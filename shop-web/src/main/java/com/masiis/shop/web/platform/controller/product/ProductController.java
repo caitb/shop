@@ -135,6 +135,7 @@ public class ProductController extends BaseController {
 
 
     /**
+     * jjh
      * 平台发货，申请拿货
      */
     @RequestMapping(value = "/user/applyStock.do")
@@ -226,7 +227,6 @@ public class ProductController extends BaseController {
      */
     @RequestMapping("/checkStock.do")
     @ResponseBody
-
     public String checkStock(HttpServletRequest request,
                              HttpServletResponse response,
                                    @RequestParam(value = "skuId",required = true) Integer skuId,

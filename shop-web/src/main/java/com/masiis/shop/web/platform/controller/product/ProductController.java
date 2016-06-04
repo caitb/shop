@@ -226,6 +226,7 @@ public class ProductController extends BaseController {
      */
     @RequestMapping("/checkStock.do")
     @ResponseBody
+
     public String checkStock(HttpServletRequest request,
                              HttpServletResponse response,
                                    @RequestParam(value = "skuId",required = true) Integer skuId,

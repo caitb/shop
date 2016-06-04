@@ -65,17 +65,17 @@
                 <li>
                     <a href="<%=path%>/marketGood/market">
                         <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
-                        <span>好货市场</span></a>
+                        <span>我要进货</span></a>
+                </li>
+                <li>
+                    <a href="<%=path%>/borderManage/borderManagement.html">
+                        <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
+                        <span>订单管理</span></a>
                 </li>
                 <li class="market">
                     <a class="herf" href="<%=basePath%>product/user/${user.id}">
                         <h1><img src="<%=path%>/static/images/1%20(2).png" ></h1>
-                        <span>库存管理</span></a>
-                </li>
-                <li>
-                    <a  href="<%=path%>/borderManage/borderManagement.html">
-                        <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
-                        <span>合伙人订单</span></a>
+                        <span>库存</span></a>
                 </li>
             </ul>
         </nav>

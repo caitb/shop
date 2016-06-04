@@ -135,6 +135,7 @@ public class ProductController extends BaseController {
 
 
     /**
+     * jjh
      * 平台发货，申请拿货
      */
     @RequestMapping(value = "/user/applyStock.do")

@@ -14,5 +14,5 @@
     response.sendRedirect("/index");
 %>
 </body>
-<%----%>
+<%--OKOKOKO--%>
 </html>

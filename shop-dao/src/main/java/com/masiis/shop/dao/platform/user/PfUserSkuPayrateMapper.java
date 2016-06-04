@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 
 import com.masiis.shop.dao.po.PfUserSkuPayrate;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface PfUserSkuPayrateMapper {
     List<PfUserSkuPayrate> selectAll();
 
     int updateByPrimaryKey(PfUserSkuPayrate record);
+
+    PfUserSkuPayrate selectByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 }

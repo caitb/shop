@@ -32,35 +32,70 @@
             <p>我的资金</p>
         </header>
         <main>
+            <div class="head_img">
+                <p><img src="${comUser.wxHeadImg}" alt=""></p>
+                <div><h1>${comUser.wxNkName}</h1>
+                    <h1>
+                        <c:if test="${pfSkuAgentDetails!=null}">
+                            <c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">
+                                <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt=""></span>
+                            </c:forEach>
+                        </c:if>
+                    </h1>
+                </div>
+                <span>个人信息</span>
+            </div>
             <div class="ban">
-                <p>累计收入:￥${totalIncom}</p>
-                <h2>(截止到<span>${currentDate}</span>)</h2>
+                <img src="${path}/static/images/what.png" alt="">
+                <p>累计收入</p>
+                <h1><b>￥</b>${totalIncom}</h1>
+<%--                <h2>(截止到<span>${currentDate}</span>)</h2>
                 <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
                 <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>
-                <button onclick="withdrawRequest()">申请提现</button>
+                <button onclick="withdrawRequest()">申请提现</button>--%>
             </div>
+            <div class="floor" onclick="showJiesuan()">
+                <p>结算中</p>
+                <p>￥<b>123123</b></p>
+                <p><img src="${path}/static/images/top.png" alt=""></p>
+            </div>
+            <div class="floordown">
+                <p><span>结算中(合伙人)</span><span>￥<b>300.00</b></span></p>
+                <p><span>结算中(店铺)</span><span>￥<b>300.00</b></span></p>
+            </div>
+            <%----%>
+            <%--<nav>--%>
+                <%--<ul>--%>
+                    <%--<li>申请中： ${applicationed}</li>--%>
+                    <%--<li>已提现： ${withdrawd}</li>--%>
+                <%--</ul>--%>
+            <%--</nav>--%>
             <nav>
                 <ul>
-                    <li>申请中： ${applicationed}</li>
-                    <li>已提现： ${withdrawd}</li>
+                    <li><b> ${applicationed}<br></b>已提现</li>
+                    <li><b> ${withdrawd} <br></b>可提现</li>
+                    <li><b> ${withdrawd} <br></b>申请中</li>
                 </ul>
             </nav>
-            <div class="floor">
-                <p><b>￥</b>${account.countingFee}</p>
-                <h1>结算中<img src="${path}/static/images/what.png" alt="?" onclick="showDetail()" /></h1>
-                <nav>
-                    <ul>
-                        <li>
-                            <p>${agentAmount}</p>
-                            <h1>结算中(合伙人)<img src="${path}/static/images/what.png" alt="?" onclick="showHedetail()"></h1>
-                        </li>
-                        <li>
-                            <p><b>￥</b>${shopAmount}</p>
-                            <h1>结算中（店铺）<img src="${path}/static/images/what.png" alt="?" onclick="showDidetail()"></h1>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <button class="btn">
+                申请提现
+            </button>
+            <%--<div class="floor">--%>
+                <%--<p><b>￥</b>${account.countingFee}</p>--%>
+                <%--<h1>结算中<img src="${path}/static/images/what.png" alt="?" onclick="showDetail()" /></h1>--%>
+                <%--<nav>--%>
+                    <%--<ul>--%>
+                        <%--<li>--%>
+                            <%--<p>${agentAmount}</p>--%>
+                            <%--<h1>结算中(合伙人)<img src="${path}/static/images/what.png" alt="?" onclick="showHedetail()"></h1>--%>
+                        <%--</li>--%>
+                        <%--<li>--%>
+                            <%--<p><b>￥</b>${shopAmount}</p>--%>
+                            <%--<h1>结算中（店铺）<img src="${path}/static/images/what.png" alt="?" onclick="showDidetail()"></h1>--%>
+                        <%--</li>--%>
+                    <%--</ul>--%>
+                <%--</nav>--%>
+            <%--</div>--%>
             <div class="floor2">
                 <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
@@ -170,6 +205,15 @@
     function toExtract(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>extract/list";
+    }
+    function showJiesuan(){
+        if($(".floordown").is(":hidden")){
+            $(".floordown").show();    //如果元素为隐藏,则将它显现
+            $(".floor p img").attr("src","${path}/static/images/down.png");
+        }else{
+            $(".floordown").hide();     //如果元素为显现,则将其隐藏
+            $(".floor p img").attr("src","${path}/static/images/top.png")
+        }
     }
 </script>
 </body>

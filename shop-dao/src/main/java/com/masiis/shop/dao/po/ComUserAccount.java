@@ -42,6 +42,14 @@ public class ComUserAccount {
      */
     private BigDecimal countingFee;
     /**
+     * 代理结算中
+     */
+    private BigDecimal agentBillAmount;
+    /**
+     * 分销结算中
+     */
+    private BigDecimal distributionBillAmount;
+    /**
      * 保证金
      */
     private BigDecimal bailFee;
@@ -115,6 +123,22 @@ public class ComUserAccount {
 
     public void setCountingFee(BigDecimal countingFee) {
         this.countingFee = countingFee;
+    }
+
+    public BigDecimal getAgentBillAmount() {
+        return agentBillAmount;
+    }
+
+    public void setAgentBillAmount(BigDecimal agentBillAmount) {
+        this.agentBillAmount = agentBillAmount;
+    }
+
+    public BigDecimal getDistributionBillAmount() {
+        return distributionBillAmount;
+    }
+
+    public void setDistributionBillAmount(BigDecimal distributionBillAmount) {
+        this.distributionBillAmount = distributionBillAmount;
     }
 
     public BigDecimal getBailFee() {

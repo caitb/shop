@@ -3,10 +3,11 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-06-04 Created
+ * 2016-06-06 Created
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PfUserStatistics {
@@ -23,15 +24,15 @@ public class PfUserStatistics {
     /**
      * 总销售额
      */
-    private Long incomeFee;
+    private BigDecimal incomeFee;
     /**
      * 总利润
      */
-    private Long profitFee;
+    private BigDecimal profitFee;
     /**
      * 总成本
      */
-    private Long costFee;
+    private BigDecimal costFee;
     /**
      * 进货订单数量
      */
@@ -87,22 +88,22 @@ public class PfUserStatistics {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public Long getIncomeFee() {
+    public BigDecimal getIncomeFee() {
         return incomeFee;
     }
-    public void setIncomeFee(Long incomeFee) {
+    public void setIncomeFee(BigDecimal incomeFee) {
         this.incomeFee = incomeFee;
     }
-    public Long getProfitFee() {
+    public BigDecimal getProfitFee() {
         return profitFee;
     }
-    public void setProfitFee(Long profitFee) {
+    public void setProfitFee(BigDecimal profitFee) {
         this.profitFee = profitFee;
     }
-    public Long getCostFee() {
+    public BigDecimal getCostFee() {
         return costFee;
     }
-    public void setCostFee(Long costFee) {
+    public void setCostFee(BigDecimal costFee) {
         this.costFee = costFee;
     }
     public Integer getUpOrderCount() {

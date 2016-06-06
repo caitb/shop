@@ -50,7 +50,7 @@ public class ReplenishStockService {
                 }
                 skuId = map.get("skuId").toString();
                 userId = Long.valueOf(map.get("userId").toString());
-                url = PropertiesUtils.getStringValue("web.domain.name.address") + "product/user/" + userId;
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/" + userId;
                 logger.info("url:" + url);
                 params = new String[3];
                 params[0] = skuId;

@@ -36,6 +36,7 @@
                     </ul>
                     <img src="${paht}/static/images/youdao.png" alt="" class="you">
                 </nav>
+               <marquee><img src="${path}/static/images/laba.png" alt="">您只可以查看直接下级的订单</marquee>
                 <main>
                     <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>
                     <div class="all">

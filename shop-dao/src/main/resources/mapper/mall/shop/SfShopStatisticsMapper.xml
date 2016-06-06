@@ -53,6 +53,13 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByShopUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count,
+        pageviews_count, share_count, return_order_count
+        from sf_shop_statistics
+        where user_id = #{shopUserId,jdbcType=BIGINT}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count, 
         pageviews_count, share_count, return_order_count

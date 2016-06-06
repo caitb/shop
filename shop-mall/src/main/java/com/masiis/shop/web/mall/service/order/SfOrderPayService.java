@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -62,6 +63,9 @@ public class SfOrderPayService {
     private SfOrderItemDistributionService  ordItemDisService;
     @Resource
     private SfUserStatisticsService statisticsService;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
+
 
     /**
      * 获得需要支付的订单的信息
@@ -148,15 +152,13 @@ public class SfOrderPayService {
     }
 
     private void updateStatistics(SfOrder order,List<SfOrderItem> orderItems){
-        updateShopUserStatistics(order,orderItems);
+        updatePurchaseUserStatistics(order,orderItems);
     }
-    private void updateShopUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
-        SfUserStatistics statistics = statisticsService.selectByUserId(order.getShopUserId());
+    private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
         if (statistics != null){
-            Integer sumQuantity = new Integer(0);
             //总分润
             for (SfOrderItem orderItem : orderItems){
-                sumQuantity = sumQuantity + orderItem.getQuantity();
                 List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
                 for (SfOrderItemDistribution itemDis : itemDises){
                     SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
@@ -170,7 +172,7 @@ public class SfOrderPayService {
                 }
             }
             //总订单数
-            statistics.setOrderCount(statistics.getOrderCount()+sumQuantity);
+            statistics.setOrderCount(statistics.getOrderCount()+1);
             //总购买金额
             statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()));
             int i = statisticsService.updateByIdAndVersion(statistics);
@@ -181,7 +183,24 @@ public class SfOrderPayService {
             throw new BusinessException("");
         }
     }
+    private void updateShopUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        //获得小铺统计信息
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
+        if (shopStatistics != null){
+            //总销售额
+            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()));
+            //总利润
+            //店铺总订单
+            shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
+            //店铺总销量
+            Integer toatalQuantity = new Integer(0);
+            for (SfOrderItem orderItem : orderItems){
+                toatalQuantity = toatalQuantity + orderItem.getQuantity();
+            }
+            shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+        }
 
+    }
 
 
     /**

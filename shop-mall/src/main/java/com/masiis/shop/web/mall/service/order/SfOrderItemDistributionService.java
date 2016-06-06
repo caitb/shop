@@ -41,8 +41,8 @@ public class SfOrderItemDistributionService {
      * @author hanzengzhi
      * @date 2016/5/17 10:08
      */
-    public List<SfOrderItemDistribution> selectBySfOrderItemId(Long sfOrderId){
-        return sfOrderItemDistributionMapper.selectBySfOrderItemId(sfOrderId);
+    public List<SfOrderItemDistribution> selectBySfOrderItemId(Long orderItemId){
+        return sfOrderItemDistributionMapper.selectBySfOrderItemId(orderItemId);
     }
 
     /**

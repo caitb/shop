@@ -38,11 +38,20 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, user_id, order_count, distribution_fee, withdraw_fee, buy_fee, 
         remark
         from sf_user_statistics
         where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, order_count, distribution_fee, withdraw_fee, buy_fee,
+        remark
+        from sf_user_statistics
+        where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >

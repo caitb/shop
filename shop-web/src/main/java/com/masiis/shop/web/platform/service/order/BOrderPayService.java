@@ -26,6 +26,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
@@ -93,6 +94,8 @@ public class BOrderPayService {
     private SkuService skuService;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
 
     /**
      * 订单支付回调入口
@@ -447,6 +450,7 @@ public class BOrderPayService {
      * <2>修改订单数据
      * <3>添加订单日志
      * <4>处理发货库存
+     * <5>增加统计数据
      */
     public void payBOrderTypeIII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
@@ -477,6 +481,12 @@ public class BOrderPayService {
             log.info("<4>处理发货库存");
             PfUserSkuStock mySkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             mySkuStock.setFrozenStock(mySkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(pfBorder.getUserId(),pfBorderItem.getSkuId());
+            pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount()+1);
+            pfUserStatistics.setTakeProductCount(pfUserStatistics.getTakeProductCount() + pfBorderItem.getQuantity());
+            pfUserStatistics.setTakeFee(pfBorderItem.getTotalPrice());
+            pfUserStatistics.setVersion(pfUserStatistics.getVersion());
+            pfUserStatisticsService.updateByIdAndVersion(pfUserStatistics);
         }
 
     }

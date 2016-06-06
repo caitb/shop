@@ -47,22 +47,22 @@
                             </div>
                         </section>
                         <section class="sec3">
-                            <%--<c:if test="${sku.pfBorder.payStatus==0}"><!--订单未完成支付><-->--%>
-                            <%--<p class="jianku"--%>
-                               <%--onclick="contininuePay(0,'${sku.pfBorder.id}')">--%>
-                                <%--申请拿货</p>--%>
-                            <%--<p class="buhuo"--%>
-                               <%--onclick="contininuePay(1,'${sku.pfBorder.id}')">--%>
-                                <%--补货</p>--%>
-                            <%--</c:if>--%>
-                            <%--<c:if test="${sku.pfBorder.payStatus==1}">--%>
+                            <c:if test="${sku.pfBorder.payStatus==0}"><!--订单未完成支付><-->
+                            <p class="jianku"
+                               onclick="contininuePay(0,'${sku.pfBorder.id}')">
+                                申请拿货</p>
+                            <p class="buhuo"
+                               onclick="contininuePay(1,'${sku.pfBorder.id}')">
+                                补货</p>
+                            </c:if>
+                            <c:if test="${sku.pfBorder.payStatus==1}">
                                 <p class="jianku"
                                    onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
                                     申请拿货</p>
                                 <p class="buhuo"
                                    onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
                                     补货</p>
-                            <%--</c:if>--%>
+                            </c:if>
                         </section>
                     </c:forEach>
                 </div>

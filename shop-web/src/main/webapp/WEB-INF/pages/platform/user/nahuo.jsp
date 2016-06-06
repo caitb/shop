@@ -133,9 +133,10 @@
 <script type="text/javascript">
     var i = 1;
     var isRate = ${isRate};
+    var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
-        $(".totalNumber").html("￥"+i*2);
+        $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
     })
 
     $(".jian").on("tap", function () {

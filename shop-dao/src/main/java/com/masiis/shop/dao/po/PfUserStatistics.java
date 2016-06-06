@@ -60,7 +60,7 @@ public class PfUserStatistics {
     /**
      * 提货金额
      */
-    private Long takeFee;
+    private BigDecimal takeFee;
     /**
      * 版本号
      */
@@ -142,10 +142,10 @@ public class PfUserStatistics {
     public void setTakeProductCount(Integer takeProductCount) {
         this.takeProductCount = takeProductCount;
     }
-    public Long getTakeFee() {
+    public BigDecimal getTakeFee() {
         return takeFee;
     }
-    public void setTakeFee(Long takeFee) {
+    public void setTakeFee(BigDecimal takeFee) {
         this.takeFee = takeFee;
     }
     public Long getVersion() {

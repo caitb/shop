@@ -13,6 +13,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.FileOutputStream;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -26,11 +27,15 @@ public class JavaMailUtils {
     private static final String DEFAULT_TO_MAIL = "";
     private static final String DEFAULT_USER_HOST = "";
 
-    public static void main(String... args){
-        sendImageMail("aa", "", "smtp.126.com", "luozhihuicxk@126.com", "lzhCXK0912#)*", "luozhihuicxk@126.com");
+    public static boolean sendImageMailBySystem(String subject, String content, Map<String, String> map){
+        return sendImageMail(subject, content,
+                DEFAULT_USER_HOST, DEFAULT_USER_MAIL, DEFAULT_USER_MAIL_PWD, DEFAULT_TO_MAIL, map);
     }
 
-    public static boolean sendImageMail(String subject, String content, String mailHost, String user, String password, String to){
+    public static boolean sendImageMail(String subject, String content,
+                                        String mailHost, String user,
+                                        String password, String to,
+                                        Map<String, String> imgParams){
         Transport ts = null;
         try {
             //1、创建发送邮件session
@@ -51,27 +56,24 @@ public class JavaMailUtils {
             // 准备邮件数据
             // 准备邮件正文数据
             MimeBodyPart text = new MimeBodyPart();
-            text.setContent("这是一封邮件正文带图片<img src='cid:1.jpg'>的邮件<br/>第二个图片:<img src='cid:2.jpg'>", "text/html;charset=UTF-8");
-            // 准备图片数据
-            MimeBodyPart image = new MimeBodyPart();
-            DataHandler dh = new DataHandler(new FileDataSource("D:/wx.jpg"));
-            image.setDataHandler(dh);
-            image.setContentID("1.jpg");
-
-            MimeBodyPart image2 = new MimeBodyPart();
-            DataHandler dh2 = new DataHandler(new FileDataSource("D:/Michael_QRCode.png"));
-            image.setDataHandler(dh2);
-            image.setContentID("2.jpg");
+            text.setContent(content, "text/html;charset=UTF-8");
             // 描述数据关系
             MimeMultipart mm = new MimeMultipart();
-            mm.addBodyPart(text);
-            mm.addBodyPart(image);
-            mm.addBodyPart(image2);
             mm.setSubType("related");
+            mm.addBodyPart(text);
+            // 准备图片数据
+            if(imgParams != null && imgParams.size() > 0) {
+                for (Map.Entry<String, String> entry : imgParams.entrySet()) {
+                    MimeBodyPart image = new MimeBodyPart();
+                    DataHandler dh = new DataHandler(new FileDataSource(entry.getValue()));
+                    image.setDataHandler(dh);
+                    image.setContentID(entry.getKey());
+                    mm.addBodyPart(image);
+                }
+            }
+
             message.setContent(mm);
             message.saveChanges();
-            //将创建好的邮件写入到E盘以文件的形式进行保存
-            message.writeTo(new FileOutputStream("E:\\ImageMail.eml"));
             //5、发送邮件
             ts.sendMessage(message, message.getAllRecipients());
             releaseTransport(ts);

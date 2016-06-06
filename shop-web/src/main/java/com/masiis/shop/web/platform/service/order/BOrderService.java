@@ -14,12 +14,14 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +55,8 @@ public class BOrderService {
     private BOrderSkuStockService borderSkuStockService;
     @Resource
     private ComUserAccountService comUserAccountService;
+    @Resource
+    private PfUserStatisticsService userStatisticsService;
 
     /**
      * 获取订单
@@ -387,6 +391,33 @@ public class BOrderService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
+    }
+
+    private void statisticsByOrder(PfBorder order){
+
+    }
+    private void statisticsPidUser(PfBorder order){
+        //获得购买人的上级统计信息
+        Long userPid = order.getUserPid();
+        PfUserStatistics statistics = null;
+        if (userPid != null){
+            statistics = userStatisticsService.selectByPrimaryKey(userPid);
+            if (statistics != null){
+                //总销售额
+                BigDecimal ordAmount = order.getOrderAmount();
+                BigDecimal bailAmount = order.getBailAmount();
+                statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
+                //利润
+                //成本
+                //进货订单数量
+                //进货商品数量
+                //出货订单数量
+                //出货商品数量
+            }else {
+                throw new BusinessException("获得上级统计信息失败，本级userId----"+order.getUserId()+"----父级id----"+order.getUserPid());
+            }
+        }
+
     }
 
     /**

@@ -145,9 +145,9 @@
                 </a>
             </div>
             <div class="btm">
-                <a href="<%=path%>/personalInfo/personalHomePageInfo.html">
+                <a href="<%=path%>/account/home">
                     <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                    <span>个人中心</span>
+                    <span>我的账户</span>
                 </a>
             </div>
         </footer>

@@ -112,7 +112,7 @@ public class BOrderPayService {
             throw new BusinessException("该支付记录已经被处理成功");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
-        //处理支付逻辑
+        //处理支付逻辑 订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0) {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 1) {

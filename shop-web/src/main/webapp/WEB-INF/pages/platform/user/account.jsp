@@ -28,8 +28,8 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-            <p>我的资金</p>
+            <%--<a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>--%>
+            <p>我的收入</p>
         </header>
         <main>
             <div class="head_img">
@@ -40,7 +40,7 @@
             <div class="ban">
                 <a href="<%=path%>/account/home/shuoming.shtml"><img src="${path}/static/images/what.png" alt=""></a>
                 <p>累计收入</p>
-                <h1><b>￥</b>${totalIncom}</h1>
+                <h1>￥${totalIncom}</h1>
 <%--                <h2>(截止到<span>${currentDate}</span>)</h2>
                 <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
                 <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>

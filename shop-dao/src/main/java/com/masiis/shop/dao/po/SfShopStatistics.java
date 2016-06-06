@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SfShopStatistics {
@@ -27,11 +28,11 @@ public class SfShopStatistics {
     /**
      * 总销售额
      */
-    private Long incomeFee;
+    private BigDecimal incomeFee;
     /**
      * 总利润
      */
-    private Long profitFee;
+    private BigDecimal profitFee;
     /**
      * 店铺总订单
      */
@@ -77,16 +78,16 @@ public class SfShopStatistics {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public Long getIncomeFee() {
+    public BigDecimal getIncomeFee() {
         return incomeFee;
     }
-    public void setIncomeFee(Long incomeFee) {
+    public void setIncomeFee(BigDecimal incomeFee) {
         this.incomeFee = incomeFee;
     }
-    public Long getProfitFee() {
+    public BigDecimal getProfitFee() {
         return profitFee;
     }
-    public void setProfitFee(Long profitFee) {
+    public void setProfitFee(BigDecimal profitFee) {
         this.profitFee = profitFee;
     }
     public Integer getOrderCount() {

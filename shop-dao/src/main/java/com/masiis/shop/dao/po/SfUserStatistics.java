@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SfUserStatistics {
@@ -27,15 +28,15 @@ public class SfUserStatistics {
     /**
      * 总分润
      */
-    private Long distributionFee;
+    private BigDecimal distributionFee;
     /**
      * 累计体现金额
      */
-    private Long withdrawFee;
+    private BigDecimal withdrawFee;
     /**
      * 总购买金额
      */
-    private Long buyFee;
+    private BigDecimal buyFee;
     private String remark;
 
     public Long getId() {
@@ -62,22 +63,22 @@ public class SfUserStatistics {
     public void setOrderCount(Integer orderCount) {
         this.orderCount = orderCount;
     }
-    public Long getDistributionFee() {
+    public BigDecimal getDistributionFee() {
         return distributionFee;
     }
-    public void setDistributionFee(Long distributionFee) {
+    public void setDistributionFee(BigDecimal distributionFee) {
         this.distributionFee = distributionFee;
     }
-    public Long getWithdrawFee() {
+    public BigDecimal getWithdrawFee() {
         return withdrawFee;
     }
-    public void setWithdrawFee(Long withdrawFee) {
+    public void setWithdrawFee(BigDecimal withdrawFee) {
         this.withdrawFee = withdrawFee;
     }
-    public Long getBuyFee() {
+    public BigDecimal getBuyFee() {
         return buyFee;
     }
-    public void setBuyFee(Long buyFee) {
+    public void setBuyFee(BigDecimal buyFee) {
         this.buyFee = buyFee;
     }
     public String getRemark() {

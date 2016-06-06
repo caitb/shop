@@ -469,7 +469,7 @@
                                    }else if(pfBorder.orderStatus ==5){
                                        StatusName="已退款";
                                    }
-                                   trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class=\"fahuo_"+pfBorder.id+"\">"+StatusName+"</b ></h2>";
+                                   trHtml+=" <h2>订单号：<span>"+pfBorder.orderCode+"</span><b class=\"fahuo_"+pfBorder.id+"\">"+StatusName+"</b ></h2>";
                                    $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
                                        trHtml+="<div class=\"shangpin\">";
                                        trHtml+=" <p class=\"photo\">";

@@ -125,7 +125,7 @@
 <div class="bottom">
     <footer>
         <div class="btm" >
-            <a href="index.html">
+            <a href="<%=path%>/index">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
                 <span>我是合伙人</span>
             </a>

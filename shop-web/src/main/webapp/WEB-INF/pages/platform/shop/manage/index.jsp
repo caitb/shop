@@ -13,18 +13,18 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/css/wodedianpu.css">
 </head>
 <body>
 <div class="wrap" <c:if test="${sfShop==null}">style="display: none;"</c:if> >
-    <div class="na">
-<%--        <p><img src="${comUser.wxHeadImg}" alt=""></p>
-        <h1>
-            <span>${comUser.realName}，欢迎登陆~</span>
-        </h1>--%>
-        <h1>店铺地址：<input value="${shopUrl}"/></h1>
-        <p id="copyShopUrl"><b>关闭</b></p>
-    </div>
+    <%--<div class="na">--%>
+<%--&lt;%&ndash;        <p><img src="${comUser.wxHeadImg}" alt=""></p>--%>
+        <%--<h1>--%>
+            <%--<span>${comUser.realName}，欢迎登陆~</span>--%>
+        <%--</h1>&ndash;%&gt;--%>
+        <%--<h1>店铺地址：<input value="${shopUrl}"/></h1>--%>
+        <%--<p id="copyShopUrl"><b>关闭</b></p>--%>
+    <%--</div>--%>
     <div class="header">
         <%--<div>
             <p>${sfShop.name}</p>
@@ -41,11 +41,11 @@
                 <img src="${comUser.wxHeadImg}" alt="">
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
-                <h3>
-                    <span id="showUrl">店铺地址</span>
-                    <span onclick="javascript:window.location.replace('${shopUrl}');">店铺预览</span>
-                    <span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>
-                </h3>
+                <%--<h3>--%>
+                    <%--<span id="showUrl">店铺地址</span>--%>
+                    <%--<span onclick="javascript:window.location.replace('${shopUrl}');">店铺预览</span>--%>
+                    <%--<span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>--%>
+                <%--</h3>--%>
             </div>
         <nav>
             <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
@@ -63,13 +63,11 @@
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/foot_icon%20(3).png" alt=""></span><span>店铺订单</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/foot_icon%20(2).png" alt=""></span><span>店铺设置</span></p>
     </nav>
-    <nav style="margin:0;">
-        <%--<p onclick="javascript:window.location.replace('<%=basePath%>distribution/distribution.shtml');"><span><img src="<%=basePath%>static/images/foot_icon%20(4).png" alt=""></span><span>分销记录</span></p>--%>
-        <%--<p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupFreight');"><span><img src="<%=basePath%>static/images/foot_icon%20(1).png" alt=""></span><span>运费模板</span></p>--%>
-        <p></p>
-        <p></p>
-        <p></p>
-    </nav>
+        <nav style="margin: 0;">
+            <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&&isSale=1');"><span><img src="<%=basePath%>static/images/lookshop.png" alt="" style="margin-bottom: 5px"></span><span>预览商店</span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/feel.png" alt="" style="margin-bottom: 5px"></span><span>分享店铺</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
+            <p style="background: #eeeeee; border-bottom: none;"></p>
+        </nav>
 </div>
 <c:if test="${sfShop==null}">
     <div class="wrap_no">

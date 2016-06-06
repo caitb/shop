@@ -32,49 +32,53 @@
 </head>
 <body>
 <div class="wrap">
+    <header class="xq_header">
+        <a href="#" onclick="backLastPage()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p>个人信息</p>
+    </header>
     <main>
-        <div class="head_img" style="background: url('${path}/static/images/gerenxinxibeijing.png');background-size: 100% 100%">
-            <p><img src="${comUser.wxHeadImg}" alt=""></p>
-            <div><h1>${comUser.wxNkName}</h1>
-                <h1>
-                    <c:if test="${pfSkuAgentDetails!=null}">
-                        <c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">
-                            <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt=""></span>
-                        </c:forEach>
-                    </c:if>
-                </h1>
-            </div>
-        </div>
-        <div id="bindPhoneId" class="sec1" style="background:white url('${path}/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px;">
+        <%--<div class="head_img" style="background: url('${path}/static/images/gerenxinxibeijing.png');background-size: 100% 100%">--%>
+            <%--<p><img src="${comUser.wxHeadImg}" alt=""></p>--%>
+            <%--<div><h1>${comUser.wxNkName}</h1>--%>
+                <%--<h1>--%>
+                    <%--<c:if test="${pfSkuAgentDetails!=null}">--%>
+                        <%--<c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">--%>
+                            <%--<span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt=""></span>--%>
+                        <%--</c:forEach>--%>
+                    <%--</c:if>--%>
+                <%--</h1>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <div id="bindPhoneId" class="sec1" style="background:white url('${path}/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px">
             <p>手机号</p>
             <c:choose>
                 <c:when test="${comUser.mobile == null || comUser.mobile == ''}">
                     <p><b>点击绑定</b><img src="${path}/static/images/next.png" style="margin-top: 4px;"/></p>
                 </c:when>
                 <c:otherwise>
-                    <p>已绑定 ${comUser.mobile}</p>
+                    <p>${comUser.mobile}</p>
                 </c:otherwise>
             </c:choose>
             <input id="mobileId" style="display: none" value="${comUser.mobile}" />
         </div>
-        <div class="sec1" style="background:white url('${path}/static/images/weixin.png') no-repeat 10px;  background-size: 20px;">
+        <div class="sec1" style="background:white url('${path}/static/images/weixin.png') no-repeat 10px;  background-size: 20px; margin-bottom: 10px;">
             <p>微信号</p>
             <p>已绑定 ${comUser.wxNkName}</p>
         </div>
-        <div class="sec1" id = "identityAuthId"  style="padding-left: 10px">
+        <div class="sec1" id = "identityAuthId"  style="background:white url('${path}/static/images/name.png') no-repeat 10px;  background-size: 20px;">
             <p>实名认证</p>
             <p><b>${auditStatusName}</b><img src="${path}/static/images/next.png" alt="" style="margin-top:4px"></p>
             <input id="auditStatusId" style="display: none" value="${comUser.auditStatus}" />
         </div>
-        <div class="sec1" id="capitalId" style="background:white url('${path}/static/images/qianban.png') no-repeat 10px;  background-size: 20px;margin-bottom: 0;">
-            <p>我的资金</p>
-            <p><b>可提现 ￥${comUserAccount.extractableFee}</b><img src="${path}/static/images/next.png" alt="" style="    margin-top:4px"></p>
-        </div>
-        <div class="sec1" id="bankCardId" style="background:white url('${path}/static/images/yinh.png') no-repeat 10px;  background-size: 20px;">
+        <%--<div class="sec1" id="capitalId" style="background:white url('${path}/static/images/qianban.png') no-repeat 10px;  background-size: 20px;margin-bottom: 0;">--%>
+            <%--<p>我的资金</p>--%>
+            <%--<p><b>可提现 ￥${comUserAccount.extractableFee}</b><img src="${path}/static/images/next.png" alt="" style="    margin-top:4px"></p>--%>
+        <%--</div>--%>
+        <div class="sec1" id="bankCardId" style="background:white url('${path}/static/images/yinh.png') no-repeat 10px;  background-size: 20px;margin-bottom: 10px;">
             <p>我的银行卡</p>
             <p><img src="${path}/static/images/next.png" alt=""></p>
         </div>
-        <div  id="addressManageId" class="sec1" style="padding-left: 10px;margin-bottom: 20px;">
+        <div  id="addressManageId" class="sec1" style="background:white url('${path}/static/images/address.png') no-repeat 10px;  background-size: 20px;">
             <p>地址管理</p>
             <p><img  src="${path}/static/images/next.png" alt=""></p>
         </div>

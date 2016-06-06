@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.EmojiUtils;
+import com.masiis.shop.dao.mall.user.SfUserStatisticsMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
@@ -41,6 +42,10 @@ public class UserService {
     private ComWxUserMapper wxUserMapper;
     @Resource
     private SfUserAccountService sfAccountService;
+    @Resource
+    private PfUserStatisticsMapper pfUserStatisticsMapper;
+    @Resource
+    private SfUserStatisticsMapper sfUserStatisticsMapper;
 
     /**
      * 根据用户id获取用户

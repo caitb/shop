@@ -27,10 +27,10 @@ public class JavaMailUtils {
     private static final String DEFAULT_USER_HOST = "";
 
     public static void main(String... args){
-        sendImageMail("smtp.126.com", "luozhihuicxk@126.com", "lzhCXK0912#)*", "luozhihuicxk@126.com");
+        sendImageMail("aa", "", "smtp.126.com", "luozhihuicxk@126.com", "lzhCXK0912#)*", "luozhihuicxk@126.com");
     }
 
-    public static boolean sendImageMail(String mailHost, String user, String password, String to){
+    public static boolean sendImageMail(String subject, String content, String mailHost, String user, String password, String to){
         Transport ts = null;
         try {
             //1、创建发送邮件session
@@ -47,20 +47,26 @@ public class JavaMailUtils {
             //收件人
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
             //邮件标题
-            message.setSubject("带图片的邮件");
+            message.setSubject(subject);
             // 准备邮件数据
             // 准备邮件正文数据
             MimeBodyPart text = new MimeBodyPart();
-            text.setContent("这是一封邮件正文带图片<img src='cid:1.jpg'>的邮件", "text/html;charset=UTF-8");
+            text.setContent("这是一封邮件正文带图片<img src='cid:1.jpg'>的邮件<br/>第二个图片:<img src='cid:2.jpg'>", "text/html;charset=UTF-8");
             // 准备图片数据
             MimeBodyPart image = new MimeBodyPart();
             DataHandler dh = new DataHandler(new FileDataSource("D:/wx.jpg"));
             image.setDataHandler(dh);
             image.setContentID("1.jpg");
+
+            MimeBodyPart image2 = new MimeBodyPart();
+            DataHandler dh2 = new DataHandler(new FileDataSource("D:/Michael_QRCode.png"));
+            image.setDataHandler(dh2);
+            image.setContentID("2.jpg");
             // 描述数据关系
             MimeMultipart mm = new MimeMultipart();
             mm.addBodyPart(text);
             mm.addBodyPart(image);
+            mm.addBodyPart(image2);
             mm.setSubType("related");
             message.setContent(mm);
             message.saveChanges();

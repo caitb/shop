@@ -9,9 +9,11 @@ package com.masiis.shop.dao.platform.user;
 
 
 import com.masiis.shop.dao.po.PfUserStatistics;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PfUserStatisticsMapper {
     int deleteByPrimaryKey(Long id);
 

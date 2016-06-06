@@ -131,14 +131,22 @@ public class UserAccountController extends BaseController{
         Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
         BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
         log.info("查询已提现金额end");
+        mv.addObject("comUser",comUser);
         mv.addObject("account",account);
         mv.addObject("agentAmount",rmbFormat.format(agentAmount));
-        mv.addObject("shopAmount",account.getCountingFee().subtract(agentAmount));
+        mv.addObject("shopAmount",rmbFormat.format(account.getCountingFee().subtract(agentAmount)));
         mv.addObject("applicationed",rmbFormat.format(account.getAppliedFee()));
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
         mv.addObject("totalIncom",account.getExtractableFee().add(withdrawd).add(account.getCountingFee()));
         mv.setViewName("platform/user/account");
+        return mv;
+    }
+
+    @RequestMapping("/home/shuoming.shtml")
+    public ModelAndView gotoShuoming(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("platform/user/shuoming");
         return mv;
     }
 

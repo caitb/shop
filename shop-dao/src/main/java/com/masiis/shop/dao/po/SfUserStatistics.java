@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-06-04 Created
+ * 2016-06-06 Created
  */
 package com.masiis.shop.dao.po;
 

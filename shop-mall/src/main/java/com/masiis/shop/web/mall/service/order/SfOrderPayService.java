@@ -14,6 +14,7 @@ import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.mall.service.user.ComUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -71,6 +72,8 @@ public class SfOrderPayService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private ComUserAccountService comUserAccountService;
 
 
     /**
@@ -146,7 +149,7 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity());
             }
-            //统计信息
+            //统计更新信息
             updateStatistics(order,orderItems);
             //微信短信提醒
             ComUser comUser = userService.getUserById(order.getUserId());
@@ -164,7 +167,7 @@ public class SfOrderPayService {
     private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
         SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
         if (statistics != null){
-            //总分润
+            //总分润(一条订单分润人的分润信息的更新)
             for (SfOrderItem orderItem : orderItems){
                 List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
                 for (SfOrderItemDistribution itemDis : itemDises){
@@ -180,7 +183,7 @@ public class SfOrderPayService {
             }
             //总订单数
             statistics.setOrderCount(statistics.getOrderCount()+1);
-            //总购买金额
+            //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
             statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
             int i = statisticsService.updateByIdAndVersion(statistics);
             if (i != 1){
@@ -194,7 +197,7 @@ public class SfOrderPayService {
         //获得小铺统计信息
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
         if (shopStatistics != null){
-            //总销售额
+            //总销售额(总销售额 = 订单金额 - 订单的代理运费)
             shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
             //总利润
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
@@ -212,8 +215,17 @@ public class SfOrderPayService {
 
     }
 
+    private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
+        if (comUserAccount != null){
+
+        }
+    }
+
+
     /**
      * 此订单小铺获得利润
+     * 小铺商品的利润 = 商品购买价格 - 商品的代理价格 - 商品的分润
      * @param order
      * @param orderItems
      * @return

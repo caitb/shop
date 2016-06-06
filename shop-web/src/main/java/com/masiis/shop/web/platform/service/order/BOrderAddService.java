@@ -8,11 +8,9 @@ import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -238,9 +236,9 @@ public class BOrderAddService {
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
         order.setSendType(comUser.getSendType());
-        order.setOrderStatus(BOrderStatus.WaitShip.getCode());    //待发货
+        order.setOrderStatus(BOrderStatus.NotPaid.getCode());    //未付款
         order.setShipStatus(0);
-        order.setPayStatus(1);      //已支付
+        order.setPayStatus(0);      //未支付
         order.setIsShip(0);
         order.setIsReceipt(0);
         order.setIsCounting(0);
@@ -258,8 +256,8 @@ public class BOrderAddService {
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());
-        pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
+        pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());//合伙人价
+        pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));//倒算总价
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);

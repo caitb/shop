@@ -1,13 +1,15 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.po.*;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
+import com.masiis.shop.dao.po.ComAgentLevel;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
@@ -16,23 +18,19 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @autor zhaoliang
@@ -335,7 +333,10 @@ public class BOrderController extends BaseController {
             }
         } else if (pfBorder.getOrderType() == 1) {
             successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
-        } else {
+        } else if (pfBorder.getOrderType() == 2) {
+            successURL += "product/replenishmentSelf.shtml?bOrderId=" + pfBorder.getId();
+        }
+        else {
             throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
         }
         modelAndView.addObject("bOrderId", bOrderId);

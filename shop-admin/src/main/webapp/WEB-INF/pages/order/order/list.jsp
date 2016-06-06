@@ -433,7 +433,7 @@
                         }
                     },
                     {
-                        field: 'shopName',
+                        field: 'shop_user_id',
                         title: '店铺所属人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,

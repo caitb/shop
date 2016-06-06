@@ -48,6 +48,10 @@ public class ComUserAccountService {
         return accountMapper.findByUserId(id);
     }
 
+    public int updateByIdWithVersion(ComUserAccount comUserAccount){
+        return accountMapper.updateByIdWithVersion(comUserAccount);
+    }
+
     /**
      * 创建用户之初,创建用户的资产对象
      *

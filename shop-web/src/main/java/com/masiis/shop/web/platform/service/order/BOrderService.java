@@ -400,6 +400,7 @@ public class BOrderService {
         List<PfBorderItem> ordItems =  pfBorderItemMapper.getPfBorderItemDetail(order.getId());
         statisticsUserInfo(order,ordItems);
         statisticsPidUserInfo(order,ordItems);
+        updateDisBillAmount(order,ordItems);
     }
     private void statisticsUserInfo(PfBorder order,List<PfBorderItem> ordItems){
         //代理人的统计信息
@@ -437,13 +438,7 @@ public class BOrderService {
                     BigDecimal bailAmount = order.getBailAmount();
                     statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
                     //利润
-                    PfUserSku pUserSku = null;
-                    PfSkuAgent pSkuAgent = null;
-                    BigDecimal sumProfitFee = BigDecimal.ZERO;
-                    pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, pfBorderItem.getSkuId());
-                    pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
-                    BigDecimal unit_profit = pfBorderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
-                    sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                    BigDecimal sumProfitFee = getSumProfitFee(userPid,pfBorderItem.getSkuId(),pfBorderItem.getUnitPrice(),pfBorderItem.getQuantity());
                     statistics.setProfitFee(statistics.getProfitFee().add(sumProfitFee));
                     //出货订单数量
                     statistics.setDownOrderCount(statistics.getDownOrderCount()+1);
@@ -457,6 +452,37 @@ public class BOrderService {
                     throw new BusinessException("查询代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
                 }
             }
+        }
+    }
+
+    /**
+     * 获得商品的利润
+     * @param userPid
+     * @param skuId
+     * @param unitPrice
+     * @param quantity
+     * @return
+     */
+    private BigDecimal getSumProfitFee(Long userPid,Integer skuId,BigDecimal unitPrice,Integer quantity){
+        PfUserSku pUserSku = null;
+        PfSkuAgent pSkuAgent = null;
+        BigDecimal sumProfitFee = BigDecimal.ZERO;
+        pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, skuId);
+        pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
+        BigDecimal unit_profit = unitPrice.subtract(pSkuAgent.getUnitPrice());
+        sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
+        return sumProfitFee;
+    }
+
+    private void updateDisBillAmount(PfBorder order,List<PfBorderItem> ordItems){
+        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getUserId());
+        if (comUserAccount != null){
+            BigDecimal sumProfitFee = BigDecimal.ZERO;
+            for (PfBorderItem orderItem : ordItems){
+                sumProfitFee = sumProfitFee.add(getSumProfitFee(order.getUserId(),orderItem.getSkuId(),orderItem.getUnitPrice(),orderItem.getQuantity()));
+            }
+            comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(sumProfitFee));
+            int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
         }
     }
 

@@ -151,6 +151,8 @@ public class SfOrderPayService {
             }
             //统计更新信息
             updateStatistics(order,orderItems);
+            //更新小铺用户结算中信息
+            updateDisBillAmount(order,orderItems);
             //微信短信提醒
             ComUser comUser = userService.getUserById(order.getUserId());
             orderNotice(comUser, order, orderItems);
@@ -215,10 +217,18 @@ public class SfOrderPayService {
 
     }
 
+    /**
+     * 更新小铺用户人结算中信息
+     * 结算中(结算中 = 之前结算中 + 利润 )
+     * @param order
+     * @param orderItems
+     */
     private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
         if (comUserAccount != null){
-
+            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
+            comUserAccountService.updateByIdWithVersion(comUserAccount);
         }
     }
 

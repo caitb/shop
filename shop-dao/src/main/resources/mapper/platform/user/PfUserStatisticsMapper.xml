@@ -14,7 +14,7 @@
         <result column="down_product_count" property="downProductCount" jdbcType="INTEGER" />
         <result column="take_order_count" property="takeOrderCount" jdbcType="INTEGER" />
         <result column="take_product_count" property="takeProductCount" jdbcType="INTEGER" />
-        <result column="take_fee" property="takeFee" jdbcType="BIGINT" />
+        <result column="take_fee" property="takeFee" jdbcType="DECIMAL" />
         <result column="version" property="version" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
@@ -35,7 +35,7 @@
             #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL}, 
             #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER}, 
             #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER}, 
-            #{takeFee,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+            #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
             )
     </insert>
 
@@ -52,7 +52,7 @@
             down_product_count = #{downProductCount,jdbcType=INTEGER},
             take_order_count = #{takeOrderCount,jdbcType=INTEGER},
             take_product_count = #{takeProductCount,jdbcType=INTEGER},
-            take_fee = #{takeFee,jdbcType=BIGINT},
+            take_fee = #{takeFee,jdbcType=DECIMAL},
             version = #{version,jdbcType=BIGINT},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}

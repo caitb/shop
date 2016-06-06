@@ -1,9 +1,7 @@
-package com.masiis.shop.web.platform.service.user;
+package com.masiis.shop.api.service.user;
 
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserStatisticsMapper;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

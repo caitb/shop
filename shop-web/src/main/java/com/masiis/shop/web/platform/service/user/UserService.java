@@ -43,9 +43,9 @@ public class UserService {
     @Resource
     private SfUserAccountService sfAccountService;
     @Resource
-    private PfUserStatisticsMapper pfUserStatisticsMapper;
+    private PfUserStatisticsService pfUserStatisticsService;
     @Resource
-    private SfUserStatisticsMapper sfUserStatisticsMapper;
+    private SfUserStatisticsService sfUserStatisticsService;
 
     /**
      * 根据用户id获取用户
@@ -248,6 +248,8 @@ public class UserService {
             insertComUser(user);
             accountService.createAccountByUser(user);
             sfAccountService.createSfAccountByUser(user);
+            sfUserStatisticsService.initSfUserStatistics(user);
+            pfUserStatisticsService.initPfUserStatistics(user);
         }
 
         if(wxUser == null) {

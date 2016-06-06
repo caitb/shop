@@ -5,6 +5,8 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
@@ -65,6 +67,10 @@ public class SfOrderPayService {
     private SfUserStatisticsService statisticsService;
     @Resource
     private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
 
     /**
@@ -175,7 +181,7 @@ public class SfOrderPayService {
             //总订单数
             statistics.setOrderCount(statistics.getOrderCount()+1);
             //总购买金额
-            statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()));
+            statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
             int i = statisticsService.updateByIdAndVersion(statistics);
             if (i != 1){
                 throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
@@ -189,8 +195,10 @@ public class SfOrderPayService {
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
         if (shopStatistics != null){
             //总销售额
-            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()));
+            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
             //总利润
+            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            shopStatistics.setProfitFee(shopStatistics.getProfitFee().add(sumProfitFee));
             //店铺总订单
             shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
             //店铺总销量
@@ -204,6 +212,25 @@ public class SfOrderPayService {
 
     }
 
+    /**
+     * 此订单小铺获得利润
+     * @param order
+     * @param orderItems
+     * @return
+     */
+    private BigDecimal getShopProfitfee(SfOrder order,List<SfOrderItem> orderItems){
+        BigDecimal sumProfitFee = BigDecimal.ZERO;
+        PfUserSku pUserSku = null;
+        PfSkuAgent pSkuAgent = null;
+        for (SfOrderItem orderItem:orderItems){
+            pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getShopUserId(), orderItem.getSkuId());
+            pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(orderItem.getSkuId(), pUserSku.getAgentLevelId());
+            BigDecimal unit_profit = orderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        }
+        sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
+        return sumProfitFee;
+    }
 
     /**
      * 更新支付订单

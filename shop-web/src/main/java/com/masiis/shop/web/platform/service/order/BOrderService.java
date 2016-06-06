@@ -402,12 +402,12 @@ public class BOrderService {
         statisticsPidUserInfo(order,ordItems);
     }
     private void statisticsUserInfo(PfBorder order,List<PfBorderItem> ordItems){
-        //获得购买人的统计信息
+        //代理人的统计信息
         Long userId = order.getUserId();
         if (userId != null){
             for (PfBorderItem pfBorderItem : ordItems){
                 PfUserStatistics statistics = userStatisticsService.selectByUserIdAndSkuId(userId,pfBorderItem.getSkuId());
-                //总成本
+                //总成本(订单金额-保证金)
                 BigDecimal ordAmount = order.getOrderAmount();
                 BigDecimal bailAmount = order.getBailAmount();
                 statistics.setCostFee(statistics.getCostFee().add(ordAmount.subtract(bailAmount)));
@@ -417,15 +417,15 @@ public class BOrderService {
                 statistics.setUpProductCount(statistics.getUpProductCount()+pfBorderItem.getQuantity());
                 int i = userStatisticsService.updateByIdAndVersion(statistics);
                 if (i!=1){
-                    throw new BusinessException("更新购买人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
+                    throw new BusinessException("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
                 }
             }
         }else{
-            throw new BusinessException("购买人id为null");
+            throw new BusinessException("代理人id为null");
         }
     }
     private void statisticsPidUserInfo(PfBorder order,List<PfBorderItem> ordItems){
-        //获得购买人的上级统计信息
+        //获得代理人的上级统计信息
         Long userPid = order.getUserPid();
         PfUserStatistics statistics = null;
         if (userPid != null){

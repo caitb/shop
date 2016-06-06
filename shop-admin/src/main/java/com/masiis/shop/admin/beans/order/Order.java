@@ -15,6 +15,7 @@ public class Order {
     private PfBorder pfBorder;
     private PfCorder pfCorder;
     private SfOrder sfOrder;
+    private ComUser shopUser;//店铺主人
 
     private List<PfBorderItem> pfBorderItems;
     private List<SfOrderItem> sfOrderItems;
@@ -63,6 +64,14 @@ public class Order {
 
     public void setSfOrder(SfOrder sfOrder) {
         this.sfOrder = sfOrder;
+    }
+
+    public ComUser getShopUser() {
+        return shopUser;
+    }
+
+    public void setShopUser(ComUser shopUser) {
+        this.shopUser = shopUser;
     }
 
     public List<PfBorderItem> getPfBorderItems() {
@@ -168,6 +177,7 @@ public class Order {
                 ", pfBorder=" + pfBorder +
                 ", pfCorder=" + pfCorder +
                 ", sfOrder=" + sfOrder +
+                ", shopUser=" + shopUser +
                 ", pfBorderItems=" + pfBorderItems +
                 ", sfOrderItems=" + sfOrderItems +
                 ", pfBorderConsignee=" + pfBorderConsignee +

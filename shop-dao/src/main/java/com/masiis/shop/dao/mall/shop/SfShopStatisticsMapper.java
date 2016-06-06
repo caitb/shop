@@ -19,6 +19,8 @@ public interface SfShopStatisticsMapper {
 
     SfShopStatistics selectByPrimaryKey(Long id);
 
+    SfShopStatistics selectByShopUserId(Long shopUserId);
+
     List<SfShopStatistics> selectAll();
 
     int updateByPrimaryKey(SfShopStatistics record);

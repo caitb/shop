@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="order_count" property="orderCount" jdbcType="INTEGER" />
         <result column="distribution_fee" property="distributionFee" jdbcType="DECIMAL" />
         <result column="withdraw_fee" property="withdrawFee" jdbcType="DECIMAL" />
@@ -18,10 +19,10 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserStatistics" >
-        insert into sf_user_statistics (id, create_time, user_id, 
+        insert into sf_user_statistics (id, create_time, user_id, sku_id,
             order_count, distribution_fee, withdraw_fee, 
             buy_fee, remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
             #{orderCount,jdbcType=INTEGER}, #{distributionFee,jdbcType=DECIMAL}, #{withdrawFee,jdbcType=DECIMAL}, 
             #{buyFee,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -30,6 +31,7 @@
         update sf_user_statistics
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             user_id = #{userId,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
             order_count = #{orderCount,jdbcType=INTEGER},
             distribution_fee = #{distributionFee,jdbcType=DECIMAL},
             withdraw_fee = #{withdrawFee,jdbcType=DECIMAL},
@@ -38,15 +40,24 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
+
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, order_count, distribution_fee, withdraw_fee, buy_fee, 
+        select id, create_time, user_id,sku_id, order_count, distribution_fee, withdraw_fee, buy_fee,
         remark
         from sf_user_statistics
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id,sku_id, order_count, distribution_fee, withdraw_fee, buy_fee,
+        remark
+        from sf_user_statistics
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, order_count, distribution_fee, withdraw_fee, buy_fee, 
+        select id, create_time, user_id,sku_id, order_count, distribution_fee, withdraw_fee, buy_fee,
         remark
         from sf_user_statistics
     </select>

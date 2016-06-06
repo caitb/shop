@@ -57,6 +57,27 @@
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserStatistics">
+        update
+        pf_user_statistics
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        user_id = #{userId,jdbcType=BIGINT},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        cost_fee = #{costFee,jdbcType=DECIMAL},
+        up_order_count = #{upOrderCount,jdbcType=INTEGER},
+        up_product_count = #{upProductCount,jdbcType=INTEGER},
+        down_order_count = #{downOrderCount,jdbcType=INTEGER},
+        down_product_count = #{downProductCount,jdbcType=INTEGER},
+        take_order_count = #{takeOrderCount,jdbcType=INTEGER},
+        take_product_count = #{takeProductCount,jdbcType=INTEGER},
+        take_fee = #{takeFee,jdbcType=DECIMAL},
+        version = #{version,jdbcType=BIGINT}+1,
+        remark = #{remark,jdbcType=VARCHAR}
+        where
+        id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=INTEGER}
+    </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, user_id, income_fee, profit_fee, cost_fee, up_order_count, 

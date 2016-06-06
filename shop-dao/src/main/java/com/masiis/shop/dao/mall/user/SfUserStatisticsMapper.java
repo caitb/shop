@@ -21,7 +21,11 @@ public interface SfUserStatisticsMapper {
 
     SfUserStatistics selectByPrimaryKey(Long id);
 
+    SfUserStatistics selectByUserId(Long userId);
+
     List<SfUserStatistics> selectAll();
 
     int updateByPrimaryKey(SfUserStatistics record);
+
+    int updateByIdAndVersion(SfUserStatistics record);
 }

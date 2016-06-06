@@ -9,9 +9,11 @@ package com.masiis.shop.dao.mall.user;
 
 
 import com.masiis.shop.dao.po.SfUserStatistics;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface SfUserStatisticsMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -19,7 +21,11 @@ public interface SfUserStatisticsMapper {
 
     SfUserStatistics selectByPrimaryKey(Long id);
 
+    SfUserStatistics selectByUserId(Long userId);
+
     List<SfUserStatistics> selectAll();
 
     int updateByPrimaryKey(SfUserStatistics record);
+
+    int updateByIdAndVersion(SfUserStatistics record);
 }

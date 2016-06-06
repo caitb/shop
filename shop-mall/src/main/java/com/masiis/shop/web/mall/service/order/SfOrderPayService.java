@@ -11,7 +11,9 @@ import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
+import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.web.mall.utils.wx.WxPFNoticeUtils;
@@ -60,7 +62,10 @@ public class SfOrderPayService {
     @Resource
     private SfOrderItemDistributionService  ordItemDisService;
     @Resource
-    private SfShopService sfShopService;
+    private SfUserStatisticsService statisticsService;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
+
 
     /**
      * 获得需要支付的订单的信息
@@ -135,6 +140,8 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity());
             }
+            //统计信息
+            updateStatistics(order,orderItems);
             //微信短信提醒
             ComUser comUser = userService.getUserById(order.getUserId());
             orderNotice(comUser, order, orderItems);
@@ -143,6 +150,60 @@ public class SfOrderPayService {
         }
         log.info("微信支付完进行异步回调---end");
     }
+
+    private void updateStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        updatePurchaseUserStatistics(order,orderItems);
+        updateShopUserStatistics(order,orderItems);
+    }
+    private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
+        if (statistics != null){
+            //总分润
+            for (SfOrderItem orderItem : orderItems){
+                List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
+                for (SfOrderItemDistribution itemDis : itemDises){
+                    SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
+                    if (disUserStatist != null ){
+                        disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                        int i = statisticsService.updateByIdAndVersion(disUserStatist);
+                        if (i != 1){
+                            throw new BusinessException("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
+                        }
+                    }
+                }
+            }
+            //总订单数
+            statistics.setOrderCount(statistics.getOrderCount()+1);
+            //总购买金额
+            statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()));
+            int i = statisticsService.updateByIdAndVersion(statistics);
+            if (i != 1){
+                throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
+            }
+        }else{
+            throw new BusinessException("");
+        }
+    }
+    private void updateShopUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        //获得小铺统计信息
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
+        if (shopStatistics != null){
+            //总销售额
+            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()));
+            //总利润
+            //店铺总订单
+            shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
+            //店铺总销量
+            Integer toatalQuantity = new Integer(0);
+            for (SfOrderItem orderItem : orderItems){
+                toatalQuantity = toatalQuantity + orderItem.getQuantity();
+            }
+            shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+            shopStatisticsService.updateByIdAndVersion(shopStatistics);
+        }
+
+    }
+
 
     /**
      * 更新支付订单
@@ -248,6 +309,8 @@ public class SfOrderPayService {
         }
         log.info("更新小铺商品表的总销量----end");
     }
+
+
 
     /**
      * 支付成功回调
@@ -415,7 +478,6 @@ public class SfOrderPayService {
         /*消费者端提醒*/
         StringBuffer skuNames = new StringBuffer();
         for (SfOrderItem orderItem : orderItems) {
-            System.out.println();
             skuNames.append(orderItem.getSkuName());
         }
         MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(), skuNames.toString());

@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-06-04 Created
+ * 2016-06-06 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -16,6 +16,10 @@ public class SfShopStatistics {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 小铺id
+     */
+    private Long shopId;
     /**
      * 用户id
      */
@@ -60,6 +64,12 @@ public class SfShopStatistics {
     }
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+    public Long getShopId() {
+        return shopId;
+    }
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
     public Long getUserId() {
         return userId;

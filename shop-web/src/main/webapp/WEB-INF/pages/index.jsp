@@ -152,6 +152,13 @@
             </div>
         </footer>
     </div>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+    <script>
+       $("body").on("swipeLeft", function () {
+           location.href='<%=path%>/shop/manage/index';
+       })
+
+    </script>
     <script>
         var mySwiper = new Swiper ('.swiper-container', {
             direction: 'horizontal',

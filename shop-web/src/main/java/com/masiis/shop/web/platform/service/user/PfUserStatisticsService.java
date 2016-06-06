@@ -25,7 +25,9 @@ public class PfUserStatisticsService {
     public PfUserStatistics selectByPrimaryKey(Long id){
         return userStatisticsMapper.selectByPrimaryKey(id);
     }
-
+    public int updateByIdAndVersion(PfUserStatistics statistics){
+        return userStatisticsMapper.updateByIdAndVersion(statistics);
+    }
     public PfUserStatistics initPfUserStatistics(ComUser user){
         PfUserStatistics statistics = new PfUserStatistics();
 

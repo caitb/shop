@@ -8,6 +8,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
@@ -57,6 +58,8 @@ public class BOrderService {
     private ComUserAccountService comUserAccountService;
     @Resource
     private PfUserStatisticsService userStatisticsService;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
     /**
      * 获取订单
@@ -394,9 +397,34 @@ public class BOrderService {
     }
 
     private void statisticsByOrder(PfBorder order){
-
+        List<PfBorderItem> ordItems =  pfBorderItemMapper.getPfBorderItemDetail(order.getId());
+        statisticsUserInfo(order,ordItems);
+        statisticsPidUserInfo(order,ordItems);
     }
-    private void statisticsPidUser(PfBorder order){
+    private void statisticsUserInfo(PfBorder order,List<PfBorderItem> ordItems){
+        //获得购买人的统计信息
+        Long userId = order.getUserId();
+        if (userId != null){
+            PfUserStatistics statistics = userStatisticsService.selectByPrimaryKey(userId);
+            if (statistics != null){
+                //总成本
+                BigDecimal ordAmount = order.getOrderAmount();
+                BigDecimal bailAmount = order.getBailAmount();
+                statistics.setCostFee(statistics.getCostFee().add(ordAmount.subtract(bailAmount)));
+                //进货订单数量
+                statistics.setUpOrderCount(statistics.getUpOrderCount()+1);
+                //进货商品数量
+                Integer sumQuantity = new Integer(0);
+                for (PfBorderItem pfBorderItem : ordItems){
+                    sumQuantity = sumQuantity + pfBorderItem.getQuantity();
+                }
+                statistics.setUpProductCount(statistics.getUpProductCount()+sumQuantity);
+            }
+        }else{
+            throw new BusinessException("购买人id为null");
+        }
+    }
+    private void statisticsPidUserInfo(PfBorder order,List<PfBorderItem> ordItems){
         //获得购买人的上级统计信息
         Long userPid = order.getUserPid();
         PfUserStatistics statistics = null;
@@ -408,11 +436,22 @@ public class BOrderService {
                 BigDecimal bailAmount = order.getBailAmount();
                 statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
                 //利润
-                //成本
-                //进货订单数量
-                //进货商品数量
+                PfUserSku pUserSku = null;
+                PfSkuAgent pSkuAgent = null;
+                BigDecimal sumProfitFee = BigDecimal.ZERO;
+                Integer sumQuantity = new Integer(0);
+                for (PfBorderItem pfBorderItem : ordItems) {
+                    pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, pfBorderItem.getSkuId());
+                    pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
+                    BigDecimal unit_profit = pfBorderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+                    sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                    sumQuantity = sumQuantity + pfBorderItem.getQuantity();
+                }
+                statistics.setProfitFee(statistics.getProfitFee().add(sumProfitFee));
                 //出货订单数量
+                statistics.setDownOrderCount(statistics.getDownOrderCount()+1);
                 //出货商品数量
+                statistics.setDownProductCount(statistics.getDownProductCount()+sumQuantity);
             }else {
                 throw new BusinessException("获得上级统计信息失败，本级userId----"+order.getUserId()+"----父级id----"+order.getUserPid());
             }

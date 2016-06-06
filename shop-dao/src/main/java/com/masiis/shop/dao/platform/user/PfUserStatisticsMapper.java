@@ -24,4 +24,6 @@ public interface PfUserStatisticsMapper {
     List<PfUserStatistics> selectAll();
 
     int updateByPrimaryKey(PfUserStatistics record);
+
+    int updateByIdAndVersion(PfUserStatistics statistics);
 }

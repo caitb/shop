@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,16 +160,17 @@ public class PfBorderController extends BaseController {
      * @param response
      * @param bOrderId   合伙人订单ID
      * @param outOrderId 银行流水号
+     * @param payAmount  实付金额
      * @return
      */
     @RequestMapping("/offline/Receipt.do")
     @ResponseBody
-    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId) {
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, BigDecimal payAmount) {
 
         try {
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
             //,getPbUser(request)
-            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"),getPbUser(request));
+            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"),getPbUser(request));
 
             return "success";
         } catch (Exception e) {

@@ -80,9 +80,13 @@
             success:function(data){
                 $("#divall").empty();
                 var arr=eval(data);
-                for(var i=0;i<arr.length;i++)
-                {
-                    $("#divall").append("<div><p><span class='sd'>"+arr[i].date+"日</span><span>"+arr[i].incom+"</span></p></div>")
+                if (arr.length == 0){
+                    alert("暂无数据");
+                }else {
+                    for(var i=0;i<arr.length;i++)
+                    {
+                        $("#divall").append("<div><p><span class='sd'>"+arr[i].date+"日</span><span>"+arr[i].incom+"</span></p></div>")
+                    }
                 }
             },
             error: function(){

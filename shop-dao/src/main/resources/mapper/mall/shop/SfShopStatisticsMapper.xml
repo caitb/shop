@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopStatistics" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="income_fee" property="incomeFee" jdbcType="DECIMAL" />
         <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
@@ -20,19 +21,20 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >
-        insert into sf_shop_statistics (id, create_time, user_id, 
-            income_fee, profit_fee, order_count, 
-            product_count, pageviews_count, share_count, 
-            return_order_count)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{orderCount,jdbcType=INTEGER}, 
-            #{productCount,jdbcType=INTEGER}, #{pageviewsCount,jdbcType=INTEGER}, #{shareCount,jdbcType=INTEGER}, 
-            #{returnOrderCount,jdbcType=INTEGER})
+        insert into sf_shop_statistics (id, create_time, shop_id, 
+            user_id, income_fee, profit_fee, 
+            order_count, product_count, pageviews_count, 
+            share_count, return_order_count)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, 
+            #{orderCount,jdbcType=INTEGER}, #{productCount,jdbcType=INTEGER}, #{pageviewsCount,jdbcType=INTEGER}, 
+            #{shareCount,jdbcType=INTEGER}, #{returnOrderCount,jdbcType=INTEGER})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >
         update sf_shop_statistics
         set create_time = #{createTime,jdbcType=TIMESTAMP},
+            shop_id = #{shopId,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
             income_fee = #{incomeFee,jdbcType=DECIMAL},
             profit_fee = #{profitFee,jdbcType=DECIMAL},
@@ -45,14 +47,14 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, income_fee, profit_fee, order_count, product_count, 
+        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count, 
         pageviews_count, share_count, return_order_count
         from sf_shop_statistics
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, income_fee, profit_fee, order_count, product_count, 
+        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count, 
         pageviews_count, share_count, return_order_count
         from sf_shop_statistics
     </select>

@@ -415,6 +415,7 @@ public class SfOrderPayService {
         /*消费者端提醒*/
         StringBuffer skuNames = new StringBuffer();
         for (SfOrderItem orderItem : orderItems) {
+            System.out.println();
             skuNames.append(orderItem.getSkuName());
         }
         MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(), skuNames.toString());

@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
@@ -15,7 +14,6 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -131,14 +129,22 @@ public class UserAccountController extends BaseController{
         Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
         BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
         log.info("查询已提现金额end");
+        mv.addObject("comUser",comUser);
         mv.addObject("account",account);
         mv.addObject("agentAmount",rmbFormat.format(agentAmount));
-        mv.addObject("shopAmount",account.getCountingFee().subtract(agentAmount));
+        mv.addObject("shopAmount",rmbFormat.format(account.getCountingFee().subtract(agentAmount)));
         mv.addObject("applicationed",rmbFormat.format(account.getAppliedFee()));
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
         mv.addObject("totalIncom",account.getExtractableFee().add(withdrawd).add(account.getCountingFee()));
         mv.setViewName("platform/user/account");
+        return mv;
+    }
+
+    @RequestMapping("/home/shuoming.shtml")
+    public ModelAndView gotoShuoming(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("platform/user/shuoming");
         return mv;
     }
 

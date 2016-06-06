@@ -145,13 +145,20 @@
                 </a>
             </div>
             <div class="btm">
-                <a href="<%=path%>/personalInfo/personalHomePageInfo.html">
+                <a href="<%=path%>/account/home">
                     <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                    <span>个人中心</span>
+                    <span>我的账户</span>
                 </a>
             </div>
         </footer>
     </div>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+    <script>
+       $("body").on("swipeLeft", function () {
+           location.href='<%=path%>/shop/manage/index';
+       })
+
+    </script>
     <script>
         var mySwiper = new Swiper ('.swiper-container', {
             direction: 'horizontal',

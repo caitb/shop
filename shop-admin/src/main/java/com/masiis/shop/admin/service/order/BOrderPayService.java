@@ -29,6 +29,7 @@ import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuPayrateMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ import java.util.List;
  * payBOrderService
  *
  * @author ZhaoLiang
- * @date 2016/3/30
+ * @date 2016/3/30111
  */
 @Service
 public class BOrderPayService {
@@ -93,6 +94,8 @@ public class BOrderPayService {
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
     @Resource
+    private PfUserSkuPayrateMapper pfUserSkuPayrateMapper;
+    @Resource
     private PbOperationLogMapper pbOperationLogMapper;
 
     /**
@@ -100,11 +103,12 @@ public class BOrderPayService {
      *
      * @param pfBorderPayment 订单支付信息表数据
      * @param outOrderId      第三方支付订单号
+     * @param payAmount       实付金额
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
     @Transactional
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath,PbUser pbUser) throws Exception {
+    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath,PbUser pbUser) throws Exception {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
 //        System.out.println(dateFormat.format(new Date()));
         if (pfBorderPayment == null) {
@@ -122,6 +126,22 @@ public class BOrderPayService {
         } else {
             throw new BusinessException("订单类型有误");
         }
+
+        PfBorderItem pfBorderItem = pfBorderItemMapper.selectByOrderId(pfBorder.getId());
+        PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+        if(pfUserSkuPayrate != null){
+            log.error("已有记录![pfUserSkuPayrate="+pfUserSkuPayrate+"]");
+            throw new BusinessException("已有记录!");
+        }
+
+        pfUserSkuPayrate = new PfUserSkuPayrate();
+        pfUserSkuPayrate.setCreateTime(new Date());
+        pfUserSkuPayrate.setUserId(pfBorder.getUserId());
+        pfUserSkuPayrate.setSkuId(pfBorderItem.getSkuId());
+        pfUserSkuPayrate.setReceivableAmount(pfBorder.getReceivableAmount());
+        pfUserSkuPayrate.setPayAmount(payAmount);
+        pfUserSkuPayrateMapper.insert(pfUserSkuPayrate);
+
         //支付完成推送消息(发送失败不回滚事务)
         try {
             payEndPushMessage(pfBorderPayment);

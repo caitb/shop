@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-06-04 Created
+ * 2016-06-06 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -24,7 +24,7 @@ public class PfUserSkuPayrate {
     /**
      * skuid
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 应收账款
      */
@@ -53,10 +53,10 @@ public class PfUserSkuPayrate {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
     public BigDecimal getReceivableAmount() {

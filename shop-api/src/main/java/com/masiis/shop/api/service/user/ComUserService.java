@@ -42,6 +42,10 @@ public class ComUserService {
     private SfUserAccountService sfAccountService;
     @Resource
     private ComUserKeyboxMapper keyboxMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
+    @Resource
+    private SfUserStatisticsService sfUserStatisticsService;
 
     /**
      * 根据用户id获取用户
@@ -244,6 +248,8 @@ public class ComUserService {
             insertComUser(user);
             accountService.createAccountByUser(user);
             sfAccountService.createSfAccountByUser(user);
+            sfUserStatisticsService.initSfUserStatistics(user);
+            pfUserStatisticsService.initPfUserStatistics(user);
         }
 
         if(wxUser == null) {

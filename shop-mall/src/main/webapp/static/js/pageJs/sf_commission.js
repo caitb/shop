@@ -9,7 +9,6 @@ $(function(){
  * 用户提现
  */
 function withdraw(userId,extractableFee){
-    alert(extractableFee);
     if (extractableFee == 0){
         alert("暂无可提现额度");
         return;

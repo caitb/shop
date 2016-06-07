@@ -73,4 +73,8 @@ public class UserExtractApplyService {
     public Map<String, BigDecimal> findSumExtractfeeByUserId(Long userId){
         return applyMapper.selectSumExtractfeeByUserId(userId);
     }
+
+    public List<Map<String, Object>> findSumExtractfeeByUserIdList(Long userId){
+        return applyMapper.findSumExtractfeeByUserIdList(userId);
+    }
 }

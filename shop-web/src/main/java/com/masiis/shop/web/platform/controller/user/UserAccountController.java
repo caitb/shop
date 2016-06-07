@@ -7,10 +7,10 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.OrderCostAndProfitService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserBillService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
-import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
@@ -36,13 +36,13 @@ public class UserAccountController extends BaseController{
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private UserService userService;
-    @Resource
     private ComUserAccountService accountService;
     @Resource
     private PfUserBillService pfUserBillService;
     @Resource
     private UserExtractApplyService userExtractApplyService;
+    @Resource
+    private OrderCostAndProfitService orderCostAndProfitService;
 
     /*@RequestMapping("/home")
     public String accountHome(HttpServletRequest request, Model model) throws Exception{
@@ -96,10 +96,12 @@ public class UserAccountController extends BaseController{
         if(comUser == null){
             throw new BusinessException("用户未登录!");
         }
+        log.info("userId = " + comUser.getId());
         String currentDate = DateUtil.Date2String(new Date(),"yyyy-MM-dd");
         //查询用户资产表，用于展示累计收入和可提现金额
         ComUserAccount account = accountService.findAccountByUserid(comUser.getId());
         if (account == null){
+            log.info("无用户账户信息");
             BigDecimal fee = new BigDecimal(0.00);
             account = new ComUserAccount();
             account.setTotalIncomeFee(fee);
@@ -129,14 +131,12 @@ public class UserAccountController extends BaseController{
         Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
         BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
         log.info("查询已提现金额end");
+        account.setCountingFee(account.getAgentBillAmount().add(account.getDistributionBillAmount()));
         mv.addObject("comUser",comUser);
         mv.addObject("account",account);
-        mv.addObject("agentAmount",rmbFormat.format(agentAmount));
-        mv.addObject("shopAmount",rmbFormat.format(account.getCountingFee().subtract(agentAmount)));
-        mv.addObject("applicationed",rmbFormat.format(account.getAppliedFee()));
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
-        mv.addObject("totalIncom",account.getExtractableFee().add(withdrawd).add(account.getCountingFee()));
+        mv.addObject("totalIncom",rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getCountingFee())));
         mv.setViewName("platform/user/account");
         return mv;
     }

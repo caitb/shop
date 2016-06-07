@@ -8,9 +8,13 @@
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ComUserAccount {
+
+    private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
 
     private Long id;
     /**
@@ -56,6 +60,11 @@ public class ComUserAccount {
     private Date createdTime;
     private Date changedTime;
     private String changedBy;
+    private String viewCountingFee;
+    private String viewAgentBillAmount;
+    private String viewDistributionBillAmount;
+    private String viewExtractableFee;
+    private String viewAppliedFee;
     /**
      * 乐观锁字段
      */
@@ -107,6 +116,7 @@ public class ComUserAccount {
 
     public void setExtractableFee(BigDecimal extractableFee) {
         this.extractableFee = extractableFee;
+        setViewExtractableFee(rmbFormat.format(extractableFee));
     }
 
     public BigDecimal getAppliedFee() {
@@ -115,6 +125,7 @@ public class ComUserAccount {
 
     public void setAppliedFee(BigDecimal appliedFee) {
         this.appliedFee = appliedFee;
+        setViewAppliedFee(rmbFormat.format(appliedFee));
     }
 
     public BigDecimal getCountingFee() {
@@ -123,6 +134,7 @@ public class ComUserAccount {
 
     public void setCountingFee(BigDecimal countingFee) {
         this.countingFee = countingFee;
+        setViewCountingFee(rmbFormat.format(countingFee));
     }
 
     public BigDecimal getAgentBillAmount() {
@@ -131,6 +143,7 @@ public class ComUserAccount {
 
     public void setAgentBillAmount(BigDecimal agentBillAmount) {
         this.agentBillAmount = agentBillAmount;
+        setViewAgentBillAmount(rmbFormat.format(agentBillAmount));
     }
 
     public BigDecimal getDistributionBillAmount() {
@@ -139,6 +152,7 @@ public class ComUserAccount {
 
     public void setDistributionBillAmount(BigDecimal distributionBillAmount) {
         this.distributionBillAmount = distributionBillAmount;
+        setViewDistributionBillAmount(rmbFormat.format(distributionBillAmount));
     }
 
     public BigDecimal getBailFee() {
@@ -179,6 +193,46 @@ public class ComUserAccount {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getViewCountingFee() {
+        return viewCountingFee;
+    }
+
+    public void setViewCountingFee(String viewCountingFee) {
+        this.viewCountingFee = viewCountingFee;
+    }
+
+    public String getViewAgentBillAmount() {
+        return viewAgentBillAmount;
+    }
+
+    public void setViewAgentBillAmount(String viewAgentBillAmount) {
+        this.viewAgentBillAmount = viewAgentBillAmount;
+    }
+
+    public String getViewDistributionBillAmount() {
+        return viewDistributionBillAmount;
+    }
+
+    public void setViewDistributionBillAmount(String viewDistributionBillAmount) {
+        this.viewDistributionBillAmount = viewDistributionBillAmount;
+    }
+
+    public String getViewExtractableFee() {
+        return viewExtractableFee;
+    }
+
+    public void setViewExtractableFee(String viewExtractableFee) {
+        this.viewExtractableFee = viewExtractableFee;
+    }
+
+    public String getViewAppliedFee() {
+        return viewAppliedFee;
+    }
+
+    public void setViewAppliedFee(String viewAppliedFee) {
+        this.viewAppliedFee = viewAppliedFee;
     }
 
     @Override

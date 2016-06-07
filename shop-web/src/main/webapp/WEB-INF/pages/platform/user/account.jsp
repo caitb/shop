@@ -152,6 +152,12 @@
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script>
+    $("body").on("swipeRight", function () {
+        location.href='<%=path%>/shop/manage/index';
+    })
+</script>
 <script type="text/javascript">
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){

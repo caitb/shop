@@ -24,7 +24,7 @@
         buy_fee, remark,version)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
         #{orderCount,jdbcType=INTEGER}, #{distributionFee,jdbcType=DECIMAL}, #{withdrawFee,jdbcType=DECIMAL},
-        #{buyFee,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}), #{version,jdbcType=BIGINT})
+        #{buyFee,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserStatistics" >

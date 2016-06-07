@@ -78,6 +78,10 @@ public class SfUserAccountService {
         return sfUserAccountMapper.selectByUserId(userId);
     }
 
+    public int updateByIdAndVersion(SfUserAccount userAccount){
+        return sfUserAccountMapper.updateByIdAndVersion(userAccount);
+    }
+
     /**
      * 根据ComUser创建小铺端用户账户对象
      *

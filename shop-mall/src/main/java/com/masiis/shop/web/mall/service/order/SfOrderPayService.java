@@ -14,10 +14,7 @@ import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
-import com.masiis.shop.web.mall.service.user.ComUserAccountService;
-import com.masiis.shop.web.mall.service.user.SfUserRelationService;
-import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.service.user.*;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.web.mall.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
@@ -74,6 +71,8 @@ public class SfOrderPayService {
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private ComUserAccountService comUserAccountService;
+    @Resource
+    private SfUserAccountService sfUserAccountService;
 
 
     /**
@@ -163,60 +162,90 @@ public class SfOrderPayService {
     }
 
     private void updateStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("统计信息--------------------------start");
         updatePurchaseUserStatistics(order,orderItems);
         updateShopUserStatistics(order,orderItems);
         updateDisUserStatistics(order,orderItems);
+        log.info("统计信息-----------------------end");
     }
     private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("统计购买人-------start");
+        log.info("购买人id----------"+order.getUserId());
         SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
         if (statistics != null){
             //总订单数
+            log.info("总订单数-----之前-----"+statistics.getOrderCount());
             statistics.setOrderCount(statistics.getOrderCount()+1);
+            log.info("总订单数-----之后-----"+statistics.getOrderCount());
             //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
+            log.info("总购买金额------之前-----"+statistics.getBuyFee());
             statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            log.info("总购买金额------之后-----"+statistics.getBuyFee());
+            log.info("总购买金额------增加-----"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
             int i = statisticsService.updateByIdAndVersion(statistics);
             if (i != 1){
+                log.info("更新购买人统计信息失败------购买人id---"+order.getUserId());
                 throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
             }
         }else{
             throw new BusinessException("");
         }
+        log.info("统计购买人-------end");
     }
     private void updateShopUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("小铺统计信息-------start");
         //获得小铺统计信息
+        log.info("小铺统计信息-------用户id------"+order.getShopUserId());
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
         if (shopStatistics != null){
             //总销售额(总销售额 = 订单金额 - 订单的代理运费)
+            log.info("总销售额----------之前------"+shopStatistics.getIncomeFee());
             shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            log.info("总销售额----------之后------"+shopStatistics.getIncomeFee());
+            log.info("总销售额----------增加了------"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
             //总利润
+            log.info("总利润---------之前------"+shopStatistics.getProfitFee());
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
             shopStatistics.setProfitFee(shopStatistics.getProfitFee().add(sumProfitFee));
+            log.info("总利润---------之后------"+shopStatistics.getProfitFee());
+            log.info("总利润---------增加了------"+sumProfitFee.intValue());
             //店铺总订单
             shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
             //店铺总销量
+            log.info("店铺总销量------之前----"+shopStatistics.getProductCount());
             Integer toatalQuantity = new Integer(0);
             for (SfOrderItem orderItem : orderItems){
                 toatalQuantity = toatalQuantity + orderItem.getQuantity();
             }
             shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+            log.info("店铺总销量------之后----"+shopStatistics.getProductCount());
+            log.info("店铺总销量------增加了----"+toatalQuantity);
             shopStatisticsService.updateByIdAndVersion(shopStatistics);
         }
+        log.info("小铺统计信息-------end");
     }
     private void updateDisUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新获得三级分润人的信息------start");
         //总分润(一条订单分润人的分润信息的更新)
         for (SfOrderItem orderItem : orderItems){
             List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
             for (SfOrderItemDistribution itemDis : itemDises){
                 SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
+                log.info("分润人id------------"+itemDis.getUserId());
                 if (disUserStatist != null ){
+                    log.info("分润------之前------"+disUserStatist.getDistributionFee());
                     disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                    log.info("分润------之后------"+disUserStatist.getDistributionFee());
+                    log.info("分润------增加了------"+itemDis.getDistributionAmount().intValue());
                     int i = statisticsService.updateByIdAndVersion(disUserStatist);
                     if (i != 1){
+                        log.info("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
                         throw new BusinessException("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
                     }
                 }
             }
         }
+        log.info("更新获得三级分润人的信息------end");
     }
 
     private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
@@ -249,10 +278,10 @@ public class SfOrderPayService {
         for (SfOrderItem orderItem : orderItems){
             List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
             for (SfOrderItemDistribution itemDis : itemDises){
-                ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(itemDis.getUserId());
-                if (comUserAccount!=null){
-                    comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(itemDis.getDistributionAmount()));
-                    int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+                SfUserAccount sfUserAccount = sfUserAccountService.findAccountByUserId(itemDis.getUserId());
+                if (sfUserAccount!=null){
+                    sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(itemDis.getDistributionAmount()));
+                    int i = sfUserAccountService.updateByIdAndVersion(sfUserAccount);
                     if (i!=1){
                         throw new BusinessException("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
                     }

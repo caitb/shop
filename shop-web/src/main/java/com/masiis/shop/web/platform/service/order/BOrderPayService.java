@@ -96,6 +96,8 @@ public class BOrderPayService {
     private SfUserRelationMapper sfUserRelationMapper;
     @Resource
     private PfUserStatisticsService pfUserStatisticsService;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
 
     /**
      * 订单支付回调入口
@@ -203,6 +205,21 @@ public class BOrderPayService {
             sfShop.setVersion(0l);
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
+        }
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(comUser.getId());
+        if (shopStatistics!=null){
+            shopStatistics.setCreateTime(new Date());
+            shopStatistics.setShopId(sfShop.getId());
+            shopStatistics.setUserId(comUser.getId());
+            shopStatistics.setIncomeFee(new BigDecimal(0));
+            shopStatistics.setProfitFee(new BigDecimal(0));
+            shopStatistics.setOrderCount(0);
+            shopStatistics.setProductCount(0);
+            shopStatistics.setPageviewsCount(0);
+            shopStatistics.setShareCount(0);
+            shopStatistics.setReturnOrderCount(0);
+            shopStatistics.setVersion(0);
+            shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
         SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());

@@ -41,6 +41,8 @@ public class SfUserStatistics {
      * 总购买金额
      */
     private BigDecimal buyFee;
+
+    private String version;
     private String remark;
 
     public Long getId() {
@@ -98,5 +100,13 @@ public class SfUserStatistics {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

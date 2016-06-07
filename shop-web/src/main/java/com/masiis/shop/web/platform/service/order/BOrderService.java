@@ -465,7 +465,7 @@ public class BOrderService {
                     statistics.setCostFee(ordAmount.subtract(bailAmount));
                     statistics.setUpOrderCount(1);
                     statistics.setUpProductCount(pfBorderItem.getQuantity());
-                    statistics.setDownProductCount(0);
+                    statistics.setDownOrderCount(0);
                     statistics.setDownProductCount(0);
                     statistics.setTakeOrderCount(0);
                     statistics.setTakeProductCount(0);

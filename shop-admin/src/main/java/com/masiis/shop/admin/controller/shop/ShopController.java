@@ -41,11 +41,12 @@ public class ShopController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
+                       String sortName,
                        String sortOrder){
 
         Map<String, Object> conditionMap = new HashMap<>();
         try {
-            Map<String, Object> pageMap = shopService.listByCondition(pageNumber, pageSize, conditionMap);
+            Map<String, Object> pageMap = shopService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
 
             return pageMap;
         } catch (Exception e) {

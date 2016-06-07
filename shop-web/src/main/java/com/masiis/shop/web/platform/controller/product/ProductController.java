@@ -154,7 +154,8 @@ public class ProductController extends BaseController {
                              @RequestParam(required = true) Integer stock,
                              @RequestParam(required = true) Long id,
                              @RequestParam(required = false) String message,
-                             @RequestParam(required = true) Long userAddressId) {
+                             @RequestParam(required = true) Long userAddressId,
+                             @RequestParam(required = true) BigDecimal isRate) {
         JSONObject object = new JSONObject();
         try {
             HttpSession session = request.getSession();
@@ -164,7 +165,7 @@ public class ProductController extends BaseController {
             if (currentStock - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
-            Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);
+            Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId,isRate);
             object.put("borderId", orderCode);
             object.put("isError", false);
         } catch (Exception ex) {
@@ -207,12 +208,13 @@ public class ProductController extends BaseController {
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
         //check 是否全额拿货
         PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getSkuId());
-        BigDecimal isRate = pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
-        BigDecimal baseNum=new BigDecimal(100);
-        BigDecimal a=new BigDecimal(1);
+        BigDecimal isRate=null;
         BigDecimal initPay =null;
-        if(isRate.signum()==1){
-             initPay = pfSkuAgent.getUnitPrice().multiply((a.subtract(pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount())).divide(baseNum)));
+        if(pfUserSkuPayrate==null){
+            throw new BusinessException("提货价格异常！");
+        }else{
+            isRate= pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
+            initPay = skuService.getPriceDifference(1, pfSkuAgent.getUnitPrice(), comUser.getId(), product.getSkuId());
         }
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
@@ -222,6 +224,7 @@ public class ProductController extends BaseController {
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
         mav.addObject("initPay",initPay);
         mav.addObject("isRate",isRate);
+        mav.addObject("payAmount",pfUserSkuPayrate.getPayAmount());
         return mav;
     }
 

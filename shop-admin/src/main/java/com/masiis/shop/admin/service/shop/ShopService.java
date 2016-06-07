@@ -34,8 +34,11 @@ public class ShopService {
      * @param conditionMap  查询条件
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
-        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
+        String sort = "create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
         List<SfShop> sfShops = sfShopMapper.selectByMap(conditionMap);
         PageInfo<SfShop> pageInfo = new PageInfo<>(sfShops);
 

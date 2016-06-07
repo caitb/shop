@@ -416,26 +416,43 @@ public class BOrderService {
             for (PfBorderItem pfBorderItem : ordItems){
                 logger.info("代理人统计-----userId----"+order.getUserId()+"----skuId---"+pfBorderItem.getSkuId());
                 PfUserStatistics statistics = userStatisticsService.selectByUserIdAndSkuId(userId,pfBorderItem.getSkuId());
-                //总成本(订单金额-保证金)
-                BigDecimal ordAmount = order.getOrderAmount();
-                BigDecimal bailAmount = order.getBailAmount();
-                logger.info("总成本---之前----"+statistics.getCostFee());
-                statistics.setCostFee(statistics.getCostFee().add(ordAmount.subtract(bailAmount)));
-                logger.info("总成本---之后----"+statistics.getCostFee());
-                logger.info("总成本---增加了----"+ordAmount.subtract(bailAmount).intValue());
-                //进货订单数量
-                logger.info("进货订单数量----之前----"+statistics.getUpOrderCount());
-                statistics.setUpOrderCount(statistics.getUpOrderCount()+1);
-                logger.info("进货订单数量----之后----"+statistics.getUpOrderCount());
-                //进货商品数量
-                logger.info("进货商品数量----之前---"+statistics.getUpProductCount());
-                statistics.setUpProductCount(statistics.getUpProductCount()+pfBorderItem.getQuantity());
-                logger.info("进货商品数量----之后---"+statistics.getUpProductCount());
-                logger.info("进货商品数量----增加了---"+pfBorderItem.getQuantity());
-                int i = userStatisticsService.updateByIdAndVersion(statistics);
-                if (i!=1){
-                    logger.info("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
-                    throw new BusinessException("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
+                if (statistics!=null){
+                    //总成本(订单金额-保证金)
+                    BigDecimal ordAmount = order.getOrderAmount();
+                    BigDecimal bailAmount = order.getBailAmount();
+                    logger.info("总成本---之前----"+statistics.getCostFee());
+                    if (statistics.getCostFee()!=null){
+                        statistics.setCostFee(statistics.getCostFee().add(ordAmount.subtract(bailAmount)));
+                    }else{
+                        statistics.setCostFee(ordAmount.subtract(bailAmount));
+                    }
+                    logger.info("总成本---之后----"+statistics.getCostFee());
+                    logger.info("总成本---增加了----"+ordAmount.subtract(bailAmount).intValue());
+                    //进货订单数量
+                    logger.info("进货订单数量----之前----"+statistics.getUpOrderCount());
+                    if (statistics.getUpOrderCount()!=null){
+                        statistics.setUpOrderCount(statistics.getUpOrderCount()+1);
+                    }else{
+                        statistics.setUpOrderCount(1);
+                    }
+                    logger.info("进货订单数量----之后----"+statistics.getUpOrderCount());
+                    //进货商品数量
+                    logger.info("进货商品数量----之前---"+statistics.getUpProductCount());
+                    if (statistics.getUpProductCount()!=null){
+                        statistics.setUpProductCount(statistics.getUpProductCount()+pfBorderItem.getQuantity());
+                    }else{
+                        statistics.setUpProductCount(pfBorderItem.getQuantity());
+                    }
+                    logger.info("进货商品数量----之后---"+statistics.getUpProductCount());
+                    logger.info("进货商品数量----增加了---"+pfBorderItem.getQuantity());
+                    statistics.setCreateTime(new Date());
+                    int i = userStatisticsService.updateByIdAndVersion(statistics);
+                    if (i!=1){
+                        logger.info("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
+                        throw new BusinessException("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
+                    }
+                }else{
+                    logger.info("更新代理人的统计信息----失败---statistics为null");
                 }
             }
         }else{
@@ -458,28 +475,45 @@ public class BOrderService {
                     BigDecimal ordAmount = order.getOrderAmount();
                     BigDecimal bailAmount = order.getBailAmount();
                     logger.info("总销售额-----之前----"+statistics.getIncomeFee());
-                    statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
+                    if (statistics.getIncomeFee()!=null){
+                        statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
+                    }else{
+                        statistics.setIncomeFee(ordAmount.subtract(bailAmount));
+                    }
                     logger.info("总销售额-----之后----"+statistics.getIncomeFee());
                     logger.info("总销售额-----增加了----"+ordAmount.subtract(bailAmount).intValue());
                     //利润
                     logger.info("利润-----之前----"+statistics.getProfitFee());
                     BigDecimal sumProfitFee = getSumProfitFee(userPid,pfBorderItem.getSkuId(),pfBorderItem.getUnitPrice(),pfBorderItem.getQuantity());
-                    statistics.setProfitFee(statistics.getProfitFee().add(sumProfitFee));
+                    if (statistics.getProfitFee()!=null){
+                        statistics.setProfitFee(statistics.getProfitFee().add(sumProfitFee));
+                    }else{
+                        statistics.setProfitFee(sumProfitFee);
+                    }
                     logger.info("利润-----之后----"+statistics.getProfitFee());
                     logger.info("利润-----增加了----"+sumProfitFee);
                     //出货订单数量
-                    statistics.setDownOrderCount(statistics.getDownOrderCount()+1);
+                    if (statistics.getDownOrderCount()!=null){
+                        statistics.setDownOrderCount(statistics.getDownOrderCount()+1);
+                    }else{
+                        statistics.setDownOrderCount(1);
+                    }
                     //出货商品数量
                     logger.info("出货商品数量----之前------"+statistics.getDownProductCount());
-                    statistics.setDownProductCount(statistics.getDownProductCount()+pfBorderItem.getQuantity());
+                    if (statistics.getDownProductCount()!=null){
+                        statistics.setDownProductCount(statistics.getDownProductCount()+pfBorderItem.getQuantity());
+                    }else{
+                        statistics.setDownProductCount(pfBorderItem.getQuantity());
+                    }
                     logger.info("出货商品数量----之后-----"+statistics.getDownProductCount());
                     logger.info("出货商品数量----增加-----"+pfBorderItem.getQuantity());
+                    statistics.setCreateTime(new Date());
                     int i = userStatisticsService.updateByIdAndVersion(statistics);
                     if (i!=1){
                         throw new BusinessException("更新代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
                     }
                 }else{
-                    throw new BusinessException("查询代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
+                    logger.info("查询代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
                 }
             }
         }
@@ -500,7 +534,16 @@ public class BOrderService {
         BigDecimal sumProfitFee = BigDecimal.ZERO;
         pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, skuId);
         pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
-        BigDecimal unit_profit = unitPrice.subtract(pSkuAgent.getUnitPrice());
+        BigDecimal unit_profit = BigDecimal.ZERO;
+        if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+            if (unitPrice.compareTo(pSkuAgent.getUnitPrice())<0){
+                logger.info("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+                throw new BusinessException("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+            }
+            unit_profit= unitPrice.subtract(pSkuAgent.getUnitPrice());
+        }else{
+            unit_profit= unitPrice;
+        }
         sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
         return sumProfitFee;
     }
@@ -518,7 +561,11 @@ public class BOrderService {
                 sumProfitFee = sumProfitFee.add(getSumProfitFee(order.getUserId(),orderItem.getSkuId(),orderItem.getUnitPrice(),orderItem.getQuantity()));
             }
             logger.info("结算中-----之前----"+comUserAccount.getAgentBillAmount());
-            comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(sumProfitFee));
+            if (comUserAccount.getAgentBillAmount()!=null){
+                comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(sumProfitFee));
+            }else{
+                comUserAccount.setAgentBillAmount(sumProfitFee);
+            }
             logger.info("结算中-----之后----"+comUserAccount.getAgentBillAmount());
             logger.info("结算中-----增加----"+sumProfitFee);
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);

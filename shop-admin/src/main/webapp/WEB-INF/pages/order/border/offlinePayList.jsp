@@ -368,7 +368,7 @@
                         }
                     },
                     {
-                        field: 'real_name',
+                        field: 'user_id',
                         title: '购买人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -417,7 +417,6 @@
                     {
                         field: 'agent_product',
                         title: '代理产品',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -473,7 +472,6 @@
                     {
                         field: 'pay_type',
                         title: '支付方式',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){

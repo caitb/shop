@@ -48,13 +48,15 @@
                 <%--</h3>--%>
             </div>
         <nav>
-            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}<b>位</b></span><span>代言人</span></p>
-            <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
-            <p><span>
-                <c:if test="${shopView == null}">0<b>笔</b></c:if>
-                <c:if test="${shopView != null}">${shopView}<b>笔</b></c:if>
-               </span>
-                <span>店铺总订单</span>
+            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>
+                <c:if test="${shopView == null}">0</c:if>
+                <c:if test="${shopView != null}">${shopView}</c:if><b>位</b></span><span>代言人</span>
+            </p>
+            <p>
+                <span>${saleAmount}</span><span>店铺总销售额</span>
+            </p>
+            <p>
+                <span>${orderCount}<b>笔</b></span><span>店铺总订单</span>
             </p>
         </nav>
     </div>

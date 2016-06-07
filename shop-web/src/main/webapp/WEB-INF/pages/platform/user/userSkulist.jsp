@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="back_applyInfo b" style="display:none;">
-            <h4>亲，由于您未全额拿货，系统不支持补货！</h4>
+            <h4>亲，由于您是0元用户，系统不支持补货！</h4>
             <h1><span class="zhidao">知道了</span>
             </h1>
         </div>

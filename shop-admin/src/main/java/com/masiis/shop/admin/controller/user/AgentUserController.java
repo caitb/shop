@@ -47,13 +47,14 @@ public class AgentUserController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
+                       String sortName,
                        String sortOrder,
                        Integer pid){
 
         Map<String, Object> conMap = new HashMap<>();
         try {
             conMap.put("pid", pid);
-            Map<String, Object> pageMap = agentUserService.listByCondition(pageNumber, pageSize, conMap);
+            Map<String, Object> pageMap = agentUserService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conMap);
 
             return pageMap;
         } catch (Exception e) {

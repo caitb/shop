@@ -50,10 +50,10 @@
                 <img src="${user.wxHeadImg}" alt="">
                 <h3>${user.wxNkName}—欢迎您登入</h3>
             </div> <c:if test="${user.isAgent==1}">
-            <p><b>${num}</b><span>下级合伙人</span></p>
+            <p><b>${countGroup.count}</b><span>团队人数</span></p>
             <ul>
-                <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span></h1></li>
-                <li><p>总利润</p><h1>￥<span>${comUserAccount.profitFee}</span></h1></li>
+                <li><p>团队总销售额</p><h1><span>${countGroup.groupSum}</span></h1></li>
+                <li><p>团队总订单</p><h1><span>${countGroup.orderNum}</span></h1></li>
             </ul></c:if>
         </div><c:if test="${user.isAgent==0}">
         <div class="index_Nlogin" >

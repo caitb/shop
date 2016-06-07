@@ -55,7 +55,7 @@ public class SfShopStatistics {
     private Integer returnOrderCount;
 
     private String remark;
-    private String version;
+    private Integer version;
 
     public Long getId() {
         return id;
@@ -132,11 +132,11 @@ public class SfShopStatistics {
         this.remark = remark;
     }
 
-    public String getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 }

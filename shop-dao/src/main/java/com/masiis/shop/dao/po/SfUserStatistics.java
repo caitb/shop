@@ -42,7 +42,7 @@ public class SfUserStatistics {
      */
     private BigDecimal buyFee;
 
-    private String version;
+    private Long version;
     private String remark;
 
     public Long getId() {
@@ -102,11 +102,11 @@ public class SfUserStatistics {
         this.skuId = skuId;
     }
 
-    public String getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 }

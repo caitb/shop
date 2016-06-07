@@ -168,6 +168,11 @@ public class SfOrderPayService {
         updateDisUserStatistics(order,orderItems);
         log.info("统计信息-----------------------end");
     }
+    /**
+     * 更新购买人的统计信息
+     * @author hanzengzhi
+     * @date 2016/6/7 14:31
+     */
     private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
         log.info("统计购买人-------start");
         log.info("购买人id----------"+order.getUserId());
@@ -175,11 +180,19 @@ public class SfOrderPayService {
         if (statistics != null){
             //总订单数
             log.info("总订单数-----之前-----"+statistics.getOrderCount());
-            statistics.setOrderCount(statistics.getOrderCount()+1);
+            if (statistics.getOrderCount()!=null){
+                statistics.setOrderCount(statistics.getOrderCount()+1);
+            }else{
+                statistics.setOrderCount(1);
+            }
             log.info("总订单数-----之后-----"+statistics.getOrderCount());
             //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
             log.info("总购买金额------之前-----"+statistics.getBuyFee());
-            statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            if (statistics.getBuyFee()!=null){
+                statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            }else{
+                statistics.setBuyFee(order.getOrderAmount().subtract(order.getAgentShipAmount()));
+            }
             log.info("总购买金额------之后-----"+statistics.getBuyFee());
             log.info("总购买金额------增加-----"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
             int i = statisticsService.updateByIdAndVersion(statistics);
@@ -200,24 +213,40 @@ public class SfOrderPayService {
         if (shopStatistics != null){
             //总销售额(总销售额 = 订单金额 - 订单的代理运费)
             log.info("总销售额----------之前------"+shopStatistics.getIncomeFee());
-            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            if (shopStatistics.getIncomeFee()!=null){
+                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            }else{
+                shopStatistics.setIncomeFee(order.getOrderAmount().subtract(order.getAgentShipAmount()));
+            }
             log.info("总销售额----------之后------"+shopStatistics.getIncomeFee());
             log.info("总销售额----------增加了------"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
             //总利润
             log.info("总利润---------之前------"+shopStatistics.getProfitFee());
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
-            shopStatistics.setProfitFee(shopStatistics.getProfitFee().add(sumProfitFee));
+            if (shopStatistics.getProfitFee()!=null){
+                shopStatistics.setProfitFee(shopStatistics.getProfitFee().add(sumProfitFee));
+            }else{
+                shopStatistics.setProfitFee(sumProfitFee);
+            }
             log.info("总利润---------之后------"+shopStatistics.getProfitFee());
             log.info("总利润---------增加了------"+sumProfitFee.intValue());
             //店铺总订单
-            shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
+            if (shopStatistics.getOrderCount()!=null){
+                shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
+            }else{
+                shopStatistics.setOrderCount(1);
+            }
             //店铺总销量
             log.info("店铺总销量------之前----"+shopStatistics.getProductCount());
             Integer toatalQuantity = new Integer(0);
             for (SfOrderItem orderItem : orderItems){
                 toatalQuantity = toatalQuantity + orderItem.getQuantity();
             }
-            shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+            if (shopStatistics.getProductCount()!=null){
+                shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+            }else{
+                shopStatistics.setProductCount(toatalQuantity);
+            }
             log.info("店铺总销量------之后----"+shopStatistics.getProductCount());
             log.info("店铺总销量------增加了----"+toatalQuantity);
             shopStatisticsService.updateByIdAndVersion(shopStatistics);
@@ -234,7 +263,11 @@ public class SfOrderPayService {
                 log.info("分润人id------------"+itemDis.getUserId());
                 if (disUserStatist != null ){
                     log.info("分润------之前------"+disUserStatist.getDistributionFee());
-                    disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                    if (disUserStatist.getDistributionFee()!=null){
+                        disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                    }else{
+                        disUserStatist.setDistributionFee(itemDis.getDistributionAmount());
+                    }
                     log.info("分润------之后------"+disUserStatist.getDistributionFee());
                     log.info("分润------增加了------"+itemDis.getDistributionAmount().intValue());
                     int i = statisticsService.updateByIdAndVersion(disUserStatist);
@@ -265,7 +298,11 @@ public class SfOrderPayService {
         if (comUserAccount != null){
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
             log.info("小铺结算中-----之前------"+comUserAccount.getDistributionBillAmount());
-            comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
+            if (comUserAccount.getDistributionBillAmount()!=null){
+                comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
+            }else{
+                comUserAccount.setDistributionBillAmount(sumProfitFee);
+            }
             log.info("小铺结算中-----之后------"+comUserAccount.getDistributionBillAmount());
             log.info("小铺结算中-----增加了------"+sumProfitFee);
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
@@ -290,7 +327,11 @@ public class SfOrderPayService {
                 SfUserAccount sfUserAccount = sfUserAccountService.findAccountByUserId(itemDis.getUserId());
                 if (sfUserAccount!=null){
                     log.info("结算中-----之前-------------"+sfUserAccount.getCountingFee());
-                    sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(itemDis.getDistributionAmount()));
+                    if (sfUserAccount.getCountingFee()!=null){
+                        sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(itemDis.getDistributionAmount()));
+                    }else{
+                        sfUserAccount.setCountingFee(itemDis.getDistributionAmount());
+                    }
                     log.info("结算中-----之后-------------"+sfUserAccount.getCountingFee());
                     log.info("结算中-----增加了-------------"+itemDis.getDistributionAmount());
                     int i = sfUserAccountService.updateByIdAndVersion(sfUserAccount);

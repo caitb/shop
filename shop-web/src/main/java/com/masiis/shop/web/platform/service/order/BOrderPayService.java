@@ -476,11 +476,23 @@ public class BOrderPayService {
         }
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
-        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "拿货订单");
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单已支付,拿货订单");
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<4>处理发货库存");
-            PfUserSkuStock mySkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-            mySkuStock.setFrozenStock(mySkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            //冻结usersku库存 用户加冻结库存
+            PfUserSkuStock pfUserSkuStock = null;
+            pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if (pfUserSkuStock == null) {
+                throw new BusinessException("拿货失败：没有库存信息");
+            }
+            if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                throw new BusinessException("拿货失败：拿货数量超过库存数量");
+            }
+            pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            if (pfUserSkuStockService.updateByIdAndVersions(pfUserSkuStock) == 0) {
+                throw new BusinessException("并发修改库存失败");
+            }
+            log.info("<5>增加统计数据");
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(pfBorder.getUserId(),pfBorderItem.getSkuId());
             pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount()+1);
             pfUserStatistics.setTakeProductCount(pfUserStatistics.getTakeProductCount() + pfBorderItem.getQuantity());

@@ -37,6 +37,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -95,6 +96,7 @@ public class SfShopManageController extends BaseController {
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
+            mav.addObject("saleAmount", NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShop.getSaleAmount()));
             mav.addObject("orderCount", orderCount);
             mav.addObject("shopView", shopView);
             mav.addObject("shopUrl", shopUrl);

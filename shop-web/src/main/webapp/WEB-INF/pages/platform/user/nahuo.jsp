@@ -94,8 +94,8 @@
         </section>
         <c:if test="${isRate>0}">
             <div class="floor">
-                <h1>亲，您代理时未全额缴纳，本次还需要支付金额如下：</h1>
-                <p><span>另需支付：</span><span class="totalNumber">￥1.00</span><span></span></p>
+                <h1>亲，您是0元合伙用户，本次拿货需要支付金额(小于5000)：</h1>
+                <p><span>另需支付：</span><span class="totalNumber">${initPay}<span></span></p>
             </div>
         </c:if>
         <section class="sec5">
@@ -106,7 +106,12 @@
             </div>
             <input type="checkbox" id="active">
             <label for="active"><b>拿货风险：</b>请确认已了解申请拿货的部分不能继续发展下级，货物由我自行销售</label>
-            <button onclick="submit();">确认拿货</button>
+            <c:if test="${isRate >0}">
+                <button onclick="submit();">下一步</button>
+            </c:if>
+            <c:if test="${isRate <=0}">
+                <button onclick="submit();">确认拿货</button>
+            </c:if>
         </section>
     </main>
 </div>
@@ -119,7 +124,7 @@
 
     <h3>
         <span class="que_qu">返回修改</span>
-        <span class="queding('${isRate}')">确定</span>
+        <span onclick="queding('${isRate}')">确定</span>
     </h3>
 </div>
 
@@ -133,10 +138,15 @@
 <script type="text/javascript">
     var i = 1;
     var isRate = ${isRate};
+    var payAmount = ${payAmount};
     var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
-        $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+        if(payAmount==0){//0元用户
+            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+        }else{
+            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+        }
     })
 
     $(".jian").on("tap", function () {
@@ -145,12 +155,20 @@
         }
         i--;
         $(".number").val(i)
-        $(".totalNumber").html("￥"+i*2);
+        if(payAmount==0){//0元用户
+            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+        }else{
+            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+        }
     })
     $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
-        $(".totalNumber").html("￥"+i*2);
+        if(payAmount==0){//0元用户
+            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+        }else{
+            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+        }
 
     })
     $(".que_qu").on("tap", function () {
@@ -166,6 +184,11 @@
         var addressId = $("#addressId").val();
         if (addressId === undefined || addressId == "") {
             alert("请输入拿货地址！");
+            return;
+        }
+        var totalNum = $(".totalNumber").text();
+        if(totalNum>5000){
+            alert("拿货支付金额不能超过5000！");
             return;
         }
         if (checked == true) {
@@ -188,6 +211,7 @@
         paraData.message = $("#msg").val();
         paraData.stock = $("#applyStock").text();
         paraData.id = ${productInfo.id};
+        paraData.isRate = ${isRate};
       if(a!=null && a>0){
           $.ajax({
               url: "<%=basePath%>/product/user/applyStock.do",

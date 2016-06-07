@@ -47,21 +47,18 @@
                             </div>
                         </section>
                         <section class="sec3">
-                            <c:if test="${sku.pfBorder.payStatus==0}"><!--订单未完成支付><-->
-                            <p class="jianku"
-                               onclick="contininuePay(0,'${sku.pfBorder.id}')">
-                                申请拿货</p>
-                            <p class="buhuo"
-                               onclick="contininuePay(1,'${sku.pfBorder.id}')">
-                                补货</p>
-                            </c:if>
-                            <c:if test="${sku.pfBorder.payStatus==1}">
                                 <p class="jianku"
                                    onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
                                     申请拿货</p>
+                            <c:if test="${sku.isRate <=0}"><!-- 无差价><-->
                                 <p class="buhuo"
                                    onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
                                     补货</p>
+                            </c:if>
+                            <c:if test="${sku.isRate >0}"><!-- 有差价><-->
+                            <p class="buhuo"
+                               onclick="checkIsAddStock()">
+                                补货</p>
                             </c:if>
                         </section>
                     </c:forEach>
@@ -90,17 +87,8 @@
             </div>
         </div>
         <div class="back_applyInfo b" style="display:none;">
-            <h4>亲，您还有一单未完成交易，请先处理完再进行拿货哦！</h4>
-            <input style="display: none" id="applyOrder"/>
-            <h1><span class="zhidao">取消</span><span
-                    onclick="forwardToPay(0)">继续支付</span>
-            </h1>
-        </div>
-        <div class="back_addInfo b" style="display:none;">
-            <input style="display: none" id="applyOrder1"/>
-            <h4>亲，您还有一单未完成交易，请先处理完再进行补货哦！</h4>
-            <h1><span class="zhidao">取消</span><span
-                    onclick="forwardToPay(1)">继续支付</span>
+            <h4>亲，由于您未全额拿货，系统不支持补货！</h4>
+            <h1><span class="zhidao">知道了</span>
             </h1>
         </div>
     </main>
@@ -146,30 +134,14 @@
         $(".back").css("display", "none");
         $(".back_b").hide();
     })
-    function contininuePay(param1,param2){
-        if(param1==0){
+    function checkIsAddStock(){
             $(".back_applyInfo").show();
             $(".back").show();
-            $(".applyOrder").val(param2);
-        }else{
-            $(".back_addInfo").show();
-            $(".back").show();
-            $(".applyOrder1").val(param2);
-        }
     }
     $(".zhidao").on("click", function () {
         $(this).parents(".b").hide();
         $(".back").hide();
     })
-    function forwardToPay(value){
-        var orderId;
-        if(value==0){
-             orderId = (".applyOrder").val();
-        }else{
-             orderId = (".applyOrder1").val();
-        }
-        window.location.href = "<%=basePath%>border/goToPayBOrder.shtml/?bOrderId=" + orderId + "";
-    }
     $(".b_que").on("tap", function () {
         i = $(".number").val();
         var paraData = "?";

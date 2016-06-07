@@ -165,24 +165,11 @@ public class SfOrderPayService {
     private void updateStatistics(SfOrder order,List<SfOrderItem> orderItems){
         updatePurchaseUserStatistics(order,orderItems);
         updateShopUserStatistics(order,orderItems);
+        updateDisUserStatistics(order,orderItems);
     }
     private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
         SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
         if (statistics != null){
-            //总分润(一条订单分润人的分润信息的更新)
-            for (SfOrderItem orderItem : orderItems){
-                List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
-                for (SfOrderItemDistribution itemDis : itemDises){
-                    SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
-                    if (disUserStatist != null ){
-                        disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
-                        int i = statisticsService.updateByIdAndVersion(disUserStatist);
-                        if (i != 1){
-                            throw new BusinessException("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
-                        }
-                    }
-                }
-            }
             //总订单数
             statistics.setOrderCount(statistics.getOrderCount()+1);
             //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
@@ -214,24 +201,65 @@ public class SfOrderPayService {
             shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
             shopStatisticsService.updateByIdAndVersion(shopStatistics);
         }
-
+    }
+    private void updateDisUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        //总分润(一条订单分润人的分润信息的更新)
+        for (SfOrderItem orderItem : orderItems){
+            List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
+            for (SfOrderItemDistribution itemDis : itemDises){
+                SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
+                if (disUserStatist != null ){
+                    disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                    int i = statisticsService.updateByIdAndVersion(disUserStatist);
+                    if (i != 1){
+                        throw new BusinessException("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
+                    }
+                }
+            }
+        }
     }
 
+    private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        updateShopUserDisBillAmount(order,orderItems);
+        updateDisUserBillAmount(order,orderItems);
+    }
     /**
      * 更新小铺用户人结算中信息
      * 结算中(结算中 = 之前结算中 + 利润 )
      * @param order
      * @param orderItems
      */
-    private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+    private void updateShopUserDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
         if (comUserAccount != null){
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
             comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
-            comUserAccountService.updateByIdWithVersion(comUserAccount);
+            int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+            if (i!=1){
+                throw new BusinessException("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
+            }
         }
     }
-
+    /**
+     * 更新订单分润人的结算信息
+     * @author hanzengzhi
+     * @date 2016/6/7 10:24
+     */
+    private void updateDisUserBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        for (SfOrderItem orderItem : orderItems){
+            List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
+            for (SfOrderItemDistribution itemDis : itemDises){
+                ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(itemDis.getUserId());
+                if (comUserAccount!=null){
+                    comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(itemDis.getDistributionAmount()));
+                    int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+                    if (i!=1){
+                        throw new BusinessException("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 此订单小铺获得利润

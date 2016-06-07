@@ -42,7 +42,9 @@
         <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
     </div>
     <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
-    <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    <c:if test="${pfBorder.orderType==0 || pfBorder.orderType==1}">
+        <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    </c:if>
     <p><span style="color:red;">*大于5000元的订单建议选择线下支付</span></p>
 </div>
 <div class="back_box" style="display: none">

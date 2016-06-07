@@ -394,6 +394,7 @@ public class BOrderService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
+        statisticsByOrder(pfBorder);
     }
 
     private void statisticsByOrder(PfBorder order){
@@ -473,7 +474,11 @@ public class BOrderService {
         sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
         return sumProfitFee;
     }
-
+    /**
+     * 更新用户账户结算中
+     * @author hanzengzhi
+     * @date 2016/6/7 9:59
+     */
     private void updateDisBillAmount(PfBorder order,List<PfBorderItem> ordItems){
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getUserId());
         if (comUserAccount != null){
@@ -483,6 +488,9 @@ public class BOrderService {
             }
             comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(sumProfitFee));
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+            if(i!=1){
+                throw new BusinessException("更新结算中数据失败-----用户id-----"+order.getUserId());
+            }
         }
     }
 

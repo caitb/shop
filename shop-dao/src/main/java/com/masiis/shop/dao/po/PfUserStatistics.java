@@ -21,6 +21,9 @@ public class PfUserStatistics {
      * 用户id
      */
     private Long userId;
+
+    private Long skuId;
+
     /**
      * 总销售额
      */
@@ -159,5 +162,13 @@ public class PfUserStatistics {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Long getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Long skuId) {
+        this.skuId = skuId;
     }
 }

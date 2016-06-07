@@ -454,6 +454,7 @@ public class BOrderService {
                         throw new BusinessException("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
                     }
                 }else{
+                    statistics = new PfUserStatistics();
                     statistics.setCreateTime(new Date());
                     statistics.setUserId(order.getUserId());
                     statistics.setSkuId(pfBorderItem.getSkuId().longValue());
@@ -532,6 +533,7 @@ public class BOrderService {
                         throw new BusinessException("更新代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
                     }
                 }else{
+                    statistics = new PfUserStatistics();
                     statistics.setCreateTime(new Date());
                     statistics.setUserId(order.getUserId());
                     statistics.setSkuId(pfBorderItem.getSkuId().longValue());

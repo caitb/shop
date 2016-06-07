@@ -42,6 +42,7 @@ public class SfUserStatisticsService {
         statistics.setOrderCount(0);
         statistics.setWithdrawFee(BigDecimal.ZERO);
         statistics.setUserId(user.getId());
+        statistics.setVersion(0l);
         sfUserStatisticsMapper.insert(statistics);
 
         return statistics;

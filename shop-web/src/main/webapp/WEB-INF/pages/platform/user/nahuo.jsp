@@ -95,7 +95,7 @@
         <c:if test="${isRate>0}">
             <div class="floor">
                 <h1>亲，您是0元合伙用户，本次拿货需要支付金额(小于5000)：</h1>
-                <p><span>另需支付：</span><span class="totalNumber">${initPay}<span></span></p>
+                <p><span>另需支付：</span><span class="totalNumber">${initPay}</span></p>
             </div>
         </c:if>
         <section class="sec5">
@@ -138,15 +138,15 @@
 <script type="text/javascript">
     var i = 1;
     var isRate = ${isRate};
-    var payAmount = ${payAmount};
+    <%--var payAmount = ${payAmount};--%>
     var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
-        if(payAmount!=null && payAmount==0){//0元用户
-            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
-        }else{
-            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
-        }
+//        if(payAmount!=null && payAmount==0){//0元用户
+//            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+//        }else{
+//            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+//        }
     })
 
     $(".jian").on("tap", function () {
@@ -155,20 +155,20 @@
         }
         i--;
         $(".number").val(i)
-        if(payAmount!=null && payAmount==0){//0元用户
-            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
-        }else{
-            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
-        }
+//        if(payAmount!=null && payAmount==0){//0元用户
+//            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+//        }else{
+//            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+//        }
     })
     $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
-        if(payAmount!=null && payAmount==0){//0元用户
-            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
-        }else{
-            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
-        }
+//        if(payAmount!=null && payAmount==0){//0元用户
+//            $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
+//        }else{
+//            $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
+//        }
 
     })
     $(".que_qu").on("tap", function () {

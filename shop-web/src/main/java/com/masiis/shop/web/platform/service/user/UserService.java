@@ -248,8 +248,6 @@ public class UserService {
             insertComUser(user);
             accountService.createAccountByUser(user);
             sfAccountService.createSfAccountByUser(user);
-            sfUserStatisticsService.initSfUserStatistics(user);
-            pfUserStatisticsService.initPfUserStatistics(user);
         }
 
         if(wxUser == null) {

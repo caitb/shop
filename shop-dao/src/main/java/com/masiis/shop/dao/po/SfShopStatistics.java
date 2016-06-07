@@ -54,6 +54,9 @@ public class SfShopStatistics {
      */
     private Integer returnOrderCount;
 
+    private String remark;
+    private String version;
+
     public Long getId() {
         return id;
     }
@@ -119,5 +122,21 @@ public class SfShopStatistics {
     }
     public void setReturnOrderCount(Integer returnOrderCount) {
         this.returnOrderCount = returnOrderCount;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

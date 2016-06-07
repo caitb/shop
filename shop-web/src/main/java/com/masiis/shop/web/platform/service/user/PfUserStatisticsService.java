@@ -30,7 +30,9 @@ public class PfUserStatisticsService {
     public PfUserStatistics selectByUserIdAndSkuId(Long userId, Integer skuId){
         return  userStatisticsMapper.selectByUserIdAndSkuId(userId,skuId);
     }
-
+    public int insert(PfUserStatistics statistics){
+        return userStatisticsMapper.insert(statistics);
+    }
     public int updateByIdAndVersion(PfUserStatistics statistics){
         return userStatisticsMapper.updateByIdAndVersion(statistics);
     }

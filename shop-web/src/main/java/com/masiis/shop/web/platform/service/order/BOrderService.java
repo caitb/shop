@@ -536,6 +536,10 @@ public class BOrderService {
         pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
         BigDecimal unit_profit = BigDecimal.ZERO;
         if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+            if (unitPrice.compareTo(pSkuAgent.getUnitPrice())<0){
+                logger.info("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+                throw new BusinessException("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+            }
             unit_profit= unitPrice.subtract(pSkuAgent.getUnitPrice());
         }else{
             unit_profit= unitPrice;

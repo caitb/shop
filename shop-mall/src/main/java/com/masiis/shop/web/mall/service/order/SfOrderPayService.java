@@ -359,8 +359,26 @@ public class SfOrderPayService {
         for (SfOrderItem orderItem:orderItems){
             pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getShopUserId(), orderItem.getSkuId());
             pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(orderItem.getSkuId(), pUserSku.getAgentLevelId());
-            BigDecimal unit_profit = orderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+            BigDecimal unit_profit = BigDecimal.ZERO;
+            if (orderItem.getUnitPrice()==null){
+                log.info("orderItem订单明细中购买价格为null");
+                throw new BusinessException("orderItem订单明细中购买价格为null");
+            }
+            if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+                if (orderItem.getUnitPrice().compareTo(pSkuAgent.getUnitPrice())<0){
+                    log.info("商品的购买价格小于商品的拿货价格-----商品的skuId--"+orderItem.getSkuId()+"-----orderItem订单明细id---"+orderItem.getId());
+                    throw new BusinessException("商品的购买价格小于商品的拿货价格-----商品的skuId--"+orderItem.getSkuId()+"-----orderItem订单明细id---"+orderItem.getId());
+                }
+                unit_profit  = orderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+            }else{
+                log.info("商品的拿货价格为null-----商品skuId-----"+orderItem.getSkuId());
+                throw new BusinessException("商品的拿货价格为null-----商品skuId-----"+orderItem.getSkuId());
+            }
             sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        }
+        if (sumProfitFee.compareTo(order.getDistributionAmount())<0){
+            log.info("商品获得利润小于商品的分润-------订单id---"+order.getId());
+            throw new BusinessException("商品获得利润小于商品的分润");
         }
         sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
         return sumProfitFee;

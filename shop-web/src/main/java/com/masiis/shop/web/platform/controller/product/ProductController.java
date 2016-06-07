@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -34,7 +36,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/product")
 public class ProductController extends BaseController {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private ProductService productService;
     @Resource
@@ -208,13 +210,16 @@ public class ProductController extends BaseController {
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
         //check 是否全额拿货
         PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getSkuId());
-        BigDecimal isRate=null;
+        BigDecimal isRate = new BigDecimal(0);
         BigDecimal initPay =null;
+        BigDecimal payAmount = null;
         if(pfUserSkuPayrate==null){
-            throw new BusinessException("提货价格异常！");
+              log.info("表可能不存在，当前数据有误");
+//            throw new BusinessException("提货价格异常！");
         }else{
             isRate= pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
             initPay = skuService.getPriceDifference(1, pfSkuAgent.getUnitPrice(), comUser.getId(), product.getSkuId());
+            payAmount = pfUserSkuPayrate.getPayAmount();
         }
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
@@ -224,7 +229,7 @@ public class ProductController extends BaseController {
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
         mav.addObject("initPay",initPay);
         mav.addObject("isRate",isRate);
-        mav.addObject("payAmount",pfUserSkuPayrate.getPayAmount());
+        mav.addObject("payAmount",payAmount);
         return mav;
     }
 

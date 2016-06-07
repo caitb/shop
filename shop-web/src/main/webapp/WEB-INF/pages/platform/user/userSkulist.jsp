@@ -50,12 +50,12 @@
                                 <p class="jianku"
                                    onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
                                     申请拿货</p>
-                            <c:if test="${sku.isRate <=0}"><!-- 无差价><-->
+                            <c:if test="${empty sku.isRate || sku.isRate <=0}"><!-- 无差价><-->
                                 <p class="buhuo"
                                    onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
                                     补货</p>
                             </c:if>
-                            <c:if test="${sku.isRate >0}"><!-- 有差价><-->
+                            <c:if test="${not empty sku.isRate && sku.isRate >0}"><!-- 有差价><-->
                             <p class="buhuo"
                                onclick="checkIsAddStock()">
                                 补货</p>

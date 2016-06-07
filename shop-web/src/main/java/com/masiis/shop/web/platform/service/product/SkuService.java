@@ -4,14 +4,15 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.product.ComSkuExtensionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuPayrateMapper;
 import com.masiis.shop.dao.po.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * SkuService
@@ -35,6 +36,8 @@ public class SkuService {
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private ComUserMapper comUserMapper;
+    @Autowired
+    private PfUserSkuPayrateMapper pfUserSkuPayrateMapper;
 
     public ComSku getSkuById(Integer skuId) {
         return comSkuMapper.selectByPrimaryKey(skuId);
@@ -108,4 +111,24 @@ public class SkuService {
         return pfSkuStockService.selectBySkuId(skuId);
     }
 
+    
+    /**
+      * @Author jjh
+      * @Date 2016/6/7 0007 上午 11:31
+      * 根据数量计算应出的差价
+      */
+    public BigDecimal getPriceDifference(Integer quitity,BigDecimal price,Long userId,Integer skuId){
+        BigDecimal myprice =null;
+        BigDecimal baseNum=new BigDecimal(100);
+        BigDecimal a=new BigDecimal(1);
+        PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateMapper.selectByUserIdAndSkuId(userId, skuId);
+        BigDecimal isRate = pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
+        if(isRate.intValue()>0 && pfUserSkuPayrate.getPayAmount().intValue()==0){ //0元用户
+            myprice = price.multiply(new BigDecimal(quitity));
+        }else{
+            BigDecimal ss = (pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount())).divide(baseNum);
+            myprice = price.multiply(a.subtract(ss));
+        }
+        return myprice;
+    }
 }

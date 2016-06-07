@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.product;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
@@ -10,11 +11,10 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.PfUserRelationService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +23,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,10 @@ public class ProductController extends BaseController {
     private BOrderAddService bOrderAddService;
     @Resource
     private PfUserRelationService pfUserRelationService;
-
+    @Resource
+    private PfUserSkuPayrateService pfUserSkuPayrateService;
+    @Resource
+    private SkuAgentService skuAgentService;
     /**
      * 1 商品详细信息
      * 2 库存信息暂时都显示平台,与上级无关
@@ -102,6 +107,10 @@ public class ProductController extends BaseController {
         List<Product> userProducts = productService.productListByUser(userId);
         if (userProducts != null) {
             for (Product product : userProducts) {
+                PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(product.getId(),userId);
+                if(pfBorder!=null){
+                    product.setPfBorder(pfBorder);
+                }
                 product.setUpperStock(productService.getUpperStock(userId, product.getId()));
             }
         }
@@ -194,12 +203,24 @@ public class ProductController extends BaseController {
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(), product.getSkuId());
         Map<String, Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
+        //check 是否全额拿货
+        PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getSkuId());
+        BigDecimal isRate = pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
+        BigDecimal baseNum=new BigDecimal(100);
+        BigDecimal a=new BigDecimal(1);
+        BigDecimal initPay =null;
+        if(isRate.signum()==1){
+             initPay = pfSkuAgent.getUnitPrice().multiply((a.subtract(pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount())).divide(baseNum)));
+        }
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
         mav.addObject("comSku", comSku);
         mav.addObject("comSkuImage", productImgValue + comSkuImage.getImgUrl());
         mav.addObject("levelStock", objectMap.get("levelStock"));
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
+        mav.addObject("initPay",initPay);
+        mav.addObject("isRate",isRate);
         return mav;
     }
 
@@ -266,6 +287,36 @@ public class ProductController extends BaseController {
             mv.addObject("pfBorderConsignee", pfBorderConsignee);
         }
         mv.setViewName("platform/user/previewnahuo");
+        return mv;
+    }
+
+    /**
+      * @Author jjh
+      * @Date 2016/6/4 0004 下午 5:05
+      * 拿货收银台界面
+      */
+    @RequestMapping("/goToApplyPayBOrder.shtml")
+    public ModelAndView previewOfApplyOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                           HttpServletRequest request) throws Exception {
+        if (bOrderId == null || bOrderId <= 0) {
+            throw new BusinessException("订单号不正确");
+        }
+        ModelAndView mv = new ModelAndView();
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(pfBorder.getId());
+        String successURL = getBasePath(request);
+        successURL += "border/payBOrdersSuccessBefore.shtml?bOrderId=" + pfBorder.getId();
+        WxPaySysParamReq req = new WxPaySysParamReq();
+        req.setOrderId(pfBorder.getOrderCode());
+        req.setSignType("MD5");
+        req.setNonceStr(WXBeanUtils.createGenerateStr());
+        req.setSuccessUrl(successURL);
+        req.setSign(WXBeanUtils.toSignString(req));
+        String param = URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8");
+        System.out.println("payParam:" + param);
+        mv.addObject("pfBorderItems", pfBorderItems);
+        mv.setViewName("platform/user/goTonahuoOrder");
+        mv.addObject("paramReq", param);
         return mv;
     }
 }

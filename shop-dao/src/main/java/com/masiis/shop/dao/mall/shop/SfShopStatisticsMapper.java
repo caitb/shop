@@ -24,4 +24,6 @@ public interface SfShopStatisticsMapper {
     List<SfShopStatistics> selectAll();
 
     int updateByPrimaryKey(SfShopStatistics record);
+
+    int updateByIdAndVersion(SfShopStatistics record);
 }

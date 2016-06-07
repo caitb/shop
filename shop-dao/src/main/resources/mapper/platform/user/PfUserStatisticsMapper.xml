@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="income_fee" property="incomeFee" jdbcType="DECIMAL" />
         <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
         <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
@@ -25,36 +26,37 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserStatistics" >
-        insert into pf_user_statistics (id, create_time, user_id, 
-            income_fee, profit_fee, cost_fee, 
-            up_order_count, up_product_count, down_order_count, 
-            down_product_count, take_order_count, take_product_count, 
-            take_fee, version, remark
-            )
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL}, 
-            #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER}, 
-            #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER}, 
-            #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
-            )
+        insert into pf_user_statistics (id, create_time, user_id, sku_id,
+        income_fee, profit_fee, cost_fee,
+        up_order_count, up_product_count, down_order_count,
+        down_product_count, take_order_count, take_product_count,
+        take_fee, version, remark
+        )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
+        #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL},
+        #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER},
+        #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER},
+        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserStatistics" >
         update pf_user_statistics
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            user_id = #{userId,jdbcType=BIGINT},
-            income_fee = #{incomeFee,jdbcType=DECIMAL},
-            profit_fee = #{profitFee,jdbcType=DECIMAL},
-            cost_fee = #{costFee,jdbcType=DECIMAL},
-            up_order_count = #{upOrderCount,jdbcType=INTEGER},
-            up_product_count = #{upProductCount,jdbcType=INTEGER},
-            down_order_count = #{downOrderCount,jdbcType=INTEGER},
-            down_product_count = #{downProductCount,jdbcType=INTEGER},
-            take_order_count = #{takeOrderCount,jdbcType=INTEGER},
-            take_product_count = #{takeProductCount,jdbcType=INTEGER},
-            take_fee = #{takeFee,jdbcType=DECIMAL},
-            version = #{version,jdbcType=BIGINT},
-            remark = #{remark,jdbcType=VARCHAR}
+        user_id = #{userId,jdbcType=BIGINT},
+        sku_id = #{skuId,jdbcType=INTEGER},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        cost_fee = #{costFee,jdbcType=DECIMAL},
+        up_order_count = #{upOrderCount,jdbcType=INTEGER},
+        up_product_count = #{upProductCount,jdbcType=INTEGER},
+        down_order_count = #{downOrderCount,jdbcType=INTEGER},
+        down_product_count = #{downProductCount,jdbcType=INTEGER},
+        take_order_count = #{takeOrderCount,jdbcType=INTEGER},
+        take_product_count = #{takeProductCount,jdbcType=INTEGER},
+        take_fee = #{takeFee,jdbcType=DECIMAL},
+        version = #{version,jdbcType=BIGINT},
+        remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserStatistics">
@@ -62,6 +64,7 @@
         pf_user_statistics
         set create_time = #{createTime,jdbcType=TIMESTAMP},
         user_id = #{userId,jdbcType=BIGINT},
+        sku_id = #{skuId,jdbcType=INTEGER},
         income_fee = #{incomeFee,jdbcType=DECIMAL},
         profit_fee = #{profitFee,jdbcType=DECIMAL},
         cost_fee = #{costFee,jdbcType=DECIMAL},
@@ -80,15 +83,24 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, income_fee, profit_fee, cost_fee, up_order_count, 
-        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count, 
+        select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
+        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
         take_fee, version, remark
         from pf_user_statistics
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
+        select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
+        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
+        take_fee, version, remark
+        from pf_user_statistics
+        where user_id = #{id,jdbcType=BIGINT}
+        AND sku_id = #{skuId,jdbcType=INTEGER}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, income_fee, profit_fee, cost_fee, up_order_count, 
+        select id, create_time, user_id, sku_id,income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count, 
         take_fee, version, remark
         from pf_user_statistics

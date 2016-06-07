@@ -92,6 +92,12 @@
 
             <%--<p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>--%>
         </section>
+        <c:if test="${isRate>0}">
+            <div class="floor">
+                <h1>亲，您代理时未全额缴纳，本次还需要支付金额如下：</h1>
+                <p><span>另需支付：</span><span class="totalNumber">￥1.00</span><span></span></p>
+            </div>
+        </c:if>
         <section class="sec5">
             <div>
                 <h1>说明</h1>
@@ -113,7 +119,7 @@
 
     <h3>
         <span class="que_qu">返回修改</span>
-        <span class="que_que">确定</span>
+        <span class="queding('${isRate}')">确定</span>
     </h3>
 </div>
 
@@ -126,19 +132,26 @@
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script type="text/javascript">
     var i = 1;
+    var isRate = ${isRate};
+    var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
+        $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
     })
+
     $(".jian").on("tap", function () {
         if (i <= 1) {
             return false;
         }
         i--;
         $(".number").val(i)
+        $(".totalNumber").html("￥"+i*2);
     })
     $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
+        $(".totalNumber").html("￥"+i*2);
+
     })
     $(".que_qu").on("tap", function () {
         $(".back").css("display", "none");
@@ -168,29 +181,49 @@
             alert("请确认拿货风险!");
         }
     }
-    $('.que_que').on('tap', function () {
+
+    function queding(a){
         var paraData = {};
         paraData.userAddressId = "${comUserAddress.id}";
         paraData.message = $("#msg").val();
         paraData.stock = $("#applyStock").text();
         paraData.id = ${productInfo.id};
-        $.ajax({
-            url: "<%=basePath%>/product/user/applyStock.do",
-            type: "post",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                if (data.isError == false) {
-                    window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
-                }
-                else {
-                    $(".back").css("display", "none");
-                    $(".back_que").hide();
-                    alert(data.message);
-                }
-            }
-        });
-    });
+      if(a!=null && a>0){
+          $.ajax({
+              url: "<%=basePath%>/product/user/applyStock.do",
+              type: "post",
+              data: paraData,
+              dataType: "json",
+              success: function (data) {
+                  if (data.isError == false) {
+                      window.location.href = "<%=basePath%>border/goToPayBOrder.shtml?bOrderId=" + data.borderId;
+                  }
+                  else {
+                      $(".back").css("display", "none");
+                      $(".back_que").hide();
+                      alert(data.message);
+                  }
+              }
+          });
+      }else{
+          $.ajax({
+              url: "<%=basePath%>/product/user/applyStock.do",
+              type: "post",
+              data: paraData,
+              dataType: "json",
+              success: function (data) {
+                  if (data.isError == false) {
+                      window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
+                  }
+                  else {
+                      $(".back").css("display", "none");
+                      $(".back_que").hide();
+                      alert(data.message);
+                  }
+              }
+          });
+      }
+    }
 </script>
 </body>
 </html>

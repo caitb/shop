@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.user.PfUserStatisticsMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserStatistics;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,11 @@ public class PfUserStatisticsService {
     public PfUserStatistics selectByPrimaryKey(Long id){
         return userStatisticsMapper.selectByPrimaryKey(id);
     }
+
+    public PfUserStatistics selectByUserIdAndSkuId(Long userId, Integer skuId){
+        return  userStatisticsMapper.selectByUserIdAndSkuId(userId,skuId);
+    }
+
     public int updateByIdAndVersion(PfUserStatistics statistics){
         return userStatisticsMapper.updateByIdAndVersion(statistics);
     }

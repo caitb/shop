@@ -26,6 +26,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
@@ -93,6 +94,8 @@ public class BOrderPayService {
     private SkuService skuService;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
 
     /**
      * 订单支付回调入口
@@ -112,12 +115,15 @@ public class BOrderPayService {
             throw new BusinessException("该支付记录已经被处理成功");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
-        //处理支付逻辑
+        //处理支付逻辑 订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0) {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
-        } else {
+        } else if(pfBorder.getOrderType() == 2){
+            payBOrderTypeIII(pfBorderPayment, outOrderId, rootPath);
+        }
+        else {
             throw new BusinessException("订单类型有误");
         }
         //支付完成推送消息(发送失败不回滚事务)
@@ -434,6 +440,55 @@ public class BOrderPayService {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }
+    }
+
+    /**
+     * @Author jjh
+     * @Date 2016/6/6 0006 下午 4:37
+     * 自己提货的订单回调处理
+     * <1>修改订单支付信息
+     * <2>修改订单数据
+     * <3>添加订单日志
+     * <4>处理发货库存
+     * <5>增加统计数据
+     */
+    public void payBOrderTypeIII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+        log.info("<1>修改订单支付信息");
+        pfBorderPayment.setOutOrderId(outOrderId);
+        pfBorderPayment.setIsEnabled(1);//设置为有效
+        pfBorderPaymentMapper.updateById(pfBorderPayment);
+        BigDecimal payAmount = pfBorderPayment.getAmount();
+        Long bOrderId = pfBorderPayment.getPfBorderId();
+        log.info("<2>修改订单数据");
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        if (pfBorder.getPayStatus() != BOrderStatus.NotPaid.getCode() && pfBorder.getPayStatus() != BOrderStatus.offLineNoPay.getCode()) {
+            throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
+        }
+        pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
+        pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
+        pfBorder.setPayTime(new Date());
+        pfBorder.setPayStatus(1);
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 2) {
+            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
+        } else {
+            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
+        }
+        pfBorderMapper.updateById(pfBorder);
+        log.info("<3>添加订单日志");
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "拿货订单");
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
+            log.info("<4>处理发货库存");
+            PfUserSkuStock mySkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            mySkuStock.setFrozenStock(mySkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(pfBorder.getUserId(),pfBorderItem.getSkuId());
+            pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount()+1);
+            pfUserStatistics.setTakeProductCount(pfUserStatistics.getTakeProductCount() + pfBorderItem.getQuantity());
+            pfUserStatistics.setTakeFee(pfBorderItem.getTotalPrice());
+            pfUserStatistics.setVersion(pfUserStatistics.getVersion());
+            pfUserStatisticsService.updateByIdAndVersion(pfUserStatistics);
+        }
+
     }
 
     /**

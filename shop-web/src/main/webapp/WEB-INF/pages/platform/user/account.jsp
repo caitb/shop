@@ -28,27 +28,19 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-            <p>我的资金</p>
+            <%--<a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>--%>
+            <p>我的收入</p>
         </header>
         <main>
             <div class="head_img">
                 <p><img src="${comUser.wxHeadImg}" alt=""></p>
-                <div><h1>${comUser.wxNkName}</h1>
-                    <h1>
-                        <c:if test="${pfSkuAgentDetails!=null}">
-                            <c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">
-                                <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt=""></span>
-                            </c:forEach>
-                        </c:if>
-                    </h1>
-                </div>
-                <span>个人信息</span>
+                <div><h1>${comUser.wxNkName}</h1></div>
+                <span onclick="personCenter()">个人信息</span>
             </div>
             <div class="ban">
-                <img src="${path}/static/images/what.png" alt="">
+                <a href="<%=path%>/account/home/shuoming.shtml"><img src="${path}/static/images/what.png" alt=""></a>
                 <p>累计收入</p>
-                <h1><b>￥</b>${totalIncom}</h1>
+                <h1>￥${totalIncom}</h1>
 <%--                <h2>(截止到<span>${currentDate}</span>)</h2>
                 <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
                 <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>
@@ -56,12 +48,12 @@
             </div>
             <div class="floor" onclick="showJiesuan()">
                 <p>结算中</p>
-                <p>￥<b>123123</b></p>
+                <p>￥<b>${account.countingFee}</b></p>
                 <p><img src="${path}/static/images/top.png" alt=""></p>
             </div>
             <div class="floordown">
-                <p><span>结算中(合伙人)</span><span>￥<b>300.00</b></span></p>
-                <p><span>结算中(店铺)</span><span>￥<b>300.00</b></span></p>
+                <p><span>结算中(合伙人)</span><span><b>${agentAmount}</b></span></p>
+                <p><span>结算中(店铺)</span><span><b>${shopAmount}</b></span></p>
             </div>
             <%----%>
             <%--<nav>--%>
@@ -73,11 +65,11 @@
             <nav>
                 <ul>
                     <li><b> ${applicationed}<br></b>已提现</li>
-                    <li><b> ${withdrawd} <br></b>可提现</li>
-                    <li><b> ${withdrawd} <br></b>申请中</li>
+                    <li><b>￥${account.extractableFee} <br></b>可提现</li>
+                    <li><b> ${applicationed} <br></b>申请中</li>
                 </ul>
             </nav>
-            <button class="btn">
+            <button class="btn" onclick="withdrawRequest()">
                 申请提现
             </button>
             <%--<div class="floor">--%>
@@ -130,7 +122,28 @@
         <botton onClick="hideDetail()">我知道了</botton>
     </div>
 </div>
-<div id="datePlugin"></div>
+<div class="bottom">
+    <footer>
+        <div class="btm" >
+            <a href="<%=path%>/index">
+                <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                <span>我是合伙人</span>
+            </a>
+        </div>
+        <div class="btm">
+            <a href="<%=path%>/shop/manage/index">
+                <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+                <span>我的店铺</span>
+            </a>
+        </div>
+        <div class="btm" style="background: #DA3600;">
+            <a href="<%=path%>/account/home">
+                <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
+                <span>我的账户</span>
+            </a>
+        </div>
+    </footer>
+</div>
 <script type="text/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
@@ -205,6 +218,10 @@
     function toExtract(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>extract/list";
+    }
+    function personCenter(){
+        fullShow();
+        window.location.href = "<%=basePath%>personalInfo/personalHomePageInfo.html";
     }
     function showJiesuan(){
         if($(".floordown").is(":hidden")){

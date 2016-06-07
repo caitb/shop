@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 
 import com.masiis.shop.dao.po.PfUserStatistics;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface PfUserStatisticsMapper {
     int insert(PfUserStatistics record);
 
     PfUserStatistics selectByPrimaryKey(Long id);
+
+    PfUserStatistics selectByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     List<PfUserStatistics> selectAll();
 

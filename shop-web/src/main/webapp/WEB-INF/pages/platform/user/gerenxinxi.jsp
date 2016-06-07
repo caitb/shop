@@ -1,8 +1,10 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
 <META   HTTP-EQUIV="pragma"   CONTENT="no-cache">
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <%
     //设置缓存为空
     response.setHeader("Pragma","No-cache");
@@ -33,7 +35,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="#" onclick="backLastPage()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="<%=path%>/account/home" ><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>个人信息</p>
     </header>
     <main>
@@ -99,28 +101,6 @@
         </div>
         <div class="back"></div>
     </main>
-    <div class="bottom">
-        <footer>
-            <div class="btm">
-                <a href="${path}/index">
-                    <span><img src="${path}/static/images/footer%20(2).png" alt=""></span>
-                    <span>我是合伙人</span>
-                </a>
-            </div>
-            <div class="btm">
-                <a href="${path}/shop/manage/index">
-                    <span><img src="${path}/static/images/footer%20(3).png" alt=""></span>
-                    <span>我的店铺</span>
-                </a>
-            </div>
-            <div class="btm" style="background: #DA3600;">
-                <a href="${path}/personalInfo/personalHomePageInfo.html">
-                    <span><img src="${path}/static/images/footer%20(1).png" alt=""></span>
-                    <span>个人中心</span>
-                </a>
-            </div>
-        </footer>
-    </div>
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>

@@ -19,11 +19,12 @@
   position: relative;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  padding-bottom: 2em;
+  overflow: auto;
+  padding-bottom: 3em;
 }
 .wrap main {
   -webkit-box-flex: 1;
+  padding-bottom: 2em;
 }
 .wrap main .ban {
   width: 100%;

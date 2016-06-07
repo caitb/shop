@@ -188,6 +188,27 @@
     padding: 15px 10px;
     color: #666;
 }
+.wrap .floor{
+    width:100%;
+}
+.wrap .floor h1{
+    padding: 10px;
+    color: #666;
+    font-size: 12px;
+}
+.wrap .floor p{
+    padding: 10px;
+    display: -webkit-box;
+    background: #fff;
+}
+.wrap .floor p span{
+    display: block;
+    color: #333;
+    font-size: 12px;
+}
+.wrap .floor p span:nth-child(2){
+    color: #f74a11;
+}
 .wrap main .sec5 div {
     margin: 15px 10px 0 10px;
     border: 1px solid #C5C5C5;

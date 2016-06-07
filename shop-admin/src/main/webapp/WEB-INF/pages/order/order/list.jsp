@@ -421,14 +421,26 @@
                         }
                     },
                     {
-                        field: 'real_name',
+                        field: 'wx_nk_name',
                         title: '购买人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row.comUser && row.comUser.wxNkName){
+                                return row.comUser.wxNkName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'shop_user_id',
+                        title: '店铺所属人',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.shopUser && row.shopUser.realName){
+                                return row.shopUser.realName;
                             }
                         }
                     },

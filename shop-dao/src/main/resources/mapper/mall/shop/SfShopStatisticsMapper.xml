@@ -13,6 +13,8 @@
         <result column="pageviews_count" property="pageviewsCount" jdbcType="INTEGER" />
         <result column="share_count" property="shareCount" jdbcType="INTEGER" />
         <result column="return_order_count" property="returnOrderCount" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="BIGINT" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -21,48 +23,67 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >
-        insert into sf_shop_statistics (id, create_time, shop_id, 
-            user_id, income_fee, profit_fee, 
-            order_count, product_count, pageviews_count, 
-            share_count, return_order_count)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
-            #{userId,jdbcType=BIGINT}, #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, 
-            #{orderCount,jdbcType=INTEGER}, #{productCount,jdbcType=INTEGER}, #{pageviewsCount,jdbcType=INTEGER}, 
-            #{shareCount,jdbcType=INTEGER}, #{returnOrderCount,jdbcType=INTEGER})
+        insert into sf_shop_statistics (id, create_time, shop_id,
+        user_id, income_fee, profit_fee,
+        order_count, product_count, pageviews_count,
+        share_count, return_order_count, remark,version)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT},
+        #{userId,jdbcType=BIGINT}, #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL},
+        #{orderCount,jdbcType=INTEGER}, #{productCount,jdbcType=INTEGER}, #{pageviewsCount,jdbcType=INTEGER},
+        #{shareCount,jdbcType=INTEGER}, #{returnOrderCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}), #{version,jdbcType=BIGINT})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >
         update sf_shop_statistics
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            shop_id = #{shopId,jdbcType=BIGINT},
-            user_id = #{userId,jdbcType=BIGINT},
-            income_fee = #{incomeFee,jdbcType=DECIMAL},
-            profit_fee = #{profitFee,jdbcType=DECIMAL},
-            order_count = #{orderCount,jdbcType=INTEGER},
-            product_count = #{productCount,jdbcType=INTEGER},
-            pageviews_count = #{pageviewsCount,jdbcType=INTEGER},
-            share_count = #{shareCount,jdbcType=INTEGER},
-            return_order_count = #{returnOrderCount,jdbcType=INTEGER}
+        shop_id = #{shopId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        order_count = #{orderCount,jdbcType=INTEGER},
+        product_count = #{productCount,jdbcType=INTEGER},
+        pageviews_count = #{pageviewsCount,jdbcType=INTEGER},
+        share_count = #{shareCount,jdbcType=INTEGER},
+        return_order_count = #{returnOrderCount,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR},
+        version = #{version,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >
+        update sf_shop_statistics
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        shop_id = #{shopId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        order_count = #{orderCount,jdbcType=INTEGER},
+        product_count = #{productCount,jdbcType=INTEGER},
+        pageviews_count = #{pageviewsCount,jdbcType=INTEGER},
+        share_count = #{shareCount,jdbcType=INTEGER},
+        return_order_count = #{returnOrderCount,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR},
+        version = #{version,jdbcType=BIGINT}+1
+        where id = #{id,jdbcType=BIGINT}
+        AND version = #{version,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count, 
-        pageviews_count, share_count, return_order_count
+        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count,
+        pageviews_count, share_count, return_order_count, remark,version
         from sf_shop_statistics
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectByShopUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count,
-        pageviews_count, share_count, return_order_count
+        pageviews_count, share_count, return_order_count, remark,version
         from sf_shop_statistics
         where user_id = #{shopUserId,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count, 
-        pageviews_count, share_count, return_order_count
+        select id, create_time, shop_id, user_id, income_fee, profit_fee, order_count, product_count,
+        pageviews_count, share_count, return_order_count, remark,version
         from sf_shop_statistics
     </select>
 

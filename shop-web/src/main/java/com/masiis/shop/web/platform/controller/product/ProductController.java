@@ -1,7 +1,8 @@
 package com.masiis.shop.web.platform.controller.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
@@ -14,7 +15,6 @@ import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/product")
 public class ProductController extends BaseController {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private ProductService productService;
     @Resource
@@ -208,13 +207,16 @@ public class ProductController extends BaseController {
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
         //check 是否全额拿货
         PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getSkuId());
-        BigDecimal isRate=null;
+        BigDecimal isRate = new BigDecimal(0);
         BigDecimal initPay =null;
+        BigDecimal payAmount = null;
         if(pfUserSkuPayrate==null){
-            throw new BusinessException("提货价格异常！");
+              log.info("表可能不存在，当前数据有误");
+//            throw new BusinessException("提货价格异常！");
         }else{
             isRate= pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
             initPay = skuService.getPriceDifference(1, pfSkuAgent.getUnitPrice(), comUser.getId(), product.getSkuId());
+            payAmount = pfUserSkuPayrate.getPayAmount();
         }
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
@@ -224,7 +226,7 @@ public class ProductController extends BaseController {
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
         mav.addObject("initPay",initPay);
         mav.addObject("isRate",isRate);
-        mav.addObject("payAmount",pfUserSkuPayrate.getPayAmount());
+        mav.addObject("payAmount",payAmount);
         return mav;
     }
 
@@ -291,36 +293,6 @@ public class ProductController extends BaseController {
             mv.addObject("pfBorderConsignee", pfBorderConsignee);
         }
         mv.setViewName("platform/user/previewnahuo");
-        return mv;
-    }
-
-    /**
-      * @Author jjh
-      * @Date 2016/6/4 0004 下午 5:05
-      * 拿货收银台界面
-      */
-    @RequestMapping("/goToApplyPayBOrder.shtml")
-    public ModelAndView previewOfApplyOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
-                                           HttpServletRequest request) throws Exception {
-        if (bOrderId == null || bOrderId <= 0) {
-            throw new BusinessException("订单号不正确");
-        }
-        ModelAndView mv = new ModelAndView();
-        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(pfBorder.getId());
-        String successURL = getBasePath(request);
-        successURL += "border/payBOrdersSuccessBefore.shtml?bOrderId=" + pfBorder.getId();
-        WxPaySysParamReq req = new WxPaySysParamReq();
-        req.setOrderId(pfBorder.getOrderCode());
-        req.setSignType("MD5");
-        req.setNonceStr(WXBeanUtils.createGenerateStr());
-        req.setSuccessUrl(successURL);
-        req.setSign(WXBeanUtils.toSignString(req));
-        String param = URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8");
-        System.out.println("payParam:" + param);
-        mv.addObject("pfBorderItems", pfBorderItems);
-        mv.setViewName("platform/user/goTonahuoOrder");
-        mv.addObject("paramReq", param);
         return mv;
     }
 }

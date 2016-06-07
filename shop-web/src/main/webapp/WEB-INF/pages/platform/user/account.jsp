@@ -28,7 +28,6 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <%--<a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>--%>
             <p>我的收入</p>
         </header>
         <main>
@@ -40,54 +39,27 @@
             <div class="ban">
                 <a href="<%=path%>/account/home/shuoming.shtml"><img src="${path}/static/images/what.png" alt=""></a>
                 <p>累计收入</p>
-                <h1>￥${totalIncom}</h1>
-<%--                <h2>(截止到<span>${currentDate}</span>)</h2>
-                <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
-                <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>
-                <button onclick="withdrawRequest()">申请提现</button>--%>
+                <h1>${totalIncom}</h1>
             </div>
             <div class="floor" onclick="showJiesuan()">
                 <p>结算中</p>
-                <p>￥<b>${account.countingFee}</b></p>
+                <p><b>${account.viewCountingFee}</b></p>
                 <p><img src="${path}/static/images/top.png" alt=""></p>
             </div>
             <div class="floordown">
-                <p><span>结算中(合伙人)</span><span><b>${agentAmount}</b></span></p>
-                <p><span>结算中(店铺)</span><span><b>${shopAmount}</b></span></p>
+                <p><span>结算中(合伙人)</span><span><b>${account.viewAgentBillAmount}</b></span></p>
+                <p><span>结算中(店铺)</span><span><b>${account.viewDistributionBillAmount}</b></span></p>
             </div>
-            <%----%>
-            <%--<nav>--%>
-                <%--<ul>--%>
-                    <%--<li>申请中： ${applicationed}</li>--%>
-                    <%--<li>已提现： ${withdrawd}</li>--%>
-                <%--</ul>--%>
-            <%--</nav>--%>
             <nav>
                 <ul>
-                    <li><b> ${applicationed}<br></b>已提现</li>
-                    <li><b>￥${account.extractableFee} <br></b>可提现</li>
-                    <li><b> ${applicationed} <br></b>申请中</li>
+                    <li><b> ${withdrawd}<br></b>已提现</li>
+                    <li><b> ${account.viewExtractableFee} <br></b>可提现</li>
+                    <li><b> ${account.viewAppliedFee} <br></b>申请中</li>
                 </ul>
             </nav>
             <button class="btn" onclick="withdrawRequest()">
                 申请提现
             </button>
-            <%--<div class="floor">--%>
-                <%--<p><b>￥</b>${account.countingFee}</p>--%>
-                <%--<h1>结算中<img src="${path}/static/images/what.png" alt="?" onclick="showDetail()" /></h1>--%>
-                <%--<nav>--%>
-                    <%--<ul>--%>
-                        <%--<li>--%>
-                            <%--<p>${agentAmount}</p>--%>
-                            <%--<h1>结算中(合伙人)<img src="${path}/static/images/what.png" alt="?" onclick="showHedetail()"></h1>--%>
-                        <%--</li>--%>
-                        <%--<li>--%>
-                            <%--<p><b>￥</b>${shopAmount}</p>--%>
-                            <%--<h1>结算中（店铺）<img src="${path}/static/images/what.png" alt="?" onclick="showDidetail()"></h1>--%>
-                        <%--</li>--%>
-                    <%--</ul>--%>
-                <%--</nav>--%>
-            <%--</div>--%>
             <div class="floor2">
                 <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>

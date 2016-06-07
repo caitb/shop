@@ -142,7 +142,7 @@
     var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
-        if(payAmount==0){//0元用户
+        if(payAmount!=null && payAmount==0){//0元用户
             $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
         }else{
             $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
@@ -155,7 +155,7 @@
         }
         i--;
         $(".number").val(i)
-        if(payAmount==0){//0元用户
+        if(payAmount!=null && payAmount==0){//0元用户
             $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
         }else{
             $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);
@@ -164,7 +164,7 @@
     $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
-        if(payAmount==0){//0元用户
+        if(payAmount!=null && payAmount==0){//0元用户
             $(".totalNumber").html("￥"+(i*priceDiscount).toFixed(2));
         }else{
             $(".totalNumber").html("￥"+i*(1-(isRate/100))*priceDiscount);

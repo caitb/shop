@@ -60,6 +60,8 @@ public class BOrderService {
     private PfUserStatisticsService userStatisticsService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
 
     /**
      * 获取订单
@@ -575,7 +577,6 @@ public class BOrderService {
         }
         logger.info("更新用户账户结算中------end");
     }
-
     /**
      * 获取排队订单数量
      *

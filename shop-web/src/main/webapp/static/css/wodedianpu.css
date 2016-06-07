@@ -123,6 +123,10 @@
 .wrap .header nav p span:first-child{
   font-weight:600;
 }
+.wrap .header nav p span:first-child b{
+  font-size:12px;
+  margin-left:5px;
+}
 .wrap > nav {
   display: -webkit-box;
   width: 100%;

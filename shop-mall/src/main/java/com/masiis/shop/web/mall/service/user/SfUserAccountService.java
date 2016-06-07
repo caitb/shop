@@ -78,6 +78,10 @@ public class SfUserAccountService {
         return sfUserAccountMapper.selectByUserId(userId);
     }
 
+    public int updateByIdAndVersion(SfUserAccount userAccount){
+        return sfUserAccountMapper.updateByIdAndVersion(userAccount);
+    }
+
     /**
      * 根据ComUser创建小铺端用户账户对象
      *
@@ -164,11 +168,11 @@ public class SfUserAccountService {
             }
 
             // 计算订单结算中金额计入到account中
-            ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
+            /*ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
                     UserAccountRecordFeeType.SF_AddCountingFee.getCode(), comUserAccount);
             countRecord.setPrevFee(comUserAccount.getCountingFee());
             comUserAccount.setCountingFee(comUserAccount.getCountingFee().add(countFee));
-            countRecord.setNextFee(comUserAccount.getCountingFee());
+            countRecord.setNextFee(comUserAccount.getCountingFee());*/
 
             // 计算店主此次总销售额(利润和运费也算销售额)
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
@@ -223,7 +227,7 @@ public class SfUserAccountService {
                 throw new BusinessException("小铺店主account修改失败!");
             }
             // 插入变动记录
-            comUserAccountRecordMapper.insert(countRecord);
+            //comUserAccountRecordMapper.insert(countRecord);
             comUserAccountRecordMapper.insert(pfIncomeRecord);
             comUserAccountRecordMapper.insert(pfprofitRecord);
 

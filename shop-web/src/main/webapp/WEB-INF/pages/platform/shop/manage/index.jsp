@@ -48,13 +48,13 @@
                 <%--</h3>--%>
             </div>
         <nav>
-            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}<b>位</b></span><span>代言人</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
             <p><span>
-                <c:if test="${shopView == null}">0</c:if>
-                <c:if test="${shopView != null}">${shopView}</c:if>
+                <c:if test="${shopView == null}">0<b>笔</b></c:if>
+                <c:if test="${shopView != null}">${shopView}<b>笔</b></c:if>
                </span>
-                <span>店铺总浏览人数</span>
+                <span>店铺总订单</span>
             </p>
         </nav>
     </div>
@@ -76,10 +76,20 @@
 </c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
+<script src="<%=basePath%>static/js/zepto.min/js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath%>static/js/hideWXShare.js"></script>
 <script src="<%=basePath%>static/js/jquery.zclip.js"></script>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script>
+    $("body").on("swipeRight", function () {
+        location.href='<%=path%>/index';
+    })
+    $("body").on("swipeLeft", function () {
+        location.href='<%=path%>/account/home';
+    })
+</script>
 <script>
     $(document).ready(function(){
         if ( window.clipboardData ) {

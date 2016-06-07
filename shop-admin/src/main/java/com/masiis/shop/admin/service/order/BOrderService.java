@@ -225,4 +225,13 @@ public class BOrderService {
             }
         }
     }
+
+    /**
+     * 查找合伙订单
+     * @param borderId
+     * @return
+     */
+    public PfBorder findById(Long borderId){
+        return pfBorderMapper.selectByPrimaryKey(borderId);
+    }
 }

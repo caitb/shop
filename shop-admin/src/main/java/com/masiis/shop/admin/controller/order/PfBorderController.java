@@ -4,15 +4,9 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
-import com.masiis.shop.admin.service.order.BOrderPayService;
-import com.masiis.shop.admin.service.order.BOrderPaymentService;
-import com.masiis.shop.admin.service.order.BOrderService;
-import com.masiis.shop.admin.service.order.OrderQueueDealService;
+import com.masiis.shop.admin.service.order.*;
 import com.masiis.shop.admin.service.system.DictionaryService;
-import com.masiis.shop.dao.po.ComDictionary;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderFreight;
-import com.masiis.shop.dao.po.PfBorderPayment;
+import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +40,8 @@ public class PfBorderController extends BaseController {
     private BOrderPayService bOrderPayService;
     @Resource
     private DictionaryService dictionaryService;
+    @Resource
+    private BorderItemService borderItemService;
 
     @RequestMapping("/list.shtml")
     public String list() {
@@ -160,25 +156,51 @@ public class PfBorderController extends BaseController {
      * @param response
      * @param bOrderId   合伙人订单ID
      * @param outOrderId 银行流水号
-     * @param payAmount  实付金额
+     * @param zeroAgent  0元代理
      * @return
      */
     @RequestMapping("/offline/Receipt.do")
     @ResponseBody
-    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, BigDecimal payAmount) {
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, int zeroAgent) {
+        Map<String, String> resultMap = new HashMap<>();
 
         try {
-            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
-            //,getPbUser(request)
-            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"),getPbUser(request));
+            PfBorder pfBorder = bOrderService.findById(bOrderId);
+            if(pfBorder == null){
+                resultMap.put("result_code", "1");
+                resultMap.put("result_msg", "此订单不存在!");
+                return resultMap;
+            }
+            if(zeroAgent == 1 && pfBorder.getOrderType().intValue() != 0){
+                resultMap.put("result_code", "1");
+                resultMap.put("result_msg", "此订单不是代理订单,不能0元支付!");
+                return resultMap;
+            }
+            if(zeroAgent == 1 && pfBorder.getUserPid().longValue() != 0){
+                resultMap.put("result_code", "1");
+                resultMap.put("result_msg", "只有上级是平台的用户才允许0元代理!");
+                return resultMap;
+            }
 
-            return "success";
+            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
+            BigDecimal payAmount = null;
+            if(zeroAgent == 0) payAmount = pfBorder.getReceivableAmount();//不是0元代理
+            if(zeroAgent == 1) payAmount = new BigDecimal(0);//是0元代理
+
+            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"),getPbUser(request));
+            resultMap.put("result_code", "0");
+            resultMap.put("result_msg", "确认收款成功!");
+
+            return resultMap;
         } catch (Exception e) {
             log.error("合伙人线下支付收款确认失败![bOrderId=" + bOrderId + "][outOrderId=" + outOrderId + "]");
             e.printStackTrace();
+
+            resultMap.put("result_code", "1");
+            resultMap.put("result_msg", "操作异常!");
+            return resultMap;
         }
 
-        return null;
     }
 
     /**

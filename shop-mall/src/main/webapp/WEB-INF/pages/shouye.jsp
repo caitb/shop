@@ -36,7 +36,7 @@
     </c:if>
     <div class="header">
         <div>
-            <img src="${path}/static/images/qwe%20(2).png" alt="">
+            <img src="${path}/static/images/beijingtu.png" alt="">
             <p>${sfShop.name}<c:if test="${not empty sfShop.logo}"><img src="${sfShop.logo}" alt=""></c:if></p>
             <p>${sfShop.explanation}　</p>
             <%--<img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">--%>

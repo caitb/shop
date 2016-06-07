@@ -107,11 +107,12 @@ public class ProductController extends BaseController {
         List<Product> userProducts = productService.productListByUser(userId);
         if (userProducts != null) {
             for (Product product : userProducts) {
-                PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(product.getId(),userId);
-                if(pfBorder!=null){
-                    product.setPfBorder(pfBorder);
-                }
                 product.setUpperStock(productService.getUpperStock(userId, product.getId()));
+                PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getId());
+                if(pfUserSkuPayrate!=null){
+                    BigDecimal isRate = pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
+                    product.setIsRate(isRate);
+                }
             }
         }
         mav.addObject("userProducts", userProducts);

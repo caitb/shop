@@ -259,15 +259,22 @@ public class SfOrderPayService {
      * @param orderItems
      */
     private void updateShopUserDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新小铺用户结算信息--------start");
+        log.info("更新小铺用户结算信息--------小铺用户id-----------"+order.getShopUserId());
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
         if (comUserAccount != null){
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            log.info("小铺结算中-----之前------"+comUserAccount.getDistributionBillAmount());
             comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
+            log.info("小铺结算中-----之后------"+comUserAccount.getDistributionBillAmount());
+            log.info("小铺结算中-----增加了------"+sumProfitFee);
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
             if (i!=1){
+                log.info("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
                 throw new BusinessException("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
             }
         }
+        log.info("更新小铺用户结算信息--------end");
     }
     /**
      * 更新订单分润人的结算信息
@@ -275,19 +282,26 @@ public class SfOrderPayService {
      * @date 2016/6/7 10:24
      */
     private void updateDisUserBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新订单三级人润的结算中------------------start");
         for (SfOrderItem orderItem : orderItems){
             List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
             for (SfOrderItemDistribution itemDis : itemDises){
+                log.info("---------分润人id---------"+itemDis.getUserId());
                 SfUserAccount sfUserAccount = sfUserAccountService.findAccountByUserId(itemDis.getUserId());
                 if (sfUserAccount!=null){
+                    log.info("结算中-----之前-------------"+sfUserAccount.getCountingFee());
                     sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(itemDis.getDistributionAmount()));
+                    log.info("结算中-----之后-------------"+sfUserAccount.getCountingFee());
+                    log.info("结算中-----增加了-------------"+itemDis.getDistributionAmount());
                     int i = sfUserAccountService.updateByIdAndVersion(sfUserAccount);
                     if (i!=1){
+                        log.info("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
                         throw new BusinessException("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
                     }
                 }
             }
         }
+        log.info("更新订单三级人润的结算中------------------end");
     }
 
     /**

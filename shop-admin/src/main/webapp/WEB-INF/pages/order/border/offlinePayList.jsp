@@ -171,10 +171,17 @@
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 实付金额 </div>
+                                                            <div class="profile-info-name"> 0元代理 </div>
 
                                                             <div class="profile-info-value">
-                                                                <input type="text" name="payAmount" id="payAmount" value="" placeholder="实付金额" />
+                                                                <div class="control-group">
+                                                                    <label class="control-label bolder blue">是</label>
+                                                                    <input type="radio" name="zeroAgent" value="1" />
+                                                                </div>
+                                                                <div class="control-group">
+                                                                    <label class="control-label bolder blue">否</label>
+                                                                    <input type="radio" name="zeroAgent" value="0" checked />
+                                                                </div>
                                                             </div>
                                                         </div>
 
@@ -551,7 +558,6 @@
                                 $('#receivableAmount').html(row.pfBorder.receivableAmount);
                                 $('input[name="receivableAmount"]').val(row.pfBorder.receivableAmount);
                                 $('#bOrderId').val(row.pfBorder.id);
-                                $('#payAmount').val('');
                                 $('#outOrderId').val('');
                                 $('#modal-receipt').modal('show');
                             }
@@ -741,32 +747,10 @@
     });
 
     $('.ok').on('click', function(){
-        var receivableAmount = $('input[name="receivableAmount"]').val();
-        var payAmount = $('input[name="payAmount"]').val();
         var outOrderId = $('input[name="outOrderId"]').val();
-        var reg = new RegExp("^[0-9]*$");
+        var zeroAgent = $('input[name="zeroAgent"]:checked').val();
 
-        if(!payAmount){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '请输入实付金额!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        if(!reg.test(payAmount*10000)){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '实付金额格式不对!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        if(!outOrderId){
+        if(!outOrderId && zeroAgent==0){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写银行流水号!',
@@ -776,25 +760,7 @@
             return false;
         }
 
-        if(payAmount > receivableAmount){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '实付金额不能大于应付金额!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        if(payAmount < receivableAmount){
-            bootbox.confirm('实付金额小于应付金额,确定要提交吗?', function(result) {
-                if(result){
-                    submitForm();
-                }
-            });
-        }else{
-            submitForm();
-        }
+        submitForm();
 
         function submitForm(){
             $('.ok').attr('disabled', 'disabled');
@@ -802,18 +768,16 @@
                 url: '<%=basePath%>order/border/offline/Receipt.do',
                 type: 'POST',
                 data: $('#auditForm').serialize(),
-                success: function(msg){
-                    if('success' == msg){
+                success: function(result){
+                    result = window.eval('('+result+')');
+                    if(result.result_code == 0){
                         $('#table').bootstrapTable('refresh');
                         $('#modal-receipt').modal('hide');
-                        msg = '确认收款成功!';
-                    }else{
-                        msg = '确认收款失败!';
                     }
                     $('.ok').removeAttr('disabled');
                     $.gritter.add({
                         title: '消息',
-                        text: msg,
+                        text: result.result_msg,
                         class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                     });
                 }

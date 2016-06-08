@@ -21,5 +21,11 @@ public interface IndexShowMapper {
      */
     List<IndexComSku> selectAllIndexComSku(Long userId);
 
-
+    /**
+     * 查询该人能展示的测试商品
+     *
+     * @param userId
+     * @return
+     */
+    List<IndexComSku> selectTestListComSku(Long userId);
 }

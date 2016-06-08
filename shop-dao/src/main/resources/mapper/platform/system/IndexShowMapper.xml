@@ -57,4 +57,24 @@
         WHERE spu.is_sale=1 AND spu.is_delete = 0
     </select>
 
+    <select id="selectTestListComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Long">
+        SELECT
+            sku_image.img_name,
+            sku_image.img_url,
+            sku_image.sku_id,
+            sku.name,
+            sku.price_retail,
+            sku_statistic.agent_num,
+            sku.spu_id,
+            spu.ship_amount,
+            user_sku.user_id,
+            spu.is_trial
+        from com_sku sku
+        LEFT JOIN com_spu spu on (spu.id=sku.spu_id AND spu.is_delete=0 AND spu.is_sale=0)
+        LEFT JOIN com_sku_image sku_image on (sku.id = sku_image.sku_id AND sku_image.is_default = 1)
+        LEFT JOIN pf_sku_statistic sku_statistic ON sku.id = sku_statistic.sku_id
+        LEFT JOIN pf_user_sku user_sku ON sku.id = user_sku.sku_id AND user_sku.user_id = #{userId,jdbcType=BIGINT}
+        WHERE EXISTS(select 1 from pf_user_sku_testlist t where t.com_user_id=#{userId,jdbcType=BIGINT} AND t.sku_id=sku.id and t.is_enable=1);
+    </select>
+
 </mapper>

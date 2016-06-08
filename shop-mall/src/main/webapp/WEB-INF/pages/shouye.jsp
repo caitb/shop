@@ -76,16 +76,16 @@
         <c:forEach items="${SfShopDetails}" var="sd">
             <div class="sec1"
                  onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
-                <img src="${path}/static/images/jinghuaye.png" alt="">
+                <img src="${sd.skuUrl}" alt="">
 
                 <div>
-                    <h1>抗引力纤颜奢养光感精华液</h1>
+                    <h1>${sd.skuAssia}</h1>
 
-                    <h2>最最最好的护肤品</h2>
+                    <h2>${sd.slogan}</h2>
 
-                    <p>运费：包邮</p>
+                    <p>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span></p>
 
-                    <h3><span>￥<b>289.00</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
+                    <h3><span>￥<b>${sd.priceRetail}</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
                 </div>
             </div>
         </c:forEach>

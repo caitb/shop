@@ -65,7 +65,7 @@
                 <li>
                     <a href="<%=path%>/marketGood/market">
                         <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
-                        <span>我要进货</span></a>
+                        <span>好货市场</span></a>
                 </li>
                 <li>
                     <a href="<%=path%>/borderManage/borderManagement.html">

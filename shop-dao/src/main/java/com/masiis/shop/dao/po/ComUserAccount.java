@@ -253,8 +253,4 @@ public class ComUserAccount {
                 ", version=" + version +
                 '}';
     }
-
-    public static void main(String[] args){
-        System.out.println(new BigDecimal(0));
-    }
 }

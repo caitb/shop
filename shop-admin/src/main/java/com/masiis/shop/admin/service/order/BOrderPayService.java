@@ -30,7 +30,6 @@ import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuPayrateMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

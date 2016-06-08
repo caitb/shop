@@ -1,7 +1,5 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.masiis.shop.dao.platform.user.PfUserSkuPayrateMapper;
-import com.masiis.shop.dao.po.PfUserSkuPayrate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

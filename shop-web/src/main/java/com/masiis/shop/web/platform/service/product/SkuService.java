@@ -5,7 +5,6 @@ import com.masiis.shop.dao.platform.product.ComSkuExtensionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuPayrateMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,6 @@ public class SkuService {
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private ComUserMapper comUserMapper;
-    @Autowired
-    private PfUserSkuPayrateMapper pfUserSkuPayrateMapper;
 
     public ComSku getSkuById(Integer skuId) {
         return comSkuMapper.selectByPrimaryKey(skuId);

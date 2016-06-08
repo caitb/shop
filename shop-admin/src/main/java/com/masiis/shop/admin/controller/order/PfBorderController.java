@@ -56,19 +56,19 @@ public class PfBorderController extends BaseController {
                        String sortName,
                        String sortOrder,
                        PfBorder pfBorder,
-                       Integer  payTypeId
-                       ){
+                       Integer payTypeId
+    ) {
         try {
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,payTypeId);
-            if(pfBorder.getOrderType() == null){
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, payTypeId);
+            if (pfBorder.getOrderType() == null) {
                 List<ComDictionary> orderTypeList = dictionaryService.pickListOfBaseData("PF_BORDER_TYPE");//订单类型
                 pageMap.put("orderTypeList", orderTypeList);
             }
-            if(pfBorder.getShipType() == null){
+            if (pfBorder.getShipType() == null) {
                 List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
                 pageMap.put("payTypeList", payTypeList);
             }
-            if(pfBorder.getOrderStatus() == null){
+            if (pfBorder.getOrderStatus() == null) {
                 List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", orderStatusList);
             }
@@ -131,12 +131,12 @@ public class PfBorderController extends BaseController {
 
         try {
             pfBorder.setOrderStatus(9);
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,null);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, null);
             if (pfBorder.getShipStatus() == null) {
                 List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
                 pageMap.put("wuliuList", wuliuList);
             }
-            if(orderStatus == null){
+            if (orderStatus == null) {
                 List<ComDictionary> comDictionaryList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", comDictionaryList);
             }
@@ -166,17 +166,17 @@ public class PfBorderController extends BaseController {
 
         try {
             PfBorder pfBorder = bOrderService.findById(bOrderId);
-            if(pfBorder == null){
+            if (pfBorder == null) {
                 resultMap.put("result_code", "1");
                 resultMap.put("result_msg", "此订单不存在!");
                 return resultMap;
             }
-            if(zeroAgent == 1 && pfBorder.getOrderType().intValue() != 0){
+            if (zeroAgent == 1 && pfBorder.getOrderType().intValue() != 0) {
                 resultMap.put("result_code", "1");
                 resultMap.put("result_msg", "此订单不是代理订单,不能0元支付!");
                 return resultMap;
             }
-            if(zeroAgent == 1 && pfBorder.getUserPid().longValue() != 0){
+            if (zeroAgent == 1 && pfBorder.getUserPid().longValue() != 0) {
                 resultMap.put("result_code", "1");
                 resultMap.put("result_msg", "只有上级是平台的用户才允许0元代理!");
                 return resultMap;
@@ -184,10 +184,10 @@ public class PfBorderController extends BaseController {
 
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
             BigDecimal payAmount = null;
-            if(zeroAgent == 0) payAmount = pfBorder.getReceivableAmount();//不是0元代理
-            if(zeroAgent == 1) payAmount = new BigDecimal(0);//是0元代理
+            if (zeroAgent == 0) payAmount = pfBorder.getReceivableAmount();//不是0元代理
+            if (zeroAgent == 1) payAmount = new BigDecimal(0);//是0元代理
 
-            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"),getPbUser(request));
+            bOrderPayService.payBOrderOffline(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"), getPbUser(request));
             resultMap.put("result_code", "0");
             resultMap.put("result_msg", "确认收款成功!");
 
@@ -254,7 +254,7 @@ public class PfBorderController extends BaseController {
             if (StringUtils.isBlank(pfBorderFreight.getFreight())) {
                 return "请填写运单号";
             }
-            bOrderService.delivery(pfBorderFreight,getPbUser(request));
+            bOrderService.delivery(pfBorderFreight, getPbUser(request));
 
             return "success";
         } catch (Exception e) {

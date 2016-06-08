@@ -58,6 +58,7 @@ import java.util.List;
  * @date 2016/3/30111
  */
 @Service
+@Transactional
 public class BOrderPayService {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -94,23 +95,75 @@ public class BOrderPayService {
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
     @Resource
-    private PfUserSkuPayrateMapper pfUserSkuPayrateMapper;
-    @Resource
     private PbOperationLogMapper pbOperationLogMapper;
+
+
+    public void payBOrderOffline(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath, PbUser pbUser) throws Exception {
+        if (pfBorderPayment == null) {
+            throw new BusinessException("pfBorderPayment为空");
+        }
+        if (pfBorderPayment.getIsEnabled() == 1) {
+            throw new BusinessException("该支付记录已经被处理成功");
+        }
+        if (payAmount.compareTo(pfBorderPayment.getAmount()) == 0) {
+            mainPayBOrder(pfBorderPayment, outOrderId, rootPath, pbUser);
+        } else {
+            PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
+            List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            if (pfBorderItems.size() != 1) {
+                throw new BusinessException("代理商品表有误");
+            }
+            BigDecimal productAmount = BigDecimal.ZERO;
+            for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+                int quantity = payAmount.divide(pfBorderItem.getUnitPrice()).intValue();
+                pfBorderItem.setQuantity(quantity);
+                pfBorderItem.setTotalPrice(pfBorderItem.getUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                pfBorderItem.setBailAmount(BigDecimal.ZERO);
+                if (pfBorderItemMapper.updateById(pfBorderItem) != 1) {
+                    throw new BusinessException("代理订单商品表操作失败id:" + pfBorderItem.getId());
+                }
+                productAmount = productAmount.add(pfBorderItem.getTotalPrice());
+            }
+            pfBorder.setReceivableAmount(productAmount);
+            pfBorder.setOrderAmount(productAmount);
+            pfBorder.setBailAmount(BigDecimal.ZERO);
+            pfBorder.setShipAmount(BigDecimal.ZERO);
+            pfBorder.setProductAmount(productAmount);
+            if (payAmount.compareTo(productAmount) > 0) {
+                pfBorder.setRemark(pfBorder.getRemark() + "；超出支付金额为" + payAmount.subtract(productAmount));
+            }
+
+            if (pfBorderMapper.updateById(pfBorder) != 1) {
+                throw new BusinessException("代理订单表操作失败id:" + pfBorder.getId());
+            }
+            //添加订单日志
+            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下部分支付代理");
+            PfBorderPayment orderPayment = new PfBorderPayment();
+            orderPayment.setPayTypeId(1);
+            orderPayment.setPayTypeName("线下支付");
+            orderPayment.setPfBorderId(pfBorder.getId());
+            orderPayment.setIsEnabled(0);
+            orderPayment.setAmount(pfBorder.getOrderAmount());
+            orderPayment.setCreateTime(new Date());
+            orderPayment.setOutOrderId("");
+            orderPayment.setPaySerialNum(UUID.randomUUID().toString());
+            orderPayment.setRemark("订单线下部分支付代理插入");
+            if (pfBorderPaymentMapper.insert(orderPayment) != 1) {
+                throw new BusinessException("线下支付往订单支付表插入失败");
+            }
+            mainPayBOrder(orderPayment, outOrderId, rootPath, pbUser);
+        }
+    }
 
     /**
      * 订单支付回调入口
      *
      * @param pfBorderPayment 订单支付信息表数据
      * @param outOrderId      第三方支付订单号
-     * @param payAmount       实付金额
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
-    @Transactional
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath,PbUser pbUser) throws Exception {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
-//        System.out.println(dateFormat.format(new Date()));
+    private void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath, PbUser pbUser) throws Exception {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
@@ -127,21 +180,6 @@ public class BOrderPayService {
             throw new BusinessException("订单类型有误");
         }
 
-        PfBorderItem pfBorderItem = pfBorderItemMapper.selectByOrderId(pfBorder.getId());
-        PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-        if(pfUserSkuPayrate != null){
-            log.error("已有记录![pfUserSkuPayrate="+pfUserSkuPayrate+"]");
-            throw new BusinessException("已有记录!");
-        }
-
-        pfUserSkuPayrate = new PfUserSkuPayrate();
-        pfUserSkuPayrate.setCreateTime(new Date());
-        pfUserSkuPayrate.setUserId(pfBorder.getUserId());
-        pfUserSkuPayrate.setSkuId(pfBorderItem.getSkuId());
-        pfUserSkuPayrate.setReceivableAmount(pfBorder.getReceivableAmount());
-        pfUserSkuPayrate.setPayAmount(payAmount);
-        pfUserSkuPayrateMapper.insert(pfUserSkuPayrate);
-
         //支付完成推送消息(发送失败不回滚事务)
         try {
             payEndPushMessage(pfBorderPayment);
@@ -157,10 +195,9 @@ public class BOrderPayService {
         pbOperationLog.setRemark("订单线下支付处理");
         pbOperationLog.setOperateContent(pfBorderPayment.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
-        if(updateByPrimaryKey==0){
+        if (updateByPrimaryKey == 0) {
             throw new Exception("日志新建订单支付回调失败!");
         }
-//        System.out.println(dateFormat.format(new Date()));
     }
 
     /**
@@ -177,7 +214,7 @@ public class BOrderPayService {
      * <10>处理发货库存
      * <11>处理收货库存
      */
-    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -409,8 +446,7 @@ public class BOrderPayService {
      * <3>添加订单日志
      * <4>处理发货库存
      */
-    @Transactional
-    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -481,7 +517,7 @@ public class BOrderPayService {
      * <2>增加收货方库存
      * <3>订单完成处理
      */
-    public void saveBOrderSendType(PfBorder pfBorder) throws Exception {
+    public void saveBOrderSendType(PfBorder pfBorder) {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
@@ -520,8 +556,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/4/9 11:22
      */
-    @Transactional
-    public void completeBOrder(PfBorder pfBorder) throws Exception {
+    public void completeBOrder(PfBorder pfBorder) {
         if (pfBorder == null) {
             throw new BusinessException("订单为空对象");
         }
@@ -559,7 +594,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/3/31 11:26
      */
-    private String getCertificateCode(PfUserCertificate certificateInfo) throws Exception {
+    private String getCertificateCode(PfUserCertificate certificateInfo) {
         String certificateCode = "";
         String value = "";
         StringBuffer Code = new StringBuffer("MASIIS");

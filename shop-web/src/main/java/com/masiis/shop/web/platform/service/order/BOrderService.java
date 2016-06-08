@@ -492,7 +492,7 @@ public class BOrderService {
         logger.info("代理人上级统计-------userPid---"+order.getUserPid());
         Long userPid = order.getUserPid();
         PfUserStatistics statistics = null;
-        if (userPid != null){
+        if (userPid != null&&userPid!=0){
             for (PfBorderItem pfBorderItem : ordItems) {
                 logger.info("代理人上级统计-------userPid---"+order.getUserPid()+"----skuId----"+pfBorderItem.getSkuId());
                 statistics = userStatisticsService.selectByUserIdAndSkuId(userPid,pfBorderItem.getSkuId());
@@ -502,6 +502,8 @@ public class BOrderService {
                     insertStatisticsPidUserInfo(statistics,order,pfBorderItem,userPid);
                 }
             }
+        }else{
+            logger.info("代理上级的id为null或者为平台-------userPid----"+userPid+"-----本级userId-----"+order.getUserId());
         }
         logger.info("代理人上级统计-------end");
     }

@@ -60,11 +60,11 @@ public class ComUserAccount {
     private Date createdTime;
     private Date changedTime;
     private String changedBy;
-    private String viewCountingFee;
-    private String viewAgentBillAmount;
-    private String viewDistributionBillAmount;
-    private String viewExtractableFee;
-    private String viewAppliedFee;
+    private String viewCountingFee = "￥0.00";
+    private String viewAgentBillAmount = "￥0.00";
+    private String viewDistributionBillAmount = "￥0.00";
+    private String viewExtractableFee = "￥0.00";
+    private String viewAppliedFee = "￥0.00";
     /**
      * 乐观锁字段
      */
@@ -133,8 +133,8 @@ public class ComUserAccount {
     }
 
     public void setCountingFee(BigDecimal countingFee) {
-        this.countingFee = countingFee;
-        setViewCountingFee(rmbFormat.format(countingFee));
+        this.countingFee = countingFee == null?new BigDecimal(0):countingFee;
+        setViewCountingFee(rmbFormat.format(this.countingFee));
     }
 
     public BigDecimal getAgentBillAmount() {
@@ -252,5 +252,9 @@ public class ComUserAccount {
                 ", changedBy='" + changedBy + '\'' +
                 ", version=" + version +
                 '}';
+    }
+
+    public static void main(String[] args){
+        System.out.println(new BigDecimal(0));
     }
 }

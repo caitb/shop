@@ -63,6 +63,7 @@ public class MarketController extends BaseController {
         String skuValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         //获取主页展示商品信息
         List<IndexComSku> indexComS = indexShowService.findIndexComSku(user.getId());
+        indexComS.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
 //            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());

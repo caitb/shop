@@ -166,22 +166,14 @@
 
                                                             <div class="profile-info-value">
                                                                 <span class="" id="receivableAmount"> </span>
-                                                                <input type="hidden" name="receivableAmount" value="" />
                                                             </div>
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 0元代理 </div>
+                                                            <div class="profile-info-name"> 实付金额 </div>
 
                                                             <div class="profile-info-value">
-                                                                <div class="control-group">
-                                                                    <label class="control-label bolder blue">是</label>
-                                                                    <input type="radio" name="zeroAgent" value="1" />
-                                                                </div>
-                                                                <div class="control-group">
-                                                                    <label class="control-label bolder blue">否</label>
-                                                                    <input type="radio" name="zeroAgent" value="0" checked />
-                                                                </div>
+                                                                <input type="text" name="payAmount" id="payAmount" value="" placeholder="实付金额" />
                                                             </div>
                                                         </div>
 
@@ -554,9 +546,9 @@
                             'click .receipt': function(e, value, row, index){
                                 $('#orderCode2').html(row.pfBorder.orderCode);
                                 $('#receivableAmount').html(row.pfBorder.receivableAmount);
-                                $('input[name="receivableAmount"]').val(row.pfBorder.receivableAmount);
-                                $('#bOrderId').val(row.pfBorder.id);
-                                $('#outOrderId').val('');
+                                $('input[name="bOrderId"]').val(row.pfBorder.id);
+                                $('input[name="payAmount"]').val('');
+                                $('input[name="outOrderId"]').val('');
                                 $('#modal-receipt').modal('show');
                             }
                         }
@@ -746,9 +738,30 @@
 
     $('.ok').on('click', function(){
         var outOrderId = $('input[name="outOrderId"]').val();
-        var zeroAgent = $('input[name="zeroAgent"]:checked').val();
+        var payAmount = $('input[name="payAmount"]').val();
+        var reg = new RegExp("^[0-9]*$");
 
-        if(!outOrderId && zeroAgent==0){
+        if(!payAmount){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '请输入实付金额!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        if(!reg.test(payAmount*10000)){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '实付金额格式不对!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        if(!outOrderId){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写银行流水号!',

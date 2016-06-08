@@ -34,4 +34,8 @@ public class IndexShowService {
     public List<PbBanner> findPbBanner()throws Exception{
         return indexShowMapper.selectAllPbBanner();
     }
+
+    public List<IndexComSku> findTestListComSku(Long userId) {
+        return indexShowMapper.selectTestListComSku(userId);
+    }
 }

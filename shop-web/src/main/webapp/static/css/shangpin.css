@@ -90,9 +90,17 @@ img {}
     width: 100%;
     font-size: 12px;
     color: #333333;
+    line-height:30px;
 }
 .wrap main #box .main .d_box .sec2 div p span {
     font-size: 12px;
+
+}
+.wrap main #box .main .d_box .sec2 div p b{
+    font-size:12px;
+    float:right;
+    color:#f74a11;
+    margin:8px 10px 0 0;
 }
 .wrap main #box .main .d_box .sec3 {
     width: 100%;
@@ -300,14 +308,7 @@ img {}
     display: none;
     z-index: 10;
 }
-.jianku{
-    background: url("/static/images/n.png") no-repeat 31%;
-    background-size: 14px;
-}
-.buhuo{
-    background: url("/static/images/b.png") no-repeat 36%;
-    background-size: 14px;
-}
+
 .b{
     position: fixed;
     left: 12.5%;

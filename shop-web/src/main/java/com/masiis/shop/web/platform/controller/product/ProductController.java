@@ -51,8 +51,6 @@ public class ProductController extends BaseController {
     @Resource
     private PfUserRelationService pfUserRelationService;
     @Resource
-    private PfUserSkuPayrateService pfUserSkuPayrateService;
-    @Resource
     private SkuAgentService skuAgentService;
     /**
      * 1 商品详细信息
@@ -107,11 +105,6 @@ public class ProductController extends BaseController {
         if (userProducts != null) {
             for (Product product : userProducts) {
                 product.setUpperStock(productService.getUpperStock(userId, product.getId()));
-                PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getId());
-                if(pfUserSkuPayrate!=null){
-                    BigDecimal isRate = pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
-                    product.setIsRate(isRate);
-                }
             }
         }
         mav.addObject("userProducts", userProducts);
@@ -164,7 +157,7 @@ public class ProductController extends BaseController {
             if (currentStock - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
-            Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId,isRate);
+            Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);
             object.put("borderId", orderCode);
             object.put("isError", false);
         } catch (Exception ex) {
@@ -205,28 +198,12 @@ public class ProductController extends BaseController {
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(), product.getSkuId());
         Map<String, Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
-        //check 是否全额拿货
-        PfUserSkuPayrate pfUserSkuPayrate = pfUserSkuPayrateService.selectByUserIdAndSkuId(comUser.getId(),product.getSkuId());
-        BigDecimal isRate = new BigDecimal(0);
-        BigDecimal initPay =null;
-        BigDecimal payAmount = null;
-        if(pfUserSkuPayrate==null){
-              log.info("表可能不存在，当前数据有误");
-//            throw new BusinessException("提货价格异常！");
-        }else{
-            isRate= pfUserSkuPayrate.getReceivableAmount().subtract(pfUserSkuPayrate.getPayAmount());
-            initPay = skuService.getPriceDifference(1, pfSkuAgent.getUnitPrice(), comUser.getId(), product.getSkuId());
-            payAmount = pfUserSkuPayrate.getPayAmount();
-        }
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
         mav.addObject("comSku", comSku);
         mav.addObject("comSkuImage", productImgValue + comSkuImage.getImgUrl());
         mav.addObject("levelStock", objectMap.get("levelStock"));
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
-        mav.addObject("initPay",initPay);
-        mav.addObject("isRate",isRate);
-//        mav.addObject("payAmount",payAmount);
         return mav;
     }
 

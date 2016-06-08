@@ -9,9 +9,11 @@ package com.masiis.shop.dao.mall.shop;
 
 
 import com.masiis.shop.dao.po.SfShopStatistics;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface SfShopStatisticsMapper {
     int deleteByPrimaryKey(Long id);
 

@@ -17,10 +17,15 @@ public class SfShopStatisticsService {
     @Resource
     private SfShopStatisticsMapper statisticsMapper;
 
-    public SfShopStatistics selectByShopUserId(Long shopUserId){
+    public SfShopStatistics selectByShopUserId(Long shopUserId) {
         return statisticsMapper.selectByShopUserId(shopUserId);
     }
-    public int updateByIdAndVersion(SfShopStatistics record){
+
+    public int insert(SfShopStatistics shopStatistics) {
+        return statisticsMapper.insert(shopStatistics);
+    }
+
+    public int updateByIdAndVersion(SfShopStatistics record) {
         return statisticsMapper.updateByIdAndVersion(record);
     }
 }

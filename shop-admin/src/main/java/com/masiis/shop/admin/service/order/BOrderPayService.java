@@ -271,7 +271,8 @@ public class BOrderPayService {
             sfShopMapper.insert(sfShop);
         }
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(comUser.getId());
-        if (shopStatistics!=null){
+        if (shopStatistics==null){
+            shopStatistics = new SfShopStatistics();
             shopStatistics.setCreateTime(new Date());
             shopStatistics.setShopId(sfShop.getId());
             shopStatistics.setUserId(comUser.getId());
@@ -283,6 +284,7 @@ public class BOrderPayService {
             shopStatistics.setShareCount(0);
             shopStatistics.setReturnOrderCount(0);
             shopStatistics.setVersion(0);
+            shopStatistics.setRemark("");
             shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");

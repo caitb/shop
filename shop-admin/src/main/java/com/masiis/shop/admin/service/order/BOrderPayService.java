@@ -131,7 +131,7 @@ public class BOrderPayService {
             pfBorder.setShipAmount(BigDecimal.ZERO);
             pfBorder.setProductAmount(productAmount);
             if (payAmount.compareTo(productAmount) > 0) {
-                pfBorder.setRemark(pfBorder.getRemark() + "；超出支付金额为" + payAmount.subtract(productAmount));
+                pfBorder.setRemark(pfBorder.getRemark() + "；超出支付金额为:" + payAmount.subtract(productAmount));
             }
 
             if (pfBorderMapper.updateById(pfBorder) != 1) {

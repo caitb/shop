@@ -64,10 +64,10 @@ public class ShopIndexController extends BaseController {
         List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
         if (agentNum != null) {
             for (PfUserSku pfUserSku : agentNum) {
-                CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
+                CountGroup countGroup = countGroupService.countGroupInfo(user.getId(),pfUserSku.getTreeCode());
                 CountGroup countGroup1 = countGroupService.infoOrderNum(user.getId(), pfUserSku.getTreeCode());
                 numb+=countGroup.getCount();
-                countNum=countGroup.getGroupMomey().add(countNum);
+                countNum=countGroup.getGroupMoney().add(countNum);
                 orderNum+=countGroup1.getOrderNum();
             }
         }

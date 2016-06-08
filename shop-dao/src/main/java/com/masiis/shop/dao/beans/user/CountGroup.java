@@ -12,14 +12,14 @@ public class CountGroup {
     private Integer count;
     private String groupSum;
     private Integer orderNum;
-    private BigDecimal groupMomey;
+    private BigDecimal groupMoney;
 
-    public void setGroupMomey(BigDecimal groupMomey) {
-        this.groupMomey = groupMomey;
+    public void setGroupMomey(BigDecimal groupMoney) {
+        this.groupMoney = groupMoney;
     }
 
-    public BigDecimal getGroupMomey() {
-        return groupMomey;
+    public BigDecimal getGroupMoney() {
+        return groupMoney;
     }
 
     public void setOrderNum(Integer orderNum) {

@@ -195,7 +195,7 @@ public class BOrderAddService {
      * @auth:wbj
      */
     @Transactional
-    public Long addProductTake(Long userId, Integer skuId, int quantity, String message, long userAddressId,BigDecimal isRate) throws Exception {
+    public Long addProductTake(Long userId, Integer skuId, int quantity, String message, long userAddressId) throws Exception {
         logger.info("进入拿货订单处理Service");
         logger.info("<1>处理订单数据");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
@@ -236,17 +236,9 @@ public class BOrderAddService {
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
         order.setSendType(comUser.getSendType());
-        if(isRate==null || isRate.intValue() <= 0){
-            order.setOrderStatus(BOrderStatus.WaitShip.getCode());
-        }else{
-            order.setOrderStatus(BOrderStatus.NotPaid.getCode());    //未付款
-        }
+        order.setOrderStatus(BOrderStatus.WaitShip.getCode());
         order.setShipStatus(0);
-        if(isRate==null || isRate.intValue() <= 0){
-            order.setPayStatus(1);//支付
-        }else{
-            order.setPayStatus(0);
-        }
+        order.setPayStatus(1);//支付
         order.setIsShip(0);
         order.setIsReceipt(0);
         order.setIsCounting(0);
@@ -265,31 +257,25 @@ public class BOrderAddService {
         pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
         pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());//合伙人价
-        if(isRate==null || isRate.intValue() <= 0){
-            pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
-        }else {
-            pfBorderItem.setTotalPrice(skuService.getPriceDifference(quantity, pfSkuAgent.getUnitPrice(), comUser.getId(), comSku.getId()));//倒算总价
-        }
+        pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
-        if (isRate==null || isRate.intValue() <= 0) {
-            logger.info("<2>添加订单日志");
-            bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
-            logger.info("<3>冻结usersku库存 用户加冻结库存存");
-            PfUserSkuStock pfUserSkuStock = null;
-            //冻结usersku库存 用户加冻结库存
-            pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
-            if (pfUserSkuStock == null) {
-                throw new BusinessException("拿货失败：没有库存信息");
-            }
-            if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
-                throw new BusinessException("拿货失败：拿货数量超过库存数量");
-            }
-            pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
-            if (pfUserSkuStockService.updateByIdAndVersions(pfUserSkuStock) == 0) {
-                throw new BusinessException("并发修改库存失败");
-            }
+        logger.info("<2>添加订单日志");
+        bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
+        logger.info("<3>冻结usersku库存 用户加冻结库存存");
+        PfUserSkuStock pfUserSkuStock = null;
+        //冻结usersku库存 用户加冻结库存
+        pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
+        if (pfUserSkuStock == null) {
+            throw new BusinessException("拿货失败：没有库存信息");
+        }
+        if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
+            throw new BusinessException("拿货失败：拿货数量超过库存数量");
+        }
+        pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
+        if (pfUserSkuStockService.updateByIdAndVersions(pfUserSkuStock) == 0) {
+            throw new BusinessException("并发修改库存失败");
         }
         logger.info("<4>添加订单地址信息");
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);

@@ -50,16 +50,9 @@
                                 <p class="jianku"
                                    onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
                                     <b>申请拿货</b></p>
-                            <c:if test="${empty sku.isRate || sku.isRate <=0}"><!-- 无差价><-->
                                 <p class="buhuo"
                                    onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
                                     <b>补货</b></p>
-                            </c:if>
-                            <c:if test="${not empty sku.isRate && sku.isRate >0}"><!-- 有差价><-->
-                            <p class="buhuo"
-                               onclick="checkIsAddStock()">
-                                <b>补货</b></p>
-                            </c:if>
                         </section>
                     </c:forEach>
                 </div>
@@ -86,11 +79,11 @@
                 <h1 class="b_que">确定</h1>
             </div>
         </div>
-        <div class="back_applyInfo b" style="display:none;">
-            <h4>亲，由于您是0元用户，系统不支持补货！</h4>
-            <h1><span class="zhidao">知道了</span>
-            </h1>
-        </div>
+        <%--<div class="back_applyInfo b" style="display:none;">--%>
+            <%--<h4>亲，由于您是0元用户，系统不支持补货！</h4>--%>
+            <%--<h1><span class="zhidao">知道了</span>--%>
+            <%--</h1>--%>
+        <%--</div>--%>
     </main>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
@@ -134,14 +127,14 @@
         $(".back").css("display", "none");
         $(".back_b").hide();
     })
-    function checkIsAddStock(){
-            $(".back_applyInfo").show();
-            $(".back").show();
-    }
-    $(".zhidao").on("click", function () {
-        $(this).parents(".b").hide();
-        $(".back").hide();
-    })
+//    function checkIsAddStock(){
+//            $(".back_applyInfo").show();
+//            $(".back").show();
+//    }
+//    $(".zhidao").on("click", function () {
+//        $(this).parents(".b").hide();
+//        $(".back").hide();
+//    })
     $(".b_que").on("tap", function () {
         i = $(".number").val();
         var paraData = "?";

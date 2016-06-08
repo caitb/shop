@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountGroupMapper {
 
-    CountGroup countGroup(String  treeCode);
+    CountGroup countGroup(@Param("userId")Long  userId,@Param("treeCode")String  treeCode);
 
     CountGroup countOrderNum(@Param("userId") Long  userId,@Param("treeCode") String  treeCode);
 

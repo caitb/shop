@@ -41,7 +41,7 @@
                             <div>
                                 <h2 id="sku1">${sku.name}</h2>
                                 <h3>零售价：<span>￥${sku.priceRetail}</span></h3>
-                                <p>在线库存：<span id="sku2">${sku.stock}</span></p>
+                                <p>在线库存：<span id="sku2">${sku.stock}</span><b>需进货${sku.needStockNum}件</b></p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="text" id="skuId" value="${sku.id}" style="display: none">
                             </div>
@@ -49,16 +49,16 @@
                         <section class="sec3">
                                 <p class="jianku"
                                    onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
-                                    申请拿货</p>
+                                    <b>申请拿货</b></p>
                             <c:if test="${empty sku.isRate || sku.isRate <=0}"><!-- 无差价><-->
                                 <p class="buhuo"
                                    onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
-                                    补货</p>
+                                    <b>补货</b></p>
                             </c:if>
                             <c:if test="${not empty sku.isRate && sku.isRate >0}"><!-- 有差价><-->
                             <p class="buhuo"
                                onclick="checkIsAddStock()">
-                                补货</p>
+                                <b>补货</b></p>
                             </c:if>
                         </section>
                     </c:forEach>

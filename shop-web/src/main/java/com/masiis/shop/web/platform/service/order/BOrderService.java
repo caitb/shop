@@ -553,7 +553,7 @@ public class BOrderService {
     private void insertStatisticsPidUserInfo(PfUserStatistics statistics,PfBorder order,PfBorderItem pfBorderItem,Long userPid){
         statistics = new PfUserStatistics();
         statistics.setCreateTime(new Date());
-        statistics.setUserId(order.getUserId());
+        statistics.setUserId(userPid);
         statistics.setSkuId(pfBorderItem.getSkuId().longValue());
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();

@@ -14,7 +14,10 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +26,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -146,8 +148,8 @@ public class ProductController extends BaseController {
                              @RequestParam(required = true) Integer stock,
                              @RequestParam(required = true) Long id,
                              @RequestParam(required = false) String message,
-                             @RequestParam(required = true) Long userAddressId,
-                             @RequestParam(required = true) BigDecimal isRate) {
+                             @RequestParam(required = true) Long userAddressId
+                             ) {
         JSONObject object = new JSONObject();
         try {
             HttpSession session = request.getSession();

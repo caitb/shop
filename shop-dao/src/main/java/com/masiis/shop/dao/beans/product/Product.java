@@ -62,8 +62,6 @@ public class Product extends ComSku {
 
     private PfBorder pfBorder;//订单属性
 
-    private BigDecimal isRate;//差价
-
     private Integer needStockNum;//需进货数量
 
     public String getSpuName() {
@@ -264,13 +262,6 @@ public class Product extends ComSku {
 
     public void setPfBorder(PfBorder pfBorder) {
         this.pfBorder = pfBorder;
-    }
-
-    public BigDecimal getIsRate() {
-        return isRate;
-    }
-    public void setIsRate(BigDecimal isRate) {
-        this.isRate = isRate;
     }
 
     public Integer getNeedStockNum() {

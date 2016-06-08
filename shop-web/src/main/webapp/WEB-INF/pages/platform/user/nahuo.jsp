@@ -132,7 +132,6 @@
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script type="text/javascript">
     var i = 1;
-    var isRate = ${isRate};
     var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();

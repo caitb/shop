@@ -587,11 +587,18 @@ public class BOrderService {
         PfUserSku pUserSku = null;
         PfSkuAgent pSkuAgent = null;
         BigDecimal sumProfitFee = BigDecimal.ZERO;
+        logger.info("用户id-------------"+userPid);
+        logger.info("商品的skuId-------------"+skuId);
+        logger.info("商品的购买价格-------------"+unitPrice);
+        logger.info("商品的购买数量-------------"+quantity);
         pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, skuId);
         if (pUserSku!=null){
+            logger.info("代理的商品等级表id------------"+pUserSku.getAgentLevelId());
             pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
             BigDecimal unit_profit = BigDecimal.ZERO;
             if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+                logger.info("商品的购买价格-----------"+unitPrice);
+                logger.info("商品的成本拿货价格-----------"+pSkuAgent.getUnitPrice());
                 if (unitPrice.compareTo(pSkuAgent.getUnitPrice())<0){
                     logger.info("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
                     throw new BusinessException("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
@@ -601,7 +608,10 @@ public class BOrderService {
                 unit_profit= unitPrice;
             }
             sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
+        }else{
+            logger.info("平台sku代理设置表为null-------用户id------"+userPid+"----------skuId----"+skuId);
         }
+        logger.info("总利润--------"+sumProfitFee);
         return sumProfitFee;
     }
     /**
@@ -615,7 +625,7 @@ public class BOrderService {
         if (comUserAccount != null){
             BigDecimal sumProfitFee = BigDecimal.ZERO;
             for (PfBorderItem orderItem : ordItems){
-                sumProfitFee = sumProfitFee.add(getSumProfitFee(order.getUserId(),orderItem.getSkuId(),orderItem.getUnitPrice(),orderItem.getQuantity()));
+                sumProfitFee = sumProfitFee.add(getSumProfitFee(order.getUserPid(),orderItem.getSkuId(),orderItem.getUnitPrice(),orderItem.getQuantity()));
             }
             logger.info("结算中-----之前----"+comUserAccount.getAgentBillAmount());
             if (comUserAccount.getAgentBillAmount()!=null){

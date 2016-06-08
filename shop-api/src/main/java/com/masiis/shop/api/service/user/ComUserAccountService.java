@@ -65,6 +65,8 @@ public class ComUserAccountService {
         account.setProfitFee(new BigDecimal(0));
         account.setVersion(0L);
         account.setAppliedFee(new BigDecimal(0));
+        account.setDistributionBillAmount(new BigDecimal(0));
+        account.setAgentBillAmount(new BigDecimal(0));
         accountMapper.insert(account);
     }
 

@@ -156,12 +156,12 @@ public class PfBorderController extends BaseController {
      * @param response
      * @param bOrderId   合伙人订单ID
      * @param outOrderId 银行流水号
-     * @param zeroAgent  0元代理
+     * @param payAmount  实付金额
      * @return
      */
     @RequestMapping("/offline/Receipt.do")
     @ResponseBody
-    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, int zeroAgent) {
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, BigDecimal payAmount) {
         Map<String, String> resultMap = new HashMap<>();
 
         try {
@@ -171,21 +171,13 @@ public class PfBorderController extends BaseController {
                 resultMap.put("result_msg", "此订单不存在!");
                 return resultMap;
             }
-            if (zeroAgent == 1 && pfBorder.getOrderType().intValue() != 0) {
+            if (payAmount.compareTo(pfBorder.getReceivableAmount())==-1 && pfBorder.getOrderType().intValue() != 0) {
                 resultMap.put("result_code", "1");
-                resultMap.put("result_msg", "此订单不是代理订单,不能0元支付!");
-                return resultMap;
-            }
-            if (zeroAgent == 1 && pfBorder.getUserPid().longValue() != 0) {
-                resultMap.put("result_code", "1");
-                resultMap.put("result_msg", "只有上级是平台的用户才允许0元代理!");
+                resultMap.put("result_msg", "此订单不是代理订单,必须全额支付!");
                 return resultMap;
             }
 
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
-            BigDecimal payAmount = null;
-            if (zeroAgent == 0) payAmount = pfBorder.getReceivableAmount();//不是0元代理
-            if (zeroAgent == 1) payAmount = new BigDecimal(0);//是0元代理
 
             bOrderPayService.payBOrderOffline(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"), getPbUser(request));
             resultMap.put("result_code", "0");

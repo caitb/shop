@@ -236,9 +236,17 @@ public class BOrderAddService {
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
         order.setSendType(comUser.getSendType());
-        order.setOrderStatus(BOrderStatus.NotPaid.getCode());    //未付款
+        if(isRate==null || isRate.intValue() <= 0){
+            order.setOrderStatus(BOrderStatus.WaitShip.getCode());
+        }else{
+            order.setOrderStatus(BOrderStatus.NotPaid.getCode());    //未付款
+        }
         order.setShipStatus(0);
-        order.setPayStatus(0);      //未支付
+        if(isRate==null || isRate.intValue() <= 0){
+            order.setPayStatus(1);//支付
+        }else{
+            order.setPayStatus(0);
+        }
         order.setIsShip(0);
         order.setIsReceipt(0);
         order.setIsCounting(0);
@@ -257,11 +265,15 @@ public class BOrderAddService {
         pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
         pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());//合伙人价
-        pfBorderItem.setTotalPrice(skuService.getPriceDifference(quantity, pfSkuAgent.getUnitPrice(), comUser.getId(), comSku.getId()));//倒算总价
+        if(isRate==null || isRate.intValue() <= 0){
+            pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
+        }else {
+            pfBorderItem.setTotalPrice(skuService.getPriceDifference(quantity, pfSkuAgent.getUnitPrice(), comUser.getId(), comSku.getId()));//倒算总价
+        }
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
-        if (isRate.intValue() <= 0) {
+        if (isRate==null || isRate.intValue() <= 0) {
             logger.info("<2>添加订单日志");
             bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
             logger.info("<3>冻结usersku库存 用户加冻结库存存");

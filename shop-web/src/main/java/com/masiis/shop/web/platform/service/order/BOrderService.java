@@ -60,6 +60,8 @@ public class BOrderService {
     private PfUserStatisticsService userStatisticsService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
 
     /**
      * 获取订单
@@ -452,7 +454,25 @@ public class BOrderService {
                         throw new BusinessException("更新代理人的统计信息----userId---"+userId+"-----skuId---"+pfBorderItem.getSkuId());
                     }
                 }else{
-                    logger.info("更新代理人的统计信息----失败---statistics为null");
+                    statistics = new PfUserStatistics();
+                    statistics.setCreateTime(new Date());
+                    statistics.setUserId(order.getUserId());
+                    statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+                    statistics.setIncomeFee(new BigDecimal(0));
+                    statistics.setProfitFee(new BigDecimal(0));
+                    BigDecimal ordAmount = order.getOrderAmount();
+                    BigDecimal bailAmount = order.getBailAmount();
+                    statistics.setCostFee(ordAmount.subtract(bailAmount));
+                    statistics.setUpOrderCount(1);
+                    statistics.setUpProductCount(pfBorderItem.getQuantity());
+                    statistics.setDownOrderCount(0);
+                    statistics.setDownProductCount(0);
+                    statistics.setTakeOrderCount(0);
+                    statistics.setTakeProductCount(0);
+                    statistics.setTakeFee(new BigDecimal(0));
+                    statistics.setVersion(0L);
+                    userStatisticsService.insert(statistics);
+                    logger.info("插入代理人的统计信息-------");
                 }
             }
         }else{
@@ -513,7 +533,26 @@ public class BOrderService {
                         throw new BusinessException("更新代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
                     }
                 }else{
-                    logger.info("查询代理人上级统计信息失败-----pidUserId---"+order.getUserPid()+"---skuId----"+pfBorderItem.getSkuId());
+                    statistics = new PfUserStatistics();
+                    statistics.setCreateTime(new Date());
+                    statistics.setUserId(order.getUserId());
+                    statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+                    BigDecimal ordAmount = order.getOrderAmount();
+                    BigDecimal bailAmount = order.getBailAmount();
+                    statistics.setIncomeFee(ordAmount.subtract(bailAmount));
+                    BigDecimal sumProfitFee = getSumProfitFee(userPid,pfBorderItem.getSkuId(),pfBorderItem.getUnitPrice(),pfBorderItem.getQuantity());
+                    statistics.setProfitFee(sumProfitFee);
+                    statistics.setCostFee(new BigDecimal(0));
+                    statistics.setUpOrderCount(0);
+                    statistics.setUpProductCount(0);
+                    statistics.setDownOrderCount(1);
+                    statistics.setDownProductCount(pfBorderItem.getQuantity());
+                    statistics.setTakeOrderCount(0);
+                    statistics.setTakeProductCount(0);
+                    statistics.setTakeFee(new BigDecimal(0));
+                    statistics.setVersion(0L);
+                    userStatisticsService.insert(statistics);
+                    logger.info("插入代理人上级统计信息-------");
                 }
             }
         }
@@ -533,18 +572,20 @@ public class BOrderService {
         PfSkuAgent pSkuAgent = null;
         BigDecimal sumProfitFee = BigDecimal.ZERO;
         pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, skuId);
-        pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
-        BigDecimal unit_profit = BigDecimal.ZERO;
-        if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
-            if (unitPrice.compareTo(pSkuAgent.getUnitPrice())<0){
-                logger.info("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
-                throw new BusinessException("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+        if (pUserSku!=null){
+            pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, pUserSku.getAgentLevelId());
+            BigDecimal unit_profit = BigDecimal.ZERO;
+            if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+                if (unitPrice.compareTo(pSkuAgent.getUnitPrice())<0){
+                    logger.info("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+                    throw new BusinessException("商品的购买价格小于商品的代理价格,利润小于0------userPid---"+userPid+"-----skuId----"+skuId);
+                }
+                unit_profit= unitPrice.subtract(pSkuAgent.getUnitPrice());
+            }else{
+                unit_profit= unitPrice;
             }
-            unit_profit= unitPrice.subtract(pSkuAgent.getUnitPrice());
-        }else{
-            unit_profit= unitPrice;
+            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
         }
-        sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
         return sumProfitFee;
     }
     /**
@@ -575,7 +616,6 @@ public class BOrderService {
         }
         logger.info("更新用户账户结算中------end");
     }
-
     /**
      * 获取排队订单数量
      *

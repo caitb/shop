@@ -226,7 +226,7 @@ public class ProductController extends BaseController {
         mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
         mav.addObject("initPay",initPay);
         mav.addObject("isRate",isRate);
-        mav.addObject("payAmount",payAmount);
+//        mav.addObject("payAmount",payAmount);
         return mav;
     }
 

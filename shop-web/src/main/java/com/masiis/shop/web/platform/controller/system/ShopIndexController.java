@@ -72,6 +72,9 @@ public class ShopIndexController extends BaseController {
             }
         }
         CountGroup countGroup = new CountGroup();
+        if(numb!=0){
+            numb-=1;
+        }
         countGroup.setCount(numb);
         NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
         countGroup.setGroupSum(rmbFormat.format(countNum));

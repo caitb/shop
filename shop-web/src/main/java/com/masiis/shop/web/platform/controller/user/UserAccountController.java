@@ -224,25 +224,4 @@ public class UserAccountController extends BaseController{
         return jsonArray.toString();
     }
 
-//    /**
-//     * 跳转月份查询用户账单信息
-//     * @param year
-//     * @param month
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "getUserBillbyTurn",method = RequestMethod.POST)
-//    @ResponseBody
-//    public String getUserBillbyTurn(@RequestParam(value = "year",required = true) String year,
-//                                    @RequestParam(value = "month",required = true) String month,
-//                                    HttpServletRequest request){
-//        ComUser user = getComUser(request);
-//        log.info("获取其他年份月份的用户账单信息");
-//        if(user == null){
-//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-//        }
-//        //首次查询默认查询第一页，每页查询10条
-//        List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,1,10);
-//
-//    }
 }

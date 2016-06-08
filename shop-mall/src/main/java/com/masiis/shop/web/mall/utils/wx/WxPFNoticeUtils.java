@@ -538,6 +538,34 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 店铺新订单通知,库存不足情况
+     *
+     * @param pUser    店铺店主user
+     * @param params   (1,收件人;2,联系电话;3,收货地址;4,购物清单;5,备注)
+     * @param orderUrl
+     * @return
+     */
+    public Boolean newShopOrderNoticeNoStock(ComUser pUser, String[] params, String orderUrl) {
+        WxPFNewShopOrder order = new WxPFNewShopOrder();
+        WxNoticeReq<WxPFNewShopOrder> req = new WxNoticeReq<>(order);
+
+        order.setFirst(new WxNoticeDataItem("你有新的店铺订单啦", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的库存不足，无法发货，请及时补货。点击补货！", null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        req.setUrl(orderUrl);
+        // 调用库存不足提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_SHOP_ORDER);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 线下支付提醒
      *
      * @param user  目标人

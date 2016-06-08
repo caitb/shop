@@ -128,7 +128,7 @@ public class UserAccountController extends BaseController{
         Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
         BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
         log.info("查询已提现金额end");
-        account.setCountingFee(account.getAgentBillAmount().add(account.getDistributionBillAmount()));
+        account.setCountingFee(account.getAgentBillAmount() == null?new BigDecimal(0):account.getAgentBillAmount().add(account.getDistributionBillAmount() == null?new BigDecimal(0):account.getDistributionBillAmount()));
         mv.addObject("comUser",comUser);
         mv.addObject("account",account);
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));

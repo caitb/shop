@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.user.CountGroup">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="num" property="count" jdbcType="INTEGER"/>
-        <result column="sam" property="groupMomey" jdbcType="BIGINT"/>
+        <result column="sam" property="groupMoney" jdbcType="BIGINT"/>
         <result column="orders" property="orderNum" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -12,7 +12,8 @@
     <select id="countGroup" resultMap="BaseResultMap">
         SELECT COUNT(a.id) as num,IFNULL(SUM(b.income_fee),0) as sam  FROM pf_user_sku a
         LEFT JOIN pf_user_statistics b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
-        WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
+        WHERE a.user_id !=#{userId}
+        AND a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>
 
     <select id="countOrderNum"  resultMap="BaseResultMap">

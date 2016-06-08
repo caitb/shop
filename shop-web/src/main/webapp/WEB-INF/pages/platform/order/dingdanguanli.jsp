@@ -37,7 +37,7 @@
                         <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorders6 !=0}"><span></span></c:if></h1>
                         <h1>排单中</h1></a>
                     </li>
-                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=3">
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span></span></c:if></h1>
                         <h1>未付款</h1></a>
                     </li>

@@ -42,8 +42,8 @@ public class CountGroupService {
      * @author muchaofeng
      * @date 2016/6/7 11:06
      */
-    public CountGroup countGroupInfo(String treeCode){
-        return countGroupMapper.countGroup(treeCode);
+    public CountGroup countGroupInfo(Long userId,String treeCode){
+        return countGroupMapper.countGroup(userId,treeCode);
     }
     /**
      * 团队订单数

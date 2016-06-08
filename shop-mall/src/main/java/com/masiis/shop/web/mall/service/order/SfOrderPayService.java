@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
@@ -73,7 +74,8 @@ public class SfOrderPayService {
     private ComUserAccountService comUserAccountService;
     @Resource
     private SfUserAccountService sfUserAccountService;
-
+    @Resource
+    private SkuService skuService;
 
     /**
      * 获得需要支付的订单的信息
@@ -635,11 +637,20 @@ public class SfOrderPayService {
             }
             param_shopuser[3] = sb.toString();
             param_shopuser[4] = order.getRemark();
-            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+            String url = null;
             log.info("小铺发送微信----param参数-----"+param_shopuser.toString());
-            WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+            if (isEnoughStock(order.getShopUserId(),orderItems)){
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+                WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+            }else {
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/"+order.getShopUserId();
+                WxPFNoticeUtils.getInstance().newShopOrderNoticeNoStock(shopUser, param_shopuser, url);
+            }
         }
         log.info("小铺归属人微信提醒-------end");
+        log.info("库存不足提醒--------------start");
+
+        log.info("库存不足提醒----------------end");
         /*分润人微信提醒*/
         log.info("分润人微信提醒------start");
         List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderId(order.getId());
@@ -667,7 +678,20 @@ public class SfOrderPayService {
         }
         log.info("短信提醒-------------------------------end");
     }
-
+    private Boolean isEnoughStock(Long shopUserId,List<SfOrderItem> orderItems) {
+        log.info("判断商品是否有足够的库存----start");
+        for (SfOrderItem orderItem:orderItems){
+            PfUserSkuStock skuStock = skuStockService.selectByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
+            if (skuStock!=null){
+                if (skuStock.getStock()-skuStock.getFrozenStock()<0){
+                    log.info("库存不足------skuId----"+orderItem.getSkuId());
+                    return false;
+                }
+            }
+        }
+        log.info("判断商品是否有足够的库存----end");
+        return true;
+    }
     public void addSfOrderPayment(SfOrderPayment payment) {
         paymentMapper.insert(payment);
     }

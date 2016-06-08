@@ -12,6 +12,7 @@ import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -115,6 +116,8 @@ public class ProductController {
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
                       @RequestParam("mainImgNames")String[] mainImgNames,
                       @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames,
+                      @RequestParam("skuBackgroundImgName")String skuBackgroundImgName,
+                      @RequestParam("developPosterName")String developPosterName,
                       @RequestParam("iconImgUrls")String[] iconImgUrls,
                       @RequestParam("iconImgNames")String[] iconImgNames) throws FileNotFoundException {
 
@@ -184,7 +187,11 @@ public class ProductController {
                 }
                 log.info("保存商品-comSpu数据[comSkuImages="+comSkuImages+"]");
 
-                productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
+                ComSkuExtension comSkuExtension = new ComSkuExtension();
+                comSkuExtension.setSkuBackgroundImg(skuBackgroundImgName);
+                comSkuExtension.setPoster(developPosterName);
+
+                productService.save(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "保存成功!";
             }
         } catch(Exception e) {
@@ -199,22 +206,25 @@ public class ProductController {
     public String update(HttpServletRequest request, HttpServletResponse response,
                          Integer spuId,
                          Integer skuId,
+                         Integer skuExtensionId,
                          @RequestParam("skuImageIds")Integer[] skuImageIds,
                          Integer unitId,
                          @RequestParam("skuAgentIds")Integer[] skuAgentIds,
                          @RequestParam("skuDistributionIds")Integer[] skuDistributionIds,
                          ComSpu comSpu,
                          ComSku comSku,
-                         @RequestParam("unitPrices")String[] unitPrices,
-                         @RequestParam("totalPrices")String[] totalPrices,
-                         @RequestParam("quantitys")Integer[] quantitys,
-                         @RequestParam("bails")String[] bails,
+                         @RequestParam("unitPrices") String[]  unitPrices,
+                         @RequestParam("totalPrices")String[]  totalPrices,
+                         @RequestParam("quantitys")  Integer[] quantitys,
+                         @RequestParam("bails")      String[]  bails,
                          @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                          @RequestParam(value = "proIconUrl", required = false)String proIconUrl,
                          @RequestParam(value = "proIconName", required = false)String proIconName,
                          @RequestParam(value = "mainImgUrls", required = false)String[] mainImgUrls,
                          @RequestParam(value = "mainImgNames", required = false)String[] mainImgNames,
                          @RequestParam(value = "mainImgOriginalNames", required = false)String[] mainImgOriginalNames,
+                         @RequestParam(value = "skuBackgroundImgName", required = false)String skuBackgroundImgName,
+                         @RequestParam(value = "developPosterName", required = false)String developPosterName,
                          @RequestParam(value = "iconImgUrls", required = false)String[] iconImgUrls,
                          @RequestParam(value = "iconImgNames", required = false)String[] iconImgNames
                          ) throws FileNotFoundException {
@@ -291,7 +301,15 @@ public class ProductController {
                     }
                 }
 
-                productService.update(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
+                ComSkuExtension comSkuExtension = null;
+                if(StringUtils.isNotBlank(skuBackgroundImgName) || StringUtils.isNotBlank(developPosterName)){
+                    comSkuExtension = new ComSkuExtension();
+                    comSkuExtension.setId(skuExtensionId);
+                    comSkuExtension.setSkuBackgroundImg(StringUtils.isNotBlank(skuBackgroundImgName)?skuBackgroundImgName:null);
+                    comSkuExtension.setPoster(StringUtils.isNotBlank(developPosterName)?developPosterName:null);
+                }
+
+                productService.update(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "修改商品成功!";
             }
         } catch(Exception e){

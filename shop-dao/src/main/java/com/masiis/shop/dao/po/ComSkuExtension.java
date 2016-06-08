@@ -8,6 +8,7 @@ public class ComSkuExtension {
     private Integer id;
     private Integer skuId;
     private String poster;
+    private String skuBackgroundImg;
 
     public Integer getId() {
         return id;
@@ -31,5 +32,13 @@ public class ComSkuExtension {
 
     public void setPoster(String poster) {
         this.poster = poster;
+    }
+
+    public String getSkuBackgroundImg() {
+        return skuBackgroundImg;
+    }
+
+    public void setSkuBackgroundImg(String skuBackgroundImg) {
+        this.skuBackgroundImg = skuBackgroundImg;
     }
 }

@@ -30,6 +30,8 @@ public class ProductService {
     private PfSkuStatisticMapper pfSkuStatisticMapper;
     @Resource
     private PfSkuStockService pfSkuStockService;
+    @Resource
+    private ComSkuExtensionMapper comSkuExtensionMapper;
 
     /**
      * 添加商品
@@ -39,7 +41,7 @@ public class ProductService {
      * @param pfSkuAgents
      * @param sfSkuDistributions
      */
-    public void save(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
+    public void save(ComSpu comSpu, ComSku comSku, ComSkuExtension comSkuExtension, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
 
         //保存spu
         comSpuMapper.insert(comSpu);
@@ -47,6 +49,10 @@ public class ProductService {
         //保存sku
         comSku.setSpuId(comSpu.getId());
         comSkuMapper.insert(comSku);
+
+        //保存sku扩展表
+        comSkuExtension.setSkuId(comSku.getId());
+        comSkuExtensionMapper.insert(comSkuExtension);
 
         //sku统计表
         PfSkuStatistic pfSkuStatistic = new PfSkuStatistic();
@@ -96,7 +102,7 @@ public class ProductService {
      * @param pfSkuAgents
      * @param sfSkuDistributions
      */
-    public void update(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
+    public void update(ComSpu comSpu, ComSku comSku, ComSkuExtension comSkuExtension, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
 
         if (comSpu.getId() != null && comSku.getId() != null) {
             //保存spu
@@ -104,6 +110,10 @@ public class ProductService {
 
             //保存sku
             comSkuMapper.updateById(comSku);
+
+            if(comSkuExtension != null){
+                comSkuExtensionMapper.updateById(comSkuExtension);
+            }
 
             //保存sku图片
             if (comSkuImages != null) {
@@ -185,12 +195,14 @@ public class ProductService {
 
         ComSku comSku = comSkuMapper.selectById(skuId);
         ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+        ComSkuExtension comSkuExtension = comSkuExtensionMapper.selectBySkuId(comSku.getId());
         List<ComSkuImage> comSkuImages = comSkuImageMapper.selectBySkuId(comSku.getId());
         List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectBySkuId(comSku.getId());
         List<SfSkuDistribution> sfSkuDistributions = sfSkuDistributionMapper.selectBySkuId(comSku.getId());
 
         productInfo.setComSku(comSku);
         productInfo.setComSpu(comSpu);
+        productInfo.setComSkuExtension(comSkuExtension);
         productInfo.setComSkuImages(comSkuImages);
         productInfo.setPfSkuAgents(pfSkuAgents);
         productInfo.setSfSkuDistributions(sfSkuDistributions);

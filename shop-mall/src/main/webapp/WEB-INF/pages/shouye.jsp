@@ -73,33 +73,22 @@
     </div>
     <div class="content">
         <h1>在售商品</h1>
-        <%--<c:forEach items="${SfShopDetails}" var="sd">--%>
-        <%--<section class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">--%>
-            <%--<p class="photo">--%>
-                <%--<img src="${sd.skuUrl}" alt="">--%>
-            <%--</p>--%>
+        <c:forEach items="${SfShopDetails}" var="sd">
+            <div class="sec1"
+                 onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
+                <img src="${path}/static/images/jinghuaye.png" alt="">
 
-            <%--<div>--%>
-                <%--<h2 style="padding-right: 20px;">${sd.skuAssia}</h2>--%>
+                <div>
+                    <h1>抗引力纤颜奢养光感精华液</h1>
 
-                <%--<h3>${sd.slogan}</h3>--%>
+                    <h2>最最最好的护肤品</h2>
 
-                    <%--&lt;%&ndash;<h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>&ndash;%&gt;--%>
-                <%--<h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
-                <%--<p>--%>
-                    <%--<button>立即购买</button>--%>
-                <%--</p>--%>
-            <%--</div>--%>
-        <%--</section></c:forEach>--%>
-        <div class="sec1">
-            <img src="${path}/static/images/jinghuaye.png" alt="">
-            <div>
-                <h1>抗引力纤颜奢养光感精华液</h1>
-                <h2>最最最好的护肤品</h2>
-                <p>运费：包邮</p>
-                <h3><span>￥<b>289.00</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
+                    <p>运费：包邮</p>
+
+                    <h3><span>￥<b>289.00</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
+                </div>
             </div>
-        </div>
+        </c:forEach>
     </div>
     <footer>
         <div>

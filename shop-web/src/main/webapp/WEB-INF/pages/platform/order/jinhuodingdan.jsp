@@ -23,7 +23,7 @@
            <div class="box">
                 <header class="xq_header">
                     <a href="<%=path%>/borderManage/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>进货订单</p>
+                        <p>我的订单</p>
                 </header>
                 <nav>
                     <ul>
@@ -37,7 +37,7 @@
                     </ul>
                     <img src="${path}/static/images/youdao.png" alt="" class="you">
                 </nav>
-               <marquee><img src="${path}/static/images/laba.png" alt="">您只可以查看直接下级的订单</marquee>
+               <p><img src="${path}/static/images/laba.png" alt="">您只可以查看直接下级的订单</p>
                 <main>
                     <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>
                     <%--<div class="all">--%>

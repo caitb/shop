@@ -19,18 +19,19 @@
   overflow-x: auto;
   padding: 5px 0;
 }
-.wrap .box marquee{
+.wrap .box nav+p{
   background: rgb(243,230,88);
   color: rgb(255,0,0);
   font-size:12px;
   padding:5px 0;
 }
-.wrap .box marquee img{
+.wrap .box nav+p img{
   display:inline-block;
   width:17px;
   float:left;
   margin-right:10px;
   margin-top:2px;
+  margin-left: 10px;
 }
 .wrap .box nav ul li {
   width: 95px;

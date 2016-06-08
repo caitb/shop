@@ -142,8 +142,8 @@ public class ComUserAccount {
     }
 
     public void setAgentBillAmount(BigDecimal agentBillAmount) {
-        this.agentBillAmount = agentBillAmount;
-        setViewAgentBillAmount(rmbFormat.format(agentBillAmount));
+        this.agentBillAmount = agentBillAmount == null?new BigDecimal(0):agentBillAmount;
+        setViewAgentBillAmount(rmbFormat.format(this.agentBillAmount));
     }
 
     public BigDecimal getDistributionBillAmount() {
@@ -151,8 +151,8 @@ public class ComUserAccount {
     }
 
     public void setDistributionBillAmount(BigDecimal distributionBillAmount) {
-        this.distributionBillAmount = distributionBillAmount;
-        setViewDistributionBillAmount(rmbFormat.format(distributionBillAmount));
+        this.distributionBillAmount = distributionBillAmount == null?new BigDecimal(0):distributionBillAmount;
+        setViewDistributionBillAmount(rmbFormat.format(this.distributionBillAmount));
     }
 
     public BigDecimal getBailFee() {

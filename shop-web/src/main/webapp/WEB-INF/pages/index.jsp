@@ -49,12 +49,15 @@
             <div class="admin" >
                 <img src="${user.wxHeadImg}" alt="">
                 <h3>${user.wxNkName}—欢迎您登入</h3>
-            </div> <c:if test="${user.isAgent==1}">
-            <p><b>${countGroup.count}</b><span>团队人数</span></p>
-            <ul>
-                <li><p>团队总销售额</p><h1><span>${countGroup.groupSum}</span></h1></li>
-                <li><p>团队总订单</p><h1><span>${countGroup.orderNum}</span></h1></li>
-            </ul></c:if>
+            </div>
+            <c:if test="${user.isAgent==1}">
+
+                <ul>
+                    <li><h1>${countGroup.groupSum}</h1><p>团队总销售额</p></li>
+                    <li><h1>${countGroup.count}</h1><p>团队人数</p></li>
+                    <li><h1>${countGroup.orderNum}</h1><p>团队总订单</p></li>
+                </ul>
+            </c:if>
         </div><c:if test="${user.isAgent==0}">
         <div class="index_Nlogin" >
             <span style="background: url('<%=path%>/static/images/index_login1.png') no-repeat;background-size: contain;"></span>

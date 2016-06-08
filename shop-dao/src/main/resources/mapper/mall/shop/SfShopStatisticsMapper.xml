@@ -30,7 +30,7 @@
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT},
         #{userId,jdbcType=BIGINT}, #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL},
         #{orderCount,jdbcType=INTEGER}, #{productCount,jdbcType=INTEGER}, #{pageviewsCount,jdbcType=INTEGER},
-        #{shareCount,jdbcType=INTEGER}, #{returnOrderCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}), #{version,jdbcType=BIGINT})
+        #{shareCount,jdbcType=INTEGER}, #{returnOrderCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopStatistics" >

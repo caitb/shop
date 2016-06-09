@@ -14,13 +14,10 @@
         WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>
 
-    <select id="countOrderNum"  resultMap="BaseResultMap">
-        SELECT COUNT(a.id) AS orders FROM pf_user_sku a
-        INNER JOIN pf_border b ON a.user_id=b.user_id
-        WHERE a.user_id !=#{userId}
-        AND a.tree_code LIKE CONCAT(#{treeCode},'%')
-        AND b.order_type IN (0,1)
-        AND b.pay_status=1;
+    <select id="countOrderNum" resultMap="BaseResultMap">
+        SELECT SUM(b.down_order_count) orders FROM pf_user_sku a
+        INNER JOIN pf_user_statistics b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
+        WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>
 
 </mapper>

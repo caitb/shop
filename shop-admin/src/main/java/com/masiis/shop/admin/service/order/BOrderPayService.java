@@ -122,7 +122,7 @@ public class BOrderPayService {
             }
             BigDecimal productAmount = BigDecimal.ZERO;
             for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-                int quantity = payAmount.divide(pfBorderItem.getUnitPrice(), 0, BigDecimal.ROUND_UNNECESSARY).intValue();
+                int quantity = payAmount.divide(pfBorderItem.getUnitPrice(), 0, BigDecimal.ROUND_DOWN).intValue();
                 pfBorderItem.setQuantity(quantity);
                 pfBorderItem.setTotalPrice(pfBorderItem.getUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
                 pfBorderItem.setBailAmount(BigDecimal.ZERO);

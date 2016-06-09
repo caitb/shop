@@ -214,15 +214,15 @@ public class SfOrderPayService {
         log.info("小铺统计信息-------用户id------"+order.getShopUserId());
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
         if (shopStatistics != null){
-            //总销售额(总销售额 = 订单金额 - 订单的代理运费)
+            //总销售额(总销售额 = 订单金额)
             log.info("总销售额----------之前------"+shopStatistics.getIncomeFee());
             if (shopStatistics.getIncomeFee()!=null){
-                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()));
             }else{
-                shopStatistics.setIncomeFee(order.getOrderAmount().subtract(order.getAgentShipAmount()));
+                shopStatistics.setIncomeFee(order.getOrderAmount());
             }
             log.info("总销售额----------之后------"+shopStatistics.getIncomeFee());
-            log.info("总销售额----------增加了------"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
+            log.info("总销售额----------增加了------"+order.getOrderAmount().intValue());
             //总利润
             log.info("总利润---------之前------"+shopStatistics.getProfitFee());
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);

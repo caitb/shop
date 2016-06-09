@@ -463,6 +463,10 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单

@@ -5,6 +5,7 @@ import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.shop.SfShopStatisticsService;
 import com.masiis.shop.admin.service.user.ComUserAccountService;
+import com.masiis.shop.admin.service.user.PfUserStatisticsService;
 import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
@@ -25,6 +26,7 @@ import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -98,6 +100,10 @@ public class BOrderPayService {
     private PbOperationLogMapper pbOperationLogMapper;
     @Resource
     private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private BOrderStatisticsService orderStatisticsService;
+    @Resource
+    private BOrderBillAmountService billAmountService;
 
     public void payBOrderOffline(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath, PbUser pbUser) throws Exception {
         if (pfBorderPayment == null) {
@@ -518,6 +524,10 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
@@ -605,6 +615,7 @@ public class BOrderPayService {
             comUserAccountService.countingByOrder(pfBorder);
         }
     }
+
 
     /**
      * 获取证书编码

@@ -53,8 +53,8 @@
             <c:if test="${user.isAgent==1}">
 
                 <ul>
-                    <li><h1>${countGroup.groupSum}</h1><p>团队总销售额</p></li>
                     <li><h1>${countGroup.count}</h1><p>团队人数</p></li>
+                    <li><h1>${countGroup.groupSum}</h1><p>团队总销售额</p></li>
                     <li><h1>${countGroup.orderNum}</h1><p>团队总订单</p></li>
                 </ul>
             </c:if>

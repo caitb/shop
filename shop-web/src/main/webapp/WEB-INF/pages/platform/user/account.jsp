@@ -28,7 +28,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <p>我的收入</p>
+            <p>我的账户</p>
         </header>
         <main>
             <div class="head_img">

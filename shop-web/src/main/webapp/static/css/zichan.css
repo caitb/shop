@@ -32,10 +32,10 @@
   background-size: 100% 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  height: 160px;
+  height: 130px;
   -webkit-box-pack: center;
   -webkit-box-align: center;
-  position: relative;;
+  position: relative;
 }
 .ban img{
   position: absolute;;
@@ -187,7 +187,7 @@ nav ul li b{
 .wrap main .head_img {
   display: -webkit-box;
   background: white;
-  padding: 20px 0;
+  padding: 6px 0;
   background:url("/static/images/gerenxinxibeijing.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
@@ -217,7 +217,7 @@ nav ul li b{
 }
 .wrap main .head_img span{
   position:absolute;
-  top:35px;
+  top: 23px;
   right:10px;
   padding-right:15px;
   background: url("/static/images/next.png") no-repeat 100%;

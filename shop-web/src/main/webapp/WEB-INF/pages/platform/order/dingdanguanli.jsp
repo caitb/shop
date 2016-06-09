@@ -48,7 +48,7 @@
                     <h1>待收货</h1></a>
                 </li>
                 <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=3">
-                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders3 !=0}"><span></span></c:if></h1>
+                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""></h1>
                     <h1>已完成</h1></a>
                 </li>
                 <li><a href="<%=path%>/borderManage/stockDouckBorder">
@@ -69,7 +69,7 @@
                         <h1>下级未付款</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=3">
-                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""><c:if test="${pfBorderps3 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""></h1>
                         <h1>已完成</h1></a>
                     </li>
                 </ul>

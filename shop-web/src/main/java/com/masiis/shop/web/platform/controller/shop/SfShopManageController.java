@@ -13,7 +13,9 @@ import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
+import com.masiis.shop.dao.po.SfShopStatistics;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.SfShopStatisticsService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
@@ -68,6 +70,8 @@ public class SfShopManageController extends BaseController {
     private SfUserShopViewMapper sfUserShopViewMapper;
     @Resource
     private WeiXinQRCodeService weiXinQRCodeService;
+    @Resource
+    private SfShopStatisticsService sfShopStatisticsService;
 
     /**
      * 店铺管理首页
@@ -80,11 +84,13 @@ public class SfShopManageController extends BaseController {
         ModelAndView mav = new ModelAndView("platform/shop/manage/index");
         ComUser comUser = null;
         SfShop sfShop = null;
+        SfShopStatistics sfShopStatistics = null;
 
         try {
             comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
+            sfShopStatistics = sfShopStatisticsService.selectByShopUserId(comUser.getId());
 
             if(sfShop == null) return mav;
 
@@ -96,8 +102,8 @@ public class SfShopManageController extends BaseController {
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
-            mav.addObject("saleAmount", NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShop.getSaleAmount()));
-            mav.addObject("orderCount", orderCount);
+            mav.addObject("saleAmount", NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShopStatistics.getIncomeFee()));
+            mav.addObject("orderCount", sfShopStatistics.getOrderCount());
             mav.addObject("shopView", shopView);
             mav.addObject("shopUrl", shopUrl);
 

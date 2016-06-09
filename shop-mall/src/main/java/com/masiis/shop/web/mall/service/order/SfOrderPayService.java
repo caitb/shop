@@ -203,7 +203,8 @@ public class SfOrderPayService {
                 throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
             }
         }else{
-            throw new BusinessException("");
+            log.info("sfUserStatistics为null---------------");
+            throw new BusinessException("sfUserStatistics为null---------------");
         }
         log.info("统计购买人-------end");
     }

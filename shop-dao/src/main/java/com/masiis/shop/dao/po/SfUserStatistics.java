@@ -22,10 +22,6 @@ public class SfUserStatistics {
      */
     private Long userId;
     /**
-     * sku
-     */
-    private Integer skuId;
-    /**
      * 总订单数
      */
     private Integer orderCount;
@@ -94,13 +90,6 @@ public class SfUserStatistics {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Integer getSkuId() {
-        return skuId;
-    }
-
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
-    }
 
     public Long getVersion() {
         return version;

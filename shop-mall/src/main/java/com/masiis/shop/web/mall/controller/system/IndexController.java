@@ -87,10 +87,10 @@ public class IndexController extends BaseController {
         for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
-            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
+            ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail = new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
-            sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
+            sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
             sfShopDetail.setSkuAssia(comSku.getAlias());//别名
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价

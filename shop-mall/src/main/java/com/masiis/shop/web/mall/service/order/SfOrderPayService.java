@@ -289,7 +289,7 @@ public class SfOrderPayService {
     }
     /**
      * 更新小铺用户人结算中信息
-     * 结算中(结算中 = 之前结算中 + 利润 )
+     * 结算中(结算中 = 之前结算中 + (商品的购买价格 - 商品的分润 -  代理运费 ) )
      * @param order
      * @param orderItems
      */
@@ -298,15 +298,18 @@ public class SfOrderPayService {
         log.info("更新小铺用户结算信息--------小铺用户id-----------"+order.getShopUserId());
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
         if (comUserAccount != null){
-            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            BigDecimal orderAmount = order.getOrderAmount();
+            BigDecimal disAmount = order.getDistributionAmount();
+            BigDecimal agentShipAmount = order.getAgentShipAmount();
+            BigDecimal billAmount = orderAmount.subtract(disAmount).subtract(agentShipAmount);
             log.info("小铺结算中-----之前------"+comUserAccount.getDistributionBillAmount());
             if (comUserAccount.getDistributionBillAmount()!=null){
-                comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(sumProfitFee));
+                comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(billAmount));
             }else{
-                comUserAccount.setDistributionBillAmount(sumProfitFee);
+                comUserAccount.setDistributionBillAmount(billAmount);
             }
             log.info("小铺结算中-----之后------"+comUserAccount.getDistributionBillAmount());
-            log.info("小铺结算中-----增加了------"+sumProfitFee);
+            log.info("小铺结算中-----增加了------"+billAmount);
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
             if (i!=1){
                 log.info("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
@@ -349,7 +352,7 @@ public class SfOrderPayService {
 
     /**
      * 此订单小铺获得利润
-     * 小铺商品的利润 = 商品购买价格 - 商品的代理价格 - 商品的分润
+     * 小铺商品的利润 = 商品购买价格 - 商品的代理价格 - 商品的分润 - 代理运费
      * @param order
      * @param orderItems
      * @return
@@ -378,6 +381,7 @@ public class SfOrderPayService {
             }
             sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
         }
+        sumProfitFee = sumProfitFee.subtract(order.getAgentShipAmount());
         if (sumProfitFee.compareTo(order.getDistributionAmount())<0){
             log.info("商品获得利润小于商品的分润-------订单id---"+order.getId());
             throw new BusinessException("商品获得利润小于商品的分润");

@@ -401,7 +401,7 @@ public class BOrderService {
         logger.info("---实时显示统计---------------------------end");
         statisticsByOrder(pfBorder,ordItems);
         logger.info("---结算------------------------------------start");
-        updateDisBillAmount(pfBorder,ordItems);
+        updateDisBillAmount(pfBorder);
         logger.info("---结算-----------------------------------end");
     }
 
@@ -619,22 +619,20 @@ public class BOrderService {
      * @author hanzengzhi
      * @date 2016/6/7 9:59
      */
-    private void updateDisBillAmount(PfBorder order,List<PfBorderItem> ordItems){
+    private void updateDisBillAmount(PfBorder order){
         logger.info("更新用户账户结算中------start");
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getUserId());
+        BigDecimal ordAmount = order.getOrderAmount();
+        BigDecimal bailAmount = order.getBailAmount();
         if (comUserAccount != null){
-            BigDecimal sumProfitFee = BigDecimal.ZERO;
-            for (PfBorderItem orderItem : ordItems){
-                sumProfitFee = sumProfitFee.add(getSumProfitFee(order.getUserPid(),orderItem.getSkuId(),orderItem.getUnitPrice(),orderItem.getQuantity()));
-            }
             logger.info("结算中-----之前----"+comUserAccount.getAgentBillAmount());
             if (comUserAccount.getAgentBillAmount()!=null){
-                comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(sumProfitFee));
+                comUserAccount.setAgentBillAmount(comUserAccount.getAgentBillAmount().add(ordAmount.subtract(bailAmount)));
             }else{
-                comUserAccount.setAgentBillAmount(sumProfitFee);
+                comUserAccount.setAgentBillAmount(ordAmount.subtract(bailAmount));
             }
             logger.info("结算中-----之后----"+comUserAccount.getAgentBillAmount());
-            logger.info("结算中-----增加----"+sumProfitFee);
+            logger.info("结算中-----增加----"+ordAmount.subtract(bailAmount));
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
             if(i!=1){
                 throw new BusinessException("更新结算中数据失败-----用户id-----"+order.getUserId());

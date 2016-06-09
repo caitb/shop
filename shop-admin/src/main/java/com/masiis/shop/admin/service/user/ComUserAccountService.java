@@ -38,6 +38,10 @@ public class ComUserAccountService {
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
 
+    public int updateByIdWithVersion(ComUserAccount comUserAccount){
+        return accountMapper.updateByIdWithVersion(comUserAccount);
+    }
+
     /**
      * 根据用户id查询用户资产账户
      *

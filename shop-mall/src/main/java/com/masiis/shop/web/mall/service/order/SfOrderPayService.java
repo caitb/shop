@@ -188,7 +188,7 @@ public class SfOrderPayService {
                 statistics.setOrderCount(1);
             }
             log.info("总订单数-----之后-----"+statistics.getOrderCount());
-            //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
+            //总购买金额(总购买金额 = 总共买金额 + 订单金额 - 订单代理商运费)
             log.info("总购买金额------之前-----"+statistics.getBuyFee());
             if (statistics.getBuyFee()!=null){
                 statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));

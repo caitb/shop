@@ -621,7 +621,7 @@ public class BOrderService {
      */
     private void updateDisBillAmount(PfBorder order){
         logger.info("更新用户账户结算中------start");
-        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getUserId());
+        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getUserPid());
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();
         if (comUserAccount != null){
@@ -635,7 +635,7 @@ public class BOrderService {
             logger.info("结算中-----增加----"+ordAmount.subtract(bailAmount));
             int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
             if(i!=1){
-                throw new BusinessException("更新结算中数据失败-----用户id-----"+order.getUserId());
+                throw new BusinessException("更新结算中数据失败-----用户id-----"+order.getUserPid());
             }
         }
         logger.info("更新用户账户结算中------end");

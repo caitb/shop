@@ -19,7 +19,7 @@
   background: white;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  margin: 10px 0;
+  margin-top: 10px;
   display: none;
 }
 .wrap .index_login > p {
@@ -47,6 +47,7 @@
 }
 .wrap .index_login > ul {
   display: -webkit-box;
+  margin-bottom: 10px;
 }
 .wrap .index_login > ul li {
   -webkit-box-flex: 1;
@@ -84,8 +85,9 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   padding: 25px 0;
-  margin: 10px 0;
+  margin: 0 0 10px 0;
   position: relative;
+  border-top: 1px solid #f6f6f6;
 }
 .wrap .index_Nlogin span {
   display: block;

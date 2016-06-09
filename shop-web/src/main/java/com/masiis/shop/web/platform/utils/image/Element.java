@@ -23,6 +23,8 @@ public class Element<T> {
     private T content;
     /* 行风格 */
     private int lineStyle = 1;
+    /* 每行字符数 */
+    private int lineCount = 16;
 
     public Element() {
     }
@@ -105,5 +107,13 @@ public class Element<T> {
 
     public void setLineStyle(int lineStyle) {
         this.lineStyle = lineStyle;
+    }
+
+    public int getLineCount() {
+        return lineCount;
+    }
+
+    public void setLineCount(int lineCount) {
+        this.lineCount = lineCount;
     }
 }

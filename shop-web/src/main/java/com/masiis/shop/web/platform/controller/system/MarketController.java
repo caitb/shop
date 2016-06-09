@@ -54,8 +54,6 @@ public class MarketController extends BaseController {
         for (PbBanner banner:pbBanner) {
             //图片地址
             banner.setImgUrl(value + banner.getImgUrl());
-//            String url = value + banner.getImgUrl();
-//            urls.add(url);
         }
         ModelAndView modelAndView = new ModelAndView();
         //封装图片地址集合

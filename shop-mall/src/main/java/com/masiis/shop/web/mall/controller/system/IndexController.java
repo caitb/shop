@@ -88,7 +88,7 @@ public class IndexController extends BaseController {
             SfShopDetail sfShopDetail = new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
-            sfShopDetail.setSkuAssia(comSku.getAlias());
+            sfShopDetail.setSkuAssia(comSku.getAlias());//别名
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称

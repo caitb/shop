@@ -30,8 +30,8 @@ public class DrawImageUtil {
                     g.drawString(element.getContent().toString(), element.getX(), element.getY());
                 }else if(element.getLineStyle()==1){
                     for(int i=0; i<element.getContent().toString().length(); i++){
-                        int l = i%16;
-                        int t = i/16;
+                        int l = i%element.getLineCount();
+                        int t = i/element.getLineCount();
                         g.drawString(
                                 ((String)element.getContent()).substring(i, i+1),
                                 element.getX()+element.getFont().getSize()*l,

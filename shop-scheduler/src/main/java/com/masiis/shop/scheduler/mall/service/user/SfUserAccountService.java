@@ -280,6 +280,7 @@ public class SfUserAccountService {
         sfItem.setSourceCreateTime(order.getCreateTime());
         sfItem.setRemark("用户订单分润");
         sfItem.setItemType(1);
+        sfItem.setIsCount(0);
         sfItem.setItemSubType(2);
 
         return sfItem;

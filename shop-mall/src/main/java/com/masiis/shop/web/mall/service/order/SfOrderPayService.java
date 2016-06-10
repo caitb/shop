@@ -320,7 +320,7 @@ public class SfOrderPayService {
         log.info("更新小铺用户结算信息--------end");
     }
     /**
-     * 更新订单分润人的结算信息
+     * 更新订单分润人的结算信息 ( 结算中 = 之前的结算 + 获得分润)
      * @author hanzengzhi
      * @date 2016/6/7 10:24
      */
@@ -382,12 +382,20 @@ public class SfOrderPayService {
             }
             sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
         }
-        sumProfitFee = sumProfitFee.subtract(order.getAgentShipAmount());
-        if (sumProfitFee.compareTo(order.getDistributionAmount())<0){
-            log.info("商品获得利润小于商品的分润-------订单id---"+order.getId());
-            throw new BusinessException("商品获得利润小于商品的分润");
+        log.info("商品获得还没有减去分润和代理运费的利润----------"+sumProfitFee);
+        log.info("商品分润---------"+order.getDistributionAmount());
+        log.info("商品代理运费---------"+order.getAgentShipAmount());
+        if (order.getAgentShipAmount()!=null){
+            sumProfitFee = sumProfitFee.subtract(order.getAgentShipAmount());
         }
-        sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
+        if (order.getDistributionAmount()!=null){
+            sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
+        }
+        log.info("商品获得净利润---------------------"+sumProfitFee.intValue());
+        if (sumProfitFee.compareTo(new BigDecimal(0))<0){
+            log.info("商品获得利润为负数-------订单id------"+order.getId());
+            throw new BusinessException("商品获得利润为负数-------订单id------"+order.getId());
+        }
         return sumProfitFee;
     }
 

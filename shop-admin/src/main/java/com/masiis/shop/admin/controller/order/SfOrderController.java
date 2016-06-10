@@ -3,7 +3,9 @@ package com.masiis.shop.admin.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
+import com.masiis.shop.admin.service.order.OrderItemService;
 import com.masiis.shop.admin.service.order.OrderService;
+import com.masiis.shop.admin.service.order.UserSkuStockService;
 import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
@@ -35,6 +37,10 @@ public class SfOrderController extends BaseController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private OrderItemService orderItemService;
+    @Resource
+    private UserSkuStockService userSkuStockService;
     @Resource
     private DictionaryService dictionaryService;
 
@@ -143,6 +149,17 @@ public class SfOrderController extends BaseController {
             }
             if(StringUtils.isBlank(sfOrderFreight.getFreight())){
                 return "请填写运单号";
+            }
+
+            SfOrder sfOrder = orderService.findById(sfOrderFreight.getSfOrderId());
+            if(sfOrder == null){
+                return "此订单不存在!";
+            }
+
+            List<SfOrderItem> sfOrderItems = orderItemService.findByOrderId(sfOrder.getId());
+            PfUserSkuStock pfUserSkuStock = userSkuStockService.findByUserIdAndSkuId(sfOrder.getShopUserId(), sfOrderItems.get(0).getSkuId());
+            if(pfUserSkuStock.getStock() - sfOrderItems.get(0).getQuantity() < 0){
+                return "库存不足,无法发货!";
             }
 
             orderService.delivery(sfOrderFreight, (PbUser)request.getSession().getAttribute("pbUser"));

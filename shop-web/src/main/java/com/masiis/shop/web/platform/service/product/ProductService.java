@@ -136,8 +136,8 @@ public class ProductService {
                     product.setStock(currentStock);
                     product.setNeedStockNum(0);
                 } else {
-                    product.setStock(0);
                     product.setNeedStockNum(product.getFrozenStock() - product.getStock());
+                    product.setStock(0);
                 }
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);

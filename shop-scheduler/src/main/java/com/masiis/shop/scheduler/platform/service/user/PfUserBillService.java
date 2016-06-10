@@ -101,6 +101,14 @@ public class PfUserBillService {
             recordMapper.insert(recordEx);
             log.info("添加资产账户操作记录成功!");
 
+            // 代理结算中减少
+            ComUserAccountRecord recordAgentcount = createAccountRecord(account, bill, 17);
+            recordAgentcount.setPrevFee(account.getAgentBillAmount());
+            account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount()));
+            log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getAgentBillAmount());
+            recordAgentcount.setNextFee(account.getAgentBillAmount());
+            recordMapper.insert(recordAgentcount);
+
             int changeSize = accountMapper.updateByIdWithVersion(account);
             if(changeSize != 1){
                 throw new BusinessException("");

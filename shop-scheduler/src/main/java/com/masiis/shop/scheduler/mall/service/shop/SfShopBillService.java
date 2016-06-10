@@ -93,6 +93,14 @@ public class SfShopBillService {
             recordMapper.insert(recordEx);
             log.info("添加资产账户操作记录成功!");
 
+            // 代理结算中减少
+            ComUserAccountRecord recordDiscount = createAccountRecord(account, bill, 18);
+            recordDiscount.setPrevFee(account.getDistributionBillAmount());
+            account.setDistributionBillAmount(account.getDistributionBillAmount().subtract(bill.getBillAmount()));
+            log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getDistributionBillAmount());
+            recordDiscount.setNextFee(account.getDistributionBillAmount());
+            recordMapper.insert(recordDiscount);
+
             int changeSize = accountMapper.updateByIdWithVersion(account);
             if(changeSize != 1){
                 throw new BusinessException("");

@@ -96,7 +96,7 @@ public class SfShopBillService {
             // 代理结算中减少
             ComUserAccountRecord recordDiscount = createAccountRecord(account, bill, 18);
             recordDiscount.setPrevFee(account.getDistributionBillAmount());
-            account.setDistributionBillAmount(account.getDistributionBillAmount().subtract(bill.getBillAmount()));
+            account.setDistributionBillAmount(account.getDistributionBillAmount().subtract(bill.getCountAmount()));
             log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getDistributionBillAmount());
             recordDiscount.setNextFee(account.getDistributionBillAmount());
             recordMapper.insert(recordDiscount);

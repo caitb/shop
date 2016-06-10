@@ -77,6 +77,7 @@ public class WxPayService {
                 res.setBody(body.substring(0, body.length() - 1));
                 // 给外部支付的是系统的支付流水号,自己生成
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
+                log.info("recevableAmount------------------"+order.getReceivableAmount());
                 res.setTotal_fee(order.getReceivableAmount().multiply(new BigDecimal(100)).intValue() + "");
                 log.info("订单类型orderType:S");
             } else {

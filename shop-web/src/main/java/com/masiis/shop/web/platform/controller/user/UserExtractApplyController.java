@@ -81,7 +81,7 @@ public class UserExtractApplyController extends BaseController {
             extractWay = cd.getValue();
         }
 
-        String extractMoney = account == null?"0.00":account.getExtractableFee() == null?"0.00":account.getExtractableFee().toString();
+        String extractMoney = account == null?"0.00":account.getExtractableFee() == null?"0.00":account.getExtractableFee().subtract(account.getAppliedFee()==null?new BigDecimal(0):account.getAppliedFee()).toString();
         String appliedFee = account == null?"0.00":account.getAppliedFee() == null?"0.00":account.getAppliedFee().toString();
         if (extractwayInfo != null){
             String cardCode = extractwayInfo.getBankCard();

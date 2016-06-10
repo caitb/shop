@@ -220,7 +220,7 @@
                                                                 <form id="auditForm">
                                                                   <input type="hidden" name="id" id="applyId" value="" />
                                                                   <input type="hidden" name="auditType" id="auditType" value="2" />
-                                                                  <textarea name="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                  <textarea name="auditCause" id="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -454,6 +454,7 @@
                                 $('#bankName').html(row.comUserExtractApply.bankName);
                                 $('#depositBankName').html(row.comUserExtractApply.depositBankName);
                                 $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
+                                $('#auditCause').val('');
 
                                 $('#modal-audit').modal('show');
                             },

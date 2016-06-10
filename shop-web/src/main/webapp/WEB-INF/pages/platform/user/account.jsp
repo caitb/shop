@@ -52,16 +52,16 @@
             </div>
             <nav>
                 <ul>
-                    <li><b> ${withdrawd}<br></b>已提现</li>
                     <li><b> ${account.viewExtractableFee} <br></b>可提现</li>
                     <li><b> ${account.viewAppliedFee} <br></b>申请中</li>
+                    <li><b> ${withdrawd}<br></b>已提现</li>
                 </ul>
             </nav>
             <button class="btn" onclick="withdrawRequest()">
                 申请提现
             </button>
             <div class="floor2">
-                <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
+                <%--<p><a href="#" onclick="toIncomRecord()">收入记录</a></p>--%>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
             </div>
         </main>
@@ -99,19 +99,19 @@
         <div class="btm" >
             <a href="<%=path%>/index">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-                <span>代理商管理</span>
+                <span>我是合伙人</span>
             </a>
         </div>
         <div class="btm">
             <a href="<%=path%>/shop/manage/index">
                 <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
-                <span>零售管理</span>
+                <span>我的店铺</span>
             </a>
         </div>
         <div class="btm" style="background: #DA3600;">
             <a href="<%=path%>/account/home">
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>账户管理</span>
+                <span>我的账户</span>
             </a>
         </div>
     </footer>

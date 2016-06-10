@@ -219,11 +219,11 @@ public class DevelopingController extends BaseController {
                     Element qrcodeImgElement = new Element(566, 776, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                     Element text1Element = new Element(92, 775, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
-                    Element text2Element = new Element(598, 990, font2, new Color(102,102,102), "该二维码有效期:");
-                    Element text3Element = new Element(575, 1046, font2, new Color(102,102,102), startTime+"-"+endDate);
+                    Element text2Element = new Element(603, 990, font2, new Color(102,102,102), "该二维码有效期:");
+                    Element text3Element = new Element(570, 1046, font2, new Color(102,102,102), startTime+"-"+endDate);
                     text1Element.setLineCount(11);
                     text3Element.setLineStyle(0);
-                    java.util.List<Element> drawElements = new ArrayList<>();
+                    List<Element> drawElements = new ArrayList<>();
                     drawElements.add(headImgElement);
                     drawElements.add(bgPosterImgElement);
                     drawElements.add(qrcodeImgElement);
@@ -242,7 +242,7 @@ public class DevelopingController extends BaseController {
                     Element text3Element = new Element(610, 1145, font2, new Color(102,102,102), startTime+"-"+endDate);
                     text1Element.setLineCount(11);
                     text3Element.setLineStyle(0);
-                    java.util.List<Element> drawElements = new ArrayList<>();
+                    List<Element> drawElements = new ArrayList<>();
                     drawElements.add(headImgElement);
                     drawElements.add(bgPosterImgElement);
                     drawElements.add(qrcodeImgElement);

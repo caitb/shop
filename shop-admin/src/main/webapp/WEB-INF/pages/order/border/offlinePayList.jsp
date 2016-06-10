@@ -751,7 +751,7 @@
             return false;
         }
 
-        if(!reg.test(payAmount*10000)){
+        if(!reg.test(Math.floor(payAmount*10000))){
             $.gritter.add({
                 title: '温馨提示',
                 text: '实付金额格式不对!',
@@ -761,7 +761,7 @@
             return false;
         }
 
-        if(!outOrderId){
+        if(!outOrderId && payAmount >= 0){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写银行流水号!',

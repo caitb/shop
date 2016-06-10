@@ -188,15 +188,15 @@ public class SfOrderPayService {
                 statistics.setOrderCount(1);
             }
             log.info("总订单数-----之后-----"+statistics.getOrderCount());
-            //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
+            //总购买金额(总购买金额 = 总共买金额 + 订单金额)
             log.info("总购买金额------之前-----"+statistics.getBuyFee());
             if (statistics.getBuyFee()!=null){
-                statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+                statistics.setBuyFee(statistics.getBuyFee().add(order.getPayAmount()));
             }else{
-                statistics.setBuyFee(order.getOrderAmount().subtract(order.getAgentShipAmount()));
+                statistics.setBuyFee(order.getPayAmount());
             }
             log.info("总购买金额------之后-----"+statistics.getBuyFee());
-            log.info("总购买金额------增加-----"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
+            log.info("总购买金额------增加-----"+order.getPayAmount().intValue());
             int i = statisticsService.updateByIdAndVersion(statistics);
             if (i != 1){
                 log.info("更新购买人统计信息失败------购买人id---"+order.getUserId());
@@ -214,15 +214,15 @@ public class SfOrderPayService {
         log.info("小铺统计信息-------用户id------"+order.getShopUserId());
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
         if (shopStatistics != null){
-            //总销售额(总销售额 = 订单金额 - 订单的代理运费)
+            //总销售额(总销售额 = 订单金额)
             log.info("总销售额----------之前------"+shopStatistics.getIncomeFee());
             if (shopStatistics.getIncomeFee()!=null){
-                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getPayAmount()));
             }else{
-                shopStatistics.setIncomeFee(order.getOrderAmount().subtract(order.getAgentShipAmount()));
+                shopStatistics.setIncomeFee(order.getPayAmount());
             }
             log.info("总销售额----------之后------"+shopStatistics.getIncomeFee());
-            log.info("总销售额----------增加了------"+order.getOrderAmount().subtract(order.getAgentShipAmount()).intValue());
+            log.info("总销售额----------增加了------"+order.getPayAmount().intValue());
             //总利润
             log.info("总利润---------之前------"+shopStatistics.getProfitFee());
             BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
@@ -299,10 +299,10 @@ public class SfOrderPayService {
         log.info("更新小铺用户结算信息--------小铺用户id-----------"+order.getShopUserId());
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
         if (comUserAccount != null){
-            BigDecimal orderAmount = order.getOrderAmount();
+            BigDecimal payAmount = order.getPayAmount();
             BigDecimal disAmount = order.getDistributionAmount();
             BigDecimal agentShipAmount = order.getAgentShipAmount();
-            BigDecimal billAmount = orderAmount.subtract(disAmount).subtract(agentShipAmount);
+            BigDecimal billAmount = payAmount.subtract(disAmount).subtract(agentShipAmount);
             log.info("小铺结算中-----之前------"+comUserAccount.getDistributionBillAmount());
             if (comUserAccount.getDistributionBillAmount()!=null){
                 comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(billAmount));

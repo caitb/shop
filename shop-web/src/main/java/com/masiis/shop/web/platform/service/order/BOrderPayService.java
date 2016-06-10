@@ -98,6 +98,10 @@ public class BOrderPayService {
     private PfUserStatisticsService pfUserStatisticsService;
     @Resource
     private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private BOrderStatisticsService orderStatisticsService;
+    @Resource
+    private BOrderBillAmountService billAmountService;
 
     /**
      * 订单支付回调入口
@@ -150,6 +154,8 @@ public class BOrderPayService {
      * <9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
      * <10>处理发货库存
      * <11>处理收货库存
+     * <12>实时统计数据显示
+     * <13>修改结算中数据
      */
     public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
@@ -386,13 +392,16 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }
     }
-
     /**
      * 自己拿货支付订单
      * <1>修改订单支付信息
@@ -454,6 +463,10 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单

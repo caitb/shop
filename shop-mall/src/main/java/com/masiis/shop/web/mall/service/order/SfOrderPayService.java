@@ -320,7 +320,7 @@ public class SfOrderPayService {
         log.info("更新小铺用户结算信息--------end");
     }
     /**
-     * 更新订单分润人的结算信息
+     * 更新订单分润人的结算信息 ( 结算中 = 之前的结算 + 获得分润)
      * @author hanzengzhi
      * @date 2016/6/7 10:24
      */

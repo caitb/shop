@@ -42,6 +42,8 @@ public class PfBorderController extends BaseController {
     private DictionaryService dictionaryService;
     @Resource
     private BorderItemService borderItemService;
+    @Resource
+    private UserSkuStockService userSkuStockService;
 
     @RequestMapping("/list.shtml")
     public String list() {
@@ -246,6 +248,18 @@ public class PfBorderController extends BaseController {
             if (StringUtils.isBlank(pfBorderFreight.getFreight())) {
                 return "请填写运单号";
             }
+
+            PfBorder pfBorder = bOrderService.findById(pfBorderFreight.getPfBorderId());
+            if(pfBorder == null){
+                return "此订单不存在!";
+            }
+
+            PfBorderItem pfBorderItem = borderItemService.findByBorderId(pfBorder.getId());
+            PfUserSkuStock pfUserSkuStock = userSkuStockService.findByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if(pfUserSkuStock.getStock()-pfBorderItem.getQuantity()<0){
+                return "库存不足,请补货!";
+            }
+
             bOrderService.delivery(pfBorderFreight, getPbUser(request));
 
             return "success";

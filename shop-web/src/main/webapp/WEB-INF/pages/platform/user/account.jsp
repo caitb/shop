@@ -99,19 +99,19 @@
         <div class="btm" >
             <a href="<%=path%>/index">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-                <span>我是合伙人</span>
+                <span>代理商管理</span>
             </a>
         </div>
         <div class="btm">
             <a href="<%=path%>/shop/manage/index">
                 <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
-                <span>我的店铺</span>
+                <span>零售管理</span>
             </a>
         </div>
         <div class="btm" style="background: #DA3600;">
             <a href="<%=path%>/account/home">
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>我的账户</span>
+                <span>账户管理</span>
             </a>
         </div>
     </footer>

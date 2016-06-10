@@ -127,9 +127,12 @@ nav ul li{
   text-align: center;
   border-right: 1px solid #f6f6f6;
   color: #666;
+  font-size: 12px;
 }
 nav ul li b{
   color: #333;
+  font-size: 12px;
+  font-weight: 600;
 }
 .btn{
   margin: 0 auto;

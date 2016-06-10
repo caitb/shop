@@ -52,16 +52,16 @@
             </div>
             <nav>
                 <ul>
-                    <li><b> ${withdrawd}<br></b>已提现</li>
                     <li><b> ${account.viewExtractableFee} <br></b>可提现</li>
                     <li><b> ${account.viewAppliedFee} <br></b>申请中</li>
+                    <li><b> ${withdrawd}<br></b>已提现</li>
                 </ul>
             </nav>
             <button class="btn" onclick="withdrawRequest()">
                 申请提现
             </button>
             <div class="floor2">
-                <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
+                <%--<p><a href="#" onclick="toIncomRecord()">收入记录</a></p>--%>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
             </div>
         </main>

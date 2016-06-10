@@ -14,20 +14,12 @@ main h1 {
 }
 main p {
   padding: 0 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 12px;
+  color: #666;
 }
 main p span {
-  display: block;
-  padding: 5px 0;
-  position: relative;
-}
-main p span::before {
-  position: absolute;
-  content: "";
-  display: block;
-  border-left: 3px solid #f74a11;
-  height: 14px;
-  left: -8px;
-  top: 9px;
+  font-weight:600;
+  font-size:12px;
+  color: #333;
 }

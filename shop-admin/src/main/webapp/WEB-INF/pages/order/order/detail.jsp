@@ -769,14 +769,16 @@
                         url: '<%=basePath%>order/order/delivery.do',
                         type: 'POST',
                         data: $form.serialize(),
-                        success: function(msg){
-                            if(msg == 'success'){
+                        success: function(result){
+                            result = window.eval('('+result+')');
+
+                            if(result.result_key == 0){
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
                                 window.location.reload();
                             }else{
-                                alert('发货失败了!');
+                                alert(result.result_msg);
                             }
                         }
                     });

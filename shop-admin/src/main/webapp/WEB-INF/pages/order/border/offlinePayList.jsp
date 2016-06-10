@@ -761,7 +761,7 @@
             return false;
         }
 
-        if(!outOrderId && payAmount >= 0){
+        if(!outOrderId && payAmount > 0){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写银行流水号!',

@@ -606,4 +606,13 @@ public class OrderService {
 
         return item;
     }
+
+    /**
+     * 查找店铺订单
+     * @param sfOrderId
+     * @return
+     */
+    public SfOrder findById(Long sfOrderId){
+        return sfOrderMapper.selectByPrimaryKey(sfOrderId);
+    }
 }

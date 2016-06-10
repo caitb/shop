@@ -142,35 +142,49 @@ public class SfOrderController extends BaseController {
     @ResponseBody
     public Object delivery(HttpServletRequest request, HttpServletResponse response,
                            SfOrderFreight sfOrderFreight){
+        Map<String, Object> resultMap = new HashMap<>();
 
         try {
             if (sfOrderFreight.getShipManId() == null){
-                return "请选择一个快递";
+                resultMap.put("result_key", "1");
+                resultMap.put("result_msg", "请选择一个快递");
+                return resultMap;
             }
             if(StringUtils.isBlank(sfOrderFreight.getFreight())){
-                return "请填写运单号";
+                resultMap.put("result_key", "1");
+                resultMap.put("result_msg", "请填写运单号");
+                return resultMap;
             }
 
             SfOrder sfOrder = orderService.findById(sfOrderFreight.getSfOrderId());
             if(sfOrder == null){
-                return "此订单不存在!";
+                resultMap.put("result_key", "1");
+                resultMap.put("result_msg", "此订单不存在!");
+                return resultMap;
             }
 
             List<SfOrderItem> sfOrderItems = orderItemService.findByOrderId(sfOrder.getId());
             PfUserSkuStock pfUserSkuStock = userSkuStockService.findByUserIdAndSkuId(sfOrder.getShopUserId(), sfOrderItems.get(0).getSkuId());
             if(pfUserSkuStock.getStock() - sfOrderItems.get(0).getQuantity() < 0){
-                return "库存不足,无法发货!";
+                resultMap.put("result_key", "1");
+                resultMap.put("result_msg", "库存不足,无法发货!");
+                return resultMap;
             }
 
             orderService.delivery(sfOrderFreight, (PbUser)request.getSession().getAttribute("pbUser"));
 
-            return "success";
+            resultMap.put("result_key", "0");
+            resultMap.put("result_msg", "发货成功!");
+            return resultMap;
         } catch (Exception e) {
             log.error("合伙人订单发货失败![sfOrderFreight="+sfOrderFreight+"]");
             e.printStackTrace();
+
+            resultMap.put("result_key", "1");
+            resultMap.put("result_msg", "操作异常!");
+            return resultMap;
         }
 
-        return null;
     }
 
     @RequestMapping("/sfOrderRefund.do")

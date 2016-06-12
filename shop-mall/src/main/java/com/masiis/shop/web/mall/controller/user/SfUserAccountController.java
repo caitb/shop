@@ -280,11 +280,7 @@ public class SfUserAccountController extends BaseController {
             //根据userId查询小铺订单商品分润信息
             list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(userId,1,10);
         }
-        mv.addObject("currentPage",1);
-        mv.addObject("pageSize",10);
-        mv.addObject("userAccount",userAccount);
-        mv.addObject("totalCount",totalCount);
-        mv.addObject("orderItemDistributions",list);
+
         log.info("处理可提现的财富、佣金记录end");
 
         log.info("处理已付款、未付款订单财富begin");
@@ -319,6 +315,12 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("withdraw",withdraw);
         mv.addObject("isPayDistribution",isPayDistribution.subtract(userAccount.getExtractableFee().add(withdraw)));
         mv.addObject("isNotPayDistribution",isNotPayDistribution);
+        mv.addObject("currentPage",1);
+        mv.addObject("pageSize",10);
+        userAccount.setExtractableFee(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee() == null?new BigDecimal(0):userAccount.getAppliedFee()));
+        mv.addObject("userAccount",userAccount);
+        mv.addObject("totalCount",totalCount);
+        mv.addObject("orderItemDistributions",list);
         mv.addObject("isBuy",comUser.getIsBuy());
         mv.setViewName("mall/user/sf_reward");
         return mv;

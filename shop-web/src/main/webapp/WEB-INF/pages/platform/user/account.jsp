@@ -27,9 +27,9 @@
 <input type="hidden" id="month" name="month" value = "${month}"/>
 <div class="wrap">
     <div class="box">
-        <header class="xq_header">
+        <%--<header class="xq_header">
             <p>我的账户</p>
-        </header>
+        </header>--%>
         <main>
             <div class="head_img">
                 <p><img src="${comUser.wxHeadImg}" alt=""></p>

@@ -59,22 +59,19 @@ public class ShopIndexController extends BaseController {
         }
 
         int orderNum = 0;
-        int numb=0;
-        BigDecimal countNum =new BigDecimal("0");
+        int numb = 0;
+        BigDecimal countNum = new BigDecimal("0");
         List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
         if (agentNum != null) {
             for (PfUserSku pfUserSku : agentNum) {
-                CountGroup countGroup = countGroupService.countGroupInfo(user.getId(),pfUserSku.getTreeCode());
+                CountGroup countGroup = countGroupService.countGroupInfo(user.getId(), pfUserSku.getTreeCode());
                 CountGroup countGroup1 = countGroupService.infoOrderNum(user.getId(), pfUserSku.getTreeCode());
-                numb+=countGroup.getCount();
-                countNum=countGroup.getGroupMoney().add(countNum);
-                orderNum+=countGroup1.getOrderNum();
+                numb += countGroup.getCount() - 1;
+                countNum = countGroup.getGroupMoney().add(countNum);
+                orderNum += countGroup1.getOrderNum();
             }
         }
         CountGroup countGroup = new CountGroup();
-        if(numb!=0){
-            numb-=1;
-        }
         countGroup.setCount(numb);
         NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
         countGroup.setGroupSum(rmbFormat.format(countNum));
@@ -84,9 +81,9 @@ public class ShopIndexController extends BaseController {
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorders) {
-            if (pfBord.getOrderStatus() == 6){
+            if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
-            }else if (pfBord.getOrderStatus() == 7){
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
             }
         }
@@ -100,7 +97,7 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("user", user);
 
         String curUrl = req.getRequestURL().toString();
-        log.info("===========================B-index[curUrl="+curUrl+"]");
+        log.info("===========================B-index[curUrl=" + curUrl + "]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         modelAndView.addObject("shareMap", shareMap);
 

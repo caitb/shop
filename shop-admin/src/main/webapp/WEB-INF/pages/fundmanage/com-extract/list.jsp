@@ -247,6 +247,116 @@
                             </div><!-- /.modal-dialog -->
                         </div><!-- PAGE CONTENT ENDS -->
 
+                        <div id="modal-view" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">&times;</span>
+                                            </button>
+                                            提现申请信息
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <div>
+                                            <div id="user-profile-2" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+
+                                                    <!-- #section:pages/profile.info -->
+                                                    <div class="profile-user-info profile-user-info-striped">
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请时间 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="applyTime2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请人 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="editable editable-click" id="realName2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请金额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractFee2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 账户余额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractableFee2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 提现方式 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractWay2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行卡号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankCard2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankName2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 开户行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="depositBankName2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 持卡人姓名 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="cardOwnerName2"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row" id="auditReason2">
+                                                            <div class="profile-info-name" id="jjT2"> 审核记录 </div>
+
+                                                            <div class="profile-info-value" id="jjF2">
+                                                                <textarea name="auditCause" id="auditCause2" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- PAGE CONTENT ENDS -->
+
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content-area -->
@@ -363,18 +473,6 @@
                         }
                     },
                     {
-                        field: 'record',
-                        title: '拿货记录',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return '<a class="view" href="javascript:void(0);">查看</a>';
-                            }
-                        }
-                    },
-                    {
                         field: 'extractFee',
                         title: '申请金额',
                         sortable: true,
@@ -432,7 +530,7 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var sArr = ['<a class="v-detail" href="javascript:void(0);">查看</a>'];
+                            var sArr = ['<a class="view" href="javascript:void(0);">查看</a>'];
                             if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
                                 sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
                             }
@@ -443,13 +541,44 @@
                             return sArr.join('');
                         },
                         events: {
+                            'click .view': function(e, value, row, index){
+                                $('#applyId2').val(row.comUserExtractApply.id);
+                                $('#applyTime2').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName2').html(row.comUser.realName);
+                                $('#extractFee2').html(row.comUserExtractApply.extractFee);
+                                $('#extractableFee2').html(row.comUserAccount.extractableFee);
+                                if(row.comUserExtractApply.extractWay == 1){
+                                    $('#extractWay2').html('微信');
+                                }
+                                if(row.comUserExtractApply.extractWay == 2){
+                                    $('#extractWay2').html('支付宝');
+                                }
+                                if(row.comUserExtractApply.extractWay == 3){
+                                    $('#extractWay2').html('银行卡');
+                                }
+                                $('#bankCard2').html(row.comUserExtractApply.bankCard);
+                                $('#bankName2').html(row.comUserExtractApply.bankName);
+                                $('#depositBankName2').html(row.comUserExtractApply.depositBankName);
+                                $('#cardOwnerName2').html(row.comUserExtractApply.cardOwnerName);
+                                $('#auditCause2').val(row.comUserExtractApply.auditCause);
+
+                                $('#modal-view').modal('show');
+                            },
                             'click .audit': function(e, value, row, index){
                                 $('#applyId').val(row.comUserExtractApply.id);
                                 $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
                                 $('#realName').html(row.comUser.realName);
                                 $('#extractFee').html(row.comUserExtractApply.extractFee);
                                 $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                $('#extractWay').html(row.comUserExtractApply.extractWay);
+                                if(row.comUserExtractApply.extractWay==1){
+                                    $('#extractWay').html('微信');
+                                }
+                                if(row.comUserExtractApply.extractWay==2){
+                                    $('#extractWay').html('支付宝');
+                                }
+                                if(row.comUserExtractApply.extractWay==3){
+                                    $('#extractWay').html('银行卡');
+                                }
                                 $('#bankCard').html(row.comUserExtractApply.bankCard);
                                 $('#bankName').html(row.comUserExtractApply.bankName);
                                 $('#depositBankName').html(row.comUserExtractApply.depositBankName);

@@ -79,11 +79,11 @@
                 <img src="${sd.skuUrl}" alt="">
 
                 <div>
-                    <h1>${sd.skuAssia}</h1>
+                    <h2>${sd.skuAssia}</h2>
 
-                    <h2>${sd.slogan}</h2>
+                    <h1>${sd.slogan}</h1>
 
-                    <p>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span></p>
+                    <%--<p>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span></p>--%>
 
                     <h3><span>￥<b>${sd.priceRetail}</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
                 </div>

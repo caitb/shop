@@ -74,6 +74,7 @@ public class SfUserExtractApplyController extends BaseController{
         if (userAccount.getAppliedFee() == null){
             userAccount.setAppliedFee(new BigDecimal(0.00));
         }
+        userAccount.setExtractableFee(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee()));
         mv.addObject("userAccount",userAccount);
         mv.setViewName("mall/user/sf_withdrawRequest");
         return mv;
@@ -90,6 +91,7 @@ public class SfUserExtractApplyController extends BaseController{
     @RequestMapping(value = "/confirmWithdraw.do")
     @ResponseBody
     public String confirmWithdraw(@RequestParam(value = "inputAccount",required = true) String inputAccount,
+                                  @RequestParam(value = "extractableFee",required = true) String extractableFee,
                                   @RequestParam(value = "userId",required = true) Long userId,
                                   HttpServletRequest request){
 
@@ -131,6 +133,13 @@ public class SfUserExtractApplyController extends BaseController{
         if (b_inputAccount.compareTo(new BigDecimal(1)) < 0){
             jsonobject.put("isTrue","false");
             jsonobject.put("message","提现金额不小于1元!");
+            log.info(jsonobject.toJSONString());
+            return jsonobject.toJSONString();
+        }
+        BigDecimal b_extractableFee = new BigDecimal(extractableFee);
+        if (b_inputAccount.compareTo(b_extractableFee) > 0){
+            jsonobject.put("isTrue","false");
+            jsonobject.put("message","输入金额大于可提现金额!");
             log.info(jsonobject.toJSONString());
             return jsonobject.toJSONString();
         }

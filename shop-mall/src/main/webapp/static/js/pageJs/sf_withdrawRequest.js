@@ -6,8 +6,8 @@ function withdraw(userId){
         alert("暂无提现金额");
         return;
     }
-    var extractableFee = $("#extractableFee").val();
-    var inputAccount = $("#inputAccount").val();
+    var extractableFee = parseFloat($("#extractableFee").val());
+    var inputAccount = parseFloat($("#inputAccount").val());
     if (extractableFee == 0){
         alert("暂无可提现金额");
         return;

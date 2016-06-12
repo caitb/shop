@@ -266,9 +266,12 @@ public class SfOrderPurchaseService {
                             }
                         }
                         //批量删除购物车中相应的商品信息
+                        log.info("删除购物车相应的商品信息-------start");
                         String shopCartIds = shopCartIdSB.toString();
+                        log.info("删除购物车商品的id字符串-------"+shopCartIds);
                         shopCartIds = shopCartIds.substring(0, shopCartIds.lastIndexOf(","));
                         deleteShopCartById(shopCartIds);
+                        log.info("删除购物车相应的商品信息-------end");
                     } else {
                         log.info("获得购物车中的商品详情信息为null");
                         throw new BusinessException("获得购物车中的商品详情信息为null");
@@ -281,10 +284,10 @@ public class SfOrderPurchaseService {
                 SfOrderConsignee sfOrderConsignee = generateSfOrderConsigness(sfOrder.getId(), comUserAddress);
                 int iiii = ordConService.insert(sfOrderConsignee);
                 if (iiii != 1) {
-                    log.info("插入订单失败---end");
+                    log.info("插入订单地址失败---end");
                     throw new BusinessException("插入订单地址失败");
                 } else {
-                    log.info("插入订单成功---end");
+                    log.info("插入订单地址成功---end");
                 }
             } else {
                 return -1L;//库存不足

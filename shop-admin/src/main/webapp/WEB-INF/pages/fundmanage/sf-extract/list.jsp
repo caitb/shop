@@ -357,8 +357,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row.comUser && row.comUser.wxNkName){
+                                return row.comUser.wxNkName;
                             }
                         }
                     },
@@ -452,7 +452,7 @@
                             'click .audit': function(e, value, row, index){
                                 $('#applyId').val(row.sfUserExtractApply.id);
                                 $('#applyTime').html(new Date(row.sfUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName').html(row.comUser.realName);
+                                $('#realName').html(row.comUser.wxNkName);
                                 $('#extractFee').html(row.sfUserExtractApply.extractFee);
                                 $('#extractableFee').html(row.sfUserAccount.extractableFee);
                                 $('#extractWay').html(row.sfUserExtractApply.extractWay);

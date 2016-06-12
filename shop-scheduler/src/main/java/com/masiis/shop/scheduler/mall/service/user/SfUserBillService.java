@@ -43,14 +43,18 @@ public class SfUserBillService {
     @Transactional
     public void createBillByUserAndDate(ComUser user, Date countStartDay, Date countEndDay, Date balanceDate) {
         try{
+            // 根据用户来查询小铺账单子项
+            List<SfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), countStartDay, countEndDay);
+            if(items == null || items.size() <= 0){
+                log.info("该用户昨日没有账单子项记录,不予创建日账单,用户id:" + user.getId());
+                return;
+            }
             // 组织账单对象
             SfUserBill bill = createBillBean(user, countStartDay, countEndDay, balanceDate);
             billMapper.insert(bill);
 
             log.info("日账单记录创建成功,日账单id:" + bill.getId());
 
-            // 根据用户来查询小铺账单子项
-            List<SfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), countStartDay, countEndDay);
             for(SfUserBillItem item : items){
                 item.setSfUserBillId(bill.getId());
                 log.info("计算账单子项,子项id:" + item.getId());

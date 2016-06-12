@@ -25,4 +25,9 @@ public class ComUserService {
     public ComUser getUserById(Long userId) {
         return userMapper.selectByPrimaryKey(userId);
     }
+
+
+    public List<ComUser> findAllAgentUser() {
+        return userMapper.selectAllAgentUser();
+    }
 }

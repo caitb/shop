@@ -31,7 +31,7 @@
     <div class="box">
         <header class="xq_header">
             <a href="#" onClick="toBack()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>提现申请</p>
+            <p>提现记录</p>
         </header>
         <main>
             <div class="sec1" id="sec1">

@@ -25,11 +25,7 @@ public class PfUserBillTaskService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private PfBorderService orderService;
-    @Resource
     private PfUserBillService billService;
-    @Resource
-    private PfUserBillItemService itemService;
     @Resource
     private ComUserService userService;
 
@@ -47,8 +43,8 @@ public class PfUserBillTaskService {
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
         log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
 
-        // 查询所有用户
-        List<ComUser> users = userService.findAll();
+        // 查询所有代理用户
+        List<ComUser> users = userService.findAllAgentUser();
         // 多线程处理
         CurrentThreadUtils.parallelJob(new IParallelThread() {
             public Boolean doMyJob(Object obj) throws Exception {

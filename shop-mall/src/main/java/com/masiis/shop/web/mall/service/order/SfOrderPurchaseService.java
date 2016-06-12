@@ -268,6 +268,7 @@ public class SfOrderPurchaseService {
                         //批量删除购物车中相应的商品信息
                         log.info("删除购物车相应的商品信息-------start");
                         String shopCartIds = shopCartIdSB.toString();
+                        log.info("删除购物车商品的id字符串-------"+shopCartIds);
                         shopCartIds = shopCartIds.substring(0, shopCartIds.lastIndexOf(","));
                         deleteShopCartById(shopCartIds);
                         log.info("删除购物车相应的商品信息-------end");

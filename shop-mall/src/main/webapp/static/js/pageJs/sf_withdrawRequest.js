@@ -16,15 +16,15 @@ function withdraw(userId){
         alert("请输入提现金额");
         return;
     }
-    if (inputAccount > extractableFee){
-        alert("输入金额大于可提现金额");
-        return;
-    }
+    //if (inputAccount > extractableFee){
+    //    alert("输入金额大于可提现金额");
+    //    return;
+    //}
     $.ajax({
         type:"POST",
         async:true,
         url : basepath+"/withdraw/confirmWithdraw.do",
-        data:{userId:userId,inputAccount:inputAccount},
+        data:{userId:userId,inputAccount:inputAccount,extractableFee:extractableFee},
         dataType:"Json",
         success:function(data){
             if(data.isTrue == "false"){

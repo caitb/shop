@@ -19,7 +19,7 @@
 <div id="wrap">
     <div class="box">
         <header>
-            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>商品详情</p>
         </header>
         <div class="banner">

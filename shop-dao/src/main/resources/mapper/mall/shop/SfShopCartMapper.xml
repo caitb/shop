@@ -81,4 +81,11 @@
         where user_id = #{userId,jdbcType=BIGINT} and sf_shop_id =  #{shopId,jdbcType=BIGINT}
         and sku_id = #{skuId,jdbcType=INTEGER}
     </select>
+
+    <select id="getProductInfoByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id , sku_id, quantity, sort,
+        is_check
+        from sf_shop_cart
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

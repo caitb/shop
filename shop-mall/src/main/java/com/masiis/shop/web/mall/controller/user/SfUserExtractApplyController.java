@@ -74,6 +74,7 @@ public class SfUserExtractApplyController extends BaseController{
         if (userAccount.getAppliedFee() == null){
             userAccount.setAppliedFee(new BigDecimal(0.00));
         }
+        userAccount.setExtractableFee(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee()));
         mv.addObject("userAccount",userAccount);
         mv.setViewName("mall/user/sf_withdrawRequest");
         return mv;

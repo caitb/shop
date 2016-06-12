@@ -33,4 +33,6 @@ public interface SfShopCartMapper {
     List<SfShopCart>  getShopCartInfoByUserIdAndShopId(@Param("userId")Long userId,@Param("sfShopId")Long sfShopId,@Param("isCheck")Integer isCheck);
 
     SfShopCart getProductInfoByUserIdAndShipIdAndSkuId(@Param("userId") Long userId, @Param("shopId") Long shopId,@Param("skuId") Integer skuId);
+
+    List<SfShopCart> getProductInfoByUserId(Long userId);
 }

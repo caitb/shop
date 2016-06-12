@@ -194,14 +194,14 @@
 }
 .sec1 div h1{
   font-size:14px;
-  color:#333;
+  color:#999;
   width: 100%;
   white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
 }
 .sec1 div h2{
-  color:#999;
+  color:#333;
 }
 .sec1 div h3{
   position:relative;

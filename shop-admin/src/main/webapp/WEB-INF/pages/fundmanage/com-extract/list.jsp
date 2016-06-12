@@ -473,18 +473,6 @@
                         }
                     },
                     {
-                        field: 'record',
-                        title: '拿货记录',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return '<a class="view" href="javascript:void(0);">查看</a>';
-                            }
-                        }
-                    },
-                    {
                         field: 'extractFee',
                         title: '申请金额',
                         sortable: true,
@@ -559,7 +547,15 @@
                                 $('#realName2').html(row.comUser.realName);
                                 $('#extractFee2').html(row.comUserExtractApply.extractFee);
                                 $('#extractableFee2').html(row.comUserAccount.extractableFee);
-                                $('#extractWay2').html(row.comUserExtractApply.extractWay);
+                                if(row.comUserExtractApply.extractWay == 1){
+                                    $('#extractWay2').html('微信');
+                                }
+                                if(row.comUserExtractApply.extractWay == 2){
+                                    $('#extractWay2').html('支付宝');
+                                }
+                                if(row.comUserExtractApply.extractWay == 3){
+                                    $('#extractWay2').html('银行卡');
+                                }
                                 $('#bankCard2').html(row.comUserExtractApply.bankCard);
                                 $('#bankName2').html(row.comUserExtractApply.bankName);
                                 $('#depositBankName2').html(row.comUserExtractApply.depositBankName);
@@ -574,7 +570,15 @@
                                 $('#realName').html(row.comUser.realName);
                                 $('#extractFee').html(row.comUserExtractApply.extractFee);
                                 $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                $('#extractWay').html(row.comUserExtractApply.extractWay);
+                                if(row.comUserExtractApply.extractWay==1){
+                                    $('#extractWay').html('微信');
+                                }
+                                if(row.comUserExtractApply.extractWay==2){
+                                    $('#extractWay').html('支付宝');
+                                }
+                                if(row.comUserExtractApply.extractWay==3){
+                                    $('#extractWay').html('银行卡');
+                                }
                                 $('#bankCard').html(row.comUserExtractApply.bankCard);
                                 $('#bankName').html(row.comUserExtractApply.bankName);
                                 $('#depositBankName').html(row.comUserExtractApply.depositBankName);

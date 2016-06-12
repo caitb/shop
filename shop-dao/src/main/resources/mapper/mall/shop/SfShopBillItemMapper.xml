@@ -64,7 +64,6 @@
         source_create_time, amount, is_count, remark
         from sf_shop_bill_item
         WHERE shop_id = #{shopId,jdbcType=BIGINT}
-        AND create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
         AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
     </select>
 

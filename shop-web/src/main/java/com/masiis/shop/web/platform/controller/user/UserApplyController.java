@@ -11,7 +11,6 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
-import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -53,9 +52,12 @@ public class UserApplyController extends BaseController {
 
     /**
      * 合伙人申请
-     *
      * @author ZhaoLiang
-     * @date 2016/3/5 13:51
+     * @param request
+     * @param skuId
+     * @param pUserId
+     * @return
+     * @throws Exception
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView apply(HttpServletRequest request,

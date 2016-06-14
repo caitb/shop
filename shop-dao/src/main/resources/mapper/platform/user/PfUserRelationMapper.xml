@@ -9,6 +9,7 @@
         <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
         <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="agent_level_ids" property="agentLevelIds" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -19,10 +20,10 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRelation">
         insert into pf_user_relation (id, create_time, sku_id, 
             user_id, user_pid, is_enable, 
-            remark)
+            remark, agent_level_ids)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{skuId,jdbcType=INTEGER}, 
             #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, 
-            #{remark,jdbcType=VARCHAR})
+            #{remark,jdbcType=VARCHAR}, #{agentLevelIds,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserRelation">
@@ -32,23 +33,24 @@
             user_id = #{userId,jdbcType=BIGINT},
             user_pid = #{userPid,jdbcType=BIGINT},
             is_enable = #{isEnable,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+            remark = #{remark,jdbcType=VARCHAR},
+            agent_level_ids = #{agentLevelIds,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark, agent_level_ids
         from pf_user_relation
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark, agent_level_ids
         from pf_user_relation
     </select>
 
     <select id="selectEnableByUserId" resultMap="BaseResultMap">
-        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark, agent_level_ids
         from pf_user_relation
         where user_id = #{userId}
         and sku_id=#{skuId}
@@ -63,7 +65,8 @@
                user_id,
                user_pid,
                is_enable,
-               remark
+               remark,
+               agent_level_ids
         from
                pf_user_relation
         WHERE
@@ -72,7 +75,7 @@
     </select>
 
     <select id="selectRelationByUserIdAndSkuIdAndPUserId" resultMap="BaseResultMap">
-        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark, agent_level_ids
         from pf_user_relation
         WHERE user_id = #{userId,jdbcType=BIGINT}
         AND sku_id = #{skuId,jdbcType=INTEGER}
@@ -94,7 +97,8 @@
                user_id,
                user_pid,
                is_enable,
-               remark
+               remark,
+               agent_level_ids
         from
                pf_user_relation
         <where>
@@ -118,6 +122,9 @@
             </if>
             <if test="remark != null">
                 AND remark = #{remark}
+            </if>
+            <if test="agentLevelIds != null">
+                AND agent_level_ids = #{agentLevelIds,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

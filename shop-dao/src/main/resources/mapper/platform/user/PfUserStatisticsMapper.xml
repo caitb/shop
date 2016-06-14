@@ -18,6 +18,8 @@
         <result column="take_fee" property="takeFee" jdbcType="DECIMAL" />
         <result column="version" property="version" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="recommen_get_fee" property="recommenGetFee" jdbcType="DECIMAL" />
+        <result column="recommen_send_fee" property="recommenSendFee" jdbcType="DECIMAL" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -30,13 +32,14 @@
         income_fee, profit_fee, cost_fee,
         up_order_count, up_product_count, down_order_count,
         down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
         #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL},
         #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER},
         #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER},
-        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{recommenGetFee,jdbcType=DECIMAL},
+        #{recommenSendFee,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -56,7 +59,9 @@
         take_product_count = #{takeProductCount,jdbcType=INTEGER},
         take_fee = #{takeFee,jdbcType=DECIMAL},
         version = #{version,jdbcType=BIGINT},
-        remark = #{remark,jdbcType=VARCHAR}
+        remark = #{remark,jdbcType=VARCHAR},
+        recommen_get_fee = #{recommenGetFee,jdbcType=DECIMAL},
+        recommen_send_fee = #{recommenSendFee,jdbcType=DECIMAL}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserStatistics">
@@ -76,7 +81,9 @@
         take_product_count = #{takeProductCount,jdbcType=INTEGER},
         take_fee = #{takeFee,jdbcType=DECIMAL},
         version = #{version,jdbcType=BIGINT}+1,
-        remark = #{remark,jdbcType=VARCHAR}
+        remark = #{remark,jdbcType=VARCHAR},
+        recommen_get_fee = #{recommenGetFee,jdbcType=DECIMAL},
+        recommen_send_fee = #{recommenSendFee,jdbcType=DECIMAL}
         where
         id = #{id,jdbcType=INTEGER}
         and version = #{version,jdbcType=INTEGER}
@@ -85,7 +92,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -93,7 +100,7 @@
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
         where user_id = #{userId,jdbcType=BIGINT}
         AND sku_id = #{skuId,jdbcType=INTEGER}
@@ -102,7 +109,7 @@
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, user_id, sku_id,income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count, 
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
     </select>
 

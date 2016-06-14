@@ -69,6 +69,10 @@ public class ComUserAccount {
      * 乐观锁字段
      */
     private Long version;
+    /**
+     * 推荐奖励结算中
+     */
+    private BigDecimal recommenBillAmount;
 
     public Long getId() {
         return id;
@@ -235,6 +239,14 @@ public class ComUserAccount {
         this.viewAppliedFee = viewAppliedFee;
     }
 
+    public BigDecimal getRecommenBillAmount() {
+        return recommenBillAmount;
+    }
+
+    public void setRecommenBillAmount(BigDecimal recommenBillAmount) {
+        this.recommenBillAmount = recommenBillAmount;
+    }
+
     @Override
     public String toString() {
         return "ComUserAccount{" +
@@ -246,11 +258,19 @@ public class ComUserAccount {
                 ", extractableFee=" + extractableFee +
                 ", appliedFee=" + appliedFee +
                 ", countingFee=" + countingFee +
+                ", agentBillAmount=" + agentBillAmount +
+                ", distributionBillAmount=" + distributionBillAmount +
                 ", bailFee=" + bailFee +
                 ", createdTime=" + createdTime +
                 ", changedTime=" + changedTime +
                 ", changedBy='" + changedBy + '\'' +
+                ", viewCountingFee='" + viewCountingFee + '\'' +
+                ", viewAgentBillAmount='" + viewAgentBillAmount + '\'' +
+                ", viewDistributionBillAmount='" + viewDistributionBillAmount + '\'' +
+                ", viewExtractableFee='" + viewExtractableFee + '\'' +
+                ", viewAppliedFee='" + viewAppliedFee + '\'' +
                 ", version=" + version +
+                ", recommenBillAmount=" + recommenBillAmount +
                 '}';
     }
 }

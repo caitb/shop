@@ -67,6 +67,10 @@ public class PfBorder {
      */
     private BigDecimal productAmount;
     /**
+     * 推荐奖励金额
+     */
+    private BigDecimal recommenAmount;
+    /**
      * 运费
      */
     private BigDecimal shipAmount;
@@ -346,6 +350,14 @@ public class PfBorder {
 
     public void setProductAmount(BigDecimal productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public BigDecimal getRecommenAmount() {
+        return recommenAmount;
+    }
+
+    public void setRecommenAmount(BigDecimal recommenAmount) {
+        this.recommenAmount = recommenAmount;
     }
 
     public BigDecimal getShipAmount() {

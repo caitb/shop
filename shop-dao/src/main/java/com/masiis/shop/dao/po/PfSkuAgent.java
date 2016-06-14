@@ -49,6 +49,10 @@ public class PfSkuAgent {
      */
     private Integer isShow;
     private String remark;
+    /**
+     * 是否支持升级，0否1是
+     */
+    private Integer isUpgrade;
 
     public Integer getId() {
         return id;
@@ -115,5 +119,13 @@ public class PfSkuAgent {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getIsUpgrade() {
+        return isUpgrade;
+    }
+
+    public void setIsUpgrade(Integer isUpgrade) {
+        this.isUpgrade = isUpgrade;
     }
 }

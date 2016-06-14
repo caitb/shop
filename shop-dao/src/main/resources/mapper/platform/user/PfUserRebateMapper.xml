@@ -16,7 +16,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRebate" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRebate" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_rebate (id, create_time, user_upgrade_notice_id, 
             user_id, user_pid, pf_border_id, 
             remark)

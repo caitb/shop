@@ -21,7 +21,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_upgrade_notice (id, create_time, code, 
             user_id, user_pid, sku_id, 
             org_agent_level_id, wish_agent_level_id, status, 

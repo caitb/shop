@@ -19,7 +19,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderRecommenReward" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderRecommenReward" useGeneratedKeys="true" keyProperty="id">
         insert into pf_border_recommen_reward (id, create_time, pf_border_id, 
             pf_border_item_id, sku_id, recommen_user_id, 
             quantity, reward_unit_price, reward_total_price, 

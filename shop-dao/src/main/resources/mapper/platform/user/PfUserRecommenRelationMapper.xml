@@ -19,7 +19,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRecommenRelation" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRecommenRelation" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_recommen_relation (id, create_time, pid, 
             user_id, user_pid, sku_id, 
             pf_border_id, tree_code, tree_level, 

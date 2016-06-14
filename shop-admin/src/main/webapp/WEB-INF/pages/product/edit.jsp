@@ -288,6 +288,15 @@
                                     <input type="text" class="form-control" id="priceRetail" name="priceRetail" value="${productInfo.comSku.priceRetail}" placeholder="微信零售价">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label for="priceRetail" class="col-sm-2 control-label">推荐人奖励单价</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="rewardUnitPrice" name="rewardUnitPrice" value="${productInfo.comSku.rewardUnitPrice}"
+                                           placeholder="推荐人奖励单价">
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">是否允许试用</label>
                                 <div class="col-sm-9">

@@ -128,7 +128,7 @@
             <if test="isShow != null">
                 is_show = #{isShow,jdbcType=INTEGER},
             </if>
-            <if test="">
+            <if test="isUpgrade != null">
                 is_upgrade = #{isUpgrade,jdbcType=INTEGER},
             </if>
         </set>

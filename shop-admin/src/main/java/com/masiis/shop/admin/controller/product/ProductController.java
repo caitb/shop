@@ -151,6 +151,7 @@ public class ProductController {
                     pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setIsShow(1);
                     pfSkuAgent.setIcon(iconImgNames[i]);
+                    pfSkuAgent.setIsUpgrade(1);
 
                     pfSkuAgents.add(pfSkuAgent);
                 }

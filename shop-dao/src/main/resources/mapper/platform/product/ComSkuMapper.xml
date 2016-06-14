@@ -226,7 +226,7 @@
             <if test="remark != null">
             remark = #{remark},
             </if>
-            <if test="">
+            <if test="rewardUnitPrice != null">
             reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
             </if>
         </set>

@@ -70,7 +70,8 @@
     <select id="selectShopBillNumsByDateAndShopId" resultType="java.lang.Long">
         select count(id)
         from sf_shop_bill
-        WHERE create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+        WHERE create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+        AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
         AND shop_id = #{shopId,jdbcType=BIGINT}
     </select>
 </mapper>

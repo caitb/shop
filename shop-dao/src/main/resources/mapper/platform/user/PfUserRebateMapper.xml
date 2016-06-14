@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserRebateMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserRebate" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_upgrade_notice_id" property="userUpgradeNoticeId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_pid" property="userPid" jdbcType="BIGINT" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_rebate
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRebate" >
+        insert into pf_user_rebate (id, create_time, user_upgrade_notice_id, 
+            user_id, user_pid, pf_border_id, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userUpgradeNoticeId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{pfBorderId,jdbcType=BIGINT}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserRebate" >
+        update pf_user_rebate
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_upgrade_notice_id = #{userUpgradeNoticeId,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_upgrade_notice_id, user_id, user_pid, pf_border_id, 
+        remark
+        from pf_user_rebate
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_upgrade_notice_id, user_id, user_pid, pf_border_id, 
+        remark
+        from pf_user_rebate
+    </select>
+
+</mapper>

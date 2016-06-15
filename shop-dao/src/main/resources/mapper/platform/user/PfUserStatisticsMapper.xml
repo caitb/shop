@@ -125,4 +125,46 @@
         from pf_user_statistics
     </select>
 
+    <select id="recommendStatistics" parameterType="Map" resultType="com.masiis.shop.dao.beans.recommend.RecommendStatistics">
+        SELECT
+            pus.`code` `code`,
+            sku.NAME skuName,
+            u.real_name realName,
+            ust.recommen_get_fee recommenGetFee,
+            ust.recommen_send_fee recommenSendFee,
+            (
+                SELECT
+                    COUNT(0) countPresentee
+                FROM
+                    pf_user_recommen_relation
+                WHERE
+                    user_id = pus.user_id
+                AND sku_id = pus.sku_id
+                AND user_pid != 0
+            ),
+            (
+                SELECT
+                    COUNT(0) countRecommend
+                FROM
+                    pf_user_recommen_relation
+                WHERE
+                    user_pid = pus.user_id
+                AND sku_id = pus.sku_id
+            )
+        FROM
+            pf_user_sku pus
+        INNER JOIN com_sku sku ON pus.sku_id = sku.id
+        INNER JOIN com_user u ON pus.user_id = u.id
+        INNER JOIN pf_user_statistics ust ON pus.user_id = ust.user_id
+        AND pus.sku_id = ust.sku_id
+        <where>
+            <if test="code != null">
+                AND pus.code = #{code}
+            </if>
+            <if test="realName != null">
+                AND u.real_name = #{realName}
+            </if>
+        </where>
+    </select>
+
 </mapper>

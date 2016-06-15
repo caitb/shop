@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserStatistics;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 我的推荐
@@ -32,6 +35,11 @@ public class MyRecommendController extends BaseController{
 
     private final Log log = LogFactory.getLog(MyRecommendController.class);
 
+    /**
+     * 我的推荐
+     * @author muchaofeng
+     * @date 2016/6/15 17:44
+     */
     @RequestMapping("/feeList")
     public ModelAndView feeList(HttpServletRequest request){
         try{
@@ -48,6 +56,27 @@ public class MyRecommendController extends BaseController{
             modelAndView.addObject("borders",borders);
             modelAndView.addObject("pBorders",pBorders);
             modelAndView.setViewName("platform/user/wodetuijian");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return null;
+    }
+
+    /**
+     * 推荐给我的详情列表
+     * @author muchaofeng
+     * @date 2016/6/15 17:44
+     */
+    @RequestMapping("/RecommendGiveList")
+    public ModelAndView RecommendGiveList(HttpServletRequest request){
+        try{
+            ModelAndView modelAndView = new ModelAndView();
+            ComUser comUser = getComUser(request);
+
+            List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//推荐给我的
+            modelAndView.addObject("sumByUserPid",sumByUserPid);
+            modelAndView.setViewName("platform/user/wotuijianderen");
             return modelAndView;
         }catch (Exception e){
             log.error("获取代理产品列表失败!",e);

@@ -80,57 +80,12 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="orderCode">订单号</label>
-                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                                <label for="code">证书编号</label>
+                                                <input type="text" class="form-control" id="code" name="code" placeholder="证书编号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="orderCode">订单日期：</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <%--<div class="form-group">--%>
-                                            <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
-                                            <%--</div>--%>
-                                            <div class="form-group">
-                                                <label for="orderType">订单类型</label>
-                                                <select id="orderType" name="orderType">
-                                                    <option value="" selected="selected">所有订单</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payTypeId">支付方式</label>
-                                                <select id="payTypeId" name="payTypeId">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isCounting">是否结算：</label>
-                                                <select id="isCounting" name="isCounting">
-                                                    <option value="">全部</option>
-                                                    <option value="0">未结算</option>
-                                                    <option value="1">已结算</option>
-                                                </select>
+                                                <label for="realName">证书编号</label>
+                                                <input type="text" class="form-control" id="realName" name="realName" placeholder="姓名">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -264,31 +219,9 @@
             //multipleSearch: true,
             queryParamsType: 'pageNo',
             queryParams: function(params){
-                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#orderType').val()){
-                    params.orderType = $('#orderType').val();
-                }
-                if($('#orderStatus').val()){
-                    params.orderStatus = $('#orderStatus').val();
-                }
-                if($('#payStatus').val()){
-                    params.payStatus = $('#payStatus').val();
-                }
-                if($('#shipStatus').val()){
-                    params.shipStatus = $('#shipStatus').val();
-                }
-                if($('#payTypeId').val()){
-                    params.payTypeId = $('#payTypeId').val();
-                }
-                if($('#beginTime').val()){
-                    params.beginTime = $('#beginTime').val();
-                }
-                if($('#endTime').val()){
-                    params.endTime = $('#endTime').val();
-                }
-                if($('#isCounting').val()){
-                    params.isCounting = $('#isCounting').val();
-                }
+                if($('#code').val())     params.code = $('#code').val();
+                if($('#realName').val()) params.realName = encodeURI($('#realName').val());
+
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -330,20 +263,19 @@
 //                        }
 //                    },
                     {
-                        field: 'code',
+                        field: 'pus.code',
                         title: '证书编号',
                         sortable: true,
-                        //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(value){
-                                return value;
+                            if(row.code){
+                                return row.code;
                             }
                         }
                     },
                     {
-                        field: 'real_name',
+                        field: 'u.real_name',
                         title: '姓名',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -355,11 +287,11 @@
                         }
                     },
                     {
-                        field: 'sku_name',
+                        field: 'sku.name',
                         title: '合伙商品',
+                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
-                        sortable: true,
                         formatter: function(value, row, index){
                             if(row.skuName){
                                 return row.skuName;
@@ -382,7 +314,6 @@
                     {
                         field: 'countPresentee',
                         title: '推荐我的人',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -394,7 +325,7 @@
                         }
                     },
                     {
-                        field: 'recommenSendFee',
+                        field: 'ust.recommen_send_fee',
                         title: '发出奖励',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -408,7 +339,7 @@
                         }
                     },
                     {
-                        field: 'recommenGetFee',
+                        field: 'ust.recommen_get_fee',
                         title: '获得奖励',
                         sortable: true,
                         footerFormatter: totalNameFormatter,

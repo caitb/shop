@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.po.extendPo.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -113,4 +114,5 @@ public interface PfUserSkuMapper {
      */
     List<Long> selectAllTeamMember(String treeCode);
 
+    List<UserSkuAgent> selectCurrentAgentLevel(@Param("userId") Long userId);
 }

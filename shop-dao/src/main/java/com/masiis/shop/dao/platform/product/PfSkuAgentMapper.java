@@ -45,4 +45,8 @@ public interface PfSkuAgentMapper {
      * @return
      */
     Integer countSkuAgentLevel(Integer skuId);
+
+    List<PfSkuAgent> selectUpgradeAgents(@Param("skuId") Integer skuId,
+                                         @Param("agentLevelId") Integer agentLevelId,
+                                         @Param("pLevelId") Integer pLevelId);
 }

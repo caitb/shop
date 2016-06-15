@@ -195,4 +195,28 @@ public class PfUserStatistics {
     public void setRecommenSendFee(BigDecimal recommenSendFee) {
         this.recommenSendFee = recommenSendFee;
     }
+
+    @Override
+    public String toString() {
+        return "PfUserStatistics{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", userId=" + userId +
+                ", skuId=" + skuId +
+                ", incomeFee=" + incomeFee +
+                ", profitFee=" + profitFee +
+                ", costFee=" + costFee +
+                ", upOrderCount=" + upOrderCount +
+                ", upProductCount=" + upProductCount +
+                ", downOrderCount=" + downOrderCount +
+                ", downProductCount=" + downProductCount +
+                ", takeOrderCount=" + takeOrderCount +
+                ", takeProductCount=" + takeProductCount +
+                ", takeFee=" + takeFee +
+                ", version=" + version +
+                ", remark='" + remark + '\'' +
+                ", recommenGetFee=" + recommenGetFee +
+                ", recommenSendFee=" + recommenSendFee +
+                '}';
+    }
 }

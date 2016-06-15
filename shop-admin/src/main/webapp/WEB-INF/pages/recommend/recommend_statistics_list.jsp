@@ -80,57 +80,12 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="orderCode">订单号</label>
-                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                                <label for="code">证书编号</label>
+                                                <input type="text" class="form-control" id="code" name="code" placeholder="证书编号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="orderCode">订单日期：</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <%--<div class="form-group">--%>
-                                                <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
-                                            <%--</div>--%>
-                                            <div class="form-group">
-                                                <label for="orderType">订单类型</label>
-                                                <select id="orderType" name="orderType">
-                                                    <option value="" selected="selected">所有订单</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payTypeId">支付方式</label>
-                                                <select id="payTypeId" name="payTypeId">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isCounting">是否结算：</label>
-                                                <select id="isCounting" name="isCounting">
-                                                    <option value="">全部</option>
-                                                    <option value="0">未结算</option>
-                                                    <option value="1">已结算</option>
-                                                </select>
+                                                <label for="realName">证书编号</label>
+                                                <input type="text" class="form-control" id="realName" name="realName" placeholder="姓名">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -257,38 +212,16 @@
             selections = [];
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>order/border/list.do',
+            url: '<%=basePath%>recommendStatistics/list.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
             queryParams: function(params){
-                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#orderType').val()){
-                    params.orderType = $('#orderType').val();
-                }
-                if($('#orderStatus').val()){
-                    params.orderStatus = $('#orderStatus').val();
-                }
-                if($('#payStatus').val()){
-                    params.payStatus = $('#payStatus').val();
-                }
-                if($('#shipStatus').val()){
-                    params.shipStatus = $('#shipStatus').val();
-                }
-                if($('#payTypeId').val()){
-                    params.payTypeId = $('#payTypeId').val();
-                }
-                if($('#beginTime').val()){
-                    params.beginTime = $('#beginTime').val();
-                }
-                if($('#endTime').val()){
-                    params.endTime = $('#endTime').val();
-                }
-                if($('#isCounting').val()){
-                    params.isCounting = $('#isCounting').val();
-                }
+                if($('#code').val())     params.code = $('#code').val();
+                if($('#realName').val()) params.realName = encodeURI($('#realName').val());
+
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -316,279 +249,106 @@
                         align: 'center',
                         valign: 'middle'
                     },
+//                    {
+//                        title: 'ID',
+//                        field: 'id',
+//                        align: 'center',
+//                        valign: 'middle',
+//                        sortable: true,
+//                        footerFormatter: totalTextFormatter,
+//                        formatter: function(value, row, index){
+//                            if(row.pfUserRecommenRelation && row.pfUserRecommenRelation.id){
+//                                return row.pfUserRecommenRelation.id;
+//                            }
+//                        }
+//                    },
                     {
-                        title: 'ID',
-                        field: 'id',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        footerFormatter: totalTextFormatter,
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.id){
-                                return row.pfBorder.id;
-                            }
-                        }
-                    },
-                    {
-                        field: 'order_code',
-                        title: '订单号',
-                        sortable: true,
-                        //editable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderCode){
-                                return row.pfBorder.orderCode;
-                            }
-                        }
-                    },
-                    {
-                        field: 'create_time',
-                        title: '订单日期',
+                        field: 'pus.code',
+                        title: '证书编号',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return new Date(row.pfBorder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
-                        }
-                    },
-                    {
-                        field: 'consignee',
-                        title: '收货人',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorderConsignee && row.pfBorderConsignee.consignee){
-                                return row.pfBorderConsignee.consignee;
+                            if(row.code){
+                                return row.code;
                             }
                         }
                     },
                     {
-                        field: 'user_id',
-                        title: '购买人',
+                        field: 'u.real_name',
+                        title: '姓名',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row.realName){
+                                return row.realName;
                             }
                         }
                     },
                     {
-                        field: 'product_amount',
-                        title: '订单金额',
+                        field: 'sku.name',
+                        title: '合伙商品',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.productAmount;
+                            if(row.skuName){
+                                return row.skuName;
                             }
                         }
                     },
                     {
-                        field: 'bail_amount',
-                        title: '保证金',
+                        field: 'countRecommend',
+                        title: '我推荐的人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.countRecommend){
+                                return row.countRecommend;
+                            }else{
+                                return 0;
+                            }
+                        }
+                    },
+                    {
+                        field: 'countPresentee',
+                        title: '推荐我的人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.countPresentee){
+                                return row.countPresentee;
+                            }else{
+                                return 0;
+                            }
+                        }
+                    },
+                    {
+                        field: 'ust.recommen_send_fee',
+                        title: '发出奖励',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.bailAmount;
+                            if(row.recommenSendFee){
+                                return row.recommenSendFee;
+                            }else{
+                                return 0;
                             }
                         }
                     },
                     {
-                        field: 'receivable_amount',
-                        title: '应付金额',
+                        field: 'ust.recommen_get_fee',
+                        title: '获得奖励',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.receivableAmount;
-                            }
-                        }
-                    },
-                    {
-                        field: 'pay_amount',
-                        title: '实付金额',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.payAmount;
-                            }
-                        }
-                    },
-                    {
-                        field: 'recommen_amount',
-                        title: '推荐奖励金额',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.recommenAmount;
-                            }
-                        }
-                    },
-                    {
-                        field: 'order_status',
-                        title: '订单状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderStatus == 0){
-                                return '未处理';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 1){
-                                return '已付款';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 2){
-                                return '已取消';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
-                                return '已完成';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 4){
-                                return '退款中';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 5){
-                                return '已退款';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 6){
-                                return '排单中';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 7){
-                                return '待发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 8){
-                                return '已发货';
-                            }
-                        }
-                    },
-                    {
-                        field: 'pay_type_id',
-                        title: '支付方式',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorderPayments){
-                                var sHtm = '';
-                                for(var i in row.pfBorderPayments){
-                                    if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 1) sHtm += '线下支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 2) sHtm += '支付宝支付';
-                                }
-                                return sHtm;
-                            }
-                        }
-                    },
-                    {
-                        field: 'order_type',
-                        title: '订单类型',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderType == 0){
-                                return '合伙人订单';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderType == 1){
-                                return '补货订单';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderType == 2){
-                                return '拿货订单';
-                            }
-                        }
-                    },
-                    {
-                        field: 'pay_status',
-                        title: '支付状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.payStatus == 0){
-                                return '待付款';
-                            }
-                            if(row.pfBorder && row.pfBorder.payStatus == 1){
-                                return '已付款';
-                            }
-                        }
-                    },
-                    {
-                        field: 'ship_status',
-                        title: '物流状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.shipStatus == 0){
-                                return '未发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 5){
-                                return '已发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 9){
-                                return '已收货';
-                            }
-
-                        }
-                    },
-                    {
-                        field: 'is_counting',
-                        title: '是否结算',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.isCounting == 0){
-                                return '未结算';
-                            }
-                            if(row.pfBorder && row.pfBorder.isCounting == 1){
-                                return '已结算';
-                            }
-
-                        }
-                    },
-                    {
-                        title: '操作项',
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
-                                arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
-                            }
-
-                            return arr.join('');
-                        },
-                        events: {
-                            'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
-                            },
-                            'click .scheduling': function(e, value, row, index){
-                                $.ajax({
-                                    url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
-                                    success: function(msg){
-                                        msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
-                                        $.gritter.add({
-                                            title: '消息',
-                                            text: msg,
-                                            class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                        });
-                                        $('#table').bootstrapTable('refresh');
-                                    }
-                                })
-                            },
-                            'click .receipt': function(e, value, row, index){
-                                $('#bOrderId').val(row.pfBorder.id);
-                                $('#modal-receipt').modal('show');
+                            if(row.recommenGetFee){
+                                return row.recommenGetFee;
+                            }else{
+                                return 0;
                             }
                         }
                     }
@@ -647,42 +407,42 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
-            //订单类型
-            if( res.orderTypeList !=null){
-                var $select = $('#orderType');
-                $select.empty();
-                $select.append('<option value="" selected="selected">全部</option>')
-                for(var i=0, len = res.orderTypeList.length;i<len;i++)  {
-                    $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
-                }
+        //订单类型
+        if( res.orderTypeList !=null){
+            var $select = $('#orderType');
+            $select.empty();
+            $select.append('<option value="" selected="selected">全部</option>')
+            for(var i=0, len = res.orderTypeList.length;i<len;i++)  {
+                $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
             }
-            //支付方式
-            if(res.payTypeList !=null){
-                var $select = $('#payTypeId');
-                $select.empty();
-                $select.append('<option value="" selected="selected">全部</option>')
-                for(var i=0, len = res.payTypeList.length;i<len;i++){
-                    $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
-                }
+        }
+        //支付方式
+        if(res.payTypeList !=null){
+            var $select = $('#payTypeId');
+            $select.empty();
+            $select.append('<option value="" selected="selected">全部</option>')
+            for(var i=0, len = res.payTypeList.length;i<len;i++){
+                $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
             }
-            //订单状态
-            if( res.orderStatusList !=null){
-                var $select = $('#orderStatus');
-                $select.empty();
-                $select.append('<option value="" selected="selected">全部</option>')
-                for(var i=0, len = res.orderStatusList.length;i<len;i++){
-                    $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
-                }
+        }
+        //订单状态
+        if( res.orderStatusList !=null){
+            var $select = $('#orderStatus');
+            $select.empty();
+            $select.append('<option value="" selected="selected">全部</option>')
+            for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
             }
-            //物流状态
-            if( res.wuliuList !=null){
-                var $select = $('#shipStatus');
-                $select.empty();
-                $select.append('<option value="" selected="selected">全部</option>')
-                for(var i=0, len = res.wuliuList.length;i<len;i++){
-                    $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
-                }
+        }
+        //物流状态
+        if( res.wuliuList !=null){
+            var $select = $('#shipStatus');
+            $select.empty();
+            $select.append('<option value="" selected="selected">全部</option>')
+            for(var i=0, len = res.wuliuList.length;i<len;i++){
+                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
             }
+        }
         return res;
     }
 

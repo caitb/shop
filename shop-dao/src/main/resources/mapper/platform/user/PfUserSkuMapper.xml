@@ -61,6 +61,13 @@
 
     </resultMap>
 
+    <resultMap id="UserSkuAgentResultMap" type="com.masiis.shop.dao.po.extendPo.UserSkuAgent">
+        <id column="skuId" property="skuId" jdbcType="INTEGER"/>
+        <id column="skuName" property="skuName" jdbcType="VARCHAR"/>
+        <id column="agentLevelId" property="agentLevelId" jdbcType="INTEGER"/>
+        <id column="agentName" property="agentName" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from pf_user_sku
         where id = #{id,jdbcType=INTEGER}
@@ -393,6 +400,21 @@
     <!-- 查找团队所有成员 -->
     <select id="selectAllTeamMember" parameterType="String" resultType="Long">
         SELECT user_id FROM pf_user_sku WHERE tree_code LIKE #{treeCode}
+    </select>
+
+    <select id="selectCurrentAgentLevel" resultMap="UserSkuAgentResultMap" parameterType="java.lang.Long">
+        SELECT
+	      a.sku_id as skuId,
+          c.name as skuName,
+          a.agent_level_id as agentLevelId,
+          b.name as agentName,
+          a.user_pid as userPid
+        FROM
+	      pf_user_sku a
+        LEFT JOIN com_agent_level b ON a.agent_level_id = b.id
+        LEFT JOIN com_sku c ON a.sku_id = c.id
+        WHERE
+	      a.user_id = #{userId}
     </select>
 </mapper>
 

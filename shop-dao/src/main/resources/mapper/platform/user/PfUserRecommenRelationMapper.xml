@@ -51,6 +51,14 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="selectNumByUserId" resultType="Integer" parameterType="java.lang.Long" >
+        select COUNT(id) from pf_user_recommen_relation where user_id = #{userId}
+    </select>
+
+    <select id="selectNumByUserPid" resultType="Integer"  parameterType="java.lang.Long" >
+        select COUNT(id) from pf_user_recommen_relation where user_pid = #{userId}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, pid, user_id, user_pid, sku_id, pf_border_id, tree_code, 
         tree_level, remark

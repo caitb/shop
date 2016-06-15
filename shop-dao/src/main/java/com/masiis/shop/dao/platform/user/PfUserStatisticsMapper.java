@@ -22,6 +22,13 @@ public interface PfUserStatisticsMapper {
 
     PfUserStatistics selectByPrimaryKey(Long id);
 
+    /**
+     * 推荐金额
+     * @author muchaofeng
+     * @date 2016/6/15 10:50
+     */
+    PfUserStatistics selectFeeByUserId(Long userId);
+
     PfUserStatistics selectByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     List<PfUserStatistics> selectAll();

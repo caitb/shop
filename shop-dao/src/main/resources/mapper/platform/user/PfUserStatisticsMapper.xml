@@ -22,6 +22,12 @@
         <result column="recommen_send_fee" property="recommenSendFee" jdbcType="DECIMAL" />
     </resultMap>
 
+    <resultMap id="BaseMap" type="com.masiis.shop.dao.po.PfUserStatistics" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="getFee" property="recommenGetFee" jdbcType="DECIMAL" />
+        <result column="sendFee" property="recommenSendFee" jdbcType="DECIMAL" />
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from pf_user_statistics
         where id = #{id,jdbcType=BIGINT}
@@ -95,6 +101,12 @@
         take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
         where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectFeeByUserId" resultMap="BaseMap" parameterType="java.lang.Long" >
+        select SUM(recommen_get_fee) as getFee, SUM(recommen_send_fee) as sendFee
+        from pf_user_statistics
+        where user_id = #{userId}
     </select>
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">

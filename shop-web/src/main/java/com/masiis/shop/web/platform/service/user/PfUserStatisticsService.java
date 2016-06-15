@@ -1,11 +1,8 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserStatisticsMapper;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserStatistics;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +52,14 @@ public class PfUserStatisticsService {
         userStatisticsMapper.insert(statistics);
 
         return statistics;
+    }
+
+    /**
+     * 推荐金额
+     * @author muchaofeng
+     * @date 2016/6/15 10:53
+     */
+    public PfUserStatistics selectFee(Long userId){
+        return userStatisticsMapper.selectFeeByUserId(userId);
     }
 }

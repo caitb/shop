@@ -51,6 +51,17 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectBorders" resultType="Integer" parameterType="java.lang.Long" >
+        select COUNT(id) from pf_border_recommen_reward where recommen_user_id = #{userId}
+    </select>
+
+    <select id="selectPBorders" resultType="Integer" parameterType="java.lang.Long" >
+        select COUNT(pbrr.pf_border_id)
+        from pf_border_recommen_reward pbrr
+        LEFT JOIN pf_border pb ON  pb.id=pbrr.pf_border_id
+        where pb.user_pid = #{userId}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id, 
         quantity, reward_unit_price, reward_total_price, remark

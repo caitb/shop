@@ -22,4 +22,18 @@ public interface PfUserRecommenRelationMapper {
     int updateByPrimaryKey(PfUserRecommenRelation record);
 
     List<PfUserRecommenRelation> selectByCondition(PfUserRecommenRelation pfUserRecommenRelation);
+
+    /**
+     * 推荐我的人
+     * @author muchaofeng
+     * @date 2016/6/15 14:12
+     */
+    int selectNumByUserId(Long  userId);
+
+    /**
+     * 我推荐的人
+     * @author muchaofeng
+     * @date 2016/6/15 14:12
+     */
+    int selectNumByUserPid(Long  userId);
 }

@@ -20,4 +20,15 @@ public interface PfBorderRecommenRewardMapper {
     List<PfBorderRecommenReward> selectAll();
 
     int updateByPrimaryKey(PfBorderRecommenReward record);
+    /**
+     * 获得奖励订单
+     * @author muchaofeng
+     */
+    int selectBorders(Long userId);
+    /**
+     * 发出奖励订单
+     * @author muchaofeng
+     * @date 2016/6/15 15:36
+     */
+    int selectPBorders(Long userId);
 }

@@ -134,6 +134,41 @@ public class DevelopingController extends BaseController {
         }
     }
 
+    /**
+     * 可发展等级页面
+     * @param request
+     * @param skuId
+     * @return
+     */
+    @RequestMapping("/developLevel")
+    public ModelAndView developLevel(HttpServletRequest request, Integer skuId){
+        ModelAndView mav = new ModelAndView("platform/user/developLevel");
+
+        ComUser comUser = null;
+        try {
+            comUser = getComUser(request);
+            PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), skuId);
+            List<Integer> levelIds = pfSkuAgentMapper.selectLevelIdsBySkuIdAndIsShow(skuId, 1);
+
+        /* 删除高于comUser代理的等级id */
+            for(int i=0; i<levelIds.size(); i++){
+                if(levelIds.get(i).intValue() < pfUserSku.getAgentLevelId().intValue()){
+                    levelIds.remove(i--);
+                }
+            }
+
+            List<ComAgentLevel> comAgentLevels = comAgentLevelMapper.selectByIds(levelIds);
+            mav.addObject("comAgentLevels", comAgentLevels);
+            mav.addObject("skuId", skuId);
+            mav.addObject("agentLevelId", pfUserSku.getAgentLevelId());
+        } catch (Exception e) {
+            log.error("获取可发展等级失败![comUser="+comUser+"][skuId="+skuId+"]"+e);
+            e.printStackTrace();
+        }
+
+        return mav;
+    }
+
     @RequestMapping("/sharelink")
     public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response,
                                   Integer skuId,
@@ -178,7 +213,6 @@ public class DevelopingController extends BaseController {
                     sLevelIds.append(",");
                 }
             }
-            sLevelIds.deleteCharAt(sLevelIds.length()-1);
 
 
             log.info("发展合伙人[comUser="+comUser+"]");

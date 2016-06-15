@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,14 +41,14 @@ public class RecommendStatisticsController {
                        String sortName,
                        String sortOrder,
                        String code,
-                       String name
+                       String realName
                        ){
 
         Map<String, Object> conditionMap = new HashMap<>();
         Map<String, Object> pageMap = null;
         try {
             if(StringUtils.isNotBlank(code)) conditionMap.put("code", code);
-            if(StringUtils.isNotBlank(name)) conditionMap.put("name", name);
+            if(StringUtils.isNotBlank(realName)) conditionMap.put("realName", URLDecoder.decode(realName, "UTF-8"));
 
             pageMap = recommendStatisticsService.list(pageNumber, pageSize, sortName, sortOrder, conditionMap);
         } catch (Exception e) {

@@ -23,6 +23,8 @@ public interface PfUserRecommenRelationMapper {
 
     List<PfUserRecommenRelation> selectByCondition(PfUserRecommenRelation pfUserRecommenRelation);
 
+    PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(Long userId,Integer skuId);
+
     /**
      * 推荐我的人
      * @author muchaofeng

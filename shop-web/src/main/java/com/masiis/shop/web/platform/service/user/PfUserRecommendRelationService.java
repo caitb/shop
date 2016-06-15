@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.PfUserRecommenRelationMapper;
 import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
+import com.masiis.shop.dao.po.PfUserRecommenRelation;
 import com.masiis.shop.dao.po.PfUserRelation;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,15 @@ public class PfUserRecommendRelationService {
 
     public int findNumByUserPid(Long userId) {
         return pfUserRecopmmenRelationMapper.selectNumByUserPid(userId);
+    }
+
+    /**
+     * 根据skuId和userId获得推荐信息
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(Long userId,Integer skuId){
+        return pfUserRecopmmenRelationMapper.selectRecommenRelationByUserIdAndSkuId(userId,skuId);
     }
 }

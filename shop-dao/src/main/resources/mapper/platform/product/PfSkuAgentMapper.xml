@@ -145,4 +145,27 @@
     <select id="countSkuAgentLevel" parameterType="Integer" resultType="Integer">
         SELECT count(1) FROM pf_sku_agent WHERE sku_id = #{skuId}
     </select>
+
+    <select id="selectUpgradeAgents" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        a.id,
+        a.sku_id,
+        a.agent_level_id,
+        a.icon,
+        a.unit_price,
+        a.quantity,
+        a.total_price,
+        a.bail,
+        a.back_img,
+        a.is_show,
+        b. NAME AS remark
+        FROM
+        pf_sku_agent a
+        LEFT JOIN com_agent_level b ON a.agent_level_id = b.id
+        WHERE
+        a.sku_id = #{skuId}
+        AND <![CDATA[ agent_level_id < #{agentLevelId} ]]>
+        AND <![CDATA[agent_level_id >= #{pLevelId} ]]>
+        /*AND a.is_upgrade = 1;*/
+    </select>
 </mapper>

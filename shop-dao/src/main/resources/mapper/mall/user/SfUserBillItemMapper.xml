@@ -67,6 +67,7 @@
         from sf_user_bill_item
         WHERE com_user_id = #{userId,jdbcType=BIGINT}
         AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+        AND is_count=0
     </select>
 
     <select id="selectByUserIdAndSourceIdAndFeeType" resultMap="BaseResultMap" >

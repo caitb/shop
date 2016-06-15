@@ -65,6 +65,7 @@
         from sf_shop_bill_item
         WHERE shop_id = #{shopId,jdbcType=BIGINT}
         AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+        AND is_count=0
     </select>
 
 </mapper>

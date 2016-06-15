@@ -54,9 +54,9 @@
         <button>查询</button>
     </div>
     <div class="box">
-        <main>
+        <main id="main">
             <c:forEach items="${pfUserUpGradeInfoList}" var="grade">
-                <div class="sec1">
+            <div class="sec1">
                     <div class="s_1">
                         <p>商品：${grade.skuName}</p>
                         <p>状态：<span class="active">申请中</span></p>
@@ -72,7 +72,7 @@
                         <p>升级编号：${grade.pfUserUpgradeNotice.code}</p>
                         <p>申请时间：${grade.createDate}</p>
                     </div>
-                </div>
+            </div>
             </c:forEach>
         </main>
     </div>
@@ -93,8 +93,38 @@
         $(".level b").html(tabVal);
     })
     $("nav").on("click","p",function(){
-        var i=$(this).index();
-        $(this).addClass("on").siblings().removeClass("on");
+        var index=$(this).index();
+            $(this).addClass("on").siblings().removeClass("on");
+            $.ajax({
+                url: '<%=basePath%>upgradeInfo/tab',
+                type: 'post',
+                async:true,
+                data: {tabId:index},
+                dataType: 'json',
+                success: function (res) {
+                    var trHtml = "";
+                    $.each(res.pfUserUpGradeInfoList, function(i, grade){
+                        trHtml+="<div class=\"sec1\">";
+                        trHtml+="<div class=\"s_1\">";
+                        trHtml+="<p>商品："+grade.skuName+"</p>>";
+                        trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
+                        trHtml+="</div>";
+                        trHtml+="<div class=\"s_2\">";
+                        trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";
+                        trHtml+="<div>";
+                        trHtml+="<p>"+grade.comUser.realName+"</p>";
+                        trHtml+="<h1><span class=\"on\">"+grade.orgLevelName+"</span>"+grade.wishLevelName+"</h1>";
+                        trHtml+="</div>";
+                        trHtml+="</div>";
+                        trHtml+=" <div class=\"s_3\">";
+                        trHtml+="<p>升级编号："+grade.pfUserUpgradeNotice.code+"</p>";
+                        trHtml+="<p>申请时间："+grade.createDate+"</p>";
+                        trHtml+="</div>";
+                        trHtml+="</div>";
+                    });
+                    $("#main").empty().html(trHtml);
+                }
+            });
     })
 </script>
 </body>

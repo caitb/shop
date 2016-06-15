@@ -68,4 +68,11 @@
         from pf_border_recommen_reward
     </select>
 
+    <select id="selectByPfBorderId" resultMap="BaseResultMap">
+        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id,
+        quantity, reward_unit_price, reward_total_price, remark
+        from pf_border_recommen_reward
+        WHERE pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
+import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
@@ -39,6 +40,8 @@ public class ComUserAccountService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private PfBorderRecommenRewardMapper recommenRewardMapper;
 
     /**
      * 根据用户id查询用户资产账户
@@ -143,6 +146,18 @@ public class ComUserAccountService {
                 }
                 log.info("更新出货人账户结算额和总销售额成功!");
             }
+
+            BigDecimal recommon = order.getRecommenAmount();
+            if(recommon != null && recommon.compareTo(BigDecimal.ZERO) > 0){
+                log.info("计算推荐奖励");
+                List<PfBorderRecommenReward> rewards = recommenRewardMapper.selectByPfBorderId(order.getId());
+                if(rewards != null && rewards.size() > 0){
+                    for(PfBorderRecommenReward reward:rewards){
+
+                    }
+                }
+            }
+
             log.info("开始给进货人增加成本");
 
             ComUserAccount accountS = accountMapper.findByUserId(userId);

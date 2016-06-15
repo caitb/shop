@@ -8,8 +8,12 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderRecommenReward;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface PfBorderRecommenRewardMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -31,4 +35,12 @@ public interface PfBorderRecommenRewardMapper {
      * @date 2016/6/15 15:36
      */
     int selectPBorders(Long userId);
+
+    /**
+     * 根据代理订单查询推荐奖励明细
+     *
+     * @param pfBorderId
+     * @return
+     */
+    List<PfBorderRecommenReward> selectByPfBorderId(@Param("pfBorderId") Long pfBorderId);
 }

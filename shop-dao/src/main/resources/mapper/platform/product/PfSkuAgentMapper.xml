@@ -173,4 +173,8 @@
         AND <![CDATA[agent_level_id >= #{pLevelId} ]]>
         /*AND a.is_upgrade = 1;*/
     </select>
+
+    <select id="selectLevelIdsBySkuIdAndIsShow" resultType="Integer">
+        SELECT agent_level_id FROM pf_sku_agent WHERE sku_id = #{skuId} AND is_show = #{isShow}
+    </select>
 </mapper>

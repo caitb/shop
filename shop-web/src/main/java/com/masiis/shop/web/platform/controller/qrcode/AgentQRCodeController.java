@@ -38,7 +38,7 @@ public class AgentQRCodeController extends BaseController {
         try {
             comUser = getComUser(request);
 
-            String qrcodeUrl = weiXinQRCodeService.createAgentQRCode(663);
+            String qrcodeUrl = weiXinQRCodeService.createAgentQRCode(null, null, null);
 
             return qrcodeUrl;
         } catch (Exception e) {

@@ -137,6 +137,7 @@ public class DevelopingController extends BaseController {
     @RequestMapping("/sharelink")
     public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response,
                                   Integer skuId,
+                                  @RequestParam(value = "levelIds", required = false)String[] levelIds,
                                   @RequestParam(value = "fromUserId", required = false)Long fromUserId
     ){
 
@@ -169,6 +170,16 @@ public class DevelopingController extends BaseController {
                 shareLink = curUrl + "&fromUserId="+comUser.getId();
             }
 
+            /** 拼接等级ID  **/
+            StringBuilder sLevelIds = new StringBuilder();
+            if(levelIds != null && levelIds.length > 0){
+                for(String levelId : levelIds){
+                    sLevelIds.append(levelId);
+                    sLevelIds.append(",");
+                }
+            }
+            sLevelIds.deleteCharAt(sLevelIds.length()-1);
+
 
             log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
@@ -198,7 +209,7 @@ public class DevelopingController extends BaseController {
                 new File(posterDirPath+"/"+bgPoster).delete();
                 new File(posterDirPath+"/"+qrcodeName).delete();
                 DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(pfUserCertificate.getPfUserSkuId()), qrcodeName, posterDirPath);
+                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
                 OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
 
                 //画图

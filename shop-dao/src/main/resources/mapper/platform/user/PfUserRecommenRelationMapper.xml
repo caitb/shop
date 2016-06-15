@@ -57,4 +57,52 @@
         from pf_user_recommen_relation
     </select>
 
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserRecommenRelation" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               pid,
+               user_id,
+               user_pid,
+               sku_id,
+               pf_border_id,
+               tree_code,
+               tree_level,
+               remark
+        from
+               pf_user_recommen_relation
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+            <if test="pid != null">
+                AND pid = #{pid}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="userPid != null">
+                AND user_pid = #{userPid}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="pfBorderId != null">
+                AND pf_border_id = #{pfBorderId}
+            </if>
+            <if test="treeCode != null">
+                AND tree_code = #{treeCode}
+            </if>
+            <if test="treeLevel != null">
+                AND tree_level = #{treeLevel}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark}
+            </if>
+        </where>
+    </select>
+
 </mapper>

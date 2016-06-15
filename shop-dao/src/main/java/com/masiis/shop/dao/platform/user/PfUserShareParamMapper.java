@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.PfUserShareParam;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PfUserShareParamMapper {
@@ -23,4 +24,6 @@ public interface PfUserShareParamMapper {
     List<PfUserShareParam> selectAll();
 
     int updateByPrimaryKey(PfUserShareParam record);
+
+    List<PfUserShareParam> selectByCondition(PfUserShareParam pfUserShareParam);
 }

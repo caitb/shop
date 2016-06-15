@@ -16,12 +16,24 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserShareParam" useGeneratedKeys="true" keyProperty="id">
-        insert into pf_user_share_param (id, create_time, f_user_id, 
-            sku_id, agent_level_ids, remark
-            )
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{fUserId,jdbcType=BIGINT}, 
-            #{skuId,jdbcType=INTEGER}, #{agentLevelIds,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-            )
+        insert into pf_user_share_param
+                   (
+                   id,
+                   create_time,
+                   f_user_id,
+                   sku_id,
+                   agent_level_ids,
+                   remark
+                   )
+        values
+                   (
+                   #{id,jdbcType=BIGINT},
+                   #{createTime,jdbcType=TIMESTAMP},
+                   #{fUserId,jdbcType=BIGINT},
+                   #{skuId,jdbcType=INTEGER},
+                   #{agentLevelIds,jdbcType=VARCHAR},
+                   #{remark,jdbcType=VARCHAR}
+                   )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserShareParam" >
@@ -43,6 +55,32 @@
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, f_user_id, sku_id, agent_level_ids, remark
         from pf_user_share_param
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserShareParam" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               f_user_id,
+               sku_id,
+               agent_level_ids,
+               remark
+        from
+               pf_user_share_param
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="fUserId != null">
+                AND f_user_id = #{fUserId}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="agentLevelIds != null">
+                AND agent_level_ids = #{agentLevelIds}
+            </if>
+        </where>
     </select>
 
 </mapper>

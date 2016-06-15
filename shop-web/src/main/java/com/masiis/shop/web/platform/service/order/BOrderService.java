@@ -58,6 +58,11 @@ public class BOrderService {
     private ComUserAccountService comUserAccountService;
 
 
+    public int insert(PfBorder pfBorder){
+        return pfBorderMapper.insert(pfBorder);
+    }
+
+
     /**
      * 获取订单
      *

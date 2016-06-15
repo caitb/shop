@@ -52,12 +52,13 @@ public class UserApplyController extends BaseController {
 
     /**
      * 合伙人申请
-     * @author ZhaoLiang
+     *
      * @param request
      * @param skuId
      * @param pUserId
      * @return
      * @throws Exception
+     * @author ZhaoLiang
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView apply(HttpServletRequest request,
@@ -143,10 +144,18 @@ public class UserApplyController extends BaseController {
         List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
         //上级代理等级
         Integer pUserLevelId = 0;
-        Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
-        if (pUserId > 0) {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-            pUserLevelId = pfUserSku.getAgentLevelId();
+        //v1.2 合伙人可以指定推送代理等级
+        Long pUserId = 0l;
+        String agentLevelIds = "";
+        PfUserRelation pfUserRelation = pfUserRelationService.getRelation(comUser.getId(), skuId);
+        if (pfUserRelation != null) {
+            pUserId = pfUserRelation.getUserPid();
+            agentLevelIds = pfUserRelation.getAgentLevelIds();
+            if (pUserId > 0) {
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+                pUserLevelId = pfUserSku.getAgentLevelId();
+
+            }
         }
         // 创建该sku代理商的代理门槛信息
         List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
@@ -171,6 +180,7 @@ public class UserApplyController extends BaseController {
         modelAndView.addObject("pUserLevelId", pUserLevelId);
         modelAndView.addObject("pUserId", pUserId);
         modelAndView.addObject("agentSkuViews", agentSkuViews);
+        modelAndView.addObject("agentLevelIds", agentLevelIds);
         Integer sendType = 0;
         if (comUser.getSendType() > 0) {
             sendType = comUser.getSendType();

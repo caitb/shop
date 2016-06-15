@@ -14,6 +14,15 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="ComSkuMap" type="com.masiis.shop.dao.beans.user.UserRecommend" >
+        <id column="id" property="userId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="real_name" property="name" jdbcType="VARCHAR" />
+        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR" />
+        <result column="name" property="skuName" jdbcType="VARCHAR" />
+        <result column="agentName" property="agentName" jdbcType="VARCHAR" />
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
         delete from pf_user_recommen_relation
         where id = #{id,jdbcType=INTEGER}
@@ -50,13 +59,31 @@
         from pf_user_recommen_relation
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <!--  我推荐的人  -->
+    <select id="selectSumByUserId" resultMap="ComSkuMap" parameterType="java.lang.Long" >
+        select sku.name,com.real_name,com.wx_head_img,sku.id,com.id,agent.name as agentName
+        from pf_user_recommen_relation pbrr
+        INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
+        INNER JOIN com_user com ON com.id = pbrr.user_id
+        INNER JOIN pf_user_sku user_sku ON pbrr.user_id = user_sku.user_id AND pbrr.sku_id = user_sku.sku_id
+        INNER JOIN com_agent_level agent ON user_sku.agent_level_id = agent.id
+        where pbrr.user_pid = #{userId}
+    </select>
+
+    <select id="selectSumByOneUserId" resultType="Integer" >
+        select COUNT(pbrr.user_id)
+        from pf_border_recommen_reward pbrr
+        INNER JOIN com_sku sku ON sku.id=pbrr.sku_id
+        INNER JOIN com_user use ON use.id=pbrr.user_pid
+        where pbrr.user_pid = #{userId}  AND pbrr.sku_id=#{skuId}
+    </select>
 
     <select id="selectNumByUserId" resultType="Integer" parameterType="java.lang.Long" >
-        select COUNT(id) from pf_user_recommen_relation where user_id = #{userId}
+        select COUNT(pid) from pf_user_recommen_relation   where user_id = #{userId}
     </select>
 
     <select id="selectNumByUserPid" resultType="Integer"  parameterType="java.lang.Long" >
-        select COUNT(id) from pf_user_recommen_relation where user_pid = #{userId}
+        select COUNT(pid) from pf_user_recommen_relation where user_pid = #{userId}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
@@ -64,6 +91,15 @@
         tree_level, remark
         from pf_user_recommen_relation
     </select>
+
+    <select id="selectRecommenRelationByUserIdAndSkuId" resultMap="BaseResultMap" >
+        select id, create_time, pid, user_id, user_pid, sku_id, pf_border_id, tree_code,
+        tree_level, remark
+        from pf_user_recommen_relation
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        AND sku_id = #{skuId,jdbcType=INTEGER}
+    </select>
+
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserRecommenRelation" resultMap="BaseResultMap">
         select

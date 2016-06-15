@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import java.util.List;
+import java.util.Map;
 
 public interface PfUserUpgradeNoticeMapper {
     int deleteByPrimaryKey(Long id);
@@ -24,4 +25,6 @@ public interface PfUserUpgradeNoticeMapper {
     List<PfUserUpgradeNotice> selectByUserId(Long userId);
 
     List<PfUserUpgradeNotice> selectByUserPId(Long userPid);
+
+    List<PfUserUpgradeNotice> selectByMap(Map<String,Object> conditionMap);
 }

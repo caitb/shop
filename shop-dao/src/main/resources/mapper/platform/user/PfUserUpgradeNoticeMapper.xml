@@ -77,4 +77,24 @@
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        <where>
+            <if test="beginTime != null">
+                AND create_time &gt;=#{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;=#{endTime}
+            </if>
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
 </mapper>

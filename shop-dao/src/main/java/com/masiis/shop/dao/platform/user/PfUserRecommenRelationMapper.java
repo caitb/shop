@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.PfUserRecommenRelation;
 import java.util.List;
 
@@ -23,8 +24,10 @@ public interface PfUserRecommenRelationMapper {
 
     List<PfUserRecommenRelation> selectByCondition(PfUserRecommenRelation pfUserRecommenRelation);
 
+    PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(Long userId,Integer skuId);
+
     /**
-     * 推荐我的人
+     * 推荐给我的
      * @author muchaofeng
      * @date 2016/6/15 14:12
      */
@@ -36,4 +39,11 @@ public interface PfUserRecommenRelationMapper {
      * @date 2016/6/15 14:12
      */
     int selectNumByUserPid(Long  userId);
+
+    /**
+     * 推荐给我的详情
+     * @author muchaofeng
+     * @date 2016/6/15 17:40
+     */
+    List<UserRecommend> selectSumByUserId(Long  userId);
 }

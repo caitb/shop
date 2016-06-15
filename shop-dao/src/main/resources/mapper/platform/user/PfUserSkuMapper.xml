@@ -18,6 +18,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
     </resultMap>
 
 
@@ -78,13 +79,13 @@
             sku_id, agent_level_id, is_pay,
             is_certificate, pf_border_id, bail,
             agent_num, remark, tree_code,
-            tree_level)
+            tree_level, reward_unit_price)
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR},
             #{pid,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
             #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER},
             #{isCertificate,jdbcType=INTEGER}, #{pfBorderId,jdbcType=BIGINT}, #{bail,jdbcType=DECIMAL},
             #{agentNum,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{treeCode,jdbcType=VARCHAR},
-            #{treeLevel,jdbcType=INTEGER})
+            #{treeLevel,jdbcType=INTEGER}, #{rewardUnitPrice,jdbcType=DECIMAL})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku">
@@ -136,6 +137,9 @@
             <if test="treeLevel != null">
                 tree_level = #{treeLevel,jdbcType=INTEGER},
             </if>
+            <if test="rewardUnitPrice">
+                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
+            </if>
         </set>
         where
         id = #{id,jdbcType=INTEGER}
@@ -147,7 +151,7 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         from
         pf_user_sku
         where
@@ -156,7 +160,7 @@
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         from pf_user_sku
     </select>
 
@@ -165,7 +169,7 @@
     </select>
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         from
                pf_user_sku
         where
@@ -212,7 +216,7 @@
 
     <select id="selectByOrderIdAndUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         from pf_user_sku
         where pf_border_id = #{bOrderId}
         and user_id = #{userId}
@@ -221,7 +225,7 @@
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         FROM
         pf_user_sku
         <where>
@@ -263,13 +267,16 @@
             </if>
             <if test="userPid != null">
                 and user_pid = #{userPid,jdbcType=BIGINT}
+            </if>
+            <if test="rewardUnitPrice">
+                and reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
             </if>
         </where>
     </select>
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
         FROM
         pf_user_sku
         <where>
@@ -311,6 +318,9 @@
             </if>
             <if test="userPid != null">
                 and user_pid = #{userPid,jdbcType=BIGINT}
+            </if>
+            <if test="rewardUnitPrice">
+                and reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
             </if>
         </where>
     </select>

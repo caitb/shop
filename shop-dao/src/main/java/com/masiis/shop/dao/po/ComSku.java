@@ -21,6 +21,10 @@ public class ComSku {
     private String name;
 
     private String alias;
+    /**
+     * 推荐人奖励单价
+     */
+    private BigDecimal rewardUnitPrice;
 
     private String eName;
 
@@ -131,6 +135,14 @@ public class ComSku {
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public BigDecimal getRewardUnitPrice() {
+        return rewardUnitPrice;
+    }
+
+    public void setRewardUnitPrice(BigDecimal rewardUnitPrice) {
+        this.rewardUnitPrice = rewardUnitPrice;
     }
 
     public String geteName() {

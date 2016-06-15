@@ -17,6 +17,7 @@
         <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
         <result column="changed_by" property="changedBy" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="recommen_bill_amount" property="recommenBillAmount" jdbcType="DECIMAL" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -29,13 +30,13 @@
             cost_fee, profit_fee, extractable_fee,
             applied_fee, counting_fee, agent_bill_amount,
             distribution_bill_amount, bail_fee, created_time,
-            changed_time, changed_by, version
+            changed_time, changed_by, version, recommen_bill_amount
             )
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
             #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL},
             #{appliedFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{agentBillAmount,jdbcType=DECIMAL},
             #{distributionBillAmount,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL}, #{createdTime,jdbcType=TIMESTAMP},
-            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
+            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{recommenBillAmount,jdbcType=DECIMAL}
             )
     </insert>
 
@@ -81,6 +82,9 @@
             <if test="changedBy != null">
                 changed_by = #{changedBy,jdbcType=VARCHAR},
             </if>
+            <if test="recommenBillAmount != null">
+                recommen_bill_amount = #{recommenBillAmount,jdbcType=DECIMAL},
+            </if>
             version = version + 1
         </set>
         where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
@@ -89,19 +93,21 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, com_user_id, total_income_fee, cost_fee, extractable_fee, applied_fee, counting_fee,
         agent_bill_amount, distribution_bill_amount,bail_fee,
-        created_time, changed_time, changed_by, version
+        created_time, changed_time, changed_by, version, recommen_bill_amount
         from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
-        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time, changed_time, changed_by, version
+        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time,
+        changed_time, changed_by, version, recommen_bill_amount
         from com_user_account
     </select>
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
-        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time, changed_time, changed_by, version
+        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time,
+        changed_time, changed_by, version, recommen_bill_amount
         from com_user_account
         where com_user_id = #{comUserId}
     </select>
@@ -135,6 +141,7 @@
             created_time = #{createdTime,jdbcType=TIMESTAMP},
             changed_time = #{changedTime,jdbcType=TIMESTAMP},
             changed_by = #{changedBy,jdbcType=VARCHAR},
+            recommen_bill_amount = #{recommenBillAmount,jdbcType=DECIMAL},
             version = version + 1
         where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
     </update>

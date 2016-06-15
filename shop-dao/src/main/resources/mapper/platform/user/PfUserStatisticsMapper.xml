@@ -18,6 +18,14 @@
         <result column="take_fee" property="takeFee" jdbcType="DECIMAL" />
         <result column="version" property="version" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="recommen_get_fee" property="recommenGetFee" jdbcType="DECIMAL" />
+        <result column="recommen_send_fee" property="recommenSendFee" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <resultMap id="BaseMap" type="com.masiis.shop.dao.po.PfUserStatistics" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="getFee" property="recommenGetFee" jdbcType="DECIMAL" />
+        <result column="sendFee" property="recommenSendFee" jdbcType="DECIMAL" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -30,13 +38,14 @@
         income_fee, profit_fee, cost_fee,
         up_order_count, up_product_count, down_order_count,
         down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
         #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL},
         #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER},
         #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER},
-        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{recommenGetFee,jdbcType=DECIMAL},
+        #{recommenSendFee,jdbcType=DECIMAL}
         )
     </insert>
 
@@ -56,7 +65,9 @@
         take_product_count = #{takeProductCount,jdbcType=INTEGER},
         take_fee = #{takeFee,jdbcType=DECIMAL},
         version = #{version,jdbcType=BIGINT},
-        remark = #{remark,jdbcType=VARCHAR}
+        remark = #{remark,jdbcType=VARCHAR},
+        recommen_get_fee = #{recommenGetFee,jdbcType=DECIMAL},
+        recommen_send_fee = #{recommenSendFee,jdbcType=DECIMAL}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserStatistics">
@@ -76,7 +87,9 @@
         take_product_count = #{takeProductCount,jdbcType=INTEGER},
         take_fee = #{takeFee,jdbcType=DECIMAL},
         version = #{version,jdbcType=BIGINT}+1,
-        remark = #{remark,jdbcType=VARCHAR}
+        remark = #{remark,jdbcType=VARCHAR},
+        recommen_get_fee = #{recommenGetFee,jdbcType=DECIMAL},
+        recommen_send_fee = #{recommenSendFee,jdbcType=DECIMAL}
         where
         id = #{id,jdbcType=INTEGER}
         and version = #{version,jdbcType=INTEGER}
@@ -85,15 +98,21 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
         where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectFeeByUserId" resultMap="BaseMap" parameterType="java.lang.Long" >
+        select SUM(recommen_get_fee) as getFee, SUM(recommen_send_fee) as sendFee
+        from pf_user_statistics
+        where user_id = #{userId}
     </select>
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
         where user_id = #{userId,jdbcType=BIGINT}
         AND sku_id = #{skuId,jdbcType=INTEGER}
@@ -102,8 +121,50 @@
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, user_id, sku_id,income_fee, profit_fee, cost_fee, up_order_count,
         up_product_count, down_order_count, down_product_count, take_order_count, take_product_count, 
-        take_fee, version, remark
+        take_fee, version, remark, recommen_get_fee, recommen_send_fee
         from pf_user_statistics
+    </select>
+
+    <select id="recommendStatistics" parameterType="Map" resultType="com.masiis.shop.dao.beans.recommend.RecommendStatistics">
+        SELECT
+            pus.`code` `code`,
+            sku.NAME skuName,
+            u.real_name realName,
+            ust.recommen_get_fee recommenGetFee,
+            ust.recommen_send_fee recommenSendFee,
+            (
+                SELECT
+                    COUNT(0) countPresentee
+                FROM
+                    pf_user_recommen_relation
+                WHERE
+                    user_id = pus.user_id
+                AND sku_id = pus.sku_id
+                AND user_pid != 0
+            ),
+            (
+                SELECT
+                    COUNT(0) countRecommend
+                FROM
+                    pf_user_recommen_relation
+                WHERE
+                    user_pid = pus.user_id
+                AND sku_id = pus.sku_id
+            )
+        FROM
+            pf_user_sku pus
+        INNER JOIN com_sku sku ON pus.sku_id = sku.id
+        INNER JOIN com_user u ON pus.user_id = u.id
+        INNER JOIN pf_user_statistics ust ON pus.user_id = ust.user_id
+        AND pus.sku_id = ust.sku_id
+        <where>
+            <if test="code != null">
+                AND pus.code = #{code}
+            </if>
+            <if test="realName != null">
+                AND u.real_name = #{realName}
+            </if>
+        </where>
     </select>
 
 </mapper>

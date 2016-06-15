@@ -72,6 +72,14 @@ public class PfUserStatistics {
      * 备注
      */
     private String remark;
+    /**
+     * 推荐获得奖励金额
+     */
+    private BigDecimal recommenGetFee;
+    /**
+     * 推荐发出奖励金额
+     */
+    private BigDecimal recommenSendFee;
 
     public Long getId() {
         return id;
@@ -170,5 +178,45 @@ public class PfUserStatistics {
 
     public void setSkuId(Long skuId) {
         this.skuId = skuId;
+    }
+
+    public BigDecimal getRecommenGetFee() {
+        return recommenGetFee;
+    }
+
+    public void setRecommenGetFee(BigDecimal recommenGetFee) {
+        this.recommenGetFee = recommenGetFee;
+    }
+
+    public BigDecimal getRecommenSendFee() {
+        return recommenSendFee;
+    }
+
+    public void setRecommenSendFee(BigDecimal recommenSendFee) {
+        this.recommenSendFee = recommenSendFee;
+    }
+
+    @Override
+    public String toString() {
+        return "PfUserStatistics{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", userId=" + userId +
+                ", skuId=" + skuId +
+                ", incomeFee=" + incomeFee +
+                ", profitFee=" + profitFee +
+                ", costFee=" + costFee +
+                ", upOrderCount=" + upOrderCount +
+                ", upProductCount=" + upProductCount +
+                ", downOrderCount=" + downOrderCount +
+                ", downProductCount=" + downProductCount +
+                ", takeOrderCount=" + takeOrderCount +
+                ", takeProductCount=" + takeProductCount +
+                ", takeFee=" + takeFee +
+                ", version=" + version +
+                ", remark='" + remark + '\'' +
+                ", recommenGetFee=" + recommenGetFee +
+                ", recommenSendFee=" + recommenSendFee +
+                '}';
     }
 }

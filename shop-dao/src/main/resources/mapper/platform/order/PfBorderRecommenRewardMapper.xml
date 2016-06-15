@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderRecommenReward" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="pf_border_item_id" property="pfBorderItemId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="recommen_user_id" property="recommenUserId" jdbcType="BIGINT" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+        <result column="reward_total_price" property="rewardTotalPrice" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_border_recommen_reward
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderRecommenReward" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_border_recommen_reward (id, create_time, pf_border_id, 
+            pf_border_item_id, sku_id, recommen_user_id, 
+            quantity, reward_unit_price, reward_total_price, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT}, 
+            #{pfBorderItemId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, #{recommenUserId,jdbcType=BIGINT}, 
+            #{quantity,jdbcType=INTEGER}, #{rewardUnitPrice,jdbcType=DECIMAL}, #{rewardTotalPrice,jdbcType=DECIMAL}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorderRecommenReward" >
+        update pf_border_recommen_reward
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            pf_border_item_id = #{pfBorderItemId,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            recommen_user_id = #{recommenUserId,jdbcType=BIGINT},
+            quantity = #{quantity,jdbcType=INTEGER},
+            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
+            reward_total_price = #{rewardTotalPrice,jdbcType=DECIMAL},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id, 
+        quantity, reward_unit_price, reward_total_price, remark
+        from pf_border_recommen_reward
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectBorders" resultType="Integer" parameterType="java.lang.Long" >
+        select COUNT(id) from pf_border_recommen_reward where recommen_user_id = #{userId}
+    </select>
+
+    <select id="selectPBorders" resultType="Integer" parameterType="java.lang.Long" >
+        select COUNT(pbrr.pf_border_id)
+        from pf_border_recommen_reward pbrr
+        LEFT JOIN pf_border pb ON  pb.id=pbrr.pf_border_id
+        where pb.user_pid = #{userId}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id, 
+        quantity, reward_unit_price, reward_total_price, remark
+        from pf_border_recommen_reward
+    </select>
+
+</mapper>

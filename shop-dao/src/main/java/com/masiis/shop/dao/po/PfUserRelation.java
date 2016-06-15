@@ -36,6 +36,10 @@ public class PfUserRelation {
      * 备注
      */
     private String remark;
+    /**
+     * 可见合伙等级
+     */
+    private String agentLevelIds;
 
     public Long getId() {
         return id;
@@ -78,5 +82,13 @@ public class PfUserRelation {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getAgentLevelIds() {
+        return agentLevelIds;
+    }
+
+    public void setAgentLevelIds(String agentLevelIds) {
+        this.agentLevelIds = agentLevelIds;
     }
 }

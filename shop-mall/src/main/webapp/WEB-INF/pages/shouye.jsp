@@ -98,7 +98,7 @@
             </p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>分享赚钱</span>
+                <span>二维码</span>
             </p>
             <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>

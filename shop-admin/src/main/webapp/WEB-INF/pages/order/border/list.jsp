@@ -424,6 +424,18 @@
                         }
                     },
                     {
+                        field: 'recommen_amount',
+                        title: '推荐奖励金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder){
+                                return row.pfBorder.recommenAmount;
+                            }
+                        }
+                    },
+                    {
                         field: 'order_status',
                         title: '订单状态',
                         sortable: true,

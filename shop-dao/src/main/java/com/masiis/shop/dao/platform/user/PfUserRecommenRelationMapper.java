@@ -20,4 +20,6 @@ public interface PfUserRecommenRelationMapper {
     List<PfUserRecommenRelation> selectAll();
 
     int updateByPrimaryKey(PfUserRecommenRelation record);
+
+    List<PfUserRecommenRelation> selectByCondition(PfUserRecommenRelation pfUserRecommenRelation);
 }

@@ -149,4 +149,8 @@
         </where>
     </select>
 
+    <update id="updateTreeCodeById">
+        update pf_user_recommen_relation set tree_code = #{treeCode}
+        where id = #{id}
+    </update>
 </mapper>

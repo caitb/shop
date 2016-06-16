@@ -1,11 +1,13 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.PfUserRebate;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.extendPo.UpGradeInfoPo;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,13 +139,24 @@ public class UpgradeNoticeService {
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Untreated.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
         }else {
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Complete.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             logger.info("代理用户申请代理等级小于上级代理等级");
         }
         upgradeNotice.setRemark("升级提交申请");
         pfUserUpgradeNoticeMapper.insert(upgradeNotice);
         return upgradeNotice.getId();
     }
+
+    /**
+     * 根据id查询申请信息
+     * @param id 申请信息表id
+     * @return
+     */
+    public UpGradeInfoPo getUpGradeInfo(Long id){
+        logger.info("根据id查询申请信息 id=" + id);
+        return pfUserUpgradeNoticeMapper.selectUpGradeInfoPoById(id);
+    }
+
 }

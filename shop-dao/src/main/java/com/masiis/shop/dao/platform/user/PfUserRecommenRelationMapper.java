@@ -9,8 +9,11 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.PfUserRecommenRelation;
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface PfUserRecommenRelationMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -46,4 +49,13 @@ public interface PfUserRecommenRelationMapper {
      * @date 2016/6/15 17:40
      */
     List<UserRecommend> selectSumByUserId(Long  userId);
+
+    /**
+     * 修改树形编码
+     *
+     * @param id       主键id
+     * @param treeCode 属性编码
+     * @return
+     */
+    int updateTreeCodeById(@Param("id") Integer id, @Param("treeCode") String treeCode);
 }

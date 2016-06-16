@@ -10,6 +10,10 @@ public class BOrderUpgradeDetail {
 
     private Integer skuId;
     private Integer spuId;
+    private Long    oldPUserId;                //原上级id
+    private String  oldPUserName;              //原上级姓名
+    private Long    newPUserId;                //新上级id
+    private String  newPUserName;               //新上级名字
     private String skuName;                   //商品名称
     private BigDecimal priceRetail;           //销售价
     private Integer currentAgentLevel;        //当前级别
@@ -124,5 +128,37 @@ public class BOrderUpgradeDetail {
 
     public void setPriceRetail(BigDecimal priceRetail) {
         this.priceRetail = priceRetail;
+    }
+
+    public Long getOldPUserId() {
+        return oldPUserId;
+    }
+
+    public void setOldPUserId(Long oldPUserId) {
+        this.oldPUserId = oldPUserId;
+    }
+
+    public Long getNewPUserId() {
+        return newPUserId;
+    }
+
+    public void setNewPUserId(Long newPUserId) {
+        this.newPUserId = newPUserId;
+    }
+
+    public String getOldPUserName() {
+        return oldPUserName;
+    }
+
+    public void setOldPUserName(String oldPUserName) {
+        this.oldPUserName = oldPUserName;
+    }
+
+    public String getNewPUserName() {
+        return newPUserName;
+    }
+
+    public void setNewPUserName(String newPUserName) {
+        this.newPUserName = newPUserName;
     }
 }

@@ -20,4 +20,8 @@ public interface PfUserRebateMapper {
     List<PfUserRebate> selectAll();
 
     int updateByPrimaryKey(PfUserRebate record);
+
+    List<PfUserRebate> selectByUserId(Long userPid);
+
+    List<PfUserRebate> selectByUserPId(Long userPid);
 }

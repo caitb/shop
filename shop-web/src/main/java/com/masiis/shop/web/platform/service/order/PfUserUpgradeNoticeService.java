@@ -20,4 +20,16 @@ public class PfUserUpgradeNoticeService {
     public PfUserUpgradeNotice selectByPrimaryKey(Long id){
         return noticeMapper.selectByPrimaryKey(id);
     }
+
+    /**
+     * 根据订单id查询通知单
+     * @param orderId
+     * @return
+     */
+    public PfUserUpgradeNotice selectByPfBorderId(Long orderId){
+        return noticeMapper.selectByPfBorderId(orderId);
+    }
+
+
+
 }

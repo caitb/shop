@@ -38,7 +38,7 @@
             <div class="floor1">
                 <p>推荐人</p>
                 <div>
-                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/RecommendGiveList')">
+                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommendList')">
                         <span>${numByUserPid}</span>
                         <span>我推荐的人</span>
                     </p>

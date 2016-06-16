@@ -1,5 +1,9 @@
 package com.masiis.shop.common.enums.upgrade;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Date 2016/6/16
  * @Author lzh
@@ -57,4 +61,14 @@ public enum UpGradeUpStatus {
     public abstract Integer getCode();
 
     public abstract String getMessage();
+
+
+    public static final Map<Integer,String> upStatusPickList = new HashMap<>();
+
+    static {
+        for (UpGradeStatus s : EnumSet.allOf(UpGradeStatus.class)){
+            upStatusPickList.put(s.getCode(),s.getMessage());
+        }
+    }
+
 }

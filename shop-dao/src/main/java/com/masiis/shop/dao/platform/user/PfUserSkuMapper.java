@@ -115,4 +115,7 @@ public interface PfUserSkuMapper {
     List<Long> selectAllTeamMember(String treeCode);
 
     List<UserSkuAgent> selectCurrentAgentLevel(@Param("userId") Long userId);
+
+
+    List<PfUserSku> selectByUserId(@Param("userId") Long userId);
 }

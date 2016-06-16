@@ -18,6 +18,8 @@ public interface PfUserUpgradeNoticeMapper {
 
     PfUserUpgradeNotice selectByPrimaryKey(Long id);
 
+    PfUserUpgradeNotice selectByPfBorderId(Long orderId);
+
     List<PfUserUpgradeNotice> selectAll();
 
     int updateByPrimaryKey(PfUserUpgradeNotice record);

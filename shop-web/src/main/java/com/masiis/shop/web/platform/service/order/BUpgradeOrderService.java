@@ -8,6 +8,7 @@ import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComAgentLevelService;
 import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -44,12 +45,14 @@ public class BUpgradeOrderService {
     private BOrderService bOrderService;
     @Resource
     private BOrderOperationLogService orderOperationLogService;
+    @Resource
+    private UserService comUserService;
 
 
 
     /**
      * 订单界面获得升级通知信息
-     * @param id
+     * @param id   通知单id
      */
     public BOrderUpgradeDetail getUpgradeNoticeInfo(Long id){
         //升级订单通知信息
@@ -64,6 +67,11 @@ public class BUpgradeOrderService {
             //验证条件是否可以进入
             if (true){
                 upgradeDetail = new BOrderUpgradeDetail();
+                ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
+                if (oldComUser!=null){
+                    upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());
+                    upgradeDetail.setOldPUserName(oldComUser.getRealName());
+                }
                 //商品信息
                 ComSku comSku = getComSku(upgradeNotice.getSkuId());
                 if (comSku!=null){
@@ -105,6 +113,40 @@ public class BUpgradeOrderService {
         log.info("获取升级通知信息------end");
         return upgradeDetail;
     }
+    /**
+     * 支付成功后查询订单信息
+     * @param orderId
+     */
+    public BOrderUpgradeDetail getUpgradeOrderInfo(Long orderId){
+        log.info("支付成功后查询订单信息----start");
+        //根据订单查询通知单号
+        log.info("订单号-------"+orderId);
+        PfUserUpgradeNotice upgradeNotice = noticeService.selectByPfBorderId(orderId);
+        Long newPUserId = null;
+        BOrderUpgradeDetail upgradeDetail = null;
+        if (upgradeNotice!=null){
+            log.info("通知单号-------"+upgradeNotice.getId());
+            upgradeDetail = getUpgradeNoticeInfo(upgradeNotice.getId());
+            if (upgradeDetail!=null){
+                PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+                if (pfBorder!=null){
+                    log.info("新上级id--------"+pfBorder.getUserPid());
+                    ComUser comUser = comUserService.getUserById(pfBorder.getUserPid());
+                    if (comUser!=null){
+                        upgradeDetail.setNewPUserId(comUser.getId());
+                        upgradeDetail.setNewPUserName(comUser.getRealName());
+                    }else{
+                        log.info("新上级不存在-----");
+                    }
+                }
+            }else {
+                log.info("升级通知不存在------订单号----"+orderId);
+                throw new BusinessException("升级通知不存在------订单号----"+orderId);
+            }
+        }
+        log.info("支付成功后查询订单信息----end");
+        return upgradeDetail;
+    }
 
     /**
      * 生成订单数据
@@ -128,7 +170,6 @@ public class BUpgradeOrderService {
 
         log.info("生成订单数据----end");
     }
-
     /**
      * 插入订单表
      * @param upgradeDetail

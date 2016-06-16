@@ -57,6 +57,13 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByPfBorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where pf_border_id = #{orderId,jdbcType=BIGINT}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id, 
         status, pf_border_id, remark, up_status

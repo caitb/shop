@@ -9,7 +9,9 @@ import java.util.Iterator;
 public class BOrderUpgradeDetail {
 
     private Integer skuId;
+    private Integer spuId;
     private String skuName;                   //商品名称
+    private BigDecimal priceRetail;           //销售价
     private Integer currentAgentLevel;        //当前级别
     private String currentAgentLevelName;    //当前级别名字
     private Integer applyAgentLevel;         //申请级别
@@ -106,5 +108,21 @@ public class BOrderUpgradeDetail {
 
     public void setBailChange(BigDecimal bailChange) {
         this.bailChange = bailChange;
+    }
+
+    public Integer getSpuId() {
+        return spuId;
+    }
+
+    public void setSpuId(Integer spuId) {
+        this.spuId = spuId;
+    }
+
+    public BigDecimal getPriceRetail() {
+        return priceRetail;
+    }
+
+    public void setPriceRetail(BigDecimal priceRetail) {
+        this.priceRetail = priceRetail;
     }
 }

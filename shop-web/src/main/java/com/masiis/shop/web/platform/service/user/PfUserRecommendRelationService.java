@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.user;
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.platform.user.PfUserRecommenRelationMapper;
 import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
+import com.masiis.shop.dao.po.PfUserRecommenRelation;
 import com.masiis.shop.dao.po.PfUserRelation;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,11 @@ import java.util.List;
 public class PfUserRecommendRelationService {
     @Resource
     private PfUserRecommenRelationMapper pfUserRecopmmenRelationMapper;
+
+
+    public int insert(PfUserRecommenRelation recommenRelation){
+        return pfUserRecopmmenRelationMapper.insert(recommenRelation);
+    }
 
     /**
      * 推荐我的人
@@ -55,5 +61,15 @@ public class PfUserRecommendRelationService {
      */
     public List<UserRecommend> findSumByUserPid(Long userId) {
         return pfUserRecopmmenRelationMapper.selectSumByUserId(userId);
+    }
+
+    /**
+     *  获取推荐关系
+     * @param userId  被推荐人id
+     * @param skuId   商品id
+     * @return
+     */
+    public PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(Long userId,Integer skuId){
+        return pfUserRecopmmenRelationMapper.selectRecommenRelationByUserIdAndSkuId(userId,skuId);
     }
 }

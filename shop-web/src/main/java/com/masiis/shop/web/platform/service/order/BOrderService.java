@@ -58,8 +58,11 @@ public class BOrderService {
     private ComUserAccountService comUserAccountService;
 
 
-    public int insert(PfBorder pfBorder){
+    public int insertPfBorder(PfBorder pfBorder){
         return pfBorderMapper.insert(pfBorder);
+    }
+    public int insertPfBorderItem(PfBorderItem pfBorderItem){
+        return pfBorderItemMapper.insert(pfBorderItem);
     }
 
 

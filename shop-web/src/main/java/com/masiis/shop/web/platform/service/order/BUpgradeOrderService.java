@@ -39,7 +39,12 @@ public class BUpgradeOrderService {
     @Resource
     private PfUserRecommendRelationService recommendRelationService;
     @Resource
+    private PfBorderRecommenRewardService recommenRewardService;
+    @Resource
     private BOrderService bOrderService;
+    @Resource
+    private BOrderOperationLogService orderOperationLogService;
+
 
 
     /**
@@ -63,7 +68,9 @@ public class BUpgradeOrderService {
                 ComSku comSku = getComSku(upgradeNotice.getSkuId());
                 if (comSku!=null){
                     upgradeDetail.setSkuId(comSku.getId());
+                    upgradeDetail.setSpuId(comSku.getSpuId());
                     upgradeDetail.setSkuName(comSku.getName());
+                    upgradeDetail.setPriceRetail(comSku.getPriceRetail());
                 }else{
                     log.info("商品信息为null-----id--"+upgradeNotice.getSkuId());
                     throw new BusinessException("商品信息为null-----id--"+upgradeNotice.getSkuId());
@@ -107,18 +114,33 @@ public class BUpgradeOrderService {
         log.info("生成订单数据----start");
         BOrderUpgradeDetail upgradeDetail = getUpgradeNoticeInfo(id);
         if (upgradeDetail!=null){
+            ComUser comUser = null;
             //插入订单表
+            PfSkuAgent newSkuAgent = getPfSkuAgent(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+            PfBorder border = insertPfBorder(upgradeDetail,comUser,newSkuAgent);
             //插入订单子表
+            PfBorderItem orderItem = insertBOrderItem(border,upgradeDetail,comUser,newSkuAgent);
             //插入订单操作日志
+            insertBorderOperationLog(border);
+            //插入合伙人订单推荐奖励表
+            insertBorderRecommenReward(border,orderItem);
         }
 
         log.info("生成订单数据----end");
     }
-    private Long  insertPfBorder(BOrderUpgradeDetail upgradeDetail,ComUser comUser,PfSkuAgent newSkuAgent){
+
+    /**
+     * 插入订单表
+     * @param upgradeDetail
+     * @param comUser
+     * @param newSkuAgent
+     * @return
+     */
+    private PfBorder  insertPfBorder(BOrderUpgradeDetail upgradeDetail,ComUser comUser,PfSkuAgent newSkuAgent){
         PfBorder pfBorder = new PfBorder();
         pfBorder.setCreateTime(new Date());
         pfBorder.setOrderCode(OrderMakeUtils.makeOrder("B"));
-        pfBorder.setUserId(getPUserId(upgradeDetail,comUser));//上级id
+        pfBorder.setUserId(getNewPUserId(upgradeDetail,comUser));//上级id
         pfBorder.setUserMessage("");
         pfBorder.setSupplierId(0);//平台给供应商id
         pfBorder.setModifyTime(new Date());
@@ -145,12 +167,84 @@ public class BUpgradeOrderService {
         pfBorder.setIsShip(0);//是否发货
         pfBorder.setIsReceipt(0);//收货标识位
         pfBorder.setRemark("升级插入");
-        int i = bOrderService.insert(pfBorder);
-        if (i==1){
-            return pfBorder.getId();
-        }else {
+        int i = bOrderService.insertPfBorder(pfBorder);
+        if (i!=1){
             throw new BusinessException("升级插入订单失败");
         }
+        return pfBorder;
+    }
+
+    /**
+     * 插入订单商品子表
+     * @param order
+     * @param upgradeDetail
+     * @param comUser
+     * @param newSkuAgent
+     * @return
+     */
+    private PfBorderItem insertBOrderItem(PfBorder order,BOrderUpgradeDetail upgradeDetail,ComUser comUser,PfSkuAgent newSkuAgent){
+        PfBorderItem orderItem = new PfBorderItem();
+        orderItem.setCreateTime(new Date());
+        orderItem.setPfBorderId(order.getId());
+        orderItem.setSpuId(upgradeDetail.getSpuId());
+        orderItem.setSkuId(upgradeDetail.getSkuId());
+        orderItem.setSkuName(upgradeDetail.getSkuName());
+        orderItem.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+        orderItem.setWxId(comUser.getWxId());
+        orderItem.setQuantity(order.getTotalQuantity());
+        orderItem.setOriginalPrice(upgradeDetail.getPriceRetail());//销售价格
+        orderItem.setUnitPrice(newSkuAgent.getUnitPrice());//购买价格
+        orderItem.setTotalPrice(order.getProductAmount());//总价
+        orderItem.setBailAmount(order.getBailAmount());//保证金
+        orderItem.setIsComment(0);
+        orderItem.setIsReturn(0);
+        orderItem.setRemark("升级插入");
+        int i = bOrderService.insertPfBorderItem(orderItem);
+        if (i!=1){
+            throw new BusinessException("升级插入orderItem失败");
+        }
+        return orderItem;
+    }
+
+    /**
+     * 插入订单操作日志表
+     * @param order
+     */
+    private void insertBorderOperationLog(PfBorder order){
+        orderOperationLogService.insertBOrderOperationLog(order,"升级插入");
+    }
+
+    /**
+     * 插入合伙人订单推荐奖励表
+     * @param order
+     * @param orderItem
+     */
+    private void insertBorderRecommenReward(PfBorder order,PfBorderItem orderItem){
+        PfBorderRecommenReward recommenReward = new PfBorderRecommenReward();
+        recommenReward.setCreateTime(new Date());
+        recommenReward.setPfBorderId(order.getId());
+        recommenReward.setPfBorderItemId(orderItem.getId());
+        recommenReward.setSkuId(orderItem.getSkuId());
+        //推荐人
+        PfUserRecommenRelation recommenRelation = getRecommenUserInfo(order.getUserId(),orderItem.getSkuId());
+        if (recommenRelation!=null){
+            recommenReward.setRecommenUserId(recommenRelation.getUserPid());
+        }
+        recommenReward.setQuantity(orderItem.getQuantity());
+        //奖励单价
+        //新上级的 pfUserSku表中的推荐单价
+        recommenReward.setRewardUnitPrice(getRewardUnitPrice(order.getUserPid(),orderItem.getSkuId()));
+        recommenReward.setRewardTotalPrice(order.getRecommenAmount());//奖励总金额
+        recommenReward.setRemark("升级插入");
+        int i = recommenRewardService.insert(recommenReward);
+        if (i!=1){
+            throw new BusinessException("升级插入合伙人订单推荐奖励表失败");
+        }
+    }
+
+
+    private PfUserRecommenRelation getRecommenUserInfo(Long userId,Integer skuId){
+       return recommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId,skuId);
     }
 
     /**
@@ -159,7 +253,7 @@ public class BUpgradeOrderService {
      * @param comUser
      * @return
      */
-    private Long getPUserId(BOrderUpgradeDetail upgradeDetail,ComUser comUser){
+    private Long getNewPUserId(BOrderUpgradeDetail upgradeDetail,ComUser comUser){
         Integer applyAgentLevel = upgradeDetail.getApplyAgentLevel();
         Long newPUserId = null;
         //查询上级的等级

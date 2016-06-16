@@ -39,6 +39,11 @@ public class PfBorderRecommenRewardService {
     @Resource
     private PfBorderRecommenRewardMapper pfBorderRecommenRewardMapper;
 
+
+    public int insert(PfBorderRecommenReward po){
+        return pfBorderRecommenRewardMapper.insert(po);
+    }
+
     /**
      * 获得奖励订单
      * @author muchaofeng

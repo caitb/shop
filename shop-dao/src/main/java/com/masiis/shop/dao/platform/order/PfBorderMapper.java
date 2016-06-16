@@ -113,4 +113,17 @@ public interface PfBorderMapper {
      * @return
      */
     int updateOfflineBOrderCancelById(@Param("orderId") Long orderId);
+
+    /**
+     * 根据订单创建时间的上限,订单状态和支付状态来查询非升级订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    List<PfBorder> selectUnUpgradeByStatusAndDate(@Param("expiraTime") Date expiraTime,
+                                                  @Param("orderStatus") Integer orderStatus,
+                                                  @Param("payStatus") Integer payStatus,
+                                                  @Param("notOrderType") Integer notOrderType);
 }

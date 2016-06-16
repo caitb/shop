@@ -1,6 +1,7 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
@@ -37,7 +38,7 @@ public class PfBorderService {
 
 
     public List<PfBorder> findListByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
-        log.info("查询创建时间大于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
+        log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
                 + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + "的订单");
         // 查询
         List<PfBorder> resList = borderMapper.selectByStatusAndDate(expiraTime, orderStatus, payStatus);
@@ -136,5 +137,16 @@ public class PfBorderService {
             log.error("订单超7天未支付线下支付订单取消失败," + e.getMessage(), e);
             throw new BusinessException(e.getMessage());
         }
+    }
+
+    public List<PfBorder> findUnUpgradeByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
+        log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
+                + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + ",订单类型不是"
+                + BOrderType.UPGRADE.getCode() + "的订单");
+        // 查询
+        List<PfBorder> resList = borderMapper.selectUnUpgradeByStatusAndDate(expiraTime, orderStatus, payStatus, BOrderType.UPGRADE.getCode());
+        if (resList == null || resList.size() == 0)
+            return null;
+        return resList;
     }
 }

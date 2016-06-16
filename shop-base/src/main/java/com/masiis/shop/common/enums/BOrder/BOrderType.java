@@ -34,6 +34,15 @@ public enum BOrderType {
         public String getDesc() {
             return "拿货";
         }
+    },
+    UPGRADE{
+        public Integer getCode() {
+            return 3;
+        }
+
+        public String getDesc() {
+            return "升级";
+        }
     };
 
     public abstract Integer getCode();

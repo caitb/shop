@@ -104,4 +104,57 @@
         </where>
     </select>
 
+    <select id="selectUpgradeRecordByUserIdAndSkuId" resultType="Map">
+        SELECT
+               uun.create_time createTime,
+               org_al.name     orgLevelName,
+               wish_al.name    wishLevelName,
+               p_user.real_name pUserName,
+               r_user.real_name recommendUserName
+        FROM
+               pf_user_upgrade_notice uun
+        LEFT JOIN com_agent_level           org_al  ON org_al.id   = uun.org_agent_level_id
+        LEFT JOIN com_agent_level           wish_al ON wish_al.id  = uun.wish_agent_level_id
+        LEFT JOIN com_user                  p_user  ON p_user.id   = uun.user_pid
+        LEFT JOIN pf_user_recommen_relation urr     ON urr.user_id = uun.user_id AND urr.sku_id = uun.sku_id
+        LEFT JOIN com_user                  r_user  ON r_user.id   = urr.user_pid
+        <where>
+            <if test="userId != null">
+                AND uun.user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND uun.sku_id = #{skuId}
+            </if>
+        </where>
+    </select>
+    <!-->根据商品和状态查询<-->
+    <select id="selectByParam" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        <if test="skuId != null">
+            AND sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="upStatus != null">
+            AND up_status = #{upStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+    <!-->根据商品和返利状态查询<-->
+    <select id="selectBySkuIdAndRebateType" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
+        b.status, b.pf_border_id, b.remark, b.up_status
+        from pf_user_rebate a
+        left join pf_user_upgrade_notice b
+        where 1=1
+        <if test="skuId != null">
+            AND b.sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="userPid != null">
+            AND a.user_pid = #{userPid,jdbcType=BIGINT}
+        </if>
+        <if test="userId != null">
+            AND a.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+    </select>
 </mapper>

@@ -10,6 +10,18 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+.wrap main >a{
+  display: block;
+  background: #fff url("/static/images/next.png") no-repeat 97%;
+  background-size: 10px;
+  padding:10px 0;
+}
+.wrap main a img{
+  display: inline-block;
+  width:15px;
+  float: left;
+  margin:2px 5px 0 10px;
+}
 .wrap main .nav {
   display: -webkit-box;
   background: white;

@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,4 +31,10 @@ public interface PfUserUpgradeNoticeMapper {
     List<PfUserUpgradeNotice> selectByUserPId(Long userPid);
 
     List<PfUserUpgradeNotice> selectByMap(Map<String,Object> conditionMap);
+
+    List<Map<String, Object>> selectUpgradeRecordByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
+
+    List<PfUserUpgradeNotice> selectByParam(@Param("userPid") Long userPid, @Param("skuId") Integer skuId,@Param("upStatus") Integer upStatus);
+
+    List<PfUserUpgradeNotice> selectBySkuIdAndRebateType(@Param("skuId") Integer skuId,@Param("userPid") Long userPid,@Param("userId") Long userId);
 }

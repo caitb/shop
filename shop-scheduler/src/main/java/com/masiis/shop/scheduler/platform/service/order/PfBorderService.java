@@ -150,4 +150,34 @@ public class PfBorderService {
             return null;
         return resList;
     }
+
+    /**
+     * 查询2天未支付升级订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    public List<PfBorder> findUpgradeByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
+        log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
+                + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + ",订单类型是"
+                + BOrderType.UPGRADE.getCode() + "的订单");
+        // 查询
+        List<PfBorder> resList = borderMapper
+                .selectByStatusAndDateAndType(expiraTime, orderStatus, payStatus, BOrderType.UPGRADE.getCode());
+        if (resList == null || resList.size() == 0)
+            return null;
+        return resList;
+    }
+
+    /**
+     * 取消2天未支付升级订单
+     *
+     * @param bOrder
+     */
+    @Transactional
+    public void cancelUnPayUpgradeBOrder(PfBorder bOrder) {
+
+    }
 }

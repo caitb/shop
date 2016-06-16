@@ -498,4 +498,26 @@
         </if>
     </select>
 
+    <select id="selectByStatusAndDateAndType" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
+        FROM
+        where 1=1
+        <if test="expiraTime != null">
+            AND order_type = #{orderType,jdbcType=INTEGER}
+        </if>
+        <if test="expiraTime != null">
+            AND create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="payStatus != null">
+            AND pay_status = #{payStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+
 </mapper>

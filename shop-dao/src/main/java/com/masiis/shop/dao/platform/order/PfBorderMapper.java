@@ -133,4 +133,18 @@ public interface PfBorderMapper {
                                                   @Param("orderStatus") Integer orderStatus,
                                                   @Param("payStatus") Integer payStatus,
                                                   @Param("notOrderType") Integer notOrderType);
+
+    /**
+     * 根据订单创建时间的上限,订单状态和支付状态和订单状态来查询升级订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @param orderType
+     * @return
+     */
+    List<PfBorder> selectByStatusAndDateAndType(@Param("expiraTime") Date expiraTime,
+                                                @Param("orderStatus") Integer orderStatus,
+                                                @Param("payStatus") Integer payStatus,
+                                                @Param("orderType") Integer orderType);
 }

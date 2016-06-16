@@ -8,9 +8,12 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface PfUserUpgradeNoticeMapper {
     int deleteByPrimaryKey(Long id);
 

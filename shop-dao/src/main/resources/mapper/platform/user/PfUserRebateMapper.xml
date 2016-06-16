@@ -49,4 +49,18 @@
         from pf_user_rebate
     </select>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_upgrade_notice_id, user_id, user_pid, pf_border_id,
+        remark
+        from pf_user_rebate
+        where user_id = #{userPid,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserPId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_upgrade_notice_id, user_id, user_pid, pf_border_id,
+        remark
+        from pf_user_rebate
+        where user_pid = #{userPid,jdbcType=BIGINT}
+    </select>
+
 </mapper>

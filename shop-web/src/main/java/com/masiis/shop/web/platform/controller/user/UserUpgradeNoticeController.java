@@ -3,10 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
-import com.masiis.shop.dao.po.ComAgentLevel;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComAgentLevelService;
@@ -141,7 +138,26 @@ public class UserUpgradeNoticeController extends BaseController {
                 }
                 object.put("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
             }else if (tabId==2){
-
+                List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
+                List<PfUserRebate> pfUserRebateList = upgradeNoticeService.getPfUserRebateByUserId(comUser.getId());//默认获得返利
+                if(pfUserRebateList!=null && pfUserRebateList.size()>0){
+                    for (PfUserRebate pfUserRebate :pfUserRebateList){
+                        PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
+                        PfUserUpgradeNotice pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(pfUserRebate.getUserUpgradeNoticeId());
+                        pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
+                        ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                        ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
+                        ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
+                        pfUserUpGradeInfo.setSkuName(comSku.getName());
+                        pfUserUpGradeInfo.setComUser(comUser);
+                        pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
+                        pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
+                        String sDate=sdf.format(pfUserRebate.getCreateTime());
+                        pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
+                    }
+                }
+                object.put("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
             }else {
                 throw new BusinessException("参数有误");
             }

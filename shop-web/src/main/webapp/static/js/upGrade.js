@@ -30,7 +30,6 @@ function changeSku(){
     var agentLevelId = data[2];
     var agentName = data[3];
     var userPid = data[4];
-    alert(value);
     $("#product").text(skuName);
     $("#currentLevel").text(agentName);
     $.ajax({
@@ -40,6 +39,8 @@ function changeSku(){
         data:{skuId:skuId, agentLevelId:agentLevelId, userPid:userPid, skuName:skuName, agentName:agentName},
         success: function(data){
             if (data){
+                $("#skuId").val(skuId);
+                $("#userPid").val(userPid);
                 if (data.isTrue == "true"){
                     $("#upGradePackage").html(data.message);
                 }else {
@@ -57,6 +58,45 @@ function choiceAgent(data){
         $(this).addClass("on");
         $(this).siblings().removeClass("on")
     });
-    alert(data);
-    //alert(data[0] + "-" + data[1] + "-" + data[2] + "-" + data[3] + "-" + data[4]);
+    var msg = data.split(",");
+    var skuName = msg[0];
+    var curAgentLevel = msg[1];
+    var curAgentName = msg[2];
+    var upgradeLevel = msg[3];
+    var upgradeName = msg[4];
+    $("#curAgentLevel").val(curAgentLevel);
+    $("#upgradeLevel").val(upgradeLevel);
+    $("#productName").text(skuName);
+    $("#curLevel").text(curAgentName);
+    $("#upLevel").text(upgradeName);
 }
+
+$(".que_que").on("click",function(){
+    var curAgentLevel = $("#curAgentLevel").val();
+    var upgradeLevel = $("#upgradeLevel").val();
+    var skuId = $("#skuId").val();
+    var userPid = $("#userPid").val();
+    $.ajax({
+        type: 'POST',
+        url: basePath + 'upgrade/upGradeConfirm.do',
+        dataType: 'json',
+        data:{curAgentLevel:curAgentLevel, upgradeLevel:upgradeLevel, skuId:skuId, userPid:userPid},
+        success: function(data){
+            if (data){
+                if (data.isTrue == "true"){
+                    alert(data.isEquals);
+                    if (data.isEquals == "true"){
+                        window.location.href = basePath + "upgrade/applicationComplete.shtml";
+                    }else {
+                        window.location.href = "";
+                    }
+                }else {
+                    alert(data.message);
+                }
+            }
+        },
+        error: function(xhr, type){
+            alert("网络错误");
+        }
+    });
+});

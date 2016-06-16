@@ -45,12 +45,16 @@
         </main>
     </div>
     <div class="black">
+        <input type="hidden" id="skuId" name="skuId" value=""/>
+        <input type="hidden" id="curAgentLevel" name="curAgentLevel" value=""/>
+        <input type="hidden" id="upgradeLevel" name="upgradeLevel" value=""/>
+        <input type="hidden" id="userPid" name="userPid" value=""/>
         <div class="backb"></div>
         <div class="back_que">
                     <p>您确定升级?</p>
-                    <h4><b>产品名:</b><span id="productName">抗引力-手链</span></h4>
-                    <h4><b>当前级别:</b><span id="productLevel">抗引力-手链</span></h4>
-                    <h4><b>申请级别:</b><span id="upLevel">抗引力-手链</span></h4>
+                    <h4><b>产品名:</b><span id="productName"></span></h4>
+                    <h4><b>当前级别:</b><span id="curLevel"></span></h4>
+                    <h4><b>申请级别:</b><span id="upLevel"></span></h4>
                     <h3>
                         <span class="que_qu" onclick="blackHide()">我再想想</span>
                         <span class="que_que">确定</span>
@@ -59,7 +63,7 @@
     </div>
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
     <script src="${path}/static/js/commonAjax.js"></script>
-    <%--<script src="${path}/static/js/definedAlertWindow.js"></script>--%>
+    <script src="${path}/static/js/definedAlertWindow.js"></script>
     <script src="${path}/static/js/upGrade.js"></script>
     <script>
         var path = "${path}";

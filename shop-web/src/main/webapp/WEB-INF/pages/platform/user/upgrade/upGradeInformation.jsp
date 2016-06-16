@@ -49,24 +49,35 @@
                     <span>${upGradeInfoPo.applyCode}</span>
                 </p>
             </div>
-            <div class="floor2">
-                <h1>
-                    <b>*</b>您需要在2016-5-26 11：00之前选择是否升级。
-                    <span>（逾期默认不升级）</span>
-                </h1>
-                <div>
-                    <button onclick="blackShow()">暂不升级</button>
-                    <button>我要升级</button>
+            <c:if test="${upGradeInfoPo.applyStatus == 4}">
+                <h1>您的下级已取消升级</h1>
+            </c:if>
+            <c:if test="${upGradeInfoPo.upStatus == 0 && upGradeInfoPo.applyStatus != 4}">
+                <div class="floor2">
+                    <h1>
+                        <b>*</b>您需要在${overdueDate}之前选择是否升级。
+                        <span>（逾期默认不升级）</span>
+                    </h1>
+                    <div>
+                        <button onclick="blackShow()">暂不升级</button>
+                        <button>我要升级</button>
+                    </div>
+                    <p>如果您升级：${upGradeInfoPo.applyName}还是您的下线<br>如果不升级：${upGradeInfoPo.applyName}将不是您的下线，您将获得一次性奖励</p>
                 </div>
-                <p>如果您升级：赵亮还是您的下线<br>如果不升级：赵亮不是您的下线，您将获得一次性补偿</p>
-            </div>
+            </c:if>
+            <c:if test="${upGradeInfoPo.upStatus == 1 && upGradeInfoPo.applyStatus != 4}">
+                <h1>您已选择暂不升级，您的下级将会与您解除关系。您可以获得一次性奖励</h1>
+            </c:if>
+            <c:if test="${upGradeInfoPo.upStatus == 2}">
+                <h1>您已选择我要升级，请去<a href="">我的申请</a>里查看升级单</h1>
+            </c:if>
         </main>
     </div>
     <div class="black">
         <div class="backb"></div>
         <div class="back_que">
                     <p>您确定不升级?</p>
-                    <h4>如果不升级，赵亮不是您的下线，您可以获得一次性奖励。</h4>
+                    <h4>如果不升级，${upGradeInfoPo.applyName}将不是您的下线，您可以获得一次性奖励。</h4>
                     <h3>
                         <span class="que_qu" onclick="blackHide()">我再想想</span>
                         <span class="que_que">确定</span>

@@ -70,11 +70,11 @@ public enum UpGradeStatus {
     public abstract String getMessage();
 
 
-    public static final Map<Integer,UpGradeStatus> statusPickList = new HashMap<>();
+    public static final Map<Integer,String> statusPickList = new HashMap<>();
 
     static {
         for (UpGradeStatus s : EnumSet.allOf(UpGradeStatus.class)){
-            statusPickList.put(s.getCode(),s);
+            statusPickList.put(s.getCode(),s.getMessage());
         }
     }
 

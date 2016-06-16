@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
@@ -110,6 +111,36 @@ public class UpgradeNoticeService {
     public List<PfUserUpgradeNotice> getPfUserUpGradeInfoByRebateAndSkuId(Integer skuId, Long userPid, Long userId) {
         return pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, userPid, userId);
     }
+
+    public String coverCodeByMyUpgrade(Integer upStatus) {
+        String value = null;
+        if (upStatus == 0) {
+            value = UpGradeStatus.STATUS_Untreated.getMessage();
+        } else if (upStatus == 1) {
+            value = UpGradeStatus.STATUS_Processing.getMessage();
+        } else if (upStatus == 2) {
+            value = UpGradeStatus.STATUS_NoPayment.getMessage();
+        } else if (upStatus == 3) {
+            value = UpGradeStatus.STATUS_Complete.getMessage();
+        } else if (upStatus == 4) {
+            value = UpGradeStatus.STATUS_Revocation.getMessage();
+        }
+        return value;
+    }
+
+    public String coverCodeByLowerUpgrade(Integer upStatus) {
+        String value = null;
+        if (upStatus == 0) {
+            value = UpGradeUpStatus.UP_STATUS_Untreated.getMessage();
+        } else if (upStatus == 1) {
+            value = UpGradeUpStatus.UP_STATUS_NotUpgrade.getMessage();
+        } else if (upStatus == 2) {
+            value = UpGradeUpStatus.UP_STATUS_Upgrade.getMessage();
+        } else if (upStatus == 3) {
+            value = UpGradeUpStatus.UP_STATUS_Complete.getMessage();
+        }
+        return value;
+    }
 	/**
      * 处理代理用户升级
      * @param userId        代理用户id
@@ -137,9 +168,9 @@ public class UpgradeNoticeService {
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Untreated.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
         }else {
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Complete.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             logger.info("代理用户申请代理等级小于上级代理等级");
         }
         upgradeNotice.setRemark("升级提交申请");

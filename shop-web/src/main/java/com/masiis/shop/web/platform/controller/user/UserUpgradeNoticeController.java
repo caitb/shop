@@ -69,12 +69,14 @@ public class UserUpgradeNoticeController extends BaseController {
                     pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                     String sDate=sdf.format(pfUserUpgradeNotice.getCreateTime());
                     pfUserUpGradeInfo.setCreateDate(sDate);
+                    pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByMyUpgrade(pfUserUpgradeNotice.getStatus()));
                     pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                 }
             }
             mv.addObject("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
         }catch (Exception e){
-          log.info(e.getMessage());
+            log.info(e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
         return mv;
     }
@@ -88,20 +90,20 @@ public class UserUpgradeNoticeController extends BaseController {
      */
     @RequestMapping(value = "tab")
     @ResponseBody
-    public String lowerUpgradeNoticeInfo(HttpServletRequest request,HttpServletResponse response,
-                                         @RequestParam(value="tabId",required = true) Integer tabId){
+    public String lowerUpgradeNoticeInfo(HttpServletRequest request, HttpServletResponse response,
+                                         @RequestParam(value = "tabId", required = true) Integer tabId) {
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
-            if(comUser==null){
+            if (comUser == null) {
                 throw new BusinessException("用户出现问题");
             }
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            if(tabId==0){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            if (tabId == 0) {
                 List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
                 List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserId(comUser.getId());
-                if(pfUserUpgradeNoticeList!=null && pfUserUpgradeNoticeList.size()>0){
-                    for (PfUserUpgradeNotice pfUserUpgradeNotice :pfUserUpgradeNoticeList){
+                if (pfUserUpgradeNoticeList != null && pfUserUpgradeNoticeList.size() > 0) {
+                    for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
                         PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
                         pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
                         ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
@@ -111,17 +113,18 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setComUser(comUser);
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
-                        String sDate=sdf.format(pfUserUpgradeNotice.getCreateTime());
+                        String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getStatus()));
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }
-                object.put("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
-            }else if (tabId==1){
+                object.put("pfUserUpGradeInfoList", pfUserUpGradeInfoList);
+            } else if (tabId == 1) {
                 List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
                 List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserPId(comUser.getId());
-                if(pfUserUpgradeNoticeList!=null && pfUserUpgradeNoticeList.size()>0){
-                    for (PfUserUpgradeNotice pfUserUpgradeNotice :pfUserUpgradeNoticeList){
+                if (pfUserUpgradeNoticeList != null && pfUserUpgradeNoticeList.size() > 0) {
+                    for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
                         PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
                         pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
                         ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
@@ -131,17 +134,18 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
-                        String sDate=sdf.format(pfUserUpgradeNotice.getCreateTime());
+                        String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByMyUpgrade(pfUserUpgradeNotice.getStatus()));
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }
-                object.put("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
-            }else if (tabId==2){
+                object.put("pfUserUpGradeInfoList", pfUserUpGradeInfoList);
+            } else if (tabId == 2) {
                 List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
                 List<PfUserRebate> pfUserRebateList = upgradeNoticeService.getPfUserRebateByUserId(comUser.getId());//默认获得返利
-                if(pfUserRebateList!=null && pfUserRebateList.size()>0){
-                    for (PfUserRebate pfUserRebate :pfUserRebateList){
+                if (pfUserRebateList != null && pfUserRebateList.size() > 0) {
+                    for (PfUserRebate pfUserRebate : pfUserRebateList) {
                         PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
                         PfUserUpgradeNotice pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(pfUserRebate.getUserUpgradeNoticeId());
                         pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
@@ -152,20 +156,103 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setComUser(comUser);
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
-                        String sDate=sdf.format(pfUserRebate.getCreateTime());
+                        String sDate = sdf.format(pfUserRebate.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfo.setStatusValue("获得返利");
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }
-                object.put("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
-            }else {
+                object.put("pfUserUpGradeInfoList", pfUserUpGradeInfoList);
+            } else {
                 throw new BusinessException("参数有误");
             }
-        }catch (Exception e){
-          log.info(e.getMessage());
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
         return object.toJSONString();
     }
 
-
+    /**
+     * jjh
+     * 搜索查询
+     * @param request
+     * @param response
+     * @param skuId 商品
+     * @param upStatus 升级处理状态
+     * @param rebateType 返利类型
+     * @return
+     */
+    @RequestMapping(value = "search")
+    @ResponseBody
+    public String searchUpgradeByParam(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestParam(value = "skuId", required = false) Integer skuId,
+                                       @RequestParam(value = "upStatus", required = false) Integer upStatus,
+                                       @RequestParam(value = "rebateType", required = false) Integer rebateType) {
+        JSONObject object = new JSONObject();
+        try {
+            ComUser comUser = getComUser(request);
+            if (comUser != null) {
+                throw new BusinessException("用户出现问题");
+            }
+            List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            if (rebateType != null) { //一次性返利查询
+                List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = null;
+                if (rebateType == 0) {//获得返利
+                    pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByRebateAndSkuId(skuId, null, comUser.getId());
+                } else if (rebateType == 1) { //支付返利
+                    pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByRebateAndSkuId(skuId, comUser.getId(), null);
+                } else {
+                    throw new BusinessException("传入参数有误");
+                }
+                if (pfUserUpgradeNoticeList != null) {
+                    for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
+                        PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
+                        pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
+                        ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                        ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
+                        ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
+                        pfUserUpGradeInfo.setSkuName(comSku.getName());
+                        if (rebateType == 0) {
+                            pfUserUpGradeInfo.setComUser(comUser);
+                            pfUserUpGradeInfo.setStatusValue("获得返利");
+                        } else {
+                            pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                            pfUserUpGradeInfo.setStatusValue("支付返利");
+                        }
+                        pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
+                        pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
+                        String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
+                        pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
+                    }
+                }
+                object.put("pfUserUpGradeInfoList", pfUserUpGradeInfoList);
+            } else {//申请状态查询
+                List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByParam(comUser.getId(), skuId, upStatus);
+                if (pfUserUpgradeNoticeList != null && pfUserUpgradeNoticeList.size() > 0) {
+                    for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
+                        PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
+                        pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
+                        ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                        ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
+                        ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
+                        pfUserUpGradeInfo.setSkuName(comSku.getName());
+                        pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                        pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
+                        pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
+                        String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
+                        pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
+                    }
+                }
+                object.put("pfUserUpGradeInfoList", pfUserUpGradeInfoList);
+            }
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new BusinessException(e.getMessage());
+        }
+        return object.toJSONString();
+    }
 }

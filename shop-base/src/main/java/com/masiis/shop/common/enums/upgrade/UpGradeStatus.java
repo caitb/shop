@@ -1,5 +1,9 @@
 package com.masiis.shop.common.enums.upgrade;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 代理用户升级状态枚举
  * Created by wangbingjian on 2016/6/15.
@@ -64,5 +68,14 @@ public enum UpGradeStatus {
     public abstract Integer getCode();
 
     public abstract String getMessage();
+
+
+    public static final Map<Integer,UpGradeStatus> statusPickList = new HashMap<>();
+
+    static {
+        for (UpGradeStatus s : EnumSet.allOf(UpGradeStatus.class)){
+            statusPickList.put(s.getCode(),s);
+        }
+    }
 
 }

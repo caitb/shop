@@ -157,4 +157,17 @@
             AND a.user_id = #{userId,jdbcType=BIGINT}
         </if>
     </select>
+
+    <select id="selectUncalcelByUpStatusAndDate" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        WHERE status <![CDATA[ <> ]]> 4
+        <if test="upStatus != null">
+          and up_status = #{upStatus,jdbcType=INTEGER}
+        </if>
+        <if test="time != null">
+          AND create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+        </if>
+    </select>
 </mapper>

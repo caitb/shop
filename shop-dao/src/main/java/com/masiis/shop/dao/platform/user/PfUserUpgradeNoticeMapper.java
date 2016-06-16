@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,4 +41,14 @@ public interface PfUserUpgradeNoticeMapper {
     List<PfUserUpgradeNotice> selectByParam(@Param("userPid") Long userPid, @Param("skuId") Integer skuId,@Param("upStatus") Integer upStatus);
 
     List<PfUserUpgradeNotice> selectBySkuIdAndRebateType(@Param("skuId") Integer skuId,@Param("userPid") Long userPid,@Param("userId") Long userId);
+
+    /**
+     * 查询指定上级处理状态和创建时间小于指定时间的通知单
+     *
+     * @param upStatus
+     * @param time
+     * @return
+     */
+    List<PfUserUpgradeNotice> selectUncalcelByUpStatusAndDate(@Param("upStatus") Integer upStatus,
+                                                      @Param("time") Date time);
 }

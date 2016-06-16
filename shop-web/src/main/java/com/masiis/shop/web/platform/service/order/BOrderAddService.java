@@ -112,13 +112,16 @@ public class BOrderAddService {
         if (pfSkuAgent == null) {
             throw new BusinessException("找不到要代理的商品信息");
         }
-        //合伙订单需要缴纳保证金
+        //合伙订单需要缴纳保证金 订单类型(0代理1补货2拿货3升级)
         if (bOrderAdd.getOrderType() == 0) {
             bailPrice = pfSkuAgent.getBail();
             quantity = pfSkuAgent.getQuantity();
-        } else {
+        } else if (bOrderAdd.getOrderType() == 1){
             bailPrice = BigDecimal.ZERO;
             quantity = bOrderAdd.getQuantity();
+        }else if (bOrderAdd.getOrderType()==3){
+
+            quantity = pfSkuAgent.getQuantity();
         }
         //处理订单数据
         PfBorder pfBorder = new PfBorder();

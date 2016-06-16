@@ -18,13 +18,16 @@
             <div class="floor">
                 <p>
                     <span>产品名：</span>
-                    <label for="name"><b>请选择产品</b></label>
-                    <select id="name" onchange="changeSku()">
-                        <option value="">请选择产品</option>
-                        <c:forEach items="${userSkuAgents}" var="userSkuAgent">
-                            <option value="${userSkuAgent.skuId}_${userSkuAgent.skuName}_${userSkuAgent.agentLevelId}_${userSkuAgent.agentName}_${userSkuAgent.userPid}">${userSkuAgent.skuName}</option>
-                        </c:forEach>
-                    </select>
+                    <label>
+                        <b>请选择产品</b>
+                        <select id="name" onchange="changeSku()">
+                            <option value="">请选择产品</option>
+                            <c:forEach items="${userSkuAgents}" var="userSkuAgent">
+                                <option value="${userSkuAgent.skuId}_${userSkuAgent.skuName}_${userSkuAgent.agentLevelId}_${userSkuAgent.agentName}_${userSkuAgent.userPid}">${userSkuAgent.skuName}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+
                 </p>
                 <p>
                     <span>当前级别：</span>

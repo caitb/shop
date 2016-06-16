@@ -56,6 +56,7 @@ public class ComUserAccountService {
         return accountMapper.updateByIdWithVersion(comUserAccount);
     }
 
+
     /**
      * 创建用户之初,创建用户的资产对象
      *
@@ -73,6 +74,7 @@ public class ComUserAccountService {
         account.setProfitFee(new BigDecimal(0));
         account.setAgentBillAmount(new BigDecimal(0));
         account.setDistributionBillAmount(new BigDecimal(0));
+        account.setRecommenBillAmount(new BigDecimal(0));
         account.setVersion(0L);
         accountMapper.insert(account);
     }
@@ -96,6 +98,7 @@ public class ComUserAccountService {
             }
 
             BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
+            BigDecimal pUserCountAmount = order.getPayAmount().subtract(order.getBailAmount()).subtract(order.getRecommenAmount());
 
             log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
             Long userPId = order.getUserPid();
@@ -111,9 +114,9 @@ public class ComUserAccountService {
 
                 ComUserAccount account = accountMapper.findByUserId(userPId);
                 log.info("增加上级结算中金额");
-                ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
+                ComUserAccountRecord recordC = createAccountRecord(pUserCountAmount, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
                 recordC.setPrevFee(account.getCountingFee());
-                account.setCountingFee(account.getCountingFee().add(orderPayment));
+                account.setCountingFee(account.getCountingFee().add(pUserCountAmount));
                 recordC.setNextFee(account.getCountingFee());
                 recordMapper.insert(recordC);
                 log.info("增加上级总销售额");
@@ -132,6 +135,8 @@ public class ComUserAccountService {
                     BigDecimal unit_profit = pfBorderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
                     sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
                 }
+                // 减去推荐奖励
+                sumProfitFee = sumProfitFee.subtract(order.getRecommenAmount());
                 log.info("开始修改利润");
                 ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, order.getId(), UserAccountRecordFeeType.AddProfitFee);
                 recordP.setPrevFee(account.getProfitFee());
@@ -150,10 +155,15 @@ public class ComUserAccountService {
             BigDecimal recommon = order.getRecommenAmount();
             if(recommon != null && recommon.compareTo(BigDecimal.ZERO) > 0){
                 log.info("计算推荐奖励");
+                // 查询要计算的推荐奖励明细
                 List<PfBorderRecommenReward> rewards = recommenRewardMapper.selectByPfBorderId(order.getId());
                 if(rewards != null && rewards.size() > 0){
+                    // 循环处理推荐奖励
                     for(PfBorderRecommenReward reward:rewards){
-
+                        log.info("创建推荐奖励账单子项,奖励用户:" + reward.getRecommenUserId()
+                                + ",推荐奖励额度:" + reward.getRewardTotalPrice());
+                        PfUserBillItem rewardItem = createBillItemByRecommenReward(reward);
+                        itemMapper.insert(rewardItem);
                     }
                 }
             }
@@ -185,6 +195,27 @@ public class ComUserAccountService {
     }
 
     /**
+     * 创建推荐奖励结算账单子项
+     *
+     * @param reward
+     * @return
+     */
+    private PfUserBillItem createBillItemByRecommenReward(PfBorderRecommenReward reward) {
+        PfUserBillItem item = new PfUserBillItem();
+
+        item.setCreateDate(new Date());
+        item.setOrderCreateDate(reward.getCreateTime());
+        item.setOrderPayAmount(reward.getRewardTotalPrice());
+        item.setOrderSubType(2);
+        item.setOrderType(0);
+        item.setPfBorderId(reward.getPfBorderId());
+        item.setUserId(reward.getRecommenUserId());
+        item.setIsCount(0);
+
+        return item;
+    }
+
+    /**
      * 创建结算账单子项
      *
      * @param order
@@ -207,20 +238,20 @@ public class ComUserAccountService {
     /**
      * 创建结算记录对象
      *
-     * @param orderPayment
+     * @param payment
      * @param account
      * @param billId
      * @param userAccountRecordFeeType 枚举类型
      * @return
      */
-    private ComUserAccountRecord createAccountRecord(BigDecimal orderPayment,
+    public ComUserAccountRecord createAccountRecord(BigDecimal payment,
                                                      ComUserAccount account,
                                                      Long billId,
                                                      UserAccountRecordFeeType userAccountRecordFeeType) {
         ComUserAccountRecord comUserAccountRecord = new ComUserAccountRecord();
         comUserAccountRecord.setUserAccountId(account.getId());
         comUserAccountRecord.setFeeType(userAccountRecordFeeType.getCode());
-        comUserAccountRecord.setHandleFee(orderPayment);
+        comUserAccountRecord.setHandleFee(payment);
         comUserAccountRecord.setBillId(billId);
         comUserAccountRecord.setComUserId(account.getComUserId());
         comUserAccountRecord.setHandleType(0);

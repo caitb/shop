@@ -179,6 +179,24 @@ public enum UserAccountRecordFeeType {
         public String getDesc() {
             return "店铺结算中转可提现,减少店铺结算中";
         }
+    },
+    PF_ADD_RECOMMEN_COUNT{
+        public Integer getCode() {
+            return 19;
+        }
+
+        public String getDesc() {
+            return "推荐奖励结算中增加";
+        }
+    },
+    PF_SUB_RECOMMEN_COUNT{
+        public Integer getCode() {
+            return 20;
+        }
+
+        public String getDesc() {
+            return "推荐奖励结算中转可提现,结算中减少";
+        }
     };
 
     public abstract Integer getCode();

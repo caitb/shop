@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.platform.service.user;
 
+import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
@@ -50,6 +51,7 @@ public class PfUserBillService {
 
             // 根据用户来查询账单子项(已完成且未结算状态订单)
             List<PfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), start, end);
+            BigDecimal rewardAmount = new BigDecimal(0);
             for(PfUserBillItem item:items){
                 item.setPfUserBillId(bill.getId());
                 log.info("计算账单子项,子项id:" + item.getId());
@@ -58,22 +60,28 @@ public class PfUserBillService {
                     log.info("此账单子项是销售订单,销售额是:" + item.getOrderPayAmount());
                     bill.setTotalAmount(bill.getTotalAmount().add(item.getOrderPayAmount()));
                     bill.setBillAmount(bill.getBillAmount().add(item.getOrderPayAmount()));
+                    if(item.getOrderType().intValue() == 0){
+                        // 代理订单
+                        PfBorder order = borderMapper.selectByPrimaryKey(item.getPfBorderId());
+                        order.setIsCounting(1);
+                        borderMapper.updateById(order);
+                    } else if(item.getOrderType().intValue() == 1){
+                        // 分销订单
+                        SfOrder order = sfOrderMapper.selectByPrimaryKey(item.getPfBorderId());
+                        order.setIsCounting(1);
+                        sfOrderMapper.updateByPrimaryKey(order);
+                    }
                 } else if(item.getOrderSubType() == 1){
                     // 退货订单
                     log.info("此账单子项是退货订单,销售额是:" + item.getOrderPayAmount());
                     bill.setBillAmount(bill.getBillAmount().subtract(item.getOrderPayAmount()));
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getOrderPayAmount()));
-                }
-                if(item.getOrderType().intValue() == 0){
-                    // 代理订单
-                    PfBorder order = borderMapper.selectByPrimaryKey(item.getPfBorderId());
-                    order.setIsCounting(1);
-                    borderMapper.updateById(order);
-                } else if(item.getOrderType().intValue() == 1){
-                    // 分销订单
-                    SfOrder order = sfOrderMapper.selectByPrimaryKey(item.getPfBorderId());
-                    order.setIsCounting(1);
-                    sfOrderMapper.updateByPrimaryKey(order);
+                } else if(item.getOrderSubType() == 2){
+                    // 推荐奖励
+                    log.info("此账单子项是推荐奖励,销售额是:" + item.getOrderPayAmount());
+                    bill.setTotalAmount(bill.getTotalAmount().add(item.getOrderPayAmount()));
+                    bill.setBillAmount(bill.getBillAmount().add(item.getOrderPayAmount()));
+                    rewardAmount = rewardAmount.add(item.getOrderPayAmount());
                 }
                 item.setIsCount(1);
                 itemMapper.updateByPrimaryKey(item);
@@ -102,12 +110,22 @@ public class PfUserBillService {
             log.info("添加资产账户操作记录成功!");
 
             // 代理结算中减少
-            ComUserAccountRecord recordAgentcount = createAccountRecord(account, bill, 17);
+            ComUserAccountRecord recordAgentcount = createAccountRecord(account, bill, UserAccountRecordFeeType.PF_SUB_AGENT_COUNT_FEE.getCode());
             recordAgentcount.setPrevFee(account.getAgentBillAmount());
-            account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount()));
+            account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount().add(rewardAmount)));
             log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getAgentBillAmount());
             recordAgentcount.setNextFee(account.getAgentBillAmount());
             recordMapper.insert(recordAgentcount);
+
+            if(rewardAmount.compareTo(BigDecimal.ZERO) > 0) {
+                // 推荐奖励结算中减少
+                ComUserAccountRecord recordRewardcount = createAccountRecord(account, bill, UserAccountRecordFeeType.PF_SUB_RECOMMEN_COUNT.getCode());
+                recordAgentcount.setPrevFee(account.getRecommenBillAmount());
+                account.setRecommenBillAmount(account.getRecommenBillAmount().subtract(rewardAmount));
+                log.info("修改账户的推荐奖励结算金额,之后结算金额是:" + account.getAgentBillAmount());
+                recordAgentcount.setNextFee(account.getRecommenBillAmount());
+                recordMapper.insert(recordAgentcount);
+            }
 
             int changeSize = accountMapper.updateByIdWithVersion(account);
             if(changeSize != 1){

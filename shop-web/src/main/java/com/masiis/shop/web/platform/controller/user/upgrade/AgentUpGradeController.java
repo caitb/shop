@@ -41,8 +41,6 @@ public class AgentUpGradeController extends BaseController {
     @Autowired
     private PfUserSkuService pfUserSkuService;
     @Autowired
-    private PfUserRelationService pfUserRelationService;
-    @Autowired
     private UpgradeNoticeService upgradeNoticeService;
 
     /**
@@ -171,17 +169,17 @@ public class AgentUpGradeController extends BaseController {
         ModelAndView mv = new ModelAndView();
         JSONObject jsonObject = new JSONObject();
         logger.info("查询用户上级代理用户id begin");
-        Long pId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
-        if (userPid.longValue() != pId.longValue()){
-            jsonObject.put("isTrue","false");
-            jsonObject.put("message","用户代理上级有误");
-            logger.info(jsonObject.toJSONString());
-            return jsonObject.toJSONString();
-        }
+
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
         if (pfUserSku == null){
             jsonObject.put("isTrue","false");
             jsonObject.put("message","上级代理数据有误");
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
+        }
+        if (userPid.longValue() != pfUserSku.getUserPid().longValue()){
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","用户代理上级有误");
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
@@ -260,16 +258,16 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 代理暂不升级处理
-     * @param applyId   升级申请表id
+     * @param upgradeId   升级申请表id
      * @param request
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/temporarilyUpgrade.do")
     @ResponseBody
-    public String temporarilyUpgrade(@RequestParam("applyId") Long applyId,
+    public String temporarilyUpgrade(@RequestParam("upgradeId") Long upgradeId,
                                      HttpServletRequest request)throws Exception{
-        logger.info("代理暂不升级处理");
+        logger.info("代理暂不升级处理，申请id="+upgradeId);
         ComUser user = getComUser(request);
         JSONObject jsonObject = new JSONObject();
         if (user == null){
@@ -278,7 +276,7 @@ public class AgentUpGradeController extends BaseController {
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-        PfUserUpgradeNotice pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(applyId);
+        PfUserUpgradeNotice pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(upgradeId);
         if (pfUserUpgradeNotice == null){
             jsonObject.put("isTrue","false");
             jsonObject.put("message","没有用户升级申请数据");

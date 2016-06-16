@@ -39,28 +39,33 @@ public class PfBorderRecommenRewardService {
     @Resource
     private PfBorderRecommenRewardMapper pfBorderRecommenRewardMapper;
 
+    public PfBorderRecommenReward getByPfBorderItemId(Long pfBorderItemId) {
+        return pfBorderRecommenRewardMapper.selectByBorderItemId(pfBorderItemId);
+    }
 
-    public int insert(PfBorderRecommenReward po){
+    public int insert(PfBorderRecommenReward po) {
         return pfBorderRecommenRewardMapper.insert(po);
     }
 
     /**
      * 获得奖励订单
+     *
      * @author muchaofeng
      * @date 2016/6/15 15:42
      */
 
-    public Integer findBorders(Long userId)throws Exception{
+    public Integer findBorders(Long userId) throws Exception {
         return pfBorderRecommenRewardMapper.selectBorders(userId);
     }
 
     /**
      * 发出奖励订单
+     *
      * @author muchaofeng
      * @date 2016/6/15 15:42
      */
 
-    public Integer findPBorders(Long userId)throws Exception{
+    public Integer findPBorders(Long userId) throws Exception {
         return pfBorderRecommenRewardMapper.selectPBorders(userId);
     }
 }

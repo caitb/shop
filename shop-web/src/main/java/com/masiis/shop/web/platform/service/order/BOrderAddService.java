@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
@@ -15,6 +16,8 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.PipedReader;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -40,8 +44,8 @@ public class BOrderAddService {
     private PfBorderItemMapper pfBorderItemMapper;
     @Resource
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
-    @Resource
-    private PfUserSkuMapper pfUserSkuMapper;
+    //    @Resource
+//    private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
@@ -60,7 +64,12 @@ public class BOrderAddService {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private PfUserStatisticsService pfUserStatisticsService;
-
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
+    @Resource
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
 
     /**
      * 添加订单
@@ -81,7 +90,7 @@ public class BOrderAddService {
         String weiXinId = "";
         ComSku comSku = skuService.getSkuById(bOrderAdd.getSkuId());
         retailPrice = comSku.getPriceRetail();
-        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
+        PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
         if (pfUserSku == null) {
             agentLevelId = bOrderAdd.getAgentLevelId();
             weiXinId = bOrderAdd.getWeiXinId();
@@ -89,6 +98,16 @@ public class BOrderAddService {
             agentLevelId = pfUserSku.getAgentLevelId();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
         }
+        //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
+        Long recommendUserId = 0l;
+        if (bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {
+            PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
+            if (parentPfUserSku.getAgentLevelId().equals(bOrderAdd.getAgentLevelId())) {
+                recommendUserId = bOrderAdd.getpUserId();
+                bOrderAdd.setpUserId(parentPfUserSku.getUserPid());
+            }
+        }
+        //v1.2 End如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
         if (pfSkuAgent == null) {
             throw new BusinessException("找不到要代理的商品信息");
@@ -155,6 +174,42 @@ public class BOrderAddService {
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
+        //v1.2 Begin处理订单推荐奖励表
+        PfBorderRecommenReward pfBorderRecommenReward = null;
+        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
+        if (pfUserRecommenRelation != null) {
+            PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+            pfBorderRecommenReward = new PfBorderRecommenReward();
+            pfBorderRecommenReward.setCreateTime(new Date());
+            pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
+            pfBorderRecommenReward.setPfBorderItemId(pfBorderItem.getId());
+            pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
+            pfBorderRecommenReward.setRecommenUserId(pfUserRecommenRelation.getUserPid());
+            pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
+            pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
+            pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
+            pfBorderRecommenReward.setRemark("已经有了推荐关系的奖励");
+        } else {
+            if (recommendUserId > 0 && !recommendUserId.equals(pfBorder.getUserPid())) {
+                PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                pfBorderRecommenReward = new PfBorderRecommenReward();
+                pfBorderRecommenReward.setCreateTime(new Date());
+                pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
+                pfBorderRecommenReward.setPfBorderItemId(pfBorderItem.getId());
+                pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
+                pfBorderRecommenReward.setRecommenUserId(recommendUserId);
+                pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
+                pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
+                pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
+                pfBorderRecommenReward.setRemark("新建推荐关系的奖励");
+            }
+        }
+        if (pfBorderRecommenReward != null) {
+            pfBorderRecommenRewardService.insert(pfBorderRecommenReward);
+            pfBorder.setRecommenAmount(pfBorderRecommenReward.getRewardTotalPrice());
+            pfBorderMapper.updateById(pfBorder);
+        }
+        //v1.2 End处理订单推荐奖励表
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "新增订单");
         //拿货方式(0未选择1平台代发2自己发货)
@@ -203,7 +258,7 @@ public class BOrderAddService {
     public Long addProductTake(Long userId, Integer skuId, int quantity, String message, long userAddressId) throws Exception {
         logger.info("进入拿货订单处理Service");
         logger.info("<1>处理订单数据");
-        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
+        PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能拿货。");
         }
@@ -216,7 +271,7 @@ public class BOrderAddService {
         BigDecimal amount = BigDecimal.ZERO;//订单总金额
         Long rBOrderId = 0l;//返回生成的订单id
         //获取上级代理
-        PfUserSku paremtUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSku.getPid());
+        PfUserSku paremtUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), pfUserSku.getSkuId());
         if (paremtUserSku != null) {
             pUserId = paremtUserSku.getUserId();
         }
@@ -300,8 +355,8 @@ public class BOrderAddService {
         pfBorderConsignee.setZip(comUserAddress.getZip());
         pfBorderConsigneeMapper.insert(pfBorderConsignee);
         logger.info("<5>增加统计数据");
-        PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId,pfBorderItem.getSkuId());
-        pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount()+1);
+        PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
+        pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount() + 1);
         pfUserStatistics.setTakeProductCount(pfUserStatistics.getTakeProductCount() + pfBorderItem.getQuantity());
 //        pfUserStatistics.setTakeFee(pfBorderItem.getTotalPrice());
         pfUserStatistics.setVersion(pfUserStatistics.getVersion());

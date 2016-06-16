@@ -4,6 +4,7 @@ import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -54,6 +55,9 @@ public class MyTeamService {
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private ComUserAccountMapper comUserAccountMapper;
+    @Resource
+    private CountGroupService countGroupService;
+
 
 
     /**
@@ -82,11 +86,13 @@ public class MyTeamService {
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
             agentSkuMap.put("isLastLevel", pus.getAgentLevelId()==skuAgentLevels?"yes":"no");//是否代理最后一级
 
-            Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
-            Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
-            Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
-            agentSkuMap.put("countChild", countChild);      //团队人数(不包括自己)
-            agentSkuMap.put("countSales", countSales==null?0:countSales);
+            //Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
+//            Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+//            Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
+
+            CountGroup countGroup = countGroupService.countGroupInfo(pus.getUserId(), pus.getTreeCode());
+            agentSkuMap.put("countChild", countGroup.getCount()-1);      //团队人数(不包括自己)
+            agentSkuMap.put("countSales", countGroup.getGroupMoney());
 
             agentSkuMaps.add(agentSkuMap);
         }
@@ -143,17 +149,18 @@ public class MyTeamService {
 
         //下级userSkuId和userId数量
         Map<String, String> curMap = countChild(pfUserSku.getId());
-        //下级人数
-        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
-        //销售额
-        Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
-        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(pfUserSku.getUserId());
+//        //下级人数
+//        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+//        //销售额
+//        Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
+//        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(pfUserSku.getUserId());
 
         Map<String, Object> teamMap = new HashMap<>();
+        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getUserId(), pfUserSku.getTreeCode());
         teamMap.put("skuName", comSku.getName());//商品名称
         teamMap.put("totalChildren", userIds.size());//直接下级人数
-        teamMap.put("countChild", countChild - userIds.size());//间接下级人数
-        teamMap.put("countSales", (countSales==null?0:countSales)+comUserAccount.getTotalIncomeFee().intValue());//总销售额
+        teamMap.put("countChild", countGroup.getCount()-1-userIds.size());//间接下级人数
+        teamMap.put("countSales", countGroup.getGroupMoney());//总销售额
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
         for(ComUser comUser : comUsers){
@@ -191,13 +198,14 @@ public class MyTeamService {
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
         Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-        Map<String, String> curMap = countChild(pfUserSku.getId());
-        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+        //Map<String, String> curMap = countChild(pfUserSku.getId());
+        //Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getUserId(), pfUserSku.getTreeCode());
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("stock", statisticsBuy.get("stock"));
         memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
-        memberMap.put("countChild", countChild);
+        memberMap.put("countChild", countGroup.getCount()-1);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());

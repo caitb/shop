@@ -8,15 +8,14 @@ import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -59,6 +58,9 @@ public class BOrderAddService {
     private SkuAgentService skuAgentService;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
+
 
     /**
      * 添加订单
@@ -192,6 +194,7 @@ public class BOrderAddService {
      *                 <2>添加订单日志
      *                 <3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
      *                 <4>添加订单地址信息
+     *                 <5>增加统计数据
      * @return
      * @throws Exception
      * @auth:wbj
@@ -238,9 +241,9 @@ public class BOrderAddService {
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
         order.setSendType(comUser.getSendType());
-        order.setOrderStatus(BOrderStatus.WaitShip.getCode());    //待发货
+        order.setOrderStatus(BOrderStatus.WaitShip.getCode());
         order.setShipStatus(0);
-        order.setPayStatus(1);      //已支付
+        order.setPayStatus(1);//支付
         order.setIsShip(0);
         order.setIsReceipt(0);
         order.setIsCounting(0);
@@ -258,7 +261,7 @@ public class BOrderAddService {
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());
+        pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());//合伙人价
         pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
@@ -296,6 +299,13 @@ public class BOrderAddService {
         pfBorderConsignee.setAddress(comUserAddress.getAddress());
         pfBorderConsignee.setZip(comUserAddress.getZip());
         pfBorderConsigneeMapper.insert(pfBorderConsignee);
+        logger.info("<5>增加统计数据");
+        PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId,pfBorderItem.getSkuId());
+        pfUserStatistics.setTakeOrderCount(pfUserStatistics.getTakeOrderCount()+1);
+        pfUserStatistics.setTakeProductCount(pfUserStatistics.getTakeProductCount() + pfBorderItem.getQuantity());
+//        pfUserStatistics.setTakeFee(pfBorderItem.getTotalPrice());
+        pfUserStatistics.setVersion(pfUserStatistics.getVersion());
+        pfUserStatisticsService.updateByIdAndVersion(pfUserStatistics);
         return rBOrderId;
     }
 

@@ -4,15 +4,9 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
-import com.masiis.shop.admin.service.order.BOrderPayService;
-import com.masiis.shop.admin.service.order.BOrderPaymentService;
-import com.masiis.shop.admin.service.order.BOrderService;
-import com.masiis.shop.admin.service.order.OrderQueueDealService;
+import com.masiis.shop.admin.service.order.*;
 import com.masiis.shop.admin.service.system.DictionaryService;
-import com.masiis.shop.dao.po.ComDictionary;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderFreight;
-import com.masiis.shop.dao.po.PfBorderPayment;
+import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +40,10 @@ public class PfBorderController extends BaseController {
     private BOrderPayService bOrderPayService;
     @Resource
     private DictionaryService dictionaryService;
+    @Resource
+    private BorderItemService borderItemService;
+    @Resource
+    private UserSkuStockService userSkuStockService;
 
     @RequestMapping("/list.shtml")
     public String list() {
@@ -59,19 +58,19 @@ public class PfBorderController extends BaseController {
                        String sortName,
                        String sortOrder,
                        PfBorder pfBorder,
-                       Integer  payTypeId
-                       ){
+                       Integer payTypeId
+    ) {
         try {
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,payTypeId);
-            if(pfBorder.getOrderType() == null){
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, payTypeId);
+            if (pfBorder.getOrderType() == null) {
                 List<ComDictionary> orderTypeList = dictionaryService.pickListOfBaseData("PF_BORDER_TYPE");//订单类型
                 pageMap.put("orderTypeList", orderTypeList);
             }
-            if(pfBorder.getShipType() == null){
+            if (pfBorder.getShipType() == null) {
                 List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
                 pageMap.put("payTypeList", payTypeList);
             }
-            if(pfBorder.getOrderStatus() == null){
+            if (pfBorder.getOrderStatus() == null) {
                 List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", orderStatusList);
             }
@@ -134,12 +133,12 @@ public class PfBorderController extends BaseController {
 
         try {
             pfBorder.setOrderStatus(9);
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,null);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, null);
             if (pfBorder.getShipStatus() == null) {
                 List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
                 pageMap.put("wuliuList", wuliuList);
             }
-            if(orderStatus == null){
+            if (orderStatus == null) {
                 List<ComDictionary> comDictionaryList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", comDictionaryList);
             }
@@ -159,24 +158,43 @@ public class PfBorderController extends BaseController {
      * @param response
      * @param bOrderId   合伙人订单ID
      * @param outOrderId 银行流水号
+     * @param payAmount  实付金额
      * @return
      */
     @RequestMapping("/offline/Receipt.do")
     @ResponseBody
-    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId) {
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId, BigDecimal payAmount) {
+        Map<String, String> resultMap = new HashMap<>();
 
         try {
-            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
-            //,getPbUser(request)
-            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"),getPbUser(request));
+            PfBorder pfBorder = bOrderService.findById(bOrderId);
+            if (pfBorder == null) {
+                resultMap.put("result_code", "1");
+                resultMap.put("result_msg", "此订单不存在!");
+                return resultMap;
+            }
+            if (payAmount.compareTo(pfBorder.getReceivableAmount())==-1 && pfBorder.getOrderType().intValue() != 0) {
+                resultMap.put("result_code", "1");
+                resultMap.put("result_msg", "此订单不是代理订单,必须全额支付!");
+                return resultMap;
+            }
 
-            return "success";
+            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
+
+            bOrderPayService.payBOrderOffline(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"), getPbUser(request));
+            resultMap.put("result_code", "0");
+            resultMap.put("result_msg", "确认收款成功!");
+
+            return resultMap;
         } catch (Exception e) {
             log.error("合伙人线下支付收款确认失败![bOrderId=" + bOrderId + "][outOrderId=" + outOrderId + "]");
             e.printStackTrace();
+
+            resultMap.put("result_code", "1");
+            resultMap.put("result_msg", "操作异常!");
+            return resultMap;
         }
 
-        return null;
     }
 
     /**
@@ -230,7 +248,19 @@ public class PfBorderController extends BaseController {
             if (StringUtils.isBlank(pfBorderFreight.getFreight())) {
                 return "请填写运单号";
             }
-            bOrderService.delivery(pfBorderFreight,getPbUser(request));
+
+            PfBorder pfBorder = bOrderService.findById(pfBorderFreight.getPfBorderId());
+            if(pfBorder == null){
+                return "此订单不存在!";
+            }
+
+            PfBorderItem pfBorderItem = borderItemService.findByBorderId(pfBorder.getId());
+            PfUserSkuStock pfUserSkuStock = userSkuStockService.findByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if(pfUserSkuStock.getStock()-pfBorderItem.getQuantity()<0){
+                return "库存不足,请补货!";
+            }
+
+            bOrderService.delivery(pfBorderFreight, getPbUser(request));
 
             return "success";
         } catch (Exception e) {

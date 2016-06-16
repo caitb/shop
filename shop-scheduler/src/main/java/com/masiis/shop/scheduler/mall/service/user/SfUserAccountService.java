@@ -222,7 +222,7 @@ public class SfUserAccountService {
                 throw new BusinessException("小铺店主account修改失败!");
             }
             // 插入变动记录
-            comUserAccountRecordMapper.insert(countRecord);
+            //comUserAccountRecordMapper.insert(countRecord);
             comUserAccountRecordMapper.insert(pfIncomeRecord);
             comUserAccountRecordMapper.insert(pfprofitRecord);
 
@@ -235,12 +235,12 @@ public class SfUserAccountService {
                 SfUserBillItem sfBillItem = createSfUserBillItem(order, sfUserAccount, fee);
                 sfBillItemMapper.insert(sfBillItem);
                 // 计算分润用户结算中变动
-                SfUserAccountRecord sfRecord = createSfUserAccountRecordByAccount(sfUserAccount,
+                /*SfUserAccountRecord sfRecord = createSfUserAccountRecordByAccount(sfUserAccount,
                         fee, shopKeeper, order);
                 sfRecord.setPrevFee(sfUserAccount.getCountingFee());
                 sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(fee));
                 sfRecord.setNextFee(sfUserAccount.getCountingFee());
-                sfRecordMapper.insert(sfRecord);
+                sfRecordMapper.insert(sfRecord);*/
                 int resNum = sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
                 if (resNum != 1) {
                     throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
@@ -280,6 +280,7 @@ public class SfUserAccountService {
         sfItem.setSourceCreateTime(order.getCreateTime());
         sfItem.setRemark("用户订单分润");
         sfItem.setItemType(1);
+        sfItem.setIsCount(0);
         sfItem.setItemSubType(2);
 
         return sfItem;

@@ -64,8 +64,8 @@
         order_create_date, order_pay_amount, is_count, remark
         from pf_user_bill_item
         where user_id = #{userid,jdbcType=BIGINT}
-        and create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
         and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+        AND is_count=0
     </select>
 
     <select id="selectPfCountindFee" parameterType="java.lang.Long" resultType="java.util.Map">

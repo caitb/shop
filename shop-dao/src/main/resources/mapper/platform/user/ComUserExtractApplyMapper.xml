@@ -252,4 +252,8 @@
     <select id="selectSumExtractfeeByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
         select sum(extract_fee) as extractFee from com_user_extract_apply where com_user_id = #{userId} and audit_type = 3
     </select>
+
+    <select id="findSumExtractfeeByUserIdList" resultType="java.util.HashMap" parameterType="java.lang.Long">
+        select sum(extract_fee) as extractFee, audit_type type from com_user_extract_apply where com_user_id = #{userId} group by audit_type
+    </select>
 </mapper>

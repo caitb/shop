@@ -377,7 +377,7 @@
                         }
                     },
                     {
-                        field: 'createTime',
+                        field: 'create_time',
                         title: '生成日期',
                         sortable: true,
                         //editable: true,
@@ -390,7 +390,7 @@
                         }
                     },
                     {
-                        field: 'userName',
+                        field: 'user_id',
                         title: '店主',
                         sortable: true,
                         //editable: true,
@@ -403,7 +403,7 @@
                         }
                     },
                     {
-                        field: 'shopName',
+                        field: 'name',
                         title: '店铺名称',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -428,7 +428,7 @@
                     },
                     {
                         align: 'center',
-                        field: 'shoutNum',
+                        field: 'shout_num',
                         title: '呐喊量',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -442,7 +442,6 @@
                         align: 'center',
                         field: 'bankName',
                         title: '成交量',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
                             if(row.comUserExtractApply && row.comUserExtractApply.bankName){

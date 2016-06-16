@@ -9,9 +9,21 @@ package com.masiis.shop.dao.po;
 
 import org.springframework.stereotype.Repository;
 
+import java.io.InputStream;
 import java.util.Date;
 @Repository
 public class PfUserCertificate {
+
+
+    private InputStream inputStream;
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
     private Long id;
     /**

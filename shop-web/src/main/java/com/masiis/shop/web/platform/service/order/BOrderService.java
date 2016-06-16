@@ -8,18 +8,21 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +31,7 @@ import java.util.List;
  */
 @Service
 public class BOrderService {
-    private final static Logger logger = Logger.getLogger(BOrderService.class);
+
     @Resource
     private PfBorderMapper pfBorderMapper;
     @Resource
@@ -53,6 +56,7 @@ public class BOrderService {
     private BOrderSkuStockService borderSkuStockService;
     @Resource
     private ComUserAccountService comUserAccountService;
+
 
     /**
      * 获取订单
@@ -387,7 +391,9 @@ public class BOrderService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
+
     }
+
 
     /**
      * 获取排队订单数量

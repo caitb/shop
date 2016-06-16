@@ -36,7 +36,7 @@
     </c:if>
     <div class="header">
         <div>
-            <img src="${path}/static/images/qwe%20(2).png" alt="">
+            <img src="${path}/static/images/beijingtu.png" alt="">
             <p>${sfShop.name}<c:if test="${not empty sfShop.logo}"><img src="${sfShop.logo}" alt=""></c:if></p>
             <p>${sfShop.explanation}　</p>
             <%--<img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">--%>
@@ -72,24 +72,23 @@
         </div>
     </div>
     <div class="content">
-        <h1>在售商品</h1><c:forEach items="${SfShopDetails}" var="sd">
-        <section class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
-            <p class="photo">
+        <h1>在售商品</h1>
+        <c:forEach items="${SfShopDetails}" var="sd">
+            <div class="sec1"
+                 onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
                 <img src="${sd.skuUrl}" alt="">
-            </p>
 
-            <div>
-                <h2 style="padding-right: 20px;">${sd.skuAssia}</h2>
+                <div>
+                    <h2>${sd.skuAssia}</h2>
 
-                <h3>${sd.slogan}</h3>
+                    <h1>${sd.slogan}</h1>
 
-                    <%--<h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
-                <h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>
-                <p>
-                    <button>立即购买</button>
-                </p>
+                    <%--<p>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span></p>--%>
+
+                    <h3><span>￥<b>${sd.priceRetail}</b></span><img src="${path}/static/images/chakan.png" alt=""></h3>
+                </div>
             </div>
-        </section></c:forEach>
+        </c:forEach>
     </div>
     <footer>
         <div>

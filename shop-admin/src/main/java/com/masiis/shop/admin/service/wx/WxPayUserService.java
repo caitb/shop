@@ -7,10 +7,7 @@ import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.enums.SfUserExtractAuditTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.*;
-import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
-import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
-import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
-import com.masiis.shop.dao.mall.user.SfUserExtractPaymentMapper;
+import com.masiis.shop.dao.mall.user.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.po.*;
@@ -50,6 +47,8 @@ public class WxPayUserService {
     private SfUserExtractPaymentMapper paymentMapper;
     @Resource
     private SfUserAccountRecordMapper accountRecordMapper;
+    @Resource
+    private SfUserStatisticsMapper sfUserStatisticsMapper;
 
     /**
      * 小铺端用户提现,企业微信给用户打款method
@@ -168,6 +167,12 @@ public class WxPayUserService {
         applyMapper.updateByPrimaryKey(apply);
         // 插入提现申请支付记录
         SfUserExtractPayment payment = createSfExtractPayment(req, result, apply, handler);
+        // 计入累计提现金额
+        SfUserStatistics statistics = sfUserStatisticsMapper.selectByUserId(account.getUserId());
+        statistics.setWithdrawFee(statistics.getWithdrawFee().add(apply.getExtractFee()));
+        if(sfUserStatisticsMapper.updateByIdAndVersion(statistics) != 1) {
+            throw new BusinessException("修改累计提现金额失败!");
+        }
         paymentMapper.insert(payment);
     }
 

@@ -48,6 +48,10 @@ public class ComUserAccountService {
         return accountMapper.findByUserId(id);
     }
 
+    public int updateByIdWithVersion(ComUserAccount comUserAccount){
+        return accountMapper.updateByIdWithVersion(comUserAccount);
+    }
+
     /**
      * 创建用户之初,创建用户的资产对象
      *
@@ -63,6 +67,8 @@ public class ComUserAccountService {
         account.setCreatedTime(new Date());
         account.setTotalIncomeFee(new BigDecimal(0));
         account.setProfitFee(new BigDecimal(0));
+        account.setAgentBillAmount(new BigDecimal(0));
+        account.setDistributionBillAmount(new BigDecimal(0));
         account.setVersion(0L);
         accountMapper.insert(account);
     }

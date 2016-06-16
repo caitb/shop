@@ -2,6 +2,7 @@ package com.masiis.shop.dao.beans.product;
 
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
+import com.masiis.shop.dao.po.PfBorder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -58,6 +59,10 @@ public class Product extends ComSku {
     private Integer version;
 
     private Integer isUserByLink;//用户进入方式:0 链接进入, 1 公众号进入(小白)
+
+    private PfBorder pfBorder;//订单属性
+
+    private Integer needStockNum;//需进货数量
 
     public String getSpuName() {
         return spuName;
@@ -249,5 +254,21 @@ public class Product extends ComSku {
 
     public void setIsUserByLink(Integer isUserByLink) {
         this.isUserByLink = isUserByLink;
+    }
+
+    public PfBorder getPfBorder() {
+        return pfBorder;
+    }
+
+    public void setPfBorder(PfBorder pfBorder) {
+        this.pfBorder = pfBorder;
+    }
+
+    public Integer getNeedStockNum() {
+        return needStockNum;
+    }
+
+    public void setNeedStockNum(Integer needStockNum) {
+        this.needStockNum = needStockNum;
     }
 }

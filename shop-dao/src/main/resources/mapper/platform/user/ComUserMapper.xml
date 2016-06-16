@@ -268,4 +268,14 @@
         WHERE
             wx_unionid = #{unionid,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectAllAgentUser" resultMap="BaseResultMap">
+        SELECT id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
+            id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
+            password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        FROM
+            com_user
+        WHERE
+            is_agent = 1
+    </select>
 </mapper>

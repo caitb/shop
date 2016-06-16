@@ -7,14 +7,12 @@ import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.order.SfOrderManageService;
+import com.masiis.shop.web.mall.service.product.SkuBackGroupImageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +48,8 @@ public class IndexController extends BaseController {
     private SfShopShoutLogMapper sfShopShoutLogMapper;
     @Resource
     private SfUserShopViewService sfUserShopViewService;
+    @Resource
+    private SkuBackGroupImageService skuBackGroupImageService;
 
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
@@ -87,11 +87,11 @@ public class IndexController extends BaseController {
         for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
-            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
+            ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail = new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
-            sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
-            sfShopDetail.setSkuAssia(comSku.getAlias());
+            sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
+            sfShopDetail.setSkuAssia(comSku.getAlias());//别名
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
@@ -150,8 +150,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =249L;
-        userPid = 356L;
+        shopId =302L;
+        userPid = 478L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -181,10 +181,10 @@ public class IndexController extends BaseController {
         for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
-            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
+            ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail = new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
-            sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
+            sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setSkuAssia(comSku.getAlias());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价

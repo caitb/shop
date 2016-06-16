@@ -8,9 +8,13 @@
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ComUserAccount {
+
+    private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
 
     private Long id;
     /**
@@ -42,12 +46,25 @@ public class ComUserAccount {
      */
     private BigDecimal countingFee;
     /**
+     * 代理结算中
+     */
+    private BigDecimal agentBillAmount;
+    /**
+     * 分销结算中
+     */
+    private BigDecimal distributionBillAmount;
+    /**
      * 保证金
      */
     private BigDecimal bailFee;
     private Date createdTime;
     private Date changedTime;
     private String changedBy;
+    private String viewCountingFee = "￥0.00";
+    private String viewAgentBillAmount = "￥0.00";
+    private String viewDistributionBillAmount = "￥0.00";
+    private String viewExtractableFee = "￥0.00";
+    private String viewAppliedFee = "￥0.00";
     /**
      * 乐观锁字段
      */
@@ -99,6 +116,7 @@ public class ComUserAccount {
 
     public void setExtractableFee(BigDecimal extractableFee) {
         this.extractableFee = extractableFee;
+        setViewExtractableFee(rmbFormat.format(extractableFee));
     }
 
     public BigDecimal getAppliedFee() {
@@ -107,6 +125,7 @@ public class ComUserAccount {
 
     public void setAppliedFee(BigDecimal appliedFee) {
         this.appliedFee = appliedFee;
+        setViewAppliedFee(rmbFormat.format(appliedFee));
     }
 
     public BigDecimal getCountingFee() {
@@ -114,7 +133,26 @@ public class ComUserAccount {
     }
 
     public void setCountingFee(BigDecimal countingFee) {
-        this.countingFee = countingFee;
+        this.countingFee = countingFee == null?new BigDecimal(0):countingFee;
+        setViewCountingFee(rmbFormat.format(this.countingFee));
+    }
+
+    public BigDecimal getAgentBillAmount() {
+        return agentBillAmount;
+    }
+
+    public void setAgentBillAmount(BigDecimal agentBillAmount) {
+        this.agentBillAmount = agentBillAmount == null?new BigDecimal(0):agentBillAmount;
+        setViewAgentBillAmount(rmbFormat.format(this.agentBillAmount));
+    }
+
+    public BigDecimal getDistributionBillAmount() {
+        return distributionBillAmount;
+    }
+
+    public void setDistributionBillAmount(BigDecimal distributionBillAmount) {
+        this.distributionBillAmount = distributionBillAmount == null?new BigDecimal(0):distributionBillAmount;
+        setViewDistributionBillAmount(rmbFormat.format(this.distributionBillAmount));
     }
 
     public BigDecimal getBailFee() {
@@ -155,6 +193,46 @@ public class ComUserAccount {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getViewCountingFee() {
+        return viewCountingFee;
+    }
+
+    public void setViewCountingFee(String viewCountingFee) {
+        this.viewCountingFee = viewCountingFee;
+    }
+
+    public String getViewAgentBillAmount() {
+        return viewAgentBillAmount;
+    }
+
+    public void setViewAgentBillAmount(String viewAgentBillAmount) {
+        this.viewAgentBillAmount = viewAgentBillAmount;
+    }
+
+    public String getViewDistributionBillAmount() {
+        return viewDistributionBillAmount;
+    }
+
+    public void setViewDistributionBillAmount(String viewDistributionBillAmount) {
+        this.viewDistributionBillAmount = viewDistributionBillAmount;
+    }
+
+    public String getViewExtractableFee() {
+        return viewExtractableFee;
+    }
+
+    public void setViewExtractableFee(String viewExtractableFee) {
+        this.viewExtractableFee = viewExtractableFee;
+    }
+
+    public String getViewAppliedFee() {
+        return viewAppliedFee;
+    }
+
+    public void setViewAppliedFee(String viewAppliedFee) {
+        this.viewAppliedFee = viewAppliedFee;
     }
 
     @Override

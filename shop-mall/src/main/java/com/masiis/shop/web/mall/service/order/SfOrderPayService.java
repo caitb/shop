@@ -5,14 +5,17 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
-import com.masiis.shop.web.mall.service.user.SfUserRelationService;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.mall.service.user.*;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.web.mall.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
@@ -60,7 +63,19 @@ public class SfOrderPayService {
     @Resource
     private SfOrderItemDistributionService  ordItemDisService;
     @Resource
-    private SfShopService sfShopService;
+    private SfUserStatisticsService statisticsService;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private ComUserAccountService comUserAccountService;
+    @Resource
+    private SfUserAccountService sfUserAccountService;
+    @Resource
+    private SkuService skuService;
 
     /**
      * 获得需要支付的订单的信息
@@ -135,6 +150,10 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity());
             }
+            //统计更新信息
+            updateStatistics(order,orderItems);
+            //更新小铺用户结算中信息
+            updateDisBillAmount(order,orderItems);
             //微信短信提醒
             ComUser comUser = userService.getUserById(order.getUserId());
             orderNotice(comUser, order, orderItems);
@@ -142,6 +161,242 @@ public class SfOrderPayService {
             throw new BusinessException(e);
         }
         log.info("微信支付完进行异步回调---end");
+    }
+
+    private void updateStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("统计信息--------------------------start");
+        updatePurchaseUserStatistics(order,orderItems);
+        updateShopUserStatistics(order,orderItems);
+        updateDisUserStatistics(order,orderItems);
+        log.info("统计信息-----------------------end");
+    }
+    /**
+     * 更新购买人的统计信息
+     * @author hanzengzhi
+     * @date 2016/6/7 14:31
+     */
+    private void updatePurchaseUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("统计购买人-------start");
+        log.info("购买人id----------"+order.getUserId());
+        SfUserStatistics statistics = statisticsService.selectByUserId(order.getUserId());
+        if (statistics != null){
+            //总订单数
+            log.info("总订单数-----之前-----"+statistics.getOrderCount());
+            if (statistics.getOrderCount()!=null){
+                statistics.setOrderCount(statistics.getOrderCount()+1);
+            }else{
+                statistics.setOrderCount(1);
+            }
+            log.info("总订单数-----之后-----"+statistics.getOrderCount());
+            //总购买金额(总购买金额 = 总共买金额 + 订单金额)
+            log.info("总购买金额------之前-----"+statistics.getBuyFee());
+            if (statistics.getBuyFee()!=null){
+                statistics.setBuyFee(statistics.getBuyFee().add(order.getPayAmount()));
+            }else{
+                statistics.setBuyFee(order.getPayAmount());
+            }
+            log.info("总购买金额------之后-----"+statistics.getBuyFee());
+            log.info("总购买金额------增加-----"+order.getPayAmount().intValue());
+            int i = statisticsService.updateByIdAndVersion(statistics);
+            if (i != 1){
+                log.info("更新购买人统计信息失败------购买人id---"+order.getUserId());
+                throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
+            }
+        }else{
+            log.info("sfUserStatistics为null---------------");
+            throw new BusinessException("sfUserStatistics为null---------------");
+        }
+        log.info("统计购买人-------end");
+    }
+    private void updateShopUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("小铺统计信息-------start");
+        //获得小铺统计信息
+        log.info("小铺统计信息-------用户id------"+order.getShopUserId());
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
+        if (shopStatistics != null){
+            //总销售额(总销售额 = 订单金额)
+            log.info("总销售额----------之前------"+shopStatistics.getIncomeFee());
+            if (shopStatistics.getIncomeFee()!=null){
+                shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().add(order.getPayAmount()));
+            }else{
+                shopStatistics.setIncomeFee(order.getPayAmount());
+            }
+            log.info("总销售额----------之后------"+shopStatistics.getIncomeFee());
+            log.info("总销售额----------增加了------"+order.getPayAmount().intValue());
+            //总利润
+            log.info("总利润---------之前------"+shopStatistics.getProfitFee());
+            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            if (shopStatistics.getProfitFee()!=null){
+                shopStatistics.setProfitFee(shopStatistics.getProfitFee().add(sumProfitFee));
+            }else{
+                shopStatistics.setProfitFee(sumProfitFee);
+            }
+            log.info("总利润---------之后------"+shopStatistics.getProfitFee());
+            log.info("总利润---------增加了------"+sumProfitFee.intValue());
+            //店铺总订单
+            if (shopStatistics.getOrderCount()!=null){
+                shopStatistics.setOrderCount(shopStatistics.getOrderCount()+1);
+            }else{
+                shopStatistics.setOrderCount(1);
+            }
+            //店铺总销量
+            log.info("店铺总销量------之前----"+shopStatistics.getProductCount());
+            Integer toatalQuantity = new Integer(0);
+            for (SfOrderItem orderItem : orderItems){
+                toatalQuantity = toatalQuantity + orderItem.getQuantity();
+            }
+            if (shopStatistics.getProductCount()!=null){
+                shopStatistics.setProductCount(shopStatistics.getProductCount()+toatalQuantity);
+            }else{
+                shopStatistics.setProductCount(toatalQuantity);
+            }
+            log.info("店铺总销量------之后----"+shopStatistics.getProductCount());
+            log.info("店铺总销量------增加了----"+toatalQuantity);
+            shopStatisticsService.updateByIdAndVersion(shopStatistics);
+        }
+        log.info("小铺统计信息-------end");
+    }
+    private void updateDisUserStatistics(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新获得三级分润人的信息------start");
+        //总分润(一条订单分润人的分润信息的更新)
+        for (SfOrderItem orderItem : orderItems){
+            List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
+            for (SfOrderItemDistribution itemDis : itemDises){
+                SfUserStatistics disUserStatist =  statisticsService.selectByUserId(itemDis.getUserId());
+                log.info("分润人id------------"+itemDis.getUserId());
+                if (disUserStatist != null ){
+                    log.info("分润------之前------"+disUserStatist.getDistributionFee());
+                    if (disUserStatist.getDistributionFee()!=null){
+                        disUserStatist.setDistributionFee(disUserStatist.getDistributionFee().add(itemDis.getDistributionAmount()));
+                    }else{
+                        disUserStatist.setDistributionFee(itemDis.getDistributionAmount());
+                    }
+                    log.info("分润------之后------"+disUserStatist.getDistributionFee());
+                    log.info("分润------增加了------"+itemDis.getDistributionAmount().intValue());
+                    int i = statisticsService.updateByIdAndVersion(disUserStatist);
+                    if (i != 1){
+                        log.info("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
+                        throw new BusinessException("更新分润信息失败----分润人id---"+itemDis.getUserId()+"---小铺订单子表id---"+itemDis.getSfOrderItemId());
+                    }
+                }
+            }
+        }
+        log.info("更新获得三级分润人的信息------end");
+    }
+
+    private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        updateShopUserDisBillAmount(order,orderItems);
+        updateDisUserBillAmount(order,orderItems);
+    }
+    /**
+     * 更新小铺用户人结算中信息
+     * 结算中(结算中 = 之前结算中 + (商品的购买价格 - 商品的分润 -  代理运费 ) )
+     * @param order
+     * @param orderItems
+     */
+    private void updateShopUserDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新小铺用户结算信息--------start");
+        log.info("更新小铺用户结算信息--------小铺用户id-----------"+order.getShopUserId());
+        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(order.getShopUserId());
+        if (comUserAccount != null){
+            BigDecimal payAmount = order.getPayAmount();
+            BigDecimal disAmount = order.getDistributionAmount();
+            BigDecimal agentShipAmount = order.getAgentShipAmount();
+            BigDecimal billAmount = payAmount.subtract(disAmount).subtract(agentShipAmount);
+            log.info("小铺结算中-----之前------"+comUserAccount.getDistributionBillAmount());
+            if (comUserAccount.getDistributionBillAmount()!=null){
+                comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().add(billAmount));
+            }else{
+                comUserAccount.setDistributionBillAmount(billAmount);
+            }
+            log.info("小铺结算中-----之后------"+comUserAccount.getDistributionBillAmount());
+            log.info("小铺结算中-----增加了------"+billAmount);
+            int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+            if (i!=1){
+                log.info("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
+                throw new BusinessException("更新分润结算失败------订单id---"+order.getId()+"----分润结算账户id---"+order.getShopUserId());
+            }
+        }
+        log.info("更新小铺用户结算信息--------end");
+    }
+    /**
+     * 更新订单分润人的结算信息 ( 结算中 = 之前的结算 + 获得分润)
+     * @author hanzengzhi
+     * @date 2016/6/7 10:24
+     */
+    private void updateDisUserBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        log.info("更新订单三级人润的结算中------------------start");
+        for (SfOrderItem orderItem : orderItems){
+            List<SfOrderItemDistribution> itemDises = ordItemDisService.selectBySfOrderItemId(orderItem.getId());
+            for (SfOrderItemDistribution itemDis : itemDises){
+                log.info("---------分润人id---------"+itemDis.getUserId());
+                SfUserAccount sfUserAccount = sfUserAccountService.findAccountByUserId(itemDis.getUserId());
+                if (sfUserAccount!=null){
+                    log.info("结算中-----之前-------------"+sfUserAccount.getCountingFee());
+                    if (sfUserAccount.getCountingFee()!=null){
+                        sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(itemDis.getDistributionAmount()));
+                    }else{
+                        sfUserAccount.setCountingFee(itemDis.getDistributionAmount());
+                    }
+                    log.info("结算中-----之后-------------"+sfUserAccount.getCountingFee());
+                    log.info("结算中-----增加了-------------"+itemDis.getDistributionAmount());
+                    int i = sfUserAccountService.updateByIdAndVersion(sfUserAccount);
+                    if (i!=1){
+                        log.info("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
+                        throw new BusinessException("更新分润结算失败---订单id---"+order.getId()+"---分润人id----"+itemDis.getUserId());
+                    }
+                }
+            }
+        }
+        log.info("更新订单三级人润的结算中------------------end");
+    }
+
+    /**
+     * 此订单小铺获得利润
+     * 小铺商品的利润 = 商品购买价格 - 商品的代理价格 - 商品的分润 - 代理运费
+     * @param order
+     * @param orderItems
+     * @return
+     */
+    private BigDecimal getShopProfitfee(SfOrder order,List<SfOrderItem> orderItems){
+        BigDecimal sumProfitFee = BigDecimal.ZERO;
+        PfUserSku pUserSku = null;
+        PfSkuAgent pSkuAgent = null;
+        for (SfOrderItem orderItem:orderItems){
+            pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getShopUserId(), orderItem.getSkuId());
+            pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(orderItem.getSkuId(), pUserSku.getAgentLevelId());
+            BigDecimal unit_profit = BigDecimal.ZERO;
+            if (orderItem.getUnitPrice()==null){
+                log.info("orderItem订单明细中购买价格为null");
+                throw new BusinessException("orderItem订单明细中购买价格为null");
+            }
+            if (pSkuAgent!=null&&pSkuAgent.getUnitPrice()!=null){
+                if (orderItem.getUnitPrice().compareTo(pSkuAgent.getUnitPrice())<0){
+                    log.info("商品的购买价格小于商品的拿货价格-----商品的skuId--"+orderItem.getSkuId()+"-----orderItem订单明细id---"+orderItem.getId());
+                    throw new BusinessException("商品的购买价格小于商品的拿货价格-----商品的skuId--"+orderItem.getSkuId()+"-----orderItem订单明细id---"+orderItem.getId());
+                }
+                unit_profit  = orderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+            }else{
+                log.info("商品的拿货价格为null-----商品skuId-----"+orderItem.getSkuId());
+                throw new BusinessException("商品的拿货价格为null-----商品skuId-----"+orderItem.getSkuId());
+            }
+            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        }
+        log.info("商品获得还没有减去分润和代理运费的利润----------"+sumProfitFee);
+        log.info("商品分润---------"+order.getDistributionAmount());
+        log.info("商品代理运费---------"+order.getAgentShipAmount());
+        if (order.getAgentShipAmount()!=null){
+            sumProfitFee = sumProfitFee.subtract(order.getAgentShipAmount());
+        }
+        if (order.getDistributionAmount()!=null){
+            sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
+        }
+        log.info("商品获得净利润---------------------"+sumProfitFee.intValue());
+        if (sumProfitFee.compareTo(new BigDecimal(0))<0){
+            log.info("商品获得利润为负数-------订单id------"+order.getId());
+            throw new BusinessException("商品获得利润为负数-------订单id------"+order.getId());
+        }
+        return sumProfitFee;
     }
 
     /**
@@ -248,6 +503,8 @@ public class SfOrderPayService {
         }
         log.info("更新小铺商品表的总销量----end");
     }
+
+
 
     /**
      * 支付成功回调
@@ -393,11 +650,20 @@ public class SfOrderPayService {
             }
             param_shopuser[3] = sb.toString();
             param_shopuser[4] = order.getRemark();
-            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+            String url = null;
             log.info("小铺发送微信----param参数-----"+param_shopuser.toString());
-            WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+            if (isEnoughStock(order.getShopUserId(),orderItems)){
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+                WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+            }else {
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/"+order.getShopUserId();
+                WxPFNoticeUtils.getInstance().newShopOrderNoticeNoStock(shopUser, param_shopuser, url);
+            }
         }
         log.info("小铺归属人微信提醒-------end");
+        log.info("库存不足提醒--------------start");
+
+        log.info("库存不足提醒----------------end");
         /*分润人微信提醒*/
         log.info("分润人微信提醒------start");
         List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderId(order.getId());
@@ -425,7 +691,20 @@ public class SfOrderPayService {
         }
         log.info("短信提醒-------------------------------end");
     }
-
+    private Boolean isEnoughStock(Long shopUserId,List<SfOrderItem> orderItems) {
+        log.info("判断商品是否有足够的库存----start");
+        for (SfOrderItem orderItem:orderItems){
+            PfUserSkuStock skuStock = skuStockService.selectByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
+            if (skuStock!=null){
+                if (skuStock.getStock()-skuStock.getFrozenStock()<0){
+                    log.info("库存不足------skuId----"+orderItem.getSkuId());
+                    return false;
+                }
+            }
+        }
+        log.info("判断商品是否有足够的库存----end");
+        return true;
+    }
     public void addSfOrderPayment(SfOrderPayment payment) {
         paymentMapper.insert(payment);
     }

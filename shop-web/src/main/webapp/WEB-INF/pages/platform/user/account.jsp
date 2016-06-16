@@ -27,42 +27,41 @@
 <input type="hidden" id="month" name="month" value = "${month}"/>
 <div class="wrap">
     <div class="box">
-        <header class="xq_header">
-            <a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-            <p>我的资金</p>
-        </header>
+        <%--<header class="xq_header">
+            <p>我的账户</p>
+        </header>--%>
         <main>
+            <div class="head_img">
+                <p><img src="${comUser.wxHeadImg}" alt=""></p>
+                <div><h1>${comUser.wxNkName}</h1></div>
+                <span onclick="personCenter()">个人信息</span>
+            </div>
             <div class="ban">
-                <p>累计收入:￥${totalIncom}</p>
-                <h2>(截止到<span>${currentDate}</span>)</h2>
-                <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
-                <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>
-                <button onclick="withdrawRequest()">申请提现</button>
+                <a href="<%=path%>/account/home/shuoming.shtml"><img src="${path}/static/images/what.png" alt=""></a>
+                <p>累计收入</p>
+                <h1>${totalIncom}</h1>
+            </div>
+            <div class="floor" onclick="showJiesuan()">
+                <p>结算中</p>
+                <p><b>${account.viewCountingFee}</b></p>
+                <p><img src="${path}/static/images/top.png" alt=""></p>
+            </div>
+            <div class="floordown">
+                <p><span>结算中(合伙人)</span><span><b>${account.viewAgentBillAmount}</b></span></p>
+                <p><span>结算中(店铺)</span><span><b>${account.viewDistributionBillAmount}</b></span></p>
             </div>
             <nav>
                 <ul>
-                    <li>申请中： ${applicationed}</li>
-                    <li>已提现： ${withdrawd}</li>
+                    <li><b> ${account.viewExtractableFee} <br></b>可提现</li>
+                    <li><b> ${account.viewAppliedFee} <br></b>申请中</li>
+                    <li><b> ${withdrawd}<br></b>已提现</li>
                 </ul>
             </nav>
-            <div class="floor">
-                <p><b>￥</b>${account.countingFee}</p>
-                <h1>结算中<img src="${path}/static/images/what.png" alt="?" onclick="showDetail()" /></h1>
-                <nav>
-                    <ul>
-                        <li>
-                            <p>${agentAmount}</p>
-                            <h1>结算中(合伙人)<img src="${path}/static/images/what.png" alt="?" onclick="showHedetail()"></h1>
-                        </li>
-                        <li>
-                            <p><b>￥</b>${shopAmount}</p>
-                            <h1>结算中（店铺）<img src="${path}/static/images/what.png" alt="?" onclick="showDidetail()"></h1>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <button class="btn" onclick="withdrawRequest()">
+                申请提现
+            </button>
             <div class="floor2">
-                <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
+                <%--<p><a href="#" onclick="toIncomRecord()">收入记录</a></p>--%>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
             </div>
         </main>
@@ -95,7 +94,28 @@
         <botton onClick="hideDetail()">我知道了</botton>
     </div>
 </div>
-<div id="datePlugin"></div>
+<div class="bottom">
+    <footer>
+        <div class="btm" >
+            <a href="<%=path%>/index">
+                <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                <span>我是合伙人</span>
+            </a>
+        </div>
+        <div class="btm">
+            <a href="<%=path%>/shop/manage/index">
+                <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+                <span>我的店铺</span>
+            </a>
+        </div>
+        <div class="btm" style="background: #DA3600;">
+            <a href="<%=path%>/account/home">
+                <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
+                <span>我的账户</span>
+            </a>
+        </div>
+    </footer>
+</div>
 <script type="text/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
@@ -104,6 +124,12 @@
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script>
+    $("body").on("swipeRight", function () {
+        location.href='<%=path%>/shop/manage/index';
+    })
+</script>
 <script type="text/javascript">
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){
@@ -170,6 +196,19 @@
     function toExtract(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>extract/list";
+    }
+    function personCenter(){
+        fullShow();
+        window.location.href = "<%=basePath%>personalInfo/personalHomePageInfo.html";
+    }
+    function showJiesuan(){
+        if($(".floordown").is(":hidden")){
+            $(".floordown").show();    //如果元素为隐藏,则将它显现
+            $(".floor p img").attr("src","${path}/static/images/down.png");
+        }else{
+            $(".floordown").hide();     //如果元素为显现,则将其隐藏
+            $(".floor p img").attr("src","${path}/static/images/top.png")
+        }
     }
 </script>
 </body>

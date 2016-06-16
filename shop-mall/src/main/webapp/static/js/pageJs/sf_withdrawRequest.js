@@ -6,9 +6,8 @@ function withdraw(userId){
         alert("暂无提现金额");
         return;
     }
-    var extractableFee = $("#extractableFee").val();
-    var appliedFee = $("#appliedFee").val();
-    var inputAccount = $("#inputAccount").val();
+    var extractableFee = parseFloat($("#extractableFee").val());
+    var inputAccount = parseFloat($("#inputAccount").val());
     if (extractableFee == 0){
         alert("暂无可提现金额");
         return;
@@ -17,15 +16,15 @@ function withdraw(userId){
         alert("请输入提现金额");
         return;
     }
-    if (inputAccount > extractableFee - appliedFee){
-        alert("输入金额大于可提现金额");
-        return;
-    }
+    //if (inputAccount > extractableFee){
+    //    alert("输入金额大于可提现金额");
+    //    return;
+    //}
     $.ajax({
         type:"POST",
         async:true,
         url : basepath+"/withdraw/confirmWithdraw.do",
-        data:{userId:userId,inputAccount:inputAccount},
+        data:{userId:userId,inputAccount:inputAccount,extractableFee:extractableFee},
         dataType:"Json",
         success:function(data){
             if(data.isTrue == "false"){

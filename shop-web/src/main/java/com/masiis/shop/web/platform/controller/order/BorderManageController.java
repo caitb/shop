@@ -162,19 +162,19 @@ public class BorderManageController extends BaseController {
 
             if (index == 0) {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), null, null);
-            } else if (index == 1) {
+            } else if (index == 2) {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 0, null);
                 List<PfBorder> pfBorder1 = bOrderService.findPfpBorder(user.getId(), 9, null);
                 for (PfBorder pfBorder11 : pfBorder1) {
                     pfBorder.add(pfBorder11);
                 }
-            } else if (index == 2) {
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
+//            } else if (index == 2) {
+//                pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
+//            } else if (index == 3) {
+//                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
             } else if (index == 3) {
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
-            } else if (index == 4) {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
-            } else if (index == 5) {
+            } else if (index == 1) {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 6, null);
                 Iterator<PfBorder> chk_itw = pfBorder.iterator();
                 while (chk_itw.hasNext()) {
@@ -242,6 +242,7 @@ public class BorderManageController extends BaseController {
         List<PfBorder> pfBorders7 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
+        List<PfBorder> pfBorders3 = new ArrayList<>();//已完成
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorders0.add(pfBord);//待付款
@@ -251,21 +252,24 @@ public class BorderManageController extends BaseController {
                 pfBorders8.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
+            } else if (pfBord.getOrderStatus() == 3) {
+                pfBorders3.add(pfBord);//已完成
             }
         }
         List<PfBorder> pfBorderp0 = new ArrayList<>();
         List<PfBorder> pfBorderp7 = new ArrayList<>();//代发货
         List<PfBorder> pfBorderp8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorderp6 = new ArrayList<>();//排单中
+        List<PfBorder> pfBorderp3 = new ArrayList<>();//已完成
         for (PfBorder pfBord : pfBorderps) {
             if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorderp0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 8) {
-                pfBorderp8.add(pfBord);//待收货
-            } else if (pfBord.getOrderStatus() == 6) {
+            }  else if (pfBord.getOrderStatus() == 6) {
                 pfBorderp6.add(pfBord);//排单中
-            } else if (pfBord.getOrderStatus() == 7) {
-                pfBorderp7.add(pfBord);//代发货
+            } else if (pfBord.getOrderStatus() == 3) {
+                pfBorderp3.add(pfBord);//代发货
+            }else if (pfBord.getOrderStatus() == 8) {
+                pfBorderp8.add(pfBord);//待收货
             }
         }
         ModelAndView modelAndView = new ModelAndView();
@@ -273,10 +277,11 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("pfBorders6", pfBorders6.size());
         modelAndView.addObject("pfBorders0", pfBorders0.size());
         modelAndView.addObject("pfBorders8", pfBorders8.size());
-        modelAndView.addObject("pfBorderps7", pfBorderp7.size());
+        modelAndView.addObject("pfBorders3", pfBorders3.size());
+        modelAndView.addObject("pfBorderps3", pfBorderp3.size());
         modelAndView.addObject("pfBorderps6", pfBorderp6.size());
         modelAndView.addObject("pfBorderps0", pfBorderp0.size());
-        modelAndView.addObject("pfBorderps8", pfBorderp8.size());
+//        modelAndView.addObject("pfBorderps8", pfBorderp8.size());
         modelAndView.setViewName("platform/order/dingdanguanli");
         return modelAndView;
     }
@@ -454,16 +459,16 @@ public class BorderManageController extends BaseController {
         if (orderStatus == null && sendType == null) {
             index = "0";//全部
         } else if (orderStatus == 0 || orderStatus == 9) {
-            index = "1";//待付款//线下支付待付款
-        } else if (orderStatus == 7) {
-            index = "2";//代发货
-            borderNum = pfBorders.size();
-        } else if (orderStatus == 8) {
-            index = "3";//待收货
+            index = "2";//待付款//线下支付待付款
+//        } else if (orderStatus == 7) {
+//            index = "2";//代发货
+//            borderNum = pfBorders.size();
+//        } else if (orderStatus == 8) {
+//            index = "3";//待收货
         } else if (orderStatus == 3) {
-            index = "4";//已完成
+            index = "3";//已完成
         } else if (orderStatus == 6) {
-            index = "5";//排单中
+            index = "1";//排单中
             Iterator<PfBorder> chk_itw = pfBorders.iterator();
             while (chk_itw.hasNext()) {
                 PfBorder pfBorder = chk_itw.next();

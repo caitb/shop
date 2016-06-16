@@ -16,6 +16,8 @@ import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.utils.DownloadImage;
+import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
+import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.QRCodeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -174,7 +176,6 @@ public class DevelopingController extends BaseController {
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            //String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
 
             PfUserCertificate puc = new PfUserCertificate();
             puc.setUserId(comUser.getId());
@@ -183,46 +184,79 @@ public class DevelopingController extends BaseController {
             String[] contents = new String[2];
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
-                //if(pfUserCertificate.getPoster() == null){
-                    String headImgName = "headimg-"+comUser.getId()+".png";
-                    String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
-                    String qrcodeName = "qrcode"+pfUserCertificate.getPfUserSkuId()+".png";
-                    String qrcodePath = request.getServletContext().getRealPath("/")+"static";
 
-                    //删除本地头像
-                    new File(headImgPath+"/"+headImgName).delete();
-                    //下载用户微信头像
-                    if(comUser.getWxHeadImg() != null){
-                        String headImgHttpUrl = comUser.getWxHeadImg();
-                        DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
-                        headImgPath += File.separator+headImgName;
-                    }else{//没有微信头像,用默认头像
-                        headImgPath += File.separator+"default.png";
-                    }
-                    //生成二维码
-                    log.info("发展合伙人[headImgPath="+headImgPath+"]");
-                    //QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
-                    //删除本地二维码图片
-                    new File(qrcodePath+"/"+qrcodeName).delete();
-                    DownloadImage.download(weiXinQRCodeService.createAgentQRCode(pfUserCertificate.getPfUserSkuId()), qrcodeName, qrcodePath);
-                    qrcodePath += File.separator+qrcodeName;
-                    //生成海报并上传到OSS
-                    String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    //contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
+                String headImg = "h-"+comUser.getId()+".png";
+                String qrcodeName = "develop-qrcode-"+comUser.getId()+"-"+comSku.getId()+".png";
+                String bgPoster = "develop-sku-"+comSku.getId()+".png";
+                String posterDirPath = request.getServletContext().getRealPath("/")+"static/images/poster";
+                File  posterDir = new File(posterDirPath);
+                if(!posterDir.exists()){
+                    posterDir.mkdirs();
+                }
+                //先删除旧的图片,再下载新的图片
+                new File(posterDirPath+"/"+headImg).delete();
+                new File(posterDirPath+"/"+bgPoster).delete();
+                new File(posterDirPath+"/"+qrcodeName).delete();
+                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(pfUserCertificate.getPfUserSkuId()), qrcodeName, posterDirPath);
+                OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
+
+                //画图
+                String fontPath = request.getServletContext().getRealPath("/")+"static/font";
+                //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
+                //font1.deriveFont(Font.PLAIN, 32);
+                Font font1 = new Font("华文细黑", Font.PLAIN, 32);
+                Font font2 = new Font("华文细黑", Font.PLAIN, 20);
+                Date curDate = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                String startTime = sdf.format(curDate);
+                curDate.setDate(curDate.getDate()+30);
+                String endDate = sdf.format(curDate);
+
+                if("kangyinli.png".equals(comSkuExtension.getPoster())){
+                    Element headImgElement = new Element(88, 619, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+                    Element qrcodeImgElement = new Element(566, 776, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    //contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。";
-                    contents[0] = "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧";
-                    if(comSkuExtension.getPoster() != null && "kangyinli.png".equals(comSkuExtension.getPoster())){
-                        drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
-                    }else if(comSkuExtension.getPoster() != null && "mss.png".equals(comSkuExtension.getPoster())){
-                        drawPost2(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
-                    }
+                    Element text1Element = new Element(92, 775, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
+                    Element text2Element = new Element(603, 990, font2, new Color(102,102,102), "该二维码有效期:");
+                    Element text3Element = new Element(570, 1046, font2, new Color(102,102,102), startTime+"-"+endDate);
+                    text1Element.setLineCount(11);
+                    text3Element.setLineStyle(0);
+                    List<Element> drawElements = new ArrayList<>();
+                    drawElements.add(headImgElement);
+                    drawElements.add(bgPosterImgElement);
+                    drawElements.add(qrcodeImgElement);
+                    drawElements.add(text1Element);
+                    drawElements.add(text2Element);
+                    drawElements.add(text3Element);
+
+                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                }else if("mss.png".equals(comSkuExtension.getPoster())){
+                    Element headImgElement = new Element(36, 878, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+                    Element qrcodeImgElement = new Element(604, 874, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                    Element text1Element = new Element(176, 880, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
+                    Element text2Element = new Element(638, 1086, font2, new Color(102,102,102), "该二维码有效期:");
+                    Element text3Element = new Element(610, 1145, font2, new Color(102,102,102), startTime+"-"+endDate);
+                    text1Element.setLineCount(11);
+                    text3Element.setLineStyle(0);
+                    List<Element> drawElements = new ArrayList<>();
+                    drawElements.add(headImgElement);
+                    drawElements.add(bgPosterImgElement);
+                    drawElements.add(qrcodeImgElement);
+                    drawElements.add(text1Element);
+                    drawElements.add(text2Element);
+                    drawElements.add(text3Element);
+
+                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                }
 
 
-                    //保存二维码海报图片地址
-                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
-                    pfUserCertificateMapper.updateById(pfUserCertificate);
-                //}
+                //保存二维码海报图片地址
+                pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+"develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                pfUserCertificateMapper.updateById(pfUserCertificate);
                 resultMap.put("poster", pfUserCertificate.getPoster());
             }
 

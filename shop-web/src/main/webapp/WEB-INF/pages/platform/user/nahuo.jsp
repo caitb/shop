@@ -92,6 +92,12 @@
 
             <%--<p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>--%>
         </section>
+        <%--<c:if test="${isRate>0}">--%>
+            <%--<div class="floor">--%>
+                <%--<h1>亲，您是0元合伙用户，本次拿货需要支付金额(小于5000)：</h1>--%>
+                <%--<p><span>另需支付：</span><span class="totalNumber">${initPay}</span></p>--%>
+            <%--</div>--%>
+        <%--</c:if>--%>
         <section class="sec5">
             <div>
                 <h1>说明</h1>
@@ -100,7 +106,7 @@
             </div>
             <input type="checkbox" id="active">
             <label for="active"><b>拿货风险：</b>请确认已了解申请拿货的部分不能继续发展下级，货物由我自行销售</label>
-            <button onclick="submit();">确认拿货</button>
+                <button onclick="submit();">确认拿货</button>
         </section>
     </main>
 </div>
@@ -113,7 +119,7 @@
 
     <h3>
         <span class="que_qu">返回修改</span>
-        <span class="que_que">确定</span>
+        <span onclick="queding()">确定</span>
     </h3>
 </div>
 
@@ -126,9 +132,11 @@
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script type="text/javascript">
     var i = 1;
+    var priceDiscount = ${priceDiscount}
     $(".number").on("change", function () {
         i = $(this).val();
     })
+
     $(".jian").on("tap", function () {
         if (i <= 1) {
             return false;
@@ -139,6 +147,7 @@
     $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
+
     })
     $(".que_qu").on("tap", function () {
         $(".back").css("display", "none");
@@ -168,29 +177,30 @@
             alert("请确认拿货风险!");
         }
     }
-    $('.que_que').on('tap', function () {
+
+    function queding(){
         var paraData = {};
         paraData.userAddressId = "${comUserAddress.id}";
         paraData.message = $("#msg").val();
         paraData.stock = $("#applyStock").text();
         paraData.id = ${productInfo.id};
-        $.ajax({
-            url: "<%=basePath%>/product/user/applyStock.do",
-            type: "post",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                if (data.isError == false) {
-                    window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
-                }
-                else {
-                    $(".back").css("display", "none");
-                    $(".back_que").hide();
-                    alert(data.message);
-                }
-            }
-        });
-    });
+          $.ajax({
+              url: "<%=basePath%>/product/user/applyStock.do",
+              type: "post",
+              data: paraData,
+              dataType: "json",
+              success: function (data) {
+                  if (data.isError == false) {
+                      window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
+                  }
+                  else {
+                      $(".back").css("display", "none");
+                      $(".back_que").hide();
+                      alert(data.message);
+                  }
+              }
+          });
+    }
 </script>
 </body>
 </html>

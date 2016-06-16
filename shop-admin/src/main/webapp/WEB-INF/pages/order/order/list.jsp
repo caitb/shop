@@ -421,7 +421,7 @@
                         }
                     },
                     {
-                        field: 'wx_nk_name',
+                        field: 'user_id',
                         title: '购买人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -516,7 +516,6 @@
                     {
                         field: 'pay_type_id',
                         title: '支付方式',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -563,7 +562,7 @@
                         }
                     },
                     {
-                        field: 'isCounting',
+                        field: 'is_counting',
                         title: '是否结算',
                         sortable: true,
                         footerFormatter: totalNameFormatter,

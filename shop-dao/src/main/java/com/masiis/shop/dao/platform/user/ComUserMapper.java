@@ -71,4 +71,6 @@ public interface ComUserMapper {
      * @return
      */
     ComUser selectByUnionid(String unionid);
+
+    List<ComUser> selectAllAgentUser();
 }

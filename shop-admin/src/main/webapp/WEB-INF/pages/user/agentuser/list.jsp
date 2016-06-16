@@ -331,6 +331,7 @@
                     {
                         title: '证书编号',
                         field: 'code',
+                        sortable: true,
                         align: 'center',
                         valign: 'middle',
                         footerFormatter: totalTextFormatter,
@@ -341,7 +342,7 @@
                         }
                     },
                     {
-                        field: 'realName',
+                        field: 'user_id',
                         title: '姓名',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -356,7 +357,6 @@
                     {
                         field: 'mobile',
                         title: '手机号',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -367,8 +367,9 @@
                         }
                     },
                     {
-                        field: 'skuName',
+                        field: 'sku_id',
                         title: '合伙商品',
+                        sortable: true,
                         align: 'center',
                         footerFormatter: totalNameFormatter,
                         formatter: function (value, row, index) {
@@ -378,7 +379,7 @@
                         }
                     },
                     {
-                        field: 'levelName',
+                        field: 'agent_level_id',
                         title: '合伙人级别',
                         sortable: true,
                         //editable: true,
@@ -393,8 +394,6 @@
                     {
                         field: 'sendType',
                         title: '拿货方式',
-                        sortable: true,
-                        //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -412,7 +411,6 @@
                     {
                         field: 'stock',
                         title: '库存',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -422,7 +420,7 @@
                         }
                     },
                     {
-                        field: 'pRealName',
+                        field: 'user_pid',
                         title: '上级合伙人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -450,7 +448,7 @@
                         }
                     },
                     {
-                        field: 'createTime',
+                        field: 'create_time',
                         title: '加入时间',
                         sortable: true,
                         //editable: true,
@@ -463,7 +461,7 @@
                         }
                     },
                     {
-                        field: 'isPay',
+                        field: 'is_pay',
                         title: '是否支付',
                         sortable: true,
                         //editable: true,
@@ -481,7 +479,6 @@
                     {
                         field: 'lowerLevelCount',
                         title: '下级合伙人',
-                        sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',

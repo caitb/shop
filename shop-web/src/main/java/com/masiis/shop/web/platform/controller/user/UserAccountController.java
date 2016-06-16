@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
@@ -11,11 +10,9 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserBillService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
-import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,8 +34,6 @@ import java.util.*;
 public class UserAccountController extends BaseController{
     private Logger log = Logger.getLogger(this.getClass());
 
-    @Resource
-    private UserService userService;
     @Resource
     private ComUserAccountService accountService;
     @Resource
@@ -98,10 +93,12 @@ public class UserAccountController extends BaseController{
         if(comUser == null){
             throw new BusinessException("用户未登录!");
         }
+        log.info("userId = " + comUser.getId());
         String currentDate = DateUtil.Date2String(new Date(),"yyyy-MM-dd");
         //查询用户资产表，用于展示累计收入和可提现金额
         ComUserAccount account = accountService.findAccountByUserid(comUser.getId());
         if (account == null){
+            log.info("无用户账户信息");
             BigDecimal fee = new BigDecimal(0.00);
             account = new ComUserAccount();
             account.setTotalIncomeFee(fee);
@@ -131,14 +128,21 @@ public class UserAccountController extends BaseController{
         Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
         BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
         log.info("查询已提现金额end");
-        mv.addObject("account",account);
-        mv.addObject("agentAmount",rmbFormat.format(agentAmount));
-        mv.addObject("shopAmount",account.getCountingFee().subtract(agentAmount));
-        mv.addObject("applicationed",rmbFormat.format(account.getAppliedFee()));
+        mv.addObject("comUser",comUser);
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
-        mv.addObject("totalIncom",account.getExtractableFee().add(withdrawd).add(account.getCountingFee()));
+        mv.addObject("totalIncom",rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getAgentBillAmount()).add(account.getDistributionBillAmount())));
+        account.setCountingFee(account.getAgentBillAmount() == null?new BigDecimal(0):account.getAgentBillAmount().add(account.getDistributionBillAmount() == null?new BigDecimal(0):account.getDistributionBillAmount()));
+        account.setExtractableFee(account.getExtractableFee().subtract(account.getAppliedFee()));
+        mv.addObject("account",account);
         mv.setViewName("platform/user/account");
+        return mv;
+    }
+
+    @RequestMapping("/home/shuoming.shtml")
+    public ModelAndView gotoShuoming(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("platform/user/shuoming");
         return mv;
     }
 
@@ -221,25 +225,4 @@ public class UserAccountController extends BaseController{
         return jsonArray.toString();
     }
 
-//    /**
-//     * 跳转月份查询用户账单信息
-//     * @param year
-//     * @param month
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "getUserBillbyTurn",method = RequestMethod.POST)
-//    @ResponseBody
-//    public String getUserBillbyTurn(@RequestParam(value = "year",required = true) String year,
-//                                    @RequestParam(value = "month",required = true) String month,
-//                                    HttpServletRequest request){
-//        ComUser user = getComUser(request);
-//        log.info("获取其他年份月份的用户账单信息");
-//        if(user == null){
-//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-//        }
-//        //首次查询默认查询第一页，每页查询10条
-//        List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,1,10);
-//
-//    }
 }

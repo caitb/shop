@@ -52,6 +52,10 @@ public class UserService {
     private SfUserAccountService sfAccountService;
     @Resource
     private SfShopMapper sfShopMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
+    @Resource
+    private SfUserStatisticsService sfUserStatisticsService;
 
     /**
      * 根据用户id获取用户
@@ -315,6 +319,7 @@ public class UserService {
             insertComUser(user);
             accountService.createAccountByUser(user);
             sfAccountService.createSfAccountByUser(user);
+            sfUserStatisticsService.initSfUserStatistics(user);
         }
 
         if (wxUser == null) {

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +134,9 @@ public class ProductService {
                 int currentStock = product.getStock() - product.getFrozenStock();
                 if (currentStock >= 0) {
                     product.setStock(currentStock);
+                    product.setNeedStockNum(0);
                 } else {
+                    product.setNeedStockNum(product.getFrozenStock() - product.getStock());
                     product.setStock(0);
                 }
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());

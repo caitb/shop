@@ -46,17 +46,14 @@ public class MyTeamController extends BaseController {
             ComUser comUser = getComUser(request);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
-            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUser.getId());
             Integer totalChild = 0;
-            Double totalSales = 0.0;
+            BigDecimal totalSales = new BigDecimal(0);
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
-                double totalIncomeFee =  + comUserAccount.getTotalIncomeFee().doubleValue();
-                double countSales = Double.parseDouble(agentSkuMap.get("countSales").toString());
-                totalSales += totalIncomeFee + countSales;
+                totalSales = totalSales.add((BigDecimal) agentSkuMap.get("countSales"));
             }
             mav.addObject("totalChild", totalChild);
-            mav.addObject("totalSales", new BigDecimal(totalSales).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue());
+            mav.addObject("totalSales", totalSales);
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;

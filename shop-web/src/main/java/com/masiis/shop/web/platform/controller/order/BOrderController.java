@@ -1,13 +1,13 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
@@ -194,13 +194,14 @@ public class BOrderController extends BaseController {
 
     /**
      * 实时的获取订单的详情
+     *
      * @author hanzengzhi
      * @date 2016/5/11 20:30
      */
     @RequestMapping(value = "getOrderDetail.do")
     @ResponseBody
     public PfBorder getOrderDetail(HttpServletRequest request, HttpServletResponse response,
-                                @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
+                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
 
         return payBOrderService.getOrderDetail(bOrderId);
     }
@@ -335,6 +336,8 @@ public class BOrderController extends BaseController {
             }
         } else if (pfBorder.getOrderType() == 1) {
             successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+        } else if (pfBorder.getOrderType() == 2) {
+            successURL += "product/replenishmentSelf.shtml?bOrderId=" + pfBorder.getId();
         } else {
             throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
         }

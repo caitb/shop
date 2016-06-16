@@ -51,7 +51,7 @@
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  padding: 15px 0 0 0;
+  padding: 15px 0 15px 0;
 }
 .wrap .header > div img {
   display: block;
@@ -120,12 +120,18 @@
   margin: 2px 0;
   font-size:12px;
 }
+.wrap .header nav p span:first-child{
+  font-weight:600;
+}
+.wrap .header nav p span:first-child b{
+  font-size:12px;
+  margin-left:5px;
+}
 .wrap > nav {
   display: -webkit-box;
   width: 100%;
   background: #fff;
   margin-top: 10px;
-  border-bottom:1px solid #f6f6f6;
 }
 .wrap > nav p {
   width: 1px;
@@ -137,6 +143,7 @@
   border-right:1px solid #f6f6f6;
   padding: 14px 0;
   position: relative;
+  border-bottom: 1px solid #f6f6f6;
 }
 .wrap > nav p b{
   width: 10px;

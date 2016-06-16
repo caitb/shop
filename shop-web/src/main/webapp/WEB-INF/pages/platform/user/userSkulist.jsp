@@ -41,18 +41,22 @@
                             <div>
                                 <h2 id="sku1">${sku.name}</h2>
                                 <h3>零售价：<span>￥${sku.priceRetail}</span></h3>
-                                <p>在线库存：<span id="sku2">${sku.stock}</span></p>
+                                <p>在线库存：<span id="sku2">${sku.stock}</span>
+                                     <c:if test="${sku.needStockNum>0}">
+                                         <b>需进货${sku.needStockNum}件</b>
+                                     </c:if>
+                                    </p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="text" id="skuId" value="${sku.id}" style="display: none">
                             </div>
                         </section>
                         <section class="sec3">
-                            <p class="jianku"
-                               onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
-                                申请拿货</p>
-                            <p class="buhuo"
-                               onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
-                                补货</p>
+                                <p class="jianku"
+                                   onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
+                                    <b>申请拿货</b></p>
+                                <p class="buhuo"
+                                   onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
+                                    <b>补货</b></p>
                         </section>
                     </c:forEach>
                 </div>
@@ -79,6 +83,11 @@
                 <h1 class="b_que">确定</h1>
             </div>
         </div>
+        <%--<div class="back_applyInfo b" style="display:none;">--%>
+            <%--<h4>亲，由于您是0元用户，系统不支持补货！</h4>--%>
+            <%--<h1><span class="zhidao">知道了</span>--%>
+            <%--</h1>--%>
+        <%--</div>--%>
     </main>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
@@ -122,6 +131,14 @@
         $(".back").css("display", "none");
         $(".back_b").hide();
     })
+//    function checkIsAddStock(){
+//            $(".back_applyInfo").show();
+//            $(".back").show();
+//    }
+//    $(".zhidao").on("click", function () {
+//        $(this).parents(".b").hide();
+//        $(".back").hide();
+//    })
     $(".b_que").on("tap", function () {
         i = $(".number").val();
         var paraData = "?";

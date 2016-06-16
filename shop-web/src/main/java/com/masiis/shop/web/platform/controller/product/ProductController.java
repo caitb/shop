@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -10,6 +12,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
@@ -32,7 +35,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/product")
 public class ProductController extends BaseController {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private ProductService productService;
     @Resource
@@ -49,7 +52,8 @@ public class ProductController extends BaseController {
     private BOrderAddService bOrderAddService;
     @Resource
     private PfUserRelationService pfUserRelationService;
-
+    @Resource
+    private SkuAgentService skuAgentService;
     /**
      * 1 商品详细信息
      * 2 库存信息暂时都显示平台,与上级无关
@@ -135,6 +139,7 @@ public class ProductController extends BaseController {
 
 
     /**
+     * jjh
      * 平台发货，申请拿货
      */
     @RequestMapping(value = "/user/applyStock.do")
@@ -143,7 +148,8 @@ public class ProductController extends BaseController {
                              @RequestParam(required = true) Integer stock,
                              @RequestParam(required = true) Long id,
                              @RequestParam(required = false) String message,
-                             @RequestParam(required = true) Long userAddressId) {
+                             @RequestParam(required = true) Long userAddressId
+                             ) {
         JSONObject object = new JSONObject();
         try {
             HttpSession session = request.getSession();
@@ -193,6 +199,7 @@ public class ProductController extends BaseController {
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(), product.getSkuId());
         Map<String, Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
         mav.addObject("comSku", comSku);

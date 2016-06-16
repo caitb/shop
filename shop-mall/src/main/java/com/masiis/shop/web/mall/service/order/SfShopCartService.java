@@ -58,10 +58,20 @@ public class SfShopCartService {
      */
     public void addProductToCart(Long shopId,Long userId,Integer skuId,Integer quantity)throws Exception{
         SfShopCart ShopCart = new SfShopCart();
-        SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
-        if(sfShopCart!=null){
-            sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
-            log.info("----删除当前商品----");
+        //购物车功能，暂不使用
+//        SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
+//        if(sfShopCart!=null){
+//            sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
+//            log.info("----删除当前商品----");
+//        }
+
+        //单个商品的操作，清空购物车
+        List<SfShopCart> sfShopCartList = sfShopCartMapper.getProductInfoByUserId(userId);
+        if(sfShopCartList!=null && sfShopCartList.size()>0){
+            for(SfShopCart sfShopCart :sfShopCartList){
+                sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
+                log.info("用户"+userId+"的购物车删除了一条记录"+sfShopCart.getId()+",当前店铺为"+sfShopCart.getSfShopId()+"商品为"+sfShopCart.getSkuId()+"");
+            }
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);

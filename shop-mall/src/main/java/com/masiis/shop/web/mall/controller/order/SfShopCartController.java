@@ -51,13 +51,10 @@ public class SfShopCartController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             ComUser user = getComUser(request);
-            int useStock = skuService.checkSkuStock(skuId, quantity, shopId);
+//            int useStock = skuService.checkSkuStock(skuId, quantity, shopId);
             SfShop sfShop = sfShopService.getSfShopById(shopId);
             if(sfShop==null){
                 throw new BusinessException("不存在该店铺！");
-            }
-            if (useStock < 0) {
-                throw new BusinessException("可用库存不足！请重新选择商品数量");
             }
             sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
             object.put("isError", false);

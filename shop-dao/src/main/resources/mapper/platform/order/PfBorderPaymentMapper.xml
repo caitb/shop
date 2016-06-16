@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderPaymentMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderPayment" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="amount" property="amount" jdbcType="DECIMAL" />
-        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
-        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
-        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR" />
-        <result column="pay_serial_num" property="paySerialNum" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderPaymentMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderPayment">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER"/>
+        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR"/>
+        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR"/>
+        <result column="pay_serial_num" property="paySerialNum" jdbcType="VARCHAR"/>
     </resultMap>
 
 
@@ -52,20 +52,20 @@
                AND is_enabled=1
     </select>
 
-    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderPayment" resultMap="BaseResultMap" >
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderPayment" resultMap="BaseResultMap">
         select
-               id,
-               create_time,
-               pf_border_id,
-               amount,
-               pay_type_id,
-               pay_type_name,
-               is_enabled,
-               remark,
-               out_order_id,
-               pay_serial_num
+        id,
+        create_time,
+        pf_border_id,
+        amount,
+        pay_type_id,
+        pay_type_name,
+        is_enabled,
+        remark,
+        out_order_id,
+        pay_serial_num
         from
-               pf_border_payment
+        pf_border_payment
         <where>
             <if test="id != null">
                 AND id = #{id}
@@ -82,7 +82,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderPayment" useGeneratedKeys="true" keyProperty="id" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderPayment" useGeneratedKeys="true" keyProperty="id">
         insert into pf_border_payment
                     (
                     id,
@@ -110,9 +110,9 @@
                     )
     </insert>
 
-    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderPayment" >
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderPayment">
         update
-               pf_border_payment
+        pf_border_payment
         <set>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -143,14 +143,14 @@
             </if>
         </set>
         where
-              id = #{id,jdbcType=BIGINT}
+        id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteById" parameterType="java.lang.Long" >
+    <delete id="deleteById" parameterType="java.lang.Long">
         delete from pf_border_payment where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <select id="selectBySerialNum"  resultMap="BaseResultMap" >
+    <select id="selectBySerialNum" resultMap="BaseResultMap">
         select
                id,
                create_time,
@@ -168,7 +168,7 @@
                pay_serial_num = #{paySerialNum,jdbcType=VARCHAR}
     </select>
 
-<select id="selectByPaySerialNumAndAmount" resultMap="BaseResultMap">
+    <select id="selectByPaySerialNumAndAmount" resultMap="BaseResultMap">
         select
         id,
         create_time,
@@ -224,5 +224,7 @@
                 pf_border_id = #{bOrderId}
                 AND
                 pay_type_id = 1
+        ORDER BY create_time DESC
+                LIMIT 0,1
     </select>
 </mapper>

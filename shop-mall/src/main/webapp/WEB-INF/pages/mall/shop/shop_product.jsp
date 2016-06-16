@@ -19,7 +19,7 @@
 <div id="wrap">
     <div class="box">
         <header>
-            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>商品详情</p>
         </header>
         <div class="banner">
@@ -119,10 +119,10 @@
         <span id="skuName">${skuInfo.comSku.name}</span>
         <span id="price"><b>￥</b>${skuInfo.comSku.priceRetail}</span>
     </p>
-    <h1>
-        <span>库存：</span>
-        <span id="stock">${skuInfo.stock}</span>
-    </h1>
+    <%--<h1>--%>
+        <%--<span>库存：</span>--%>
+        <%--<span id="stock">${skuInfo.stock}</span>--%>
+    <%--</h1>--%>
     <h1>
         <span style="float:left">数量：</span>
         <p>
@@ -206,13 +206,13 @@
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
         var currentStock = $("#stock").text();
-        if(currentStock-i<0){
-            alert("可用库存不足！");
-            $(".shoping").hide();
-            $(".back").hide();
-            $(".back_g").hide();
-            return;
-        }
+//        if(currentStock-i<0){
+//            alert("可用库存不足！");
+//            $(".shoping").hide();
+//            $(".back").hide();
+//            $(".back_g").hide();
+//            return;
+//        }
         $.ajax({
             url: "<%=basePath%>cart/addCart.do",
             type: "post",

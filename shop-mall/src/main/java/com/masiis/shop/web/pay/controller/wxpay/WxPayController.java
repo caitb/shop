@@ -73,6 +73,7 @@ public class WxPayController extends BaseController {
         UnifiedOrderRes resObj = null;
         try {
             UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
+            log.info("uniOrder-----------totalFee-------"+uniOrder.getTotal_fee());
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsSF.WX_PAY_URL_UNIORDER, uniOrder);

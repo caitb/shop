@@ -54,8 +54,6 @@ public class MarketController extends BaseController {
         for (PbBanner banner:pbBanner) {
             //图片地址
             banner.setImgUrl(value + banner.getImgUrl());
-//            String url = value + banner.getImgUrl();
-//            urls.add(url);
         }
         ModelAndView modelAndView = new ModelAndView();
         //封装图片地址集合
@@ -65,6 +63,7 @@ public class MarketController extends BaseController {
         String skuValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         //获取主页展示商品信息
         List<IndexComSku> indexComS = indexShowService.findIndexComSku(user.getId());
+        indexComS.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
 //            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());

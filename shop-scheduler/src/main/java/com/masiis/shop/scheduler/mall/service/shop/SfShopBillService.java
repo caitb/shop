@@ -2,8 +2,10 @@ package com.masiis.shop.scheduler.mall.service.shop;
 
 import com.google.gson.annotations.SerializedName;
 import com.masiis.shop.common.enums.UserAccountRecordFeeType;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
+import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopBillItemMapper;
 import com.masiis.shop.dao.mall.shop.SfShopBillMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -34,6 +36,8 @@ public class SfShopBillService {
     private ComUserAccountMapper accountMapper;
     @Resource
     private ComUserAccountRecordMapper recordMapper;
+    @Resource
+    private SfOrderMapper sfOrderMapper;
 
 
     public Long queryShopBillNumsByDateAndShopId(Date countStartDay, Date countEndDay, Long shopId) {
@@ -58,6 +62,10 @@ public class SfShopBillService {
                     log.info("此账单子项是店铺分销订单销售");
                     bill.setBillAmount(bill.getBillAmount().add(item.getAmount()));
                     bill.setCountAmount(bill.getCountAmount().add(item.getAmount()));
+                    // 分销订单置为已结算
+                    SfOrder order = sfOrderMapper.selectByPrimaryKey(item.getSourceId());
+                    order.setIsCounting(1);
+                    sfOrderMapper.updateByPrimaryKey(order);
                 } else if (item.getItemType().intValue() == 2) {
                     log.info("此账单子项是店铺分销订单退货");
                     bill.setCountAmount(bill.getCountAmount().subtract(item.getAmount()));
@@ -93,12 +101,21 @@ public class SfShopBillService {
             recordMapper.insert(recordEx);
             log.info("添加资产账户操作记录成功!");
 
+            // 代理结算中减少
+            ComUserAccountRecord recordDiscount = createAccountRecord(account, bill, 18);
+            recordDiscount.setPrevFee(account.getDistributionBillAmount());
+            account.setDistributionBillAmount(account.getDistributionBillAmount().subtract(bill.getCountAmount()));
+            log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getDistributionBillAmount());
+            recordDiscount.setNextFee(account.getDistributionBillAmount());
+            recordMapper.insert(recordDiscount);
+
             int changeSize = accountMapper.updateByIdWithVersion(account);
             if(changeSize != 1){
                 throw new BusinessException("");
             }
             shopBillMapper.updateByPrimaryKey(bill);
             log.info("修改用户资产账户结算中和可提现额成功!");
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);

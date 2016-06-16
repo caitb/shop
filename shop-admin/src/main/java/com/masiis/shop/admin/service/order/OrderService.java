@@ -6,6 +6,8 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.shop.SfShopStatisticsService;
+import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.OperationType;
@@ -20,12 +22,10 @@ import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.shop.SfShopBillItemMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
-import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
-import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
-import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
-import com.masiis.shop.dao.mall.user.SfUserBillMapper;
+import com.masiis.shop.dao.mall.user.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.SfSkuDistributionMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
@@ -87,6 +87,14 @@ public class OrderService {
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private SfUserStatisticsMapper sfUserStatisticsMapper;
 
     /**
      * 店铺订单列表
@@ -110,7 +118,7 @@ public class OrderService {
             SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
             List<SfOrderFreight> sfOrderFreights = sfOrderFreightMapper.selectByOrderId(sfOrder.getId());
             List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(sfOrder.getId());
-            ComUser shopUser = comUserMapper.selectByPrimaryKey(sfOrder.getShopUserId());
+            ComUser shopUser = comUserMapper.selectByPrimaryKey(sfOrder.getShopUserId());//店铺主人
 
             Order order = new Order();
             order.setComUser(comUser);
@@ -390,8 +398,25 @@ public class OrderService {
                     res.put("resMsg", "该订单退货失败,请重试");
                     throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
                 }
+                SfUserStatistics sfUserStatistics = sfUserStatisticsMapper.selectByUserId(sfUserId);
+                sfUserStatistics.setDistributionFee(fee);
 
                 log.info("分润金额回退成功,用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
+            }
+
+            // 修改店铺统计信息
+            updateShopUserStatisticsByReturn(order, sfOrderItems);
+            // 修改新店主结算中金额
+            updateDisBillAmount(order, sfOrderItems);
+            // 修改订单购买人统计信息
+            SfUserStatistics statistics = sfUserStatisticsMapper.selectByUserId(order.getUserId());
+            //总订单数
+            statistics.setOrderCount(statistics.getOrderCount()+1);
+            //总购买金额(总购买金额 = 订单金额 - 订单代理商运费)
+            statistics.setBuyFee(statistics.getBuyFee().add(order.getOrderAmount()).subtract(order.getAgentShipAmount()));
+            int i = sfUserStatisticsMapper.updateByIdAndVersion(statistics);
+            if (i != 1){
+                throw new BusinessException("更新购买人统计信息失败------购买人id---"+order.getUserId());
             }
 
             // 修改订单状态
@@ -413,6 +438,68 @@ public class OrderService {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);
         }
+    }
+
+    /**
+     * 退货操作,小铺用户人结算中信息,回退结算中
+     * 结算中(结算中 = 之前结算中 + 利润 )
+     * @param order
+     * @param orderItems
+     */
+    private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
+        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
+        if (comUserAccount != null){
+            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            comUserAccount.setDistributionBillAmount(comUserAccount.getDistributionBillAmount().subtract(sumProfitFee));
+            comUserAccountMapper.updateByIdWithVersion(comUserAccount);
+        }
+    }
+
+    /**
+     * 此订单小铺获得利润
+     * 小铺商品的利润 = 商品购买价格 - 商品的代理价格 - 商品的分润
+     * @param order
+     * @param orderItems
+     * @return
+     */
+    private BigDecimal getShopProfitfee(SfOrder order,List<SfOrderItem> orderItems){
+        BigDecimal sumProfitFee = BigDecimal.ZERO;
+        PfUserSku pUserSku = null;
+        PfSkuAgent pSkuAgent = null;
+        for (SfOrderItem orderItem:orderItems){
+            pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getShopUserId(), orderItem.getSkuId());
+            pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(orderItem.getSkuId(), pUserSku.getAgentLevelId());
+            BigDecimal unit_profit = orderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        }
+        sumProfitFee = sumProfitFee.subtract(order.getDistributionAmount());
+        return sumProfitFee;
+    }
+
+    /**
+     * 退货操作,小铺统计信息减少
+     *
+     * @param order
+     * @param orderItems
+     */
+    private void updateShopUserStatisticsByReturn(SfOrder order,List<SfOrderItem> orderItems){
+        //获得小铺统计信息
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(order.getShopUserId());
+        if (shopStatistics != null){
+            //总销售额(总销售额 = 订单金额 - 订单的代理运费)
+            shopStatistics.setIncomeFee(shopStatistics.getIncomeFee().subtract((order.getOrderAmount()).subtract(order.getAgentShipAmount())));
+            //总利润
+            BigDecimal sumProfitFee = getShopProfitfee(order,orderItems);
+            shopStatistics.setProfitFee(shopStatistics.getProfitFee().subtract(sumProfitFee));
+            //店铺总销量
+            Integer toatalQuantity = new Integer(0);
+            for (SfOrderItem orderItem : orderItems){
+                toatalQuantity = toatalQuantity + orderItem.getQuantity();
+            }
+            shopStatistics.setProductCount(shopStatistics.getProductCount() - toatalQuantity);
+            shopStatisticsService.updateByIdAndVersion(shopStatistics);
+        }
+
     }
 
     private SfShopBillItem createSfShopBillItemBySfOrderRefund(SfOrder order, ComUser shopKeeper, BigDecimal countFee, Date receiveTime) {
@@ -518,5 +605,14 @@ public class OrderService {
         item.setIsCount(0);
 
         return item;
+    }
+
+    /**
+     * 查找店铺订单
+     * @param sfOrderId
+     * @return
+     */
+    public SfOrder findById(Long sfOrderId){
+        return sfOrderMapper.selectByPrimaryKey(sfOrderId);
     }
 }

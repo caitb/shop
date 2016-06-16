@@ -3,7 +3,9 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
+import com.masiis.shop.admin.service.shop.SfShopStatisticsService;
 import com.masiis.shop.admin.service.user.ComUserAccountService;
+import com.masiis.shop.admin.service.user.PfUserStatisticsService;
 import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
@@ -24,6 +26,7 @@ import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -54,9 +57,10 @@ import java.util.List;
  * payBOrderService
  *
  * @author ZhaoLiang
- * @date 2016/3/30
+ * @date 2016/3/30111
  */
 @Service
+@Transactional
 public class BOrderPayService {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -94,6 +98,69 @@ public class BOrderPayService {
     private SfUserRelationMapper sfUserRelationMapper;
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
+    @Resource
+    private SfShopStatisticsService shopStatisticsService;
+    @Resource
+    private BOrderStatisticsService orderStatisticsService;
+    @Resource
+    private BOrderBillAmountService billAmountService;
+
+    public void payBOrderOffline(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath, PbUser pbUser) throws Exception {
+        if (pfBorderPayment == null) {
+            throw new BusinessException("pfBorderPayment为空");
+        }
+        if (pfBorderPayment.getIsEnabled() == 1) {
+            throw new BusinessException("该支付记录已经被处理成功");
+        }
+        if (payAmount.compareTo(pfBorderPayment.getAmount()) == 0) {
+            mainPayBOrder(pfBorderPayment, outOrderId, rootPath, pbUser);
+        } else {
+            PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
+            List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            if (pfBorderItems.size() != 1) {
+                throw new BusinessException("代理商品表有误");
+            }
+            BigDecimal productAmount = BigDecimal.ZERO;
+            for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+                int quantity = payAmount.divide(pfBorderItem.getUnitPrice(), 0, BigDecimal.ROUND_DOWN).intValue();
+                pfBorderItem.setQuantity(quantity);
+                pfBorderItem.setTotalPrice(pfBorderItem.getUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                pfBorderItem.setBailAmount(BigDecimal.ZERO);
+                if (pfBorderItemMapper.updateById(pfBorderItem) != 1) {
+                    throw new BusinessException("代理订单商品表操作失败id:" + pfBorderItem.getId());
+                }
+                productAmount = productAmount.add(pfBorderItem.getTotalPrice());
+            }
+            pfBorder.setReceivableAmount(productAmount);
+            pfBorder.setOrderAmount(productAmount);
+            pfBorder.setBailAmount(BigDecimal.ZERO);
+            pfBorder.setShipAmount(BigDecimal.ZERO);
+            pfBorder.setProductAmount(productAmount);
+            if (payAmount.compareTo(productAmount) > 0) {
+                pfBorder.setRemark(pfBorder.getRemark() + "；超出支付金额为:" + payAmount.subtract(productAmount));
+            }
+
+            if (pfBorderMapper.updateById(pfBorder) != 1) {
+                throw new BusinessException("代理订单表操作失败id:" + pfBorder.getId());
+            }
+            //添加订单日志
+            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下部分支付代理");
+            PfBorderPayment orderPayment = new PfBorderPayment();
+            orderPayment.setPayTypeId(1);
+            orderPayment.setPayTypeName("线下支付");
+            orderPayment.setPfBorderId(pfBorder.getId());
+            orderPayment.setIsEnabled(0);
+            orderPayment.setAmount(pfBorder.getOrderAmount());
+            orderPayment.setCreateTime(new Date());
+            orderPayment.setOutOrderId("");
+            orderPayment.setPaySerialNum(UUID.randomUUID().toString());
+            orderPayment.setRemark("订单线下部分支付代理插入");
+            if (pfBorderPaymentMapper.insert(orderPayment) != 1) {
+                throw new BusinessException("线下支付往订单支付表插入失败");
+            }
+            mainPayBOrder(orderPayment, outOrderId, rootPath, pbUser);
+        }
+    }
 
     /**
      * 订单支付回调入口
@@ -103,10 +170,7 @@ public class BOrderPayService {
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
-    @Transactional
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath,PbUser pbUser) throws Exception {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
-//        System.out.println(dateFormat.format(new Date()));
+    private void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath, PbUser pbUser) throws Exception {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
@@ -122,6 +186,7 @@ public class BOrderPayService {
         } else {
             throw new BusinessException("订单类型有误");
         }
+
         //支付完成推送消息(发送失败不回滚事务)
         try {
             payEndPushMessage(pfBorderPayment);
@@ -137,10 +202,9 @@ public class BOrderPayService {
         pbOperationLog.setRemark("订单线下支付处理");
         pbOperationLog.setOperateContent(pfBorderPayment.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
-        if(updateByPrimaryKey==0){
+        if (updateByPrimaryKey == 0) {
             throw new Exception("日志新建订单支付回调失败!");
         }
-//        System.out.println(dateFormat.format(new Date()));
     }
 
     /**
@@ -157,7 +221,7 @@ public class BOrderPayService {
      * <10>处理发货库存
      * <11>处理收货库存
      */
-    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -211,6 +275,23 @@ public class BOrderPayService {
             sfShop.setVersion(0l);
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
+        }
+        SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(comUser.getId());
+        if (shopStatistics==null){
+            shopStatistics = new SfShopStatistics();
+            shopStatistics.setCreateTime(new Date());
+            shopStatistics.setShopId(sfShop.getId());
+            shopStatistics.setUserId(comUser.getId());
+            shopStatistics.setIncomeFee(new BigDecimal(0));
+            shopStatistics.setProfitFee(new BigDecimal(0));
+            shopStatistics.setOrderCount(0);
+            shopStatistics.setProductCount(0);
+            shopStatistics.setPageviewsCount(0);
+            shopStatistics.setShareCount(0);
+            shopStatistics.setReturnOrderCount(0);
+            shopStatistics.setVersion(0);
+            shopStatistics.setRemark("");
+            shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
         SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
@@ -375,6 +456,10 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
@@ -389,8 +474,7 @@ public class BOrderPayService {
      * <3>添加订单日志
      * <4>处理发货库存
      */
-    @Transactional
-    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -444,6 +528,10 @@ public class BOrderPayService {
                 }
             }
         }
+        log.info("<12>实时统计数据显示");
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        log.info("<13>修改结算中数据");
+        billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
@@ -461,7 +549,7 @@ public class BOrderPayService {
      * <2>增加收货方库存
      * <3>订单完成处理
      */
-    public void saveBOrderSendType(PfBorder pfBorder) throws Exception {
+    public void saveBOrderSendType(PfBorder pfBorder) {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
@@ -500,8 +588,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/4/9 11:22
      */
-    @Transactional
-    public void completeBOrder(PfBorder pfBorder) throws Exception {
+    public void completeBOrder(PfBorder pfBorder) {
         if (pfBorder == null) {
             throw new BusinessException("订单为空对象");
         }
@@ -531,7 +618,11 @@ public class BOrderPayService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
+
+
+
     }
+
 
     /**
      * 获取证书编码
@@ -539,7 +630,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/3/31 11:26
      */
-    private String getCertificateCode(PfUserCertificate certificateInfo) throws Exception {
+    private String getCertificateCode(PfUserCertificate certificateInfo) {
         String certificateCode = "";
         String value = "";
         StringBuffer Code = new StringBuffer("MASIIS");

@@ -5,22 +5,24 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="poster" property="poster" jdbcType="VARCHAR" />
+        <result column="sku_background_img" property="skuBackgroundImg" jdbcType="VARCHAR" />
     </resultMap>
 
 
     <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT id, sku_id, poster FROM com_sku_extension WHERE id = #{id}
+        SELECT id, sku_id, poster, sku_background_img FROM com_sku_extension WHERE id = #{id}
     </select>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT id, sku_id, poster FROM com_sku_extension WHERE sku_id = #{skuId}
+        SELECT id, sku_id, poster, sku_background_img FROM com_sku_extension WHERE sku_id = #{skuId}
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComSkuExtension" resultMap="BaseResultMap">
         SELECT
                id,
                sku_id,
-               poster
+               poster,
+               sku_background_img
         FROM
                com_sku_extension
         <where>
@@ -41,13 +43,15 @@
                     (
                     id,
                     sku_id,
-                    poster
+                    poster,
+                    sku_background_img
                     )
         VALUES
                     (
                     #{id},
                     #{skuId},
-                    #{poster}
+                    #{poster},
+                    #{skuBackgroundImg}
                     )
     </insert>
 
@@ -59,7 +63,10 @@
                 sku_id = #{skuId},
             </if>
             <if test="poster != null">
-                poster = #{poster}
+                poster = #{poster},
+            </if>
+            <if test="skuBackgroundImg != null">
+                sku_background_img = #{skuBackgroundImg},
             </if>
         </set>
         WHERE

@@ -15,7 +15,7 @@ public class Order {
     private PfBorder pfBorder;
     private PfCorder pfCorder;
     private SfOrder sfOrder;
-    private ComUser shopUser;
+    private ComUser shopUser;//店铺主人
 
     private List<PfBorderItem> pfBorderItems;
     private List<SfOrderItem> sfOrderItems;

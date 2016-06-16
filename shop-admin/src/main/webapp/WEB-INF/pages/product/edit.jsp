@@ -96,6 +96,7 @@
                                 <div class="col-sm-9">
                                     <input type="hidden" name="spuId" value="${productInfo.comSpu.id}" />
                                     <input type="hidden" name="skuId" value="${productInfo.comSku.id}" />
+                                    <input type="hidden" name="skuExtensionId" value="${productInfo.comSkuExtension.id}" />
                                     <c:forEach items="${productInfo.comSkuImages}" var="skuImage">
                                         <input type="hidden" name="skuImageIds" value="${skuImage.id}">
                                     </c:forEach>
@@ -462,11 +463,37 @@
                             <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
                         </form>
 
-                        <%--商品主图--%>
+                        <!-- 商品主图 -->
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
                                     <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 商品列表背景图 -->
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div>
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="dropzoneSkuBackgroundImg">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 商品海报图(发展合伙人) -->
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div>
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/user/background_poster/" class="dropzone" id="dropzoneDevelopPoster">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -557,9 +584,9 @@
 
     Dropzone.autoDiscover = false;
     function initDropzone(selector,dictMessage, callback){
-        var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品主图</span> \
-                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
-                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+        var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品主图</span> <br /> \
+                                                 <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                                 <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
         try {
             var myDropzone = new Dropzone(selector, {
                 paramName: "file", // The name that will be used to transfer the file
@@ -611,6 +638,13 @@
     var dictMessage2 = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品标志</span> <br /> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+    var dropzoneSkuBackgroundImg = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品列表背景图</span> <br /> \
+                                                 <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                                 <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+    var dropzoneDevelopPoster    = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>发展合伙人海报</span> <br /> \
+                                                 <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                                 <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+
     initDropzone('#dropzone', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="mainImgUrls" value="'+res.url+'" />');
@@ -626,6 +660,16 @@
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="proIconUrl" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="proIconName" value="'+res.title+'" />');
+    });
+    initDropzone('#dropzoneSkuBackgroundImg', dropzoneSkuBackgroundImg, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="skuBackgroundImgUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="skuBackgroundImgName" value="'+res.title+'" />');
+    });
+    initDropzone('#dropzoneDevelopPoster', dropzoneDevelopPoster, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="developPosterUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="developPosterName" value="'+res.title+'" />');
     });
 </script>
 <script>

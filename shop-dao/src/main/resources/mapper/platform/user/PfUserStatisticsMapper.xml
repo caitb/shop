@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserStatisticsMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserStatistics" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="income_fee" property="incomeFee" jdbcType="DECIMAL" />
+        <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
+        <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
+        <result column="up_order_count" property="upOrderCount" jdbcType="INTEGER" />
+        <result column="up_product_count" property="upProductCount" jdbcType="INTEGER" />
+        <result column="down_order_count" property="downOrderCount" jdbcType="INTEGER" />
+        <result column="down_product_count" property="downProductCount" jdbcType="INTEGER" />
+        <result column="take_order_count" property="takeOrderCount" jdbcType="INTEGER" />
+        <result column="take_product_count" property="takeProductCount" jdbcType="INTEGER" />
+        <result column="take_fee" property="takeFee" jdbcType="DECIMAL" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_statistics
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserStatistics" >
+        insert into pf_user_statistics (id, create_time, user_id, sku_id,
+        income_fee, profit_fee, cost_fee,
+        up_order_count, up_product_count, down_order_count,
+        down_product_count, take_order_count, take_product_count,
+        take_fee, version, remark
+        )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
+        #{incomeFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{costFee,jdbcType=DECIMAL},
+        #{upOrderCount,jdbcType=INTEGER}, #{upProductCount,jdbcType=INTEGER}, #{downOrderCount,jdbcType=INTEGER},
+        #{downProductCount,jdbcType=INTEGER}, #{takeOrderCount,jdbcType=INTEGER}, #{takeProductCount,jdbcType=INTEGER},
+        #{takeFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserStatistics" >
+        update pf_user_statistics
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        user_id = #{userId,jdbcType=BIGINT},
+        sku_id = #{skuId,jdbcType=INTEGER},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        cost_fee = #{costFee,jdbcType=DECIMAL},
+        up_order_count = #{upOrderCount,jdbcType=INTEGER},
+        up_product_count = #{upProductCount,jdbcType=INTEGER},
+        down_order_count = #{downOrderCount,jdbcType=INTEGER},
+        down_product_count = #{downProductCount,jdbcType=INTEGER},
+        take_order_count = #{takeOrderCount,jdbcType=INTEGER},
+        take_product_count = #{takeProductCount,jdbcType=INTEGER},
+        take_fee = #{takeFee,jdbcType=DECIMAL},
+        version = #{version,jdbcType=BIGINT},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserStatistics">
+        update
+        pf_user_statistics
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        user_id = #{userId,jdbcType=BIGINT},
+        sku_id = #{skuId,jdbcType=INTEGER},
+        income_fee = #{incomeFee,jdbcType=DECIMAL},
+        profit_fee = #{profitFee,jdbcType=DECIMAL},
+        cost_fee = #{costFee,jdbcType=DECIMAL},
+        up_order_count = #{upOrderCount,jdbcType=INTEGER},
+        up_product_count = #{upProductCount,jdbcType=INTEGER},
+        down_order_count = #{downOrderCount,jdbcType=INTEGER},
+        down_product_count = #{downProductCount,jdbcType=INTEGER},
+        take_order_count = #{takeOrderCount,jdbcType=INTEGER},
+        take_product_count = #{takeProductCount,jdbcType=INTEGER},
+        take_fee = #{takeFee,jdbcType=DECIMAL},
+        version = #{version,jdbcType=BIGINT}+1,
+        remark = #{remark,jdbcType=VARCHAR}
+        where
+        id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
+        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
+        take_fee, version, remark
+        from pf_user_statistics
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
+        select id, create_time, user_id,sku_id, income_fee, profit_fee, cost_fee, up_order_count,
+        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count,
+        take_fee, version, remark
+        from pf_user_statistics
+        where user_id = #{userId,jdbcType=BIGINT}
+        AND sku_id = #{skuId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, sku_id,income_fee, profit_fee, cost_fee, up_order_count,
+        up_product_count, down_order_count, down_product_count, take_order_count, take_product_count, 
+        take_fee, version, remark
+        from pf_user_statistics
+    </select>
+
+</mapper>

@@ -27,7 +27,7 @@ public interface PfUserRecommenRelationMapper {
 
     List<PfUserRecommenRelation> selectByCondition(PfUserRecommenRelation pfUserRecommenRelation);
 
-    PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(Long userId,Integer skuId);
+    PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(@Param("userId") Long userId,@Param("skuId") Integer skuId);
 
     /**
      * 推荐给我的

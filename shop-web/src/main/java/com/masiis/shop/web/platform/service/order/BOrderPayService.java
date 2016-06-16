@@ -51,10 +51,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * payBOrderService
- *
- * @author ZhaoLiang
- * @date 2016/3/30
+ * 合伙订单支付回调处理类
  */
 @Service
 @Transactional
@@ -105,6 +102,8 @@ public class BOrderPayService {
     private BOrderBillAmountService billAmountService;
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
+    @Resource
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
 
     /**
      * 订单支付回调入口
@@ -261,39 +260,12 @@ public class BOrderPayService {
             }
         }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            log.info("<7>处理合伙推荐关系");
-            Integer optype = 0;// 0为初始化1为绑定推荐关系
-            PfUserSku parentUS = null;
-            if (pfBorder.getUserPid() != 0) {
-                parentUS = pfUserSkuMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                if (pfBorderItem.getAgentLevelId() < parentUS.getAgentLevelId()) {
-                    throw new BusinessException("下级代理不能高于上级代理");
-                }
-                if (pfBorderItem.getAgentLevelId() == parentUS.getAgentLevelId()) {
-                    optype = 1;
-                }
-            }
-            if (optype == 0) {
-                PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
-                if (pfUserRecommenRelation == null) {
-                    pfUserRecommenRelation = new PfUserRecommenRelation();
-                    pfUserRecommenRelation.setCreateTime(new Date());
-                    pfUserRecommenRelation.setPid(0);
-                    pfUserRecommenRelation.setUserId(comUser.getId());
-                    pfUserRecommenRelation.setUserPid(0l);
-                    pfUserRecommenRelation.setSkuId(pfBorderItem.getSkuId());
-                    pfUserRecommenRelation.setPfBorderId(bOrderId);
-                    pfUserRecommenRelation.setTreeCode("");
-                    pfUserRecommenRelation.setTreeLevel(1);
-                    pfUserRecommenRelation.setRemark("初始化合伙人推荐关系");
-                    pfUserRecommendRelationService.insert(pfUserRecommenRelation);
-                    String treeCode = pfUserRecommenRelation.getId() + ",";
-                    pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
-                }
-            } else if (optype == 1) {
-                PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
-                PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                if (pfUserRecommenRelation == null) {
+            log.info("<7>v1.2处理合伙推荐关系");
+            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
+            if (pfUserRecommenRelation == null) {
+                if (pfBorder.getUserPid() != 0 && pfBorder.getRecommenAmount().compareTo(BigDecimal.ZERO) > 0) {
+                    PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+                    PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorderRecommenReward.getRecommenUserId(), pfBorderItem.getSkuId());
                     pfUserRecommenRelation = new PfUserRecommenRelation();
                     pfUserRecommenRelation.setCreateTime(new Date());
                     pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
@@ -306,6 +278,20 @@ public class BOrderPayService {
                     pfUserRecommenRelation.setRemark("绑定合伙人推荐关系");
                     pfUserRecommendRelationService.insert(pfUserRecommenRelation);
                     String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
+                    pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
+                }else{
+                    pfUserRecommenRelation = new PfUserRecommenRelation();
+                    pfUserRecommenRelation.setCreateTime(new Date());
+                    pfUserRecommenRelation.setPid(0);
+                    pfUserRecommenRelation.setUserId(comUser.getId());
+                    pfUserRecommenRelation.setUserPid(0l);
+                    pfUserRecommenRelation.setSkuId(pfBorderItem.getSkuId());
+                    pfUserRecommenRelation.setPfBorderId(bOrderId);
+                    pfUserRecommenRelation.setTreeCode("");
+                    pfUserRecommenRelation.setTreeLevel(1);
+                    pfUserRecommenRelation.setRemark("初始化合伙人推荐关系");
+                    pfUserRecommendRelationService.insert(pfUserRecommenRelation);
+                    String treeCode = pfUserRecommenRelation.getId() + ",";
                     pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
                 }
             }
@@ -333,6 +319,7 @@ public class BOrderPayService {
                 thisUS = new PfUserSku();
                 thisUS.setCreateTime(new Date());
                 thisUS.setCreateTime(new Date());
+                PfUserSku parentUS = pfUserSkuMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 if (parentUS == null) {
                     thisUS.setPid(0);
                     thisUS.setUserPid(0L);

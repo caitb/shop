@@ -23,6 +23,8 @@ public class PfUserUpGradeInfo {
 
     private String createDate;//格式化时间
 
+    private String StatusValue;//状态value
+
     public PfUserUpgradeNotice getPfUserUpgradeNotice() {
         return pfUserUpgradeNotice;
     }
@@ -77,5 +79,13 @@ public class PfUserUpGradeInfo {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getStatusValue() {
+        return StatusValue;
+    }
+
+    public void setStatusValue(String statusValue) {
+        StatusValue = statusValue;
     }
 }

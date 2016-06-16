@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.upgrade;
 
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -37,6 +38,7 @@ public class UpgradeService {
     public Map<String,Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String,Object> conditionMap) {
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByMap(conditionMap);
+        PageInfo<PfUserUpgradeNotice> pageInfo = new PageInfo<>(upgradeNotices);
 
         List<Map> upgradeNoticeWraps = new LinkedList<>();
         for(PfUserUpgradeNotice upgradeNotice : upgradeNotices) {
@@ -73,15 +75,11 @@ public class UpgradeService {
                 upgradeNoticeWrap.put("userOldParentName", pUser.getRealName());
             }
 
-            // 现上级名称
-
-
-
             upgradeNoticeWraps.add(upgradeNoticeWrap);
         }
 
         Map<String,Object> pageMap = new HashMap<>();
-        pageMap.put("total", upgradeNoticeWraps.size());
+        pageMap.put("total",pageInfo.getTotal());
         pageMap.put("rows", upgradeNoticeWraps);
         return pageMap;
     }

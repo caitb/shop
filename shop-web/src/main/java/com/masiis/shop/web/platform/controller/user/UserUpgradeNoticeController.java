@@ -98,7 +98,6 @@ public class UserUpgradeNoticeController extends BaseController {
         }
         return mv;
     }
-
     /**
      * jjh
      * 0：我的申请

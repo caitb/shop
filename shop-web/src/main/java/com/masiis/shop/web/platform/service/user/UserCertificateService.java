@@ -118,6 +118,11 @@ public class UserCertificateService {
     public PfUserCertificate getCertificateBypfuId(Integer pfuId){
         return pfUserCertificateMapper.selectByUserSkuId(pfuId);
     }
+
+
+    public PfUserCertificate getCertificateByuserskuId(Long userId,Integer skuId){
+        return pfUserCertificateMapper.selectByUserAndSkuId(userId,skuId);
+    }
     /**
      * 个人信息查询微信号信息
      * @author hanzengzhi

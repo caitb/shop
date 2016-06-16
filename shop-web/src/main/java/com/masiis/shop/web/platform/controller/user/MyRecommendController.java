@@ -2,20 +2,27 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.user.UserRecommend;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserStatistics;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
 import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,14 +33,23 @@ import java.util.List;
 @Controller
 @RequestMapping("/myRecommend")
 public class MyRecommendController extends BaseController{
+
+    private final Log log = LogFactory.getLog(MyRecommendController.class);
+
     @Resource
     private PfUserStatisticsService pfUserStatisticsService;
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
-
-    private final Log log = LogFactory.getLog(MyRecommendController.class);
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private BOrderService bOrderService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private UserCertificateService userCertificateService;
 
     /**
      * 我的推荐
@@ -82,5 +98,43 @@ public class MyRecommendController extends BaseController{
             log.error("获取代理产品列表失败!",e);
         }
         return null;
+    }
+    
+    /**
+     * 发出奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 10:47
+     */
+    @RequestMapping("/sendRewardBorder")
+    public ModelAndView sendRewardBorder(HttpServletRequest request) throws Exception {
+        ComUser comUser = getComUser(request);
+
+        List<PfBorder> pfBorders = bOrderService.getRecommendPfBorder(comUser.getId());
+        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        PfUserCertificate certificateByuserskuId =null;
+        PfUserCertificate certificateByuserskuId1 = null;
+        if (pfBorders != null && pfBorders.size() != 0) {
+            for (PfBorder pfBorder : pfBorders) {
+                List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                for (PfBorderItem pfBorderItem : pfBorderItems) {
+                    pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
+                    pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+                    certificateByuserskuId = userCertificateService.getCertificateByuserskuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                    certificateByuserskuId1 = userCertificateService.getCertificateByuserskuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                }
+                ComUser user = userService.getUserById(pfBorder.getUserId());
+                ComUser userName = userService.getUserById(pfBorder.getUserPid());
+                user.setWxId(certificateByuserskuId.getWxId());
+                userName.setWxId(certificateByuserskuId1.getWxId());
+                pfBorder.setUserName(user);
+                pfBorder.setUserPname(userName);
+                pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
+                pfBorder.setPfBorderItems(pfBorderItems);
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("pfBorders", pfBorders);
+        modelAndView.setViewName("platform/user/huoqujianglidingdan");
+        return modelAndView;
     }
 }

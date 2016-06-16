@@ -419,4 +419,14 @@ public class BOrderService {
     public PfBorder getPfBorderBySkuAndUserId(Integer skuId, Long userId) {
         return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId, userId);
     }
+
+    /**
+     * 获得奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 14:32
+     */
+
+    public List<PfBorder> getRecommendPfBorder(Long userId) {
+        return pfBorderMapper.selectRecommend(userId);
+    }
 }

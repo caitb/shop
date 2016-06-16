@@ -116,6 +116,26 @@ public class MyTeamController extends BaseController {
         }
     }
 
+    /**
+     * 查看队员指定代理产品的升级记录
+     * @param skuId
+     * @return
+     */
+    @RequestMapping("/upgradeRecord")
+    public ModelAndView upgradeRecord(Long userId, Integer skuId){
+
+        ModelAndView mav = new ModelAndView("platform/user/upgradeRecord");
+        try {
+            List<Map<String, Object>> upgradeRecords = myTeamService.upgradeRecord(userId, skuId);
+            mav.addObject("upgradeRecords", upgradeRecords);
+        } catch (Exception e) {
+            log.error("查看队员升级记录失败![userId="+userId+"][skuId="+skuId+"]---:"+e);
+            e.printStackTrace();
+        }
+
+        return mav;
+    }
+
 
     @RequestMapping("/toaudit")
     public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response,

@@ -104,4 +104,28 @@
         </where>
     </select>
 
+    <select id="selectUpgradeRecordByUserIdAndSkuId" resultType="Map">
+        SELECT
+               uun.create_time createTime,
+               org_al.name     orgLevelName,
+               wish_al.name    wishLevelName,
+               p_user.real_name pUserName,
+               r_user.real_name recommendUserName
+        FROM
+               pf_user_upgrade_notice uun
+        LEFT JOIN com_agent_level           org_al  ON org_al.id   = uun.org_agent_level_id
+        LEFT JOIN com_agent_level           wish_al ON wish_al.id  = uun.wish_agent_level_id
+        LEFT JOIN com_user                  p_user  ON p_user.id   = uun.user_pid
+        LEFT JOIN pf_user_recommen_relation urr     ON urr.user_id = uun.user_id AND urr.sku_id = uun.sku_id
+        LEFT JOIN com_user                  r_user  ON r_user.id   = urr.user_pid
+        <where>
+            <if test="userId != null">
+                AND uun.user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND uun.sku_id = #{skuId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

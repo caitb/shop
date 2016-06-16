@@ -7,10 +7,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.*;
-import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -57,6 +54,8 @@ public class MyTeamService {
     private ComUserAccountMapper comUserAccountMapper;
     @Resource
     private CountGroupService countGroupService;
+    @Resource
+    private PfUserUpgradeNoticeMapper pfUserUpgradeNoticeMapper;
 
 
 
@@ -183,7 +182,7 @@ public class MyTeamService {
     }
 
     /**
-     *
+     * 查看队员信息
      * @param code
      * @return
      */
@@ -203,6 +202,7 @@ public class MyTeamService {
         CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getUserId(), pfUserSku.getTreeCode());
 
         Map<String, Object> memberMap = new HashMap<>();
+        memberMap.put("userId", comUser.getId());
         memberMap.put("stock", statisticsBuy.get("stock"));
         memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
         memberMap.put("countChild", countGroup.getCount()-1);
@@ -227,6 +227,17 @@ public class MyTeamService {
         memberMap.put("pid", pfUserSku.getPid());
 
         return memberMap;
+    }
+
+    /**
+     * 查看队员升级记录
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public List<Map<String, Object>> upgradeRecord(Long userId, Integer skuId){
+        List<Map<String, Object>> upgradeRecords = pfUserUpgradeNoticeMapper.selectUpgradeRecordByUserIdAndSkuId(userId, skuId);
+        return upgradeRecords;
     }
 
     /**

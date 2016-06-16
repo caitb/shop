@@ -59,50 +59,6 @@ public enum UpGradeStatus {
         public String getMessage(){
             return "取消";
         }
-    },
-    /**
-     * 上级未处理
-     */
-    UP_STATUS_Untreated{
-        public Integer getCode(){
-            return 0;
-        }
-        public String getMessage(){
-            return "未处理";
-        }
-    },
-    /**
-     * 上级暂不升级
-     */
-    UP_STATUS_NotUpgrade{
-        public Integer getCode(){
-            return 1;
-        }
-        public String getMessage(){
-            return "暂不升级";
-        }
-    },
-    /**
-     * 我要升级
-     */
-    UP_STATUS_Upgrade{
-        public Integer getCode(){
-            return 2;
-        }
-        public String getMessage(){
-            return "我要升级";
-        }
-    },
-    /**
-     * 我要升级
-     */
-    UP_STATUS_Complete{
-        public Integer getCode(){
-            return 3;
-        }
-        public String getMessage(){
-            return "处理完成";
-        }
     };
 
     public abstract Integer getCode();

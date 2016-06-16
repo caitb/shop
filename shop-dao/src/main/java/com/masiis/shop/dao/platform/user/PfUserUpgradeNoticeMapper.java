@@ -8,11 +8,14 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import org.springframework.stereotype.Repository;
+import com.masiis.shop.dao.po.extendPo.UpGradeInfoPo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface PfUserUpgradeNoticeMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -37,4 +40,6 @@ public interface PfUserUpgradeNoticeMapper {
     List<PfUserUpgradeNotice> selectByParam(@Param("userPid") Long userPid, @Param("skuId") Integer skuId,@Param("upStatus") Integer upStatus);
 
     List<PfUserUpgradeNotice> selectBySkuIdAndRebateType(@Param("skuId") Integer skuId,@Param("userPid") Long userPid,@Param("userId") Long userId);
+
+    UpGradeInfoPo selectUpGradeInfoPoById(@Param("Id") Long Id);
 }

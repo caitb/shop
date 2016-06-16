@@ -618,9 +618,6 @@ public class BOrderPayService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
-
-
-
     }
 
 

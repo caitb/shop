@@ -31,9 +31,9 @@ public class PfBOrderTaskService {
         Date expiraTime = DateUtil.getDateNextdays(-7);
         log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
 
-        // 查询3天前创建的未支付订单
+        // 查询3天前创建的未支付非升级订单
         // 查询代理订单
-        List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime,
+        List<PfBorder> bList = bOrderService.findUnUpgradeByStatusAndDate(expiraTime,
                 BOrderStatus.offLineNoPay.getCode(), 0);
         if (bList == null) {
             log.info("暂无超过7天未支付线下支付代理订单!");

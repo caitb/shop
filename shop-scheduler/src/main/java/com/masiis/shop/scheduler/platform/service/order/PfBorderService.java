@@ -110,6 +110,7 @@ public class PfBorderService {
      *
      * @param bOrder
      */
+    @Transactional
     public void cancelOfflinePayBOrder(PfBorder bOrder) {
         try {
             // 重新根据id查询该订单

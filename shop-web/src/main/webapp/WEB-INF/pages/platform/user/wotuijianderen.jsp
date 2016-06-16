@@ -5,6 +5,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -29,33 +31,25 @@
                     <select id="goods">
                         <option value="">asdasd</option>
                         <option value="">13242</option>
-                        <option value="">hgfds</option>
-                        <option value="">7654</option>
-                        <option value="">lkjhgfdsa</option>
-                        <option value="">oiuytrewASDFGHJKL</option>
                     </select>
                     <span>等级：</span>
                     <label for="level" class="level"><b></b></label>
                     <select id="level">
                         <option value="">asdasd</option>
                         <option value="">13242</option>
-                        <option value="">hgfds</option>
-                        <option value="">7654</option>
-                        <option value="">lkjhgfdsa</option>
-                        <option value="">oiuytrewASDFGHJKL</option>
                     </select>
                 </div>
                 <button>查询</button>
             </div>
-            <div class="sec1">
-                <c:forEach items="${sumByUserPid}" var="sumByUserPid">
-                <img src="${sumByUserPid.wxHeadImg}" alt="">
+            <c:forEach items="${sumByUserPid}" var="sumByUser">
+            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}')">
+                <img src="${sumByUser.wxHeadImg}" alt="">
                 <div>
-                    <p>${sumByUserPid.name} <b>${sumByUserPid.agentName}</b></p>
-                    <p>${sumByUserPid.skuName}</p>
+                    <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
+                    <p>${sumByUser.skuName}</p>
                 </div>
-                </c:forEach>
             </div>
+            </c:forEach>
         </main>
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>

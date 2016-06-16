@@ -106,4 +106,9 @@ public class SkuService {
         return pfSkuStockService.selectBySkuId(skuId);
     }
 
+
+    public ComSku getSkuName(Integer skuId) {
+        return comSkuMapper.selectByPrimaryKey(skuId);
+    }
+
 }

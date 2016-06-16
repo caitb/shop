@@ -8,7 +8,7 @@ $(function(){
 //})
 $("select").on("change",function(){
     var tabVal=$("select option:selected").text();
-    $("p label").html(tabVal);
+    $("p label b").html(tabVal);
 })
 function blackShow(){
     $(".black").show();
@@ -84,7 +84,6 @@ $(".que_que").on("click",function(){
         success: function(data){
             if (data){
                 if (data.isTrue == "true"){
-                    alert(data.isEquals);
                     if (data.isEquals == "true"){
                         window.location.href = basePath + "upgrade/applicationComplete.shtml";
                     }else {

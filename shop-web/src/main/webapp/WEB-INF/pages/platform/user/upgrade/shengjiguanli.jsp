@@ -34,24 +34,30 @@
             <label class="goods">
                 <b></b>
                 <select id="goods">
-                    <c:forEach items="${skuMap}" var="sku" varStatus="skuIndex">
-                        <option value="${skuIndex.index}">${sku}</option>
+                    <c:forEach items="${skuList}" var="sku">
+                        <option value="${sku.id}">${sku.name}</option>
                     </c:forEach>
                 </select>
             </label>
-
-            <span>等级：</span>
-            <label class="level">
-                <b></b>
-                <select id="level">
-                    <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
-                        <option value="${statusIndex.index}">${status}</option>
-                    </c:forEach>
-                </select>
-            </label>
-
+                <span>等级：</span>
+                <label class="level">
+                    <b></b>
+                    <select id="level">
+                        <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
+                            <option value="${statusIndex.index}">${status}</option>
+                        </c:forEach>
+                    </select>
+                </label>
+                <%--<span id="leixing">类型：</span>--%>
+                <%--<label class="level" id="fanli">--%>
+                    <%--<b></b>--%>
+                    <%--<select id="level1">--%>
+                        <%--<option value="0">获得返利</option>--%>
+                        <%--<option value="1">支付返利</option>--%>
+                    <%--</select>--%>
+                <%--</label>--%>
         </div>
-        <button onclick="search()">查询</button>
+        <button onclick="search()" id="search">查询</button>
     </div>
     <div class="box">
         <main id="main">
@@ -79,10 +85,13 @@
     <a href="#" class="fix">我要升级</a>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/repetitionForm.js"></script>
 <script>
+    var tabId;
     $(document).ready(function(){
         $(".goods b").html($("#goods option:selected").text());
         $(".level b").html($("#level option:selected").text());
+        tabId = 1;
     })
     $("#goods").on("change",function(){
         var tabVal=$("#goods option:selected").text();
@@ -94,6 +103,11 @@
     })
     $("nav").on("click","p",function(){
         var index=$(this).index();
+        tabId = index;
+        if (tabId == 0) {
+        }
+        if (tabId == 2) {
+        }
             $(this).addClass("on").siblings().removeClass("on");
             $.ajax({
                 url: '<%=basePath%>upgradeInfo/tab',
@@ -129,8 +143,8 @@
 
     function search(){
         var searchParam = {};
-        searchParam.skuId = "";
-        searchParam.upStatus = "";
+        searchParam.skuId = $("#goods option:selected").val();
+        searchParam.upStatus = $("#level option:selected").val();
         searchParam.rebateType = "";
         $.ajax({
             url: '<%=basePath%>upgradeInfo/search',
@@ -138,7 +152,34 @@
             async:true,
             data: searchParam,
             dataType: 'json',
+            beforeSend:function(){
+                fullShow();
+            },
             success: function (res) {
+                var trHtml = "";
+                $.each(res.pfUserUpGradeInfoList, function(i, grade){
+                    trHtml+="<div class=\"sec1\">";
+                    trHtml+="<div class=\"s_1\">";
+                    trHtml+="<p>商品："+grade.skuName+"</p>>";
+                    trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
+                    trHtml+="</div>";
+                    trHtml+="<div class=\"s_2\">";
+                    trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";
+                    trHtml+="<div>";
+                    trHtml+="<p>"+grade.comUser.realName+"</p>";
+                    trHtml+="<h1><span class=\"on\">"+grade.orgLevelName+"</span>"+grade.wishLevelName+"</h1>";
+                    trHtml+="</div>";
+                    trHtml+="</div>";
+                    trHtml+=" <div class=\"s_3\">";
+                    trHtml+="<p>升级编号："+grade.pfUserUpgradeNotice.code+"</p>";
+                    trHtml+="<p>申请时间："+grade.createDate+"</p>";
+                    trHtml+="</div>";
+                    trHtml+="</div>";
+                });
+                $("#main").empty().html(trHtml);
+            },
+            complete:function(){
+                fullHide();
             }
         });
     }

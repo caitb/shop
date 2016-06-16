@@ -158,6 +158,10 @@ public class BOrderPayService {
      * <12>处理收货库存
      * <13>实时统计数据显示
      * <14>修改结算中数据
+     *
+     * @param pfBorderPayment
+     * @param outOrderId
+     * @param rootPath
      */
     public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
@@ -279,7 +283,7 @@ public class BOrderPayService {
                     pfUserRecommendRelationService.insert(pfUserRecommenRelation);
                     String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
                     pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
-                }else{
+                } else {
                     pfUserRecommenRelation = new PfUserRecommenRelation();
                     pfUserRecommenRelation.setCreateTime(new Date());
                     pfUserRecommenRelation.setPid(0);

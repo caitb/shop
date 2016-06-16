@@ -61,7 +61,7 @@
     </select>
     <!--  我推荐的人  -->
     <select id="selectSumByUserId" resultMap="ComSkuMap" parameterType="java.lang.Long" >
-        select sku.name,com.real_name,com.wx_head_img,sku.id,com.id,agent.name as agentName
+        select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id,agent.name as agentName
         from pf_user_recommen_relation pbrr
         INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
         INNER JOIN com_user com ON com.id = pbrr.user_id
@@ -69,6 +69,7 @@
         INNER JOIN com_agent_level agent ON user_sku.agent_level_id = agent.id
         where pbrr.user_pid = #{userId}
     </select>
+
 
     <!--<select id="selectSumByOneUserId" resultType="Integer" >-->
         <!--select COUNT(pbrr.user_id)-->

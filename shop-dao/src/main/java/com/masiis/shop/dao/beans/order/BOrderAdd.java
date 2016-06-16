@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class BOrderAdd {
     /**
-     * 订单类型(0代理1补货2拿货)
+     * 订单类型(0代理1补货2拿货3升级)
      */
     private Integer orderType = 0;
     /**

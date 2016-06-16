@@ -23,6 +23,7 @@
   padding: 2px 0 2px 5px;
   background: url("../../images/selectdown.png") no-repeat 95%;
   background-size: 15px;
+  position: relative;
 }
 .wrap main .floor p label b {
   display: block;
@@ -31,8 +32,14 @@
   white-space: nowrap;
   overflow: hidden;
 }
-.wrap main .floor p select {
+.wrap main .floor p label select {
   opacity: 0;
+  position: absolute;
+  left: 0;
+  width: 180px;
+  height:27px;
+  display: block;
+  top:0;
 }
 .wrap main .floor p:first-child {
   border-bottom: 1px solid #f6f6f6;

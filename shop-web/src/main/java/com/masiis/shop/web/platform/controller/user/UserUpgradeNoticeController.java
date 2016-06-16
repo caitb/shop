@@ -62,15 +62,15 @@ public class UserUpgradeNoticeController extends BaseController {
             if(pfUserSkuList==null){
                 throw new BusinessException("代理商品异常，初始化商品列表失败");
             }else{
-                List<String> skuList = new ArrayList();
+                List<ComSku> skuList = new ArrayList();
                 for(PfUserSku pfUserSku :pfUserSkuList){
                     ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
-                    skuList.add(comSku.getName());
+                    skuList.add(comSku);
                 }
                 mv.addObject("skuList", skuList);
             }
             //初始化申请状态列表
-            mv.addObject("statusPickList", UpGradeStatus.statusPickList);
+            mv.addObject("statusPickList", UpGradeStatus.statusPickList.values());
             List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserPId(comUser.getId());
@@ -209,7 +209,7 @@ public class UserUpgradeNoticeController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
-            if (comUser != null) {
+            if (comUser == null) {
                 throw new BusinessException("用户出现问题");
             }
             List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();

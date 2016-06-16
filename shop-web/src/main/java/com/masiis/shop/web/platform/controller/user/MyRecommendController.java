@@ -12,10 +12,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
-import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
-import com.masiis.shop.web.platform.service.user.UserCertificateService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,6 +47,8 @@ public class MyRecommendController extends BaseController{
     private UserService userService;
     @Resource
     private UserCertificateService userCertificateService;
+    @Resource
+    private ComAgentLevelService comAgentLevelService;
 
     /**
      * 我的推荐
@@ -115,6 +114,36 @@ public class MyRecommendController extends BaseController{
             List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
             modelAndView.addObject("sumByUserPid",sumByUserPid);
             modelAndView.setViewName("platform/user/wotuijianderen");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return null;
+    }
+
+    /**
+     * 我推荐的人详情
+     * @author muchaofeng
+     * @date 2016/6/16 17:56
+     */
+
+    @RequestMapping("/myRecommend")
+    public ModelAndView myRecommend(Long userId,Integer skuId){
+        try{
+            ModelAndView modelAndView = new ModelAndView();
+
+            PfUserCertificate certificate = userCertificateService.getCertificateByuserskuId(userId,skuId);
+            String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
+            certificate.setImgUrl(ctValue + certificate.getImgUrl());
+            modelAndView.addObject("certificate",certificate);
+
+            ComSku skuName = skuService.getSkuName(skuId);
+            ComUser user = userService.getUserById(userId);
+            ComAgentLevel agentLevel = comAgentLevelService.selectByPrimaryKey(certificate.getAgentLevelId());
+            modelAndView.addObject("skuName",skuName.getName());
+            modelAndView.addObject("userName",user.getRealName());
+            modelAndView.addObject("agentLevelName",agentLevel.getName());
+            modelAndView.setViewName("platform/user/wotuijianderenxinxi");
             return modelAndView;
         }catch (Exception e){
             log.error("获取代理产品列表失败!",e);

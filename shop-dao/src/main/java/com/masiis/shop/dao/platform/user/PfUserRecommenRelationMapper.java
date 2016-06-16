@@ -44,7 +44,7 @@ public interface PfUserRecommenRelationMapper {
     int selectNumByUserPid(Long  userId);
 
     /**
-     * 推荐给我的详情
+     * 我推荐的人详情
      * @author muchaofeng
      * @date 2016/6/15 17:40
      */

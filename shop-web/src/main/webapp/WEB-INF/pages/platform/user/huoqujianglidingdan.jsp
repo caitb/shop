@@ -20,8 +20,8 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                    <p>发出奖励订单</p>            
+                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                    <p>获取奖励订单</p>
         </header>
         <main>
             <c:forEach items="${pfBorders}" var="pfBorders">

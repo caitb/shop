@@ -40,6 +40,13 @@ public interface PfBorderMapper {
      */
     List<PfBorder> selectRecommend(Long userId);
 
+    /**
+     * 发出奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 16:43
+     */
+    List<PfBorder> selectSendRecommend(Long userId);
+
     List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
 

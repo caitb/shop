@@ -7,6 +7,8 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.po.ComUser;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -151,6 +153,9 @@ public class PfBorder {
     private String payTimes;//线下支付到期时间
     private String orderMoney;
     private String  bailMoney;
+
+    private ComUser userName;
+    private ComUser userPname;
     /**
      * 订单商品
      */
@@ -159,6 +164,22 @@ public class PfBorder {
 
     private String beginTime;
     private String endTime;
+
+    public ComUser getUserName() {
+        return userName;
+    }
+
+    public void setUserName(ComUser userName) {
+        this.userName = userName;
+    }
+
+    public ComUser getUserPname() {
+        return userPname;
+    }
+
+    public void setUserPname(ComUser userPname) {
+        this.userPname = userPname;
+    }
 
     public String getBailMoney() {
         return bailMoney;

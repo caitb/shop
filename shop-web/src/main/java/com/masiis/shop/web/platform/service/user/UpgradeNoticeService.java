@@ -1,11 +1,14 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.PfUserRebate;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.extendPo.UpGradeInfoPo;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,6 +113,36 @@ public class UpgradeNoticeService {
     public List<PfUserUpgradeNotice> getPfUserUpGradeInfoByRebateAndSkuId(Integer skuId, Long userPid, Long userId) {
         return pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, userPid, userId);
     }
+
+    public String coverCodeByMyUpgrade(Integer upStatus) {
+        String value = null;
+        if (upStatus == 0) {
+            value = UpGradeStatus.STATUS_Untreated.getMessage();
+        } else if (upStatus == 1) {
+            value = UpGradeStatus.STATUS_Processing.getMessage();
+        } else if (upStatus == 2) {
+            value = UpGradeStatus.STATUS_NoPayment.getMessage();
+        } else if (upStatus == 3) {
+            value = UpGradeStatus.STATUS_Complete.getMessage();
+        } else if (upStatus == 4) {
+            value = UpGradeStatus.STATUS_Revocation.getMessage();
+        }
+        return value;
+    }
+
+    public String coverCodeByLowerUpgrade(Integer upStatus) {
+        String value = null;
+        if (upStatus == 0) {
+            value = UpGradeUpStatus.UP_STATUS_Untreated.getMessage();
+        } else if (upStatus == 1) {
+            value = UpGradeUpStatus.UP_STATUS_NotUpgrade.getMessage();
+        } else if (upStatus == 2) {
+            value = UpGradeUpStatus.UP_STATUS_Upgrade.getMessage();
+        } else if (upStatus == 3) {
+            value = UpGradeUpStatus.UP_STATUS_Complete.getMessage();
+        }
+        return value;
+    }
 	/**
      * 处理代理用户升级
      * @param userId        代理用户id
@@ -137,13 +170,38 @@ public class UpgradeNoticeService {
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Untreated.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
         }else {
-            upgradeNotice.setUpStatus(UpGradeStatus.UP_STATUS_Complete.getCode());
+            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             logger.info("代理用户申请代理等级小于上级代理等级");
         }
         upgradeNotice.setRemark("升级提交申请");
-        pfUserUpgradeNoticeMapper.insert(upgradeNotice);
+        if (pfUserUpgradeNoticeMapper.insert(upgradeNotice) == 0){
+            throw new BusinessException("创建升级申请数据失败");
+        }
         return upgradeNotice.getId();
+    }
+
+    /**
+     * 根据id查询申请信息
+     * @param id 申请信息表id
+     * @return
+     */
+    public UpGradeInfoPo getUpGradeInfo(Long id){
+        logger.info("根据id查询申请信息 id=" + id);
+        return pfUserUpgradeNoticeMapper.selectUpGradeInfoPoById(id);
+    }
+
+    /**
+     * 更新升级申请信息
+     * @param pfUserUpgradeNotice
+     * @return
+     */
+    public int updateUpgradeNotice(PfUserUpgradeNotice pfUserUpgradeNotice) throws Exception{
+        int a = pfUserUpgradeNoticeMapper.updateByPrimaryKey(pfUserUpgradeNotice);
+        if (a == 0){
+            throw new BusinessException("处理失败");
+        }
+        return a;
     }
 }

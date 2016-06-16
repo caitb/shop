@@ -70,13 +70,13 @@
         where pbrr.user_pid = #{userId}
     </select>
 
-    <select id="selectSumByOneUserId" resultType="Integer" >
-        select COUNT(pbrr.user_id)
-        from pf_border_recommen_reward pbrr
-        INNER JOIN com_sku sku ON sku.id=pbrr.sku_id
-        INNER JOIN com_user use ON use.id=pbrr.user_pid
-        where pbrr.user_pid = #{userId}  AND pbrr.sku_id=#{skuId}
-    </select>
+    <!--<select id="selectSumByOneUserId" resultType="Integer" >-->
+        <!--select COUNT(pbrr.user_id)-->
+        <!--from pf_border_recommen_reward pbrr-->
+        <!--INNER JOIN com_sku sku ON sku.id=pbrr.sku_id-->
+        <!--INNER JOIN com_user use ON use.id=pbrr.user_pid-->
+        <!--where pbrr.user_pid = #{userId}  AND pbrr.sku_id=#{skuId}-->
+    <!--</select>-->
 
     <select id="selectNumByUserId" resultType="Integer" parameterType="java.lang.Long" >
         select COUNT(pid) from pf_user_recommen_relation   where user_id = #{userId}

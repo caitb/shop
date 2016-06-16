@@ -16,6 +16,22 @@
         <result column="up_status" property="upStatus" jdbcType="INTEGER" />
     </resultMap>
 
+    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.po.extendPo.UpGradeInfoPo" >
+        <id column="upgradeId" property="upgradeId" jdbcType="BIGINT" />
+        <result column="skuId" property="skuId" jdbcType="INTEGER" />
+        <result column="skuName" property="skuName" jdbcType="VARCHAR" />
+        <result column="applyId" property="applyId" jdbcType="BIGINT" />
+        <result column="applyName" property="applyName" jdbcType="VARCHAR" />
+        <result column="orgAgentId" property="orgAgentId" jdbcType="INTEGER" />
+        <result column="orgAgentName" property="orgAgentName" jdbcType="VARCHAR" />
+        <result column="wishAgentId" property="wishAgentId" jdbcType="INTEGER" />
+        <result column="wishAgentName" property="wishAgentName" jdbcType="VARCHAR" />
+        <result column="applyStatus" property="applyStatus" jdbcType="INTEGER" />
+        <result column="upStatus" property="upStatus" jdbcType="INTEGER" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="applyCode" property="applyCode" jdbcType="VARCHAR" />
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from pf_user_upgrade_notice
         where id = #{id,jdbcType=BIGINT}
@@ -169,5 +185,30 @@
         <if test="time != null">
           AND create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
         </if>
+    </select>
+
+    <select id="selectUpGradeInfoPoById" parameterType="java.lang.Long" resultMap="BaseUpgradeInfoResultMap">
+        SELECT
+        a.id AS upgradeId,
+        b.id AS skuId,
+        b. NAME AS skuName,
+        a.user_id AS applyId,
+        e.real_name AS applyName,
+        a.org_agent_level_id AS orgAgentId,
+        c. NAME AS orgAgentName,
+        a.wish_agent_level_id AS wishAgentId,
+        d. NAME AS wishAgentName,
+        a. STATUS AS applyStatus,
+        a.up_status AS upStatus,
+        a.create_time AS createTime,
+        a. CODE AS applyCode
+        FROM
+        pf_user_upgrade_notice a
+        LEFT JOIN com_sku b ON a.sku_id = b.id
+        LEFT JOIN com_agent_level c ON a.org_agent_level_id = c.id
+        LEFT JOIN com_agent_level d ON a.wish_agent_level_id = d.id
+        LEFT JOIN com_user e ON a.user_id = e.id
+        WHERE
+        a.id = #{Id}
     </select>
 </mapper>

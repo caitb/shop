@@ -9,7 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import org.springframework.stereotype.Repository;
-
+import com.masiis.shop.dao.po.extendPo.UpGradeInfoPo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -51,4 +51,6 @@ public interface PfUserUpgradeNoticeMapper {
      */
     List<PfUserUpgradeNotice> selectUncalcelByUpStatusAndDate(@Param("upStatus") Integer upStatus,
                                                       @Param("time") Date time);
+
+    UpGradeInfoPo selectUpGradeInfoPoById(@Param("Id") Long Id);
 }

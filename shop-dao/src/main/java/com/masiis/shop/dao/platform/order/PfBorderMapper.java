@@ -33,6 +33,13 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 
+    /**
+     * 获得奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 14:25
+     */
+    List<PfBorder> selectRecommend(Long userId);
+
     List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
 

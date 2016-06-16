@@ -18,7 +18,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>我推荐的人</p>            
         </header>
         <main>
@@ -47,15 +47,15 @@
                 </div>
                 <button>查询</button>
             </div>
-            <c:forEach items="${sumByUserPid}" var="sumByUserPid">
             <div class="sec1">
+                <c:forEach items="${sumByUserPid}" var="sumByUserPid">
                 <img src="${sumByUserPid.wxHeadImg}" alt="">
                 <div>
                     <p>${sumByUserPid.name} <b>${sumByUserPid.agentName}</b></p>
                     <p>${sumByUserPid.skuName}</p>
                 </div>
+                </c:forEach>
             </div>
-            </c:forEach>
         </main>
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>

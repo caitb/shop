@@ -65,4 +65,9 @@ public class PfUserSkuService {
     public PfUserSku getPfUserSkuByUserIdAndSkuId(Long userId, Integer skuId){
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
     }
+
+    public List<PfUserSku> getPfUserSkuInfoByUserId(Long UserId) {
+        return pfUserSkuMapper.selectByUserId(UserId);
+    }
+
 }

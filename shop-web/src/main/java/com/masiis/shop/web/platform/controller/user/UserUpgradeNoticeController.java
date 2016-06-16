@@ -1,12 +1,14 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComAgentLevelService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
@@ -40,6 +42,8 @@ public class UserUpgradeNoticeController extends BaseController {
     private ComAgentLevelService comAgentLevelService;
     @Resource
     private UserService userService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
     /**
      * jjh
      * 我的下级申请记录<默认>
@@ -53,6 +57,20 @@ public class UserUpgradeNoticeController extends BaseController {
             if(comUser==null){
               throw new BusinessException("用户出现问题");
             }
+            //初始化商品查询列表
+            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            if(pfUserSkuList==null){
+                throw new BusinessException("代理商品异常，初始化商品列表失败");
+            }else{
+                List<String> skuList = new ArrayList();
+                for(PfUserSku pfUserSku :pfUserSkuList){
+                    ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+                    skuList.add(comSku.getName());
+                }
+                mv.addObject("skuList", skuList);
+            }
+            //初始化申请状态列表
+            mv.addObject("statusPickList", UpGradeStatus.statusPickList);
             List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserPId(comUser.getId());
@@ -80,7 +98,6 @@ public class UserUpgradeNoticeController extends BaseController {
         }
         return mv;
     }
-
     /**
      * jjh
      * 0：我的申请

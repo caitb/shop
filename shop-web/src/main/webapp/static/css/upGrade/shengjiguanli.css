@@ -27,7 +27,6 @@ nav .on a {
 .floor div {
     display: -webkit-box;
     padding: 5px;
-    position: relative;
     -webkit-box-align: center;
 }
 .floor div span {
@@ -41,6 +40,7 @@ nav .on a {
     background: #ffffff url("/static/images/selectdown.png") no-repeat 95%;
     background-size: 14px;
     height: 25px;
+    position: relative;
 }
 .floor div label b {
     display: block;
@@ -52,6 +52,15 @@ nav .on a {
     white-space: nowrap;
     overflow: hidden;
 }
+.floor div label select {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 27px;
+    width: 120px;
+    z-index: 10;
+    opacity: 0;
+}
 .floor div .goods {
     width: 40%;
     margin-right: 10px;
@@ -61,13 +70,6 @@ nav .on a {
 }
 .floor div .level b {
     width: 70%;
-}
-.floor div select {
-    position: absolute;
-    left: 100px;
-    top: 10px;
-    height: 1px;
-    z-index: -1;
 }
 .floor button {
     display: block;

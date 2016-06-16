@@ -62,7 +62,7 @@ public class MyRecommendController extends BaseController{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(comUser.getId());
-            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//推荐我的人数
+            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//推荐给我的人数
             int numByUserPid = pfUserRecommendRelationService.findNumByUserPid(comUser.getId());//我推荐的人数
             Integer borders = pfBorderRecommenRewardService.findBorders(comUser.getId());//获得奖励订单数
             Integer pBorders = pfBorderRecommenRewardService.findPBorders(comUser.getId());//发出奖励订单数
@@ -84,8 +84,8 @@ public class MyRecommendController extends BaseController{
      * @author muchaofeng
      * @date 2016/6/15 17:44
      */
-    @RequestMapping("/RecommendGiveList")
-    public ModelAndView RecommendGiveList(HttpServletRequest request){
+    @RequestMapping("/recommendGiveList")
+    public ModelAndView recommendGiveList(HttpServletRequest request){
         try{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
@@ -99,42 +99,111 @@ public class MyRecommendController extends BaseController{
         }
         return null;
     }
+
+
+    /**
+     * 我推荐的详情列表
+     * @author muchaofeng
+     * @date 2016/6/16 17:27
+     */
+    @RequestMapping("/myRecommendList")
+    public ModelAndView myRecommendList(HttpServletRequest request){
+        try{
+            ModelAndView modelAndView = new ModelAndView();
+            ComUser comUser = getComUser(request);
+
+            List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
+            modelAndView.addObject("sumByUserPid",sumByUserPid);
+            modelAndView.setViewName("platform/user/wotuijianderen");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return null;
+    }
+    
+    /**
+     * 获得奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 10:47
+     */
+    @RequestMapping("/getRewardBorder")
+    public ModelAndView getRewardBorder(HttpServletRequest request) throws Exception {
+        ComUser comUser = getComUser(request);
+        try{
+            List<PfBorder> pfBorders = bOrderService.getRecommendPfBorder(comUser.getId());
+            String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            PfUserCertificate certificateByuserskuId =null;
+            PfUserCertificate certificateByuserskuId1 = null;
+            if (pfBorders != null && pfBorders.size() != 0) {
+                for (PfBorder pfBorder : pfBorders) {
+                    List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                    for (PfBorderItem pfBorderItem : pfBorderItems) {
+                        pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
+                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+                        certificateByuserskuId = userCertificateService.getCertificateByuserskuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                        certificateByuserskuId1 = userCertificateService.getCertificateByuserskuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                    }
+                    ComUser user = userService.getUserById(pfBorder.getUserId());
+                    ComUser userName = userService.getUserById(pfBorder.getUserPid());
+                    user.setWxId(certificateByuserskuId.getWxId());
+                    userName.setWxId(certificateByuserskuId1.getWxId());
+                    pfBorder.setUserName(user);
+                    pfBorder.setUserPname(userName);
+                    pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
+                    pfBorder.setPfBorderItems(pfBorderItems);
+                }
+            }
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.setViewName("platform/user/huoqujianglidingdan");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取获得奖励订单列表失败!",e);
+        }
+        return null;
+    }
+
     
     /**
      * 发出奖励订单
      * @author muchaofeng
-     * @date 2016/6/16 10:47
+     * @date 2016/6/16 16:50
      */
     @RequestMapping("/sendRewardBorder")
     public ModelAndView sendRewardBorder(HttpServletRequest request) throws Exception {
         ComUser comUser = getComUser(request);
-
-        List<PfBorder> pfBorders = bOrderService.getRecommendPfBorder(comUser.getId());
-        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        PfUserCertificate certificateByuserskuId =null;
-        PfUserCertificate certificateByuserskuId1 = null;
-        if (pfBorders != null && pfBorders.size() != 0) {
-            for (PfBorder pfBorder : pfBorders) {
-                List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
-                for (PfBorderItem pfBorderItem : pfBorderItems) {
-                    pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
-                    pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
-                    certificateByuserskuId = userCertificateService.getCertificateByuserskuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-                    certificateByuserskuId1 = userCertificateService.getCertificateByuserskuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+        try{
+            List<PfBorder> pfBorders = bOrderService.SendRecommendPfBorder(comUser.getId());
+            String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            PfUserCertificate certificateByuserskuId =null;
+            PfUserCertificate certificateByuserskuId1 = null;
+            if (pfBorders != null && pfBorders.size() != 0) {
+                for (PfBorder pfBorder : pfBorders) {
+                    List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                    for (PfBorderItem pfBorderItem : pfBorderItems) {
+                        pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
+                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+                        certificateByuserskuId1 = userCertificateService.getCertificateByuserskuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                        certificateByuserskuId = userCertificateService.getCertificateByuserskuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                    }
+                    ComUser user = userService.getUserById(pfBorder.getUserId());
+                    ComUser userName = userService.getUserById(pfBorder.getUserPid());
+                    user.setWxId(certificateByuserskuId.getWxId());
+                    userName.setWxId(certificateByuserskuId1.getWxId());
+                    pfBorder.setUserName(user);
+                    pfBorder.setUserPname(userName);
+                    pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
+                    pfBorder.setPfBorderItems(pfBorderItems);
                 }
-                ComUser user = userService.getUserById(pfBorder.getUserId());
-                ComUser userName = userService.getUserById(pfBorder.getUserPid());
-                user.setWxId(certificateByuserskuId.getWxId());
-                userName.setWxId(certificateByuserskuId1.getWxId());
-                pfBorder.setUserName(user);
-                pfBorder.setUserPname(userName);
-                pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
-                pfBorder.setPfBorderItems(pfBorderItems);
             }
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.setViewName("platform/user/fachujianglidingdan");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取获得奖励订单列表失败!",e);
         }
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("pfBorders", pfBorders);
-        modelAndView.setViewName("platform/user/huoqujianglidingdan");
-        return modelAndView;
+        return null;
     }
 }

@@ -51,7 +51,7 @@
             <div class="floor1 floor2">
                 <p>推荐人订单</p>
                 <div>
-                    <p>
+                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/getRewardBorder')">
                         <span>${borders}</span>
                         <span>获得奖励订单</span>
                     </p>

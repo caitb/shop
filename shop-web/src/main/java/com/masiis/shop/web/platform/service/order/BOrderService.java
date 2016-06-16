@@ -429,4 +429,14 @@ public class BOrderService {
     public List<PfBorder> getRecommendPfBorder(Long userId) {
         return pfBorderMapper.selectRecommend(userId);
     }
+
+    /**
+     * 发出奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 16:46
+     */
+    public List<PfBorder> SendRecommendPfBorder(Long userId) {
+        return pfBorderMapper.selectSendRecommend(userId);
+    }
+
 }

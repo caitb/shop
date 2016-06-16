@@ -31,27 +31,27 @@
     <div class="floor">
         <div>
             <span>商品：</span>
-            <label for="goods" class="goods"><b></b></label>
-            <select id="goods">
-                <option value="">asdasd</option>
-                <option value="">13242</option>
-                <option value="">hgfds</option>
-                <option value="">7654</option>
-                <option value="">lkjhgfdsa</option>
-                <option value="">oiuytrewASDFGHJKL</option>
-            </select>
+            <label class="goods">
+                <b></b>
+                <select id="goods">
+                    <c:forEach items="${skuMap}" var="sku" varStatus="skuIndex">
+                        <option value="${skuIndex.index}">${sku}</option>
+                    </c:forEach>
+                </select>
+            </label>
+
             <span>等级：</span>
-            <label for="level" class="level"><b></b></label>
-            <select id="level">
-                <option value="">asdasd</option>
-                <option value="">13242</option>
-                <option value="">hgfds</option>
-                <option value="">7654</option>
-                <option value="">lkjhgfdsa</option>
-                <option value="">oiuytrewASDFGHJKL</option>
-            </select>
+            <label class="level">
+                <b></b>
+                <select id="level">
+                    <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
+                        <option value="${statusIndex.index}">${status}</option>
+                    </c:forEach>
+                </select>
+            </label>
+
         </div>
-        <button>查询</button>
+        <button onclick="search()">查询</button>
     </div>
     <div class="box">
         <main id="main">
@@ -126,6 +126,22 @@
                 }
             });
     })
+
+    function search(){
+        var searchParam = {};
+        searchParam.skuId = "";
+        searchParam.upStatus = "";
+        searchParam.rebateType = "";
+        $.ajax({
+            url: '<%=basePath%>upgradeInfo/search',
+            type: 'post',
+            async:true,
+            data: searchParam,
+            dataType: 'json',
+            success: function (res) {
+            }
+        });
+    }
 </script>
 </body>
 </html>

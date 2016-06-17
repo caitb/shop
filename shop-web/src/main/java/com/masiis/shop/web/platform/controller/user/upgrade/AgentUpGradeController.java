@@ -379,7 +379,7 @@ public class AgentUpGradeController extends BaseController {
      */
     @RequestMapping(value = "/cannelUpgrade.do")
     @ResponseBody
-    public String cannelUpgradeNotice(@RequestParam(value = "/upgradeId") Long upgradeId,
+    public String cannelUpgradeNotice(@RequestParam(value = "upgradeId", required = true) Long upgradeId,
                                HttpServletRequest request) throws Exception{
         logger.info("用户撤销升级申请单");
         ComUser comUser = getComUser(request);
@@ -390,7 +390,14 @@ public class AgentUpGradeController extends BaseController {
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-
+        try {
+            upgradeNoticeService.cannelUpgradeNotice(upgradeId);
+        }catch (Exception e){
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message",e.getMessage());
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
+        }
         jsonObject.put("isTrue","true");
         jsonObject.put("message","撤销成功");
         logger.info(jsonObject.toJSONString());

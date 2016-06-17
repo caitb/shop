@@ -451,6 +451,8 @@ public class BOrderPayService {
      * <2>修改订单数据
      * <3>添加订单日志
      * <4>处理发货库存
+     * <5>实时统计数据显示
+     * <6>修改结算中数据
      */
     private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
@@ -506,9 +508,9 @@ public class BOrderPayService {
                 }
             }
         }
-        log.info("<12>实时统计数据显示");
+        log.info("<5>实时统计数据显示");
         orderStatisticsService.statisticsOrder(pfBorder.getId());
-        log.info("<13>修改结算中数据");
+        log.info("<6>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {

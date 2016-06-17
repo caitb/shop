@@ -20,7 +20,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>升级管理</p>
     </header>
     <nav>
@@ -39,30 +39,35 @@
                     </c:forEach>
                 </select>
             </label>
-                <span>等级：</span>
-                <label class="level">
-                    <b></b>
-                    <select id="level">
-                        <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
-                            <option value="${statusIndex.index}">${status}</option>
-                        </c:forEach>
-                    </select>
-                </label>
-                <%--<span id="leixing">类型：</span>--%>
-                <%--<label class="level" id="fanli">--%>
-                    <%--<b></b>--%>
-                    <%--<select id="level1">--%>
-                        <%--<option value="0">获得返利</option>--%>
-                        <%--<option value="1">支付返利</option>--%>
-                    <%--</select>--%>
-                <%--</label>--%>
+        </div>
+        <div id="dengji">
+            <span>等级：</span>
+            <label class="level">
+                <b></b>
+                <select id="level">
+                    <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
+                        <option value="${statusIndex.index}">${status}</option>
+                    </c:forEach>
+                </select>
+            </label>
+        </div>
+        <div id="fanli" style="display: none;">
+            <span>类型：</span>
+            <label class="level1">
+                <b></b>
+                <select id="level1">
+                    <option value="0">获得返利</option>
+                    <option value="1">支付返利</option>
+                </select>
+            </label>
         </div>
         <button onclick="search()" id="search">查询</button>
     </div>
+
     <div class="box">
         <main id="main">
             <c:forEach items="${pfUserUpGradeInfoList}" var="grade">
-            <div class="sec1">
+            <div class="sec1" onclick="upgradeDetail(1,'${grade.pfUserUpgradeNotice.id}')">
                     <div class="s_1">
                         <p>商品：${grade.skuName}</p>
                         <p>状态：<span class="active">申请中</span></p>
@@ -82,15 +87,20 @@
             </c:forEach>
         </main>
     </div>
-    <a href="#" class="fix">我要升级</a>
+    <a href="<%=path%>/upgrade/init.shtml" class="fix">我要升级</a>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/repetitionForm.js"></script>
 <script>
     var tabId;
     $(document).ready(function(){
+        var goodsWidth=$(".goods").width();
+        var levelsWidth=$(".level").width();
         $(".goods b").html($("#goods option:selected").text());
         $(".level b").html($("#level option:selected").text());
+        $(".level1 b").html($("#level1 option:selected").text());
+        $("#goods").width(goodsWidth);
+        $("#level").width(levelsWidth);
         tabId = 1;
     })
     $("#goods").on("change",function(){
@@ -101,12 +111,25 @@
         var tabVal=$("#level option:selected").text();
         $(".level b").html(tabVal);
     })
+    $("#level1").on("change",function(){
+        var tabVal=$("#level1 option:selected").text();
+        $(".level1 b").html(tabVal);
+    })
     $("nav").on("click","p",function(){
         var index=$(this).index();
         tabId = index;
         if (tabId == 0) {
+            $(".floor").hide();
+        }
+        if(tabId ==1){
+            $(".floor").show();
+            $("#dengji").show();
+            $("#fanli").hide();
         }
         if (tabId == 2) {
+            $(".floor").show();
+            $("#dengji").hide();
+            $("#fanli").show();
         }
             $(this).addClass("on").siblings().removeClass("on");
             $.ajax({
@@ -118,9 +141,9 @@
                 success: function (res) {
                     var trHtml = "";
                     $.each(res.pfUserUpGradeInfoList, function(i, grade){
-                        trHtml+="<div class=\"sec1\">";
+                        trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                         trHtml+="<div class=\"s_1\">";
-                        trHtml+="<p>商品："+grade.skuName+"</p>>";
+                        trHtml+="<p>商品："+grade.skuName+"</p>";
                         trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
                         trHtml+="</div>";
                         trHtml+="<div class=\"s_2\">";
@@ -145,7 +168,7 @@
         var searchParam = {};
         searchParam.skuId = $("#goods option:selected").val();
         searchParam.upStatus = $("#level option:selected").val();
-        searchParam.rebateType = "";
+        searchParam.rebateType = $("#level1 option:selected").val();
         $.ajax({
             url: '<%=basePath%>upgradeInfo/search',
             type: 'post',
@@ -158,9 +181,9 @@
             success: function (res) {
                 var trHtml = "";
                 $.each(res.pfUserUpGradeInfoList, function(i, grade){
-                    trHtml+="<div class=\"sec1\">";
+                    trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                     trHtml+="<div class=\"s_1\">";
-                    trHtml+="<p>商品："+grade.skuName+"</p>>";
+                    trHtml+="<p>商品："+grade.skuName+"</p>";
                     trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
                     trHtml+="</div>";
                     trHtml+="<div class=\"s_2\">";
@@ -182,6 +205,28 @@
                 fullHide();
             }
         });
+    }
+    /**
+     *  0：我的申请
+     *  1：下级申请
+     *  2：一次性返利
+     *  @param tabId
+     *  @param upgradeId
+     */
+    function upgradeDetail(tabId, upgradeId) {
+        switch (tabId) {
+            case 0:
+                window.location.href = "<%=basePath%>upgrade/myApplyUpgrade.shtml?upgradeId=" + upgradeId;
+                break;
+            case 1:
+                window.location.href = "<%=basePath%>upgrade/upgradeInfo.shtml?upgradeId=" + upgradeId;
+                break;
+            case 2:
+                window.location.href = "<%=basePath%>upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeId;
+                break;
+            default :
+                break;
+        }
     }
 </script>
 </body>

@@ -115,33 +115,11 @@ public class UpgradeNoticeService {
     }
 
     public String coverCodeByMyUpgrade(Integer upStatus) {
-        String value = null;
-        if (upStatus == 0) {
-            value = UpGradeStatus.STATUS_Untreated.getMessage();
-        } else if (upStatus == 1) {
-            value = UpGradeStatus.STATUS_Processing.getMessage();
-        } else if (upStatus == 2) {
-            value = UpGradeStatus.STATUS_NoPayment.getMessage();
-        } else if (upStatus == 3) {
-            value = UpGradeStatus.STATUS_Complete.getMessage();
-        } else if (upStatus == 4) {
-            value = UpGradeStatus.STATUS_Revocation.getMessage();
-        }
-        return value;
+        return UpGradeStatus.statusPickList.get(upStatus);
     }
 
     public String coverCodeByLowerUpgrade(Integer upStatus) {
-        String value = null;
-        if (upStatus == 0) {
-            value = UpGradeUpStatus.UP_STATUS_Untreated.getMessage();
-        } else if (upStatus == 1) {
-            value = UpGradeUpStatus.UP_STATUS_NotUpgrade.getMessage();
-        } else if (upStatus == 2) {
-            value = UpGradeUpStatus.UP_STATUS_Upgrade.getMessage();
-        } else if (upStatus == 3) {
-            value = UpGradeUpStatus.UP_STATUS_Complete.getMessage();
-        }
-        return value;
+        return UpGradeUpStatus.upStatusPickList.get(upStatus);
     }
 	/**
      * 处理代理用户升级
@@ -156,6 +134,18 @@ public class UpgradeNoticeService {
      * @throws Exception
      */
     public Long dealAgentUpGrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
+        logger.info("查询是否已经有申请单");
+        List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectBySkuIdAndUserIdAndUserPid(skuId, userPid, userId);
+        if (upgradeNotices != null & upgradeNotices.size()>0){
+            for (PfUserUpgradeNotice upGrade : upgradeNotices){
+                if (upGrade.getStatus().intValue() == UpGradeStatus.STATUS_Untreated.getCode().intValue() ||
+                    upGrade.getStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue() ||
+                    upGrade.getStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue())
+                {
+                    throw new BusinessException("当前还有未处理完成的升级申请单");
+                }
+            }
+        }
         PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
         logger.info("生成申请单号begin");
         String code = OrderMakeUtils.makeOrder("U");
@@ -178,6 +168,17 @@ public class UpgradeNoticeService {
         upgradeNotice.setRemark("升级提交申请");
         if (pfUserUpgradeNoticeMapper.insert(upgradeNotice) == 0){
             throw new BusinessException("创建升级申请数据失败");
+        }
+        logger.info("创建升级申请单后处理下级申请单数据");
+        List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectBySkuIdAndUserIdAndUserPid(skuId, userPid, userId);
+        for (PfUserUpgradeNotice upgrade : pfUserUpgradeNotices){
+            //当申请用户处理状态为未处理时进行数据更新
+            if (upgrade.getStatus().intValue() == UpGradeStatus.STATUS_Untreated.getCode().intValue()){
+                upgrade.setUpStatus(UpGradeUpStatus.UP_STATUS_Upgrade.getCode());
+                upgrade.setStatus(UpGradeStatus.STATUS_Processing.getCode());
+                //更新代理升级申请信息
+                updateUpgradeNotice(upgrade);
+            }
         }
         return upgradeNotice.getId();
     }
@@ -203,5 +204,29 @@ public class UpgradeNoticeService {
             throw new BusinessException("处理失败");
         }
         return a;
+    }
+
+    /**
+     * 代理暂不升级处理下级申请单数据
+     * @param pfUserUpgradeNotice
+     * @throws Exception
+     */
+    public void dealLowerUpgradeNotice(PfUserUpgradeNotice pfUserUpgradeNotice) throws Exception{
+        //当申请用户处理状态不是取消状态则将处理状态设置为待支付状态
+        if (pfUserUpgradeNotice.getStatus().intValue() != UpGradeStatus.STATUS_Revocation.getCode().intValue()){
+            PfUserUpgradeNotice upgrade = new PfUserUpgradeNotice();
+            upgrade.setSkuId(pfUserUpgradeNotice.getSkuId());
+            upgrade.setUserPid(pfUserUpgradeNotice.getUserPid());
+            List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(upgrade);
+            if (upgradeNotices == null || upgradeNotices.size() == 0){
+                throw new BusinessException("无下级代理申请信息");
+            }
+            for (PfUserUpgradeNotice upgradeNotice : upgradeNotices){
+                upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+                upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+                //更新代理升级申请信息
+                updateUpgradeNotice(upgradeNotice);
+            }
+        }
     }
 }

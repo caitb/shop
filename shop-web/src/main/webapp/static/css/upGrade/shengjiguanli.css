@@ -22,16 +22,26 @@ nav .on a {
 .floor {
     background: #fff;
     margin-top: 10px;
-    padding: 5px 0 10px 0;
+    padding: 5px 10px 10px 10px;
 }
-.floor div {
+.floor >div {
     display: -webkit-box;
-    padding: 5px;
+    padding: 5px 0;
     -webkit-box-align: center;
+    width: 58%;
+    float: left;
+}
+.floor >div:nth-child(2),.floor >div:nth-child(3){
+    width: 40%;
+    margin-left: 5px;
+}
+.floor >span{
+    display: block;
+    margin: 0 auto;
 }
 .floor div span {
     display: block;
-    width: 14%;
+    width: 44px;
 }
 .floor div label {
     display: block;
@@ -41,6 +51,7 @@ nav .on a {
     background-size: 14px;
     height: 25px;
     position: relative;
+    -webkit-box-flex:1;
 }
 .floor div label b {
     display: block;
@@ -57,27 +68,15 @@ nav .on a {
     left: 0;
     top: 0;
     height: 27px;
-    width: 120px;
-    z-index: 10;
     opacity: 0;
 }
-.floor div .goods {
-    width: 40%;
-    margin-right: 10px;
-}
-.floor div .level {
-    width: 28%;
-}
-.floor div .level b {
-    width: 70%;
-}
 .floor button {
+    width: 130px;
     display: block;
-    width: 50%;
     padding: 5px 0;
     background: #f74a11;
     color: #fff;
-    margin: 5px auto 0 auto;
+    margin: 0 auto;
     border-radius: 2px;
 }
 .box main .sec1 {

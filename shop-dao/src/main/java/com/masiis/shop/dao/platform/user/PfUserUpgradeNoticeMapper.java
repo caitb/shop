@@ -42,6 +42,10 @@ public interface PfUserUpgradeNoticeMapper {
 
     List<PfUserUpgradeNotice> selectBySkuIdAndRebateType(@Param("skuId") Integer skuId,@Param("userPid") Long userPid,@Param("userId") Long userId);
 
+    List<PfUserUpgradeNotice> selectBySkuIdAndUserIdAndUserPid(@Param("skuId") Integer skuId,@Param("userPid") Long userPid,@Param("userId") Long userId);
+
+    List<PfUserUpgradeNotice> selectByCondition(PfUserUpgradeNotice pfUserUpgradeNotice);
+
     /**
      * 查询指定上级处理状态和创建时间小于指定时间的通知单
      *

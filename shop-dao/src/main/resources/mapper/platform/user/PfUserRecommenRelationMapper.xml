@@ -17,6 +17,7 @@
     <resultMap id="ComSkuMap" type="com.masiis.shop.dao.beans.user.UserRecommend" >
         <id column="id" property="userId" jdbcType="BIGINT" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="agentId" property="agentId" jdbcType="INTEGER" />
         <result column="real_name" property="name" jdbcType="VARCHAR" />
         <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR" />
         <result column="name" property="skuName" jdbcType="VARCHAR" />
@@ -59,6 +60,24 @@
         from pf_user_recommen_relation
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <!--  帮我推荐的人  -->
+    <select id="selectGiveSum" resultMap="ComSkuMap" parameterType="java.lang.Long" >
+        select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id
+        from pf_border pb
+        INNER JOIN pf_border_recommen_reward pbrr ON pb.id=pbrr.pf_border_id
+        INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
+        INNER JOIN com_user com ON com.id = pbrr.recommen_user_id
+        WHERE pb.user_pid=#{userId} AND pb.pay_status=1
+    </select>
+
+    <!--  帮我推荐的单人单品推荐人数  -->
+    <select id="selectGiveNum" resultType="Integer" >
+        select COUNT(DISTINCT user_id)
+        from pf_user_recommen_relation pbrr
+        WHERE pbrr.user_pid=#{userId} AND pbrr.sku_id = #{skuId}
+    </select>
+
     <!--  我推荐的人  -->
     <select id="selectSumByUserId" resultMap="ComSkuMap" parameterType="java.lang.Long" >
         select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id,agent.name as agentName
@@ -70,6 +89,26 @@
         where pbrr.user_pid = #{userId}
     </select>
 
+    <!--  我推荐的人条件查询  -->
+    <select id="selectSumByLike" resultMap="ComSkuMap" >
+        select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id,agent.name as agentName
+        from pf_user_recommen_relation pbrr
+        INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
+        INNER JOIN com_user com ON com.id = pbrr.user_id
+        INNER JOIN pf_user_sku user_sku ON pbrr.user_id = user_sku.user_id AND pbrr.sku_id = user_sku.sku_id
+        INNER JOIN com_agent_level agent ON user_sku.agent_level_id = agent.id
+        where
+        <if test="userId != null">
+             pbrr.user_pid = #{userId}
+        </if>
+        <if test="skuId != null">
+            AND pbrr.sku_id = #{skuId}
+        </if>
+        <if test="agentLevelId != null">
+            AND agent.id = #{agentLevelId}
+        </if>
+    </select>
+
 
     <!--<select id="selectSumByOneUserId" resultType="Integer" >-->
         <!--select COUNT(pbrr.user_id)-->
@@ -78,11 +117,13 @@
         <!--INNER JOIN com_user use ON use.id=pbrr.user_pid-->
         <!--where pbrr.user_pid = #{userId}  AND pbrr.sku_id=#{skuId}-->
     <!--</select>-->
-
+    <!-- 帮我推荐的人数 -->
     <select id="selectNumByUserId" resultType="Integer" parameterType="java.lang.Long" >
-        select COUNT(pid) from pf_user_recommen_relation   where user_id = #{userId}
+        SELECT COUNT(DISTINCT b.recommen_user_id) FROM pf_border a
+        INNER JOIN pf_border_recommen_reward b ON a.id=b.pf_border_id
+        WHERE a.user_pid = #{userId} AND a.pay_status=1
     </select>
-
+    <!-- 我推荐的人数 -->
     <select id="selectNumByUserPid" resultType="Integer"  parameterType="java.lang.Long" >
         select COUNT(pid) from pf_user_recommen_relation where user_pid = #{userId}
     </select>

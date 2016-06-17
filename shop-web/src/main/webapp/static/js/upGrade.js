@@ -11,6 +11,11 @@ $("select").on("change",function(){
     $("p label b").html(tabVal);
 })
 function blackShow(){
+    var chooseWhether = $("#chooseWhether").val();
+    if (chooseWhether == "false"){
+        alert("请选择等级");
+        return;
+    }
     $(".black").show();
 }
 function blackHide(){
@@ -69,6 +74,7 @@ function choiceAgent(data){
     $("#productName").text(skuName);
     $("#curLevel").text(curAgentName);
     $("#upLevel").text(upgradeName);
+    $("#chooseWhether").val(true);
 }
 
 $(".que_que").on("click",function(){

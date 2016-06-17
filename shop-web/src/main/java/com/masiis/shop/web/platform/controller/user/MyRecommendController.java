@@ -15,11 +15,12 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,8 @@ public class MyRecommendController extends BaseController{
     private UserCertificateService userCertificateService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
 
     /**
      * 我的推荐
@@ -61,13 +64,14 @@ public class MyRecommendController extends BaseController{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(comUser.getId());
-            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//推荐给我的人数
+            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//帮我推荐的人数
             int numByUserPid = pfUserRecommendRelationService.findNumByUserPid(comUser.getId());//我推荐的人数
             Integer borders = pfBorderRecommenRewardService.findBorders(comUser.getId());//获得奖励订单数
             Integer pBorders = pfBorderRecommenRewardService.findPBorders(comUser.getId());//发出奖励订单数
             modelAndView.addObject("pfUserStatistics",pfUserStatistics);
             modelAndView.addObject("numByUserId",numByUserId);
             modelAndView.addObject("numByUserPid",numByUserPid);
+
             modelAndView.addObject("borders",borders);
             modelAndView.addObject("pBorders",pBorders);
             modelAndView.setViewName("platform/user/wodetuijian");
@@ -79,7 +83,7 @@ public class MyRecommendController extends BaseController{
     }
 
     /**
-     * 推荐给我的详情列表
+     * 帮我推荐的详情列表
      * @author muchaofeng
      * @date 2016/6/15 17:44
      */
@@ -89,9 +93,13 @@ public class MyRecommendController extends BaseController{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
 
-            List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//推荐给我的
-            modelAndView.addObject("sumByUserPid",sumByUserPid);
-            modelAndView.setViewName("platform/user/wotuijianderen");
+            List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId());//推荐给我的
+            for (UserRecommend userRecommend:sumByUser) {
+                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
+                userRecommend.setNumber(giveNum);
+            }
+            modelAndView.addObject("sumByUser",sumByUser);
+            modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;
         }catch (Exception e){
             log.error("获取代理产品列表失败!",e);
@@ -112,6 +120,21 @@ public class MyRecommendController extends BaseController{
             ComUser comUser = getComUser(request);
 
             List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
+            List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
+
+            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            if(pfUserSkuList==null){
+                throw new BusinessException("代理商品异常，初始化商品列表失败");
+            }else{
+                List<ComSku> skuList = new ArrayList();
+                for(PfUserSku pfUserSku :pfUserSkuList){
+                    ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+                    skuList.add(comSku);
+                }
+                modelAndView.addObject("skuList", skuList);
+            }
+
+            modelAndView.addObject("agentLevels",agentLevels);
             modelAndView.addObject("sumByUserPid",sumByUserPid);
             modelAndView.setViewName("platform/user/wotuijianderen");
             return modelAndView;
@@ -119,6 +142,26 @@ public class MyRecommendController extends BaseController{
             log.error("获取代理产品列表失败!",e);
         }
         return null;
+    }
+
+    /**
+     * 条件查询我推荐的详情列表
+     * @author muchaofeng
+     * @date 2016/6/17 10:31
+     */
+
+    @RequestMapping("/myRecommendLike.do")
+    @ResponseBody
+    public List<UserRecommend> myRecommendLike(HttpServletRequest request,Integer skuId, Integer agentLevelIdLong){
+        List<UserRecommend> sumByUserPid =null;
+        try{
+            ComUser comUser = getComUser(request);
+
+            sumByUserPid = pfUserRecommendRelationService.findSumByLike(skuId,comUser.getId(),agentLevelIdLong);//我推荐的详情列表
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return sumByUserPid;
     }
 
     /**

@@ -100,7 +100,7 @@ public class BOrderAddService {
         }
         //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         Long recommendUserId = 0l;
-        if (bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {
+        if (bOrderAdd.getpUserId() != 0 && bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {
             PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
             if (parentPfUserSku.getAgentLevelId().equals(bOrderAdd.getAgentLevelId())) {
                 recommendUserId = bOrderAdd.getpUserId();
@@ -116,10 +116,10 @@ public class BOrderAddService {
         if (bOrderAdd.getOrderType() == 0) {
             bailPrice = pfSkuAgent.getBail();
             quantity = pfSkuAgent.getQuantity();
-        } else if (bOrderAdd.getOrderType() == 1){
+        } else if (bOrderAdd.getOrderType() == 1) {
             bailPrice = BigDecimal.ZERO;
             quantity = bOrderAdd.getQuantity();
-        }else if (bOrderAdd.getOrderType()==3){
+        } else if (bOrderAdd.getOrderType() == 3) {
 
             quantity = pfSkuAgent.getQuantity();
         }
@@ -157,6 +157,7 @@ public class BOrderAddService {
         pfBorder.setIsCounting(0);
         pfBorder.setIsShip(0);
         pfBorder.setIsReceipt(0);
+        pfBorder.setRecommenAmount(BigDecimal.ZERO);
         pfBorder.setRemark("");
         //添加订单
         pfBorderMapper.insert(pfBorder);
@@ -178,39 +179,41 @@ public class BOrderAddService {
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
         //v1.2 Begin处理订单推荐奖励表
-        PfBorderRecommenReward pfBorderRecommenReward = null;
-        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
-        if (pfUserRecommenRelation != null) {
-            PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-            pfBorderRecommenReward = new PfBorderRecommenReward();
-            pfBorderRecommenReward.setCreateTime(new Date());
-            pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
-            pfBorderRecommenReward.setPfBorderItemId(pfBorderItem.getId());
-            pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
-            pfBorderRecommenReward.setRecommenUserId(pfUserRecommenRelation.getUserPid());
-            pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
-            pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
-            pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
-            pfBorderRecommenReward.setRemark("已经有了推荐关系的奖励");
-        } else {
-            if (recommendUserId > 0 && !recommendUserId.equals(pfBorder.getUserPid())) {
+        if (bOrderAdd.getpUserId() != 0) {
+            PfBorderRecommenReward pfBorderRecommenReward = null;
+            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
+            if (pfUserRecommenRelation != null) {
                 PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 pfBorderRecommenReward = new PfBorderRecommenReward();
                 pfBorderRecommenReward.setCreateTime(new Date());
                 pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
                 pfBorderRecommenReward.setPfBorderItemId(pfBorderItem.getId());
                 pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
-                pfBorderRecommenReward.setRecommenUserId(recommendUserId);
+                pfBorderRecommenReward.setRecommenUserId(pfUserRecommenRelation.getUserPid());
                 pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
                 pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
                 pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
-                pfBorderRecommenReward.setRemark("新建推荐关系的奖励");
+                pfBorderRecommenReward.setRemark("已经有了推荐关系的奖励");
+            } else {
+                if (recommendUserId > 0 && !recommendUserId.equals(pfBorder.getUserPid())) {
+                    PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                    pfBorderRecommenReward = new PfBorderRecommenReward();
+                    pfBorderRecommenReward.setCreateTime(new Date());
+                    pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
+                    pfBorderRecommenReward.setPfBorderItemId(pfBorderItem.getId());
+                    pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
+                    pfBorderRecommenReward.setRecommenUserId(recommendUserId);
+                    pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
+                    pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
+                    pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
+                    pfBorderRecommenReward.setRemark("新建推荐关系的奖励");
+                }
             }
-        }
-        if (pfBorderRecommenReward != null) {
-            pfBorderRecommenRewardService.insert(pfBorderRecommenReward);
-            pfBorder.setRecommenAmount(pfBorderRecommenReward.getRewardTotalPrice());
-            pfBorderMapper.updateById(pfBorder);
+            if (pfBorderRecommenReward != null) {
+                pfBorderRecommenRewardService.insert(pfBorderRecommenReward);
+                pfBorder.setRecommenAmount(pfBorderRecommenReward.getRewardTotalPrice());
+                pfBorderMapper.updateById(pfBorder);
+            }
         }
         //v1.2 End处理订单推荐奖励表
         //添加订单日志

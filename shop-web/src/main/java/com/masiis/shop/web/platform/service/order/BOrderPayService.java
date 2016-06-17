@@ -163,7 +163,7 @@ public class BOrderPayService {
      * @param outOrderId
      * @param rootPath
      */
-    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -320,6 +320,7 @@ public class BOrderPayService {
                     sfShopSkuMapper.insert(sfShopSku);
                 }
                 log.info("<9>修改用户sku代理关系数据");
+                ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
                 thisUS = new PfUserSku();
                 thisUS.setCreateTime(new Date());
                 thisUS.setCreateTime(new Date());
@@ -341,6 +342,7 @@ public class BOrderPayService {
                 thisUS.setIsCertificate(1);
                 thisUS.setPfBorderId(pfBorder.getId());
                 thisUS.setBail(pfBorder.getBailAmount());
+                thisUS.setRewardUnitPrice(comSku.getRewardUnitPrice());
                 thisUS.setRemark("");
                 PfUserCertificate pfUserCertificate = new PfUserCertificate();
                 pfUserCertificate.setCreateTime(new Date());
@@ -371,7 +373,6 @@ public class BOrderPayService {
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
                 String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径
@@ -451,8 +452,10 @@ public class BOrderPayService {
      * <2>修改订单数据
      * <3>添加订单日志
      * <4>处理发货库存
+     * <5>实时统计数据显示
+     * <6>修改结算中数据
      */
-    public void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -506,9 +509,9 @@ public class BOrderPayService {
                 }
             }
         }
-        log.info("<12>实时统计数据显示");
+        log.info("<5>实时统计数据显示");
         orderStatisticsService.statisticsOrder(pfBorder.getId());
-        log.info("<13>修改结算中数据");
+        log.info("<6>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {

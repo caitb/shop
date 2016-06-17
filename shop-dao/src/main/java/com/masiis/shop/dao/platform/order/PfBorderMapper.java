@@ -147,4 +147,9 @@ public interface PfBorderMapper {
                                                 @Param("orderStatus") Integer orderStatus,
                                                 @Param("payStatus") Integer payStatus,
                                                 @Param("orderType") Integer orderType);
+
+    int updateCancelByIdAndOStatusAndPStatusAndOType(@Param("orderId") Long orderId,
+                                                      @Param("orderStatus") Integer orderStatus,
+                                                      @Param("payStatus") Integer payStatus,
+                                                      @Param("orderType") Integer orderType);
 }

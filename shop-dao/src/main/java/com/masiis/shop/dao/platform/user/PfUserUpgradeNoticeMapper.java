@@ -9,7 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import org.springframework.stereotype.Repository;
-import com.masiis.shop.dao.po.extendPo.UpGradeInfoPo;
+import com.masiis.shop.dao.beans.extendPo.UpGradeInfoPo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;

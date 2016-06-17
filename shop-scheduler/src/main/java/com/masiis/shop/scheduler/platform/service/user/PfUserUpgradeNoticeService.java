@@ -84,4 +84,8 @@ public class PfUserUpgradeNoticeService {
             throw new BusinessException(e);
         }
     }
+
+    public PfUserUpgradeNotice findByPfBorderId(Long id) {
+        return noticeMapper.selectByPfBorderId(id);
+    }
 }

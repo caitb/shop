@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.PfUserSkuHistoryMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSkuHistory" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_pid" property="userPid" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="is_pay" property="isPay" jdbcType="INTEGER" />
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="bail" property="bail" jdbcType="DECIMAL" />
+        <result column="agent_num" property="agentNum" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="tree_code" property="treeCode" jdbcType="VARCHAR" />
+        <result column="tree_level" property="treeLevel" jdbcType="INTEGER" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_user_sku_history
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_user_sku_history (id, add_time, pf_user_sku_id, 
+            create_time, code, pid, 
+            user_id, user_pid, sku_id, 
+            agent_level_id, is_pay, is_certificate, 
+            pf_border_id, bail, agent_num, 
+            remark, tree_code, tree_level, 
+            reward_unit_price)
+        values (#{id,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{pfUserSkuId,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, 
+            #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER}, #{isCertificate,jdbcType=INTEGER}, 
+            #{pfBorderId,jdbcType=BIGINT}, #{bail,jdbcType=DECIMAL}, #{agentNum,jdbcType=BIGINT}, 
+            #{remark,jdbcType=VARCHAR}, #{treeCode,jdbcType=VARCHAR}, #{treeLevel,jdbcType=INTEGER}, 
+            #{rewardUnitPrice,jdbcType=DECIMAL})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSkuHistory" >
+        update pf_user_sku_history
+        set add_time = #{addTime,jdbcType=TIMESTAMP},
+            pf_user_sku_id = #{pfUserSkuId,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            code = #{code,jdbcType=VARCHAR},
+            pid = #{pid,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            is_pay = #{isPay,jdbcType=INTEGER},
+            is_certificate = #{isCertificate,jdbcType=INTEGER},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            bail = #{bail,jdbcType=DECIMAL},
+            agent_num = #{agentNum,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR},
+            tree_code = #{treeCode,jdbcType=VARCHAR},
+            tree_level = #{treeLevel,jdbcType=INTEGER},
+            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, add_time, pf_user_sku_id, create_time, code, pid, user_id, user_pid, sku_id, 
+        agent_level_id, is_pay, is_certificate, pf_border_id, bail, agent_num, remark, tree_code, 
+        tree_level, reward_unit_price
+        from pf_user_sku_history
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, add_time, pf_user_sku_id, create_time, code, pid, user_id, user_pid, sku_id, 
+        agent_level_id, is_pay, is_certificate, pf_border_id, bail, agent_num, remark, tree_code, 
+        tree_level, reward_unit_price
+        from pf_user_sku_history
+    </select>
+
+</mapper>

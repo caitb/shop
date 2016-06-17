@@ -8,10 +8,28 @@ package com.masiis.shop.dao.beans.user;
 public class UserRecommend {
     private Long userId;
     private Integer skuId;
+    private Integer agentId;
+    private Integer number;
     private String name;
     private String wxHeadImg;
     private String skuName;
     private String agentName;
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public Integer getAgentId() {
+        return agentId;
+    }
 
     public void setAgentName(String agentName) {
         this.agentName = agentName;

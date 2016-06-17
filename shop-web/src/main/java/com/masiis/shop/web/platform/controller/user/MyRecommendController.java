@@ -64,13 +64,14 @@ public class MyRecommendController extends BaseController{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(comUser.getId());
-            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//推荐给我的人数
+            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//帮我推荐的人数
             int numByUserPid = pfUserRecommendRelationService.findNumByUserPid(comUser.getId());//我推荐的人数
             Integer borders = pfBorderRecommenRewardService.findBorders(comUser.getId());//获得奖励订单数
             Integer pBorders = pfBorderRecommenRewardService.findPBorders(comUser.getId());//发出奖励订单数
             modelAndView.addObject("pfUserStatistics",pfUserStatistics);
             modelAndView.addObject("numByUserId",numByUserId);
             modelAndView.addObject("numByUserPid",numByUserPid);
+
             modelAndView.addObject("borders",borders);
             modelAndView.addObject("pBorders",pBorders);
             modelAndView.setViewName("platform/user/wodetuijian");
@@ -82,7 +83,7 @@ public class MyRecommendController extends BaseController{
     }
 
     /**
-     * 推荐给我的详情列表
+     * 帮我推荐的详情列表
      * @author muchaofeng
      * @date 2016/6/15 17:44
      */
@@ -92,9 +93,13 @@ public class MyRecommendController extends BaseController{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
 
-            List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//推荐给我的
-            modelAndView.addObject("sumByUserPid",sumByUserPid);
-            modelAndView.setViewName("platform/user/wotuijianderen");
+            List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId());//推荐给我的
+            for (UserRecommend userRecommend:sumByUser) {
+                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
+                userRecommend.setNumber(giveNum);
+            }
+            modelAndView.addObject("sumByUser",sumByUser);
+            modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;
         }catch (Exception e){
             log.error("获取代理产品列表失败!",e);

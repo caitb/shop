@@ -42,7 +42,7 @@
                         <span>${numByUserPid}</span>
                         <span>我推荐的人</span>
                     </p>
-                    <p>
+                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/recommendGiveList')">
                         <span>${numByUserId}</span>
                         <span>帮我推荐的</span>
                     </p>

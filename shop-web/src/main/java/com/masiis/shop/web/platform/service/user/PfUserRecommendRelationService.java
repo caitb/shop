@@ -30,7 +30,7 @@ public class PfUserRecommendRelationService {
     }
 
     /**
-     * 推荐我的人
+     * 帮我推荐的人
      *
      * @author muchaofeng
      * @date 2016/6/15 14:24
@@ -51,13 +51,22 @@ public class PfUserRecommendRelationService {
     }
 
     /**
-     * 推荐给我的详情列表
+     * 帮我推荐的详情列表
      *
      * @author muchaofeng
      * @date 2016/6/15 17:42
      */
-    public List<UserRecommend> findSumByUserId(Long userId) {
-        return pfUserRecopmmenRelationMapper.selectSumByUserId(userId);
+    public List<UserRecommend> findGiveSum(Long userId) {
+        return pfUserRecopmmenRelationMapper.selectGiveSum(userId);
+    }
+
+    /**
+     * 帮我推荐的单人单品推荐人数
+     * @author muchaofeng
+     * @date 2016/6/17 13:57
+     */
+    public Integer findGiveNum(Long userId,Integer skuId) {
+        return pfUserRecopmmenRelationMapper.selectGiveNum(userId,skuId);
     }
 
     /**

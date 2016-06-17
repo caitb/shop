@@ -115,33 +115,11 @@ public class UpgradeNoticeService {
     }
 
     public String coverCodeByMyUpgrade(Integer upStatus) {
-        String value = null;
-        if (upStatus == 0) {
-            value = UpGradeStatus.STATUS_Untreated.getMessage();
-        } else if (upStatus == 1) {
-            value = UpGradeStatus.STATUS_Processing.getMessage();
-        } else if (upStatus == 2) {
-            value = UpGradeStatus.STATUS_NoPayment.getMessage();
-        } else if (upStatus == 3) {
-            value = UpGradeStatus.STATUS_Complete.getMessage();
-        } else if (upStatus == 4) {
-            value = UpGradeStatus.STATUS_Revocation.getMessage();
-        }
-        return value;
+        return UpGradeStatus.statusPickList.get(upStatus);
     }
 
     public String coverCodeByLowerUpgrade(Integer upStatus) {
-        String value = null;
-        if (upStatus == 0) {
-            value = UpGradeUpStatus.UP_STATUS_Untreated.getMessage();
-        } else if (upStatus == 1) {
-            value = UpGradeUpStatus.UP_STATUS_NotUpgrade.getMessage();
-        } else if (upStatus == 2) {
-            value = UpGradeUpStatus.UP_STATUS_Upgrade.getMessage();
-        } else if (upStatus == 3) {
-            value = UpGradeUpStatus.UP_STATUS_Complete.getMessage();
-        }
-        return value;
+        return UpGradeUpStatus.upStatusPickList.get(upStatus);
     }
 	/**
      * 处理代理用户升级

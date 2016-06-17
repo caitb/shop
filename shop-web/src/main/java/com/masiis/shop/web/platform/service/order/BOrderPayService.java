@@ -163,7 +163,7 @@ public class BOrderPayService {
      * @param outOrderId
      * @param rootPath
      */
-    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -452,7 +452,7 @@ public class BOrderPayService {
      * <3>添加订单日志
      * <4>处理发货库存
      */
-    public void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效

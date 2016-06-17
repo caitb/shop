@@ -216,13 +216,13 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 升级信息页面   (处理未完成)
-     * @param applyId       升级申请表id
+     * @param upgradeId       升级申请表id
      * @param request
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/upgradeInfo.shtml")
-    public ModelAndView upgradeInformation(@RequestParam(value = "applyId",required = true) Long applyId,
+    public ModelAndView upgradeInformation(@RequestParam(value = "upgradeId",required = true) Long upgradeId,
                                            HttpServletRequest request)throws Exception{
         logger.info("升级信息页面");
         ComUser comUser = getComUser(request);
@@ -230,7 +230,7 @@ public class AgentUpGradeController extends BaseController {
             throw new BusinessException("用户未登录");
         }
         ModelAndView mv = new ModelAndView();
-        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(applyId);
+        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(upgradeId);
         if (upgradeNotice == null){
             throw new BusinessException("无升级申请信息");
         }
@@ -240,7 +240,7 @@ public class AgentUpGradeController extends BaseController {
             throw new BusinessException("申请人不是您下级");
         }
         logger.info("查询升级信息页面数据begin");
-        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(applyId);
+        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
         cal.setTime(upGradeInfoPo.getCreateTime());
@@ -254,13 +254,13 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 升级信息页面   (一次性返利跳转)
-     * @param applyId       升级申请表id
+     * @param upgradeId       升级申请表id
      * @param request
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/upgradeInfoNewUp.shtml")
-    public ModelAndView upgradeInformationNewUp(@RequestParam(value = "applyId",required = true) Long applyId,
+    public ModelAndView upgradeInformationNewUp(@RequestParam(value = "upgradeId",required = true) Long upgradeId,
                                            HttpServletRequest request)throws Exception{
         logger.info("升级信息页面(一次性返利跳转)");
         ComUser comUser = getComUser(request);
@@ -268,7 +268,7 @@ public class AgentUpGradeController extends BaseController {
             throw new BusinessException("用户未登录");
         }
         ModelAndView mv = new ModelAndView();
-        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(applyId);
+        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(upgradeId);
         if (upgradeNotice == null){
             throw new BusinessException("无升级申请信息");
         }
@@ -284,7 +284,7 @@ public class AgentUpGradeController extends BaseController {
             throw new BusinessException("代理关系有误");
         }
         logger.info("查询升级信息页面数据begin");
-        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(applyId);
+        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
         ComUser former = userService.getUserById(upgradeNotice.getUserPid());
         mv.addObject("former",former.getRealName());
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
@@ -333,5 +333,11 @@ public class AgentUpGradeController extends BaseController {
         jsonObject.put("message","处理完成");
         logger.info(jsonObject.toJSONString());
         return jsonObject.toJSONString();
+    }
+
+    public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId) throws Exception{
+        ModelAndView mv = new ModelAndView();
+
+        return mv;
     }
 }

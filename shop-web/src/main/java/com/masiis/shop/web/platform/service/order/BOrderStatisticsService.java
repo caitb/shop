@@ -7,6 +7,7 @@ import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
+import org.apache.commons.collections.OrderedIterator;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +49,8 @@ public class BOrderStatisticsService {
         if (pfBorder != null) {
             logger.info("---实时显示统计-------------------------start");
             List<PfBorderItem> ordItems = pfBorderItemMapper.getPfBorderItemDetail(pfBorder.getId());
-            logger.info("---实时显示统计---------------------------end");
             statisticsByOrder(pfBorder, ordItems);
+            logger.info("---实时显示统计---------------------------end");
         }
     }
 
@@ -166,6 +167,7 @@ public class BOrderStatisticsService {
         //总销售额
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();
+        BigDecimal recommenAmount = order.getRecommenAmount();
         logger.info("总销售额-----之前----" + statistics.getIncomeFee());
         if (statistics.getIncomeFee() != null) {
             statistics.setIncomeFee(statistics.getIncomeFee().add(ordAmount.subtract(bailAmount)));
@@ -199,6 +201,13 @@ public class BOrderStatisticsService {
         }
         logger.info("出货商品数量----之后-----" + statistics.getDownProductCount());
         logger.info("出货商品数量----增加-----" + pfBorderItem.getQuantity());
+        //v1.2 推荐发出奖励金额
+        if (recommenAmount.compareTo(BigDecimal.ZERO) > 0) {
+            logger.info("推荐发出奖励金额----之前------" + statistics.getRecommenSendFee());
+            statistics.setRecommenSendFee(statistics.getRecommenSendFee().add(recommenAmount));
+            logger.info("推荐发出奖励金额----之后-----" + statistics.getRecommenSendFee());
+            logger.info("推荐发出奖励金额----增加-----" + recommenAmount);
+        }
         statistics.setCreateTime(new Date());
         int i = userStatisticsService.updateByIdAndVersion(statistics);
         if (i != 1) {
@@ -213,6 +222,7 @@ public class BOrderStatisticsService {
         statistics.setSkuId(pfBorderItem.getSkuId().longValue());
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();
+        BigDecimal recommenAmount = order.getRecommenAmount();
         statistics.setIncomeFee(ordAmount.subtract(bailAmount));
         BigDecimal sumProfitFee = getSumProfitFee(userPid, pfBorderItem.getSkuId(), pfBorderItem.getUnitPrice(), pfBorderItem.getQuantity());
         statistics.setProfitFee(sumProfitFee);
@@ -225,6 +235,9 @@ public class BOrderStatisticsService {
         statistics.setTakeProductCount(0);
         statistics.setTakeFee(new BigDecimal(0));
         statistics.setVersion(0L);
+        //v1.2 新增推荐奖励金额
+        statistics.setRecommenSendFee(recommenAmount);
+        statistics.setRecommenGetFee(BigDecimal.ZERO);
         userStatisticsService.insert(statistics);
         logger.info("插入代理人上级统计信息-------");
     }

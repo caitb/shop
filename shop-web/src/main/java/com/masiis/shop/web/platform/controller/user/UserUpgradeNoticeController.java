@@ -205,7 +205,8 @@ public class UserUpgradeNoticeController extends BaseController {
     public String searchUpgradeByParam(HttpServletRequest request, HttpServletResponse response,
                                        @RequestParam(value = "skuId", required = false) Integer skuId,
                                        @RequestParam(value = "upStatus", required = false) Integer upStatus,
-                                       @RequestParam(value = "rebateType", required = false) Integer rebateType) {
+                                       @RequestParam(value = "rebateType", required = false) Integer rebateType,
+                                       @RequestParam(value = "tabId", required = true) Integer tabId) {
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
@@ -214,7 +215,7 @@ public class UserUpgradeNoticeController extends BaseController {
             }
             List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            if (rebateType != null) { //一次性返利查询
+            if (tabId ==2) { //一次性返利查询
                 List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = null;
                 if (rebateType == 0) {//获得返利
                     pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByRebateAndSkuId(skuId, null, comUser.getId());
@@ -261,6 +262,7 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByMyUpgrade(pfUserUpgradeNotice.getStatus()));
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }

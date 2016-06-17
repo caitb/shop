@@ -61,7 +61,7 @@
             <div class="sec1" onclick="upgradeDetail(1,'${grade.pfUserUpgradeNotice.id}')">
                     <div class="s_1">
                         <p>商品：${grade.skuName}</p>
-                        <p>状态：<span class="active">申请中</span></p>
+                        <p>状态：<span class="active">${grade.statusValue}</span></p>
                     </div>
                     <div class="s_2">
                         <img src="${grade.comUser.wxHeadImg}" alt="">
@@ -135,7 +135,7 @@
                         trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                         trHtml+="<div class=\"s_1\">";
                         trHtml+="<p>商品："+grade.skuName+"</p>";
-                        trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
+                        trHtml+="<p>状态：<span class=\"active\">"+grade.statusValue+"</span></p>";
                         trHtml+="</div>";
                         trHtml+="<div class=\"s_2\">";
                         trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";
@@ -160,6 +160,7 @@
         searchParam.skuId = $("#goods option:selected").val();
         searchParam.upStatus = $("#level option:selected").val();
         searchParam.rebateType = $("#level1 option:selected").val();
+        searchParam.tabId = tabId;
         $.ajax({
             url: '${basePath}upgradeInfo/search',
             type: 'post',
@@ -172,10 +173,10 @@
             success: function (res) {
                 var trHtml = "";
                 $.each(res.pfUserUpGradeInfoList, function(i, grade){
-                    trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
+                    trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+searchParam.tabId+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                     trHtml+="<div class=\"s_1\">";
                     trHtml+="<p>商品："+grade.skuName+"</p>";
-                    trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
+                    trHtml+="<p>状态：<span class=\"active\">"+grade.statusValue+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="<div class=\"s_2\">";
                     trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";

@@ -23,7 +23,7 @@ public class PfUserUpGradeInfo {
 
     private String createDate;//格式化时间
 
-    private String StatusValue;//状态value
+    private String statusValue;//状态value
 
     public PfUserUpgradeNotice getPfUserUpgradeNotice() {
         return pfUserUpgradeNotice;
@@ -82,10 +82,10 @@ public class PfUserUpGradeInfo {
     }
 
     public String getStatusValue() {
-        return StatusValue;
+        return statusValue;
     }
 
     public void setStatusValue(String statusValue) {
-        StatusValue = statusValue;
+        this.statusValue = statusValue;
     }
 }

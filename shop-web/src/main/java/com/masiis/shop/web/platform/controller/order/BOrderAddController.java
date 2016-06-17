@@ -377,8 +377,8 @@ public class BOrderAddController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/supplementBOrder/add.do")
-    public void supplementBOrderAdd(HttpServletRequest request,
+    @RequestMapping("/upgradeInsertOrder.do")
+    public void upgradeInsertOrder(HttpServletRequest request,
                                     @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
 
         log.info("生成订单数据----start");

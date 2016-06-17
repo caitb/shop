@@ -170,13 +170,15 @@ public class UpgradeNoticeService {
         PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
         logger.info("生成申请单号begin");
         String code = OrderMakeUtils.makeOrder("U");
+        Date date = new Date();
         upgradeNotice.setCode(code);
-        upgradeNotice.setCreateTime(new Date());
+        upgradeNotice.setCreateTime(date);
         upgradeNotice.setUserId(userId); //申请人id
         upgradeNotice.setUserPid(userPid);  //申请人上级合伙人id
         upgradeNotice.setSkuId(skuId);      //申请升级skuid
         upgradeNotice.setOrgAgentLevelId(curAgentLevel);    //原合伙代理等级
         upgradeNotice.setWishAgentLevelId(upgradeLevel);    //申请合伙代理等级
+        upgradeNotice.setUpdateTime(date);
         logger.info("生成申请单号end");
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
@@ -195,8 +197,10 @@ public class UpgradeNoticeService {
         for (PfUserUpgradeNotice upgrade : pfUserUpgradeNotices){
             //当申请用户处理状态为未处理时进行数据更新
             if (upgrade.getStatus().intValue() == UpGradeStatus.STATUS_Untreated.getCode().intValue()){
+                upgrade.setUpdateTime(new Date());
                 upgrade.setUpStatus(UpGradeUpStatus.UP_STATUS_Upgrade.getCode());
                 upgrade.setStatus(UpGradeStatus.STATUS_Processing.getCode());
+                upgrade.setRemark("上级代理提交升级申请");
                 //更新代理升级申请信息
                 updateUpgradeNotice(upgrade);
             }
@@ -243,8 +247,10 @@ public class UpgradeNoticeService {
                 throw new BusinessException("无下级代理申请信息");
             }
             for (PfUserUpgradeNotice upgradeNotice : upgradeNotices){
+                upgradeNotice.setUpdateTime(new Date());
                 upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
                 upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+                upgradeNotice.setRemark("上级代理暂不升级");
                 //更新代理升级申请信息
                 updateUpgradeNotice(upgradeNotice);
             }
@@ -376,5 +382,38 @@ public class UpgradeNoticeService {
     private ComAgentLevel getComAgentLeveal(Integer levelId){
         logger.info("获得等级信息----等级id-----"+levelId);
         return comAgentLevelService.selectByPrimaryKey(levelId);
+    }
+
+    /**
+     * 处理撤销申请单
+     * @param upgradeId     升级申请单id
+     * @throws Exception
+     */
+    public void cannelUpgradeNotice(Long upgradeId) throws Exception{
+        logger.info("处理当前用户申请单begin  upgradeId="+upgradeId);
+        PfUserUpgradeNotice upgradeNotice = pfUserUpgradeNoticeMapper.selectByPrimaryKey(upgradeId);
+        if (upgradeNotice == null){
+            throw new BusinessException("申请单信息不存在");
+        }
+        upgradeNotice.setUpdateTime(new Date());
+        upgradeNotice.setStatus(UpGradeStatus.STATUS_Revocation.getCode());
+        upgradeNotice.setRemark("申请用户撤销申请单");
+        logger.info("修改申请单");
+        updateUpgradeNotice(upgradeNotice);
+        logger.info("处理当前用户申请单end  upgradeId="+upgradeId);
+
+        logger.info("处理下级用户申请单begin");
+        PfUserUpgradeNotice newUpgrade = new PfUserUpgradeNotice();
+        newUpgrade.setSkuId(upgradeNotice.getSkuId());
+        newUpgrade.setUserPid(upgradeNotice.getUserId());
+        logger.info("通过skuId与userPid查询代理信息 skuId："+upgradeNotice.getSkuId()+" userPid："+upgradeNotice.getUserId());
+        List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(newUpgrade);
+        for (PfUserUpgradeNotice upgrade : upgradeNotices){
+            upgrade.setUpdateTime(new Date());
+            upgrade.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
+            upgrade.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
+            upgrade.setRemark("上级用户撤销申请，将申请人处理状态与上级处理状态设置为【未处理】");
+            updateUpgradeNotice(upgrade);
+        }
     }
 }

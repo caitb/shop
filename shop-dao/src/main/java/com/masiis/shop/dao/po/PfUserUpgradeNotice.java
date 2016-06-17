@@ -45,6 +45,10 @@ public class PfUserUpgradeNotice {
      */
     private Integer status;
     /**
+     * 更新时间
+     */
+    private Date updateTime;
+    /**
      * 升级订单id
      */
     private Long pfBorderId;
@@ -108,6 +112,15 @@ public class PfUserUpgradeNotice {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public Long getPfBorderId() {
         return pfBorderId;
     }

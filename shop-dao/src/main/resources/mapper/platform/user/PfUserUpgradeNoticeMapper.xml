@@ -11,6 +11,7 @@
         <result column="org_agent_level_id" property="orgAgentLevelId" jdbcType="INTEGER" />
         <result column="wish_agent_level_id" property="wishAgentLevelId" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="up_status" property="upStatus" jdbcType="INTEGER" />
@@ -41,12 +42,13 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_upgrade_notice (id, create_time, code, 
             user_id, user_pid, sku_id, 
-            org_agent_level_id, wish_agent_level_id, status, 
+            org_agent_level_id, wish_agent_level_id, status, update_time,
             pf_border_id, remark, up_status
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
             #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, 
-            #{orgAgentLevelId,jdbcType=INTEGER}, #{wishAgentLevelId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{orgAgentLevelId,jdbcType=INTEGER}, #{wishAgentLevelId,jdbcType=INTEGER},
+            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
             #{pfBorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{upStatus,jdbcType=INTEGER}
             )
     </insert>
@@ -61,6 +63,7 @@
             org_agent_level_id = #{orgAgentLevelId,jdbcType=INTEGER},
             wish_agent_level_id = #{wishAgentLevelId,jdbcType=INTEGER},
             status = #{status,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
             pf_border_id = #{pfBorderId,jdbcType=BIGINT},
             remark = #{remark,jdbcType=VARCHAR},
             up_status = #{upStatus,jdbcType=INTEGER}
@@ -69,41 +72,41 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id, 
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectByPfBorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where pf_border_id = #{orderId,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id, 
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
     </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <select id="selectByUserPId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
 
     <select id="selectByUserPIdAndStatus" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_pid = #{userPid,jdbcType=BIGINT}
         AND status = #{status,jdbcType=INTEGER}
@@ -111,7 +114,7 @@
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         <where>
             <if test="beginTime != null">
@@ -155,7 +158,7 @@
     <!-->根据商品和状态查询<-->
     <select id="selectByParam" resultMap="BaseResultMap">
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_pid = #{userPid,jdbcType=BIGINT}
         <if test="skuId != null">
@@ -168,7 +171,7 @@
     <!-->根据商品和返利状态查询<-->
     <select id="selectBySkuIdAndRebateType" resultMap="BaseResultMap">
         select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
-        b.status, b.pf_border_id, b.remark, b.up_status
+        b.status, b.update_time, b.pf_border_id, b.remark, b.up_status
         from pf_user_rebate a
         left join pf_user_upgrade_notice b
         where 1=1
@@ -185,7 +188,7 @@
 
     <select id="selectUncalcelByUpStatusAndDate" resultMap="BaseResultMap">
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         WHERE status <![CDATA[ <> ]]> 4
         <if test="upStatus != null">
@@ -231,7 +234,7 @@
 
     <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice">
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
-        status, pf_border_id, remark, up_status
+        status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where 1=1
         <if test="id != null">

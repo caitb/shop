@@ -34,6 +34,8 @@ public interface PfUserUpgradeNoticeMapper {
 
     List<PfUserUpgradeNotice> selectByUserPId(Long userPid);
 
+    List<PfUserUpgradeNotice> selectByUserPidAndStatus(@Param("userPid")Long userPid, @Param("status")Integer status);
+
     List<PfUserUpgradeNotice> selectByMap(Map<String,Object> conditionMap);
 
     List<Map<String, Object>> selectUpgradeRecordByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);

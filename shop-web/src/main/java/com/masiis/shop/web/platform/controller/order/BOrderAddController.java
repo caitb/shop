@@ -5,10 +5,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderConfirm;
-import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
-import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
+import com.masiis.shop.dao.beans.order.*;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -18,6 +15,7 @@ import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * BOrderAddController
@@ -40,6 +35,9 @@ import java.util.Locale;
 @Controller
 @RequestMapping("/BOrderAdd")
 public class BOrderAddController extends BaseController {
+
+    private final static Logger log = Logger.getLogger(BOrderAddController.class);
+
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -58,6 +56,8 @@ public class BOrderAddController extends BaseController {
     private UserCertificateService userCertificateService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
 
     /**
      * 代理订单确认订单页
@@ -374,5 +374,77 @@ public class BOrderAddController extends BaseController {
             }
         }
         return jsonObject.toJSONString();
+    }
+
+    @ResponseBody
+    @RequestMapping("/supplementBOrder/add.do")
+    public void supplementBOrderAdd(HttpServletRequest request,
+                                    @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
+
+        log.info("生成订单数据----start");
+        try{
+            BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
+            if (upgradeDetail!=null){
+                ComUser comUser = null;
+                //插入订单表
+                PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+                BOrderAdd  orderAdd = new BOrderAdd();
+                orderAdd.setOrderType(3);
+                orderAdd.setUserId(comUser.getId());
+                orderAdd.setpUserId(getNewPUserId(upgradeDetail,comUser));
+                orderAdd.setSendType(1);//拿货方式
+                orderAdd.setSkuId(upgradeDetail.getSkuId());
+                orderAdd.setQuantity(newSkuAgent.getQuantity());
+                orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+                bOrderAddService.addBOrder(orderAdd);
+            }
+        }catch (Exception e){
+            throw new BusinessException("生成订单数据失败------通知单id----"+upgradeNoticeId);
+        }
+        log.info("生成订单数据----end");
+    }
+    /**
+     * 获得新上级
+     * @param upgradeDetail
+     * @param comUser
+     * @return
+     */
+    private Long getNewPUserId(BOrderUpgradeDetail upgradeDetail,ComUser comUser){
+        Integer applyAgentLevel = upgradeDetail.getApplyAgentLevel();
+        Long newPUserId = null;
+        //查询上级的等级
+        PfUserSku userSku = null;
+        PfUserSku pUserSku = null;
+        Integer pUserAgentLevel = null;
+        try {
+            userSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),upgradeDetail.getSkuId());
+            if (userSku!=null){
+                pUserSku = userSkuService.getUserSkuByUserIdAndSkuId(Long.parseLong(userSku.getPid()+""),upgradeDetail.getSkuId());
+                if (pUserSku!=null){
+                    pUserAgentLevel = pUserSku.getAgentLevelId();
+                }else{
+                    log.info("查询父级userSku为null----父级id---"+userSku.getUserPid());
+                    throw new BusinessException("查询父级userSku为null----父级id---"+userSku.getUserPid());
+                }
+            }else {
+                log.info("查询usersku为null-----userId-----"+userSku.getUserId());
+                throw new BusinessException("查询usersku为null-----userId-----"+userSku.getUserId());
+            }
+        }catch (Exception e){
+            log.info("获得userSku出错-----"+e.getMessage());
+            throw new BusinessException("获得userSku出错-----"+e.getMessage());
+        }
+        if (pUserAgentLevel-applyAgentLevel<0){
+            //直接升级  上级的等级大于用户要升级的等级
+            newPUserId = pUserSku.getUserId();
+        }else if (pUserAgentLevel-applyAgentLevel==0){
+            //平级升级   上级的等级=用户要升级的等级
+            newPUserId = pUserSku.getUserPid();
+        }else {
+            log.info("申请登记超过了上级的等级-----skuId---"+upgradeDetail.getSkuId()+"----当前等级----"+upgradeDetail.getCurrentAgentLevel());
+            log.info("----升级等级----"+upgradeDetail.getApplyAgentLevel());
+            throw new BusinessException("申请登记超过了上级的等级");
+        }
+        return newPUserId;
     }
 }

@@ -51,26 +51,23 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id,
-        quantity, reward_unit_price, reward_total_price, remark
-        from pf_border_recommen_reward
-    </select>
-
-    <!--  获得奖励订单  -->
     <select id="selectBorders" resultType="Integer" parameterType="java.lang.Long" >
         select COUNT(purr.pf_border_id)
         from pf_user_recommen_relation purr
         INNER JOIN pf_border pb ON pb.user_id=purr.user_id
         where purr.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
     </select>
-    <!--  发出奖励订单  -->
+
     <select id="selectPBorders" resultType="Integer" parameterType="java.lang.Long" >
         select COUNT(0) from  pf_border pb
         where pb.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
     </select>
 
-
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id, 
+        quantity, reward_unit_price, reward_total_price, remark
+        from pf_border_recommen_reward
+    </select>
 
     <select id="selectByPfBorderId" resultMap="BaseResultMap">
         select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id,
@@ -79,10 +76,4 @@
         WHERE pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByBorderItemId" resultMap="BaseResultMap">
-        select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id,
-        quantity, reward_unit_price, reward_total_price, remark
-        from pf_border_recommen_reward
-        WHERE pf_border_item_id = #{pfBorderItemId,jdbcType=BIGINT}
-    </select>
 </mapper>

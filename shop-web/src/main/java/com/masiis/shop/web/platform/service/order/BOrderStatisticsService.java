@@ -6,7 +6,9 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
 import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.collections.OrderedIterator;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,10 @@ public class BOrderStatisticsService {
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private PfBorderMapper pfBorderMapper;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
+    @Resource
+    private UserSkuService userSkuService;
 
 
     /**
@@ -57,8 +63,8 @@ public class BOrderStatisticsService {
     private void statisticsByOrder(PfBorder order, List<PfBorderItem> ordItems) {
         statisticsUserInfo(order, ordItems);
         statisticsPidUserInfo(order, ordItems);
+        statisticsRecommenUserInfo(order, ordItems);
     }
-
     private void statisticsUserInfo(PfBorder order, List<PfBorderItem> ordItems) {
         logger.info("代理人统计-----start");
         //代理人的统计信息
@@ -282,6 +288,28 @@ public class BOrderStatisticsService {
         logger.info("总利润--------" + sumProfitFee);
         return sumProfitFee;
     }
+
+    private void statisticsRecommenUserInfo(PfBorder border,List<PfBorderItem> ordItems){
+        for (PfBorderItem orderItem : ordItems){
+            logger.info("推荐获得的奖励-------userId----"+border.getBailAmount()+"-----skuId----"+orderItem.getSkuId());
+            PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(border.getUserId(),orderItem.getSkuId());
+            PfUserStatistics _pfUserStatistics = userStatisticsService.selectByUserIdAndSkuId(userRecommenRelation.getUserPid(),orderItem.getSkuId());
+            if (_pfUserStatistics!=null){
+                BigDecimal rewardUnitPrice = userSkuService.getRewardUnitPrice(border.getUserPid(),orderItem.getSkuId());
+                BigDecimal totalRewardPrice = rewardUnitPrice.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
+                logger.info("推荐获得的奖励之前-----"+_pfUserStatistics.getRecommenSendFee());
+                _pfUserStatistics.setRecommenSendFee(_pfUserStatistics.getRecommenSendFee().add(totalRewardPrice));
+                logger.info("推荐获得的奖励之后-----"+_pfUserStatistics.getRecommenSendFee());
+                int i = userStatisticsService.updateByIdAndVersion(_pfUserStatistics);
+                if (i!=1){
+                    logger.info("更新推荐获得的奖励失败");
+                    throw new BusinessException("更新推荐获得的奖励失败");
+                }
+            }
+        }
+
+    }
+
 
     /**
      * 获取订单

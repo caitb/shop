@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
@@ -16,6 +17,8 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
+import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,8 @@ import java.util.List;
  */
 @Service
 public class BOrderService {
+
+    private final static Logger logger = Logger.getLogger(BOrderService.class);
 
     @Resource
     private PfBorderMapper pfBorderMapper;
@@ -56,13 +61,20 @@ public class BOrderService {
     private BOrderSkuStockService borderSkuStockService;
     @Resource
     private ComUserAccountService comUserAccountService;
-
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
+    @Resource
+    private UserService comUserService;
 
     public int insertPfBorder(PfBorder pfBorder){
         return pfBorderMapper.insert(pfBorder);
     }
     public int insertPfBorderItem(PfBorderItem pfBorderItem){
         return pfBorderItemMapper.insert(pfBorderItem);
+    }
+
+    public int updatePfBorder(PfBorder pfBorder){
+        return pfBorderMapper.updateById(pfBorder);
     }
 
 
@@ -437,6 +449,42 @@ public class BOrderService {
      */
     public List<PfBorder> SendRecommendPfBorder(Long userId) {
         return pfBorderMapper.selectSendRecommend(userId);
+    }
+
+
+    /**
+     * 支付成功后查询订单信息
+     * @param orderId
+     */
+    public BOrderUpgradeDetail getUpgradeOrderInfo(Long orderId){
+        logger.info("支付成功后查询订单信息----start");
+        //根据订单查询通知单号
+        logger.info("订单号-------"+orderId);
+        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.selectByPfBorderId(orderId);
+        Long newPUserId = null;
+        BOrderUpgradeDetail upgradeDetail = null;
+        if (upgradeNotice!=null){
+            logger.info("通知单号-------"+upgradeNotice.getId());
+            upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNotice.getId());
+            if (upgradeDetail!=null){
+                PfBorder pfBorder = getPfBorderById(orderId);
+                if (pfBorder!=null){
+                    logger.info("新上级id--------"+pfBorder.getUserPid());
+                    ComUser comUser = comUserService.getUserById(pfBorder.getUserPid());
+                    if (comUser!=null){
+                        upgradeDetail.setNewPUserId(comUser.getId());
+                        upgradeDetail.setNewPUserName(comUser.getRealName());
+                    }else{
+                        logger.info("新上级不存在-----");
+                    }
+                }
+            }else {
+                logger.info("升级通知不存在------订单号----"+orderId);
+                throw new BusinessException("升级通知不存在------订单号----"+orderId);
+            }
+        }
+        logger.info("支付成功后查询订单信息----end");
+        return upgradeDetail;
     }
 
 }

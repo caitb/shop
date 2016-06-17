@@ -16,7 +16,7 @@
         <result column="up_status" property="upStatus" jdbcType="INTEGER" />
     </resultMap>
 
-    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.beans.extendPo.UpGradeInfoPo" >
+    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo" >
         <id column="upgradeId" property="upgradeId" jdbcType="BIGINT" />
         <result column="skuId" property="skuId" jdbcType="INTEGER" />
         <result column="skuName" property="skuName" jdbcType="VARCHAR" />

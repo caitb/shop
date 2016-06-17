@@ -1,4 +1,4 @@
-package com.masiis.shop.dao.beans.extendPo;
+package com.masiis.shop.dao.beans.user.upgrade;
 
 import java.util.Date;
 

@@ -8,7 +8,11 @@ import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.PfUserRebate;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+<<<<<<< HEAD
+import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
+=======
 import com.masiis.shop.dao.beans.extendPo.UpGradeInfoPo;
+>>>>>>> 9e018347e1694fcf85933f849002626705a1320a
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

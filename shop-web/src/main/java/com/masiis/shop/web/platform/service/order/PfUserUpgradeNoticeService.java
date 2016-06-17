@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 升级通知
@@ -30,6 +31,12 @@ public class PfUserUpgradeNoticeService {
         return noticeMapper.selectByPfBorderId(orderId);
     }
 
+    public int update(PfUserUpgradeNotice po){
+        return noticeMapper.updateByPrimaryKey(po);
+    }
 
+    public List<PfUserUpgradeNotice> selectByUserPidAndStatus(Long userPid,Integer status){
+        return noticeMapper.selectByUserPidAndStatus(userPid,status);
+    }
 
 }

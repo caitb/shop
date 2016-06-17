@@ -25,6 +25,8 @@ public interface SfShopSkuMapper {
 
     int updateByPrimaryKey(SfShopSku record);
 
+    SfShopSku getSfShopSkuByShopUserIdAndSkuId(@Param("shopUserId") Long shopUserId, @Param("skuId") Integer skuId);
+
     SfShopSku selectByShopIdAndSkuId(@Param("shopId") Long shopId, @Param("skuId") Integer skuId);
 
     List<SfShopSku> selectByShopId(Long shopId);

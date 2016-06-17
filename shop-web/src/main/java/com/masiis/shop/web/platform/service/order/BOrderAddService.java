@@ -5,6 +5,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -16,10 +17,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
-import com.masiis.shop.web.platform.service.user.PfUserSkuService;
-import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +68,8 @@ public class BOrderAddService {
     private PfUserRecommendRelationService pfUserRecommendRelationService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
-
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
     /**
      * 添加订单
      *
@@ -113,6 +112,7 @@ public class BOrderAddService {
             throw new BusinessException("找不到要代理的商品信息");
         }
         //合伙订单需要缴纳保证金 订单类型(0代理1补货2拿货3升级)
+        BigDecimal bailChange = BigDecimal.ZERO;
         if (bOrderAdd.getOrderType() == 0) {
             bailPrice = pfSkuAgent.getBail();
             quantity = pfSkuAgent.getQuantity();
@@ -120,7 +120,12 @@ public class BOrderAddService {
             bailPrice = BigDecimal.ZERO;
             quantity = bOrderAdd.getQuantity();
         } else if (bOrderAdd.getOrderType() == 3) {
-
+            logger.info("商品-----skuId----"+comSku.getId()+"-----等级------"+bOrderAdd.getAgentLevelId());
+            PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), bOrderAdd.getAgentLevelId());
+            logger.info("新代理保证金-------"+newPfSkuAgent.getBail());
+            logger.info("旧代理保证金-------"+pfSkuAgent.getBail());
+            bailChange = newPfSkuAgent.getBail().subtract(pfSkuAgent.getBail());
+            logger.info("保证金差额-------"+bailChange);
             quantity = pfSkuAgent.getQuantity();
         }
         //处理订单数据
@@ -138,7 +143,12 @@ public class BOrderAddService {
         //商品总金额=商品微信销售价*折扣*数量
         BigDecimal productAmount = unitPrice.multiply(BigDecimal.valueOf(quantity));
         //订单总金额=商品总金额+保证金+运费
-        BigDecimal orderAmount = productAmount.add(bailPrice).add(bOrderAdd.getShipAmount());
+        BigDecimal orderAmount = BigDecimal.ZERO;
+        if (bOrderAdd.getOrderType() == 3){
+            orderAmount = productAmount.add(bailChange).add(bOrderAdd.getShipAmount());
+        }else{
+            orderAmount = productAmount.add(bailPrice).add(bOrderAdd.getShipAmount());
+        }
         pfBorder.setReceivableAmount(orderAmount);
         pfBorder.setOrderAmount(orderAmount);
         pfBorder.setBailAmount(bailPrice);

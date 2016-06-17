@@ -27,4 +27,11 @@ public class SfShopSkuService {
     public void AddSfShopSku(SfShopSku sfShopSku) {
         sfShopSkuMapper.insert(sfShopSku);
     }
+
+    public SfShopSku getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
+        return sfShopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
+    }
+    public int update(SfShopSku sfShopSku){
+        return sfShopSkuMapper.updateByPrimaryKey(sfShopSku);
+    }
 }

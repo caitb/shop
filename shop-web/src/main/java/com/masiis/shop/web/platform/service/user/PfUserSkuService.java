@@ -26,6 +26,11 @@ public class PfUserSkuService {
     @Autowired
     private PfSkuAgentMapper pfSkuAgentMapper;
 
+
+    public int update(PfUserSku po){
+        return pfUserSkuMapper.updateByPrimaryKey(po);
+    }
+
     /**
      * 根据用户id获取当前代理等级信息
      * @param userId

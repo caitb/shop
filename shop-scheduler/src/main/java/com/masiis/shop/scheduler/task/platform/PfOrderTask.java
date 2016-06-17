@@ -98,17 +98,4 @@ public class PfOrderTask {
         log.info("处理排队订单:定时任务开始执行……结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
     }
 
-    /**
-     * 取消2天未支付的升级订单
-     */
-    public void cancelUnPayUpgradeOrderJob(){
-        log.info("2天未支付升级订单自动取消job开始,开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        try{
-            // 订单取消
-            bOrderTaskService.autoCancelUnPayUpgradeOrder();
-        } catch (Exception e) {
-            log.error("2天未支付升级订单自动取消job失败," + e.getMessage());
-        }
-        log.info("2天未支付升级订单自动取消job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
-    }
 }

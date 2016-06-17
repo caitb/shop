@@ -320,6 +320,7 @@ public class BOrderPayService {
                     sfShopSkuMapper.insert(sfShopSku);
                 }
                 log.info("<9>修改用户sku代理关系数据");
+                ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
                 thisUS = new PfUserSku();
                 thisUS.setCreateTime(new Date());
                 thisUS.setCreateTime(new Date());
@@ -341,6 +342,7 @@ public class BOrderPayService {
                 thisUS.setIsCertificate(1);
                 thisUS.setPfBorderId(pfBorder.getId());
                 thisUS.setBail(pfBorder.getBailAmount());
+                thisUS.setRewardUnitPrice(comSku.getRewardUnitPrice());
                 thisUS.setRemark("");
                 PfUserCertificate pfUserCertificate = new PfUserCertificate();
                 pfUserCertificate.setCreateTime(new Date());
@@ -371,7 +373,6 @@ public class BOrderPayService {
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
                 String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径

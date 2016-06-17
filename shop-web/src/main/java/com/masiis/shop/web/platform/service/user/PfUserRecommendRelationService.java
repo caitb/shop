@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.user.PfUserRecommenRelationMapper;
 import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
 import com.masiis.shop.dao.po.PfUserRecommenRelation;
 import com.masiis.shop.dao.po.PfUserRelation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import sun.rmi.transport.StreamRemoteCall;
 
@@ -67,6 +68,16 @@ public class PfUserRecommendRelationService {
      */
     public List<UserRecommend> findSumByUserPid(Long userId) {
         return pfUserRecopmmenRelationMapper.selectSumByUserId(userId);
+    }
+
+    /**
+     * 条件查询我推荐的详情列表
+     * @author muchaofeng
+     * @date 2016/6/17 10:30
+     */
+
+    public List<UserRecommend> findSumByLike(Integer skuId, Long userId, Integer agentLevelIdLong ) {
+        return pfUserRecopmmenRelationMapper.selectSumByLike(skuId,userId,agentLevelIdLong);
     }
 
     /**

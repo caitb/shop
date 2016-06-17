@@ -51,6 +51,13 @@ public interface PfUserRecommenRelationMapper {
     List<UserRecommend> selectSumByUserId(Long  userId);
 
     /**
+     * 我推荐的人详情(条件查询)
+     * @author muchaofeng
+     * @date 2016/6/17 10:25
+     */
+    List<UserRecommend> selectSumByLike(@Param("skuId") Integer skuId, @Param("userId") Long userId, @Param("agentLevelId") Integer agentLevelId);
+
+    /**
      * 修改树形编码
      *
      * @param id       主键id

@@ -27,36 +27,50 @@
             <div class="floor">
                 <div>
                     <span>商品：</span>
-                    <label for="goods" class="goods"><b></b></label>
-                    <select id="goods">
-                        <option value="">asdasd</option>
-                        <option value="">13242</option>
-                    </select>
+                    <label for="goods" class="goods">
+                        <b></b>
+                        <select id="goods">
+                            <c:forEach items="${skuList}" var="skuList">
+                                <option value="${skuList.id}">${skuList.name}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+
                     <span>等级：</span>
-                    <label for="level" class="level"><b></b></label>
-                    <select id="level">
-                        <option value="">asdasd</option>
-                        <option value="">13242</option>
-                    </select>
+                    <label for="level" class="level">
+                        <b></b>
+                        <select id="level">
+                            <c:forEach items="${agentLevels}" var="agent">
+                                <option value="${agent.id}">${agent.name}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+
                 </div>
-                <button>查询</button>
+                <button id="find">查询</button>
             </div>
-            <c:forEach items="${sumByUserPid}" var="sumByUser">
-            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}')">
-                <img src="${sumByUser.wxHeadImg}" alt="">
-                <div>
-                    <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
-                    <p>${sumByUser.skuName}</p>
-                </div>
+            <div class="floor2">
+                <c:forEach items="${sumByUserPid}" var="sumByUser">
+                    <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}')">
+                        <img src="${sumByUser.wxHeadImg}" alt="">
+                        <div>
+                            <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
+                            <p>${sumByUser.skuName}</p>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
-            </c:forEach>
         </main>
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script>
         $(document).ready(function(){
+            var goodsWidth=$(".goods").width();
+            var levelWidth=$(".level").width();
             $(".goods b").html($("#goods option:selected").text());
             $(".level b").html($("#level option:selected").text());
+            $("#goods").width(goodsWidth);
+            $("#level").width(levelWidth);
         })
         $("#goods").on("change",function(){
             var tabVal=$("#goods option:selected").text();
@@ -65,6 +79,29 @@
         $("#level").on("change",function(){
             var tabVal=$("#level option:selected").text();
             $(".level b").html(tabVal);
+        })
+
+        $("#find").on("click",function(){
+            var skuId = $("#goods").val()
+            var agentLevelIdLong = $("#level").val();
+            $(".floor2").html("");
+            $.ajax({
+                type:"POST",
+                url : "<%=path%>/myRecommend/myRecommendLike.do",
+                data:{skuId:skuId,agentLevelIdLong:agentLevelIdLong},
+                dataType:"Json",
+                success:function(data){
+                    var trHtml = "";
+                    $.each(data, function(i, userRecommend) {
+                        trHtml+="<div class=\"sec1\" ";
+                        trHtml+="onclick=\"javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
+                        trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
+                        trHtml+="<div> <p>"+userRecommend.name+" <b>"+userRecommend.agentName+"</b></p>";
+                        trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";
+                    })
+                    $(".floor2").html(trHtml);
+                }
+            })
         })
     </script>
 </body>

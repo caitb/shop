@@ -70,6 +70,26 @@
         where pbrr.user_pid = #{userId}
     </select>
 
+    <!--  我推荐的人条件查询  -->
+    <select id="selectSumByLike" resultMap="ComSkuMap" >
+        select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id,agent.name as agentName
+        from pf_user_recommen_relation pbrr
+        INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
+        INNER JOIN com_user com ON com.id = pbrr.user_id
+        INNER JOIN pf_user_sku user_sku ON pbrr.user_id = user_sku.user_id AND pbrr.sku_id = user_sku.sku_id
+        INNER JOIN com_agent_level agent ON user_sku.agent_level_id = agent.id
+        where
+        <if test="userId != null">
+             pbrr.user_pid = #{userId}
+        </if>
+        <if test="skuId != null">
+            AND pbrr.sku_id = #{skuId}
+        </if>
+        <if test="agentLevelId != null">
+            AND agent.id = #{agentLevelId}
+        </if>
+    </select>
+
 
     <!--<select id="selectSumByOneUserId" resultType="Integer" >-->
         <!--select COUNT(pbrr.user_id)-->

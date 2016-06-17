@@ -211,4 +211,54 @@
         WHERE
         a.id = #{Id}
     </select>
+
+    <select id="selectBySkuIdAndUserIdAndUserPid" resultMap="BaseResultMap">
+        select * from pf_user_upgrade_notice
+        WHERE sku_id = #{skuId,jdbcType=INTEGER}
+        and user_pid = #{userPid,jdbcType=BIGINT}
+        and user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where 1=1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="code != null">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="userPid != null">
+            and user_pid = #{userPid,jdbcType=BIGINT}
+        </if>
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="skuId != null">
+            and sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="orgAgentLevelId != null">
+            and org_agent_level_id = #{orgAgentLevelId,jdbcType=INTEGER}
+        </if>
+        <if test="wishAgentLevelId != null">
+            and wish_agent_level_id = #{wishAgentLevelId,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="pfBorderId != null">
+            and pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+        </if>
+        <if test="upStatus != null">
+            and up_status = #{upStatus,jdbcType=INTEGER}
+        </if>
+    </select>
 </mapper>

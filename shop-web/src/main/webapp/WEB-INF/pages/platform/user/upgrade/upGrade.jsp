@@ -48,6 +48,7 @@
         </main>
     </div>
     <div class="black">
+        <input type="hidden" id="chooseWhether" name="chooseWhether" value="false"/>
         <input type="hidden" id="skuId" name="skuId" value=""/>
         <input type="hidden" id="curAgentLevel" name="curAgentLevel" value=""/>
         <input type="hidden" id="upgradeLevel" name="upgradeLevel" value=""/>

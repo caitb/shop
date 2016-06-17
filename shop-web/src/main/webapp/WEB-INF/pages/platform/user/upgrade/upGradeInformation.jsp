@@ -50,7 +50,7 @@
                 </p>
                 <p>
                     <span>申请时间：</span>
-                    <span>${upGradeInfoPo.createTime}</span>
+                    <span>${createTime}</span>
                 </p>
                 <p>
                     <span>升级编号：</span>

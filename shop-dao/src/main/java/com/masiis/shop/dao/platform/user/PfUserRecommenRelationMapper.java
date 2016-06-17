@@ -30,7 +30,7 @@ public interface PfUserRecommenRelationMapper {
     PfUserRecommenRelation selectRecommenRelationByUserIdAndSkuId(@Param("userId") Long userId,@Param("skuId") Integer skuId);
 
     /**
-     * 推荐给我的
+     * 帮我推荐的
      * @author muchaofeng
      * @date 2016/6/15 14:12
      */
@@ -42,6 +42,21 @@ public interface PfUserRecommenRelationMapper {
      * @date 2016/6/15 14:12
      */
     int selectNumByUserPid(Long  userId);
+
+    /**
+     * 帮我推荐的人详情列表
+     * @author muchaofeng
+     * @date 2016/6/17 13:45
+     */
+
+    List<UserRecommend> selectGiveSum(Long  userId);
+
+    /**
+     * 帮我推荐的单人单品推荐人数
+     * @author muchaofeng
+     * @date 2016/6/17 13:55
+     */
+    int selectGiveNum(@Param("userId") Long userId,@Param("skuId") Integer skuId);
 
     /**
      * 我推荐的人详情

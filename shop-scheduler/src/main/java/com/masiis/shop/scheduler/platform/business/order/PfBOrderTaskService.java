@@ -111,7 +111,7 @@ public class PfBOrderTaskService {
         if (bList == null) {
             log.info("暂无超7天未收货代理订单!");
         } else {
-            log.info("超过7天未收货代理啊订单个数:" + bList.size());
+            log.info("超过7天未收货代理订单个数:" + bList.size());
             // 多线程处理
             for(PfBorder bOrder:bList) {
                 try {
@@ -130,37 +130,4 @@ public class PfBOrderTaskService {
         System.out.println(DateUtil.getDateNextdays(-7));
     }
 
-    /**
-     * 取消2天未支付的升级订单
-     */
-    public void autoCancelUnPayUpgradeOrder() {
-        Date expiraTime = DateUtil.getDateNextdays(-2);
-        log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
-
-        // 查询3天前创建的未支付非升级订单
-        // 查询代理订单
-        List<PfBorder> bList = bOrderService.findUpgradeByStatusAndDate(expiraTime, 0, 0);
-        if (bList == null) {
-            log.info("暂无超过2天未支付代理升级订单!");
-        } else {
-            log.info("超过2天未支付代理升级订单个数:" + bList.size());
-            // 多线程处理
-            CurrentThreadUtils.parallelJob(new IParallelThread() {
-                @Override
-                public Boolean doMyJob(Object obj) throws Exception {
-                    PfBorder bOrder = (PfBorder) obj;
-                    try{
-                        log.info("开始取消订单,订单号为:" + bOrder.getOrderCode());
-                        bOrderService.cancelUnPayUpgradeBOrder(bOrder);
-                        log.info("取消订单成功,订单号为:" + bOrder.getOrderCode());
-                        return true;
-                    } catch (Exception e) {
-                        log.info("取消订单失败,订单号为:" + bOrder.getOrderCode());
-                        log.error(e.getMessage(), e);
-                    }
-                    return false;
-                }
-            }, new LinkedBlockingDeque<Object>(bList), 0);
-        }
-    }
 }

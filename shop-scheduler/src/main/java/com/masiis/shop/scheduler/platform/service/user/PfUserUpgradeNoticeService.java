@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
+import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -88,4 +89,5 @@ public class PfUserUpgradeNoticeService {
     public PfUserUpgradeNotice findByPfBorderId(Long id) {
         return noticeMapper.selectByPfBorderId(id);
     }
+
 }

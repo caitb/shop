@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.text.NumberFormat;
@@ -590,6 +591,168 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用库存不足提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_OFFLINE_PAY);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 升级订单支付成功提示
+     *
+     * @param user
+     * @param params 参数数组,(第一个,支付金额;第二个,支付方式;第三个,支付详情;第四个,支付时间)
+     * @return
+     */
+    public Boolean upgradePaySuccessNotice(ComUser user, String[] params) {
+        WxPFPartnerApplyOK applyOK = new WxPFPartnerApplyOK();
+        WxNoticeReq<WxPFPartnerApplyOK> req = new WxNoticeReq<>(applyOK);
+
+        applyOK.setFirst(new WxNoticeDataItem("您好，您的升级订单支付成功。", null));
+        applyOK.setRemark(new WxNoticeDataItem("恭喜您已升级成功，感谢您的使用。", null));
+        applyOK.setKeyword1(new WxNoticeDataItem(params[0], null));
+        applyOK.setKeyword2(new WxNoticeDataItem(params[1], null));
+        applyOK.setKeyword3(new WxNoticeDataItem(params[2], null));
+        applyOK.setKeyword4(new WxNoticeDataItem(params[3], null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
+
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 下级代理申请升级通知
+     *
+     * @param pUser 上级用户对象
+     * @param params    (第一个,下级代理名称; 第二个,下级代理现等级; 第三个,下级代理申请等级;
+     *                  第四个,申请时间; 第五个,申请过期时间)
+     * @param url   处理下级代理升级申请单url
+     * @return
+     */
+    public Boolean subLineUpgradeApplyNotice(ComUser pUser, String[] params, String url){
+        WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
+        WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您有一个代理申请升级", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem("为了保证您的利益，请在" + params[4]
+                + "之前及时处理，逾期默认不升级，点击处理。", null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 升级通知单提交通知
+     *
+     * @param user 用户对象
+     * @param params    (第一个,代理名称; 第二个,代理现等级; 第三个,代理申请等级;
+     *                  第四个,申请时间)
+     * @param url   查看代理升级申请单url
+     * @return
+     */
+    public Boolean upgradeApplySubmitNotice(ComUser user, String[] params, String url){
+        WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
+        WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您的升级申请已提交，请耐心等待审核。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem("审核通过后需要您继续支付，点击查看升级单，了解最新状态。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 申请升级通知审核通过
+     *
+     * @param user 用户对象
+     * @param params    (第一个,代理名称; 第二个,代理现等级; 第三个,代理申请等级;
+     *                  第四个,申请时间; 第五个,申请过期时间)
+     * @param url   处理下级代理升级申请单url
+     * @return
+     */
+    public Boolean upgradeApplyAuditPassNotice(ComUser user, String[] params, String url){
+        WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
+        WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您的升级申请已审核通过。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem("您的升级申请已审核通过，请在" + params[4]
+                + "前支付完成，逾期将取消订单。点击继续支付。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 升级通知单撤销通知
+     *
+     * @param user 用户对象
+     * @param params    (第一个,代理名称; 第二个,代理现等级; 第三个,代理申请等级;
+     *                  第四个,申请时间)
+     * @param url   查看代理升级申请单url
+     * @return
+     */
+    public Boolean upgradeApplyCancelNotice(ComUser user, String[] params, String url){
+        WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
+        WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您的升级申请已撤销。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem("您的升级申请已撤销，升级未成功。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 下级代理申请升级撤销通知
+     *
+     * @param pUser 上级用户对象
+     * @param params    (第一个,下级代理名称; 第二个,下级代理现等级; 第三个,下级代理申请等级;
+     *                  第四个,申请时间)
+     * @param url   查看下级代理升级申请单url
+     * @return
+     */
+    public Boolean subLineUpgradeApplyCancelNotice(ComUser pUser, String[] params, String url){
+        WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
+        WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您的下级升级申请已撤销。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem("您的下级升级申请已撤销，升级未成功。", null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
+        req.setUrl(url);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

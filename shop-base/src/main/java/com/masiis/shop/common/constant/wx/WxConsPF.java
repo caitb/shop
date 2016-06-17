@@ -166,4 +166,8 @@ public class WxConsPF {
      * 线下支付提醒
      */
     public static final String WX_PF_TM_ID_OFFLINE_PAY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_OFFLINE_PAY");
+    /**
+     * 升级申请通知
+     */
+    public static final String WX_PF_TM_ID_UP_APPLY_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_UP_APPLY_NOTICE");
 }

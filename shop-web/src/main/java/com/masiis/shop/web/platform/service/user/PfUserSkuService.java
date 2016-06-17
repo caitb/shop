@@ -4,7 +4,7 @@ import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.beans.extendPo.UserSkuAgent;
+import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,11 @@ public class PfUserSkuService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Autowired
     private PfSkuAgentMapper pfSkuAgentMapper;
+
+
+    public int update(PfUserSku po){
+        return pfUserSkuMapper.updateByPrimaryKey(po);
+    }
 
     /**
      * 根据用户id获取当前代理等级信息

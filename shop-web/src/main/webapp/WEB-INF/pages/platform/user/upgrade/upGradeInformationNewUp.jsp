@@ -11,7 +11,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <a href="${basePath}upgradeInfo/lower"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>升级信息</p>
         </header>
         <main>

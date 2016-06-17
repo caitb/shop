@@ -659,7 +659,7 @@ public class BOrderPayService {
      * @param endDate         结束日期
      * @return
      */
-    private String uploadFile(String filePath,
+    public String uploadFile(String filePath,
                               String fontPath,
                               String certificateCode,
                               String userName,

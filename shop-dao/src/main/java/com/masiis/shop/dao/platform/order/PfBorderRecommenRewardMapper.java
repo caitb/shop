@@ -43,11 +43,4 @@ public interface PfBorderRecommenRewardMapper {
      * @return
      */
     List<PfBorderRecommenReward> selectByPfBorderId(@Param("pfBorderId") Long pfBorderId);
-
-    /**
-     * 根基代理订单itemId查询推荐奖励明细
-     * @param pfBorderItemId
-     * @return
-     */
-    PfBorderRecommenReward selectByBorderItemId(@Param("pfBorderItemId") Long pfBorderItemId);
 }

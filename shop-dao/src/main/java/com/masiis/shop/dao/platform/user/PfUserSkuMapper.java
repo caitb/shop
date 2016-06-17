@@ -9,7 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.beans.extendPo.UserSkuAgent;
+import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

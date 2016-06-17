@@ -4,16 +4,20 @@ import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
-import com.masiis.shop.dao.po.PfUserRebate;
-import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.dao.beans.extendPo.UpGradeInfoPo;
+import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +34,24 @@ public class UpgradeNoticeService {
 
     @Resource
     private PfUserRebateMapper pfUserRebateMapper;
+
+    @Resource
+    private SkuService comSkuService;
+    @Resource
+    private UserService comUserService;
+    @Resource
+    private ComAgentLevelService comAgentLevelService;
+    @Resource
+    private SkuAgentService skuAgentService;
+    /**
+     * 根据订单id查询通知单
+     * @param orderId
+     * @return
+     */
+    public PfUserUpgradeNotice selectByPfBorderId(Long orderId){
+        return pfUserUpgradeNoticeMapper.selectByPfBorderId(orderId);
+    }
+
 	/**
      * 通过id查询申请单数据
      * @param id            申请单id
@@ -228,5 +250,132 @@ public class UpgradeNoticeService {
                 updateUpgradeNotice(upgradeNotice);
             }
         }
+    }
+
+    /**
+     * 订单界面获得升级通知信息
+     * @param id   通知单id
+     */
+    public BOrderUpgradeDetail getUpgradeNoticeInfo(Long id){
+        //升级订单通知信息
+        if (id==null){
+            throw new BusinessException("升级通知信息id为null");
+        }
+        logger.info("获取升级通知信息------start");
+        logger.info("获取升级通知信息------id----"+id);
+        PfUserUpgradeNotice upgradeNotice = pfUserUpgradeNoticeMapper.selectByPrimaryKey(id);
+        BOrderUpgradeDetail upgradeDetail = null;
+        if (upgradeNotice!=null){
+            //验证条件是否可以进入
+            if (true){
+                upgradeDetail = new BOrderUpgradeDetail();
+                ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
+                if (oldComUser!=null){
+                    upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());
+                    upgradeDetail.setOldPUserName(oldComUser.getRealName());
+                }
+                //商品信息
+                ComSku comSku = getComSku(upgradeNotice.getSkuId());
+                if (comSku!=null){
+                    upgradeDetail.setSkuId(comSku.getId());
+                    upgradeDetail.setSpuId(comSku.getSpuId());
+                    upgradeDetail.setSkuName(comSku.getName());
+                    upgradeDetail.setPriceRetail(comSku.getPriceRetail());
+                }else{
+                    logger.info("商品信息为null-----id--"+upgradeNotice.getSkuId());
+                    throw new BusinessException("商品信息为null-----id--"+upgradeNotice.getSkuId());
+                }
+                //级别
+                PfSkuAgent oldSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getOrgAgentLevelId());
+                PfSkuAgent newSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getWishAgentLevelId());
+                if (oldSkuAgent!=null){
+                    ComAgentLevel oldAgentLevel = getComAgentLeveal(oldSkuAgent.getAgentLevelId());
+                    upgradeDetail.setCurrentAgentLevel(newSkuAgent.getAgentLevelId());
+                    upgradeDetail.setCurrentAgentLevelName(oldAgentLevel.getName());
+                }
+                if (newSkuAgent!=null){
+                    ComAgentLevel newAgentLevel = getComAgentLeveal(newSkuAgent.getAgentLevelId());
+                    upgradeDetail.setApplyAgentLevel(newSkuAgent.getAgentLevelId());
+                    upgradeDetail.setApplyAgentLevelName(newAgentLevel.getName());
+                }
+                //拿货数量
+                upgradeDetail.setQuantity(newSkuAgent.getQuantity());
+                //保证金差额
+                upgradeDetail.setBailChange(getBailChange(oldSkuAgent,newSkuAgent));
+                //总价
+                BigDecimal totalPrice = getTotalPrice(oldSkuAgent,newSkuAgent);
+                upgradeDetail.setTotalPrice(totalPrice);
+            }else{
+                logger.info("升级通知信息状态不正确-----");
+                throw new BusinessException("升级通知信息状态不正确-----");
+            }
+        }else{
+            logger.info("升级通知信息为null------id----"+id);
+        }
+        logger.info("获取升级通知信息------end");
+        return upgradeDetail;
+    }
+
+    /**
+     * 商品信息
+     * @param skuId
+     * @return
+     */
+    private ComSku getComSku (Integer skuId){
+        return comSkuService.getSkuById(skuId);
+    }
+
+    /**
+     * 获取保证金的差额
+     * @param oldSkuAgent  旧代理商品
+     * @param newSkuAgent  新代理商品
+     * @return
+     */
+    private BigDecimal getBailChange(PfSkuAgent oldSkuAgent,PfSkuAgent newSkuAgent){
+        if (oldSkuAgent!=null&&newSkuAgent!=null){
+            logger.info("保证金差额-------"+newSkuAgent.getBail().subtract(oldSkuAgent.getBail()).intValue());
+            return newSkuAgent.getBail().subtract(oldSkuAgent.getBail());
+        }else{
+            logger.info("获取保证金差额失败");
+            throw new BusinessException("获取保证金差额失败");
+        }
+    }
+
+    /**
+     * 获取订单的总价  = 新代理产品总价（数量*单价） + 保证金差额
+     * @param oldSkuAgent
+     * @param newSkuAgent
+     * @return
+     */
+    private BigDecimal getTotalPrice(PfSkuAgent oldSkuAgent,PfSkuAgent newSkuAgent){
+        BigDecimal totalPice = null;
+        if (oldSkuAgent!=null&&newSkuAgent!=null){
+            BigDecimal bailChange = getBailChange(oldSkuAgent,newSkuAgent);
+            totalPice = newSkuAgent.getTotalPrice().add(bailChange);
+        }else{
+            totalPice = BigDecimal.ZERO ;
+        }
+        logger.info("总价------"+totalPice.intValue());
+        return totalPice;
+    }
+
+    /**
+     * 获得商品代理等级信息
+     * @param skuId
+     * @param levelId
+     * @return
+     */
+    private PfSkuAgent getPfSkuAgent(Integer skuId,Integer levelId){
+        logger.info("获得商品代理等级信息----商品skuId----"+skuId+"-----等级id----"+levelId);
+        return skuAgentService.getBySkuIdAndLevelId(skuId,levelId);
+    }
+    /**
+     * 获得等级信息
+     * @param levelId
+     * @return
+     */
+    private ComAgentLevel getComAgentLeveal(Integer levelId){
+        logger.info("获得等级信息----等级id-----"+levelId);
+        return comAgentLevelService.selectByPrimaryKey(levelId);
     }
 }

@@ -16,7 +16,7 @@
         <result column="up_status" property="upStatus" jdbcType="INTEGER" />
     </resultMap>
 
-    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.beans.extendPo.UpGradeInfoPo" >
+    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo" >
         <id column="upgradeId" property="upgradeId" jdbcType="BIGINT" />
         <result column="skuId" property="skuId" jdbcType="INTEGER" />
         <result column="skuName" property="skuName" jdbcType="VARCHAR" />
@@ -99,6 +99,14 @@
         status, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_pid = #{userPid,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserPIdAndStatus" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        AND status = #{status,jdbcType=INTEGER}
     </select>
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">

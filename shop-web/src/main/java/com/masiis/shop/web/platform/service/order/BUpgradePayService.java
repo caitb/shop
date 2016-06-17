@@ -1,0 +1,340 @@
+package com.masiis.shop.web.platform.service.order;
+
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.product.PfSkuStockService;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.shop.SfShopSkuService;
+import com.masiis.shop.web.platform.service.user.*;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 升级支付
+ */
+@Service
+@Transactional
+public class BUpgradePayService {
+
+    private final static Logger log = Logger.getLogger(BUpgradePayService.class);
+
+    @Resource
+    private PfBorderPaymentService borderPaymentService;
+    @Resource
+    private BOrderService bOrderService;
+    @Resource
+    private BOrderOperationLogService bOrderOperationLogService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private PfUserCertificateService pfUserCertificateService;
+    @Resource
+    private BOrderPayService bOrderPayService;
+    @Resource
+    private UserService comUserService;
+    @Resource
+    private ComAgentLevelService comAgentLevelService;
+    @Resource
+    private PfSkuStockService pfSkuStockService;
+    @Resource
+    private PfUserSkuStockService pfUserSkuStockService;
+    @Resource
+    private PfUserUpgradeNoticeService userUpgradeNoticeService;
+    @Resource
+    private PfUserRebateService pfUserRebateService;
+    @Resource
+    private SfShopSkuService sfShopSkuService;
+    @Resource
+    private BOrderStatisticsService orderStatisticsService;
+    @Resource
+    private BOrderBillAmountService billAmountService;
+
+
+
+
+    private static Long getRecommendRewardUserId = null;
+    private static Long sendRecommendRewardUserId = null;
+
+    public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath){
+        //修改订单支付
+        updatePfBorderPayment(pfBorderPayment,outOrderId);
+        //修改订单
+        PfBorder pfBorder = updatePfBorder(pfBorderPayment.getPfBorderId(),pfBorderPayment);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+        //添加订单操作日志
+        insertOrderOperationLog(pfBorder);
+        //修改上下级绑定关系
+        updatePfUserSku(pfBorder.getUserId(),pfBorder.getUserPid(),pfBorder.getId(), pfBorderItems );
+        //修改证书
+        updatePfUserCertificate(pfBorder.getUserId(),pfBorderItems,null,rootPath);
+        //修改冻结库存
+        updateFrozenStock(pfBorder,pfBorderItems);
+        //修改用户统计中奖励金额
+        orderStatisticsService.statisticsOrder(pfBorder.getId());
+        //修改用户账户
+        billAmountService.orderBillAmount(pfBorder.getId());
+        //插入一次性奖励
+        insertUserRebate(pfBorder.getId());
+        //修改小铺商品信息
+        updateSfShopSku(pfBorder.getUserId(),pfBorderItems);
+        //修改通知单状态
+        updateUpgradeNotice(pfBorder.getId());
+    }
+
+    /**
+     * 修改订单支付
+     * @param pfBorderPayment
+     * @param outOrderId
+     */
+    private void updatePfBorderPayment(PfBorderPayment pfBorderPayment,String outOrderId){
+        log.info("------更新订单支付表------");
+        pfBorderPayment.setOutOrderId(outOrderId);
+        pfBorderPayment.setIsEnabled(1);
+        int i = borderPaymentService.update(pfBorderPayment);
+        if (i!=1){
+            throw new BusinessException("更新订单支付表失败----id----"+pfBorderPayment.getId());
+        }
+    }
+
+    /**
+     * 修改订单信息
+     * @param orderId
+     * @param pfBorderPayment
+     */
+    private PfBorder updatePfBorder(Long orderId,PfBorderPayment pfBorderPayment){
+        log.info("----更新订单-----");
+        PfBorder pfBorder =  bOrderService.getPfBorderById(orderId);
+        BigDecimal payAmount = pfBorderPayment.getAmount();
+        if (pfBorder!=null){
+            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());
+            pfBorder.setPayTime(new Date());
+            pfBorder.setModifyTime(new Date());
+            pfBorder.setPayStatus(1);
+            pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
+            int i = bOrderService.updatePfBorder(pfBorder);
+            if (i!=1){
+                log.info("支付成功查询订单失败----orderId---"+orderId);
+                throw new BusinessException("支付成功查询订单失败----orderId---"+orderId);
+            }
+        }else{
+            log.info("支付成功查询订单失败----orderId---"+orderId);
+            throw new BusinessException("支付成功查询订单失败----orderId---"+orderId);
+        }
+        return pfBorder;
+    }
+
+    /**
+     * 添加订单操作日志
+     * @param pfBorder
+     */
+    private void insertOrderOperationLog(PfBorder pfBorder){
+        log.info("----添加订单操作日志-----");
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "升级支付成功");
+    }
+
+    /**
+     * 修改商品的代理关系
+     * @param userId     用户id
+     * @param userPid    用户新上级id
+     * @param borderId   订单id
+     */
+    private void updatePfUserSku(Long userId,Long userPid,Long borderId,List<PfBorderItem> pfBorderItems ){
+        for (PfBorderItem orderItem:pfBorderItems){
+            log.info("---修改商品的代理关系-----订单id-----"+borderId);
+            BigDecimal bailAmount =  orderItem.getBailAmount();
+            Integer skuId = orderItem.getSkuId();
+            Integer agentLevelId = orderItem.getAgentLevelId();
+            PfUserSku pfUserSku =  pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId,skuId);
+            if (pfUserSku!=null){
+                if (!pfUserSku.getUserPid().equals(userPid)){
+                    pfUserSku.setUserPid(userPid);
+                    pfUserSku.setAgentLevelId(agentLevelId);
+                    pfUserSku.setIsPay(1);
+                    pfUserSku.setIsCertificate(1);
+                    pfUserSku.setPfBorderId(borderId);
+                    pfUserSku.setBail(bailAmount);
+                    pfUserSku.setAgentNum(0L);
+                    pfUserSku.setTreeCode("");
+                    pfUserSku.setTreeLevel(1);
+                    int i = pfUserSkuService.update(pfUserSku);
+                }
+            }else{
+                log.info("修改代理关系出错，pfusersku为null");
+                throw new BusinessException("修改代理关系出错，pfusersku为null");
+            }
+        }
+
+    }
+
+    /**
+     * 修改证书
+     * @param userId
+     * @param orderItems
+     * @param spuId
+     */
+    private void updatePfUserCertificate(Long userId,List<PfBorderItem> orderItems,Integer spuId,String rootPath){
+        for (PfBorderItem orderItem:orderItems){
+            log.info("---修改证书----userId----"+userId+"----skuId---"+orderItem.getSkuId()+"----spuId----"+spuId);
+            PfUserCertificate pfUserCertificate =  pfUserCertificateService.selectByUserIdAndSkuId(userId,orderItem.getSkuId());
+            if (pfUserCertificate!=null){
+                ComUser comUser = comUserService.getUserById(userId);
+                Calendar calendar = Calendar.getInstance();
+                pfUserCertificate.setBeginTime(calendar.getTime());
+                calendar.set(Calendar.MONTH, 11);
+                calendar.set(Calendar.DAY_OF_MONTH, 31);
+                pfUserCertificate.setEndTime(calendar.getTime());
+                pfUserCertificate.setAgentLevelId(orderItem.getAgentLevelId());
+                pfUserCertificate.setStatus(1);
+                pfUserCertificate.setCode(pfUserCertificateService.getCertificateCode(pfUserCertificate));
+                ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                String picName = bOrderPayService.uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
+                        rootPath + "/static/font/",//字体路径
+                        pfUserCertificate.getCode(),//certificateCode - 证书编号
+                        comUser.getRealName(),//userName - 用户名称
+                        comAgentLevel.getName(),//levelName - 代理等级名称
+                        orderItem.getSkuName(),//skuName - 商品名称
+                        orderItem.getSkuName(),
+                        comUser.getIdCard(),//idCard - 身份证号
+                        comUser.getMobile(),//mobile - 手机号
+                        pfUserCertificate.getWxId(),//wxId - 微信号
+                        DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期
+                        DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null));//endDate - 结束日期
+                pfUserCertificate.setImgUrl(picName + ".jpg");
+                pfUserCertificate.setRemark("升级支付成功修改证书");
+                pfUserCertificateService.update(pfUserCertificate);
+            }else{
+                log.info("修改证书失败，之前的证书为null");
+                throw new BusinessException("修改证书失败，之前的证书为null");
+            }
+        }
+
+    }
+
+    /**
+     * 冻结库存
+     * @param pfBorder
+     */
+    private void updateFrozenStock(PfBorder pfBorder,List<PfBorderItem> pfBorderItems){
+        log.info("-----处理发货库存----");
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            if (pfBorder.getUserPid() == 0) {
+                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
+                //如果可售库存不足或者排单开关打开的情况下 订单进入排单
+                if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                    //平台库存不足，排单处理
+                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                    bOrderService.updatePfBorder(pfBorder);
+                }
+                //增加平台冻结库存
+                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
+                    throw new BusinessException("(平台发货)排队订单增加冻结量失败");
+                }
+            } else {
+                PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                //上级合伙人库存不足，排单处理
+                if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
+                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                    bOrderService.updatePfBorder(pfBorder);
+                }
+                //增加平台冻结库存
+                parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
+                    throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+                }
+            }
+        }
+    }
+    /**
+     * 插入一次性奖励
+     * @param pfBorderId
+     */
+    private void insertUserRebate(Long pfBorderId){
+        PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
+        PfUserRebate pfUserRebate = new PfUserRebate();
+        pfUserRebate.setCreateTime(new Date());
+        pfUserRebate.setCreateTime(new Date());
+        if (pfUserUpgradeNotice!=null){
+            pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+        }
+        pfUserRebate.setUserUpgradeNoticeId(getRecommendRewardUserId);
+        pfUserRebate.setUserPid(sendRecommendRewardUserId);
+        pfUserRebate.setPfBorderId(pfBorderId);
+        int i = pfUserRebateService.insert(pfUserRebate);
+        if (i!=1){
+            log.info("升级支付成功插入一次性奖励失败");
+            throw new BusinessException("升级支付成功插入一次性奖励失败");
+        }
+    }
+
+    /**
+     * 修改小铺商品信息
+     * @param shopUserId
+     * @param orderItems
+     */
+    private void updateSfShopSku(Long shopUserId,List<PfBorderItem> orderItems){
+        for (PfBorderItem orderItem: orderItems){
+            log.info("修改小铺商品的sku等级和保证金-----小铺userId---"+shopUserId+"----skuId----"+orderItem.getSkuId());
+            SfShopSku sfShopSku = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId,orderItem.getSkuId());
+            if (sfShopSku!=null){
+                sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
+                sfShopSku.setBail(orderItem.getBailAmount());
+                int i = sfShopSkuService.update(sfShopSku);
+                if (i!=1){
+                    throw new BusinessException("修改小铺商品的sku等级和保证金失败");
+                }
+            }
+        }
+    }
+
+    /**
+     * 修改通知单状态
+     * @param pfBorderId
+     */
+    private void updateUpgradeNotice(Long pfBorderId){
+        //修改当前申请升级的通知单状态
+        Long userId = updateCurrentNotice(pfBorderId);
+        //判断当前升级是否有下级，有下级则修改下级的状态
+        updateAllLowerNotice(userId);
+    }
+
+    /**
+     * 修改当前申请升级的通知单状态
+     * @param pfBorderId
+     * @return
+     */
+    private Long updateCurrentNotice(Long pfBorderId){
+        log.info("修改当前升级的通知单状态-----订单id---"+pfBorderId);
+        PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
+        if (pfUserUpgradeNotice!=null){
+            pfUserUpgradeNotice.setStatus(3);
+            userUpgradeNoticeService.update(pfUserUpgradeNotice);
+            return pfUserUpgradeNotice.getUserId();
+        }
+        return null;
+    }
+
+    /**
+     * 判断当前升级是否有下级，有下级则修改下级的状态
+     * @param userPid
+     */
+    private void updateAllLowerNotice(Long userPid){
+        log.info("修改所有下级为处理中的状态-----父id----"+userPid);
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userPid,1);
+        for (PfUserUpgradeNotice notice :notices){
+            log.info("下级id-------"+notice.getUserId());
+            notice.setStatus(3);
+            userUpgradeNoticeService.update(notice);
+        }
+    }
+
+}

@@ -68,4 +68,8 @@ public class PfBorderRecommenRewardService {
     public Integer findPBorders(Long userId) throws Exception {
         return pfBorderRecommenRewardMapper.selectPBorders(userId);
     }
+
+    public PfBorderRecommenReward getRewardByOrderIdAndOrderItemIdAndSkuId(Long orderId,Long orderItemId,Integer skuId){
+        return pfBorderRecommenRewardMapper.getRewardByOrderIdAndOrderItemIdAndSkuId(orderId,orderItemId,skuId);
+    }
 }

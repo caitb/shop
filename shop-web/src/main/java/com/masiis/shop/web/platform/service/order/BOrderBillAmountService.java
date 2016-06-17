@@ -96,6 +96,10 @@ public class BOrderBillAmountService {
                     logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之前----" + comUserAccount.getRecommenBillAmount());
                     comUserAccount.setRecommenBillAmount(comUserAccount.getRecommenBillAmount().add(pfBorderRecommenReward.getRewardTotalPrice()));
                     logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之后----" + comUserAccount.getRecommenBillAmount());
+                    int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+                    if (i != 1) {
+                        throw new BusinessException("更新结算中数据失败-----用户id-----" + pfBorder.getUserPid());
+                    }
                 } else {
                     throw new BusinessException("推荐人账户不能为空");
                 }

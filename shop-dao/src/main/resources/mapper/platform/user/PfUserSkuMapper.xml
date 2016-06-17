@@ -57,11 +57,9 @@
             <result column="discount" property="discount" jdbcType="DECIMAL"/>
             <result column="remark" property="remark" jdbcType="VARCHAR"/>
         </association>
-
-
     </resultMap>
 
-    <resultMap id="UserSkuAgentResultMap" type="com.masiis.shop.dao.beans.extendPo.UserSkuAgent">
+    <resultMap id="UserSkuAgentResultMap" type="com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent">
         <id column="skuId" property="skuId" jdbcType="INTEGER"/>
         <id column="skuName" property="skuName" jdbcType="VARCHAR"/>
         <id column="agentLevelId" property="agentLevelId" jdbcType="INTEGER"/>

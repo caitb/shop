@@ -100,6 +100,22 @@
                 </li>
             </ul>
         </nav>
+        <nav>
+            <ul>
+                <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
+                    <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
+                        <%--<span>1</span>--%>
+                    </h1>
+                    <span>升级管理</span></a>
+                </li>
+                <li class="market"><a class="herf" href="<%=basePath%>developing/ui">
+                    <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
+                    <span>我的推荐</span></a>
+                </li>
+                <li class="market">
+                </li>
+            </ul>
+        </nav>
         <%--                <nav>
                          <ul>
                                 <li class="market"><a class="herf" href="javascript:;">

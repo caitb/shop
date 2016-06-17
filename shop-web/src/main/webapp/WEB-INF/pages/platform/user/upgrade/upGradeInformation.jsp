@@ -46,7 +46,7 @@
                 </p>
                 <p>
                     <span>状态：</span>
-                    <span>抗引力</span>
+                    <span>${status}</span>
                 </p>
                 <p>
                     <span>申请时间：</span>

@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfSkuAgent;
@@ -248,6 +249,7 @@ public class AgentUpGradeController extends BaseController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mv.addObject("createTime",simpleDateFormat.format(upGradeInfoPo.getCreateTime()));
         mv.addObject("overdueDate", simpleDateFormat.format(cal.getTime()) );
+        mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
         mv.setViewName("platform/user/upgrade/upGradeInformation");
         return mv;
     }
@@ -335,9 +337,63 @@ public class AgentUpGradeController extends BaseController {
         return jsonObject.toJSONString();
     }
 
-    public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId) throws Exception{
+    /**
+     * 我的申请单升级信息页面展示
+     * @param upgradeId     升级申请信息id
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/myApplyUpgrade.shtml")
+    public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId,
+                                             HttpServletRequest request) throws Exception{
+        ComUser user = getComUser(request);
+        if (user == null){
+            throw new BusinessException("用户未登录");
+        }
         ModelAndView mv = new ModelAndView();
-
+        //获取页面展示po
+        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+        if (upGradeInfoPo == null){
+            throw new BusinessException("查无升级申请单数据");
+        }
+        if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
+            throw new BusinessException("升级申请单id有误（不是当前用户申请）");
+        }
+        logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
+        ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        mv.addObject("createTime",sdf.format(upGradeInfoPo.getCreateTime()));
+        mv.addObject("applyPName",pUser.getRealName());
+        mv.addObject("upGradeInfoPo",upGradeInfoPo);
+        mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
+        mv.setViewName("platform/user/upgrade/myApplyUpgradeNotice");
         return mv;
+    }
+
+    /**
+     * 用户撤销升级申请单
+     * @param upgradeId     升级申请单id
+     * @param request
+     * @throws Exception
+     */
+    @RequestMapping(value = "/cannelUpgrade.do")
+    @ResponseBody
+    public String cannelUpgradeNotice(@RequestParam(value = "/upgradeId") Long upgradeId,
+                               HttpServletRequest request) throws Exception{
+        logger.info("用户撤销升级申请单");
+        ComUser comUser = getComUser(request);
+        JSONObject jsonObject = new JSONObject();
+        if (comUser == null){
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","用户未登录");
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
+        }
+
+        jsonObject.put("isTrue","true");
+        jsonObject.put("message","撤销成功");
+        logger.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
     }
 }

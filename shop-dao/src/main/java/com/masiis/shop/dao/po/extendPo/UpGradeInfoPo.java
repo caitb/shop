@@ -24,6 +24,10 @@ public class UpGradeInfoPo {
      */
     private Long applyId;
     /**
+     * 申请人当前上级id
+     */
+    private Long applyPid;
+    /**
      * 申请人姓名
      */
     private String applyName;
@@ -86,6 +90,14 @@ public class UpGradeInfoPo {
 
     public Long getApplyId() {
         return applyId;
+    }
+
+    public Long getApplyPid() {
+        return applyPid;
+    }
+
+    public void setApplyPid(Long applyPid) {
+        this.applyPid = applyPid;
     }
 
     public void setApplyId(Long applyId) {

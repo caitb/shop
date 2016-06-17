@@ -21,6 +21,7 @@
         <result column="skuId" property="skuId" jdbcType="INTEGER" />
         <result column="skuName" property="skuName" jdbcType="VARCHAR" />
         <result column="applyId" property="applyId" jdbcType="BIGINT" />
+        <result column="applyPid" property="applyPid" jdbcType="BIGINT" />
         <result column="applyName" property="applyName" jdbcType="VARCHAR" />
         <result column="orgAgentId" property="orgAgentId" jdbcType="INTEGER" />
         <result column="orgAgentName" property="orgAgentName" jdbcType="VARCHAR" />
@@ -193,6 +194,7 @@
         b.id AS skuId,
         b. NAME AS skuName,
         a.user_id AS applyId,
+        a.user_pid AS applyPid,
         e.real_name AS applyName,
         a.org_agent_level_id AS orgAgentId,
         c. NAME AS orgAgentName,

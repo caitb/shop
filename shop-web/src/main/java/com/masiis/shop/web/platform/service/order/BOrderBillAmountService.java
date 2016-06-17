@@ -93,9 +93,9 @@ public class BOrderBillAmountService {
                 //获取推荐人账户信息
                 ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(pfBorderRecommenReward.getRecommenUserId());
                 if (comUserAccount != null) {
-                    logger.info("结算中-----之前----" + comUserAccount.getRecommenBillAmount());
+                    logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之前----" + comUserAccount.getRecommenBillAmount());
                     comUserAccount.setRecommenBillAmount(comUserAccount.getRecommenBillAmount().add(pfBorderRecommenReward.getRewardTotalPrice()));
-                    logger.info("结算中-----之后----" + comUserAccount.getRecommenBillAmount());
+                    logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之后----" + comUserAccount.getRecommenBillAmount());
                 } else {
                     throw new BusinessException("推荐人账户不能为空");
                 }

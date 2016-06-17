@@ -102,9 +102,8 @@
         </nav>
         <nav>
             <ul>
-                <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
+                <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower">
                     <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
-                        <%--<span>1</span>--%>
                     </h1>
                     <span>升级管理</span></a>
                 </li>

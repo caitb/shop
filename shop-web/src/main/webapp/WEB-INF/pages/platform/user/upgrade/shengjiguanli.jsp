@@ -67,7 +67,7 @@
     <div class="box">
         <main id="main">
             <c:forEach items="${pfUserUpGradeInfoList}" var="grade">
-            <div class="sec1">
+            <div class="sec1" onclick="upgradeDetail(1,'${grade.pfUserUpgradeNotice.id}')">
                     <div class="s_1">
                         <p>商品：${grade.skuName}</p>
                         <p>状态：<span class="active">申请中</span></p>
@@ -141,7 +141,7 @@
                 success: function (res) {
                     var trHtml = "";
                     $.each(res.pfUserUpGradeInfoList, function(i, grade){
-                        trHtml+="<div class=\"sec1\">";
+                        trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                         trHtml+="<div class=\"s_1\">";
                         trHtml+="<p>商品："+grade.skuName+"</p>";
                         trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
@@ -168,7 +168,7 @@
         var searchParam = {};
         searchParam.skuId = $("#goods option:selected").val();
         searchParam.upStatus = $("#level option:selected").val();
-        searchParam.rebateType = "";
+        searchParam.rebateType = $("#level1 option:selected").val();
         $.ajax({
             url: '<%=basePath%>upgradeInfo/search',
             type: 'post',
@@ -181,7 +181,7 @@
             success: function (res) {
                 var trHtml = "";
                 $.each(res.pfUserUpGradeInfoList, function(i, grade){
-                    trHtml+="<div class=\"sec1\">";
+                    trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+index+"','"+grade.pfUserUpgradeNotice.id+"')\">";
                     trHtml+="<div class=\"s_1\">";
                     trHtml+="<p>商品："+grade.skuName+"</p>";
                     trHtml+="<p>状态：<span class=\"active\">申请中</span></p>";
@@ -205,6 +205,28 @@
                 fullHide();
             }
         });
+    }
+    /**
+     *  0：我的申请
+     *  1：下级申请
+     *  2：一次性返利
+     *  @param tabId
+     *  @param upgradeId
+     */
+    function upgradeDetail(tabId, upgradeId) {
+        switch (tabId) {
+            case 0:
+                window.location.href = "<%=basePath%>upgrade/myApplyUpgrade.shtml?upgradeId=" + upgradeId;
+                break;
+            case 1:
+                window.location.href = "<%=basePath%>upgrade/upgradeInfo.shtml?upgradeId=" + upgradeId;
+                break;
+            case 2:
+                window.location.href = "<%=basePath%>upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeId;
+                break;
+            default :
+                break;
+        }
     }
 </script>
 </body>

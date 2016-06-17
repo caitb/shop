@@ -171,9 +171,9 @@
     <!-->根据商品和返利状态查询<-->
     <select id="selectBySkuIdAndRebateType" resultMap="BaseResultMap">
         select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
-        b.status, b.update_time, b.pf_border_id, b.remark, b.up_status
+        b.status, b.pf_border_id, b.remark, b.up_status
         from pf_user_rebate a
-        left join pf_user_upgrade_notice b
+        left join pf_user_upgrade_notice b ON a.user_upgrade_notice_id = b.id
         where 1=1
         <if test="skuId != null">
             AND b.sku_id = #{skuId,jdbcType=INTEGER}

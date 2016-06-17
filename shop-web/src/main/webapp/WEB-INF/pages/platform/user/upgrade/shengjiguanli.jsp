@@ -1,26 +1,17 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/upGrade/shengjiguanli.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/upGrade/shengjiguanli.css">
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.replace('${basePath}index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>升级管理</p>
     </header>
     <nav>
@@ -87,10 +78,10 @@
             </c:forEach>
         </main>
     </div>
-    <a href="<%=path%>/upgrade/init.shtml" class="fix">我要升级</a>
+    <a href="${path}/upgrade/init.shtml" class="fix">我要升级</a>
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/repetitionForm.js"></script>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/repetitionForm.js"></script>
 <script>
     var tabId;
     $(document).ready(function(){
@@ -133,7 +124,7 @@
         }
             $(this).addClass("on").siblings().removeClass("on");
             $.ajax({
-                url: '<%=basePath%>upgradeInfo/tab',
+                url: '${basePath}upgradeInfo/tab',
                 type: 'post',
                 async:true,
                 data: {tabId:index},
@@ -170,7 +161,7 @@
         searchParam.upStatus = $("#level option:selected").val();
         searchParam.rebateType = $("#level1 option:selected").val();
         $.ajax({
-            url: '<%=basePath%>upgradeInfo/search',
+            url: '${basePath}upgradeInfo/search',
             type: 'post',
             async:true,
             data: searchParam,
@@ -216,13 +207,13 @@
     function upgradeDetail(tabId, upgradeId) {
         switch (tabId) {
             case 0:
-                window.location.href = "<%=basePath%>upgrade/myApplyUpgrade.shtml?upgradeId=" + upgradeId;
+                window.location.href = "${basePath}upgrade/myApplyUpgrade.shtml?upgradeId=" + upgradeId;
                 break;
             case 1:
-                window.location.href = "<%=basePath%>upgrade/upgradeInfo.shtml?upgradeId=" + upgradeId;
+                window.location.href = "${basePath}upgrade/upgradeInfo.shtml?upgradeId=" + upgradeId;
                 break;
             case 2:
-                window.location.href = "<%=basePath%>upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeId;
+                window.location.href = "${basePath}upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeId;
                 break;
             default :
                 break;

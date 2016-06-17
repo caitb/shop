@@ -105,18 +105,44 @@ public class UserController {
             return mav;
         }
 
+        /* 5分钟内登录错误超过5次 */
+        Integer login_error_count = (Integer)session.getAttribute("login_error_count");//登录错误次数
+                login_error_count = login_error_count==null ? 0 : login_error_count;
+        Long    last_login_time   = (Long)session.getAttribute("last_login_time");//上次登录时间
+                last_login_time   = last_login_time==null ? System.currentTimeMillis() : last_login_time;
+        Long    current_time      = System.currentTimeMillis();//当前系统时间
+        Long    limit_time        = 1000L*60*5;//限制时间
+        if(login_error_count != null && login_error_count.intValue() >= 5 && current_time - last_login_time < limit_time){
+            mav.setViewName("redirect:login.shtml");
+            mav.addObject("login_error_msg", "登录错误超过5次,5分钟后再试试吧!");
+            return mav;
+        }
 
         pbUser.setPassword(AESUtils.encrypt(pbUser.getPassword(), key));
         List<PbUser> pbUsers = this.pbUserService.findByCondition(pbUser);
 
         //用户名或密码不对
         if (pbUsers == null || pbUsers.size() <= 0) {
+
+            /* 记录登录错误次数 */
+            if(current_time - last_login_time > limit_time){//超过5分钟再次登录错误
+                login_error_count = 1;
+            }else{
+                login_error_count++;
+            }
+            session.setAttribute("login_error_count", login_error_count);
+            session.setAttribute("last_login_time", System.currentTimeMillis());
+
+
             mav.setViewName("redirect:login.shtml");
             mav.addObject("pbUser", pbUser);
             return mav;
         }
 
+
         //登陆成功
+        session.removeAttribute("login_error_count");
+        session.removeAttribute("last_login_time");
         session.setAttribute("pbUser", pbUsers.get(0));
         mav.setViewName("redirect:/main/index.shtml");
 

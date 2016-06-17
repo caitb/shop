@@ -8,11 +8,13 @@ import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.shop.SfShopSkuService;
 import com.masiis.shop.web.platform.service.user.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,6 +59,10 @@ public class BUpgradePayService {
     private BOrderStatisticsService orderStatisticsService;
     @Resource
     private BOrderBillAmountService billAmountService;
+    @Resource
+    private PfUserSkuHistoryService pfUserSkuHistoryService;
+    @Resource
+    private PfUserCertificateHistoryService pfUserCertificateHistoryService;
 
 
 
@@ -72,8 +78,8 @@ public class BUpgradePayService {
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
         //添加订单操作日志
         insertOrderOperationLog(pfBorder);
-        //修改上下级绑定关系
-        updatePfUserSku(pfBorder.getUserId(),pfBorder.getUserPid(),pfBorder.getId(), pfBorderItems );
+        //修改上下级绑定关系和插入历史表
+        inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(),pfBorder.getUserPid(),pfBorder.getId(), pfBorderItems );
         //修改证书
         updatePfUserCertificate(pfBorder.getUserId(),pfBorderItems,null,rootPath);
         //修改冻结库存
@@ -147,33 +153,81 @@ public class BUpgradePayService {
      * @param userPid    用户新上级id
      * @param borderId   订单id
      */
-    private void updatePfUserSku(Long userId,Long userPid,Long borderId,List<PfBorderItem> pfBorderItems ){
+    private void inserHistoryAndUpdatePfUserSku(Long userId,Long userPid,Long borderId,List<PfBorderItem> pfBorderItems ){
         for (PfBorderItem orderItem:pfBorderItems){
-            log.info("---修改商品的代理关系-----订单id-----"+borderId);
-            BigDecimal bailAmount =  orderItem.getBailAmount();
-            Integer skuId = orderItem.getSkuId();
-            Integer agentLevelId = orderItem.getAgentLevelId();
-            PfUserSku pfUserSku =  pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId,skuId);
-            if (pfUserSku!=null){
-                if (!pfUserSku.getUserPid().equals(userPid)){
-                    pfUserSku.setUserPid(userPid);
-                    pfUserSku.setAgentLevelId(agentLevelId);
-                    pfUserSku.setIsPay(1);
-                    pfUserSku.setIsCertificate(1);
-                    pfUserSku.setPfBorderId(borderId);
-                    pfUserSku.setBail(bailAmount);
-                    pfUserSku.setAgentNum(0L);
-                    pfUserSku.setTreeCode("");
-                    pfUserSku.setTreeLevel(1);
-                    int i = pfUserSkuService.update(pfUserSku);
-                }
-            }else{
-                log.info("修改代理关系出错，pfusersku为null");
-                throw new BusinessException("修改代理关系出错，pfusersku为null");
+            PfUserSku pfUserSku =  pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId,orderItem.getSkuId());
+            int i = updatePfUserSku(userId,userPid,borderId,orderItem,pfUserSku);
+            if (i==1){
+                insertUserSkuHistory(pfUserSku);
             }
         }
-
     }
+
+    /**
+     * 修改商品的代理关系
+     * @param userId
+     * @param userPid
+     * @param borderId
+     * @param orderItem
+     * @param pfUserSku
+     * @return
+     */
+    private int updatePfUserSku(Long userId,Long userPid,Long borderId,PfBorderItem orderItem,PfUserSku pfUserSku){
+        log.info("---修改商品的代理关系-----订单id-----"+borderId);
+        BigDecimal bailAmount =  orderItem.getBailAmount();
+        Integer skuId = orderItem.getSkuId();
+        Integer agentLevelId = orderItem.getAgentLevelId();
+        int i = 0;
+        if (pfUserSku!=null){
+            if (!pfUserSku.getUserPid().equals(userPid)){
+                pfUserSku.setUserPid(userPid);
+                pfUserSku.setAgentLevelId(agentLevelId);
+                pfUserSku.setIsPay(1);
+                pfUserSku.setIsCertificate(1);
+                pfUserSku.setPfBorderId(borderId);
+                pfUserSku.setBail(bailAmount);
+                pfUserSku.setAgentNum(0L);
+                pfUserSku.setTreeCode("");
+                pfUserSku.setTreeLevel(1);
+                i = pfUserSkuService.update(pfUserSku);
+            }
+        }
+        return i;
+    }
+
+    /**
+     * 插入pfuserHistory历史表
+     * @param pfUserSku
+     */
+    private void insertUserSkuHistory(PfUserSku pfUserSku){
+        log.info("----插入pfuserHistory表-----");
+        PfUserSkuHistory userSkuHistory = new PfUserSkuHistory();
+        userSkuHistory.setPfUserSkuId(pfUserSku.getId());
+        userSkuHistory.setAddTime(new Date());
+        userSkuHistory.setCreateTime(pfUserSku.getCreateTime());
+        userSkuHistory.setCode(pfUserSku.getCode());
+        userSkuHistory.setPid(pfUserSku.getPid());
+        userSkuHistory.setUserId(pfUserSku.getUserId());
+        userSkuHistory.setUserPid(pfUserSku.getUserPid());
+        userSkuHistory.setSkuId(pfUserSku.getSkuId());
+        userSkuHistory.setAgentLevelId(pfUserSku.getAgentLevelId());
+        userSkuHistory.setIsPay(pfUserSku.getIsPay());
+        userSkuHistory.setIsCertificate(pfUserSku.getIsCertificate());
+        userSkuHistory.setPfBorderId(pfUserSku.getPfBorderId());
+        userSkuHistory.setBail(pfUserSku.getBail());
+        userSkuHistory.setAgentNum(pfUserSku.getAgentNum());
+        userSkuHistory.setRemark("升级修改sku关系增加历史");
+        userSkuHistory.setTreeCode(pfUserSku.getTreeCode());
+        userSkuHistory.setTreeLevel(pfUserSku.getTreeLevel());
+        userSkuHistory.setRewardUnitPrice(pfUserSku.getRewardUnitPrice());
+        int i = pfUserSkuHistoryService.insert(userSkuHistory);
+        if (i!=1){
+            log.info("升级修改sku关系增加历史");
+            throw new BusinessException("升级修改sku关系增加历史");
+        }
+    }
+
+
 
     /**
      * 修改证书
@@ -218,6 +272,33 @@ public class BUpgradePayService {
         }
 
     }
+
+    private int insertCertificateHistory(PfUserCertificate userCertificate){
+        PfUserCertificateHistory history = new PfUserCertificateHistory();
+        history.setAddTime(new Date());
+        history.setPfUserCertificateId(userCertificate.getId());
+        history.setCreateTime(new Date());
+        history.setCode(userCertificate.getCode());
+        history.setPfUserSkuId(userCertificate.getPfUserSkuId());
+        history.setUserId(userCertificate.getUserId());
+        history.setSpuId(userCertificate.getSpuId());
+        history.setSkuId(userCertificate.getSkuId());
+        history.setIdCard(userCertificate.getIdCard());
+        history.setMobile(userCertificate.getMobile());
+        history.setWxId(userCertificate.getWxId());
+        history.setBeginTime(userCertificate.getBeginTime());
+        history.setEndTime(userCertificate.getEndTime());
+        history.setAgentLevelId(userCertificate.getAgentLevelId());
+        history.setImgUrl(userCertificate.getImgUrl());
+        history.setStatus(userCertificate.getStatus());
+        history.setReason(userCertificate.getReason());
+        history.setPoster(userCertificate.getPoster());
+        history.setRemark("修改证书插入历史表");
+        int i = pfUserCertificateHistoryService.insert(history);
+        return i;
+    }
+
+
 
     /**
      * 冻结库存

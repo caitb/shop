@@ -21,6 +21,9 @@ public interface PfBorderRecommenRewardMapper {
 
     PfBorderRecommenReward selectByPrimaryKey(Long id);
 
+    PfBorderRecommenReward selectByBorderItemId(Long pfBorderItemId);
+    PfBorderRecommenReward getRewardByOrderIdAndOrderItemIdAndSkuId(@Param("orderId")Long orderId,@Param("orderItemId")Long orderItemId,@Param("skuId")Integer skuId);
+
     List<PfBorderRecommenReward> selectAll();
 
     int updateByPrimaryKey(PfBorderRecommenReward record);

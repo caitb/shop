@@ -24,7 +24,7 @@
             <span>商品：</span>
             <label class="goods">
                 <b></b>
-                <select id="goods">
+                <select id="goods" class="search">
                     <c:forEach items="${skuList}" var="sku">
                         <option value="${sku.id}">${sku.name}</option>
                     </c:forEach>
@@ -35,7 +35,7 @@
             <span>等级：</span>
             <label class="level">
                 <b></b>
-                <select id="level">
+                <select id="level" class="search">
                     <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
                         <option value="${statusIndex.index}">${status}</option>
                     </c:forEach>
@@ -46,13 +46,13 @@
             <span>类型：</span>
             <label class="level1">
                 <b></b>
-                <select id="level1">
+                <select id="level1" class="search">
                     <option value="0">获得返利</option>
                     <option value="1">支付返利</option>
                 </select>
             </label>
         </div>
-        <button onclick="search()" id="search">查询</button>
+        <%--<button onclick="search()" id="search">查询</button>--%>
     </div>
 
     <div class="box">
@@ -155,6 +155,9 @@
             });
     })
 
+    $(".search").on("change",function(){
+        search();
+    })
     function search(){
         var searchParam = {};
         searchParam.skuId = $("#goods option:selected").val();

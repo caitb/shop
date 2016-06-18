@@ -25,11 +25,11 @@
         </header>
         <main>
             <div class="floor">
-                <div>
+                <div id="find">
                     <span>商品：</span>
                     <label for="goods" class="goods">
                         <b></b>
-                        <select id="goods">
+                        <select id="goods" class="myValue">
                             <c:forEach items="${skuList}" var="skuList">
                                 <option value="${skuList.id}">${skuList.name}</option>
                             </c:forEach>
@@ -39,15 +39,14 @@
                     <span>等级：</span>
                     <label for="level" class="level">
                         <b></b>
-                        <select id="level">
+                        <select id="level" class="myValue">
                             <c:forEach items="${agentLevels}" var="agent">
                                 <option value="${agent.id}">${agent.name}</option>
                             </c:forEach>
                         </select>
                     </label>
-
                 </div>
-                <button id="find">查询</button>
+                <%--<button >查询</button>--%>
             </div>
             <div class="floor2">
                 <c:forEach items="${sumByUserPid}" var="sumByUser">
@@ -81,7 +80,7 @@
             $(".level b").html(tabVal);
         })
 
-        $("#find").on("click",function(){
+        $(".myValue").on("change",function(){
             var skuId = $("#goods").val()
             var agentLevelIdLong = $("#level").val();
             $(".floor2").html("");

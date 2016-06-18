@@ -85,13 +85,6 @@ public class UserApplyController extends BaseController {
             if (pUserId != null && pUserId > 0) {
                 //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
                 userSkuService.checkParentData(user, pUserId, skuId);
-                PfUserRelation pfUserRelation = new PfUserRelation();
-                pfUserRelation.setUserId(user.getId());
-                pfUserRelation.setSkuId(skuId);
-                pfUserRelation.setCreateTime(new Date());
-                pfUserRelation.setIsEnable(1);
-                pfUserRelation.setUserPid(pUserId);
-                pfUserRelationService.insert(pfUserRelation);
             } else {
                 pUserId = 0l;
             }
@@ -219,15 +212,8 @@ public class UserApplyController extends BaseController {
                 ComUser comUser = getComUser(request);
                 Long temPUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
                 if (temPUserId == 0) {
-                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                    //校验上级合伙人数据是否合法
                     userSkuService.checkParentData(comUser, pUserId, skuId);
-                    PfUserRelation pfUserRelation = new PfUserRelation();
-                    pfUserRelation.setCreateTime(new Date());
-                    pfUserRelation.setUserId(comUser.getId());
-                    pfUserRelation.setSkuId(skuId);
-                    pfUserRelation.setIsEnable(1);
-                    pfUserRelation.setUserPid(pUserId);
-                    pfUserRelationService.insert(pfUserRelation);
                 }
             }
             jsonObject.put("isError", false);

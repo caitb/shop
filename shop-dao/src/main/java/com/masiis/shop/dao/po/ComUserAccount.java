@@ -65,6 +65,7 @@ public class ComUserAccount {
     private String viewDistributionBillAmount = "￥0.00";
     private String viewExtractableFee = "￥0.00";
     private String viewAppliedFee = "￥0.00";
+    private String viewRecommenBillAmount = "￥0.00";
     /**
      * 乐观锁字段
      */
@@ -244,7 +245,16 @@ public class ComUserAccount {
     }
 
     public void setRecommenBillAmount(BigDecimal recommenBillAmount) {
-        this.recommenBillAmount = recommenBillAmount;
+        this.recommenBillAmount = recommenBillAmount == null?new BigDecimal(0):recommenBillAmount;
+        setViewRecommenBillAmount(rmbFormat.format(this.recommenBillAmount));
+    }
+
+    public String getViewRecommenBillAmount() {
+        return viewRecommenBillAmount;
+    }
+
+    public void setViewRecommenBillAmount(String viewRecommenBillAmount) {
+        this.viewRecommenBillAmount = viewRecommenBillAmount;
     }
 
     @Override

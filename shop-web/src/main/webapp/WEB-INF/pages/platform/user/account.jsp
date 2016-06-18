@@ -49,6 +49,7 @@
             <div class="floordown">
                 <p><span>结算中(合伙人)</span><span><b>${account.viewAgentBillAmount}</b></span></p>
                 <p><span>结算中(店铺)</span><span><b>${account.viewDistributionBillAmount}</b></span></p>
+                <p><span>结算中(推荐奖)</span><span><b>${account.viewRecommenBillAmount}</b></span></p>
             </div>
             <nav>
                 <ul>

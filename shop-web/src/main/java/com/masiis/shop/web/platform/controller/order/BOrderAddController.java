@@ -376,32 +376,56 @@ public class BOrderAddController extends BaseController {
         return jsonObject.toJSONString();
     }
 
+    /**
+     * 升级申请插入订单
+     * @param request
+     * @param upgradeNoticeId
+     */
     @ResponseBody
     @RequestMapping("/upgradeInsertOrder.do")
-    public void upgradeInsertOrder(HttpServletRequest request,
+    public String upgradeInsertOrder(HttpServletRequest request,
                                     @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
 
         log.info("生成订单数据----start");
+        Long orderId = null;
         try{
             BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
+            ComUser comUser = getComUser(request);
             if (upgradeDetail!=null){
-                ComUser comUser = null;
-                //插入订单表
-                PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
-                BOrderAdd  orderAdd = new BOrderAdd();
-                orderAdd.setOrderType(3);
-                orderAdd.setUserId(comUser.getId());
-                orderAdd.setpUserId(getNewPUserId(upgradeDetail,comUser));
-                orderAdd.setSendType(1);//拿货方式
-                orderAdd.setSkuId(upgradeDetail.getSkuId());
-                orderAdd.setQuantity(newSkuAgent.getQuantity());
-                orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
-                bOrderAddService.addBOrder(orderAdd);
+                if (upgradeDetail.getApplyAgentLevel()!=0){
+                    PfSkuAgent  pfSkuAgent= skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+                    if (pfSkuAgent!=null){
+                        if (pfSkuAgent.getIsUpgrade()==1){
+                            //插入订单表
+                            PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+                            BOrderAdd  orderAdd = new BOrderAdd();
+                            orderAdd.setOrderType(3);
+                            orderAdd.setUserId(comUser.getId());
+                            orderAdd.setpUserId(getNewPUserId(upgradeDetail,comUser));
+                            orderAdd.setSendType(1);//拿货方式
+                            orderAdd.setSkuId(upgradeDetail.getSkuId());
+                            orderAdd.setQuantity(newSkuAgent.getQuantity());
+                            orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+                            orderId = bOrderAddService.addBOrder(orderAdd);
+                        }else{
+                            log.info("此商品不支持升级------商品id----"+upgradeDetail.getSkuId()+"----申请代理等级id-----"+upgradeDetail.getApplyAgentLevel());
+                            throw new BusinessException("此商品不支持升级");
+                        }
+                    }
+                }else{
+                    log.info("您已不能再升级----当前用户id---"+comUser.getId()+"----当前等级----"+upgradeDetail.getCurrentAgentLevelName());
+                    throw new BusinessException("您是最顶级不能再升级");
+                }
             }
         }catch (Exception e){
-            throw new BusinessException("生成订单数据失败------通知单id----"+upgradeNoticeId);
+            throw new BusinessException("生成订单数据失败------通知单id----"+upgradeNoticeId+"-----出错原因-----"+e.getMessage());
         }
         log.info("生成订单数据----end");
+        if (orderId!=null){
+            return "true";
+        }else{
+            return "false";
+        }
     }
     /**
      * 获得新上级
@@ -413,28 +437,31 @@ public class BOrderAddController extends BaseController {
         Integer applyAgentLevel = upgradeDetail.getApplyAgentLevel();
         Long newPUserId = null;
         //查询上级的等级
-        PfUserSku userSku = null;
         PfUserSku pUserSku = null;
         Integer pUserAgentLevel = null;
         try {
-            userSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),upgradeDetail.getSkuId());
-            if (userSku!=null){
-                pUserSku = userSkuService.getUserSkuByUserIdAndSkuId(Long.parseLong(userSku.getPid()+""),upgradeDetail.getSkuId());
+            if (upgradeDetail.getOldPUserId()!=0){
+                pUserSku = userSkuService.getUserSkuByUserIdAndSkuId(Long.parseLong(upgradeDetail.getOldPUserId()+""),upgradeDetail.getSkuId());
                 if (pUserSku!=null){
-                    pUserAgentLevel = pUserSku.getAgentLevelId();
+                    if (pUserSku.getUserPid()!=0){
+                        pUserAgentLevel = pUserSku.getAgentLevelId();
+                    }else{
+                        log.info("联合创始人不能升级到boss------当前用户id----"+comUser.getId()+"----skuId---"+upgradeDetail.getSkuId()+"----上级用户----"+upgradeDetail.getOldPUserId());
+                        throw new BusinessException("联合创始人不能升级到boss");
+                    }
                 }else{
-                    log.info("查询父级userSku为null----父级id---"+userSku.getUserPid());
-                    throw new BusinessException("查询父级userSku为null----父级id---"+userSku.getUserPid());
+                    log.info("查询父级userSku为null----父级id---"+upgradeDetail.getOldPUserId());
+                    throw new BusinessException("查询父级userSku为null----父级id---"+upgradeDetail.getOldPUserId());
                 }
-            }else {
-                log.info("查询usersku为null-----userId-----"+userSku.getUserId());
-                throw new BusinessException("查询usersku为null-----userId-----"+userSku.getUserId());
+            }else{
+                log.info("上级为平台不能再升级------当前用户id----"+comUser.getId());
+                throw new BusinessException("上级为平台不能再升级");
             }
         }catch (Exception e){
             log.info("获得userSku出错-----"+e.getMessage());
             throw new BusinessException("获得userSku出错-----"+e.getMessage());
         }
-        if (pUserAgentLevel-applyAgentLevel<0){
+        if (pUserAgentLevel-applyAgentLevel>0){
             //直接升级  上级的等级大于用户要升级的等级
             newPUserId = pUserSku.getUserId();
         }else if (pUserAgentLevel-applyAgentLevel==0){

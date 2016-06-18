@@ -93,7 +93,7 @@ $(".que_que").on("click",function(){
                     if (data.isEquals == "true"){
                         window.location.href = basePath + "upgrade/applicationComplete.shtml";
                     }else {
-                        window.location.href = "";
+                        window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
                     }
                 }else {
                     alert(data.message);

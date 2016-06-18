@@ -180,11 +180,12 @@ public class UpgradeNoticeService {
         upgradeNotice.setWishAgentLevelId(upgradeLevel);    //申请合伙代理等级
         upgradeNotice.setUpdateTime(date);
         logger.info("生成申请单号end");
-        upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
+            upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
             upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
         }else {
+            upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             logger.info("代理用户申请代理等级小于上级代理等级");
         }
@@ -193,7 +194,10 @@ public class UpgradeNoticeService {
             throw new BusinessException("创建升级申请数据失败");
         }
         logger.info("创建升级申请单后处理下级申请单数据");
-        List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectBySkuIdAndUserIdAndUserPid(skuId, userPid, userId);
+        PfUserUpgradeNotice notice = new PfUserUpgradeNotice();
+        notice.setUserPid(userId);
+        notice.setSkuId(skuId);
+        List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(notice);
         for (PfUserUpgradeNotice upgrade : pfUserUpgradeNotices){
             //当申请用户处理状态为未处理时进行数据更新
             if (upgrade.getStatus().intValue() == UpGradeStatus.STATUS_Untreated.getCode().intValue()){
@@ -274,6 +278,7 @@ public class UpgradeNoticeService {
             //验证条件是否可以进入
             if (true){
                 upgradeDetail = new BOrderUpgradeDetail();
+                upgradeDetail.setUpgradeNoticeId(id);
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
                     upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());
@@ -394,6 +399,9 @@ public class UpgradeNoticeService {
         PfUserUpgradeNotice upgradeNotice = pfUserUpgradeNoticeMapper.selectByPrimaryKey(upgradeId);
         if (upgradeNotice == null){
             throw new BusinessException("申请单信息不存在");
+        }
+        if (upgradeNotice.getStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
+            throw new BusinessException("申请单已经撤销");
         }
         upgradeNotice.setUpdateTime(new Date());
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Revocation.getCode());

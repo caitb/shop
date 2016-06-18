@@ -26,16 +26,34 @@
         #{pbOperationLog.operateIp}, #{pbOperationLog.remark})
     </insert>
 
-    <update id="updateByPrimaryKey" >
-        update pb_operation_log
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-        pb_user_id = #{pbUserId,jdbcType=BIGINT},
-        pb_user_name = #{pbUserName,jdbcType=VARCHAR},
-        operate_content = #{operateContent,jdbcType=VARCHAR},
-        operate_type = #{operateType,jdbcType=INTEGER},
-        operate_ip = #{operateIp,jdbcType=VARCHAR},
-        remark = #{remark,jdbcType=VARCHAR}
-        where id = #{record.id,jdbcType=BIGINT}
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PbOperationLog">
+        update
+               pb_operation_log
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pbUserId != null">
+                pb_user_id = #{pbUserId,jdbcType=BIGINT},
+            </if>
+            <if test="pbUserName != null">
+                pb_user_name = #{pbUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="operateContent != null">
+                operate_content = #{operateContent,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                operate_type = #{operateType,jdbcType=INTEGER},
+            </if>
+            <if test="operateIp != null">
+                operate_ip = #{operateIp,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{record.id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

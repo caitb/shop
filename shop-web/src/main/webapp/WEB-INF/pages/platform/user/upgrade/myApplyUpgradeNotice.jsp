@@ -48,7 +48,7 @@
             </div>
             <c:if test="${upGradeInfoPo.applyStatus == 0}">
                 <h1>请耐心等待上级处理</h1>
-                <button class="chexiao">
+                <button class="chexiao" onclick="blackShow()">
                     撤销
                 </button>
             </c:if>
@@ -63,9 +63,23 @@
             </c:if>
         </main>
     </div>
+   <div class="black">
+       <input type="hidden" id="isClick" name="isClick" value="false"/>
+       <input type="hidden" id="upgradeId" name="upgradeId" value="${upGradeInfoPo.upgradeId}"/>
+       <div class="backb"></div>
+       <div class="back_que">
+           <p>您确定撤销?</p>
+           <h4>您是否确定撤销您的升级单？</h4>
+           <h3>
+               <span class="que_qu" onclick="blackHide()">我再想想</span>
+               <span class="que_que">确定</span>
+           </h3>
+       </div>
+   </div>
    <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
    <script src="${path}/static/js/commonAjax.js"></script>
    <script src="${path}/static/js/definedAlertWindow.js"></script>
+   <script src="${path}/static/js/myApplyUpgradeNotice.js"></script>
    <script>
        var path = "${path}";
        var basePath = "${basePath}";

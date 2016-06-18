@@ -97,6 +97,26 @@ public class PfUserCertificate {
 
     private String poster;
 
+    private String userName;
+
+    private String agentName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
+
     public Long getId() {
         return id;
     }

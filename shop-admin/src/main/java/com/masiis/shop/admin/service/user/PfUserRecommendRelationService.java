@@ -1,13 +1,9 @@
-package com.masiis.shop.web.platform.service.user;
+package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.platform.user.PfUserRecommenRelationMapper;
-import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
 import com.masiis.shop.dao.po.PfUserRecommenRelation;
-import com.masiis.shop.dao.po.PfUserRelation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
-import sun.rmi.transport.StreamRemoteCall;
 
 import javax.annotation.Resource;
 import java.util.List;

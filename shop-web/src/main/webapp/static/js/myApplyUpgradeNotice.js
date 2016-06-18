@@ -5,6 +5,9 @@ function blackShow(){
 function blackHide(){
     $(".black").hide();
 }
+$(".zhifu").on("click",function(){
+    window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+$("#upgradeId").val();
+});
 $(".que_que").on("click",function(){
     if ($("#isClick").val() == "true"){
         return;

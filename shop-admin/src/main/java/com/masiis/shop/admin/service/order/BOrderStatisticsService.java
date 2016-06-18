@@ -282,27 +282,25 @@ public class BOrderStatisticsService {
         return sumProfitFee;
     }
 
-    private void statisticsRecommenUserInfo(PfBorder border,List<PfBorderItem> ordItems){
-        for (PfBorderItem orderItem : ordItems){
-            logger.info("推荐获得的奖励-------userId----"+border.getBailAmount()+"-----skuId----"+orderItem.getSkuId());
-            PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(border.getUserId(),orderItem.getSkuId());
-            PfUserStatistics _pfUserStatistics = userStatisticsService.selectByUserIdAndSkuId(userRecommenRelation.getUserPid(),orderItem.getSkuId());
-            if (_pfUserStatistics!=null){
-                BigDecimal rewardUnitPrice = getRewardUnitPrice(border.getUserPid(),orderItem.getSkuId());
-                BigDecimal totalRewardPrice = rewardUnitPrice.multiply(BigDecimal.valueOf(orderItem.getQuantity()));
-                logger.info("推荐获得的奖励之前-----"+_pfUserStatistics.getRecommenSendFee());
-                _pfUserStatistics.setRecommenSendFee(_pfUserStatistics.getRecommenSendFee().add(totalRewardPrice));
-                logger.info("推荐获得的奖励之后-----"+_pfUserStatistics.getRecommenSendFee());
-                int i = userStatisticsService.updateByIdAndVersion(_pfUserStatistics);
-                if (i!=1){
-                    logger.info("更新推荐获得的奖励失败");
-                    throw new BusinessException("更新推荐获得的奖励失败");
+    private void statisticsRecommenUserInfo(PfBorder border, List<PfBorderItem> ordItems) {
+        if (border.getRecommenAmount().compareTo(BigDecimal.ZERO) > 0) {
+            for (PfBorderItem orderItem : ordItems) {
+                logger.info("推荐获得的奖励-------userId----" + border.getBailAmount() + "-----skuId----" + orderItem.getSkuId());
+                PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(border.getUserId(), orderItem.getSkuId());
+                PfUserStatistics _pfUserStatistics = userStatisticsService.selectByUserIdAndSkuId(userRecommenRelation.getUserPid(), orderItem.getSkuId());
+                if (_pfUserStatistics != null) {
+                    logger.info("推荐获得的奖励之前-----" + _pfUserStatistics.getRecommenGetFee());
+                    _pfUserStatistics.setRecommenGetFee(_pfUserStatistics.getRecommenGetFee().add(border.getRecommenAmount()));
+                    logger.info("推荐获得的奖励之后-----" + _pfUserStatistics.getRecommenGetFee());
+                    int i = userStatisticsService.updateByIdAndVersion(_pfUserStatistics);
+                    if (i != 1) {
+                        logger.info("更新推荐获得的奖励失败");
+                        throw new BusinessException("更新推荐获得的奖励失败");
+                    }
                 }
             }
         }
-
     }
-
     /**
      * 获取订单
      *

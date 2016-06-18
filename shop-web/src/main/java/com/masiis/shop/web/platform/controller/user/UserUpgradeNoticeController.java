@@ -132,7 +132,7 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
-                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getStatus()));
+                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getUpStatus()));
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }

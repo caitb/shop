@@ -5,10 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
+import com.masiis.shop.admin.service.system.PbOperationLogService;
 import com.masiis.shop.admin.service.system.PbUserMenuService;
 import com.masiis.shop.admin.service.system.PbUserService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.AESUtils;
+import com.masiis.shop.dao.po.PbOperationLog;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.PbUserMenu;
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +42,8 @@ public class UserController {
     private PbUserService pbUserService;
     @Resource
     private PbUserMenuService pbUserMenuService;
+    @Resource
+    private PbOperationLogService pbOperationLogService;
 
     /**
      * 登陆页面
@@ -114,12 +118,23 @@ public class UserController {
         Long    limit_time        = 1000L*60*5;//限制时间
         if(login_error_count != null && login_error_count.intValue() >= 5 && current_time - last_login_time < limit_time){
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("login_error_msg", "登录错误超过5次,5分钟后再试试吧!");
+            request.setAttribute("login_error_msg", "登录错误超过5次,5分钟后再试试吧!");
             return mav;
         }
 
         pbUser.setPassword(AESUtils.encrypt(pbUser.getPassword(), key));
         List<PbUser> pbUsers = this.pbUserService.findByCondition(pbUser);
+
+        //登录日志
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setOperateContent("[pbUser="+pbUser+"]试图登录");
+        pbOperationLog.setOperateIp(request.getRemoteAddr());
+        pbOperationLog.setOperateType(0);
+        pbOperationLog.setPbUserId(pbUsers.size()==0?0:pbUsers.get(0).getId());
+        pbOperationLog.setPbUserName(pbUsers.size()==0?pbUser.getUserName():pbUsers.get(0).getUserName());
+        pbOperationLog.setRemark(pbUsers.size()==0?"登录失败":"登录成功");
+        pbOperationLogService.add(pbOperationLog);
 
         //用户名或密码不对
         if (pbUsers == null || pbUsers.size() <= 0) {
@@ -145,6 +160,7 @@ public class UserController {
         session.removeAttribute("last_login_time");
         session.setAttribute("pbUser", pbUsers.get(0));
         mav.setViewName("redirect:/main/index.shtml");
+
 
         return mav;
     }

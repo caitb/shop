@@ -193,7 +193,10 @@ public class UpgradeNoticeService {
             throw new BusinessException("创建升级申请数据失败");
         }
         logger.info("创建升级申请单后处理下级申请单数据");
-        List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectBySkuIdAndUserIdAndUserPid(skuId, userPid, userId);
+        PfUserUpgradeNotice notice = new PfUserUpgradeNotice();
+        notice.setUserPid(userId);
+        notice.setSkuId(skuId);
+        List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(notice);
         for (PfUserUpgradeNotice upgrade : pfUserUpgradeNotices){
             //当申请用户处理状态为未处理时进行数据更新
             if (upgrade.getStatus().intValue() == UpGradeStatus.STATUS_Untreated.getCode().intValue()){

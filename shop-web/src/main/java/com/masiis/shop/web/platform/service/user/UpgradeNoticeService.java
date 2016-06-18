@@ -398,6 +398,9 @@ public class UpgradeNoticeService {
         if (upgradeNotice == null){
             throw new BusinessException("申请单信息不存在");
         }
+        if (upgradeNotice.getStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
+            throw new BusinessException("申请单已经撤销");
+        }
         upgradeNotice.setUpdateTime(new Date());
         upgradeNotice.setStatus(UpGradeStatus.STATUS_Revocation.getCode());
         upgradeNotice.setRemark("申请用户撤销申请单");

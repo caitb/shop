@@ -64,6 +64,8 @@
         </main>
     </div>
    <div class="black">
+       <input type="hidden" id="isClick" name="isClick" value="false"/>
+       <input type="hidden" id="upgradeId" name="upgradeId" value="${upGradeInfoPo.upgradeId}"/>
        <div class="backb"></div>
        <div class="back_que">
            <p>您确定撤销?</p>

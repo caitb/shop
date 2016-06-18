@@ -35,7 +35,7 @@
             <p>选择您需要发展合伙人的商品</p>
             <c:forEach items="${agentMaps}" var="agentMap">
                 <c:if test="${agentMap.canDeveloping == 'yes'}">
-                    <div class="sec1 toShare" onclick="javascript:window.location.replace('<%=basePath%>developing/developLevel?skuId=${agentMap.skuId}');">
+                    <div class="sec1 toShare" onclick="javascript:window.location.href = '<%=basePath%>developing/developLevel?skuId=${agentMap.skuId}';">
                         <img src="${agentMap.brandLogo}" alt="">
                         <div>
                             <p>合伙产品</p>

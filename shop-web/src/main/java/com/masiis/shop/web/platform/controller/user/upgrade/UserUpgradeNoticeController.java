@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.controller.user;
+package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;

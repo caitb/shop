@@ -69,6 +69,7 @@
         INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
         INNER JOIN com_user com ON com.id = pbrr.recommen_user_id
         WHERE pb.user_pid=#{userId} AND pb.pay_status=1
+        GROUP BY sku.name,com.real_name,com.wx_head_img,sku.id,com.id
     </select>
 
     <!--  帮我推荐的单人单品推荐人数  -->

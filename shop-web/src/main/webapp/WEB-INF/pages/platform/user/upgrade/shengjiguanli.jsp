@@ -209,7 +209,7 @@
      *  @param upgradeId
      */
     function upgradeDetail(tabId, upgradeId) {
-        switch (tabId) {
+        switch (Number(tabId)) {
             case 0:
                 window.location.href = "${basePath}upgrade/myApplyUpgrade.shtml?upgradeId=" + upgradeId;
                 break;

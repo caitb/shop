@@ -63,11 +63,9 @@ public class BUpgradePayService {
     private PfUserSkuHistoryService pfUserSkuHistoryService;
     @Resource
     private PfUserCertificateHistoryService pfUserCertificateHistoryService;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
 
-
-
-
-    private static Long getRecommendRewardUserId = null;
     private static Long sendRecommendRewardUserId = null;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath){
@@ -80,8 +78,8 @@ public class BUpgradePayService {
         insertOrderOperationLog(pfBorder);
         //修改上下级绑定关系和插入历史表
         inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(),pfBorder.getUserPid(),pfBorder.getId(), pfBorderItems );
-        //修改证书
-        updatePfUserCertificate(pfBorder.getUserId(),pfBorderItems,null,rootPath);
+        //修改证书和插入证书历史表
+        inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(),pfBorderItems,null,rootPath);
         //修改冻结库存
         updateFrozenStock(pfBorder,pfBorderItems);
         //修改用户统计中奖励金额
@@ -89,7 +87,7 @@ public class BUpgradePayService {
         //修改用户账户
         billAmountService.orderBillAmount(pfBorder.getId());
         //插入一次性奖励
-        insertUserRebate(pfBorder.getId());
+        insertUserRebate(pfBorder,pfBorderItems);
         //修改小铺商品信息
         updateSfShopSku(pfBorder.getUserId(),pfBorderItems);
         //修改通知单状态
@@ -186,9 +184,9 @@ public class BUpgradePayService {
                 pfUserSku.setIsCertificate(1);
                 pfUserSku.setPfBorderId(borderId);
                 pfUserSku.setBail(bailAmount);
-                pfUserSku.setAgentNum(0L);
+               /* pfUserSku.setAgentNum(0L);
                 pfUserSku.setTreeCode("");
-                pfUserSku.setTreeLevel(1);
+                pfUserSku.setTreeLevel(1);*/
                 i = pfUserSkuService.update(pfUserSku);
             }
         }
@@ -235,7 +233,7 @@ public class BUpgradePayService {
      * @param orderItems
      * @param spuId
      */
-    private void updatePfUserCertificate(Long userId,List<PfBorderItem> orderItems,Integer spuId,String rootPath){
+    private void inserHistoryAndUpdatePfUserCertificate(Long userId,List<PfBorderItem> orderItems,Integer spuId,String rootPath){
         for (PfBorderItem orderItem:orderItems){
             log.info("---修改证书----userId----"+userId+"----skuId---"+orderItem.getSkuId()+"----spuId----"+spuId);
             PfUserCertificate pfUserCertificate =  pfUserCertificateService.selectByUserIdAndSkuId(userId,orderItem.getSkuId());
@@ -264,7 +262,12 @@ public class BUpgradePayService {
                         DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null));//endDate - 结束日期
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificate.setRemark("升级支付成功修改证书");
-                pfUserCertificateService.update(pfUserCertificate);
+                int i = pfUserCertificateService.update(pfUserCertificate);
+                if (i==1){
+                    insertCertificateHistory(pfUserCertificate);
+                }else{
+                    log.info("更新证书失败");
+                }
             }else{
                 log.info("修改证书失败，之前的证书为null");
                 throw new BusinessException("修改证书失败，之前的证书为null");
@@ -274,6 +277,7 @@ public class BUpgradePayService {
     }
 
     private int insertCertificateHistory(PfUserCertificate userCertificate){
+        log.info("----插入证书历史表-------");
         PfUserCertificateHistory history = new PfUserCertificateHistory();
         history.setAddTime(new Date());
         history.setPfUserCertificateId(userCertificate.getId());
@@ -295,6 +299,10 @@ public class BUpgradePayService {
         history.setPoster(userCertificate.getPoster());
         history.setRemark("修改证书插入历史表");
         int i = pfUserCertificateHistoryService.insert(history);
+        if (i!=1){
+            log.info("插入证书历史表失败----证书id---"+userCertificate.getId());
+            throw new BusinessException("插入证书历史表失败");
+        }
         return i;
     }
 
@@ -335,26 +343,32 @@ public class BUpgradePayService {
             }
         }
     }
+
     /**
-     * 插入一次性奖励
-     * @param pfBorderId
+     *  插入一次性奖励
+     * @param pfBorder
      */
-    private void insertUserRebate(Long pfBorderId){
-        PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
-        PfUserRebate pfUserRebate = new PfUserRebate();
-        pfUserRebate.setCreateTime(new Date());
-        pfUserRebate.setCreateTime(new Date());
-        if (pfUserUpgradeNotice!=null){
+    private void insertUserRebate(PfBorder pfBorder,List<PfBorderItem> orderItems){
+        for (PfBorderItem pfBorderItem:orderItems){
+            PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+            PfUserRebate pfUserRebate = new PfUserRebate();
+            pfUserRebate.setCreateTime(new Date());
+            pfUserRebate.setCreateTime(new Date());
+            if (pfUserUpgradeNotice!=null){
+                pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+            }
             pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+            PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            pfUserRebate.setUserId(userRecommenRelation.getUserPid());//获得奖励用户id
+            pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
+            pfUserRebate.setPfBorderId(pfBorder.getId());
+            int i = pfUserRebateService.insert(pfUserRebate);
+            if (i!=1){
+                log.info("升级支付成功插入一次性奖励失败");
+                throw new BusinessException("升级支付成功插入一次性奖励失败");
+            }
         }
-        pfUserRebate.setUserUpgradeNoticeId(getRecommendRewardUserId);
-        pfUserRebate.setUserPid(sendRecommendRewardUserId);
-        pfUserRebate.setPfBorderId(pfBorderId);
-        int i = pfUserRebateService.insert(pfUserRebate);
-        if (i!=1){
-            log.info("升级支付成功插入一次性奖励失败");
-            throw new BusinessException("升级支付成功插入一次性奖励失败");
-        }
+
     }
 
     /**

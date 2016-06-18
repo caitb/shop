@@ -104,6 +104,8 @@ public class BOrderPayService {
     private PfUserRecommendRelationService pfUserRecommendRelationService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
+    @Resource
+    private BUpgradePayService upgradePayService;
 
     /**
      * 订单支付回调入口
@@ -130,6 +132,8 @@ public class BOrderPayService {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 2) {
             payBOrderTypeIII(pfBorderPayment, outOrderId, rootPath);
+        }else if (pfBorder.getOrderType() == 3){
+            upgradePayService.paySuccessCallBack(pfBorderPayment,outOrderId,rootPath);
         } else {
             throw new BusinessException("订单类型有误");
         }

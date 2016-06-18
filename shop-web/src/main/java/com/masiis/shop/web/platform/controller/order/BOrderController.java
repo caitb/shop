@@ -179,6 +179,8 @@ public class BOrderController extends BaseController {
                 }
             } else if (pfBorder.getOrderType() == 1) {
                 successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 3){
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else {
                 throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
             }
@@ -356,9 +358,13 @@ public class BOrderController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/upgradePaySuccessSkipPage.shtml")
-    public ModelAndView upgradePaySuccessSkipPage(@RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception{
+    public ModelAndView upgradePaySuccessSkipPage(HttpServletRequest request,@RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception{
         ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
         BOrderUpgradeDetail bOrderUpgradeDetail = bOrderService.getUpgradeOrderInfo(bOrderId);
+        if (comUser!=null){
+            bOrderUpgradeDetail.setName(comUser.getRealName());
+        }
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
         return mv;

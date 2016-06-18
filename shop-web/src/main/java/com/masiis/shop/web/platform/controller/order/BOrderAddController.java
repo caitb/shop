@@ -393,7 +393,11 @@ public class BOrderAddController extends BaseController {
             BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
             ComUser comUser = getComUser(request);
             if (upgradeDetail!=null){
-                if (upgradeDetail.getUpgradeStatus()!=1){
+                if (upgradeDetail.getPfBorderId()!=null){
+                    //订单存在重定向到收银台
+
+                }
+                if (upgradeDetail.getUpgradeStatus()!=2){
                     log.info("通知单状态不对不能生成订单----状态---"+upgradeDetail.getUpgradeStatus());
                     throw new BusinessException("通知单状态不对不能生成订单");
                 }

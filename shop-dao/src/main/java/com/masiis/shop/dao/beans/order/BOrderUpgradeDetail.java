@@ -11,6 +11,7 @@ public class BOrderUpgradeDetail {
     private String  name;                       //姓名
     private Long    upgradeNoticeId;           //通知单id
     private Integer upgradeStatus;             //通知单状态
+    private Long    pfBorderId;                //订单id
     private Integer skuId;
     private Integer spuId;
     private Long    oldPUserId;                //原上级id
@@ -187,5 +188,13 @@ public class BOrderUpgradeDetail {
 
     public void setUpgradeStatus(Integer upgradeStatus) {
         this.upgradeStatus = upgradeStatus;
+    }
+
+    public Long getPfBorderId() {
+        return pfBorderId;
+    }
+
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
 }

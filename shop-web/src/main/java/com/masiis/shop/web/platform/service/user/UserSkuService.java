@@ -79,7 +79,6 @@ public class UserSkuService {
     public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) throws Exception {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, SkuId);
     }
-
     /**
      * 获取下级合伙人
      * @author muchaofeng

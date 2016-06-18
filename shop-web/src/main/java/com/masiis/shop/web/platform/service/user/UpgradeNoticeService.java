@@ -278,6 +278,7 @@ public class UpgradeNoticeService {
             //验证条件是否可以进入
             if (true){
                 upgradeDetail = new BOrderUpgradeDetail();
+                upgradeDetail.setUpgradeNoticeId(id);
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
                     upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());

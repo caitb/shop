@@ -165,7 +165,7 @@
             AND sku_id = #{skuId,jdbcType=INTEGER}
         </if>
         <if test="upStatus != null">
-            AND up_status = #{upStatus,jdbcType=INTEGER}
+            AND status = #{upStatus,jdbcType=INTEGER}
         </if>
     </select>
     <!-->根据商品和返利状态查询<-->

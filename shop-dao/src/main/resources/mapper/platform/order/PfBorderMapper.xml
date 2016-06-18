@@ -219,19 +219,21 @@
 
     <!-- 获得奖励订单  -->
     <select id="selectRecommend" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select pb.id, pb.create_time, pb.order_code, pb.user_id,pb.user_pid, pb.order_amount,pb.order_type,pb.recommen_amount
-        from pf_user_recommen_relation purr
-        INNER JOIN pf_border pb ON pb.user_id=purr.user_id
-        where purr.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
+        select pb.id, pb.create_time, pb.order_code, pb.user_id,pbrr.recommen_user_id as user_pid,pb.order_amount,pb.order_type,pb.recommen_amount
+        from pf_border pb
+        inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
+        inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
+        where pbrr.recommen_user_id = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
         ORDER BY pb.id DESC
     </select>
 
     <!-- 发出奖励订单  -->
     <select id="selectSendRecommend" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select pb.id, pb.create_time, pb.order_code, pb.user_id,purr.user_pid, pb.order_amount,pb.order_type,pb.recommen_amount
+        select pb.id, pb.create_time, pb.order_code, pb.user_id,pbrr.recommen_user_id as user_pid,pb.order_amount,pb.order_type,pb.recommen_amount
         from pf_border pb
-        INNER JOIN pf_user_recommen_relation purr ON pb.user_id = purr.user_id
-        where pb.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
+        inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
+        inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
+        where pb.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount >0
         ORDER BY pb.id DESC
     </select>
 

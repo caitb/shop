@@ -290,6 +290,7 @@ public class MyRecommendController extends BaseController{
                     for (PfBorderItem pfBorderItem : pfBorderItems) {
                         pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                         pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+
                         certificateByuserskuId1 = userCertificateService.getCertificateByuserskuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                         certificateByuserskuId = userCertificateService.getCertificateByuserskuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
                     }

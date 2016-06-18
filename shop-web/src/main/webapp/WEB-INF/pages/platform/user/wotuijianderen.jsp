@@ -30,6 +30,7 @@
                     <label for="goods" class="goods">
                         <b></b>
                         <select id="goods" class="myValue">
+                            <option value="">全部</option>
                             <c:forEach items="${skuList}" var="skuList">
                                 <option value="${skuList.id}">${skuList.name}</option>
                             </c:forEach>
@@ -40,6 +41,7 @@
                     <label for="level" class="level">
                         <b></b>
                         <select id="level" class="myValue">
+                            <option value="">全部</option>
                             <c:forEach items="${agentLevels}" var="agent">
                                 <option value="${agent.id}">${agent.name}</option>
                             </c:forEach>

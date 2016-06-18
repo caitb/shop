@@ -69,14 +69,16 @@
     </select>
 
 
-
+    <!-- 获得奖励订单  -->
     <select id="selectBorders" resultType="Integer" parameterType="java.lang.Long" >
-        select COUNT(purr.pf_border_id)
-        from pf_user_recommen_relation purr
-        INNER JOIN pf_border pb ON pb.user_id=purr.user_id
-        where purr.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
+        select COUNT(pb.id)
+        from pf_border pb
+        inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
+        inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
+        where pbrr.recommen_user_id = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
     </select>
 
+    <!-- 发出奖励订单  -->
     <select id="selectPBorders" resultType="Integer" parameterType="java.lang.Long" >
         select COUNT(0) from  pf_border pb
         where pb.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0

@@ -70,6 +70,16 @@ public class PfUserRecommendRelationService {
     }
 
     /**
+     * 帮我推荐的人id集合
+     * @author muchaofeng
+     * @date 2016/6/17 15:11
+     */
+
+    public List<Long> findGiveList(Long userId,Integer skuId) {
+        return pfUserRecopmmenRelationMapper.selectGiveList(userId,skuId);
+    }
+
+    /**
      * 我推荐的详情列表
      *
      * @author muchaofeng

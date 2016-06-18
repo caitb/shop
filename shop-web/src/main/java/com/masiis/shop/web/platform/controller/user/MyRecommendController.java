@@ -92,7 +92,6 @@ public class MyRecommendController extends BaseController{
         try{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
-
             List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId());//推荐给我的
             for (UserRecommend userRecommend:sumByUser) {
                 Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
@@ -100,6 +99,41 @@ public class MyRecommendController extends BaseController{
             }
             modelAndView.addObject("sumByUser",sumByUser);
             modelAndView.setViewName("platform/user/bangwotuijianderen");
+            return modelAndView;
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return null;
+    }
+
+    /**
+     * 帮我推荐的人详情
+     * @author muchaofeng
+     * @date 2016/6/17 14:57
+     */
+    @RequestMapping("/giveRecommend")
+    public ModelAndView giveRecommend(Long userId,Integer skuId){
+        try{
+            ModelAndView modelAndView = new ModelAndView();
+            ComSku skuName = skuService.getSkuName(skuId);
+            ComUser userName = userService.getUserById(userId);
+            List<PfUserCertificate> certificates=new ArrayList<PfUserCertificate>();
+            PfUserCertificate certificate =null;
+            List<Long> giveList = pfUserRecommendRelationService.findGiveList(userId, skuId);
+            for (Long id:giveList) {
+                certificate = userCertificateService.getCertificateByuserskuId(id,skuId);
+                ComUser user = userService.getUserById(id);
+                certificate.setUserName(user.getRealName());
+                ComAgentLevel agentLevel = comAgentLevelService.selectByPrimaryKey(certificate.getAgentLevelId());
+                certificate.setAgentName(agentLevel.getName());
+                certificates.add(certificate);
+            }
+
+            modelAndView.addObject("skuName",skuName.getName());
+            modelAndView.addObject("userName",userName.getRealName());
+            modelAndView.addObject("certificates",certificates);
+            modelAndView.addObject("number",certificates.size());
+            modelAndView.setViewName("platform/user/bangwotuijianxinxi");
             return modelAndView;
         }catch (Exception e){
             log.error("获取代理产品列表失败!",e);

@@ -78,6 +78,13 @@
         WHERE pbrr.user_pid=#{userId} AND pbrr.sku_id = #{skuId}
     </select>
 
+    <!--  帮我推荐的单人单品推荐人数  -->
+    <select id="selectGiveList" resultType="Long" >
+        select pbrr.user_id
+        from pf_user_recommen_relation pbrr
+        WHERE pbrr.user_pid=#{userId} AND pbrr.sku_id = #{skuId}
+    </select>
+
     <!--  我推荐的人  -->
     <select id="selectSumByUserId" resultMap="ComSkuMap" parameterType="java.lang.Long" >
         select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id,agent.name as agentName

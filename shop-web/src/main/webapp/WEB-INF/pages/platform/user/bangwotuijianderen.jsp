@@ -57,7 +57,7 @@
         </header>
         <main>
             <c:forEach items="${sumByUser}" var="sum">
-             <div class="sec1">
+             <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/giveRecommend?userId=${sum.userId}&skuId=${sum.skuId}')">
                 <img src="${sum.wxHeadImg}" alt="">
                 <div>
                     <p>${sum.name}<b>推荐人数 ${sum.number}人</b></p>

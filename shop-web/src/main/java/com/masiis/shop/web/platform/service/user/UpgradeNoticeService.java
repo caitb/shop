@@ -279,6 +279,7 @@ public class UpgradeNoticeService {
             if (true){
                 upgradeDetail = new BOrderUpgradeDetail();
                 upgradeDetail.setUpgradeNoticeId(id);
+                upgradeDetail.setUpgradeStatus(upgradeNotice.getStatus());
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
                     upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());

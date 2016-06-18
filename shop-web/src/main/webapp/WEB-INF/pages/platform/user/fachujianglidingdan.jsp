@@ -52,7 +52,7 @@
                     </div>
                     <div class="f_1">
                         <p>推荐人：<b onclick="blackShow('${pfBorders.userPname.realName}','${pfBorders.userPname.wxId}','${pfBorders.userPname.mobile}')">${pfBorders.userPname.realName}</b></p>
-                        <p>获得奖励：￥${pfBorders.recommenAmount}</p>
+                        <p>发出奖励：￥${pfBorders.recommenAmount}</p>
                     </div>
                 </div>
             </c:forEach>

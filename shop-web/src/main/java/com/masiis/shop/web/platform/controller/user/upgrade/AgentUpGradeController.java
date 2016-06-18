@@ -3,16 +3,20 @@ package com.masiis.shop.web.platform.controller.user.upgrade;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -402,5 +406,27 @@ public class AgentUpGradeController extends BaseController {
         jsonObject.put("message","撤销成功");
         logger.info(jsonObject.toJSONString());
         return jsonObject.toJSONString();
+    }
+
+    /**
+     * 通知界面跳转到订单界面
+     * @param upgradeNoticeId
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/skipOrderPageGetNoticeInfo.html")
+    @ResponseBody
+    public ModelAndView skipOrderPageGetNoticeInfo(@RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId,
+                                      HttpServletRequest request) throws Exception{
+        BOrderUpgradeDetail upgradeDetail = null;
+        ModelAndView mv = new ModelAndView();
+        if (upgradeNoticeId!=null){
+            upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
+        }
+        mv.addObject("upgradeDetail",upgradeDetail);
+        mv.addObject("payDate", DateUtil.addDays(SysConstants.UPGRADE_LATEST_TIME));
+        mv.setViewName("platform/user/upgrade/shengjishenhe");
+        return mv;
     }
 }

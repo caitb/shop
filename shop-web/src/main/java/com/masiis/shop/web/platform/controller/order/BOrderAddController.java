@@ -376,6 +376,11 @@ public class BOrderAddController extends BaseController {
         return jsonObject.toJSONString();
     }
 
+    /**
+     * 升级申请插入订单
+     * @param request
+     * @param upgradeNoticeId
+     */
     @ResponseBody
     @RequestMapping("/upgradeInsertOrder.do")
     public void upgradeInsertOrder(HttpServletRequest request,

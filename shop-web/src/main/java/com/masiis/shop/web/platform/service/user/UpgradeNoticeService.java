@@ -180,11 +180,12 @@ public class UpgradeNoticeService {
         upgradeNotice.setWishAgentLevelId(upgradeLevel);    //申请合伙代理等级
         upgradeNotice.setUpdateTime(date);
         logger.info("生成申请单号end");
-        upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
+            upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
             upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
         }else {
+            upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             logger.info("代理用户申请代理等级小于上级代理等级");
         }

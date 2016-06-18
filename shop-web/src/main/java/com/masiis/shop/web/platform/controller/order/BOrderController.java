@@ -6,6 +6,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -338,11 +339,28 @@ public class BOrderController extends BaseController {
             successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
         } else if (pfBorder.getOrderType() == 2) {
             successURL += "product/replenishmentSelf.shtml?bOrderId=" + pfBorder.getId();
+        }else if (pfBorder.getOrderType() == 3){
+            successURL += "border/upgradePaySuccessSkipPage.shtml?bOrderId=" + pfBorder.getId();
         } else {
             throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
         }
         modelAndView.addObject("bOrderId", bOrderId);
         modelAndView.addObject("successURL", successURL);
         return modelAndView;
+    }
+
+    /**
+     * 升级支付成功回调
+     * @param bOrderId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/upgradePaySuccessSkipPage.shtml")
+    public ModelAndView upgradePaySuccessSkipPage(@RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception{
+        ModelAndView mv = new ModelAndView();
+        BOrderUpgradeDetail bOrderUpgradeDetail = bOrderService.getUpgradeOrderInfo(bOrderId);
+        mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
+        mv.setViewName("platform/order/agent/payBOrdersSuccess");
+        return mv;
     }
 }

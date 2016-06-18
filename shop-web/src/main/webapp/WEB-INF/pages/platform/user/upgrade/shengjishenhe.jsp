@@ -47,11 +47,29 @@
                 <p>合计：<span>￥${upgradeDetail.totalPrice} </span></p>
                 <h1><b>*</b>在${payDate}前（3天内）支付升级申请，逾期将取消升级申请</h1>
             </div>
-            <button>
+            <button onclick="skipGenerateOrder(${upgradeDetail.upgradeNoticeId})">
                 下一步
             </button>
         </main>
     </div>
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 </body>
+<script>
+    function skipGenerateOrder(upgradeNoticeId){
+        $.ajax({
+            type:"POST",
+            url : "${path}/BOrderAdd/upgradeInsertOrder.do",
+            data:"upgradeNoticeId="+upgradeNoticeId,
+            dataType:"Json",
+            success:function(result){
+                alert(result);
+                if (result=="true"){
+                    window.location.href ="${path}/border/goToPayBOrder.shtml?bOrderId="+result;
+                }else{
+                    alert(result);
+                }
+            }
+        });
+    }
+</script>
 </html>

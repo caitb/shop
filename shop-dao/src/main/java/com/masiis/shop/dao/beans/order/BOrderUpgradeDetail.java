@@ -8,6 +8,7 @@ import java.util.Iterator;
  */
 public class BOrderUpgradeDetail {
 
+    private Long    upgradeNoticeId;           //通知单id
     private Integer skuId;
     private Integer spuId;
     private Long    oldPUserId;                //原上级id
@@ -160,5 +161,13 @@ public class BOrderUpgradeDetail {
 
     public void setNewPUserName(String newPUserName) {
         this.newPUserName = newPUserName;
+    }
+
+    public Long getUpgradeNoticeId() {
+        return upgradeNoticeId;
+    }
+
+    public void setUpgradeNoticeId(Long upgradeNoticeId) {
+        this.upgradeNoticeId = upgradeNoticeId;
     }
 }

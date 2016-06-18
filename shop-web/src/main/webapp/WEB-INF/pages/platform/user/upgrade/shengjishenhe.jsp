@@ -61,12 +61,9 @@
             url : "${path}/BOrderAdd/upgradeInsertOrder.do",
             data:"upgradeNoticeId="+upgradeNoticeId,
             dataType:"Json",
-            success:function(result){
-                alert(result);
-                if (result=="true"){
-                    window.location.href ="${path}/border/goToPayBOrder.shtml?bOrderId="+result;
-                }else{
-                    alert(result);
+            success:function(data){
+                if (data.isError == false) {
+                    window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
                 }
             }
         });

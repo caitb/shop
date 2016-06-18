@@ -53,6 +53,10 @@ public class BOrderAdd {
      * 用户收货信息
      */
     private Long userAddressId = 0l;
+    /**
+     * 通知单id 用于增加通知订单用
+     */
+    private Long upgradeNoticeId ;
 
     public Integer getOrderType() {
         return orderType;
@@ -140,5 +144,13 @@ public class BOrderAdd {
 
     public void setUserAddressId(Long userAddressId) {
         this.userAddressId = userAddressId;
+    }
+
+    public Long getUpgradeNoticeId() {
+        return upgradeNoticeId;
+    }
+
+    public void setUpgradeNoticeId(Long upgradeNoticeId) {
+        this.upgradeNoticeId = upgradeNoticeId;
     }
 }

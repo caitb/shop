@@ -360,7 +360,7 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         BOrderUpgradeDetail bOrderUpgradeDetail = bOrderService.getUpgradeOrderInfo(bOrderId);
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
-        mv.setViewName("platform/order/agent/payBOrdersSuccess");
+        mv.setViewName("platform/order/agent/upgradePaySuccess");
         return mv;
     }
 }

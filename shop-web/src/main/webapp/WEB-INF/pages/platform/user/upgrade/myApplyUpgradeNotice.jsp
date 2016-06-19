@@ -46,13 +46,13 @@
                     <span>${upGradeInfoPo.applyCode}</span>
                 </p>
             </div>
-            <c:if test="${upGradeInfoPo.applyStatus == 0}">
-                <h1>请耐心等待上级处理</h1>
-                <button class="chexiao" onclick="blackShow()">
-                    撤销
-                </button>
-            </c:if>
-            <c:if test="${upGradeInfoPo.applyStatus == 1}">
+            <%--<c:if test="${upGradeInfoPo.applyStatus == 0}">--%>
+                <%--<h1>请耐心等待上级处理</h1>--%>
+                <%--<button class="chexiao" onclick="blackShow()">--%>
+                    <%--撤销--%>
+                <%--</button>--%>
+            <%--</c:if>--%>
+            <c:if test="${upGradeInfoPo.applyStatus == 1 || upGradeInfoPo.applyStatus == 0}">
                 <h1>您的上级正在处理，处理完成会返回支付订单，请耐心等待</h1>
             </c:if>
             <c:if test="${upGradeInfoPo.applyStatus == 2}">
@@ -68,14 +68,14 @@
        <input type="hidden" id="upgradeId" name="upgradeId" value="${upGradeInfoPo.upgradeId}"/>
        <input type="hidden" id="pfBorderId" name="pfBorderId" value="${upGradeInfoPo.pfBorderId}"/>
        <div class="backb"></div>
-       <div class="back_que">
+       <%--<div class="back_que">
            <p>您确定撤销?</p>
            <h4>您是否确定撤销您的升级单？</h4>
            <h3>
                <span class="que_qu" onclick="blackHide()">我再想想</span>
                <span class="que_que">确定</span>
            </h3>
-       </div>
+       </div>--%>
    </div>
    <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
    <script src="${path}/static/js/commonAjax.js"></script>

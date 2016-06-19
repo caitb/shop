@@ -29,6 +29,12 @@ function changeSku(){
         $("#currentLevel").text("请选择产品");
         return;
     }
+    $("#curAgentLevel").val("");
+    $("#upgradeLevel").val("");
+    $("#productName").text();
+    $("#curLevel").text("");
+    $("#upLevel").text("");
+    $("#chooseWhether").val(false);
     var data = value.split("_");
     var skuId = data[0];
     var skuName = data[1];

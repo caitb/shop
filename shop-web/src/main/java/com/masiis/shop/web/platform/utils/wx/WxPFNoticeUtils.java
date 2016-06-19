@@ -10,7 +10,6 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.text.NumberFormat;
@@ -990,7 +989,7 @@ public class WxPFNoticeUtils {
         profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的推荐佣金。", null));
         profit.setKeyword1(new WxNoticeDataItem(params[0], null));
         profit.setKeyword2(new WxNoticeDataItem(params[1], null));
-        profit.setRemark(new WxNoticeDataItem("您可以在“我的账户中”中查看。", null));
+        profit.setRemark(new WxNoticeDataItem("您可以在“我的账户”中查看。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_PROFIT_IN);

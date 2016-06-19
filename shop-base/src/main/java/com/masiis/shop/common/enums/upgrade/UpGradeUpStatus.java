@@ -46,7 +46,7 @@ public enum UpGradeUpStatus {
         }
     },
     /**
-     * 我要升级
+     * 处理完成
      */
     UP_STATUS_Complete {
         public Integer getCode() {

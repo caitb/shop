@@ -48,6 +48,8 @@ public interface PfUserUpgradeNoticeMapper {
 
     List<PfUserUpgradeNotice> selectByCondition(PfUserUpgradeNotice pfUserUpgradeNotice);
 
+    PfUserUpgradeNotice selectLastUpgrade(@Param("userPid") Long userPid, @Param("skuId") Integer skuId, @Param("wishLevelId") Integer wishLevelId);
+
     /**
      * 查询指定上级处理状态和创建时间小于指定时间的通知单
      *

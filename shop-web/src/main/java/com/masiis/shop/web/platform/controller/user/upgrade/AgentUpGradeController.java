@@ -174,8 +174,7 @@ public class AgentUpGradeController extends BaseController {
         }
         ModelAndView mv = new ModelAndView();
         JSONObject jsonObject = new JSONObject();
-        logger.info("查询用户上级代理用户id begin");
-
+        logger.info("查询用户上级代理等级id begin");
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
         if (pfUserSku == null){
             jsonObject.put("isTrue","false");
@@ -184,7 +183,7 @@ public class AgentUpGradeController extends BaseController {
             return jsonObject.toJSONString();
         }
         Integer pAgentLevel = pfUserSku.getAgentLevelId();
-        logger.info("查询用户上级代理用户id end");
+        logger.info("查询用户上级代理等级id end");
         Long keyProperty;
         try {
             keyProperty = upgradeNoticeService.dealAgentUpGrade(comUser.getId(), userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);

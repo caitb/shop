@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
@@ -42,6 +43,8 @@ public class UpgradeNoticeService {
     private ComAgentLevelService comAgentLevelService;
     @Resource
     private SkuAgentService skuAgentService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
     /**
      * 根据订单id查询通知单
      * @param orderId
@@ -167,9 +170,39 @@ public class UpgradeNoticeService {
                 }
             }
         }
+        logger.info("判断上级代理是否可以升级");
+        PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
+        if (pfUserSku == null){
+            throw new BusinessException("上级代理信息为空");
+        }
+        Integer pLevelId = pfUserSku.getAgentLevelId();
+        List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pLevelId);
+        if (pfSkuAgents == null || pfSkuAgents.size() == 0){
+            logger.info("上级代理用户不可以向上升级");
+            return upAgentCannotUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
+        }else {
+            logger.info("上级代理用户可以向上升级");
+            return upAgentCanUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
+        }
+    }
+
+    /**
+     * 处理代理用户升级申请单（上级可以申请）
+     * @param userId        代理用户id
+     * @param userPid       代理用户上级id
+     * @param curAgentLevel 代理用户当前代理等级
+     * @param upgradeLevel  代理用户申请代理等级
+     * @param pAgentLevel   代理用户上级代理等级
+     * @param skuId         合伙skuId
+     * @return              主键
+     * @auth:wbj
+     * @throws Exception
+     */
+    public Long upAgentCanUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
         PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
         logger.info("生成申请单号begin");
         String code = OrderMakeUtils.makeOrder("U");
+        logger.info("生成申请单号end 申请单号："+code);
         Date date = new Date();
         upgradeNotice.setCode(code);
         upgradeNotice.setCreateTime(date);
@@ -179,11 +212,34 @@ public class UpgradeNoticeService {
         upgradeNotice.setOrgAgentLevelId(curAgentLevel);    //原合伙代理等级
         upgradeNotice.setWishAgentLevelId(upgradeLevel);    //申请合伙代理等级
         upgradeNotice.setUpdateTime(date);
-        logger.info("生成申请单号end");
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
-            upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
-            upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
+            logger.info("查询是否已经有类似的申请单begin");
+            PfUserUpgradeNotice pUserUpgrade = pfUserUpgradeNoticeMapper.selectLastUpgrade(userPid, skuId, upgradeLevel);
+            logger.info("查询是否已经有类似的申请单end");
+            if (pUserUpgrade == null){
+                logger.info("上级没有申请单：设置状态为未处理状态");
+                upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
+                upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
+            }else {
+                logger.info("上级有申请单：根据上级申请单的status处理");
+                if (pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode() || pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Untreated.getCode().intValue()){
+                    upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
+                    upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
+                }
+                if (pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Upgrade.getCode().intValue()){
+                    upgradeNotice.setStatus(UpGradeStatus.STATUS_Processing.getCode());
+                    upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Upgrade.getCode().intValue());
+                }
+                if (pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Complete.getCode().intValue()){
+                    logger.info("查询上级当前等级");
+                    PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
+                    if (pfUserSku.getAgentLevelId().intValue() > pUserUpgrade.getUpStatus().intValue()){
+                        upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+                        upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
+                    }
+                }
+            }
         }else {
             upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
@@ -193,10 +249,61 @@ public class UpgradeNoticeService {
         if (pfUserUpgradeNoticeMapper.insert(upgradeNotice) == 0){
             throw new BusinessException("创建升级申请数据失败");
         }
+        //创建申请单完成后处理下级代理申请单
+        this.dealLowerUpgrades(userId, skuId, curAgentLevel);
+        return upgradeNotice.getId();
+    }
+
+    /**
+     * 处理代理用户升级申请单（上级不可以升级）
+     * @param userId        代理用户id
+     * @param userPid       代理用户上级id
+     * @param curAgentLevel 代理用户当前代理等级
+     * @param upgradeLevel  代理用户申请代理等级
+     * @param pAgentLevel   代理用户上级代理等级
+     * @param skuId         合伙skuId
+     * @return              主键
+     * @auth:wbj
+     * @throws Exception
+     */
+    public Long upAgentCannotUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
+        PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
+        logger.info("生成申请单号begin");
+        String code = OrderMakeUtils.makeOrder("U");
+        logger.info("生成申请单号end 申请单号："+code);
+        Date date = new Date();
+        upgradeNotice.setCode(code);
+        upgradeNotice.setCreateTime(date);
+        upgradeNotice.setUserId(userId); //申请人id
+        upgradeNotice.setUserPid(userPid);  //申请人上级合伙人id
+        upgradeNotice.setSkuId(skuId);      //申请升级skuid
+        upgradeNotice.setOrgAgentLevelId(curAgentLevel);    //原合伙代理等级
+        upgradeNotice.setWishAgentLevelId(upgradeLevel);    //申请合伙代理等级
+        upgradeNotice.setUpdateTime(date);
+        upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+        upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
+        upgradeNotice.setRemark("上级代理用户不可升级");
+        if (pfUserUpgradeNoticeMapper.insert(upgradeNotice) == 0){
+            throw new BusinessException("创建升级申请数据失败");
+        }
+        //创建申请单完成后处理下级代理申请单
+        this.dealLowerUpgrades(userId, skuId, curAgentLevel);
+        return upgradeNotice.getId();
+    }
+
+    /**
+     * 创建完升级订单后处理下级申请单
+     * @param userId        代理用户id
+     * @param skuId         合伙skuId
+     * @param curAgentLevel 代理用户当前代理等级
+     * @throws Exception
+     */
+    private void dealLowerUpgrades(Long userId, Integer skuId, Integer curAgentLevel) throws Exception{
         logger.info("创建升级申请单后处理下级申请单数据");
         PfUserUpgradeNotice notice = new PfUserUpgradeNotice();
         notice.setUserPid(userId);
         notice.setSkuId(skuId);
+        notice.setWishAgentLevelId(curAgentLevel);
         List<PfUserUpgradeNotice> pfUserUpgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(notice);
         for (PfUserUpgradeNotice upgrade : pfUserUpgradeNotices){
             //当申请用户处理状态为未处理时进行数据更新
@@ -209,9 +316,7 @@ public class UpgradeNoticeService {
                 updateUpgradeNotice(upgrade);
             }
         }
-        return upgradeNotice.getId();
     }
-
     /**
      * 根据id查询申请信息
      * @param id 申请信息表id

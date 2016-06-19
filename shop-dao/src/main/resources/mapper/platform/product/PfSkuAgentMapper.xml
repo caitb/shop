@@ -171,7 +171,7 @@
         a.sku_id = #{skuId}
         AND <![CDATA[ agent_level_id < #{agentLevelId} ]]>
         AND <![CDATA[agent_level_id >= #{pLevelId} ]]>
-        /*AND a.is_upgrade = 1;*/
+        AND a.is_upgrade = 1;
     </select>
 
     <select id="selectLevelIdsBySkuIdAndIsShow" resultType="Integer">

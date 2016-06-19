@@ -276,4 +276,8 @@
             and up_status = #{upStatus,jdbcType=INTEGER}
         </if>
     </select>
+
+    <select id="selectLastUpgrade" resultMap="BaseResultMap">
+        select * from pf_user_upgrade_notice where id = (select max(id) from pf_user_upgrade_notice where user_pid = #{userPid} and wish_agent_level_id = #{wishLevelId} and sku_id = #{skuId});
+    </select>
 </mapper>

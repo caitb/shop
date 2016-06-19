@@ -55,7 +55,6 @@
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
     <script src="${path}/static/js/commonAjax.js"></script>
     <script src="${path}/static/js/definedAlertWindow.js"></script>
-    <script src="${path}/static/js/upGradeInformation.js"></script>
     <script>
        var path = "${path}";
        var basePath = "${basePath}";

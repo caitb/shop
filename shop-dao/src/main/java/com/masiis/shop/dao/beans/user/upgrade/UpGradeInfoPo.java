@@ -63,6 +63,10 @@ public class UpGradeInfoPo {
      * 申请码
      */
     private String applyCode;
+    /**
+     * 订单id
+     */
+    private Long pfBorderId;
 
     public Long getUpgradeId() {
         return upgradeId;
@@ -174,5 +178,13 @@ public class UpGradeInfoPo {
 
     public void setApplyCode(String applyCode) {
         this.applyCode = applyCode;
+    }
+
+    public Long getPfBorderId() {
+        return pfBorderId;
+    }
+
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
 }

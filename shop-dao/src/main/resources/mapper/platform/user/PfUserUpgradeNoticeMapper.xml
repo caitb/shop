@@ -32,6 +32,7 @@
         <result column="upStatus" property="upStatus" jdbcType="INTEGER" />
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
         <result column="applyCode" property="applyCode" jdbcType="VARCHAR" />
+        <result column="pfBorderId" property="pfBorderId" jdbcType="BIGINT" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -214,7 +215,8 @@
         a. STATUS AS applyStatus,
         a.up_status AS upStatus,
         a.create_time AS createTime,
-        a. CODE AS applyCode
+        a. CODE AS applyCode,
+        IFNULL(a.pf_border_id,0) as pfBorderId
         FROM
         pf_user_upgrade_notice a
         LEFT JOIN com_sku b ON a.sku_id = b.id

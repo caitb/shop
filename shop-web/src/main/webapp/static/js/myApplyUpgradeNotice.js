@@ -6,7 +6,12 @@ function blackHide(){
     $(".black").hide();
 }
 $(".zhifu").on("click",function(){
-    window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+$("#upgradeId").val();
+    var pfBorderId = $("#pfBorderId").val();
+    if (pfBorderId == 0){
+        window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+$("#upgradeId").val();
+    }else {
+        window.location.href = basePath + "border/goToPayBOrder.shtml?bOrderId=" + pfBorderId;
+    }
 });
 $(".que_que").on("click",function(){
     if ($("#isClick").val() == "true"){

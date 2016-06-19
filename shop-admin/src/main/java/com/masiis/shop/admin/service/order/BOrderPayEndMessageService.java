@@ -243,6 +243,7 @@ public class BOrderPayEndMessageService {
         String[] param = new String[2];
         param[0] = numberFormat.format(pfBorderRecommenReward.getRewardTotalPrice());
         param[1] = simpleDateFormat.format(pfBorderRecommenReward.getCreateTime());
-        WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param);
+        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/getRewardBorder";
+        WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
     }
 }

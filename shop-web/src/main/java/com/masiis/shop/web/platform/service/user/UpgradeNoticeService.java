@@ -410,19 +410,25 @@ public class UpgradeNoticeService {
                     throw new BusinessException("商品信息为null-----id--"+upgradeNotice.getSkuId());
                 }
                 //级别
-                logger.info("获得商品代理原等级信息----商品skuId----"+comSku.getId()+"-----等级id----"+upgradeNotice.getOrgAgentLevelId());
+                logger.info("获得商品代理原等级信息----商品skuId----"+comSku.getId()+"-----原始等级id----"+upgradeNotice.getOrgAgentLevelId());
                 PfSkuAgent oldSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getOrgAgentLevelId());
-                logger.info("获得商品代理新等级信息----商品skuId----"+comSku.getId()+"-----等级id----"+upgradeNotice.getWishAgentLevelId());
+                logger.info("获得商品代理新等级信息----商品skuId----"+comSku.getId()+"-----期望等级id----"+upgradeNotice.getWishAgentLevelId());
                 PfSkuAgent newSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getWishAgentLevelId());
                 if (oldSkuAgent!=null){
                     ComAgentLevel oldAgentLevel = getComAgentLeveal(oldSkuAgent.getAgentLevelId());
                     upgradeDetail.setCurrentAgentLevel(newSkuAgent.getAgentLevelId());
                     upgradeDetail.setCurrentAgentLevelName(oldAgentLevel.getName());
+                }else{
+                    logger.info("原始等级商品代理为null");
+                    throw new BusinessException("原始等级商品代理为null");
                 }
                 if (newSkuAgent!=null){
                     ComAgentLevel newAgentLevel = getComAgentLeveal(newSkuAgent.getAgentLevelId());
                     upgradeDetail.setApplyAgentLevel(newSkuAgent.getAgentLevelId());
                     upgradeDetail.setApplyAgentLevelName(newAgentLevel.getName());
+                }else{
+                    logger.info("新等级商品代理为null");
+                    throw new BusinessException("新等级商品代理为null");
                 }
                 //拿货数量
                 upgradeDetail.setQuantity(newSkuAgent.getQuantity());
@@ -430,6 +436,7 @@ public class UpgradeNoticeService {
                 upgradeDetail.setBailChange(getBailChange(oldSkuAgent,newSkuAgent));
                 //总价
                 BigDecimal totalPrice = getTotalPrice(oldSkuAgent,newSkuAgent);
+                logger.info("总价------"+totalPrice);
                 upgradeDetail.setTotalPrice(totalPrice);
             }else{
                 logger.info("升级通知信息状态不正确-----");
@@ -481,7 +488,6 @@ public class UpgradeNoticeService {
         }else{
             totalPice = BigDecimal.ZERO ;
         }
-        logger.info("总价------"+totalPice.intValue());
         return totalPice;
     }
 

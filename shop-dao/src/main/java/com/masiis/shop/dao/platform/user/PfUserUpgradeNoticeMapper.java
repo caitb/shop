@@ -63,4 +63,16 @@ public interface PfUserUpgradeNoticeMapper {
     UpGradeInfoPo selectUpGradeInfoPoById(@Param("Id") Long Id);
 
     List<PfUserUpgradeNotice> selectAllUnpayNoticesByDate(@Param("time") Date time);
+
+    List<PfUserUpgradeNotice> selectAllUnpayOfflineNoticesByDate(@Param("time") Date time);
+
+    /**
+     * 根据父id和单据状态查询
+     *
+     * @param status
+     * @param userPid
+     * @return
+     */
+    List<PfUserUpgradeNotice> selectAllSubByStatusAndPid(@Param("status") Integer status,
+                                                         @Param("userPid") Long userPid);
 }

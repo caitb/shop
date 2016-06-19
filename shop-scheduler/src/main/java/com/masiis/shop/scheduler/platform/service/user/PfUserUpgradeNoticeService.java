@@ -1,11 +1,24 @@
 package com.masiis.shop.scheduler.platform.service.user;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
+import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
+import com.masiis.shop.dao.po.ComAgentLevel;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.scheduler.platform.service.order.BOrderOperationLogService;
+import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
+import com.sun.webpane.webkit.network.data.DataURLConnection;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +39,14 @@ public class PfUserUpgradeNoticeService {
 
     @Resource
     private PfUserUpgradeNoticeMapper noticeMapper;
+    @Resource
+    private PfBorderMapper pfBorderMapper;
+    @Resource
+    private BOrderOperationLogService bOrderOperationLogService;
+    @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
     public PfUserUpgradeNotice findById(Long id){
         return noticeMapper.selectByPrimaryKey(id);
@@ -98,5 +119,110 @@ public class PfUserUpgradeNoticeService {
      */
     public List<PfUserUpgradeNotice> findAllUnpayNoticesByDate(Date time) {
         return noticeMapper.selectAllUnpayNoticesByDate(time);
+    }
+
+    @Transactional
+    public void handleUnpayUpgradeNotice(PfUserUpgradeNotice notice) {
+        try {
+            // 校验升级通知单状态
+            if (notice.getStatus().intValue() != UpGradeStatus.STATUS_NoPayment.getCode().intValue()) {
+                throw new BusinessException("该升级通知单不是待支付状态");
+            }
+
+            log.info("开始取消升级申请通知单");
+            // 升级单置为取消状态
+            notice.setStatus(UpGradeStatus.STATUS_Revocation.getCode());
+            noticeMapper.updateByPrimaryKey(notice);
+            // 检查升级单对应的升级订单
+            if(notice.getPfBorderId() != null && notice.getPfBorderId().longValue() > 0l) {
+                PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(notice.getPfBorderId());
+                if(pfBorder.getPayStatus().intValue() != 0){
+                    throw new BusinessException("该订单非未支付订单");
+                }
+                if(pfBorder.getOrderType() != 3){
+                    throw new BusinessException("该订单非升级订单");
+                }
+
+                // 修改订单的状态为已取消状态
+                int result = pfBorderMapper.updateOrderCancelById(pfBorder.getId());
+                if (result != 1) {
+                    pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorder.getId());
+                    throw new BusinessException("订单取消失败,订单此时状态为:" + pfBorder.getOrderStatus()
+                            + ",支付状态为:" + pfBorder.getPayStatus());
+                }
+                // 插入订单操作记录
+                bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"未支付升级申请单,对应升级订单自动取消");
+            }
+
+            // 下级升级申请通知单
+            List<PfUserUpgradeNotice> nos = noticeMapper.selectAllSubByStatusAndPid(
+                    UpGradeStatus.STATUS_Processing.getCode(), notice.getUserId());
+            if(nos != null && nos.size() > 0){
+                // 处理下级升级申请通知
+                for(PfUserUpgradeNotice n:nos){
+                    n.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+                    n.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+                    int res = update(n);
+                    if (res != 1) {
+                        throw new BusinessException("更新升级单失败");
+                    }
+
+                    // 发送微信消息
+                    try{
+                        ComUser user = comUserMapper.selectByPrimaryKey(n.getUserId());
+                        ComAgentLevel org = comAgentLevelMapper.selectByPrimaryKey(n.getOrgAgentLevelId());
+                        ComAgentLevel wish = comAgentLevelMapper.selectByPrimaryKey(n.getWishAgentLevelId());
+                        String[] params = {user.getRealName(),
+                                org.getName(),
+                                wish.getName(),
+                                DateUtil.Date2String(n.getCreateTime(), DateUtil.SQL_TIME_FMT),
+                                DateUtil.Date2String(DateUtil.getDateNextdays(n.getCreateTime(), 2), DateUtil.SQL_TIME_FMT)
+                        };
+                        String url = PropertiesUtils.getStringValue("web.domain.name.address")
+                                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + n.getId();
+                        WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(user, params, url);
+                    } catch (Exception e){
+                        log.error("发送微信消息失败",e);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("取消升级申请单失败", e);
+            throw new BusinessException(e);
+        }
+    }
+
+    /**
+     * 根据2天未支付升级申请单默认不升级,发送微信通知
+     *
+     * @param notice
+     */
+    public void sendWxNoticeByTwoDayUnpayUpgradeNotice(PfUserUpgradeNotice notice) {
+        ComUser user = comUserMapper.selectByPrimaryKey(notice.getUserId());
+        String[] params = {
+                DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
+        };
+        String url = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().upgradeApplyTwoDayNotPayNotice(user, params, url);
+    }
+
+    public List<PfUserUpgradeNotice> findAllSevenDayUnpayNoticesByDate(Date time) {
+        return noticeMapper.selectAllUnpayOfflineNoticesByDate(time);
+    }
+
+    /**
+     * 发送线下支付升级申请单7天未支付微信通知
+     *
+     * @param notice
+     */
+    public void sendWxNoticeBySevenDayUnpayUpgradeNotice(PfUserUpgradeNotice notice) {
+        ComUser user = comUserMapper.selectByPrimaryKey(notice.getUserId());
+        String[] params = {
+                DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
+        };
+        String url = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().upgradeApplySevenDayNotPayNotice(user, params, url);
     }
 }

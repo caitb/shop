@@ -44,4 +44,18 @@ public class PfUpgradeTask {
 
         log.info("统一处理2天待支付升级通知单结束......");
     }
+
+    /**
+     * 待支付状态升级申请单7天未支付(线下支付)
+     */
+    public void upgradeNoticeSevenDayUnPay(){
+        log.info("统一处理7天(线下支付)待支付升级通知单开始......");
+        try {
+            upgradeTaskService.handleSevenDayUnpayUpgradeNotice();
+        } catch (Exception e) {
+            log.error("统一处理7天(线下支付)待支付升级通知单失败...");
+        }
+
+        log.info("统一处理7天(线下支付)待支付升级通知单结束......");
+    }
 }

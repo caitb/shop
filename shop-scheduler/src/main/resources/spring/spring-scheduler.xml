@@ -20,6 +20,12 @@
         <!-- 订单发货后7天自动收货 -->
         <task:scheduled ref="pfOrderTask" method="orderReceivedConfirmJob" cron="0 0/10 * * * ?" />
         <task:scheduled ref="pfOrderTask" method="offlineBorderCancelJob" cron="0 0/10 * * * ?" />
+        <!-- 2天未处理升级单job -->
+        <task:scheduled ref="pfUpgradeTask" method="unHandleUpgradeNoticeJob" cron="0 0/10 * * * ?" />
+        <!-- 2天未支付升级单job -->
+        <task:scheduled ref="pfUpgradeTask" method="upgradeNoticeTwoDayUnPay" cron="0 0/10 * * * ?" />
+        <!-- 7天(线下支付)未支付升级单job -->
+        <task:scheduled ref="pfUpgradeTask" method="upgradeNoticeSevenDayUnPay" cron="0 0/10 * * * ?" />
 
         <!-- mall订单相关job -->
         <task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 30 8 * * ?" />

@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
@@ -65,6 +66,10 @@ public class BUpgradePayService {
     private PfUserCertificateHistoryService pfUserCertificateHistoryService;
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath){
         //修改订单支付
@@ -72,6 +77,7 @@ public class BUpgradePayService {
         //修改订单
         PfBorder pfBorder = updatePfBorder(pfBorderPayment.getPfBorderId(),pfBorderPayment);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+        PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
         //添加订单操作日志
         insertOrderOperationLog(pfBorder);
         //修改上下级绑定关系和插入历史表
@@ -87,12 +93,14 @@ public class BUpgradePayService {
         //修改用户账户
         billAmountService.orderBillAmount(pfBorder.getId());
         //插入一次性奖励
-        insertUserRebate(pfBorder,pfBorderItems);
+        insertUserRebate(pfBorder,pfBorderItems,pfUserUpgradeNotice);
         //修改小铺商品信息
         updateSfShopSku(pfBorder.getUserId(),pfBorderItems);
         //修改通知单状态
         updateUpgradeNotice(pfBorder.getId());
-        //
+        //发送微信通知
+        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
+        upgradeWechatNewsService.upgradeOrderPaySuccessSendWXNotice(pfBorder,pfBorderPayment,upgradeDetail);
     }
 
     /**
@@ -385,9 +393,8 @@ public class BUpgradePayService {
      *  插入一次性奖励
      * @param pfBorder
      */
-    private void insertUserRebate(PfBorder pfBorder,List<PfBorderItem> orderItems){
+    private void insertUserRebate(PfBorder pfBorder,List<PfBorderItem> orderItems,PfUserUpgradeNotice pfUserUpgradeNotice){
         for (PfBorderItem pfBorderItem:orderItems){
-            PfUserUpgradeNotice pfUserUpgradeNotice=userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
             PfUserRebate pfUserRebate = new PfUserRebate();
             pfUserRebate.setCreateTime(new Date());
             pfUserRebate.setCreateTime(new Date());

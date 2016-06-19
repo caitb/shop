@@ -25,36 +25,33 @@ public class UpgradeWechatNewsService {
     /**
      * 插入订单border成功后发送微信
      * @param oldPUserId
-     * @param newPUserId
      * @param userId
      * @param upgradeDetail
      * @return
      */
-    public Boolean insertUpgradeOrderSendWXNotice(Long oldPUserId,Long newPUserId,Long userId,BOrderUpgradeDetail upgradeDetail){
+    public Boolean insertUpgradeOrderSendWXNotice(Long oldPUserId,Long userId,BOrderUpgradeDetail upgradeDetail){
         ComUser oldComUser = comUserService.getUserById(oldPUserId);
-        ComUser newComUser = comUserService.getUserById(newPUserId);
         ComUser comUser = comUserService.getUserById(userId);
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         if (upgradeDetail.getUpStatus()==1){
             //原上级暂时不升级，给原上级发微信
             String[] param = new String[1];
             param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldComUser,param,url,true);
+           return WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldComUser,param,url,true);
         }
-        return false;
+        return true;
     }
 
     /**
      * 升级订单支付成功后发送微信
      * @param pfBorder
      * @param pfBorderPayment
-     * @param userId
      * @return
      */
-    public Boolean upgradeOrderPaySuccessSendWXNotice(PfBorder pfBorder, PfBorderPayment pfBorderPayment, Long userId,BOrderUpgradeDetail upgradeDetail){
+    public Boolean upgradeOrderPaySuccessSendWXNotice(PfBorder pfBorder, PfBorderPayment pfBorderPayment,BOrderUpgradeDetail upgradeDetail){
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         //给升级人发微信
-        ComUser comUser = comUserService.getUserById(userId);
+        ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
         ComUser oldUser = comUserService.getUserById(upgradeDetail.getOldPUserId());
         String[] param = new String[4];
@@ -66,13 +63,12 @@ public class UpgradeWechatNewsService {
         //给上级发送微信
         if (pfBorder.getUserPid().equals(upgradeDetail.getOldPUserId())){
             //上级没变化
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,param,url,true);
         }else{
             //上级变化
             //给原上级发微信
             String[] _param = new String[4];
             _param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,param,url,true);
+            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,false);
             //给新的上级发
             WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),url);
         }

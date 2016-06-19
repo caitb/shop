@@ -80,6 +80,15 @@ public class PfUserRecommendRelationService {
     }
 
     /**
+     * 条件查询帮我推荐的人详情列表
+     * @author muchaofeng
+     * @date 2016/6/17 10:30
+     */
+    public List<UserRecommend> findGiveSumByLike(Integer skuId, Long userId) {
+        return pfUserRecopmmenRelationMapper.selectGiveSumByLike(skuId,userId);
+    }
+
+    /**
      * 我推荐的详情列表
      *
      * @author muchaofeng

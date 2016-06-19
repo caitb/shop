@@ -97,6 +97,9 @@ public class MyRecommendController extends BaseController{
                 Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
                 userRecommend.setNumber(giveNum);
             }
+
+            List<ComSku> allSku = skuService.getAllSku();
+            modelAndView.addObject("allSku",allSku);
             modelAndView.addObject("sumByUser",sumByUser);
             modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;
@@ -104,6 +107,30 @@ public class MyRecommendController extends BaseController{
             log.error("获取代理产品列表失败!",e);
         }
         return null;
+    }
+
+    /**
+     * 条件查询帮我推荐的人详情
+     * @author muchaofeng
+     * @date 2016/6/19 15:45
+     */
+
+    @RequestMapping("/giveRecommendLike.do")
+    @ResponseBody
+    public List<UserRecommend> giveRecommendLike(HttpServletRequest request,Integer skuId){
+        List<UserRecommend> sumByUser =null;
+        try{
+            ComUser comUser = getComUser(request);
+
+            sumByUser = pfUserRecommendRelationService.findGiveSumByLike(skuId,comUser.getId());//推荐给我的
+            for (UserRecommend userRecommend:sumByUser) {
+                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
+                userRecommend.setNumber(giveNum);
+            }
+        }catch (Exception e){
+            log.error("获取代理产品列表失败!",e);
+        }
+        return sumByUser;
     }
 
     /**

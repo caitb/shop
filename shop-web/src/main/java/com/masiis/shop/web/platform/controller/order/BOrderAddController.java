@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.*;
@@ -14,6 +15,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * BOrderAddController
@@ -58,6 +61,8 @@ public class BOrderAddController extends BaseController {
     private PfUserRelationService pfUserRelationService;
     @Resource
     private UpgradeNoticeService upgradeNoticeService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
 
     /**
      * 代理订单确认订单页
@@ -389,9 +394,9 @@ public class BOrderAddController extends BaseController {
         log.info("生成订单数据----start");
         Long orderId = null;
         JSONObject jsonObject = new JSONObject();
+        ComUser comUser = getComUser(request);
+        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
         try{
-            BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
-            ComUser comUser = getComUser(request);
             if (upgradeDetail!=null){
                 if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==1){
                     //订单存在重定向到收银台
@@ -401,7 +406,7 @@ public class BOrderAddController extends BaseController {
                     jsonObject.put("bOrderId", upgradeDetail.getPfBorderId());
                     return jsonObject.toJSONString();
                 }
-                if (upgradeDetail.getUpgradeStatus()!=1){
+                if (upgradeDetail.getUpgradeStatus()!=2){
                     log.info("通知单状态不对不能生成订单----状态---"+upgradeDetail.getUpgradeStatus());
                     throw new BusinessException("通知单状态不对不能生成订单");
                 }
@@ -436,5 +441,7 @@ public class BOrderAddController extends BaseController {
         }
         return jsonObject.toJSONString();
     }
+
+
 
 }

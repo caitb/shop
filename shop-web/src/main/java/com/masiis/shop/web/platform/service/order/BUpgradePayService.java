@@ -171,26 +171,48 @@ public class BUpgradePayService {
      * @param pfUserSku
      * @return
      */
-    private int updatePfUserSku(Long userId,Long userPid,Long borderId,PfBorderItem orderItem,PfUserSku pfUserSku){
-        log.info("---修改商品的代理关系-----订单id-----"+borderId);
-        BigDecimal bailAmount =  orderItem.getBailAmount();
+    private int updatePfUserSku(Long userId, Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
+        log.info("---修改商品的代理关系-----订单id-----" + borderId);
+        BigDecimal bailAmount = orderItem.getBailAmount();
         Integer skuId = orderItem.getSkuId();
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
-        if (pfUserSku!=null){
-            if (!pfUserSku.getUserPid().equals(userPid)){
-                PfUserSku parentUS = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
-                pfUserSku.setPid(parentUS.getId());
-                pfUserSku.setUserPid(userPid);
+        if (pfUserSku != null) {
+            if (!pfUserSku.getUserPid().equals(userPid)) {
+                PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
+                Integer parent_id = 0;
+                Long parent_userPid = 0l;
+                String parent_treeCode = pfUserSku.getSkuId() + ",";
+                Integer parent_treeLevel = 0;
+                if (null != parentPfUserSku) {
+                    parent_id = parentPfUserSku.getId();
+                    parent_userPid = parentPfUserSku.getUserId();
+                    parent_treeCode = parentPfUserSku.getTreeCode();
+                    parent_treeLevel = parentPfUserSku.getTreeLevel();
+                }
+                pfUserSku.setPid(parent_id);
+                pfUserSku.setUserPid(parent_userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);
                 pfUserSku.setIsPay(1);
                 pfUserSku.setIsCertificate(1);
                 pfUserSku.setPfBorderId(borderId);
                 pfUserSku.setBail(bailAmount);
-               /* pfUserSku.setAgentNum(0L);
-                pfUserSku.setTreeCode("");
-                pfUserSku.setTreeLevel(1);*/
                 i = pfUserSkuService.update(pfUserSku);
+                if (i <= 0) {
+                    throw new BusinessException("分销关系树结构修改失败");
+                }
+                Integer id = pfUserSku.getId();
+                String treeCode = pfUserSku.getTreeCode();
+                String parentTreeCode = parent_treeCode;
+                Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+                Integer treeLevel = pfUserSku.getTreeLevel() - parent_treeLevel - 1;
+                if (treeLevel < 0) {
+                    throw new BusinessException("树结构更换只能挂在高于自己的树枝");
+                }
+                i = pfUserSkuService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
+                if (i <= 0) {
+                    throw new BusinessException("分销关系树结构修改失败");
+                }
             }
         }
         return i;

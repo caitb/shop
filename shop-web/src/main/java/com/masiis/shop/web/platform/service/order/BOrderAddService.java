@@ -290,7 +290,7 @@ public class BOrderAddService {
         }
         if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
             PfUserUpgradeNotice pfUserUpgradeNotice =   userUpgradeNoticeService.selectByPrimaryKey(bOrderAdd.getUpgradeNoticeId());
-            pfUserUpgradeNotice.setStatus(1);//待支付
+            pfUserUpgradeNotice.setStatus(2);//待支付
             pfUserUpgradeNotice.setPfBorderId(pfBorder.getId());
             userUpgradeNoticeService.update(pfUserUpgradeNotice);
         }

@@ -18,7 +18,6 @@ import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import com.masiis.shop.scheduler.platform.service.order.BOrderOperationLogService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
-import com.sun.webpane.webkit.network.data.DataURLConnection;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

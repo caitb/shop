@@ -92,6 +92,7 @@ public class BUpgradePayService {
         updateSfShopSku(pfBorder.getUserId(),pfBorderItems);
         //修改通知单状态
         updateUpgradeNotice(pfBorder.getId());
+        //
     }
 
     /**
@@ -178,6 +179,8 @@ public class BUpgradePayService {
         int i = 0;
         if (pfUserSku!=null){
             if (!pfUserSku.getUserPid().equals(userPid)){
+                PfUserSku parentUS = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
+                pfUserSku.setPid(parentUS.getId());
                 pfUserSku.setUserPid(userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);
                 pfUserSku.setIsPay(1);

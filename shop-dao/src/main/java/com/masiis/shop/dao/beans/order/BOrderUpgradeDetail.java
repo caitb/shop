@@ -16,6 +16,7 @@ public class BOrderUpgradeDetail {
     private Integer spuId;
     private Long    oldPUserId;                //原上级id
     private String  oldPUserName;              //原上级姓名
+    private Integer upStatus;                  //上级处理状态
     private Long    newPUserId;                //新上级id
     private String  newPUserName;               //新上级名字
     private String skuName;                   //商品名称
@@ -29,6 +30,7 @@ public class BOrderUpgradeDetail {
     private String  upgradeOrderCode;        //升级单号
     private BigDecimal bailChange;           //升级的保证金差额
     private BigDecimal totalPrice;           //总价共支付
+
 
     public String getName() {
         return name;
@@ -196,5 +198,13 @@ public class BOrderUpgradeDetail {
 
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
+    }
+
+    public Integer getUpStatus() {
+        return upStatus;
+    }
+
+    public void setUpStatus(Integer upStatus) {
+        this.upStatus = upStatus;
     }
 }

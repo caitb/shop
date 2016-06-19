@@ -393,6 +393,7 @@ public class UpgradeNoticeService {
                 upgradeDetail.setUpgradeNoticeId(id);
                 upgradeDetail.setPfBorderId(upgradeNotice.getPfBorderId());
                 upgradeDetail.setUpgradeStatus(upgradeNotice.getStatus());
+                upgradeDetail.setUpStatus(upgradeNotice.getUpStatus());
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
                     upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());

@@ -6,7 +6,6 @@ import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 

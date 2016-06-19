@@ -15,8 +15,8 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
+import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,6 +48,8 @@ public class AgentUpGradeController extends BaseController {
     private UpgradeNoticeService upgradeNoticeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UpgradeWechatNewsService upgradeWechatNewsService;
 
     /**
      * 初始化我要升级首页
@@ -145,6 +147,7 @@ public class AgentUpGradeController extends BaseController {
             sb.append("<span>(包含商品" + pfSkuAgent.getQuantity() + "件　保证金差额：" + rmbFormat.format(pfSkuAgent.getBail().subtract(currentSkuAgent.getBail())) + ")</span>");
         }
         logger.info("获取用户可以升级的代理级别信息end");
+        jsonObject.put("upAgentLevel",pLevelId);
         jsonObject.put("isTrue","true");
         jsonObject.put("message",sb.toString());
         logger.info(jsonObject.toJSONString());
@@ -429,5 +432,33 @@ public class AgentUpGradeController extends BaseController {
         mv.addObject("payDate", DateUtil.addDays(SysConstants.UPGRADE_LATEST_TIME));
         mv.setViewName("platform/user/upgrade/shengjishenhe");
         return mv;
+    }
+
+    /**
+     * 申請升級成功之後發送微信消息
+     * @param upgradeLevel  申請代理等級
+     * @param upAgentLevel  上級代理等級
+     * @param request
+     */
+    @RequestMapping(value = "/upgradeApplySubmitNotice.do")
+    @ResponseBody
+    public void upgradeApplySubmitNotice(@RequestParam(value = "upgradeLevel") Integer upgradeLevel,
+                                         @RequestParam(value = "upAgentLevel") Integer upAgentLevel,
+                                         @RequestParam(value = "upgradeId") Long upgradeId,
+                                         @RequestParam(value = "userPid") Long userPid,
+                                         HttpServletRequest request){
+        logger.info("升级申请成功发送微信消息");
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            return;
+        }
+        if (upAgentLevel.intValue() == upgradeLevel.intValue()){
+            BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeId);
+            upgradeDetail.setName(comUser.getRealName());
+            upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upgradeDetail, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+            logger.info("查询上级用户信息");
+            ComUser pUser = userService.getUserById(userPid);
+            upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upgradeDetail, "/upgradeInfo/lower");
+        }
     }
 }

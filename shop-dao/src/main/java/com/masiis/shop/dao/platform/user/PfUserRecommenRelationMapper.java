@@ -66,6 +66,13 @@ public interface PfUserRecommenRelationMapper {
     List<Long> selectGiveList(@Param("userId") Long userId,@Param("skuId") Integer skuId);
 
     /**
+     * 帮我推荐的人详情(条件查询)
+     * @author muchaofeng
+     * @date 2016/6/17 10:25
+     */
+    List<UserRecommend> selectGiveSumByLike(@Param("skuId") Integer skuId, @Param("userId") Long userId);
+
+    /**
      * 我推荐的人详情
      * @author muchaofeng
      * @date 2016/6/15 17:40

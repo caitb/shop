@@ -410,7 +410,9 @@ public class UpgradeNoticeService {
                     throw new BusinessException("商品信息为null-----id--"+upgradeNotice.getSkuId());
                 }
                 //级别
+                logger.info("获得商品代理原等级信息----商品skuId----"+comSku.getId()+"-----等级id----"+upgradeNotice.getOrgAgentLevelId());
                 PfSkuAgent oldSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getOrgAgentLevelId());
+                logger.info("获得商品代理新等级信息----商品skuId----"+comSku.getId()+"-----等级id----"+upgradeNotice.getWishAgentLevelId());
                 PfSkuAgent newSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getWishAgentLevelId());
                 if (oldSkuAgent!=null){
                     ComAgentLevel oldAgentLevel = getComAgentLeveal(oldSkuAgent.getAgentLevelId());
@@ -490,7 +492,6 @@ public class UpgradeNoticeService {
      * @return
      */
     private PfSkuAgent getPfSkuAgent(Integer skuId,Integer levelId){
-        logger.info("获得商品代理等级信息----商品skuId----"+skuId+"-----等级id----"+levelId);
         return skuAgentService.getBySkuIdAndLevelId(skuId,levelId);
     }
     /**

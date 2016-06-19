@@ -115,12 +115,13 @@ public class BOrderAddService {
                     Integer applyAgentLevel = bOrderAdd.getAgentLevelId();
                     Long newPUserId = null;
                     if (_parentPfUserSku!=null){
-                        if (_parentPfUserSku.getUserPid()!=0){
+                        pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
+                        /*if (_parentPfUserSku.getUserPid()!=0){
                             pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
                         }else{
                             logger.info("联合创始人不能升级到boss------当前用户id----"+bOrderAdd.getpUserId()+"----skuId---"+bOrderAdd.getSkuId()+"----上级用户----");
                             throw new BusinessException("联合创始人不能升级到boss");
-                        }
+                        }*/
                     }else{
                         logger.info("查询父级userSku为null---");
                         throw new BusinessException("查询父级userSku为null------");

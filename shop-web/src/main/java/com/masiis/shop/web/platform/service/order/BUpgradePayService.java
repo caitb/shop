@@ -66,8 +66,6 @@ public class BUpgradePayService {
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
 
-    private static Long sendRecommendRewardUserId = null;
-
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath){
         //修改订单支付
         updatePfBorderPayment(pfBorderPayment,outOrderId);
@@ -82,6 +80,8 @@ public class BUpgradePayService {
         inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(),pfBorderItems,null,rootPath);
         //修改冻结库存
         updateFrozenStock(pfBorder,pfBorderItems);
+        //处理平台拿货类型订单
+        saveBOrderSendType(pfBorder);
         //修改用户统计中奖励金额
         orderStatisticsService.statisticsOrder(pfBorder.getId());
         //修改用户账户
@@ -345,6 +345,18 @@ public class BUpgradePayService {
     }
 
     /**
+     * 处理平台拿货类型订单
+     * <1>减少发货方库存 如果用户id是0操作平台库存
+     * <2>增加收货方库存
+     * <3>订单完成处理
+     * @param pfBorder
+     */
+    public void saveBOrderSendType(PfBorder pfBorder){
+        bOrderPayService.saveBOrderSendType(pfBorder);
+    }
+
+
+    /**
      *  插入一次性奖励
      * @param pfBorder
      */
@@ -399,7 +411,11 @@ public class BUpgradePayService {
         //修改当前申请升级的通知单状态
         Long userId = updateCurrentNotice(pfBorderId);
         //判断当前升级是否有下级，有下级则修改下级的状态
-        updateAllLowerNotice(userId);
+        if (userId!=null){
+            updateAllLowerNotice(userId);
+        }else {
+            log.info("修改当前申请升级的通知单状态状态失败");
+        }
     }
 
     /**

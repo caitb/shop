@@ -12,7 +12,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                  <a href="${path}/upgrade/init.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>升级</p>            
         </header>
         <main>
@@ -63,7 +63,11 @@
             dataType:"Json",
             success:function(data){
                 if (data.isError == false) {
-                    window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                    if (data.isRedirect == true){
+                        window.location.href = "${basePath}"+data.redirectUrl;
+                    }else{
+                        window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                    }
                 }
             }
         });

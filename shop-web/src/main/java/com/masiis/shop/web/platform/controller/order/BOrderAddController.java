@@ -393,11 +393,15 @@ public class BOrderAddController extends BaseController {
             BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
             ComUser comUser = getComUser(request);
             if (upgradeDetail!=null){
-                if (upgradeDetail.getPfBorderId()!=null){
+                if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==1){
                     //订单存在重定向到收银台
-
+                    jsonObject.put("isError", false);
+                    jsonObject.put("isRedirect",true);
+                    jsonObject.put("redirectUrl","border/goToPayBOrder.shtml?bOrderId="+upgradeDetail.getPfBorderId());
+                    jsonObject.put("bOrderId", upgradeDetail.getPfBorderId());
+                    return jsonObject.toJSONString();
                 }
-                if (upgradeDetail.getUpgradeStatus()!=2){
+                if (upgradeDetail.getUpgradeStatus()!=1){
                     log.info("通知单状态不对不能生成订单----状态---"+upgradeDetail.getUpgradeStatus());
                     throw new BusinessException("通知单状态不对不能生成订单");
                 }

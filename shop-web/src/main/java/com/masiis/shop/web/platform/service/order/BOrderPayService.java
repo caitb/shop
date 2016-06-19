@@ -595,7 +595,7 @@ public class BOrderPayService {
      * <2>增加收货方库存
      * <3>订单完成处理
      */
-    private void saveBOrderSendType(PfBorder pfBorder) {
+    public void saveBOrderSendType(PfBorder pfBorder) {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {

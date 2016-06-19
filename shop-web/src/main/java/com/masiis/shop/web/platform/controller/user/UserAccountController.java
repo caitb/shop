@@ -131,11 +131,11 @@ public class UserAccountController extends BaseController{
         mv.addObject("comUser",comUser);
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
-        mv.addObject("totalIncom",rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getAgentBillAmount()).add(account.getDistributionBillAmount())));
         account.setCountingFee(account.getAgentBillAmount() == null?new BigDecimal(0): account.getAgentBillAmount().
                                 add(account.getDistributionBillAmount() == null?new BigDecimal(0): account.getDistributionBillAmount()).
                                 add(account.getRecommenBillAmount() == null?new BigDecimal(0):account.getRecommenBillAmount()));
         account.setExtractableFee(account.getExtractableFee().subtract(account.getAppliedFee()));
+        mv.addObject("totalIncom",rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getAgentBillAmount()).add(account.getDistributionBillAmount()).add(account.getCountingFee())));
         mv.addObject("account",account);
         mv.setViewName("platform/user/account");
         return mv;

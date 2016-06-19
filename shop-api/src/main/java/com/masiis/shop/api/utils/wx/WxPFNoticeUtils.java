@@ -980,19 +980,21 @@ public class WxPFNoticeUtils {
      *
      * @param user 获得推荐奖励的用户对象
      * @param params    (第一个,佣金金额; 第二个,时间)
+     * @param url   点击去获得奖励订单页面
      * @return  是否调用成功
      */
-    public Boolean recommendProfitNotice(ComUser user, String[] params){
+    public Boolean recommendProfitNotice(ComUser user, String[] params, String url){
         WxPFRecommendProfit profit = new WxPFRecommendProfit();
         WxNoticeReq<WxPFRecommendProfit> req = new WxNoticeReq<>(profit);
 
         profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的推荐佣金。", null));
         profit.setKeyword1(new WxNoticeDataItem(params[0], null));
         profit.setKeyword2(new WxNoticeDataItem(params[1], null));
-        profit.setRemark(new WxNoticeDataItem("您可以在“我的账户”中查看。", null));
+        profit.setRemark(new WxNoticeDataItem("您可以在\"获取奖励订单\"中查看，点击查看。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_PROFIT_IN);
+        req.setUrl(url);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

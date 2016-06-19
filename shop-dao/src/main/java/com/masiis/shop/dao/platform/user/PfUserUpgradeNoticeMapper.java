@@ -61,4 +61,6 @@ public interface PfUserUpgradeNoticeMapper {
                                                       @Param("time") Date time);
 
     UpGradeInfoPo selectUpGradeInfoPoById(@Param("Id") Long Id);
+
+    List<PfUserUpgradeNotice> selectAllUnpayNoticesByDate(@Param("time") Date time);
 }

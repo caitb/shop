@@ -348,21 +348,28 @@ public class UpgradeNoticeService {
     public void dealLowerUpgradeNotice(PfUserUpgradeNotice pfUserUpgradeNotice) throws Exception{
         //当申请用户处理状态不是取消状态则将处理状态设置为待支付状态
         if (pfUserUpgradeNotice.getStatus().intValue() != UpGradeStatus.STATUS_Revocation.getCode().intValue()){
-            PfUserUpgradeNotice upgrade = new PfUserUpgradeNotice();
-            upgrade.setSkuId(pfUserUpgradeNotice.getSkuId());
-            upgrade.setUserPid(pfUserUpgradeNotice.getUserPid());
-            List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(upgrade);
-            if (upgradeNotices == null || upgradeNotices.size() == 0){
-                throw new BusinessException("无下级代理申请信息");
-            }
-            for (PfUserUpgradeNotice upgradeNotice : upgradeNotices){
-                upgradeNotice.setUpdateTime(new Date());
-                upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
-                upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
-                upgradeNotice.setRemark("上级代理暂不升级");
-                //更新代理升级申请信息
-                updateUpgradeNotice(upgradeNotice);
-            }
+//            PfUserUpgradeNotice upgrade = new PfUserUpgradeNotice();
+//            upgrade.setSkuId(pfUserUpgradeNotice.getSkuId());
+//            upgrade.setUserPid(pfUserUpgradeNotice.getUserPid());
+//            upgrade.setWishAgentLevelId(pfUserUpgradeNotice.getWishAgentLevelId());
+//            List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByCondition(upgrade);
+//            if (upgradeNotices == null || upgradeNotices.size() == 0){
+//                throw new BusinessException("无下级代理申请信息");
+//            }
+//            for (PfUserUpgradeNotice upgradeNotice : upgradeNotices){
+//                upgradeNotice.setUpdateTime(new Date());
+//                upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+//                upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+//                upgradeNotice.setRemark("上级代理暂不升级");
+//                //更新代理升级申请信息
+//                updateUpgradeNotice(upgradeNotice);
+//            }
+            pfUserUpgradeNotice.setUpdateTime(new Date());
+            pfUserUpgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+            pfUserUpgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+            pfUserUpgradeNotice.setRemark("上级代理暂不升级");
+            //更新代理升级申请信息
+            updateUpgradeNotice(pfUserUpgradeNotice);
         }
     }
 

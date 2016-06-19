@@ -46,6 +46,7 @@ function changeSku(){
             if (data){
                 $("#skuId").val(skuId);
                 $("#userPid").val(userPid);
+                $("#upAgentLevel").val(data.upAgentLevel);
                 if (data.isTrue == "true"){
                     $("#upGradePackage").html(data.message);
                 }else {
@@ -89,6 +90,7 @@ $(".que_que").on("click",function(){
         data:{curAgentLevel:curAgentLevel, upgradeLevel:upgradeLevel, skuId:skuId, userPid:userPid},
         success: function(data){
             if (data){
+                upgradeApplySubmitNotice(data.keyProperty);
                 if (data.isTrue == "true"){
                     if (data.isEquals == "true"){
                         window.location.href = basePath + "upgrade/applicationComplete.shtml";
@@ -105,3 +107,32 @@ $(".que_que").on("click",function(){
         }
     });
 });
+
+function upgradeApplySubmitNotice(keyProperty){
+    var upgradeLevel = $("#upgradeLevel").val();
+    var upAgentLevel = $("#upAgentLevel").val();
+    var userPid = $("#userPid").val();
+    $.ajax({
+        type: 'POST',
+        url: basePath + 'upgrade/upgradeApplySubmitNotice.do',
+        dataType: 'json',
+        data:{upgradeLevel:upgradeLevel, upAgentLevel:upAgentLevel, upgradeId:keyProperty, userPid:userPid},
+        success: function(data){
+            if (data){
+                upgradeApplySubmitNotice(data.keyProperty);
+                if (data.isTrue == "true"){
+                    if (data.isEquals == "true"){
+                        window.location.href = basePath + "upgrade/applicationComplete.shtml";
+                    }else {
+                        window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
+                    }
+                }else {
+                    alert(data.message);
+                }
+            }
+        },
+        error: function(xhr, type){
+            alert("网络错误");
+        }
+    });
+}

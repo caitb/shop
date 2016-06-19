@@ -49,4 +49,20 @@ public class UpgradeWechatNewsService {
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
     }
+
+    /**
+     * 下级代理申请升级通知
+     * @param comUser
+     * @param upgradeDetail
+     * @param url
+     * @return
+     */
+    public boolean subLineUpgradeApplyNotice(ComUser comUser,BOrderUpgradeDetail upgradeDetail, String url){
+        String[] param = new String[4];
+        param[0]=upgradeDetail.getApplyAgentLevelName();
+        param[1]=upgradeDetail.getCurrentAgentLevel()+"";
+        param[2]=upgradeDetail.getApplyAgentLevel()+"";
+        param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+    }
 }

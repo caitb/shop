@@ -31,8 +31,17 @@ public class PfUpgradeTask {
         log.info("统一处理2天未处理升级通知单结束......");
     }
 
+    /**
+     * 待支付状态升级申请单2天未支付
+     */
+    public void upgradeNoticeTwoDayUnPay(){
+        log.info("统一处理2天待支付升级通知单开始......");
+        try {
+            upgradeTaskService.handleUnpayUpgradeNotice();
+        } catch (Exception e) {
+            log.error("统一处理2天待支付升级通知单失败...");
+        }
 
-    public void aa(){
-
+        log.info("统一处理2天待支付升级通知单结束......");
     }
 }

@@ -90,4 +90,13 @@ public class PfUserUpgradeNoticeService {
         return noticeMapper.selectByPfBorderId(id);
     }
 
+    /**
+     * 查询指定时间之外的待支付2天未支付升级单(没有升级订单或者2天未支付非线下支付订单对应的升级申请单)
+     *
+     * @param time
+     * @return
+     */
+    public List<PfUserUpgradeNotice> findAllUnpayNoticesByDate(Date time) {
+        return noticeMapper.selectAllUnpayNoticesByDate(time);
+    }
 }

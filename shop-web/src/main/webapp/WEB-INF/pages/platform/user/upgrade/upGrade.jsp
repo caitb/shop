@@ -53,6 +53,7 @@
         <input type="hidden" id="curAgentLevel" name="curAgentLevel" value=""/>
         <input type="hidden" id="upgradeLevel" name="upgradeLevel" value=""/>
         <input type="hidden" id="userPid" name="userPid" value=""/>
+        <input type="hidden" id="upAgentLevel" name="upAgentLevel" value=""/>
         <div class="backb"></div>
         <div class="back_que">
                     <p>您确定升级?</p>

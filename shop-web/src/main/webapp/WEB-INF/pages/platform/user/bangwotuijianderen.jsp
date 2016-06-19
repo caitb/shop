@@ -56,6 +56,22 @@
                     <p>帮我推荐</p>            
         </header>
         <main>
+            <div class="floor">
+                <div>
+                    <span>商品：</span>
+                    <label for="goods" class="goods">
+                        <%--<b></b>--%>
+                        <select id="goods" class="myValue">
+                            <option value="">全部</option>
+                            <c:forEach items="${allSku}" var="skuList">
+                                <option value="${skuList.id}">${skuList.name}</option>
+                            </c:forEach>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="floor2">
             <c:forEach items="${sumByUser}" var="sum">
              <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/giveRecommend?userId=${sum.userId}&skuId=${sum.skuId}')">
                 <img src="${sum.wxHeadImg}" alt="">
@@ -65,8 +81,42 @@
                 </div>
             </div>
             </c:forEach>
+            </div>
         </main>
     </div>
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+   <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+   <script>
+       $(document).ready(function(){
+           var goodsWidth=$(".goods").width();
+           $(".goods b").html($("#goods option:selected").text());
+           $("#goods").width(goodsWidth);
+       })
+       $("#goods").on("change",function(){
+           var tabVal=$("#goods option:selected").text();
+           $(".goods b").html(tabVal);
+       })
+
+       $(".myValue").on("change",function(){
+           var skuId = $("#goods").val()
+           $(".floor2").html("");
+           $.ajax({
+               type:"POST",
+               url : "<%=path%>/myRecommend/giveRecommendLike.do",
+               data:{skuId:skuId},
+               dataType:"Json",
+               success:function(data){
+                   var trHtml = "";
+                   $.each(data, function(i, userRecommend) {
+                       trHtml+="<div class=\"sec1\" ";
+                       trHtml+="onclick=\"javascript:window.location.replace('<%=basePath%>myRecommend/giveRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
+                       trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
+                       trHtml+="<div> <p>"+userRecommend.name+" <b>推荐人数 "+userRecommend.number+"</b></p>";
+                       trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";
+                   })
+                   $(".floor2").html(trHtml);
+               }
+           })
+       })
+   </script>
 </body>
 </html>

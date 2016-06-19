@@ -25,7 +25,7 @@
         </header>
         <main>
             <div class="floor">
-                <div id="find">
+                <div>
                     <span>商品：</span>
                     <label for="goods" class="goods">
                         <b></b>
@@ -64,46 +64,46 @@
         </main>
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            var goodsWidth=$(".goods").width();
-            var levelWidth=$(".level").width();
-            $(".goods b").html($("#goods option:selected").text());
-            $(".level b").html($("#level option:selected").text());
-            $("#goods").width(goodsWidth);
-            $("#level").width(levelWidth);
-        })
-        $("#goods").on("change",function(){
-            var tabVal=$("#goods option:selected").text();
-            $(".goods b").html(tabVal);
-        })
-        $("#level").on("change",function(){
-            var tabVal=$("#level option:selected").text();
-            $(".level b").html(tabVal);
-        })
+   <script>
+       $(document).ready(function(){
+           var goodsWidth=$(".goods").width();
+           var levelWidth=$(".level").width();
+           $(".goods b").html($("#goods option:selected").text());
+           $(".level b").html($("#level option:selected").text());
+           $("#goods").width(goodsWidth);
+           $("#level").width(levelWidth);
+       })
+       $("#goods").on("change",function(){
+           var tabVal=$("#goods option:selected").text();
+           $(".goods b").html(tabVal);
+       })
+       $("#level").on("change",function(){
+           var tabVal=$("#level option:selected").text();
+           $(".level b").html(tabVal);
+       })
 
-        $(".myValue").on("change",function(){
-            var skuId = $("#goods").val()
-            var agentLevelIdLong = $("#level").val();
-            $(".floor2").html("");
-            $.ajax({
-                type:"POST",
-                url : "<%=path%>/myRecommend/myRecommendLike.do",
-                data:{skuId:skuId,agentLevelIdLong:agentLevelIdLong},
-                dataType:"Json",
-                success:function(data){
-                    var trHtml = "";
-                    $.each(data, function(i, userRecommend) {
-                        trHtml+="<div class=\"sec1\" ";
-                        trHtml+="onclick=\"javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
-                        trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
-                        trHtml+="<div> <p>"+userRecommend.name+" <b>"+userRecommend.agentName+"</b></p>";
-                        trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";
-                    })
-                    $(".floor2").html(trHtml);
-                }
-            })
-        })
-    </script>
+       $(".myValue").on("change",function(){
+           var skuId = $("#goods").val()
+           var agentLevelIdLong = $("#level").val();
+           $(".floor2").html("");
+           $.ajax({
+               type:"POST",
+               url : "<%=path%>/myRecommend/myRecommendLike.do",
+               data:{skuId:skuId,agentLevelIdLong:agentLevelIdLong},
+               dataType:"Json",
+               success:function(data){
+                   var trHtml = "";
+                   $.each(data, function(i, userRecommend) {
+                       trHtml+="<div class=\"sec1\" ";
+                       trHtml+="onclick=\"javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
+                       trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
+                       trHtml+="<div> <p>"+userRecommend.name+" <b>"+userRecommend.agentName+"</b></p>";
+                       trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";
+                   })
+                   $(".floor2").html(trHtml);
+               }
+           })
+       })
+   </script>
 </body>
 </html>

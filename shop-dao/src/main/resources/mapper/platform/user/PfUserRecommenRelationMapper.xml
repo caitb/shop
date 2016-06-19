@@ -72,6 +72,24 @@
         GROUP BY sku.name,com.real_name,com.wx_head_img,sku.id,com.id
     </select>
 
+    <!--  帮我推荐的人条件查询  -->
+    <select id="selectGiveSumByLike" resultMap="ComSkuMap" >
+        select sku.name,com.real_name,com.wx_head_img,sku.id as skuId,com.id
+        from pf_border pb
+        INNER JOIN pf_border_recommen_reward pbrr ON pb.id=pbrr.pf_border_id
+        INNER JOIN com_sku sku ON sku.id = pbrr.sku_id
+        INNER JOIN com_user com ON com.id = pbrr.recommen_user_id
+        where
+        <if test="userId != null">
+            pb.user_pid = #{userId}
+        </if>
+        <if test="skuId != null">
+            AND pbrr.sku_id = #{skuId}
+        </if>
+        AND pb.pay_status=1
+        GROUP BY sku.name,com.real_name,com.wx_head_img,sku.id,com.id
+    </select>
+
     <!--  帮我推荐的单人单品推荐人数  -->
     <select id="selectGiveNum" resultType="Integer" >
         select COUNT(DISTINCT user_id)

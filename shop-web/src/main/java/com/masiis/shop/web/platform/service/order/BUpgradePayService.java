@@ -178,6 +178,8 @@ public class BUpgradePayService {
             int i = insertUserSkuHistory(pfUserSku);
             if (i == 1) {
                 updatePfUserSku(userId, userPid, borderId, orderItem, pfUserSku);
+            }else{
+                throw new BusinessException("");
             }
         }
     }
@@ -235,6 +237,8 @@ public class BUpgradePayService {
                     throw new BusinessException("分销关系树结构修改失败");
                 }
             }
+        }else{
+            throw new BusinessException("pfUserSku不能为空");
         }
         return i;
     }

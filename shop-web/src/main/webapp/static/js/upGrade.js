@@ -90,7 +90,6 @@ $(".que_que").on("click",function(){
         data:{curAgentLevel:curAgentLevel, upgradeLevel:upgradeLevel, skuId:skuId, userPid:userPid},
         success: function(data){
             if (data){
-                upgradeApplySubmitNotice(data.keyProperty);
                 if (data.isTrue == "true"){
                     if (data.isEquals == "true"){
                         window.location.href = basePath + "upgrade/applicationComplete.shtml";
@@ -100,6 +99,7 @@ $(".que_que").on("click",function(){
                 }else {
                     alert(data.message);
                 }
+                upgradeApplySubmitNotice(data.keyProperty);
             }
         },
         error: function(xhr, type){

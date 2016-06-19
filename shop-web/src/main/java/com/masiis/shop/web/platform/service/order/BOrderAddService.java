@@ -137,6 +137,9 @@ public class BOrderAddService {
                         throw new BusinessException("申请登记超过了上级的等级");
                     }
                     bOrderAdd.setpUserId(newPUserId);
+                }else{
+                    logger.info("此等级商品不支持升级------skuId----"+bOrderAdd.getSkuId()+"-----等级Id----"+bOrderAdd.getAgentLevelId());
+                    throw new BusinessException("此等级商品不支持升级------skuId----"+bOrderAdd.getSkuId()+"-----等级Id----"+bOrderAdd.getAgentLevelId());
                 }
             }
         }
@@ -287,7 +290,7 @@ public class BOrderAddService {
         }
         if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
             PfUserUpgradeNotice pfUserUpgradeNotice =   userUpgradeNoticeService.selectByPrimaryKey(bOrderAdd.getUpgradeNoticeId());
-            pfUserUpgradeNotice.setStatus(2);//待支付
+            pfUserUpgradeNotice.setStatus(1);//待支付
             pfUserUpgradeNotice.setPfBorderId(pfBorder.getId());
             userUpgradeNoticeService.update(pfUserUpgradeNotice);
         }

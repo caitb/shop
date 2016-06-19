@@ -32,7 +32,7 @@
                 </p>
             </div>
              <div class="floor2">
-                <h1>推荐人列表<span>${number}人</span></h1>
+                <h1>被推荐人列表<span>${number}人</span></h1>
                  <c:forEach items="${certificates}" var="certificate">
                 <div class="sec1">
                     <div>

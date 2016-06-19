@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
+import org.apache.ibatis.javassist.convert.TransformWriteField;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,47 +28,50 @@ public class PfUserSkuService {
     private PfSkuAgentMapper pfSkuAgentMapper;
 
 
-    public int update(PfUserSku po){
+    public int update(PfUserSku po) {
         return pfUserSkuMapper.updateByPrimaryKey(po);
     }
 
     /**
      * 根据用户id获取当前代理等级信息
+     *
      * @param userId
      * @return
      */
-    public List<UserSkuAgent> getCurrentAgentLevel(Long userId){
+    public List<UserSkuAgent> getCurrentAgentLevel(Long userId) {
         logger.info("查询用户当前商品代理等级");
         return pfUserSkuMapper.selectCurrentAgentLevel(userId);
     }
 
     /**
      * 获取商品代理信息
+     *
      * @param skuId
      * @param agentLevelId
      * @return
      */
-    public PfSkuAgent getCurrentSkuAgent(Integer skuId, Integer agentLevelId){
+    public PfSkuAgent getCurrentSkuAgent(Integer skuId, Integer agentLevelId) {
         logger.info("获取商品代理信息");
-        return pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId,agentLevelId);
+        return pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, agentLevelId);
     }
 
     /**
      * 获取可以升级的代理信息
+     *
      * @param skuId
      * @param agentLevelId 用户代理等级
      * @param pLevelId     上级代理等级
      * @return
      */
-    public List<PfSkuAgent> getUpgradeAgents(Integer skuId, Integer agentLevelId, Integer pLevelId){
+    public List<PfSkuAgent> getUpgradeAgents(Integer skuId, Integer agentLevelId, Integer pLevelId) {
         logger.info("获取可以升级的代理信息");
-        logger.info("skuId:"+skuId);
-        logger.info("agentLevelId:"+agentLevelId);
-        logger.info("pLevelId:"+pLevelId);
+        logger.info("skuId:" + skuId);
+        logger.info("agentLevelId:" + agentLevelId);
+        logger.info("pLevelId:" + pLevelId);
         return pfSkuAgentMapper.selectUpgradeAgents(skuId, agentLevelId, pLevelId);
     }
 
-    public PfUserSku getPfUserSkuByUserIdAndSkuId(Long userId, Integer skuId){
+    public PfUserSku getPfUserSkuByUserIdAndSkuId(Long userId, Integer skuId) {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
@@ -75,4 +79,16 @@ public class PfUserSkuService {
         return pfUserSkuMapper.selectByUserId(UserId);
     }
 
+    /**
+     * 批量修改团队树结构
+     *
+     * @param treeCode
+     * @param parentTreeCode
+     * @param idIndex
+     * @param treeLevelDiff
+     * @return
+     */
+    public int updateTreeCodes(String treeCode, String parentTreeCode, Integer idIndex, Integer treeLevelDiff) {
+        return pfUserSkuMapper.updateTreeCodes(treeCode, parentTreeCode, idIndex, treeLevelDiff);
+    }
 }

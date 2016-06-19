@@ -18,7 +18,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
-        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL"/>
     </resultMap>
 
 
@@ -423,6 +423,11 @@
         where
         user_id = #{userId,jdbcType=BIGINT}
     </select>
+
+    <update id="updateTreeCodes">
+        UPDATE pf_user_sku SET tree_code=CONCAT(#{parentTreeCode},SUBSTRING(tree_code,#{idIndex})),tree_level=tree_level-#{treeLevelDiff}
+        WHERE tree_code LIKE CONCAT(#{treeCode},'%');
+    </update>
 </mapper>
 
 

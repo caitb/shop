@@ -118,4 +118,13 @@ public interface PfUserSkuMapper {
 
 
     List<PfUserSku> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * 批量修改树形编码
+     * @param treeCode
+     * @param idIndex
+     * @param treeLevelDiff
+     * @return
+     */
+    int updateTreeCodes(@Param("treeCode") String treeCode,@Param("parentTreeCode") String parentTreeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
 }

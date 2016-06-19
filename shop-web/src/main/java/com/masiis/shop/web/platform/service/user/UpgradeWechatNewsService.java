@@ -8,6 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by wangbingjian on 2016/6/18.
  */
 @Service
-@Transactional
 public class UpgradeWechatNewsService {
 }

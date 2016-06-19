@@ -34,4 +34,20 @@ public class UpgradeWechatNewsService {
         }
         return false;
     }
+
+    /**
+     * 升级通知单提交通知
+     * @param comUser
+     * @param upgradeDetail
+     * @return
+     */
+    public Boolean upgradeApplySubmitNotice(ComUser comUser,BOrderUpgradeDetail upgradeDetail){
+        String[] param = new String[4];
+        param[0]=upgradeDetail.getApplyAgentLevelName();
+        param[1]=upgradeDetail.getCurrentAgentLevel()+"";
+        param[2]=upgradeDetail.getApplyAgentLevel()+"";
+        param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,url);
+    }
 }

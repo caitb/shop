@@ -239,12 +239,19 @@ public class DevelopingController extends BaseController {
                     posterDir.mkdirs();
                 }
                 //先删除旧的图片,再下载新的图片
-                new File(posterDirPath+"/"+headImg).delete();
-                new File(posterDirPath+"/"+bgPoster).delete();
-                new File(posterDirPath+"/"+qrcodeName).delete();
-                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+//                new File(posterDirPath+"/"+headImg).delete();
+//                new File(posterDirPath+"/"+bgPoster).delete();
+//                new File(posterDirPath+"/"+qrcodeName).delete();
+//                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+//                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
+//                OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
+                File headImgFile   = new File(posterDirPath+"/"+headImg);
+                File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
+                //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
+                if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+                if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
                 DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
-                OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
+
 
                 //画图
                 String fontPath = request.getServletContext().getRealPath("/")+"static/font";

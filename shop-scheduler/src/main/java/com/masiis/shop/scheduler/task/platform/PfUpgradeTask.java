@@ -30,4 +30,9 @@ public class PfUpgradeTask {
 
         log.info("统一处理2天未处理升级通知单结束......");
     }
+
+
+    public void aa(){
+
+    }
 }

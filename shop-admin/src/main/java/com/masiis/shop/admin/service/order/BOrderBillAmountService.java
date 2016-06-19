@@ -90,17 +90,19 @@ public class BOrderBillAmountService {
                 //获取推荐奖励明细
                 PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
                 //获取推荐人账户信息
-                ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(pfBorderRecommenReward.getRecommenUserId());
-                if (comUserAccount != null) {
-                    logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之前----" + comUserAccount.getRecommenBillAmount());
-                    comUserAccount.setRecommenBillAmount(comUserAccount.getRecommenBillAmount().add(pfBorderRecommenReward.getRewardTotalPrice()));
-                    logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之后----" + comUserAccount.getRecommenBillAmount());
-                    int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
-                    if (i != 1) {
-                        throw new BusinessException("更新结算中数据失败-----用户id-----" + pfBorder.getUserPid());
+                if (pfBorderRecommenReward!=null&&pfBorderRecommenReward.getRecommenUserId()!=0){
+                    ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(pfBorderRecommenReward.getRecommenUserId());
+                    if (comUserAccount != null) {
+                        logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之前----" + comUserAccount.getRecommenBillAmount());
+                        comUserAccount.setRecommenBillAmount(comUserAccount.getRecommenBillAmount().add(pfBorderRecommenReward.getRewardTotalPrice()));
+                        logger.info("账户：" + pfBorderRecommenReward.getRecommenUserId() + "结算中-----之后----" + comUserAccount.getRecommenBillAmount());
+                        int i = comUserAccountService.updateByIdWithVersion(comUserAccount);
+                        if (i != 1) {
+                            throw new BusinessException("更新结算中数据失败-----用户id-----" + pfBorder.getUserPid());
+                        }
+                    } else {
+                        logger.info("推荐人账户为空");
                     }
-                } else {
-                    throw new BusinessException("推荐人账户不能为空");
                 }
             }
             logger.info("更新用户账户推荐奖励结算中------end");

@@ -8,7 +8,10 @@ import java.util.Iterator;
  */
 public class BOrderUpgradeDetail {
 
+    private String  name;                       //姓名
     private Long    upgradeNoticeId;           //通知单id
+    private Integer upgradeStatus;             //通知单状态
+    private Long    pfBorderId;                //订单id
     private Integer skuId;
     private Integer spuId;
     private Long    oldPUserId;                //原上级id
@@ -26,6 +29,14 @@ public class BOrderUpgradeDetail {
     private String  upgradeOrderCode;        //升级单号
     private BigDecimal bailChange;           //升级的保证金差额
     private BigDecimal totalPrice;           //总价共支付
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getSkuId() {
         return skuId;
@@ -169,5 +180,21 @@ public class BOrderUpgradeDetail {
 
     public void setUpgradeNoticeId(Long upgradeNoticeId) {
         this.upgradeNoticeId = upgradeNoticeId;
+    }
+
+    public Integer getUpgradeStatus() {
+        return upgradeStatus;
+    }
+
+    public void setUpgradeStatus(Integer upgradeStatus) {
+        this.upgradeStatus = upgradeStatus;
+    }
+
+    public Long getPfBorderId() {
+        return pfBorderId;
+    }
+
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
 }

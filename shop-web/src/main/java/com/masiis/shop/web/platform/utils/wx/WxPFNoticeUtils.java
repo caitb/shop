@@ -137,6 +137,33 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 下线加入通知(推荐方式加入)
+     *
+     * @param pUser 上级代理用户对象
+     * @param user  下级代理用户对象
+     * @param params    (第一个,推荐人; 第二个,加入时间)
+     * @Param url   查看详情
+     * @return  返回是否成功调用
+     */
+    public Boolean partnerJoinByRecommendNotice(ComUser pUser, ComUser user, String[] params, String url) {
+        WxPFPartnerJoin join = new WxPFPartnerJoin();
+        WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
+
+        join.setFirst(new WxNoticeDataItem("新下线加入通知", null));
+        join.setRemark(new WxNoticeDataItem("您有一个新的下线成功加入，ta的推荐人是" + params[0], null));
+        join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
+        join.setKeyword2(new WxNoticeDataItem(params[1], null));
+        join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        // 调用下线加入模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_JOIN_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 实名认证通知
      *
      * @param user

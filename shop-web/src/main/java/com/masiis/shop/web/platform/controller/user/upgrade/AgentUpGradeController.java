@@ -421,8 +421,10 @@ public class AgentUpGradeController extends BaseController {
                                       HttpServletRequest request) throws Exception{
         BOrderUpgradeDetail upgradeDetail = null;
         ModelAndView mv = new ModelAndView();
+        ComUser comUser =getComUser(request);
         if (upgradeNoticeId!=null){
             upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
+            upgradeDetail.setName(comUser.getRealName());
         }
         mv.addObject("upgradeDetail",upgradeDetail);
         mv.addObject("payDate", DateUtil.addDays(SysConstants.UPGRADE_LATEST_TIME));

@@ -967,7 +967,7 @@ public class WxPFNoticeUtils {
 
         success.setFirst(new WxNoticeDataItem("恭喜您，推荐成功。", null));
         success.setKeyword1(new WxNoticeDataItem(pUser.getWxNkName(), null));
-        success.setKeyword1(new WxNoticeDataItem(params[0], null));
+        success.setKeyword2(new WxNoticeDataItem(params[0], null));
         success.setRemark(new WxNoticeDataItem("您已成功成为ta的推荐人，可以获得推荐奖励。", null));
 
         req.setTouser(getOpenIdByComUser(pUser));
@@ -989,11 +989,11 @@ public class WxPFNoticeUtils {
 
         profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的推荐佣金。", null));
         profit.setKeyword1(new WxNoticeDataItem(params[0], null));
-        profit.setKeyword1(new WxNoticeDataItem(params[1], null));
+        profit.setKeyword2(new WxNoticeDataItem(params[1], null));
         profit.setRemark(new WxNoticeDataItem("您可以在“我的账户中”中查看。", null));
 
         req.setTouser(getOpenIdByComUser(user));
-        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_SUCCESS_NOTICE);
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_PROFIT_IN);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

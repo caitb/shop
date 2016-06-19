@@ -106,6 +106,8 @@ public class BOrderPayService {
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     @Resource
     private BUpgradePayService upgradePayService;
+    @Resource
+    private BOrderPayEndMessageService bOrderPayEndMessageService;
 
     /**
      * 订单支付回调入口
@@ -132,14 +134,14 @@ public class BOrderPayService {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 2) {
             payBOrderTypeIII(pfBorderPayment, outOrderId, rootPath);
-        }else if (pfBorder.getOrderType() == 3){
-            upgradePayService.paySuccessCallBack(pfBorderPayment,outOrderId,rootPath);
+        } else if (pfBorder.getOrderType() == 3) {
+            upgradePayService.paySuccessCallBack(pfBorderPayment, outOrderId, rootPath);
         } else {
             throw new BusinessException("订单类型有误");
         }
         //支付完成推送消息(发送失败不回滚事务)
         try {
-            payEndPushMessage(pfBorderPayment);
+            bOrderPayEndMessageService.payEndPushMessage(pfBorderPayment);
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
         }
@@ -664,17 +666,17 @@ public class BOrderPayService {
      * @return
      */
     public String uploadFile(String filePath,
-                              String fontPath,
-                              String certificateCode,
-                              String userName,
-                              String levelName,
-                              String skuName,
-                              String skuEName,
-                              String idCard,
-                              String mobile,
-                              String wxId,
-                              String beginDate,
-                              String endDate) {
+                             String fontPath,
+                             String certificateCode,
+                             String userName,
+                             String levelName,
+                             String skuName,
+                             String skuEName,
+                             String idCard,
+                             String mobile,
+                             String wxId,
+                             String beginDate,
+                             String endDate) {
         DrawPicUtil drawPicUtil = new DrawPicUtil();
         BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
         //宋体
@@ -770,86 +772,6 @@ public class BOrderPayService {
         Random random = new Random();
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
         return rannum + str;// 当前时间
-    }
-
-    /**
-     * 支付完成推送消息
-     */
-    private void payEndPushMessage(PfBorderPayment pfBorderPayment) {
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
-        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        ComUser pComUser = null;
-        if (pfBorder.getUserPid() > 0) {
-            pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-        }
-        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
-        log.info("****************************处理推送通知***********************************************");
-        if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
-            //排单推送通知
-            String[] param = new String[5];
-            param[0] = pfBorderItems.get(0).getSkuName();
-            param[1] = pfBorder.getOrderAmount().toString();
-            param[2] = pfBorderItems.get(0).getQuantity().toString();
-            param[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
-            param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
-            WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
-            MobileMessageUtil.getInitialization("B").joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
-            if (pfBorder.getUserPid() != 0) {
-                String[] paramIn = new String[2];
-                paramIn[0] = pfBorder.getOrderCode();
-                paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
-                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
-                MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-            }
-        } else {
-            //订单类型(0代理1补货2拿货)
-            if (pfBorder.getOrderType() == 0) {
-                //合伙人申请成功提示
-                String[] params = new String[4];
-                params[0] = rmbFormat.format(pfBorder.getPayAmount());
-                params[1] = pfBorderPayment.getPayTypeName();
-                params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
-                params[3] = timeFormart.format(pfBorder.getPayTime());
-                WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
-                MobileMessageUtil.getInitialization("B").partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
-                //给上级推送
-                if (pComUser != null) {
-                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
-                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-                }
-            } else if (pfBorder.getOrderType() == 1) {
-                //拿货方式(0未选择1平台代发2自己发货)
-                if (pfBorder.getSendType() == 1) {
-                    String[] param = new String[4];
-                    param[0] = pfBorderItems.get(0).getSkuName();
-                    param[1] = rmbFormat.format(pfBorder.getOrderAmount());
-                    param[2] = pfBorderItems.get(0).getQuantity().toString();
-                    param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-                    WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
-                    MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
-                } else if (pfBorder.getSendType() == 2) {
-                    String[] param = new String[4];
-                    param[0] = pfBorderItems.get(0).getSkuName();
-                    param[1] = rmbFormat.format(pfBorder.getOrderAmount());
-                    param[2] = pfBorderItems.get(0).getQuantity().toString();
-                    param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-                    WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
-                    MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
-                    if (pfBorder.getUserPid() != 0) {
-                        String[] paramIn = new String[2];
-                        paramIn[0] = pfBorder.getOrderCode();
-                        paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
-                        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                        WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, true);
-                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-                    }
-                }
-            }
-        }
     }
 
     /**

@@ -177,8 +177,8 @@ public class BUpgradePayService {
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, orderItem.getSkuId());
             int i = insertUserSkuHistory(pfUserSku);
             if (i == 1) {
-                updatePfUserSku(userId, userPid, borderId, orderItem, pfUserSku);
-            }else{
+                updatePfUserSku(userPid, borderId, orderItem, pfUserSku);
+            } else {
                 throw new BusinessException("");
             }
         }
@@ -187,22 +187,21 @@ public class BUpgradePayService {
     /**
      * 修改商品的代理关系
      *
-     * @param userId
      * @param userPid
      * @param borderId
      * @param orderItem
      * @param pfUserSku
      * @return
      */
-    private int updatePfUserSku(Long userId, Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
+    private int updatePfUserSku(Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
         log.info("---修改商品的代理关系-----订单id-----" + borderId);
         BigDecimal bailAmount = orderItem.getBailAmount();
         Integer skuId = orderItem.getSkuId();
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
         if (pfUserSku != null) {
-            if (!pfUserSku.getUserPid().equals(userPid)) {
-                PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
+            PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
+            if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())) {
                 Integer parent_id = 0;
                 Long parent_userPid = 0l;
                 String parent_treeCode = pfUserSku.getSkuId() + ",";
@@ -236,8 +235,10 @@ public class BUpgradePayService {
                 if (i <= 0) {
                     throw new BusinessException("分销关系树结构修改失败");
                 }
+            } else {
+                throw new BusinessException("同等级不能合伙");
             }
-        }else{
+        } else {
             throw new BusinessException("pfUserSku不能为空");
         }
         return i;

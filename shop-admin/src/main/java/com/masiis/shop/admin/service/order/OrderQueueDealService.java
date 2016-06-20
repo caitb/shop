@@ -5,11 +5,11 @@ import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,7 +201,7 @@ public class OrderQueueDealService {
                     params[0] = pfBorderItem.getSkuName();
                     params[1] = String.valueOf(pfBorder.getOrderAmount());
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
-                    params[3] = pfBorder.getOrderType() == 0?"代理":pfBorder.getOrderType() == 1?"补货":"拿货";
+                    params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.Complete.getDesc();
                     WxPFNoticeUtils.getInstance().dealWithOrderInQueueByPlatForm(comUser,params);
                 }
@@ -212,7 +212,7 @@ public class OrderQueueDealService {
                     params[0] = pfBorderItem.getSkuName();
                     params[1] = String.valueOf(pfBorder.getOrderAmount());
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
-                    params[3] = pfBorder.getOrderType() == 0?"代理":pfBorder.getOrderType() == 1?"补货":"拿货";
+                    params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.WaitShip.getDesc();
                     WxPFNoticeUtils.getInstance().dealWithOrderInQueueBySelf(comUser,params);
                 }

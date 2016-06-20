@@ -511,6 +511,7 @@ public class BUpgradePayService {
         List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
         for (PfUserUpgradeNotice notice : notices) {
             log.info("下级id-------" + notice.getUserId());
+            notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
         }

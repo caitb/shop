@@ -22,24 +22,32 @@
             <p>升级信息：</p>
             <div class="floor">
                 <p>
-                    产品名称：
+                    升级编号：
+                    <span>${upgradeDetail.upgradeOrderCode}</span>
+                </p>
+                <p>
+                    产品名：
                     <span>${upgradeDetail.skuName}</span>
                 </p>
                 <p>
-                    当前级别：
+                    当前等级：
                     <span>${upgradeDetail.currentAgentLevelName}</span>
-                </p>
-                <p>
-                    申请级别：
-                    <span>${upgradeDetail.applyAgentLevelName}</span>
-                </p>
-                <p>
-                    上级代理：
-                    <span>${upgradeDetail.pAgentName}</span>
                 </p>
                 <p>
                     商品数量：
                     <span>${upgradeDetail.quantity}</span>
+                </p>
+                <p>
+                    申请等级：
+                    <span>${upgradeDetail.applyAgentLevelName}</span>
+                </p>
+                <p>
+                    当前上级：
+                    <span>${upgradeDetail.oldPUserName}</span>
+                </p>
+                <p>
+                    升级后的上级：
+                    <span>${upgradeDetail.newPUserName}</span>
                 </p>
             </div>
             <p>

@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 我的推荐
@@ -98,8 +99,8 @@ public class MyRecommendController extends BaseController{
                 userRecommend.setNumber(giveNum);
             }
 
-            List<ComSku> allSku = skuService.getAllSku();
-            modelAndView.addObject("allSku",allSku);
+            List<Map<String, Object>> agentSkus = pfUserSkuService.listAgentSku(comUser.getId());
+            modelAndView.addObject("agentSkus",agentSkus);
             modelAndView.addObject("sumByUser",sumByUser);
             modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;

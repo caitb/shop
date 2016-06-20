@@ -188,7 +188,7 @@ public class UpgradeNoticeService {
         }else {
             PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPpid,skuId);
             if (pfPUserSku == null){
-                throw new BusinessException("上级的上级商品代理数据为空");
+                throw new BusinessException("商品代理数据为空");
             }
             List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pfPUserSku.getAgentLevelId());
             if (pfSkuAgents == null || pfSkuAgents.size() == 0){

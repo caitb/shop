@@ -11,7 +11,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="${basePath}upgradeInfo/lower"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>升级信息</p>
         </header>
         <main>
@@ -27,6 +27,10 @@
                 <p>
                     <span>姓名：</span>
                     <span>${upGradeInfoPo.applyName}</span>
+                </p>
+                <p>
+                    <span>原上級：</span>
+                    <span>${upGradeInfoPo.applyPName}</span>
                 </p>
                 <p>
                     <span>原等级：</span>

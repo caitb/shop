@@ -428,6 +428,18 @@
         UPDATE pf_user_sku SET tree_code=CONCAT(#{parentTreeCode},SUBSTRING(tree_code,#{idIndex})),tree_level=tree_level-#{treeLevelDiff}
         WHERE tree_code LIKE CONCAT(#{treeCode},'%');
     </update>
+
+    <!-- 查询代理商品信息 -->
+    <select id="selectAgentSku" parameterType="Long" resultType="Map">
+        SELECT
+               sku.id,
+               sku.name
+        FROM
+               com_sku sku
+        INNER JOIN pf_user_sku us ON us.sku_id = sku.id
+        WHERE
+               us.user_id = #{userId}
+    </select>
 </mapper>
 
 

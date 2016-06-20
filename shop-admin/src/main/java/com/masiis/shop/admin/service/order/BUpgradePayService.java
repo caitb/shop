@@ -141,6 +141,7 @@ public class BUpgradePayService {
             pfBorder.setModifyTime(new Date());
             pfBorder.setPayStatus(1);
             pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
+            pfBorder.setPayAmount(pfBorderPayment.getAmount());
             int i = bOrderService.updatePfBorder(pfBorder);
             if (i != 1) {
                 log.info("支付成功查询订单失败----orderId---" + orderId);

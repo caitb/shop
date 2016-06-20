@@ -172,7 +172,7 @@ public class UpgradeNoticeService {
         logger.info("判断上级代理是否可以升级");
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
         if (pfUserSku == null){
-            throw new BusinessException("上级代理信息为空");
+            throw new BusinessException("上级代理商品信息为空");
         }
         logger.info("代理用户id："+userId);
         logger.info("代理用户上级id："+userPid);
@@ -180,9 +180,13 @@ public class UpgradeNoticeService {
         logger.info("代理用户申请代理等级："+upgradeLevel);
         logger.info("代理用户上级代理等级："+pAgentLevel);
         logger.info("合伙skuId："+skuId);
-        Integer pLevelId = pfUserSku.getAgentLevelId();
-        logger.info("上级代理的上级代理等级："+pLevelId);
-        List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pLevelId);
+        Long userPpid = pfUserSku.getUserPid();
+        logger.info("上级代理的上级代理用户id："+userPpid);
+        PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPpid,skuId);
+        if (pfPUserSku == null){
+            throw new BusinessException("上级的上级商品代理数据为空");
+        }
+        List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pfPUserSku.getAgentLevelId());
         if (pfSkuAgents == null || pfSkuAgents.size() == 0){
             logger.info("上级代理用户不可以向上升级");
             return upAgentCannotUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);

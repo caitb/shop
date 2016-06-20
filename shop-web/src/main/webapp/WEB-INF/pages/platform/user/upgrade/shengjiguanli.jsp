@@ -25,6 +25,7 @@
             <label class="goods">
                 <b></b>
                 <select id="goods" class="search">
+                    <option value="">全部</option>
                     <c:forEach items="${skuList}" var="sku">
                         <option value="${sku.id}">${sku.name}</option>
                     </c:forEach>
@@ -36,6 +37,7 @@
             <label class="level">
                 <b></b>
                 <select id="level" class="search">
+                    <option value="">全部</option>
                     <c:forEach items="${statusPickList}" var="status" varStatus="statusIndex">
                         <option value="${statusIndex.index}">${status}</option>
                     </c:forEach>
@@ -64,9 +66,9 @@
                         <p>状态：<span class="active">${grade.statusValue}</span></p>
                     </div>
                     <div class="s_2">
-                        <img src="${grade.comUser.wxHeadImg}" alt="">
+                        <img src="${grade.wxHeadImg}" alt="">
                         <div>
-                            <p>${grade.comUser.realName}</p>
+                            <p>${grade.realName}</p>
                             <h1><span class="on">${grade.orgLevelName}</span>${grade.wishLevelName}</h1>
                         </div>
                     </div>
@@ -138,9 +140,9 @@
                         trHtml+="<p>状态：<span class=\"active\">"+grade.statusValue+"</span></p>";
                         trHtml+="</div>";
                         trHtml+="<div class=\"s_2\">";
-                        trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";
+                        trHtml+="<img src=\""+grade.wxHeadImg+"\" alt=\"\">";
                         trHtml+="<div>";
-                        trHtml+="<p>"+grade.comUser.realName+"</p>";
+                        trHtml+="<p>"+grade.realName+"</p>";
                         trHtml+="<h1><span class=\"on\">"+grade.orgLevelName+"</span>"+grade.wishLevelName+"</h1>";
                         trHtml+="</div>";
                         trHtml+="</div>";
@@ -182,9 +184,9 @@
                     trHtml+="<p>状态：<span class=\"active\">"+grade.statusValue+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="<div class=\"s_2\">";
-                    trHtml+="<img src=\""+grade.comUser.wxHeadImg+"\" alt=\"\">";
+                    trHtml+="<img src=\""+grade.wxHeadImg+"\" alt=\"\">";
                     trHtml+="<div>";
-                    trHtml+="<p>"+grade.comUser.realName+"</p>";
+                    trHtml+="<p>"+grade.realName+"</p>";
                     trHtml+="<h1><span class=\"on\">"+grade.orgLevelName+"</span>"+grade.wishLevelName+"</h1>";
                     trHtml+="</div>";
                     trHtml+="</div>";

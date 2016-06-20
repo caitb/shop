@@ -25,6 +25,10 @@ public class PfUserUpGradeInfo {
 
     private String statusValue;//状态value
 
+    private String realName;
+
+    private String wxHeadImg;
+
     public PfUserUpgradeNotice getPfUserUpgradeNotice() {
         return pfUserUpgradeNotice;
     }
@@ -87,5 +91,21 @@ public class PfUserUpGradeInfo {
 
     public void setStatusValue(String statusValue) {
         this.statusValue = statusValue;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getWxHeadImg() {
+        return wxHeadImg;
+    }
+
+    public void setWxHeadImg(String wxHeadImg) {
+        this.wxHeadImg = wxHeadImg;
     }
 }

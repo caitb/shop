@@ -174,7 +174,14 @@ public class UpgradeNoticeService {
         if (pfUserSku == null){
             throw new BusinessException("上级代理信息为空");
         }
+        logger.info("代理用户id："+userId);
+        logger.info("代理用户上级id："+userPid);
+        logger.info("代理用户当前代理等级："+curAgentLevel);
+        logger.info("代理用户申请代理等级："+upgradeLevel);
+        logger.info("代理用户上级代理等级："+pAgentLevel);
+        logger.info("合伙skuId："+skuId);
         Integer pLevelId = pfUserSku.getAgentLevelId();
+        logger.info("上级代理的上级代理等级："+pLevelId);
         List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pLevelId);
         if (pfSkuAgents == null || pfSkuAgents.size() == 0){
             logger.info("上级代理用户不可以向上升级");

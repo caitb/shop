@@ -1,12 +1,12 @@
 package com.masiis.shop.admin.service.user;
 
+import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderPayment;
-import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +20,7 @@ import java.util.Date;
 public class UpgradeWechatNewsService {
 
     @Resource
-    private UserService comUserService;
+    private ComUserService comUserService;
 
     /**
      * 插入订单border成功后发送微信

@@ -58,6 +58,8 @@ public class BOrderAdd {
      */
     private Long upgradeNoticeId ;
 
+    private Long newPUserId;//新上级，升级增加订单时使用
+
     public Integer getOrderType() {
         return orderType;
     }
@@ -152,5 +154,13 @@ public class BOrderAdd {
 
     public void setUpgradeNoticeId(Long upgradeNoticeId) {
         this.upgradeNoticeId = upgradeNoticeId;
+    }
+
+    public Long getNewPUserId() {
+        return newPUserId;
+    }
+
+    public void setNewPUserId(Long newPUserId) {
+        this.newPUserId = newPUserId;
     }
 }

@@ -474,6 +474,7 @@ public class BUpgradePayService {
      * @param pfBorderId
      */
     private void updateUpgradeNotice(Long pfBorderId) {
+        log.info("修改通知单状态--------"+pfBorderId);
         //修改当前申请升级的通知单状态
         Long userId = updateCurrentNotice(pfBorderId);
         //判断当前升级是否有下级，有下级则修改下级的状态

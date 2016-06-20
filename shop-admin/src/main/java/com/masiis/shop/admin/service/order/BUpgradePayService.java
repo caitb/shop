@@ -416,24 +416,31 @@ public class BUpgradePayService {
      */
     private void insertUserRebate(PfBorder pfBorder, List<PfBorderItem> orderItems, PfUserUpgradeNotice pfUserUpgradeNotice) {
         for (PfBorderItem pfBorderItem : orderItems) {
-            PfUserRebate pfUserRebate = new PfUserRebate();
-            pfUserRebate.setCreateTime(new Date());
-            pfUserRebate.setCreateTime(new Date());
-            if (pfUserUpgradeNotice != null) {
-                pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
-            }
-            pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
             PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-            pfUserRebate.setUserId(userRecommenRelation.getUserPid());//获得奖励用户id
-            pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
-            pfUserRebate.setPfBorderId(pfBorder.getId());
-            int i = pfUserRebateService.insert(pfUserRebate);
-            if (i != 1) {
-                log.info("升级支付成功插入一次性奖励失败");
-                throw new BusinessException("升级支付成功插入一次性奖励失败");
+            if (!userRecommenRelation.getUserPid().equals(pfBorder.getUserPid())){
+                PfUserRebate pfUserRebate = new PfUserRebate();
+                pfUserRebate.setCreateTime(new Date());
+                pfUserRebate.setCreateTime(new Date());
+                if (pfUserUpgradeNotice != null) {
+                    pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+                }
+                pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+                log.info("通知单id--------"+pfUserUpgradeNotice.getId());
+                pfUserRebate.setUserId(userRecommenRelation.getUserPid());//获得奖励用户id
+                log.info("获得奖励人-------"+userRecommenRelation.getUserPid());
+                pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
+                log.info("支付奖励用户-------"+pfBorder.getUserPid());
+                pfUserRebate.setPfBorderId(pfBorder.getId());
+                log.info("订单id------"+pfBorder.getId());
+                int i = pfUserRebateService.insert(pfUserRebate);
+                if (i != 1) {
+                    log.info("升级支付成功插入一次性奖励失败");
+                    throw new BusinessException("升级支付成功插入一次性奖励失败");
+                }
+            }else{
+                log.info("获得奖励和支付奖励的人是同一个人");
             }
         }
-
     }
 
     /**

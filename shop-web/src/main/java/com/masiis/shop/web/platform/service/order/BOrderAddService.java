@@ -92,14 +92,19 @@ public class BOrderAddService {
         ComSku comSku = skuService.getSkuById(bOrderAdd.getSkuId());
         retailPrice = comSku.getPriceRetail();
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
-        if (pfUserSku == null) {
-            logger.info("pfUser为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
+        if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
             agentLevelId = bOrderAdd.getAgentLevelId();
-            weiXinId = bOrderAdd.getWeiXinId();
-        } else {
-            logger.info("pfUser不为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
-            agentLevelId = pfUserSku.getAgentLevelId();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
+        }else{
+            if (pfUserSku == null) {
+                logger.info("pfUser为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
+                agentLevelId = bOrderAdd.getAgentLevelId();
+                weiXinId = bOrderAdd.getWeiXinId();
+            } else {
+                logger.info("pfUser不为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
+                agentLevelId = pfUserSku.getAgentLevelId();
+                weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
+            }
         }
         logger.info("agentLevelId------"+agentLevelId);
         logger.info("weiXinId------"+weiXinId);

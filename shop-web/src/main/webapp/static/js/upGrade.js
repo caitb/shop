@@ -92,12 +92,12 @@ $(".que_que").on("click",function(){
         success: function(data){
             if (data){
                 if (data.isTrue == "true"){
+                    upgradeApplySubmitNotice(data.keyProperty);
                     if (data.isEquals == "true"){
                         window.location.href = basePath + "upgrade/applicationComplete.shtml";
                     }else {
                         window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
                     }
-                    upgradeApplySubmitNotice(data.keyProperty);
                 }else {
                     alert(data.message);
                 }

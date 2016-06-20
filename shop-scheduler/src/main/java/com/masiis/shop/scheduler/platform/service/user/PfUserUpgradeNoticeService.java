@@ -224,4 +224,30 @@ public class PfUserUpgradeNoticeService {
                 + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplySevenDayNotPayNotice(user, params, url);
     }
+
+    public void sendWxNoticeByUnsolvedUpgradeNotice(PfUserUpgradeNotice notice) {
+        // 给上级通知
+        ComUser pUser = comUserMapper.selectByPrimaryKey(notice.getUserPid());
+        String[] pParams = {
+                DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
+        };
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/upgradeInfo.shtml?upgradeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().upgradeApplyNotHandleNotice(pUser, pParams, pUrl);
+
+        // 给下级通知
+        ComUser user = comUserMapper.selectByPrimaryKey(notice.getUserId());
+        ComAgentLevel org = comAgentLevelMapper.selectByPrimaryKey(notice.getOrgAgentLevelId());
+        ComAgentLevel wish = comAgentLevelMapper.selectByPrimaryKey(notice.getWishAgentLevelId());
+        String[] params = {user.getRealName(),
+                org.getName(),
+                wish.getName(),
+                DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT),
+                DateUtil.Date2String(DateUtil.getDateNextdays(notice.getCreateTime(), 2), DateUtil.SQL_TIME_FMT)
+        };
+        String url = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(user, params, url);
+
+    }
 }

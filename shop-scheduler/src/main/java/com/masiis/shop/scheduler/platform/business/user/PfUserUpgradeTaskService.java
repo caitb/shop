@@ -74,7 +74,7 @@ public class PfUserUpgradeTaskService {
                 PfUserUpgradeNotice notice = (PfUserUpgradeNotice) obj;
                 try{
                     // 发送微信
-
+                    pfUserUpgradeNoticeService.sendWxNoticeByUnsolvedUpgradeNotice(notice);
                     log.info("发送微信通知成功,noticeCode:" + notice.getCode());
                     return true;
                 } catch (Exception e) {

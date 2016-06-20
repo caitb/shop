@@ -415,13 +415,16 @@ public class BOrderAddController extends BaseController {
                     PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
                     BOrderAdd  orderAdd = new BOrderAdd();
                     orderAdd.setUpgradeNoticeId(upgradeNoticeId);
+                    log.info("升级订单对应的通知单id--------"+upgradeNoticeId);
                     orderAdd.setOrderType(3);
                     orderAdd.setUserId(comUser.getId());
                     orderAdd.setpUserId(upgradeDetail.getOldPUserId());//先设置老的，增加订单时设置新的
                     orderAdd.setSendType(1);//拿货方式
                     orderAdd.setSkuId(upgradeDetail.getSkuId());
                     orderAdd.setQuantity(newSkuAgent.getQuantity());
+                    log.info("订单数量---------"+newSkuAgent.getQuantity());
                     orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+                    log.info("期望等级--------"+upgradeDetail.getApplyAgentLevel());
                     orderId = bOrderAddService.addBOrder(orderAdd);
                 }else{
                     log.info("您已不能再升级----当前用户id---"+comUser.getId()+"----当前等级----"+upgradeDetail.getCurrentAgentLevelName());

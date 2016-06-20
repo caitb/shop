@@ -391,7 +391,9 @@ public class UpgradeNoticeService {
                 upgradeDetail = new BOrderUpgradeDetail();
                 upgradeDetail.setUpgradeNoticeId(id);
                 upgradeDetail.setPfBorderId(upgradeNotice.getPfBorderId());
+                logger.info("订单id-------"+upgradeDetail.getPfBorderId());
                 upgradeDetail.setUpgradeStatus(upgradeNotice.getStatus());
+                logger.info("上级状态--------"+upgradeDetail.getUpStatus());
                 upgradeDetail.setUpStatus(upgradeNotice.getUpStatus());
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
@@ -405,6 +407,7 @@ public class UpgradeNoticeService {
                     upgradeDetail.setSpuId(comSku.getSpuId());
                     upgradeDetail.setSkuName(comSku.getName());
                     upgradeDetail.setPriceRetail(comSku.getPriceRetail());
+                    logger.info("商品销售价-------"+comSku.getPriceRetail());
                 }else{
                     logger.info("商品信息为null-----id--"+upgradeNotice.getSkuId());
                     throw new BusinessException("商品信息为null-----id--"+upgradeNotice.getSkuId());
@@ -434,6 +437,7 @@ public class UpgradeNoticeService {
                 upgradeDetail.setQuantity(newSkuAgent.getQuantity());
                 //保证金差额
                 upgradeDetail.setBailChange(getBailChange(oldSkuAgent,newSkuAgent));
+                logger.info("保证金差额------"+upgradeDetail.getBailChange());
                 //总价
                 BigDecimal totalPrice = getTotalPrice(oldSkuAgent,newSkuAgent);
                 logger.info("总价------"+totalPrice);

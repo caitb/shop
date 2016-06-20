@@ -7,8 +7,6 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.order.SfOrderOperationLogMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderOperationLog;
 import com.masiis.shop.dao.po.SfOrder;
 import com.masiis.shop.dao.po.SfOrderOperationLog;
 import com.masiis.shop.scheduler.mall.service.user.SfUserAccountService;

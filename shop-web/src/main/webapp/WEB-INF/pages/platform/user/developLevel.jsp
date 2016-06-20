@@ -21,7 +21,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-        <p>升级信息</p>
+        <p>合伙人海报</p>
     </header>
     <form id="levelIdForm" action="<%=basePath%>developing/sharelink" method="post">
     <input type="hidden" name="skuId" value="${skuId}" >
@@ -36,7 +36,8 @@
             <c:forEach items="${comAgentLevels}" var="agentLevel">
             <input type="checkbox" id="level_${agentLevel.id}" name="levelIds" value="${agentLevel.id}"/>
             <label for="level_${agentLevel.id}">
-                    ${agentLevel.name}<c:if test="${agentLevelId == agentLevel.id}"><span>(平级推荐)</span></c:if>
+                    <b>${agentLevel.name}</b><c:if test="${agentLevelId == agentLevel.id}"><span>(平级推荐)</span><img src="${path}/static/images/i.png"
+                                                                                                            alt="" onclick="blackShow()"></c:if>
             </label>
             </c:forEach>
         </div>
@@ -44,6 +45,16 @@
     </main>
     </form>
     <button id="getPoster">获取分享海报</button>
+</div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_que">
+        <p>什么是平级推荐？</p>
+        <h4>平级推荐不同于发展下级合伙人。如果您的好友通过二维码注册的合伙人等级与您相同，那么您就是他的推荐人，他每次拿货您都可以获得相应的奖励。推荐人关系永久绑定，即便是他以后升级了，您仍然是他的推荐人。</h4>
+        <h3>
+            <span class="que_qu" onclick="blackHide()">我知道了</span>
+        </h3>
+    </div>
 </div>
 </body>
 <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
@@ -57,5 +68,22 @@
         }
         $('#levelIdForm').submit();
     });
+    $(".floor label").on("click", function () {
+        if($(this).hasClass("active")){
+            $(this).removeClass("active");
+        }else{
+            $(this).addClass("active")
+        }
+    })
+    $("label img").on("click", function (event) {
+        var event=event||event.widows;
+        event.stopPropagation();
+    })
+    function blackShow(){
+        $(".black").show();
+    }
+    function blackHide(){
+        $(".black").hide();
+    }
 </script>
 </html>

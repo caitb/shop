@@ -72,6 +72,7 @@ public class BOrderAddService {
     private UpgradeNoticeService upgradeNoticeService;
     @Resource
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
+
     /**
      * 添加订单
      *
@@ -92,23 +93,23 @@ public class BOrderAddService {
         ComSku comSku = skuService.getSkuById(bOrderAdd.getSkuId());
         retailPrice = comSku.getPriceRetail();
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
-        if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
+        if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
             agentLevelId = bOrderAdd.getAgentLevelId();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
-            logger.info("------升级流程-----获得期望升级的等级--------"+agentLevelId);
-        }else{
+            logger.info("------升级流程-----获得期望升级的等级--------" + agentLevelId);
+        } else {
             if (pfUserSku == null) {
-                logger.info("pfUser为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
+                logger.info("pfUser为空------userId----" + bOrderAdd.getUserId() + "-----商品id------" + comSku.getId());
                 agentLevelId = bOrderAdd.getAgentLevelId();
                 weiXinId = bOrderAdd.getWeiXinId();
             } else {
-                logger.info("pfUser不为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
+                logger.info("pfUser不为空------userId----" + bOrderAdd.getUserId() + "-----商品id------" + comSku.getId());
                 agentLevelId = pfUserSku.getAgentLevelId();
                 weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
             }
         }
-        logger.info("agentLevelId------"+agentLevelId);
-        logger.info("weiXinId------"+weiXinId);
+        logger.info("agentLevelId------" + agentLevelId);
+        logger.info("weiXinId------" + weiXinId);
         //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         Long recommendUserId = 0l;
         PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
@@ -117,14 +118,14 @@ public class BOrderAddService {
                 recommendUserId = bOrderAdd.getpUserId();
                 bOrderAdd.setpUserId(_parentPfUserSku.getUserPid());
             }
-        }else if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
-            PfSkuAgent  pfSkuAgent= skuAgentService.getBySkuIdAndLevelId(bOrderAdd.getSkuId(),bOrderAdd.getAgentLevelId());
-            if (pfSkuAgent!=null){
-                if (pfSkuAgent.getIsUpgrade()==1){
+        } else if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
+            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(bOrderAdd.getSkuId(), bOrderAdd.getAgentLevelId());
+            if (pfSkuAgent != null) {
+                if (pfSkuAgent.getIsUpgrade() == 1) {
                     Integer pUserAgentLevel = null;
                     Integer applyAgentLevel = bOrderAdd.getAgentLevelId();
                     Long newPUserId = null;
-                    if (_parentPfUserSku!=null){
+                    if (_parentPfUserSku != null) {
                         pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
                         /*if (_parentPfUserSku.getUserPid()!=0){
                             pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
@@ -132,25 +133,25 @@ public class BOrderAddService {
                             logger.info("联合创始人不能升级到boss------当前用户id----"+bOrderAdd.getpUserId()+"----skuId---"+bOrderAdd.getSkuId()+"----上级用户----");
                             throw new BusinessException("联合创始人不能升级到boss");
                         }*/
-                    }else{
+                    } else {
                         logger.info("查询父级userSku为null---");
                         throw new BusinessException("查询父级userSku为null------");
                     }
-                    if (pUserAgentLevel-applyAgentLevel<0){
+                    if (pUserAgentLevel - applyAgentLevel < 0) {
                         //直接升级  上级的等级大于用户要升级的等级
                         newPUserId = _parentPfUserSku.getUserId();
-                    }else if (pUserAgentLevel-applyAgentLevel==0){
+                    } else if (pUserAgentLevel - applyAgentLevel == 0) {
                         //平级升级   上级的等级=用户要升级的等级
                         newPUserId = _parentPfUserSku.getUserPid();
-                    }else {
-                        logger.info("申请等级超过了上级的等级-----skuId---"+bOrderAdd.getSkuId());
-                        logger.info("----升级等级----"+bOrderAdd.getAgentLevelId());
+                    } else {
+                        logger.info("申请等级超过了上级的等级-----skuId---" + bOrderAdd.getSkuId());
+                        logger.info("----升级等级----" + bOrderAdd.getAgentLevelId());
                         throw new BusinessException("申请登记超过了上级的等级");
                     }
                     bOrderAdd.setpUserId(newPUserId);
-                }else{
-                    logger.info("此等级商品不支持升级------skuId----"+bOrderAdd.getSkuId()+"-----等级Id----"+bOrderAdd.getAgentLevelId());
-                    throw new BusinessException("此等级商品不支持升级------skuId----"+bOrderAdd.getSkuId()+"-----等级Id----"+bOrderAdd.getAgentLevelId());
+                } else {
+                    logger.info("此等级商品不支持升级------skuId----" + bOrderAdd.getSkuId() + "-----等级Id----" + bOrderAdd.getAgentLevelId());
+                    throw new BusinessException("此等级商品不支持升级------skuId----" + bOrderAdd.getSkuId() + "-----等级Id----" + bOrderAdd.getAgentLevelId());
                 }
             }
         }
@@ -168,12 +169,12 @@ public class BOrderAddService {
             bailPrice = BigDecimal.ZERO;
             quantity = bOrderAdd.getQuantity();
         } else if (bOrderAdd.getOrderType() == 3) {
-            logger.info("商品-----skuId----"+comSku.getId()+"-----等级------"+bOrderAdd.getAgentLevelId());
+            logger.info("商品-----skuId----" + comSku.getId() + "-----等级------" + bOrderAdd.getAgentLevelId());
             PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), bOrderAdd.getAgentLevelId());
-            logger.info("新代理保证金-------"+newPfSkuAgent.getBail());
-            logger.info("旧代理保证金-------"+pfSkuAgent.getBail());
+            logger.info("新代理保证金-------" + newPfSkuAgent.getBail());
+            logger.info("旧代理保证金-------" + pfSkuAgent.getBail());
             bailChange = newPfSkuAgent.getBail().subtract(pfSkuAgent.getBail());
-            logger.info("保证金差额-------"+bailChange);
+            logger.info("保证金差额-------" + bailChange);
             quantity = pfSkuAgent.getQuantity();
         }
         //处理订单数据
@@ -192,9 +193,9 @@ public class BOrderAddService {
         BigDecimal productAmount = unitPrice.multiply(BigDecimal.valueOf(quantity));
         //订单总金额=商品总金额+保证金+运费
         BigDecimal orderAmount = BigDecimal.ZERO;
-        if (bOrderAdd.getOrderType() == 3){
+        if (bOrderAdd.getOrderType() == 3) {
             orderAmount = productAmount.add(bailChange).add(bOrderAdd.getShipAmount());
-        }else{
+        } else {
             orderAmount = productAmount.add(bailPrice).add(bOrderAdd.getShipAmount());
         }
         pfBorder.setReceivableAmount(orderAmount);
@@ -226,7 +227,7 @@ public class BOrderAddService {
         pfBorderItem.setSpuId(comSku.getSpuId());
         pfBorderItem.setSkuId(comSku.getId());
         pfBorderItem.setSkuName(comSku.getName());
-        logger.info("pfborderItem-------中的agentLevelId------"+agentLevelId);
+        logger.info("pfborderItem-------中的agentLevelId------" + agentLevelId);
         pfBorderItem.setAgentLevelId(agentLevelId);
         pfBorderItem.setWxId(weiXinId);
         pfBorderItem.setQuantity(quantity);
@@ -241,7 +242,7 @@ public class BOrderAddService {
         if (bOrderAdd.getpUserId() != 0) {
             PfBorderRecommenReward pfBorderRecommenReward = null;
             PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
-            if (pfUserRecommenRelation != null) {
+            if (pfUserRecommenRelation != null && pfUserRecommenRelation.getPid() > 0) {
                 PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 pfBorderRecommenReward = new PfBorderRecommenReward();
                 pfBorderRecommenReward.setCreateTime(new Date());
@@ -300,8 +301,8 @@ public class BOrderAddService {
             pfBorderConsignee.setZip(comUserAddress.getZip());
             pfBorderConsigneeMapper.insert(pfBorderConsignee);
         }
-        if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
-            PfUserUpgradeNotice pfUserUpgradeNotice =   userUpgradeNoticeService.selectByPrimaryKey(bOrderAdd.getUpgradeNoticeId());
+        if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
+            PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPrimaryKey(bOrderAdd.getUpgradeNoticeId());
             pfUserUpgradeNotice.setStatus(2);//待支付
             pfUserUpgradeNotice.setPfBorderId(pfBorder.getId());
             userUpgradeNoticeService.update(pfUserUpgradeNotice);

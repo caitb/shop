@@ -442,23 +442,36 @@ public class AgentUpGradeController extends BaseController {
      */
     @RequestMapping(value = "/upgradeApplySubmitNotice.do")
     @ResponseBody
-    public void upgradeApplySubmitNotice(@RequestParam(value = "upgradeLevel") Integer upgradeLevel,
+    public String upgradeApplySubmitNotice(@RequestParam(value = "upgradeLevel") Integer upgradeLevel,
                                          @RequestParam(value = "upAgentLevel") Integer upAgentLevel,
                                          @RequestParam(value = "upgradeId") Long upgradeId,
                                          @RequestParam(value = "userPid") Long userPid,
                                          HttpServletRequest request){
         logger.info("升级申请成功发送微信消息");
         ComUser comUser = getComUser(request);
+        JSONObject jsonObject = new JSONObject();
         if (comUser == null){
-            return;
+            jsonObject.put("message","用户未登录");
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
         }
-        if (upAgentLevel.intValue() == upgradeLevel.intValue()){
-            BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeId);
-            upgradeDetail.setName(comUser.getRealName());
-            upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upgradeDetail, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-            logger.info("查询上级用户信息");
-            ComUser pUser = userService.getUserById(userPid);
-            upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upgradeDetail, "/upgradeInfo/lower");
+        try {
+            if (upAgentLevel.intValue() == upgradeLevel.intValue()){
+                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeId);
+                upgradeDetail.setName(comUser.getRealName());
+                upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upgradeDetail, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                logger.info("查询上级用户信息");
+                ComUser pUser = userService.getUserById(userPid);
+                upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upgradeDetail, "/upgradeInfo/lower");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonObject.put("message","发送微信失败");
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
         }
+        jsonObject.put("message","已经发送成功");
+        logger.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
     }
 }

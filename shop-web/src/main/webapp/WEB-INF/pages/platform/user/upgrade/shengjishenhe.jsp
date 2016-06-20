@@ -16,7 +16,9 @@
                     <p>升级</p>            
         </header>
         <main>
-            <h1>您的升级申请已经审核通过，请继续支付。</h1>
+            <c:if test="${upgradeDetail.upStatus == 3}">
+                <h1>您的升级申请已经审核通过，请继续支付。</h1>
+            </c:if>
             <p>升级信息：</p>
             <div class="floor">
                 <p>

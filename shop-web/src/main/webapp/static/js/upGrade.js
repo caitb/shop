@@ -23,18 +23,13 @@ function blackHide(){
 }
 function changeSku(){
     var value = $("#name").val();
+    $("#chooseWhether").val("false");
     if (value == ""){
         $("#upGradePackage").html("<p>请选择产品</p>");
         $("#product").text("请选择产品");
         $("#currentLevel").text("请选择产品");
         return;
     }
-    $("#curAgentLevel").val("");
-    $("#upgradeLevel").val("");
-    $("#productName").text();
-    $("#curLevel").text("");
-    $("#upLevel").text("");
-    $("#chooseWhether").val(false);
     var data = value.split("_");
     var skuId = data[0];
     var skuName = data[1];
@@ -81,7 +76,7 @@ function choiceAgent(data){
     $("#productName").text(skuName);
     $("#curLevel").text(curAgentName);
     $("#upLevel").text(upgradeName);
-    $("#chooseWhether").val(true);
+    $("#chooseWhether").val("true");
 }
 
 $(".que_que").on("click",function(){
@@ -102,10 +97,10 @@ $(".que_que").on("click",function(){
                     }else {
                         window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
                     }
+                    upgradeApplySubmitNotice(data.keyProperty);
                 }else {
                     alert(data.message);
                 }
-                upgradeApplySubmitNotice(data.keyProperty);
             }
         },
         error: function(xhr, type){
@@ -124,21 +119,7 @@ function upgradeApplySubmitNotice(keyProperty){
         dataType: 'json',
         data:{upgradeLevel:upgradeLevel, upAgentLevel:upAgentLevel, upgradeId:keyProperty, userPid:userPid},
         success: function(data){
-            if (data){
-                upgradeApplySubmitNotice(data.keyProperty);
-                if (data.isTrue == "true"){
-                    if (data.isEquals == "true"){
-                        window.location.href = basePath + "upgrade/applicationComplete.shtml";
-                    }else {
-                        window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
-                    }
-                }else {
-                    alert(data.message);
-                }
-            }
+
         },
-        error: function(xhr, type){
-            alert("网络错误");
-        }
     });
 }

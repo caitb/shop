@@ -93,12 +93,16 @@ public class BOrderAddService {
         retailPrice = comSku.getPriceRetail();
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
         if (pfUserSku == null) {
+            logger.info("pfUser为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
             agentLevelId = bOrderAdd.getAgentLevelId();
             weiXinId = bOrderAdd.getWeiXinId();
         } else {
+            logger.info("pfUser不为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());
             agentLevelId = pfUserSku.getAgentLevelId();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
         }
+        logger.info("agentLevelId------"+agentLevelId);
+        logger.info("weiXinId------"+weiXinId);
         //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         Long recommendUserId = 0l;
         PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
@@ -115,12 +119,13 @@ public class BOrderAddService {
                     Integer applyAgentLevel = bOrderAdd.getAgentLevelId();
                     Long newPUserId = null;
                     if (_parentPfUserSku!=null){
-                        if (_parentPfUserSku.getUserPid()!=0){
+                        pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
+                        /*if (_parentPfUserSku.getUserPid()!=0){
                             pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
                         }else{
                             logger.info("联合创始人不能升级到boss------当前用户id----"+bOrderAdd.getpUserId()+"----skuId---"+bOrderAdd.getSkuId()+"----上级用户----");
                             throw new BusinessException("联合创始人不能升级到boss");
-                        }
+                        }*/
                     }else{
                         logger.info("查询父级userSku为null---");
                         throw new BusinessException("查询父级userSku为null------");
@@ -215,6 +220,7 @@ public class BOrderAddService {
         pfBorderItem.setSpuId(comSku.getSpuId());
         pfBorderItem.setSkuId(comSku.getId());
         pfBorderItem.setSkuName(comSku.getName());
+        logger.info("pfborderItem-------中的agentLevelId------"+agentLevelId);
         pfBorderItem.setAgentLevelId(agentLevelId);
         pfBorderItem.setWxId(weiXinId);
         pfBorderItem.setQuantity(quantity);

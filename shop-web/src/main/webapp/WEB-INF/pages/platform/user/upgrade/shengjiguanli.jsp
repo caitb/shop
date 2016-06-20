@@ -106,7 +106,7 @@
         var tabVal=$("#level1 option:selected").text();
         $(".level1 b").html(tabVal);
     })
-    $("nav").on("click","p",function(){
+    $("nav p").on("click",function(){
         var index=$(this).index();
         tabId = index;
         if (tabId == 0) {

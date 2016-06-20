@@ -43,6 +43,18 @@ public class ComUserService {
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
 
+
+    /**
+     * 根据用户id获取用户
+     *
+     * @param userId
+     * @return
+     */
+    public ComUser getUserById(Long userId) {
+        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
+        return comUser;
+    }
+
     /**
      * 根据id查找合伙人
      * @param id

@@ -60,6 +60,31 @@ public class BOrderService {
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
 
+
+    public int updatePfBorder(PfBorder pfBorder){
+        return pfBorderMapper.updateById(pfBorder);
+    }
+
+    /**
+     * 根据订单号获取订单商品
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/9 11:45
+     */
+    public List<PfBorderItem> getPfBorderItemByOrderId(Long pfBorderId) {
+        return pfBorderItemMapper.selectAllByOrderId(pfBorderId);
+    }
+
+    /**
+     * 获取订单
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/9 11:07
+     */
+    public PfBorder getPfBorderById(Long id) {
+        return pfBorderMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 根据条件查询记录
      *

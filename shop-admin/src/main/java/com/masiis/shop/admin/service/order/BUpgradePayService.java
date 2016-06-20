@@ -1,21 +1,19 @@
-package com.masiis.shop.web.platform.service.order;
+package com.masiis.shop.admin.service.order;
 
+import com.masiis.shop.admin.service.product.PfSkuStockService;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.shop.SfShopSkuService;
+import com.masiis.shop.admin.service.user.*;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.product.PfSkuStockService;
-import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.web.platform.service.shop.SfShopSkuService;
-import com.masiis.shop.web.platform.service.user.*;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,7 +41,7 @@ public class BUpgradePayService {
     @Resource
     private BOrderPayService bOrderPayService;
     @Resource
-    private UserService comUserService;
+    private ComUserService comUserService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
     @Resource

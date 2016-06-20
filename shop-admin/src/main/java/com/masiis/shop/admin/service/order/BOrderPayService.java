@@ -109,6 +109,8 @@ public class BOrderPayService {
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     @Resource
     private BOrderPayEndMessageService bOrderPayEndMessageService;
+    @Resource
+    private BUpgradePayService upgradePayService;
 
     public void payBOrderOffline(PfBorderPayment pfBorderPayment, String outOrderId, BigDecimal payAmount, String rootPath, PbUser pbUser) throws Exception {
         if (pfBorderPayment == null) {
@@ -188,7 +190,9 @@ public class BOrderPayService {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
-        } else {
+        } else if (pfBorder.getOrderType() == 3) {
+            upgradePayService.paySuccessCallBack(pfBorderPayment, outOrderId, rootPath);
+        }else {
             throw new BusinessException("订单类型有误");
         }
 
@@ -707,7 +711,7 @@ public class BOrderPayService {
      * @param endDate         结束日期
      * @return
      */
-    private String uploadFile(String filePath,
+    public String uploadFile(String filePath,
                               String fontPath,
                               String certificateCode,
                               String userName,

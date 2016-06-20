@@ -1,5 +1,7 @@
-package com.masiis.shop.web.platform.service.user;
+package com.masiis.shop.admin.service.user;
 
+import com.masiis.shop.admin.service.product.SkuAgentService;
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -9,8 +11,6 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.platform.service.product.SkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,7 @@ public class UpgradeNoticeService {
     @Resource
     private SkuService comSkuService;
     @Resource
-    private UserService comUserService;
+    private ComUserService comUserService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
     @Resource
@@ -182,22 +182,17 @@ public class UpgradeNoticeService {
         logger.info("合伙skuId："+skuId);
         Long userPpid = pfUserSku.getUserPid();
         logger.info("上级代理的上级代理用户id："+userPpid);
-        if (userPpid.longValue() == 0){
+        PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPpid,skuId);
+        if (pfPUserSku == null){
+            throw new BusinessException("上级的上级商品代理数据为空");
+        }
+        List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pfPUserSku.getAgentLevelId());
+        if (pfSkuAgents == null || pfSkuAgents.size() == 0){
             logger.info("上级代理用户不可以向上升级");
             return upAgentCannotUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
         }else {
-            PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPpid,skuId);
-            if (pfPUserSku == null){
-                throw new BusinessException("商品代理数据为空");
-            }
-            List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(skuId, pAgentLevel, pfPUserSku.getAgentLevelId());
-            if (pfSkuAgents == null || pfSkuAgents.size() == 0){
-                logger.info("上级代理用户不可以向上升级");
-                return upAgentCannotUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
-            }else {
-                logger.info("上级代理用户可以向上升级");
-                return upAgentCanUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
-            }
+            logger.info("上级代理用户可以向上升级");
+            return upAgentCanUpgrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
         }
     }
 

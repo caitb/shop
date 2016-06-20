@@ -116,7 +116,7 @@ function upgradeApplySubmitNotice(keyProperty){
     $.ajax({
         type: 'POST',
         url: basePath + 'upgrade/upgradeApplySubmitNotice.do',
-        //dataType: 'json',
+        dataType: 'json',
         data:{upgradeLevel:upgradeLevel, upAgentLevel:upAgentLevel, upgradeId:keyProperty, userPid:userPid},
         success: function(data){
 

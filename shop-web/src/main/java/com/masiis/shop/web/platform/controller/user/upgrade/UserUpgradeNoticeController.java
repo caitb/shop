@@ -73,22 +73,22 @@ public class UserUpgradeNoticeController extends BaseController {
             mv.addObject("statusPickList", UpGradeStatus.statusPickList.values());
             List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserPId(comUser.getId());
-            if(pfUserUpgradeNoticeList!=null && pfUserUpgradeNoticeList.size()>0){
-                for (PfUserUpgradeNotice pfUserUpgradeNotice :pfUserUpgradeNoticeList){
+            List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = upgradeNoticeService.getPfUserUpGradeInfoByUserId(comUser.getId());
+            if (pfUserUpgradeNoticeList != null && pfUserUpgradeNoticeList.size() > 0) {
+                for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
                     PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
                     pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
                     ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
                     ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                     ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                     pfUserUpGradeInfo.setSkuName(comSku.getName());
-                    pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                    pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
+                    pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
+                    pfUserUpGradeInfo.setRealName(comUser.getRealName());
                     pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                     pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
-                    String sDate=sdf.format(pfUserUpgradeNotice.getCreateTime());
+                    String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                     pfUserUpGradeInfo.setCreateDate(sDate);
-                    pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByMyUpgrade(pfUserUpgradeNotice.getStatus()));
+                    pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getStatus()));
                     pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                 }
             }
@@ -261,7 +261,8 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
-                        pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());

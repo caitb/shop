@@ -15,8 +15,8 @@
         <p>升级管理</p>
     </header>
     <nav>
-        <p><a>我的申请</a></p>
-        <p class="on"><a>下级申请</a></p>
+        <p  class="on"><a>我的申请</a></p>
+        <p><a>下级申请</a></p>
         <p><a>一次性返利</a></p>
     </nav>
     <div class="floor">
@@ -49,6 +49,7 @@
             <label class="level1">
                 <b></b>
                 <select id="level1" class="search">
+                    <%--<option value="">全部</option>--%>
                     <option value="0">获得返利</option>
                     <option value="1">支付返利</option>
                 </select>
@@ -94,20 +95,10 @@
         $(".level1 b").html($("#level1 option:selected").text());
         $("#goods").width(goodsWidth);
         $("#level").width(levelsWidth);
-        tabId = 1;
+        tabId = 0;
+        $(".floor").hide();
     })
-    $("#goods").on("change",function(){
-        var tabVal=$("#goods option:selected").text();
-        $(".goods b").html(tabVal);
-    })
-    $("#level").on("change",function(){
-        var tabVal=$("#level option:selected").text();
-        $(".level b").html(tabVal);
-    })
-    $("#level1").on("change",function(){
-        var tabVal=$("#level1 option:selected").text();
-        $(".level1 b").html(tabVal);
-    })
+
     $("nav p").on("click",function(){
         var index=$(this).index();
         tabId = index;
@@ -115,11 +106,15 @@
             $(".floor").hide();
         }
         if(tabId ==1){
+            $(".goods b").html($("#goods option:eq(0)").attr("selected","true").text());
+            $(".level b").html($("#level option:eq(0)").attr("selected","true").text());
             $(".floor").show();
             $("#dengji").show();
             $("#fanli").hide();
         }
         if (tabId == 2) {
+            $(".goods b").html($("#goods option:eq(0)").attr("selected","true").text());
+            $(".level1 b").html($("#level1 option:eq(0)").attr("selected","true").text());
             $(".floor").show();
             $("#dengji").hide();
             $("#fanli").show();
@@ -156,7 +151,18 @@
                 }
             });
     })
-
+    $("#goods").on("change",function(){
+        var tabVal=$("#goods option:selected").text();
+        $(".goods b").html(tabVal);
+    })
+    $("#level").on("change",function(){
+        var tabVal=$("#level option:selected").text();
+        $(".level b").html(tabVal);
+    })
+    $("#level1").on("change",function(){
+        var tabVal=$("#level1 option:selected").text();
+        $(".level1 b").html(tabVal);
+    })
     $(".search").on("change",function(){
         search();
     })

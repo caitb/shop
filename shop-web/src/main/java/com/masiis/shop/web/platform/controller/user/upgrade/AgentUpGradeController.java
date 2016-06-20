@@ -445,7 +445,6 @@ public class AgentUpGradeController extends BaseController {
     public String upgradeApplySubmitNotice(@RequestParam(value = "upgradeLevel") Integer upgradeLevel,
                                          @RequestParam(value = "upAgentLevel") Integer upAgentLevel,
                                          @RequestParam(value = "upgradeId") Long upgradeId,
-                                         @RequestParam(value = "userPid") Long userPid,
                                          HttpServletRequest request){
         logger.info("升级申请成功发送微信消息");
         ComUser comUser = getComUser(request);
@@ -460,7 +459,7 @@ public class AgentUpGradeController extends BaseController {
                 UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
                 upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 logger.info("查询上级用户信息");
-                ComUser pUser = userService.getUserById(userPid);
+                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
                 upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower");
             }
         }catch (Exception e){

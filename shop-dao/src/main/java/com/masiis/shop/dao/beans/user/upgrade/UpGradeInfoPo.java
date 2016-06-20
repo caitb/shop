@@ -24,13 +24,17 @@ public class UpGradeInfoPo {
      */
     private Long applyId;
     /**
-     * 申请人当前上级id
-     */
-    private Long applyPid;
-    /**
      * 申请人姓名
      */
     private String applyName;
+    /**
+     * 申请人原上级id
+     */
+    private Long applyPid;
+    /**
+     * 申请人原上级名稱
+     */
+    private String applyPName;
     /**
      * 当前代理等级
      */
@@ -186,5 +190,13 @@ public class UpGradeInfoPo {
 
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
+    }
+
+    public String getApplyPName() {
+        return applyPName;
+    }
+
+    public void setApplyPName(String applyPName) {
+        this.applyPName = applyPName;
     }
 }

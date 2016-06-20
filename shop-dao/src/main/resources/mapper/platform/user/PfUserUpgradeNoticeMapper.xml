@@ -202,29 +202,31 @@
 
     <select id="selectUpGradeInfoPoById" parameterType="java.lang.Long" resultMap="BaseUpgradeInfoResultMap">
         SELECT
-        a.id AS upgradeId,
-        b.id AS skuId,
-        b. NAME AS skuName,
-        a.user_id AS applyId,
-        a.user_pid AS applyPid,
-        e.real_name AS applyName,
-        a.org_agent_level_id AS orgAgentId,
-        c. NAME AS orgAgentName,
-        a.wish_agent_level_id AS wishAgentId,
-        d. NAME AS wishAgentName,
-        a. STATUS AS applyStatus,
-        a.up_status AS upStatus,
-        a.create_time AS createTime,
-        a. CODE AS applyCode,
-        IFNULL(a.pf_border_id,0) as pfBorderId
+            a.id AS upgradeId,
+            b.id AS skuId,
+            b. NAME AS skuName,
+            a.user_id AS applyId,
+            e.real_name AS applyName,
+            a.user_pid AS applyPid,
+            f.real_name AS applyPName,
+            a.org_agent_level_id AS orgAgentId,
+            c. NAME AS orgAgentName,
+            a.wish_agent_level_id AS wishAgentId,
+            d. NAME AS wishAgentName,
+            a. STATUS AS applyStatus,
+            a.up_status AS upStatus,
+            a.create_time AS createTime,
+            a. CODE AS applyCode,
+            IFNULL(a.pf_border_id,0) as pfBorderId
         FROM
-        pf_user_upgrade_notice a
+	        pf_user_upgrade_notice a
         LEFT JOIN com_sku b ON a.sku_id = b.id
         LEFT JOIN com_agent_level c ON a.org_agent_level_id = c.id
         LEFT JOIN com_agent_level d ON a.wish_agent_level_id = d.id
         LEFT JOIN com_user e ON a.user_id = e.id
+        LEFT JOIN com_user f on a.user_pid = f.id
         WHERE
-        a.id = #{Id}
+            a.id = #{Id}
     </select>
 
     <select id="selectBySkuIdAndUserIdAndUserPid" resultMap="BaseResultMap">

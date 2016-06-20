@@ -55,7 +55,7 @@
             </p>
             <div class="floor2">
                 <p>合计：<span>￥${upgradeDetail.totalPrice} </span></p>
-                <h1><b>*</b>在${payDate}前（3天内）支付升级申请，逾期将取消升级申请</h1>
+                <h1><b>*</b>在${payDate}前（2天内）支付升级申请，逾期将取消升级申请</h1>
             </div>
             <button onclick="skipGenerateOrder(${upgradeDetail.upgradeNoticeId})">
                 下一步

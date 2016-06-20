@@ -112,12 +112,12 @@ $(".que_que").on("click",function(){
 function upgradeApplySubmitNotice(keyProperty){
     var upgradeLevel = $("#upgradeLevel").val();
     var upAgentLevel = $("#upAgentLevel").val();
-    var userPid = $("#userPid").val();
+    //var userPid = $("#userPid").val();
     $.ajax({
         type: 'POST',
         url: basePath + 'upgrade/upgradeApplySubmitNotice.do',
         dataType: 'json',
-        data:{upgradeLevel:upgradeLevel, upAgentLevel:upAgentLevel, upgradeId:keyProperty, userPid:userPid},
+        data:{upgradeLevel:upgradeLevel, upAgentLevel:upAgentLevel, upgradeId:keyProperty},
         success: function(data){
 
         },

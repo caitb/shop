@@ -95,6 +95,7 @@ public class BOrderAddService {
         if (bOrderAdd.getOrderType()==BOrderType.UPGRADE.getCode()){
             agentLevelId = bOrderAdd.getAgentLevelId();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
+            logger.info("------升级流程-----获得期望升级的等级--------"+agentLevelId);
         }else{
             if (pfUserSku == null) {
                 logger.info("pfUser为空------userId----"+bOrderAdd.getUserId()+"-----商品id------"+comSku.getId());

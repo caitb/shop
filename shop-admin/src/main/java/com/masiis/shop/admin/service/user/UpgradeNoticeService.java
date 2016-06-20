@@ -401,6 +401,7 @@ public class UpgradeNoticeService {
             if (true){
                 upgradeDetail = new BOrderUpgradeDetail();
                 upgradeDetail.setUpgradeNoticeId(id);
+                upgradeDetail.setUpgradeOrderCode(upgradeNotice.getCode());
                 upgradeDetail.setPfBorderId(upgradeNotice.getPfBorderId());
                 logger.info("订单id-------"+upgradeDetail.getPfBorderId());
                 upgradeDetail.setUpgradeStatus(upgradeNotice.getStatus());
@@ -408,8 +409,18 @@ public class UpgradeNoticeService {
                 upgradeDetail.setUpStatus(upgradeNotice.getUpStatus());
                 ComUser oldComUser = comUserService.getUserById(upgradeNotice.getUserPid());
                 if (oldComUser!=null){
+                    logger.info("旧上级-------"+upgradeNotice.getUserPid());
                     upgradeDetail.setOldPUserId(upgradeNotice.getUserPid());
                     upgradeDetail.setOldPUserName(oldComUser.getRealName());
+                    Long newComUserId = getNewComUserId(upgradeDetail.getOldPUserId(),upgradeNotice.getSkuId(),upgradeNotice.getWishAgentLevelId());
+                    if (newComUserId!=null){
+                        logger.info("新上级id----------"+newComUserId);
+                        ComUser newComUser = comUserService.getUserById(newComUserId);
+                        if (newComUser!=null){
+                            upgradeDetail.setNewPUserId(newComUserId);
+                            upgradeDetail.setNewPUserName(newComUser.getRealName());
+                        }
+                    }
                 }
                 //商品信息
                 ComSku comSku = getComSku(upgradeNotice.getSkuId());
@@ -462,6 +473,44 @@ public class UpgradeNoticeService {
         }
         logger.info("获取升级通知信息------end");
         return upgradeDetail;
+    }
+
+    private Long getNewComUserId(Long oldPUserId,Integer skuId,Integer applyAgentLevel){
+        PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(oldPUserId, skuId);
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, applyAgentLevel);
+        Long newPUserId = null;
+        if (pfSkuAgent != null) {
+            if (pfSkuAgent.getIsUpgrade() == 1) {
+                Integer pUserAgentLevel = null;
+                if (_parentPfUserSku != null) {
+                    pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
+                        /*if (_parentPfUserSku.getUserPid()!=0){
+                            pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
+                        }else{
+                            logger.info("联合创始人不能升级到boss------当前用户id----"+bOrderAdd.getpUserId()+"----skuId---"+bOrderAdd.getSkuId()+"----上级用户----");
+                            throw new BusinessException("联合创始人不能升级到boss");
+                        }*/
+                } else {
+                    logger.info("查询父级userSku为null---");
+                    throw new BusinessException("查询父级userSku为null------");
+                }
+                if (pUserAgentLevel - applyAgentLevel < 0) {
+                    //直接升级  上级的等级大于用户要升级的等级
+                    newPUserId = _parentPfUserSku.getUserId();
+                } else if (pUserAgentLevel - applyAgentLevel == 0) {
+                    //平级升级   上级的等级=用户要升级的等级
+                    newPUserId = _parentPfUserSku.getUserPid();
+                } else {
+                    logger.info("申请等级超过了上级的等级-----skuId---" + skuId);
+                    logger.info("----升级等级----" + applyAgentLevel);
+                    throw new BusinessException("申请登记超过了上级的等级");
+                }
+            } else {
+                logger.info("此等级商品不支持升级------skuId----" + skuId + "-----等级Id----" + applyAgentLevel);
+                throw new BusinessException("此等级商品不支持升级------skuId----" + skuId + "-----等级Id----" + applyAgentLevel);
+            }
+        }
+        return newPUserId;
     }
 
     /**

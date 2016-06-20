@@ -118,42 +118,6 @@ public class BOrderAddService {
                 recommendUserId = bOrderAdd.getpUserId();
                 bOrderAdd.setpUserId(_parentPfUserSku.getUserPid());
             }
-        } else if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
-            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(bOrderAdd.getSkuId(), bOrderAdd.getAgentLevelId());
-            if (pfSkuAgent != null) {
-                if (pfSkuAgent.getIsUpgrade() == 1) {
-                    Integer pUserAgentLevel = null;
-                    Integer applyAgentLevel = bOrderAdd.getAgentLevelId();
-                    Long newPUserId = null;
-                    if (_parentPfUserSku != null) {
-                        pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
-                        /*if (_parentPfUserSku.getUserPid()!=0){
-                            pUserAgentLevel = _parentPfUserSku.getAgentLevelId();
-                        }else{
-                            logger.info("联合创始人不能升级到boss------当前用户id----"+bOrderAdd.getpUserId()+"----skuId---"+bOrderAdd.getSkuId()+"----上级用户----");
-                            throw new BusinessException("联合创始人不能升级到boss");
-                        }*/
-                    } else {
-                        logger.info("查询父级userSku为null---");
-                        throw new BusinessException("查询父级userSku为null------");
-                    }
-                    if (pUserAgentLevel - applyAgentLevel < 0) {
-                        //直接升级  上级的等级大于用户要升级的等级
-                        newPUserId = _parentPfUserSku.getUserId();
-                    } else if (pUserAgentLevel - applyAgentLevel == 0) {
-                        //平级升级   上级的等级=用户要升级的等级
-                        newPUserId = _parentPfUserSku.getUserPid();
-                    } else {
-                        logger.info("申请等级超过了上级的等级-----skuId---" + bOrderAdd.getSkuId());
-                        logger.info("----升级等级----" + bOrderAdd.getAgentLevelId());
-                        throw new BusinessException("申请登记超过了上级的等级");
-                    }
-                    bOrderAdd.setpUserId(newPUserId);
-                } else {
-                    logger.info("此等级商品不支持升级------skuId----" + bOrderAdd.getSkuId() + "-----等级Id----" + bOrderAdd.getAgentLevelId());
-                    throw new BusinessException("此等级商品不支持升级------skuId----" + bOrderAdd.getSkuId() + "-----等级Id----" + bOrderAdd.getAgentLevelId());
-                }
-            }
         }
         //v1.2 End如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);

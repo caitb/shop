@@ -103,6 +103,7 @@
         status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_pid = #{userPid,jdbcType=BIGINT}
+        ORDER BY update_time desc
     </select>
 
     <select id="selectByUserPidAndStatus" resultMap="BaseResultMap">
@@ -168,6 +169,7 @@
         <if test="upStatus != null">
             AND status = #{upStatus,jdbcType=INTEGER}
         </if>
+        ORDER BY update_time desc
     </select>
     <!-->根据商品和返利状态查询<-->
     <select id="selectBySkuIdAndRebateType" resultMap="BaseResultMap">
@@ -185,6 +187,7 @@
         <if test="userId != null">
             AND a.user_id = #{userId,jdbcType=BIGINT}
         </if>
+        ORDER BY b.up_status desc
     </select>
 
     <select id="selectUncalcelByUpStatusAndDate" resultMap="BaseResultMap">

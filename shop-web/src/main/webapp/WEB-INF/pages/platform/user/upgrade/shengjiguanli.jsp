@@ -61,7 +61,7 @@
     <div class="box">
         <main id="main">
             <c:forEach items="${pfUserUpGradeInfoList}" var="grade">
-            <div class="sec1" onclick="upgradeDetail(1,'${grade.pfUserUpgradeNotice.id}')">
+            <div class="sec1" onclick="upgradeDetail(0,'${grade.pfUserUpgradeNotice.id}')">
                     <div class="s_1">
                         <p>商品：${grade.skuName}</p>
                         <p>状态：<span class="active">${grade.statusValue}</span></p>

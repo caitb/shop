@@ -1,6 +1,8 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
@@ -492,7 +494,7 @@ public class BUpgradePayService {
         log.info("修改当前升级的通知单状态-----订单id---" + pfBorderId);
         PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
         if (pfUserUpgradeNotice != null) {
-            pfUserUpgradeNotice.setStatus(3);
+            pfUserUpgradeNotice.setStatus(UpGradeStatus.STATUS_Complete.getCode());
             userUpgradeNoticeService.update(pfUserUpgradeNotice);
             return pfUserUpgradeNotice.getUserId();
         }
@@ -502,14 +504,14 @@ public class BUpgradePayService {
     /**
      * 判断当前升级是否有下级，有下级则修改下级的状态
      *
-     * @param userPid
+     * @param userId
      */
-    private void updateAllLowerNotice(Long userPid) {
-        log.info("修改所有下级为处理中的状态-----父id----" + userPid);
-        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userPid, 1);
+    private void updateAllLowerNotice(Long userId) {
+        log.info("修改所有下级为处理中的状态-----父id----" + userId);
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
         for (PfUserUpgradeNotice notice : notices) {
             log.info("下级id-------" + notice.getUserId());
-            notice.setStatus(3);
+            notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
         }
     }

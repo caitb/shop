@@ -63,8 +63,8 @@
                         <%--<b></b>--%>
                         <select id="goods" class="myValue">
                             <option value="">全部</option>
-                            <c:forEach items="${allSku}" var="skuList">
-                                <option value="${skuList.id}">${skuList.name}</option>
+                            <c:forEach items="${agentSkus}" var="sku">
+                                <option value="${sku.id}">${sku.name}</option>
                             </c:forEach>
                         </select>
                     </label>

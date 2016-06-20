@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户商品代理关系Service
@@ -90,5 +91,14 @@ public class PfUserSkuService {
      */
     public int updateTreeCodes(String treeCode, String parentTreeCode, Integer idIndex, Integer treeLevelDiff) {
         return pfUserSkuMapper.updateTreeCodes(treeCode, parentTreeCode, idIndex, treeLevelDiff);
+    }
+
+    /**
+     * 查询代理商品信息
+     * @param userId
+     * @return
+     */
+    public List<Map<String, Object>> listAgentSku(Long userId){
+        return pfUserSkuMapper.selectAgentSku(userId);
     }
 }

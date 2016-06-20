@@ -127,4 +127,11 @@ public interface PfUserSkuMapper {
      * @return
      */
     int updateTreeCodes(@Param("treeCode") String treeCode,@Param("parentTreeCode") String parentTreeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
+
+    /**
+     * 查询代理产品信息
+     * @param userId
+     * @return
+     */
+    List<Map<String, Object>> selectAgentSku(Long userId);
 }

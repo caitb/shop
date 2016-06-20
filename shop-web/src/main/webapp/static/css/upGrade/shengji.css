@@ -120,7 +120,6 @@
   line-height: 21px;
 }
 .back_que h3 {
-  margin-top: 10px;
   display: -webkit-box;
   -webkit-box-align: center;
   margin: 15px 10px;
@@ -133,7 +132,6 @@
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;

@@ -1,7 +1,6 @@
 package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;

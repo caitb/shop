@@ -1,7 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;

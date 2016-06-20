@@ -82,7 +82,8 @@ public class UserUpgradeNoticeController extends BaseController {
                     ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                     ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                     pfUserUpGradeInfo.setSkuName(comSku.getName());
-                    pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                    pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                    pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                     pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                     pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                     String sDate=sdf.format(pfUserUpgradeNotice.getCreateTime());
@@ -127,12 +128,13 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
-                        pfUserUpGradeInfo.setComUser(comUser);
+                        pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(comUser.getRealName());
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
-                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getUpStatus()));
+                        pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getStatus()));
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
                     }
                 }
@@ -148,7 +150,8 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
-                        pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
@@ -170,7 +173,8 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
-                        pfUserUpGradeInfo.setComUser(comUser);
+                        pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(comUser.getRealName());
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserRebate.getCreateTime());

@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.user;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
+import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderPayment;
@@ -78,14 +79,14 @@ public class UpgradeWechatNewsService {
     /**
      * 升级通知单提交通知
      * @param comUser
-     * @param upgradeDetail
+     * @param upGradeInfoPo
      * @return
      */
-    public Boolean upgradeApplySubmitNotice(ComUser comUser,BOrderUpgradeDetail upgradeDetail, String url){
+    public Boolean upgradeApplySubmitNotice(ComUser comUser, UpGradeInfoPo upGradeInfoPo, String url){
         String[] param = new String[4];
-        param[0]=upgradeDetail.getApplyAgentLevelName();
-        param[1]=upgradeDetail.getCurrentAgentLevel()+"";
-        param[2]=upgradeDetail.getApplyAgentLevel()+"";
+        param[0]=upGradeInfoPo.getApplyName();
+        param[1]=upGradeInfoPo.getOrgAgentName();
+        param[2]=upGradeInfoPo.getWishAgentName();
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
     }
@@ -93,15 +94,15 @@ public class UpgradeWechatNewsService {
     /**
      * 下级代理申请升级通知
      * @param comUser
-     * @param upgradeDetail
+     * @param upGradeInfoPo
      * @param url
      * @return
      */
-    public boolean subLineUpgradeApplyNotice(ComUser comUser,BOrderUpgradeDetail upgradeDetail, String url){
+    public boolean subLineUpgradeApplyNotice(ComUser comUser,UpGradeInfoPo upGradeInfoPo, String url){
         String[] param = new String[4];
-        param[0]=upgradeDetail.getApplyAgentLevelName();
-        param[1]=upgradeDetail.getCurrentAgentLevel()+"";
-        param[2]=upgradeDetail.getApplyAgentLevel()+"";
+        param[0]=upGradeInfoPo.getApplyName();
+        param[1]=upGradeInfoPo.getOrgAgentName();
+        param[2]=upGradeInfoPo.getWishAgentName();
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
     }

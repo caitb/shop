@@ -439,8 +439,6 @@ public class BOrderAddController extends BaseController {
         if (orderId!=null){
             jsonObject.put("isError", false);
             jsonObject.put("bOrderId", orderId);
-            //发微信
-            upgradeWechatNewsService.insertUpgradeOrderSendWXNotice(upgradeDetail.getOldPUserId(),comUser.getId(),upgradeDetail);
         }else{
             jsonObject.put("isError", false);
             jsonObject.put("bOrderId", orderId);

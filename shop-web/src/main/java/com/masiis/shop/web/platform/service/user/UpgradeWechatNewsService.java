@@ -22,26 +22,7 @@ public class UpgradeWechatNewsService {
 
     @Resource
     private UserService comUserService;
-
-    /**
-     * 插入订单border成功后发送微信
-     * @param oldPUserId
-     * @param userId
-     * @param upgradeDetail
-     * @return
-     */
-    public Boolean insertUpgradeOrderSendWXNotice(Long oldPUserId,Long userId,BOrderUpgradeDetail upgradeDetail){
-        ComUser oldComUser = comUserService.getUserById(oldPUserId);
-        ComUser comUser = comUserService.getUserById(userId);
-        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
-        if (upgradeDetail.getUpStatus()==1){
-            //原上级暂时不升级，给原上级发微信
-            String[] param = new String[1];
-            param[0] = comUser.getRealName();
-           return WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldComUser,param,url,true);
-        }
-        return true;
-    }
+    
 
     /**
      * 升级订单支付成功后发送微信

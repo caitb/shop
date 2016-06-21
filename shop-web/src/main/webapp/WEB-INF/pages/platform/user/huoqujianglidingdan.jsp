@@ -31,7 +31,7 @@
                    <select id="goods" class="myValue">
                        <option value="">全部</option>
                        <c:forEach items="${agentSkus}" var="sku">
-                           <option value="${sku.id}">${sku.name}</option>
+                           <option value="${sku.id}" <c:if test="${sku.id == skuId}">selected</c:if> >${sku.name}</option>
                        </c:forEach>
                    </select>
                </label>
@@ -91,8 +91,8 @@
             $("#goods").width(goodsWidth);
         })
         $("#goods").on("change",function(){
-            var tabVal=$("#goods option:selected").text();
-            $(".goods b").html(tabVal);
+            var skuId=$("#goods option:selected").val();
+            window.location.href = skuId ? '<%=basePath%>myRecommend/getRewardBorder?skuId='+skuId : '<%=basePath%>myRecommend/getRewardBorder';
         })
 
         function blackShow(a,b,c,d){

@@ -16,6 +16,7 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -263,10 +264,10 @@ public class MyRecommendController extends BaseController{
      * @date 2016/6/16 10:47
      */
     @RequestMapping("/getRewardBorder")
-    public ModelAndView getRewardBorder(HttpServletRequest request) throws Exception {
+    public ModelAndView getRewardBorder(HttpServletRequest request, @RequestParam(value = "skuId", required = false)Integer skuId) throws Exception {
         ComUser comUser = getComUser(request);
         try{
-            List<PfBorder> pfBorders = bOrderService.getRecommendPfBorder(comUser.getId());
+            List<PfBorder> pfBorders = bOrderService.getRecommendPfBorder(comUser.getId(), skuId);
             String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             PfUserCertificate certificateByuserskuId =null;
             PfUserCertificate certificateByuserskuId1 = null;
@@ -289,8 +290,12 @@ public class MyRecommendController extends BaseController{
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }
+            List<Map<String, Object>> agentSkus = pfUserSkuService.listAgentSku(comUser.getId());
+
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.addObject("agentSkus", agentSkus);
+            modelAndView.addObject("skuId", skuId);
             modelAndView.addObject("bOrderTypes", BOrderType.values());
             modelAndView.setViewName("platform/user/huoqujianglidingdan");
             return modelAndView;
@@ -307,10 +312,10 @@ public class MyRecommendController extends BaseController{
      * @date 2016/6/16 16:50
      */
     @RequestMapping("/sendRewardBorder")
-    public ModelAndView sendRewardBorder(HttpServletRequest request) throws Exception {
+    public ModelAndView sendRewardBorder(HttpServletRequest request, @RequestParam(value = "skuId", required = false)Integer skuId) throws Exception {
         ComUser comUser = getComUser(request);
         try{
-            List<PfBorder> pfBorders = bOrderService.SendRecommendPfBorder(comUser.getId());
+            List<PfBorder> pfBorders = bOrderService.SendRecommendPfBorder(comUser.getId(), skuId);
             String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             PfUserCertificate certificateByuserskuId =null;
             PfUserCertificate certificateByuserskuId1 = null;
@@ -334,8 +339,13 @@ public class MyRecommendController extends BaseController{
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }
+
+            List<Map<String, Object>> agentSkus = pfUserSkuService.listAgentSku(comUser.getId());
+
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.addObject("agentSkus", agentSkus);
+            modelAndView.addObject("skuId", skuId);
             modelAndView.addObject("bOrderTypes", BOrderType.values());
             modelAndView.setViewName("platform/user/fachujianglidingdan");
             return modelAndView;

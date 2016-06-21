@@ -438,8 +438,8 @@ public class BOrderService {
      * @date 2016/6/16 14:32
      */
 
-    public List<PfBorder> getRecommendPfBorder(Long userId) {
-        return pfBorderMapper.selectRecommend(userId);
+    public List<PfBorder> getRecommendPfBorder(Long userId, Integer skuId) {
+        return pfBorderMapper.selectRecommend(userId, skuId);
     }
 
     /**
@@ -447,8 +447,8 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/6/16 16:46
      */
-    public List<PfBorder> SendRecommendPfBorder(Long userId) {
-        return pfBorderMapper.selectSendRecommend(userId);
+    public List<PfBorder> SendRecommendPfBorder(Long userId, Integer skuId) {
+        return pfBorderMapper.selectSendRecommend(userId, skuId);
     }
 
 

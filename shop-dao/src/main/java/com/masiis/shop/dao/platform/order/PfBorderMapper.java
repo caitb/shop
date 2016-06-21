@@ -38,14 +38,14 @@ public interface PfBorderMapper {
      * @author muchaofeng
      * @date 2016/6/16 14:25
      */
-    List<PfBorder> selectRecommend(Long userId);
+    List<PfBorder> selectRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     /**
      * 发出奖励订单
      * @author muchaofeng
      * @date 2016/6/16 16:43
      */
-    List<PfBorder> selectSendRecommend(Long userId);
+    List<PfBorder> selectSendRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 

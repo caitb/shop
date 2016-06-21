@@ -230,7 +230,7 @@ public class BUpgradePayService {
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
         if (pfUserSku != null) {
-            log.info("---修改商品的代理关系-----用户原上级-----userId----"+userPid+"-----skuId----"+skuId);
+            log.info("---修改商品的代理关系-----用户新上级-----userId----"+userPid+"-----skuId----"+skuId);
             PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
             log.info("期望等级----"+agentLevelId+"-----原上级等级------"+parentPfUserSku.getAgentLevelId());
             if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())) {
@@ -245,6 +245,17 @@ public class BUpgradePayService {
                     log.info("父级的treeCode-----"+parent_treeCode);
                     parent_treeLevel = parentPfUserSku.getTreeLevel();
                 }
+                PfUserCertificate certificateInfo = new PfUserCertificate();
+                Calendar calendar = Calendar.getInstance();
+                certificateInfo.setSkuId(pfUserSku.getSkuId());
+                certificateInfo.setUserId(pfUserSku.getUserId());
+                certificateInfo.setBeginTime(calendar.getTime());
+                calendar.set(Calendar.MONTH, 11);
+                calendar.set(Calendar.DAY_OF_MONTH, 31);
+                certificateInfo.setEndTime(calendar.getTime());
+                certificateInfo.setAgentLevelId(orderItem.getAgentLevelId());
+                certificateInfo.setStatus(1);
+                pfUserSku.setCode(pfUserCertificateService.getCertificateCode(certificateInfo));
                 pfUserSku.setPid(parent_id);
                 pfUserSku.setUserPid(parent_userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);

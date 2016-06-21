@@ -91,11 +91,11 @@ public class MyRecommendController extends BaseController{
      * @date 2016/6/15 17:44
      */
     @RequestMapping("/recommendGiveList")
-    public ModelAndView recommendGiveList(HttpServletRequest request){
+    public ModelAndView recommendGiveList(HttpServletRequest request, @RequestParam(value = "skuId", required = false)Integer skuId){
         try{
             ModelAndView modelAndView = new ModelAndView();
             ComUser comUser = getComUser(request);
-            List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId());//推荐给我的
+            List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId(), skuId);//推荐给我的
             for (UserRecommend userRecommend:sumByUser) {
                 Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
                 userRecommend.setNumber(giveNum);
@@ -103,6 +103,7 @@ public class MyRecommendController extends BaseController{
 
             List<Map<String, Object>> agentSkus = pfUserSkuService.listAgentSku(comUser.getId());
             modelAndView.addObject("agentSkus",agentSkus);
+            modelAndView.addObject("skuId",skuId);
             modelAndView.addObject("sumByUser",sumByUser);
             modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;

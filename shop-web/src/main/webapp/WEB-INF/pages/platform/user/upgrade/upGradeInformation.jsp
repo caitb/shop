@@ -69,6 +69,23 @@
                     </div>
                     <p>如果您升级：${upGradeInfoPo.applyName}还是您的下线<br>如果不升级：${upGradeInfoPo.applyName}将不是您的下线，您将获得一次性奖励</p>
                 </c:if>
+                <c:if test="${upGradeInfoPo.upStatus == 2}">
+                    <p>
+                        您已选择我要升级，请去<a href="${basePath}upgradeInfo/lower?tabId=0">我的申请</a>里查看升级单
+                    </p>
+                </c:if>
+                <c:if test="${upGradeInfoPo.upStatus == 1}">
+                    <c:if test="${upGradeInfoPo.applyStatus == 1 || upGradeInfoPo.applyStatus == 2}">
+                        <p>
+                            您已选择暂不升级，您的下级将会与您解除关系。您可以获得一次性奖励
+                        </p>
+                    </c:if>
+                    <c:if test="${upGradeInfoPo.applyStatus == 3}">
+                        <p>
+                            您选择的是暂不升级，您的下级已经升级成功
+                        </p>
+                    </c:if>
+                </c:if>
             </div>
         </main>
     </div>

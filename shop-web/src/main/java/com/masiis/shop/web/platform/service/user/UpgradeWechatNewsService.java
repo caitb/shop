@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -71,6 +72,7 @@ public class UpgradeWechatNewsService {
         param[1]=upGradeInfoPo.getOrgAgentName();
         param[2]=upGradeInfoPo.getWishAgentName();
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
         return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
     }
 
@@ -84,10 +86,15 @@ public class UpgradeWechatNewsService {
     public boolean subLineUpgradeApplyNotice(ComUser comUser,UpGradeInfoPo upGradeInfoPo, String url){
         logger.info("------------------------------您有一个代理申请升级----------------------------------");
         String[] param = new String[4];
-        param[0]=upGradeInfoPo.getApplyName();
-        param[1]=upGradeInfoPo.getOrgAgentName();
-        param[2]=upGradeInfoPo.getWishAgentName();
-        param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        param[0] = upGradeInfoPo.getApplyName();
+        param[1] = upGradeInfoPo.getOrgAgentName();
+        param[2] = upGradeInfoPo.getWishAgentName();
+        param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,2);//日期加10天
+        param[4] = DateUtil.Date2String(calendar.getTime(),DateUtil.CHINESEALL_DATE_FMT);
+        logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
         return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
     }
 }

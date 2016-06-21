@@ -365,6 +365,8 @@ public class AgentUpGradeController extends BaseController {
     @RequestMapping(value = "/myApplyUpgrade.shtml")
     public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId,
                                              HttpServletRequest request) throws Exception{
+        logger.info("我的申请单升级信息页面展示");
+        logger.info("upgradeId=" + upgradeId);
         ComUser user = getComUser(request);
         if (user == null){
             throw new BusinessException("用户未登录");
@@ -484,10 +486,10 @@ public class AgentUpGradeController extends BaseController {
         try {
             if (upAgentLevel.intValue() == upgradeLevel.intValue()){
                 UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-                upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 logger.info("查询上级用户信息");
                 ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower");
+                upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgrade/upgradeInfo/lower?tabId=0");
             }
         }catch (Exception e){
             e.printStackTrace();

@@ -221,6 +221,15 @@ public class BUpgradePayService {
      * @param pfUserSku
      * @return
      */
+    /**
+     * 修改商品的代理关系
+     *
+     * @param userPid
+     * @param borderId
+     * @param orderItem
+     * @param pfUserSku
+     * @return
+     */
     private int updatePfUserSku(Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
         log.info("---修改商品的代理关系-----订单id-----" + borderId);
         BigDecimal bailAmount = orderItem.getBailAmount();
@@ -263,7 +272,10 @@ public class BUpgradePayService {
                     log.info("树结构更换只能挂在高于自己的树枝");
                     throw new BusinessException("树结构更换只能挂在高于自己的树枝");
                 }
-                log.info("父级的treeCode-----"+parent_treeCode);
+                log.info("之前的pfUserSku----的---treeCode-----"+treeCode);
+                log.info("要更变后的treeCode------parentTreeCode-----"+parentTreeCode);
+                log.info("id_index-----"+id_index);
+                log.info("treeLevel-----"+treeLevel);
                 i = pfUserSkuService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
                 if (i <= 0) {
                     log.info("分销关系树结构修改失败");

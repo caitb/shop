@@ -36,7 +36,7 @@
                 <span>间接下级</span>
             </p>
             <p>
-                <span>${teamMap.countSales}</span>
+                <span>￥${teamMap.countSales}</span>
                 <span>销售额</span>
             </p>
         </div>

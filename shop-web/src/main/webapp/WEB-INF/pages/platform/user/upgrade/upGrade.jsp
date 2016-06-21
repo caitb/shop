@@ -31,7 +31,7 @@
                 </p>
                 <p>
                     <span>当前级别：</span>
-                    <span id="currentLevel">请选择产品</span>
+                    <span id="currentLevel"></span>
                 </p>
                 <p>
                     <span>申请级别</span>

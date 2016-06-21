@@ -44,14 +44,16 @@
                 </c:forEach>
                 <div class="f_1">
                     <p>类型：
-                        <c:if test="${pfBorders.orderType==2 && pfBorders.sendType==1}">申请拿货</c:if>
-                        <c:if test="${pfBorders.orderType==0}">下级合伙订单</c:if>
-                        <c:if test="${pfBorders.orderType==1}">下级补货</c:if></p>
+                        <c:if test="${pfBorders.orderType == 0}">代理订单</c:if>
+                        <c:if test="${pfBorders.orderType == 1}">补货订单</c:if>
+                        <c:if test="${pfBorders.orderType == 2}">拿货订单</c:if>
+                        <c:if test="${pfBorders.orderType == 3}">升级订单</c:if>
+                    </p>
                     <p>购买人：<b onclick="blackShow('${pfBorders.userName.realName}','${pfBorders.userName.wxId}','${pfBorders.userName.mobile}','1')">${pfBorders.userName.realName}</b></p>
                     <p>合计：￥${pfBorders.orderAmount}</p>
                 </div>
                 <div class="f_1">
-                    <p>上级：<b onclick="blackShow('${pfBorders.userPname.realName}','${pfBorders.userPname.wxId}','${pfBorders.userPname.mobile}','2')">${pfBorders.userPname.realName}</b></p>
+                    <p>推荐人：<b onclick="blackShow('${pfBorders.userPname.realName}','${pfBorders.userPname.wxId}','${pfBorders.userPname.mobile}','2')">${pfBorders.userPname.realName}</b></p>
                     <p>获得奖励：￥${pfBorders.recommenAmount}</p>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                 $("#xin").html("购买人信息")
             }
             if(d==2){
-                $("#xin").html("上级信息")
+                $("#xin").html("推荐人")
             }
             $("#1").html(a);
             $("#2").html(b);

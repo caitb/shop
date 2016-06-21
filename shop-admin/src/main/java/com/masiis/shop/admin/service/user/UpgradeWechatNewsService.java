@@ -54,7 +54,7 @@ public class UpgradeWechatNewsService {
             //上级变化
             logger.info("发送微信通知-----------上级变化");
             //给原上级发微信
-            String[] _param = new String[4];
+            String[] _param = new String[1];
             _param[0] = comUser.getRealName();
             WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,false);
             //给新的上级发

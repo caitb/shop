@@ -15,7 +15,7 @@
         <p>升级管理</p>
     </header>
     <nav>
-        <p  class="on"><a>我的申请</a></p>
+        <p><a>我的申请</a></p>
         <p><a>下级申请</a></p>
         <p><a>一次性返利</a></p>
     </nav>
@@ -95,8 +95,59 @@
         $(".level1 b").html($("#level1 option:selected").text());
         $("#goods").width(goodsWidth);
         $("#level").width(levelsWidth);
+        var myTabId = ${tabId};
+        if (myTabId == 0) {
+            $("nav p").eq(myTabId).addClass("on").siblings().removeClass("on");
+            $(".floor").hide();
+            return;
+        }
+        if(myTabId ==1){
+            $("nav p").eq(myTabId).addClass("on").siblings().removeClass("on");
+            $(".goods b").html($("#goods option:eq(0)").attr("selected","true").text());
+            $(".level b").html($("#level option:eq(0)").attr("selected","true").text());
+            $(".floor").show();
+            $("#dengji").show();
+            $("#fanli").hide();
+        }
+        if (myTabId == 2) {
+            $("nav p").eq(myTabId).addClass("on").siblings().removeClass("on");
+            $(".goods b").html($("#goods option:eq(0)").attr("selected","true").text());
+            $(".level1 b").html($("#level1 option:eq(0)").attr("selected","true").text());
+            $(".floor").show();
+            $("#dengji").hide();
+            $("#fanli").show();
+        }
+        $.ajax({
+            url: '${basePath}upgradeInfo/tab',
+            type: 'post',
+            async:true,
+            data: {tabId:myTabId},
+            dataType: 'json',
+            success: function (res) {
+                var trHtml = "";
+                $.each(res.pfUserUpGradeInfoList, function(i, grade){
+                    trHtml+="<div class=\"sec1\" onclick=\"upgradeDetail('"+myTabId+"','"+grade.pfUserUpgradeNotice.id+"')\">";
+                    trHtml+="<div class=\"s_1\">";
+                    trHtml+="<p>商品："+grade.skuName+"</p>";
+                    trHtml+="<p>状态：<span class=\"active\">"+grade.statusValue+"</span></p>";
+                    trHtml+="</div>";
+                    trHtml+="<div class=\"s_2\">";
+                    trHtml+="<img src=\""+grade.wxHeadImg+"\" alt=\"\">";
+                    trHtml+="<div>";
+                    trHtml+="<p>"+grade.realName+"</p>";
+                    trHtml+="<h1><span class=\"on\">"+grade.orgLevelName+"</span>"+grade.wishLevelName+"</h1>";
+                    trHtml+="</div>";
+                    trHtml+="</div>";
+                    trHtml+=" <div class=\"s_3\">";
+                    trHtml+="<p>升级编号："+grade.pfUserUpgradeNotice.code+"</p>";
+                    trHtml+="<p>申请时间："+grade.createDate+"</p>";
+                    trHtml+="</div>";
+                    trHtml+="</div>";
+                });
+                $("#main").empty().html(trHtml);
+            }
+        });
         tabId = 0;
-        $(".floor").hide();
     })
 
     $("nav p").on("click",function(){

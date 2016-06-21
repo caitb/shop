@@ -44,7 +44,8 @@ public class UpgradeWechatNewsService {
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
         ComUser oldUser = comUserService.getUserById(upgradeDetail.getOldPUserId());
         String[] param = new String[4];
-        param[0] = pfBorder.getPayAmount().intValue()+"";
+        param[0] = pfBorderPayment.getAmount().intValue()+"";
+        logger.info("支付金额---------"+pfBorderPayment.getAmount().intValue());
         param[1] = pfBorderPayment.getPayTypeName();
         param[2] = "升级"+upgradeDetail.getApplyAgentLevelName();
         param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);

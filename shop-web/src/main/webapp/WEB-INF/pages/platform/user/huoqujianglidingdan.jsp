@@ -51,7 +51,7 @@
                     <p>合计：￥${pfBorders.orderAmount}</p>
                 </div>
                 <div class="f_1">
-                    <p>上级：<b onclick="blackShow('${pfBorders.userPname.realName}','${pfBorders.userPname.wxId}','${pfBorders.userPname.mobile}','2')">${pfBorders.userPname.realName}</b></p>
+                    <p>推荐人：<b onclick="blackShow('${pfBorders.userPname.realName}','${pfBorders.userPname.wxId}','${pfBorders.userPname.mobile}','2')">${pfBorders.userPname.realName}</b></p>
                     <p>获得奖励：￥${pfBorders.recommenAmount}</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 $("#xin").html("购买人信息")
             }
             if(d==2){
-                $("#xin").html("上级信息")
+                $("#xin").html("推荐人")
             }
             $("#1").html(a);
             $("#2").html(b);

@@ -2,7 +2,6 @@ package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
-import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
@@ -252,13 +251,17 @@ public class AgentUpGradeController extends BaseController {
         }
         if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
-            //选择暂不升级，查询当前上级的上级代理
+            logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            if (pfUserSku.getUserPid().longValue() == 0){
-                mv.addObject("newUp","平台");
+            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
+                if (pfUserSku.getUserPid().longValue() == 0){
+                    mv.addObject("newUp","平台");
+                }else {
+                    ComUser user = userService.getUserById(pfUserSku.getUserPid());
+                    mv.addObject("newUp",user.getRealName());
+                }
             }else {
-                ComUser user = userService.getUserById(pfUserSku.getUserPid());
-                mv.addObject("newUp",user.getRealName());
+                mv.addObject("newUp",upGradeInfoPo.getApplyPName());
             }
         }
         logger.info("根据处理获取升级后的上级信息 end");
@@ -393,13 +396,17 @@ public class AgentUpGradeController extends BaseController {
         }
         if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
-            //选择暂不升级，查询当前上级的上级代理
+            logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            if (pfUserSku.getUserPid().longValue() == 0){
-                mv.addObject("newUp","平台");
+            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
+                if (pfUserSku.getUserPid().longValue() == 0){
+                    mv.addObject("newUp","平台");
+                }else {
+                    ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
+                    mv.addObject("newUp",comUser.getRealName());
+                }
             }else {
-                ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
-                mv.addObject("newUp",comUser.getRealName());
+                mv.addObject("newUp",upGradeInfoPo.getApplyPName());
             }
         }
         logger.info("根据处理获取升级后的上级信息 end");

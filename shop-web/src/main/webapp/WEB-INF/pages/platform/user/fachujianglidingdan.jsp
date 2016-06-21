@@ -58,10 +58,9 @@
                     </c:forEach>
                     <div class="f_1">
                         <p>类型：
-                            <c:if test="${pfBorders.orderType == 0}">代理订单</c:if>
-                            <c:if test="${pfBorders.orderType == 1}">补货订单</c:if>
-                            <c:if test="${pfBorders.orderType == 2}">拿货订单</c:if>
-                            <c:if test="${pfBorders.orderType == 3}">升级订单</c:if>
+                            <c:forEach items="${bOrderTypes}" var="orderType">
+                                <c:if test="${orderType.code == pfBorders.orderType}"><span>${orderType.desc}</span></c:if>
+                            </c:forEach>
                         </p>
                         <p>购买人：<b onclick="blackShow('${pfBorders.userName.realName}','${pfBorders.userName.wxId}','${pfBorders.userName.mobile}','1')">${pfBorders.userName.realName}</b></p>
                         <p>合计：￥${pfBorders.orderAmount}</p>

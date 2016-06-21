@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -290,6 +291,7 @@ public class MyRecommendController extends BaseController{
             }
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.addObject("bOrderTypes", BOrderType.values());
             modelAndView.setViewName("platform/user/huoqujianglidingdan");
             return modelAndView;
         }catch (Exception e){
@@ -334,6 +336,7 @@ public class MyRecommendController extends BaseController{
             }
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("pfBorders", pfBorders);
+            modelAndView.addObject("bOrderTypes", BOrderType.values());
             modelAndView.setViewName("platform/user/fachujianglidingdan");
             return modelAndView;
         }catch (Exception e){

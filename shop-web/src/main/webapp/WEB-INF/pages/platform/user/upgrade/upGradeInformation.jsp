@@ -11,7 +11,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <a href="${basePath}upgradeInfo/lower?tabId=1"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>升级信息</p>
         </header>
         <main>

@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderPayment;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,29 +20,10 @@ import java.util.Date;
  */
 @Service
 public class UpgradeWechatNewsService {
-
+    private Logger logger = Logger.getLogger(UpgradeWechatNewsService.class);
     @Resource
     private UserService comUserService;
-
-    /**
-     * 插入订单border成功后发送微信
-     * @param oldPUserId
-     * @param userId
-     * @param upgradeDetail
-     * @return
-     */
-    public Boolean insertUpgradeOrderSendWXNotice(Long oldPUserId,Long userId,BOrderUpgradeDetail upgradeDetail){
-        ComUser oldComUser = comUserService.getUserById(oldPUserId);
-        ComUser comUser = comUserService.getUserById(userId);
-        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
-        if (upgradeDetail.getUpStatus()==1){
-            //原上级暂时不升级，给原上级发微信
-            String[] param = new String[1];
-            param[0] = comUser.getRealName();
-           return WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldComUser,param,url,true);
-        }
-        return true;
-    }
+    
 
     /**
      * 升级订单支付成功后发送微信
@@ -83,6 +65,7 @@ public class UpgradeWechatNewsService {
      * @return
      */
     public Boolean upgradeApplySubmitNotice(ComUser comUser, UpGradeInfoPo upGradeInfoPo, String url){
+        logger.info("--------------------------您的升级申请已提交，请耐心等待审核。--------------------------");
         String[] param = new String[4];
         param[0]=upGradeInfoPo.getApplyName();
         param[1]=upGradeInfoPo.getOrgAgentName();
@@ -99,6 +82,7 @@ public class UpgradeWechatNewsService {
      * @return
      */
     public boolean subLineUpgradeApplyNotice(ComUser comUser,UpGradeInfoPo upGradeInfoPo, String url){
+        logger.info("------------------------------您有一个代理申请升级----------------------------------");
         String[] param = new String[4];
         param[0]=upGradeInfoPo.getApplyName();
         param[1]=upGradeInfoPo.getOrgAgentName();

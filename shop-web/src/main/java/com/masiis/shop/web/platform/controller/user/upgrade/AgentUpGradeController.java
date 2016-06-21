@@ -243,8 +243,8 @@ public class AgentUpGradeController extends BaseController {
         }
         logger.info("登录人id="+comUser.getId());
         logger.info("申请人上级id="+upgradeNotice.getUserPid());
-        if (comUser.getId().longValue() != upgradeNotice.getUserId().longValue()){
-            throw new BusinessException("申请人id錯誤");
+        if (comUser.getId().longValue() != upgradeNotice.getUserPid().longValue()){
+            throw new BusinessException("申请人不是您下级");
         }
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
@@ -445,7 +445,6 @@ public class AgentUpGradeController extends BaseController {
     public String upgradeApplySubmitNotice(@RequestParam(value = "upgradeLevel") Integer upgradeLevel,
                                          @RequestParam(value = "upAgentLevel") Integer upAgentLevel,
                                          @RequestParam(value = "upgradeId") Long upgradeId,
-                                         @RequestParam(value = "userPid") Long userPid,
                                          HttpServletRequest request){
         logger.info("升级申请成功发送微信消息");
         ComUser comUser = getComUser(request);
@@ -460,7 +459,7 @@ public class AgentUpGradeController extends BaseController {
                 UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
                 upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 logger.info("查询上级用户信息");
-                ComUser pUser = userService.getUserById(userPid);
+                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
                 upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower");
             }
         }catch (Exception e){

@@ -1,6 +1,8 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
@@ -65,7 +67,7 @@ public class BUpgradePayService {
     @Resource
     private PfUserCertificateHistoryService pfUserCertificateHistoryService;
     @Resource
-    private PfUserRecommendRelationService pfUserRecommendRelationService;
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     @Resource
     private UpgradeWechatNewsService upgradeWechatNewsService;
     @Resource
@@ -417,31 +419,38 @@ public class BUpgradePayService {
      * @param pfBorder
      */
     private void insertUserRebate(PfBorder pfBorder, List<PfBorderItem> orderItems, PfUserUpgradeNotice pfUserUpgradeNotice) {
+        log.info("插入一次性奖励-----orderId-----"+pfBorder.getId());
         for (PfBorderItem pfBorderItem : orderItems) {
-            PfUserRecommenRelation userRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-            if (!userRecommenRelation.getUserPid().equals(pfBorder.getUserPid())){
-                PfUserRebate pfUserRebate = new PfUserRebate();
-                pfUserRebate.setCreateTime(new Date());
-                pfUserRebate.setCreateTime(new Date());
-                if (pfUserUpgradeNotice != null) {
-                    pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+            log.info("----orderItem的Id-----"+pfBorderItem.getId());
+            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getRewardByOrderIdAndOrderItemIdAndSkuId(pfBorder.getId(),pfBorderItem.getId(),pfBorderItem.getSkuId());
+            if (pfBorderRecommenReward!=null){
+                    if (!pfBorderRecommenReward.getRecommenUserId().equals(pfBorder.getUserPid())){
+                        PfUserRebate pfUserRebate = new PfUserRebate();
+                        pfUserRebate.setCreateTime(new Date());
+                        pfUserRebate.setCreateTime(new Date());
+                        if (pfUserUpgradeNotice != null) {
+                            pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+                        }
+                        pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
+                        log.info("通知单id--------"+pfUserUpgradeNotice.getId());
+                        log.info("获得奖励人-------"+pfBorderRecommenReward.getRecommenUserId());
+                        pfUserRebate.setUserId(pfBorderRecommenReward.getRecommenUserId());//获得奖励用户id
+                        log.info("支付奖励用户-------"+pfBorder.getUserPid());
+                        pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
+                        pfUserRebate.setPfBorderId(pfBorder.getId());
+                        log.info("订单id------"+pfBorder.getId());
+                        int i = pfUserRebateService.insert(pfUserRebate);
+                        if (i != 1) {
+                            log.info("升级支付成功插入一次性奖励失败");
+                            throw new BusinessException("升级支付成功插入一次性奖励失败");
+                        }
+                    }else {
+                        log.info("发送奖励的人--userId---"+pfBorder.getUserPid()+"-----收到奖励的人-----"+pfBorderRecommenReward.getRecommenUserId()+"-----是同一人");
+                    }
+
+                }else{
+                    log.info("pfBorderRecommenReward----为null没有推荐奖励");
                 }
-                pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
-                log.info("通知单id--------"+pfUserUpgradeNotice.getId());
-                pfUserRebate.setUserId(userRecommenRelation.getUserPid());//获得奖励用户id
-                log.info("获得奖励人-------"+userRecommenRelation.getUserPid());
-                pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
-                log.info("支付奖励用户-------"+pfBorder.getUserPid());
-                pfUserRebate.setPfBorderId(pfBorder.getId());
-                log.info("订单id------"+pfBorder.getId());
-                int i = pfUserRebateService.insert(pfUserRebate);
-                if (i != 1) {
-                    log.info("升级支付成功插入一次性奖励失败");
-                    throw new BusinessException("升级支付成功插入一次性奖励失败");
-                }
-            }else{
-                log.info("获得奖励和支付奖励的人是同一个人");
-            }
         }
     }
 
@@ -472,6 +481,7 @@ public class BUpgradePayService {
      * @param pfBorderId
      */
     private void updateUpgradeNotice(Long pfBorderId) {
+        log.info("修改通知单状态--------"+pfBorderId);
         //修改当前申请升级的通知单状态
         Long userId = updateCurrentNotice(pfBorderId);
         //判断当前升级是否有下级，有下级则修改下级的状态
@@ -492,7 +502,7 @@ public class BUpgradePayService {
         log.info("修改当前升级的通知单状态-----订单id---" + pfBorderId);
         PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
         if (pfUserUpgradeNotice != null) {
-            pfUserUpgradeNotice.setStatus(3);
+            pfUserUpgradeNotice.setStatus(UpGradeStatus.STATUS_Complete.getCode());
             userUpgradeNoticeService.update(pfUserUpgradeNotice);
             return pfUserUpgradeNotice.getUserId();
         }
@@ -502,14 +512,15 @@ public class BUpgradePayService {
     /**
      * 判断当前升级是否有下级，有下级则修改下级的状态
      *
-     * @param userPid
+     * @param userId
      */
-    private void updateAllLowerNotice(Long userPid) {
-        log.info("修改所有下级为处理中的状态-----父id----" + userPid);
-        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userPid, 1);
+    private void updateAllLowerNotice(Long userId) {
+        log.info("修改所有下级为处理中的状态-----父id----" + userId);
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
         for (PfUserUpgradeNotice notice : notices) {
             log.info("下级id-------" + notice.getUserId());
-            notice.setStatus(3);
+            notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
+            notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
         }
     }

@@ -29,7 +29,7 @@ main .floor label div:first-child{
   display: -webkit-box;
 }
 main .floor label div:last-child span{
-  font-size: 10px;
+  font-size: 12px;
   color: #666;
 }
 main .floor label div:first-child b{
@@ -45,7 +45,7 @@ main .floor label div:first-child span {
   display: block;
 }
 main .floor label.active {
-  background: url("../images/shengji_4.png") no-repeat 10px;
+  background: url("../images/shengji_4.png") no-repeat 0px 10px;
   background-size: 14px;
 }
 main > p {

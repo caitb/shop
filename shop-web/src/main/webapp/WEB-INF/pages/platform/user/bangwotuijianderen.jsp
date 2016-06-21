@@ -19,7 +19,52 @@
             .wrap main {
               margin-top: 10px;
             }
-            .wrap main .sec1 {
+        .wrap main .floor {
+            background: #fff;
+            margin-top: 10px;
+            padding: 5px 0;
+        }
+        .wrap main .floor div {
+            display: -webkit-box;
+            padding: 5px 10px;
+            position: relative;
+            -webkit-box-align: center;
+        }
+        .wrap main .floor div span {
+            display: block;
+            width: 14%;
+        }
+        .wrap main .floor div label {
+            display: block;
+            border: 1px solid #CBCBCB;
+            z-index: 10;
+            background: #ffffff url("/static/images/selectdown.png") no-repeat 95%;
+            background-size: 14px;
+            height: 25px;
+            position: relative;
+        }
+        .wrap main .floor div label b {
+            display: block;
+            padding-left: 10px;
+            color: #666;
+            line-height: 27px;
+            width: 80%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .wrap main .floor div .goods {
+            width: 50%;
+            margin-right: 10px;
+        }
+        .wrap main .floor div label select {
+            position: absolute;
+            left:0;
+            top:0;
+            height:27px;
+            opacity: 0;
+        }
+    .wrap main .sec1 {
               height: 60px;
               display: -webkit-box;
               padding: 10px;
@@ -46,7 +91,6 @@
               color: #f74a11;
                 margin-left: 30px;
             }
-
     </style>
 </head>
 <body>
@@ -60,7 +104,7 @@
                 <div>
                     <span>商品：</span>
                     <label for="goods" class="goods">
-                        <%--<b></b>--%>
+                        <b></b>
                         <select id="goods" class="myValue">
                             <option value="">全部</option>
                             <c:forEach items="${agentSkus}" var="sku">

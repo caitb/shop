@@ -36,8 +36,9 @@
             <c:forEach items="${comAgentLevels}" var="agentLevel">
             <input type="checkbox" id="level_${agentLevel.id}" name="levelIds" value="${agentLevel.id}"/>
             <label for="level_${agentLevel.id}">
-                    <b>${agentLevel.name}</b><c:if test="${agentLevelId == agentLevel.id}"><span>(平级推荐)</span><img src="${path}/static/images/i.png"
-                                                                                                            alt="" onclick="blackShow()"></c:if>
+                    <div><b>${agentLevel.name}</b><c:if test="${agentLevelId == agentLevel.id}"><span>(平级推荐)</span><img src="${path}/static/images/i.png"
+                                                                                                            alt="" onclick="blackShow()"></c:if></div>
+                <div><span>50万元套餐</span> <span>(包含商品12000件，保证金：0元)</span></div>
             </label>
             </c:forEach>
         </div>

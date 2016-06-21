@@ -75,4 +75,6 @@ public interface PfUserUpgradeNoticeMapper {
      */
     List<PfUserUpgradeNotice> selectAllSubByStatusAndPid(@Param("status") Integer status,
                                                          @Param("userPid") Long userPid);
+
+    List<PfUserUpgradeNotice> selectBySkuIdAndRebateALLType(@Param("skuId") Integer skuId,@Param("userId") Long userId);
 }

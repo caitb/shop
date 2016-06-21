@@ -312,4 +312,17 @@
         WHERE status = #{status,jdbcType=INTEGER}
         AND user_pid = #{userPid,jdbcType=BIGINT}
     </select>
+
+    <select id="selectBySkuIdAndRebateALLType" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
+        b.status, b.pf_border_id, b.remark, b.up_status
+        from pf_user_rebate a
+        left join pf_user_upgrade_notice b ON a.user_upgrade_notice_id = b.id
+        where 1=1
+        <if test="skuId != null">
+            AND b.sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+            AND (a.user_pid = #{userId,jdbcType=BIGINT} OR a.user_id = #{userId,jdbcType=BIGINT})
+        ORDER BY b.up_status desc
+    </select>
 </mapper>

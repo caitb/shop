@@ -486,10 +486,13 @@ public class AgentUpGradeController extends BaseController {
         try {
             if (upAgentLevel.intValue() == upgradeLevel.intValue()){
                 UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+                PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),upGradeInfoPo.getWishAgentId());
+                if (pfSkuAgent.getIsUpgrade().intValue() == 1){
+                    logger.info("查询上级用户信息");
+                    ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
+                    upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgrade/upgradeInfo/lower?tabId=0");
+                }
                 upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-                logger.info("查询上级用户信息");
-                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgrade/upgradeInfo/lower?tabId=0");
             }
         }catch (Exception e){
             e.printStackTrace();

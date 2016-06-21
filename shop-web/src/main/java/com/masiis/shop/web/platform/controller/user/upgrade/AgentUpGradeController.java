@@ -296,6 +296,7 @@ public class AgentUpGradeController extends BaseController {
         ComUser former = userService.getUserById(upgradeNotice.getUserPid());
         mv.addObject("former",former.getRealName());
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
+        mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mv.addObject("createTime",sdf.format(upGradeInfoPo.getCreateTime()));
         mv.setViewName("platform/user/upgrade/upGradeInformationNewUp");

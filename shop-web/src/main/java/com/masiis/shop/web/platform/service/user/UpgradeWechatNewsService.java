@@ -45,10 +45,14 @@ public class UpgradeWechatNewsService {
         param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         WxPFNoticeUtils.getInstance().upgradePaySuccessNotice(comUser,param);
         //给上级发送微信
+        logger.info("发送微信通知---原上级-------"+upgradeDetail.getOldPUserId());
+        logger.info("发送微信通知---新上级-------"+pfBorder.getUserPid());
         if (pfBorder.getUserPid().equals(upgradeDetail.getOldPUserId())){
             //上级没变化
+            logger.info("发送微信通知-----------上级没变化");
         }else{
             //上级变化
+            logger.info("发送微信通知-----------上级变化");
             //给原上级发微信
             String[] _param = new String[4];
             _param[0] = comUser.getRealName();

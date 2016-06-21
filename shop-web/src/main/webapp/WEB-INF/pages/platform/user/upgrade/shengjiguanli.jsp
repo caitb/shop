@@ -49,7 +49,7 @@
             <label class="level1">
                 <b></b>
                 <select id="level1" class="search">
-                    <%--<option value="">全部</option>--%>
+                    <option value="">全部</option>
                     <option value="0">获得返利</option>
                     <option value="1">支付返利</option>
                 </select>

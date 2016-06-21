@@ -103,6 +103,16 @@ public class UpgradeNoticeService {
     }
 
     /**
+     * 一次性返利<支付的返利,获得的返利>
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<PfUserRebate> getPfUserRebateByUserPIdOrUserId(Long userId) throws Exception{
+        return pfUserRebateMapper.selectByUserPIdOrUserId(userId);
+    }
+
+    /**
      * jjh
      * 根据主键获取申请信息
      * @param id
@@ -135,6 +145,10 @@ public class UpgradeNoticeService {
      */
     public List<PfUserUpgradeNotice> getPfUserUpGradeInfoByRebateAndSkuId(Integer skuId, Long userPid, Long userId) {
         return pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, userPid, userId);
+    }
+
+    public List<PfUserUpgradeNotice> getPfUserUpGradeInfoByALLRebateAndSkuId(Integer skuId,Long userId) {
+        return pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateALLType(skuId, userId);
     }
 
     public String coverCodeByMyUpgrade(Integer upStatus) {

@@ -42,9 +42,11 @@
                     请选择产品
                 </p>
             </div>
-            <button onclick="blackShow()">
-                下一步
-            </button>
+            <div class="nextbutton" style="display: none">
+                <button onclick="blackShow()">
+                    下一步
+                </button>
+            </div>
         </main>
     </div>
     <div class="black">

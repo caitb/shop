@@ -208,6 +208,7 @@ public class BUpgradePayService {
                     log.info("插入商品历史表成功----修改商品关系---失败");
                 }
             } else {
+                log.info("插入商品历史表成功----失败");
                 throw new BusinessException("");
             }
         }
@@ -229,7 +230,9 @@ public class BUpgradePayService {
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
         if (pfUserSku != null) {
+            log.info("---修改商品的代理关系-----用户原上级-----userId----"+userPid+"-----skuId----"+skuId);
             PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
+            log.info("期望等级----"+agentLevelId+"-----原上级等级------"+parentPfUserSku.getAgentLevelId());
             if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())) {
                 Integer parent_id = 0;
                 Long parent_userPid = 0l;
@@ -239,6 +242,7 @@ public class BUpgradePayService {
                     parent_id = parentPfUserSku.getId();
                     parent_userPid = parentPfUserSku.getUserId();
                     parent_treeCode = parentPfUserSku.getTreeCode();
+                    log.info("父级的treeCode-----"+parent_treeCode);
                     parent_treeLevel = parentPfUserSku.getTreeLevel();
                 }
                 pfUserSku.setPid(parent_id);
@@ -258,16 +262,21 @@ public class BUpgradePayService {
                 Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
                 Integer treeLevel = pfUserSku.getTreeLevel() - parent_treeLevel - 1;
                 if (treeLevel < 0) {
+                    log.info("树结构更换只能挂在高于自己的树枝");
                     throw new BusinessException("树结构更换只能挂在高于自己的树枝");
                 }
+                log.info("父级的treeCode-----"+parent_treeCode);
                 i = pfUserSkuService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
                 if (i <= 0) {
+                    log.info("分销关系树结构修改失败");
                     throw new BusinessException("分销关系树结构修改失败");
                 }
             } else {
+                log.info("同等级不能合伙");
                 throw new BusinessException("同等级不能合伙");
             }
         } else {
+            log.info("pfUserSku不能为空");
             throw new BusinessException("pfUserSku不能为空");
         }
         return i;

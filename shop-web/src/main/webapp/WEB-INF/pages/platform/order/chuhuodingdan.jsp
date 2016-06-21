@@ -76,10 +76,11 @@
                                     未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
+                                    <span>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 0}">代理</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 1}">补货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 2}">拿货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 3}">升级</c:if>
                                     </span>
                                 </h1>
                             <div class="ding">
@@ -126,10 +127,11 @@
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                         <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
+                                    <span>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 0}">代理</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 1}">补货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 2}">拿货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 3}">升级</c:if>
                                     </span>
                                     </h1>
                                     <div class="ding">
@@ -177,10 +179,11 @@
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
+                                    <span>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 0}">代理</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 1}">补货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 2}">拿货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 3}">升级</c:if>
                                     </span>
                                 </h1>
                                 <div class="ding">
@@ -369,10 +372,11 @@
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
+                                    <span>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 0}">代理</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 1}">补货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 2}">拿货</c:if>
+                                    <c:if test="${borderDetail.pfBorder.orderType  == 3}">升级</c:if>
                                     </span>
                                 </h1>
                                 <div class="ding">

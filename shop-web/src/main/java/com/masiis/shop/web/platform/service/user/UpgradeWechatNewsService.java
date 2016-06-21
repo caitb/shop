@@ -7,6 +7,8 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderPayment;
+import com.masiis.shop.dao.po.PfBorderRecommenReward;
+import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 代理升级微信消息通知Service
@@ -24,6 +27,8 @@ public class UpgradeWechatNewsService {
     private Logger logger = Logger.getLogger(UpgradeWechatNewsService.class);
     @Resource
     private UserService comUserService;
+    @Resource
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     
 
     /**
@@ -54,9 +59,9 @@ public class UpgradeWechatNewsService {
             //上级变化
             logger.info("发送微信通知-----------上级变化");
             //给原上级发微信
-            String[] _param = new String[4];
+            String[] _param = new String[1];
             _param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,false);
+            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,true);
             //给新的上级发
             WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),url);
         }

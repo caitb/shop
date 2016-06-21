@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * BOrderAddService
@@ -71,5 +72,9 @@ public class PfBorderRecommenRewardService {
 
     public PfBorderRecommenReward getRewardByOrderIdAndOrderItemIdAndSkuId(Long orderId,Long orderItemId,Integer skuId){
         return pfBorderRecommenRewardMapper.getRewardByOrderIdAndOrderItemIdAndSkuId(orderId,orderItemId,skuId);
+    }
+
+    public List<PfBorderRecommenReward> selectByPfBorderId(Long orderId){
+        return pfBorderRecommenRewardMapper.selectByPfBorderId(orderId);
     }
 }

@@ -50,7 +50,8 @@ public class UserUpgradeNoticeController extends BaseController {
      * @return
      */
     @RequestMapping("/lower")
-    public ModelAndView myUpgradeNoticeInfo(HttpServletRequest request,HttpServletResponse response){
+    public ModelAndView myUpgradeNoticeInfo(HttpServletRequest request,HttpServletResponse response,
+                                            @RequestParam(value = "tabId", required = true) Integer tabId){
         ModelAndView mv = new ModelAndView("/platform/user/upgrade/shengjiguanli");
         try {
             ComUser comUser = getComUser(request);
@@ -93,6 +94,7 @@ public class UserUpgradeNoticeController extends BaseController {
                 }
             }
             mv.addObject("pfUserUpGradeInfoList",pfUserUpGradeInfoList);
+            mv.addObject("tabId",tabId);
         }catch (Exception e){
             log.info(e.getMessage());
             throw new BusinessException(e.getMessage());
@@ -237,10 +239,12 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
                         if (rebateType == 0) {
-                            pfUserUpGradeInfo.setComUser(comUser);
+                            pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
+                            pfUserUpGradeInfo.setRealName(comUser.getRealName());
                             pfUserUpGradeInfo.setStatusValue("获得返利");
                         } else {
-                            pfUserUpGradeInfo.setComUser(userService.getUserById(pfUserUpgradeNotice.getUserId()));
+                            pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                            pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                             pfUserUpGradeInfo.setStatusValue("支付返利");
                         }
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());

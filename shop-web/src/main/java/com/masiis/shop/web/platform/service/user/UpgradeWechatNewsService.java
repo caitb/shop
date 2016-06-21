@@ -38,7 +38,8 @@ public class UpgradeWechatNewsService {
      * @return
      */
     public Boolean upgradeOrderPaySuccessSendWXNotice(PfBorder pfBorder, PfBorderPayment pfBorderPayment,BOrderUpgradeDetail upgradeDetail){
-        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        String newPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgradeInfo.shtmll?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         //给升级人发微信
         ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
@@ -62,9 +63,9 @@ public class UpgradeWechatNewsService {
             //给原上级发微信
             String[] _param = new String[1];
             _param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,true);
+            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,oldPuserUrl,true);
             //给新的上级发
-            WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),url);
+            WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),newPuserUrl);
         }
         return true;
     }

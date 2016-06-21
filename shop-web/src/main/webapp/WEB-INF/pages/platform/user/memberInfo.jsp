@@ -35,7 +35,7 @@
                 <span>进货次数</span>
             </p>
             <p>
-                <span>${memberMap.totalAmount}</span>
+                <span>￥${memberMap.totalAmount}</span>
                 <span>进货总额</span>
             </p>
             <p>

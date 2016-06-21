@@ -32,7 +32,7 @@
                 <span>总人数</span>
             </p>
             <p>
-                <span>${totalSales}</span>
+                <span>￥${totalSales}</span>
                 <span>总销售额</span>
             </p>
         </div>

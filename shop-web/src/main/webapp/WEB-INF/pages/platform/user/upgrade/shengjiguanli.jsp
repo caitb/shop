@@ -45,7 +45,7 @@
             </label>
         </div>
         <div id="fanli" style="display: none;">
-            <span>类型：</span>
+            <span>状态：</span>
             <label class="level1">
                 <b></b>
                 <select id="level1" class="search">

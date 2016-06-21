@@ -21,4 +21,8 @@ public class PfUserRebateService {
     public int insert(PfUserRebate po){
         return pfUserRebateMapper.insert(po);
     }
+
+    public PfUserRebate selectByupgradeId(Long upgradeId){
+        return pfUserRebateMapper.selectByUpgradeId(upgradeId);
+    }
 }

@@ -149,6 +149,7 @@ public class DevelopingController extends BaseController {
             comUser = getComUser(request);
             PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), skuId);
             List<Integer> levelIds = pfSkuAgentMapper.selectLevelIdsBySkuIdAndIsShow(skuId, 1);
+            List<PfSkuAgent> skuAgents = pfSkuAgentMapper.selectAllBySkuId(skuId);
 
         /* 删除高于comUser代理的等级id */
             for(int i=0; i<levelIds.size(); i++){
@@ -159,6 +160,7 @@ public class DevelopingController extends BaseController {
 
             List<ComAgentLevel> comAgentLevels = comAgentLevelMapper.selectByIds(levelIds);
             mav.addObject("comAgentLevels", comAgentLevels);
+            mav.addObject("skuAgents", skuAgents);
             mav.addObject("skuId", skuId);
             mav.addObject("agentLevelId", pfUserSku.getAgentLevelId());
         } catch (Exception e) {

@@ -2,21 +2,16 @@ package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfSkuAgent;
-import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.PfUserSkuService;
-import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
-import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -248,6 +243,21 @@ public class AgentUpGradeController extends BaseController {
         }
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+        logger.info("根据处理获取升级后的上级信息");
+        logger.info("---------------------upstatus="+upGradeInfoPo.getUpStatus()+"------------------------");
+        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Upgrade.getCode().intValue()){
+            mv.addObject("newUp",upGradeInfoPo.getApplyPName());
+        }
+        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode().intValue()){
+            //选择暂不升级，查询当前上级的上级代理
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
+            if (pfUserSku.getUserPid().longValue() == 0){
+                mv.addObject("newUp","平台");
+            }else {
+                ComUser user = userService.getUserById(pfUserSku.getUserPid());
+                mv.addObject("newUp",user.getRealName());
+            }
+        }
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
         cal.setTime(upGradeInfoPo.getCreateTime());
@@ -287,14 +297,15 @@ public class AgentUpGradeController extends BaseController {
         if (pfUserSku == null){
             throw new BusinessException("代理等级信息有误");
         }
-        if (pfUserSku.getUserPid().longValue() != comUser.getId()){
-            logger.info("申请人不是当前用户下级");
-            throw new BusinessException("代理关系有误");
-        }
+
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+        //原上级
         ComUser former = userService.getUserById(upgradeNotice.getUserPid());
         mv.addObject("former",former.getRealName());
+        //新上级
+        ComUser user = userService.getUserById(pfUserSku.getUserPid());
+        mv.addObject("newUp",user.getRealName());
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

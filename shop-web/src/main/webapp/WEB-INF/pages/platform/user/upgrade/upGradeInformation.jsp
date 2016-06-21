@@ -37,6 +37,14 @@
                     <span>${upGradeInfoPo.applyName}</span>
                 </p>
                 <p>
+                    <span>原上級：</span>
+                    <span>${upGradeInfoPo.applyPName}</span>
+                </p>
+                <p>
+                    <span>新上级：</span>
+                    <span>${newUp}</span>
+                </p>
+                <p>
                     <span>原等级：</span>
                     <span>${upGradeInfoPo.orgAgentName}</span>
                 </p>
@@ -46,7 +54,7 @@
                 </p>
                 <p>
                     <span>状态：</span>
-                    <span>${status}</span>
+                    <span id="status">${status}</span>
                 </p>
                 <p>
                     <span>申请时间：</span>
@@ -73,6 +81,18 @@
                     <p>
                         您已选择我要升级，请去<a href="${basePath}upgradeInfo/lower?tabId=0">我的申请</a>里查看升级单
                     </p>
+                </c:if>
+                <c:if test="${upGradeInfoPo.upStatus == 1}">
+                    <c:if test="${upGradeInfoPo.applyStatus == 1 || upGradeInfoPo.applyStatus == 2}">
+                        <p>
+                            您已选择暂不升级，您的下级将会与您解除关系。您可以获得一次性奖励
+                        </p>
+                    </c:if>
+                    <c:if test="${upGradeInfoPo.applyStatus == 3}">
+                        <p>
+                            您选择的是暂不升级，您的下级已经升级成功
+                        </p>
+                    </c:if>
                 </c:if>
             </div>
         </main>

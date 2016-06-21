@@ -85,7 +85,7 @@ public class UpgradeWechatNewsService {
      */
     public boolean subLineUpgradeApplyNotice(ComUser comUser,UpGradeInfoPo upGradeInfoPo, String url){
         logger.info("------------------------------您有一个代理申请升级----------------------------------");
-        String[] param = new String[4];
+        String[] param = new String[5];
         param[0] = upGradeInfoPo.getApplyName();
         param[1] = upGradeInfoPo.getOrgAgentName();
         param[2] = upGradeInfoPo.getWishAgentName();

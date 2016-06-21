@@ -4,11 +4,14 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.user.ComAgentLevelService;
+import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
+import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,12 @@ public class BOrderPayEndMessageService {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     PfBorderRecommenRewardService pfBorderRecommenRewardService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
+    @Resource
+    private PfUserUpgradeNoticeService userUpgradeNoticeService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
 
     /**
      * 支付完成推送消息
@@ -75,6 +84,20 @@ public class BOrderPayEndMessageService {
                     pushMessageSupplementAndSendTypeI(comUser, pfBorder, pfBorderItems, numberFormat);
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+                }
+            }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+                //支付完成推送消息(发送失败不回滚事务)
+                try {
+                    //发送微信通知
+                    PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+                    BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
+                    Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccessSendWXNotice(pfBorder, pfBorderPayment, upgradeDetail);
+                    if (!bl){
+                        logger.info("升级支付完发送消息失败");
+                        throw new Exception("升级支付完发送消息失败");
+                    }
+                } catch (Exception ex) {
+                    logger.info("升级支付完发送消息失败");
                 }
             }
         }

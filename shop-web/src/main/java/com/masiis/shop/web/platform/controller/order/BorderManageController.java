@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -428,6 +429,7 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index", index);
         modelAndView.addObject("pfBorders", pfBorders);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;
     }
@@ -500,6 +502,7 @@ public class BorderManageController extends BaseController {
             request.getSession().setAttribute("comShipMans", comShipMans);
         }
         modelAndView.addObject("index", index);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }
@@ -559,6 +562,7 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("stockNum", stockNum);
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("borderDetail", borderDetail);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuoxiangqing");
         return modelAndView;
     }
@@ -600,6 +604,7 @@ public class BorderManageController extends BaseController {
         List<ComShipMan> comShipMans = comShipManService.list();
         modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("borderDetail", borderDetail);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/chuhuoxiangqing");
         return modelAndView;
     }

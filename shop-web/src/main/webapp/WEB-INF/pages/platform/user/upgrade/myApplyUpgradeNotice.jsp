@@ -26,11 +26,19 @@
                     <span>${upGradeInfoPo.applyName}</span>
                 </p>
                 <p>
-                    <span>原等级：</span>
+                    <span>原上級：</span>
+                    <span>${upGradeInfoPo.applyPName}</span>
+                </p>
+                <p>
+                    <span>新上级：</span>
+                    <span>${curPName}</span>
+                </p>
+                <p>
+                    <span>当前等级：</span>
                     <span>${upGradeInfoPo.orgAgentName}</span>
                 </p>
                 <p>
-                    <span>升级后等级：</span>
+                    <span>申请等级：</span>
                     <span>${upGradeInfoPo.wishAgentName}</span>
                 </p>
                 <p>

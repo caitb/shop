@@ -56,7 +56,7 @@ public class UpgradeWechatNewsService {
             //给原上级发微信
             String[] _param = new String[1];
             _param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,false);
+            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,url,true);
             //给新的上级发
             WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),url);
         }

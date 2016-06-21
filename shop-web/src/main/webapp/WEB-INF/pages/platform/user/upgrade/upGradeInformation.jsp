@@ -37,6 +37,14 @@
                     <span>${upGradeInfoPo.applyName}</span>
                 </p>
                 <p>
+                    <span>原上級：</span>
+                    <span>${upGradeInfoPo.applyPName}</span>
+                </p>
+                <p>
+                    <span>新上级：</span>
+                    <span>${newUp}</span>
+                </p>
+                <p>
                     <span>原等级：</span>
                     <span>${upGradeInfoPo.orgAgentName}</span>
                 </p>
@@ -46,7 +54,7 @@
                 </p>
                 <p>
                     <span>状态：</span>
-                    <span>${status}</span>
+                    <span id="status">${status}</span>
                 </p>
                 <p>
                     <span>申请时间：</span>

@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserRebate;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface PfUserRebateMapper {
@@ -24,4 +26,6 @@ public interface PfUserRebateMapper {
     List<PfUserRebate> selectByUserId(Long userPid);
 
     List<PfUserRebate> selectByUserPId(Long userPid);
+
+    PfUserRebate selectByUpgradeId(@Param("upgradeId") Long upgradeId);
 }

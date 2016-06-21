@@ -243,12 +243,15 @@ public class AgentUpGradeController extends BaseController {
         }
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-        logger.info("根据处理获取升级后的上级信息");
-        logger.info("---------------------upstatus="+upGradeInfoPo.getUpStatus()+"------------------------");
-        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Upgrade.getCode().intValue()){
+        logger.info("根据处理获取升级后的上级信息 begin");
+        logger.info("---------------------status="+upGradeInfoPo.getApplyStatus()+"------------------------");
+        if (upGradeInfoPo.getApplyStatus() == UpGradeStatus.STATUS_Untreated.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
             mv.addObject("newUp",upGradeInfoPo.getApplyPName());
         }
-        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode().intValue()){
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
             //选择暂不升级，查询当前上级的上级代理
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
             if (pfUserSku.getUserPid().longValue() == 0){
@@ -258,6 +261,7 @@ public class AgentUpGradeController extends BaseController {
                 mv.addObject("newUp",user.getRealName());
             }
         }
+        logger.info("根据处理获取升级后的上级信息 end");
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
         cal.setTime(upGradeInfoPo.getCreateTime());
@@ -380,12 +384,15 @@ public class AgentUpGradeController extends BaseController {
         if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
             throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
         }
-        logger.info("根据处理获取升级后的上级信息");
-        logger.info("---------------------upstatus="+upGradeInfoPo.getUpStatus()+"------------------------");
-        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Upgrade.getCode().intValue()){
+        logger.info("根据处理获取升级后的上级信息 begin");
+        logger.info("---------------------status="+upGradeInfoPo.getApplyStatus()+"------------------------");
+        if (upGradeInfoPo.getApplyStatus() == UpGradeStatus.STATUS_Untreated.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
             mv.addObject("newUp",upGradeInfoPo.getApplyPName());
         }
-        if (upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode().intValue()){
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
             //选择暂不升级，查询当前上级的上级代理
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
             if (pfUserSku.getUserPid().longValue() == 0){
@@ -395,6 +402,7 @@ public class AgentUpGradeController extends BaseController {
                 mv.addObject("newUp",comUser.getRealName());
             }
         }
+        logger.info("根据处理获取升级后的上级信息 end");
         logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
         ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

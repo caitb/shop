@@ -65,7 +65,13 @@
                     <fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><c:forEach items="${borderDetail.pfBorderPayments}" var="pp"> <span>${pp.payTypeName}</span></c:forEach></p>
                 <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台发货</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></p>
-                <p><span>类　　型：</span><c:if test="${borderDetail.pfBorder.orderType==0}">下级合伙订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">下级补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></p>
+                <p>类    型：<span>
+                            <c:if test="${borderDetail.pfBorder.orderType  == 0}">代理</c:if>
+                            <c:if test="${borderDetail.pfBorder.orderType  == 1}">补货</c:if>
+                            <c:if test="${borderDetail.pfBorder.orderType  == 2}">拿货</c:if>
+                            <c:if test="${borderDetail.pfBorder.orderType  == 3}">升级</c:if>
+                            </span>
+                </p>
                 <p><span>物流状态：</span>
                     <c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}">
                         <span>已完成</span>

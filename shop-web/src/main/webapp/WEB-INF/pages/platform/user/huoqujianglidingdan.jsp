@@ -23,6 +23,20 @@
                   <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>获取奖励订单</p>
         </header>
+       <div class="sel">
+           <div>
+               <span>商品：</span>
+               <label for="goods" class="goods">
+                   <b></b>
+                   <select id="goods" class="myValue">
+                       <option value="">全部</option>
+                       <c:forEach items="${agentSkus}" var="sku">
+                           <option value="${sku.id}">${sku.name}</option>
+                       </c:forEach>
+                   </select>
+               </label>
+           </div>
+       </div>
         <main>
             <c:forEach items="${pfBorders}" var="pfBorders">
             <div class="floor">
@@ -72,6 +86,16 @@
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script>
+        $(document).ready(function(){
+            var goodsWidth=$(".goods").width();
+            $(".goods b").html($("#goods option:selected").text());
+            $("#goods").width(goodsWidth);
+        })
+        $("#goods").on("change",function(){
+            var tabVal=$("#goods option:selected").text();
+            $(".goods b").html(tabVal);
+        })
+
         function blackShow(a,b,c,d){
             $(".black").show();
             if(d==1){

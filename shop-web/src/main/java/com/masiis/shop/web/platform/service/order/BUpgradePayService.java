@@ -82,14 +82,14 @@ public class BUpgradePayService {
         log.info("插入订单操作日志------start");
         insertOrderOperationLog(pfBorder);
         log.info("插入订单操作日志------end");
-        //修改上下级绑定关系和插入历史表
-        log.info("修改上下级关系插入历史-------start");
-        inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
-        log.info("修改上下级关系插入历史-------end");
         //修改证书和插入证书历史表
         log.info("修改证书插入历史-----start");
         inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(), pfBorderItems, null, rootPath);
         log.info("修改证书插入历史-----end");
+        //修改上下级绑定关系和插入历史表
+        log.info("修改上下级关系插入历史-------start");
+        inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
+        log.info("修改上下级关系插入历史-------end");
         //修改冻结库存
         log.info("修改冻结库存----start");
         updateFrozenStock(pfBorder, pfBorderItems);
@@ -239,17 +239,13 @@ public class BUpgradePayService {
                     log.info("父级的treeCode-----"+parent_treeCode);
                     parent_treeLevel = parentPfUserSku.getTreeLevel();
                 }
-                PfUserCertificate certificateInfo = new PfUserCertificate();
-                Calendar calendar = Calendar.getInstance();
-                certificateInfo.setSkuId(pfUserSku.getSkuId());
-                certificateInfo.setUserId(pfUserSku.getUserId());
-                certificateInfo.setBeginTime(calendar.getTime());
-                calendar.set(Calendar.MONTH, 11);
-                calendar.set(Calendar.DAY_OF_MONTH, 31);
-                certificateInfo.setEndTime(calendar.getTime());
-                certificateInfo.setAgentLevelId(orderItem.getAgentLevelId());
-                certificateInfo.setStatus(1);
-                pfUserSku.setCode(pfUserCertificateService.getCertificateCode(certificateInfo));
+                PfUserCertificate certificateInfo = pfUserCertificateService.selectByUserSkuId(pfUserSku.getId());
+                if (certificateInfo!=null){
+                    log.info("证书编码code--------"+certificateInfo.getCode());
+                    pfUserSku.setCode(certificateInfo.getCode());
+                }else{
+                    log.info("根据pfuserskuId-----"+pfUserSku.getId()+"-----查询证书失败");
+                }
                 pfUserSku.setPid(parent_id);
                 pfUserSku.setUserPid(parent_userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);

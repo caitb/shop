@@ -99,7 +99,7 @@
         </nav>
         <nav>
             <ul>
-                <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower">
+                <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower?tabId=0">
                     <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
                     </h1>
                     <span>升级管理</span></a>

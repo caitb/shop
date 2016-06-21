@@ -18,14 +18,18 @@ main .floor p {
   margin: 0 10px;
   border-bottom: 1px solid #f6f6f6;
   padding: 10px 0 10px 15px;
-  color: #666;
+  display: -webkit-box;
+  -webkit-box-align:center;
 }
 main .floor p span {
-  margin-left: 3em;
+  display: block;
+  color: #666;
+  width:100px;
+}
+main .floor p span:last-child{
+  width:150px;
+  margin-left:15px;
   color: #333;
-  width: 130px;
-  display: inline-block;
-  line-height: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

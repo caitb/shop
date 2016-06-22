@@ -94,6 +94,7 @@ public class BOrderPayEndMessageService {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
             }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+                logger.info("未进入排单----升级订单发送短信-------");
                 //支付完成推送消息(发送失败不回滚事务)
                 try {
                     //发送微信通知

@@ -511,13 +511,14 @@ public class AgentUpGradeController extends BaseController {
             UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
             PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),upGradeInfoPo.getWishAgentId());
             if (pfSkuAgent.getIsUpgrade().intValue() == 1){
-                logger.info("查询上级用户信息");
+                logger.info("-----------------------------上级可以升级---------------------------------");
                 ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
                 boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
                 jsonObject.put("upBoolean",upBoolean);
                 boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 jsonObject.put("applyBoolean",applyBoolean);
             }else {
+                logger.info("-----------------------------上级不可以升级---------------------------------");
                 boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 jsonObject.put("applyBoolean",applyBoolean);
             }

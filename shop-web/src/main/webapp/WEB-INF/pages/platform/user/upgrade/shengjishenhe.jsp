@@ -65,22 +65,26 @@
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 </body>
 <script>
+    var promise =  $.Deferred().promise();
     function skipGenerateOrder(upgradeNoticeId){
-        $.ajax({
-            type:"POST",
-            url : "${path}/BOrderAdd/upgradeInsertOrder.do",
-            data:"upgradeNoticeId="+upgradeNoticeId,
-            dataType:"Json",
-            success:function(data){
-                if (data.isError == false) {
-                    if (data.isRedirect == true){
-                        window.location.href = "${basePath}"+data.redirectUrl;
-                    }else{
-                        window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+        if (promise.state()=="pending"){
+            $.ajax({
+                type:"POST",
+                url : "${path}/BOrderAdd/upgradeInsertOrder.do",
+                data:"upgradeNoticeId="+upgradeNoticeId,
+                dataType:"Json",
+                success:function(data){
+                    if (data.isError == false) {
+                        if (data.isRedirect == true){
+                            window.location.href = "${basePath}"+data.redirectUrl;
+                        }else{
+                            window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        promise.then()
     }
 </script>
 </html>

@@ -39,4 +39,8 @@ public class PfUserUpgradeNoticeService {
         return noticeMapper.selectByUserPidAndStatus(userPid,status);
     }
 
+    public List<PfUserUpgradeNotice> selectByUserPidAndInStatus(Long userPid,List<Integer> statusList){
+        return noticeMapper.selectByUserPidAndInStatus(userPid,statusList);
+    }
+
 }

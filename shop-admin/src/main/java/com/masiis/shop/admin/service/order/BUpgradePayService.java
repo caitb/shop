@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -556,9 +557,17 @@ public class BUpgradePayService {
      */
     private void updateAllLowerNotice(Long userId) {
         log.info("修改所有下级为处理中的状态-----父id----" + userId);
-        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
+        List<Integer> statusList = new ArrayList<Integer>();
+        statusList.add(UpGradeStatus.STATUS_Untreated.getCode());
+        statusList.add(UpGradeStatus.STATUS_Processing.getCode());
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndInStatus(userId, statusList);
+        if (notices!=null){
+            log.info("下级的人数--------"+notices.size());
+        }else {
+            log.info("下级人数为null");
+        }
         for (PfUserUpgradeNotice notice : notices) {
-            log.info("下级id-------" + notice.getUserId());
+            log.info("下级id-------" + notice.getUserId()+"-----下级的状态status----"+notice.getStatus());
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);

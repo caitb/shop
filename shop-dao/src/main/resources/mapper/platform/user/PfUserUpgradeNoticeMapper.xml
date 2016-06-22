@@ -114,6 +114,18 @@
         AND status = #{status,jdbcType=INTEGER}
     </select>
 
+    <select id="selectByUserPidAndInStatus" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        AND status IN
+        <foreach collection="statusList" open="(" separator="," close=")" item="status" index="index">
+            #{status}
+        </foreach>
+    </select>
+
+
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
         status, update_time, pf_border_id, remark, up_status

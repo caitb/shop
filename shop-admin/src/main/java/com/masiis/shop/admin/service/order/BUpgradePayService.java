@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -556,7 +557,10 @@ public class BUpgradePayService {
      */
     private void updateAllLowerNotice(Long userId) {
         log.info("修改所有下级为处理中的状态-----父id----" + userId);
-        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
+        List<Integer> statusList = new ArrayList<Integer>();
+        statusList.add(UpGradeStatus.STATUS_Untreated.getCode());
+        statusList.add(UpGradeStatus.STATUS_Processing.getCode());
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndInStatus(userId, statusList);
         for (PfUserUpgradeNotice notice : notices) {
             log.info("下级id-------" + notice.getUserId());
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());

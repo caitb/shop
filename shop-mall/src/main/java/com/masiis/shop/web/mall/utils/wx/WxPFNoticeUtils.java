@@ -544,7 +544,7 @@ public class WxPFNoticeUtils {
      * @param params (1,订单名称(可传商品名称);2,订单价格;3,订单数量;4,订单类型;5,订单状态)
      * @return  返回是否成功调用
      */
-    public Boolean dealWithOrderInQueueByUp(ComUser user, String[] params) {
+    public Boolean dealWithOrderInQueueByUp(ComUser user, String[] params, String url) {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
@@ -559,6 +559,7 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        req.setUrl(url);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

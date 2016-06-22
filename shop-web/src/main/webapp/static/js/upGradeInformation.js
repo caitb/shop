@@ -20,7 +20,8 @@ $(".que_que").on("click",function(){
                     blackHide();
                     $("#floor3").html("").append("<h1>您已选择暂不升级，您的下级将会与您解除关系。您可以获得一次性奖励</h1>");
                     $("#floor2").html("");
-                    $("status").text("待支付");
+                    $("status").text(data.status);
+                    //var newUp = data.newUp;
                     notUpgradeMessage(upgradeId);
                 }else {
                     alert(data.message);

@@ -279,7 +279,7 @@ public class AgentUpGradeController extends BaseController {
         }
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+//        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
         logger.info("根据处理获取升级后的上级信息 end");
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
@@ -495,7 +495,7 @@ public class AgentUpGradeController extends BaseController {
                 if (pfSkuAgent.getIsUpgrade().intValue() == 1){
                     logger.info("查询上级用户信息");
                     ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                    upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgrade/upgradeInfo/lower?tabId=0");
+                    upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
                 }
                 upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
             }

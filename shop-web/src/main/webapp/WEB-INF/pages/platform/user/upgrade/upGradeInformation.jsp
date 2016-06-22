@@ -41,10 +41,6 @@
                     <span>${upGradeInfoPo.applyPName}</span>
                 </p>
                 <p>
-                    <span>新上级：</span>
-                    <span>${newUp}</span>
-                </p>
-                <p>
                     <span>原等级：</span>
                     <span>${upGradeInfoPo.orgAgentName}</span>
                 </p>

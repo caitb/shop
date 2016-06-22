@@ -96,7 +96,7 @@
                     </p>
                 </div>
             </a>
-            <a href="${basePath}userCertificate/userList/${pfBorder.userId}">
+            <a href="${basePath}userCertificate/userList/${comUser.id}">
                 <div class="sec1">
                     <img src="${path}/static/images/zs%20(2).png" alt="">
                     <p>

@@ -57,6 +57,11 @@ public class UpgradeWechatNewsService {
         if (pfBorder.getUserPid().equals(upgradeDetail.getOldPUserId())){
             //上级没变化
             logger.info("发送微信通知-----------上级没变化");
+            String[] _param = new String[3];
+            _param[0] = comUser.getRealName();
+            _param[1] = upgradeDetail.getApplyAgentLevel()+"";
+            _param[2] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+            WxPFNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser,param,oldPuserUrl);
         }else{
             //上级变化
             logger.info("发送微信通知-----------上级变化");

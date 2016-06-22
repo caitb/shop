@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/lingquzhengshu.css">
+    <link rel="stylesheet" href="${path}/static/css/upGrade/upgradePaySuccess.css">
 </head>
 <body>
 <div id="fakeLoader"></div>
@@ -92,7 +92,6 @@
                     <img src="${path}/static/images/zs%20(3).png" alt="">
                     <p>
                         <span>返回市场</span>
-                        <span>继续查看感兴趣的商品</span>
                     </p>
                 </div>
             </a>
@@ -101,7 +100,6 @@
                     <img src="${path}/static/images/zs%20(2).png" alt="">
                     <p>
                         <span>查看授权书</span>
-                        <span>查看您的商品授权书</span>
                     </p>
                 </div>
             </a>

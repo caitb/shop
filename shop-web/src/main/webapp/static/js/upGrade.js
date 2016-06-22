@@ -111,6 +111,10 @@ $(".que_que").on("click",function(){
     });
 });
 
+/**
+ * 升级申请成功发送微信消息
+ * @param keyProperty
+ */
 function upgradeApplySubmitNotice(keyProperty){
     var upgradeLevel = $("#upgradeLevel").val();
     var upAgentLevel = $("#upAgentLevel").val();

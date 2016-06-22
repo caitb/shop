@@ -52,7 +52,7 @@ public class UpgradeWechatNewsService {
         String[] _param = new String[5];
         _param[0] = upgradeDetail.getSkuName();
         _param[1] = pfBorder.getPayAmount().toString();
-        _param[2] = pfBorder.getTotalQuantity()+"";
+        _param[2] = upgradeDetail.getQuantity()+"";
         _param[3] = pfBorderPayment.getPayTypeName();
         _param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().orderInQueue(comUser,_param);
@@ -79,8 +79,8 @@ public class UpgradeWechatNewsService {
      * @return
      */
     public Boolean upgradeOrderPaySuccessSendWXNotice(PfBorder pfBorder, PfBorderPayment pfBorderPayment,BOrderUpgradeDetail upgradeDetail){
-        String newPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
-        String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgradeInfo.shtmll?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        String newPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfo.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         //给升级人发微信
         ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
@@ -101,7 +101,7 @@ public class UpgradeWechatNewsService {
             _param[0] = comUser.getRealName();
             _param[1] = upgradeDetail.getApplyAgentLevel()+"";
             _param[2] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
-            WxPFNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser,param,oldPuserUrl);
+            WxPFNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser,_param,oldPuserUrl);
         }else{
             //上级变化
             logger.info("发送微信通知-----------上级变化");

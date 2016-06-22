@@ -273,14 +273,9 @@
 
                             function operateFormatter(value, row, index) {
                                 return [
-                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑',
-                                    '</a>',
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权',
-                                    //'<i class="glyphicon glyphicon-heart"></i>',
-                                    '</a>  ',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">冻结',
-                                    //'<i class="glyphicon glyphicon-remove"></i>',
-                                    '</a>'
+                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑</a>',
+                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权</a>  '
+//                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">冻结</a>'
                                 ].join('');
                             }
 
@@ -539,8 +534,10 @@
                 type: 'post',
                 data: $('#userForm').serialize(),
                 success: function (data) {
-                    alert(data);
-                    $('#addModal').modal('hide');
+                    if(data == 'success'){
+                        $table.bootstrapTable('refresh');
+                        $('#addModal').modal('hide');
+                    }
                 }
             });
         });

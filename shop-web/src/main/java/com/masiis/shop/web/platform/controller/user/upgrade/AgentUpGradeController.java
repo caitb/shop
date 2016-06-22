@@ -242,7 +242,10 @@ public class AgentUpGradeController extends BaseController {
         if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
             throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
         }
-        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
+            mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+        }
         logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
         ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

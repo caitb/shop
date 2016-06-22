@@ -38,11 +38,11 @@
             <div class="floor1">
                 <p>推荐人</p>
                 <div>
-                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommendList')">
+                    <p onclick="javascript:window.location.href = '<%=basePath%>myRecommend/myRecommendList';">
                         <span>${numByUserPid}</span>
                         <span>我推荐的人</span>
                     </p>
-                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/recommendGiveList')">
+                    <p onclick="javascript:window.location.href = '<%=basePath%>myRecommend/recommendGiveList';">
                         <span>${numByUserId}</span>
                         <span>帮我推荐的人</span>
                     </p>
@@ -51,11 +51,11 @@
             <div class="floor1 floor2">
                 <p>推荐人订单</p>
                 <div>
-                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/getRewardBorder')">
+                    <p onclick="javascript:window.location.href = '<%=basePath%>myRecommend/getRewardBorder';">
                         <span>${borders}</span>
                         <span>获得奖励订单</span>
                     </p>
-                    <p onclick="javascript:window.location.replace('<%=basePath%>myRecommend/sendRewardBorder')">
+                    <p onclick="javascript:window.location.href = '<%=basePath%>myRecommend/sendRewardBorder';">
                         <span>${pBorders}</span>
                         <span>发出奖励订单</span>
                     </p>

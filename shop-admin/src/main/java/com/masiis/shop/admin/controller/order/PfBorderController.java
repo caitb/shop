@@ -180,7 +180,7 @@ public class PfBorderController extends BaseController {
             }
 
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
-
+            log.info("线下支付测试金额入口--------amount-----"+borderPayment.getAmount().intValue());
             bOrderPayService.payBOrderOffline(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"), getPbUser(request));
             resultMap.put("result_code", "0");
             resultMap.put("result_msg", "确认收款成功!");

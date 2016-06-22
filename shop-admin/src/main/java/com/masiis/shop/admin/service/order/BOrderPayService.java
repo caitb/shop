@@ -191,7 +191,9 @@ public class BOrderPayService {
         } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 3) {
+            log.info("线下支付测试金额支付回调----start----amount-----"+pfBorderPayment.getAmount());
             upgradePayService.paySuccessCallBack(pfBorderPayment, outOrderId, rootPath);
+            log.info("线下支付测试金额支付回调----end----amount-----"+pfBorderPayment.getAmount());
         }else {
             throw new BusinessException("订单类型有误");
         }

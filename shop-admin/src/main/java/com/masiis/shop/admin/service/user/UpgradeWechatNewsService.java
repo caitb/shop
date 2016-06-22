@@ -70,6 +70,8 @@ public class UpgradeWechatNewsService {
      * @return
      */
     public Boolean upgradeOrderPaySuccessSendWXNotice(PfBorder pfBorder, PfBorderPayment pfBorderPayment,BOrderUpgradeDetail upgradeDetail){
+        logger.info("------订单id-------"+pfBorder.getId());
+        logger.info("------通知单id-------"+upgradeDetail.getUpgradeNoticeId());
         String newPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfo.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         //给升级人发微信

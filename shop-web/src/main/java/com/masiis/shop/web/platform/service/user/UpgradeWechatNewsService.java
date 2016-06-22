@@ -45,8 +45,7 @@ public class UpgradeWechatNewsService {
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
         ComUser oldUser = comUserService.getUserById(upgradeDetail.getOldPUserId());
         String[] param = new String[4];
-        param[0] = pfBorderPayment.getAmount().intValue()+"";
-        logger.info("支付金额---------"+pfBorderPayment.getAmount().intValue());
+        param[0] = pfBorderPayment.getAmount().toString();
         param[1] = pfBorderPayment.getPayTypeName();
         param[2] = "升级"+upgradeDetail.getApplyAgentLevelName();
         param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
@@ -89,7 +88,12 @@ public class UpgradeWechatNewsService {
         param[2]=upGradeInfoPo.getWishAgentName();
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
-        return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        try {
+            return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -108,9 +112,61 @@ public class UpgradeWechatNewsService {
         param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_YEAR,2);//日期加10天
+        calendar.add(Calendar.DAY_OF_YEAR,2);//日期加2天
         param[4] = DateUtil.Date2String(calendar.getTime(),DateUtil.CHINESEALL_DATE_FMT);
         logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
-        return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        try {
+            return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 代理暂不升级 微信消息通知
+     * @param comUser           暂不升级user
+     * @param upGradeInfoPo     po
+     * @param url               url
+     * @return
+     */
+    public boolean upgradeApplyResultNotice(ComUser comUser, UpGradeInfoPo upGradeInfoPo, String url){
+        logger.info("--------------------------暂不升级消息提醒-----------------------------");
+        String [] param = new String[1];
+        param[0] = upGradeInfoPo.getApplyName();
+        logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        try {
+            return WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url, false);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 升级审核结果通知
+     * @param comUser       user
+     * @param upGradeInfoPo po
+     * @param url           url
+     * @return
+     */
+    public boolean upgradeApplyAuditPassNotice(ComUser comUser, UpGradeInfoPo upGradeInfoPo, String url){
+        logger.info("------------------------代理升级申请审核结果通知---------------------------");
+        String [] param = new String[5];
+        param[0] = upGradeInfoPo.getApplyName();
+        param[1] = upGradeInfoPo.getOrgAgentName();
+        param[2] = upGradeInfoPo.getWishAgentName();
+        param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,2);//日期加2天
+        param[4] = DateUtil.Date2String(calendar.getTime(),DateUtil.CHINESEALL_DATE_FMT);
+        logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        try {
+            return WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

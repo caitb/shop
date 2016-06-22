@@ -44,6 +44,8 @@ public class AgentUpGradeController extends BaseController {
     private UserService userService;
     @Autowired
     private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Autowired
+    private PfUserRebateService pfUserRebateService;
 
     /**
      * 初始化我要升级首页
@@ -240,7 +242,10 @@ public class AgentUpGradeController extends BaseController {
         if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
             throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
         }
-        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
+            mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+        }
         logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
         ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -358,6 +363,18 @@ public class AgentUpGradeController extends BaseController {
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
         //原上级
         ComUser former = userService.getUserById(upgradeNotice.getUserPid());
+        PfUserRebate pfUserRebate = pfUserRebateService.selectByupgradeId(upgradeId);
+        if (pfUserRebate == null){
+            throw new BusinessException("一次性返利有误");
+        }
+        if (comUser.getId().longValue() == pfUserRebate.getUserId().longValue()){
+            logger.info("登录人将获得一次性奖励");
+            mv.addObject("income","1");
+        }
+        if (comUser.getId().longValue() == pfUserRebate.getUserPid().longValue()){
+            logger.info("登录人将发出一次性奖励");
+            mv.addObject("income","2");
+        }
         mv.addObject("former",former.getRealName());
         //新上级
         ComUser user = userService.getUserById(pfUserSku.getUserPid());
@@ -472,6 +489,7 @@ public class AgentUpGradeController extends BaseController {
      * 申請升級成功之後發送微信消息
      * @param upgradeLevel  申請代理等級
      * @param upAgentLevel  上級代理等級
+     * @param upgradeId     通知单id
      * @param request
      */
     @RequestMapping(value = "/upgradeApplySubmitNotice.do")
@@ -484,28 +502,56 @@ public class AgentUpGradeController extends BaseController {
         ComUser comUser = getComUser(request);
         JSONObject jsonObject = new JSONObject();
         if (comUser == null){
+            jsonObject.put("isTrue","false");
             jsonObject.put("message","用户未登录");
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-        try {
-            if (upAgentLevel.intValue() == upgradeLevel.intValue()){
-                UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-                PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),upGradeInfoPo.getWishAgentId());
-                if (pfSkuAgent.getIsUpgrade().intValue() == 1){
-                    logger.info("查询上级用户信息");
-                    ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                    upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
-                }
-                upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+        if (upAgentLevel.intValue() == upgradeLevel.intValue()){
+            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+            PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),upGradeInfoPo.getWishAgentId());
+            if (pfSkuAgent.getIsUpgrade().intValue() == 1){
+                logger.info("查询上级用户信息");
+                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
+                boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
+                jsonObject.put("upBoolean",upBoolean);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            jsonObject.put("message","发送微信失败");
+            boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+            jsonObject.put("applyBoolean",applyBoolean);
+        }
+        jsonObject.put("isTrue","true");
+        logger.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
+    }
+
+    /**
+     * 代理暂不升级发送微信消息
+     * @param upgradeId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/notUpgradeMessage.do")
+    @ResponseBody
+    public String notUpgradeMessage(@RequestParam(value = "upgradeId") Long upgradeId, HttpServletRequest request) throws Exception {
+        ComUser comUser = getComUser(request);
+        JSONObject jsonObject = new JSONObject();
+        if (comUser == null){
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","用户未登录");
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-        jsonObject.put("message","已经发送成功");
+        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(upgradeId);
+        ComUser applyUser = userService.getUserById(upgradeNotice.getUserId());
+        ComUser oldUpUser = userService.getUserById(upgradeNotice.getUserPid());
+        logger.info("代理暂不升级发送消息");
+        boolean oldBoolean = upgradeWechatNewsService.upgradeApplyResultNotice(oldUpUser, upGradeInfoPo, "/upgrade/upgradeInfoNewUp.shtml?upgradeId="+upgradeId);
+        logger.info("代理暂不升级给下级发送微信消息");
+        boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(applyUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+        jsonObject.put("isTrue","true");
+        jsonObject.put("oldBoolean",oldBoolean);
+        jsonObject.put("applyBoolean",applyBoolean);
         logger.info(jsonObject.toJSONString());
         return jsonObject.toJSONString();
     }

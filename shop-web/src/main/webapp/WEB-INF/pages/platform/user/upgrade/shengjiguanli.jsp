@@ -96,6 +96,7 @@
         $("#goods").width(goodsWidth);
         $("#level").width(levelsWidth);
         var myTabId = ${tabId};
+        tabId = myTabId;
         if (myTabId == 0) {
             $("nav p").eq(myTabId).addClass("on").siblings().removeClass("on");
             $(".floor").hide();
@@ -147,7 +148,6 @@
                 $("#main").empty().html(trHtml);
             }
         });
-        tabId = 0;
     })
 
     $("nav p").on("click",function(){

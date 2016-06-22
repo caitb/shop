@@ -156,6 +156,7 @@
                 AND uun.sku_id = #{skuId}
             </if>
         </where>
+        ORDER BY uun.create_time DESC
     </select>
     <!-->根据商品和状态查询<-->
     <select id="selectByParam" resultMap="BaseResultMap">

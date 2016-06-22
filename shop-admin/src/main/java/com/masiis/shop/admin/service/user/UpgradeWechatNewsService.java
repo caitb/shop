@@ -55,7 +55,7 @@ public class UpgradeWechatNewsService {
         String[] param = new String[5];
         param[0] = upgradeDetail.getSkuName();
         param[1] = pfBorder.getPayAmount().toString();
-        param[2] = pfBorder.getTotalQuantity()+"";
+        param[2] = upgradeDetail.getQuantity()+"";
         param[3] = pfBorderPayment.getPayTypeName();
         param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);

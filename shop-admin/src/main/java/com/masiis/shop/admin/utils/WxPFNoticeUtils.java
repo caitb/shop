@@ -938,7 +938,7 @@ public class WxPFNoticeUtils {
 
         notice.setKeyword1(new WxNoticeDataItem(params[0] + "的升级申请", null));
         if(isApply) {
-            notice.setFirst(new WxNoticeDataItem("您好，在您的下级 " + params[0] + " 已成功升级。", null));
+            notice.setFirst(new WxNoticeDataItem("您好，您的下级 " + params[0] + " 已成功升级。", null));
             notice.setKeyword2(new WxNoticeDataItem("下级升级成功", null));
             notice.setRemark(new WxNoticeDataItem("您的下级已升级成功，ta已不是您的下级，您可以获得一次性奖励。点击查看详情。", null));
         } else {

@@ -509,11 +509,15 @@ public class AgentUpGradeController extends BaseController {
         }
         if (upAgentLevel.intValue() == upgradeLevel.intValue()){
             UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-            PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),upGradeInfoPo.getWishAgentId());
+            logger.info("申请人原上级商品代理信息");
+            PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
+            logger.info("查询申请人原上级的上级代理信息");
+            PfUserSku pfPPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfPUserSku.getUserPid(), upGradeInfoPo.getSkuId());
+            PfSkuAgent pfSkuAgent = pfUserSkuService.getCurrentSkuAgent(upGradeInfoPo.getSkuId(),pfPPUserSku.getAgentLevelId());
             if (pfSkuAgent.getIsUpgrade().intValue() == 1){
                 logger.info("-----------------------------上级可以升级---------------------------------");
                 ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
+                boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=1");
                 jsonObject.put("upBoolean",upBoolean);
                 boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
                 jsonObject.put("applyBoolean",applyBoolean);

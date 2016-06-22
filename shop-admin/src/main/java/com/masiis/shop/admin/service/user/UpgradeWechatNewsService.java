@@ -46,7 +46,7 @@ public class UpgradeWechatNewsService {
         _param[0] = upgradeDetail.getSkuName();
         _param[1] = pfBorder.getPayAmount().toString();
         _param[2] = upgradeDetail.getQuantity()+"";
-        _param[3] = pfBorderPayment.getPayTypeName();
+        _param[3] = BOrderType.UPGRADE.getDesc();
         _param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().orderInQueue(comUser,_param);
         //2.2给上级发
@@ -56,7 +56,7 @@ public class UpgradeWechatNewsService {
         param[0] = upgradeDetail.getSkuName();
         param[1] = pfBorder.getPayAmount().toString();
         param[2] = upgradeDetail.getQuantity()+"";
-        param[3] = pfBorderPayment.getPayTypeName();
+        param[3] = BOrderType.UPGRADE.getDesc();
         param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);
 

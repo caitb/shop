@@ -1,9 +1,12 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
+import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
@@ -53,7 +56,7 @@ public class UpgradeWechatNewsService {
         _param[0] = upgradeDetail.getSkuName();
         _param[1] = pfBorder.getPayAmount().toString();
         _param[2] = upgradeDetail.getQuantity()+"";
-        _param[3] = pfBorderPayment.getPayTypeName();
+        _param[3] = BOrderType.UPGRADE.getDesc();
         _param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().orderInQueue(comUser,_param);
         //2.2给上级发
@@ -63,7 +66,7 @@ public class UpgradeWechatNewsService {
         param[0] = upgradeDetail.getSkuName();
         param[1] = pfBorder.getPayAmount().toString();
         param[2] = upgradeDetail.getQuantity()+"";
-        param[3] = pfBorderPayment.getPayTypeName();
+        param[3] = BOrderType.UPGRADE.getDesc();
         param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);
 

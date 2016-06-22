@@ -163,7 +163,7 @@ public class SfShopController extends BaseController {
             File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
             //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
             if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-            if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
+            if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
             DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
 
             //画图

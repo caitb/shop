@@ -420,9 +420,9 @@ public class AgentUpGradeController extends BaseController {
             pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(upgradeId);
             logger.info("设置申请人申请状态 status="+UpGradeStatus.statusPickList.get(pfUserUpgradeNotice.getStatus()));
             jsonObject.put("status",UpGradeStatus.statusPickList.get(pfUserUpgradeNotice.getStatus()));
-            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-            logger.info("设置申请人新上级");
-            jsonObject.put("newUp",this.getNewUpAgent(upGradeInfoPo));
+//            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+//            logger.info("设置申请人新上级");
+//            jsonObject.put("newUp",this.getNewUpAgent(upGradeInfoPo));
         }catch (Exception e){
             jsonObject.put("isTrue","false");
             jsonObject.put("message",e.getMessage());

@@ -515,9 +515,12 @@ public class AgentUpGradeController extends BaseController {
                 ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
                 boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=0");
                 jsonObject.put("upBoolean",upBoolean);
+                boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                jsonObject.put("applyBoolean",applyBoolean);
+            }else {
+                boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                jsonObject.put("applyBoolean",applyBoolean);
             }
-            boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-            jsonObject.put("applyBoolean",applyBoolean);
         }
         jsonObject.put("isTrue","true");
         logger.info(jsonObject.toJSONString());

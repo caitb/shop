@@ -76,7 +76,7 @@ public class AgentUpGradeController extends BaseController {
      * @param skuName       商品名称
      * @param agentName     当前代理名称
      * @param request       servlet
-     * @return
+     * @return              String
      */
     @RequestMapping(value = "/getUpGradePackage.do", method = RequestMethod.POST)
     @ResponseBody
@@ -155,7 +155,7 @@ public class AgentUpGradeController extends BaseController {
      * @param skuId         代理skuId
      * @param userPid       代理上级用户id
      * @param request
-     * @return
+     * @return return
      */
     @RequestMapping(value = "/upGradeConfirm.do")
     @ResponseBody
@@ -216,6 +216,43 @@ public class AgentUpGradeController extends BaseController {
     }
 
     /**
+     * 我的申请单升级信息页面展示
+     * @param upgradeId     升级申请信息id
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/myApplyUpgrade.shtml")
+    public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId,
+                                             HttpServletRequest request) throws Exception{
+        logger.info("我的申请单升级信息页面展示");
+        logger.info("upgradeId=" + upgradeId);
+        ComUser user = getComUser(request);
+        if (user == null){
+            throw new BusinessException("用户未登录");
+        }
+        ModelAndView mv = new ModelAndView();
+        //获取页面展示po
+        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+        if (upGradeInfoPo == null){
+            throw new BusinessException("查无升级申请单数据");
+        }
+        if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
+            throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
+        }
+        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
+        logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
+        ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        mv.addObject("createTime",sdf.format(upGradeInfoPo.getCreateTime()));
+        mv.addObject("applyPName",pUser.getRealName());
+        mv.addObject("upGradeInfoPo",upGradeInfoPo);
+        mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
+        mv.setViewName("platform/user/upgrade/myApplyUpgradeNotice");
+        return mv;
+    }
+
+    /**
      * 升级信息页面   (处理未完成)
      * @param upgradeId       升级申请表id
      * @param request
@@ -242,28 +279,7 @@ public class AgentUpGradeController extends BaseController {
         }
         logger.info("查询升级信息页面数据begin");
         UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-        logger.info("根据处理获取升级后的上级信息 begin");
-        logger.info("---------------------status="+upGradeInfoPo.getApplyStatus()+"------------------------");
-        if (upGradeInfoPo.getApplyStatus() == UpGradeStatus.STATUS_Untreated.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
-            mv.addObject("newUp",upGradeInfoPo.getApplyPName());
-        }
-        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
-            logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
-                if (pfUserSku.getUserPid().longValue() == 0){
-                    mv.addObject("newUp","平台");
-                }else {
-                    ComUser user = userService.getUserById(pfUserSku.getUserPid());
-                    mv.addObject("newUp",user.getRealName());
-                }
-            }else {
-                mv.addObject("newUp",upGradeInfoPo.getApplyPName());
-            }
-        }
+        mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
         logger.info("根据处理获取升级后的上级信息 end");
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
@@ -277,6 +293,39 @@ public class AgentUpGradeController extends BaseController {
         return mv;
     }
 
+    /**
+     * 查找升级后的新上级
+     * @param upGradeInfoPo  升级信息页面po
+     * @return
+     * @throws Exception
+     */
+    private String getNewUpAgent(UpGradeInfoPo upGradeInfoPo) throws Exception{
+        logger.info("根据处理获取升级后的上级信息 begin");
+        logger.info("---------------------status="+upGradeInfoPo.getApplyStatus()+"------------------------");
+        String returnMsg = "";
+        if (upGradeInfoPo.getApplyStatus() == UpGradeStatus.STATUS_Untreated.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
+            returnMsg = upGradeInfoPo.getApplyPName();
+        }
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
+            logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
+            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
+                if (pfUserSku.getUserPid().longValue() == 0){
+                    returnMsg = "平台";
+                }else {
+                    ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
+                    returnMsg = comUser.getRealName();
+                }
+            }else {
+                returnMsg = upGradeInfoPo.getApplyPName();
+            }
+        }
+        logger.info("根据处理获取升级后的上级信息 end");
+        return returnMsg;
+    }
     /**
      * 升级信息页面   (一次性返利跳转)
      * @param upgradeId       升级申请表id
@@ -360,65 +409,6 @@ public class AgentUpGradeController extends BaseController {
         jsonObject.put("message","处理完成");
         logger.info(jsonObject.toJSONString());
         return jsonObject.toJSONString();
-    }
-
-    /**
-     * 我的申请单升级信息页面展示
-     * @param upgradeId     升级申请信息id
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/myApplyUpgrade.shtml")
-    public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId,
-                                             HttpServletRequest request) throws Exception{
-        logger.info("我的申请单升级信息页面展示");
-        logger.info("upgradeId=" + upgradeId);
-        ComUser user = getComUser(request);
-        if (user == null){
-            throw new BusinessException("用户未登录");
-        }
-        ModelAndView mv = new ModelAndView();
-        //获取页面展示po
-        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-        if (upGradeInfoPo == null){
-            throw new BusinessException("查无升级申请单数据");
-        }
-        if (upGradeInfoPo.getApplyId().longValue() != user.getId().longValue()){
-            throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
-        }
-        logger.info("根据处理获取升级后的上级信息 begin");
-        logger.info("---------------------status="+upGradeInfoPo.getApplyStatus()+"------------------------");
-        if (upGradeInfoPo.getApplyStatus() == UpGradeStatus.STATUS_Untreated.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Processing.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
-            mv.addObject("newUp",upGradeInfoPo.getApplyPName());
-        }
-        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
-                || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
-            logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
-                if (pfUserSku.getUserPid().longValue() == 0){
-                    mv.addObject("newUp","平台");
-                }else {
-                    ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
-                    mv.addObject("newUp",comUser.getRealName());
-                }
-            }else {
-                mv.addObject("newUp",upGradeInfoPo.getApplyPName());
-            }
-        }
-        logger.info("根据处理获取升级后的上级信息 end");
-        logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());
-        ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        mv.addObject("createTime",sdf.format(upGradeInfoPo.getCreateTime()));
-        mv.addObject("applyPName",pUser.getRealName());
-        mv.addObject("upGradeInfoPo",upGradeInfoPo);
-        mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
-        mv.setViewName("platform/user/upgrade/myApplyUpgradeNotice");
-        return mv;
     }
 
     /**

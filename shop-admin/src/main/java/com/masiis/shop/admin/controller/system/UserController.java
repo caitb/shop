@@ -258,7 +258,7 @@ public class UserController {
             this.pbUserService.updateById(pbUser);
         }
 
-        return "保存成功";
+        return "success";
     }
 
     /**

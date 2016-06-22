@@ -475,7 +475,7 @@ public class WxPFNoticeUtils {
         order.setKeyword3(new WxNoticeDataItem(params[2], null));
         order.setKeyword4(new WxNoticeDataItem(params[3], null));
         order.setKeyword5(new WxNoticeDataItem(params[4], null));
-        order.setRemark(new WxNoticeDataItem("由于库存不足，您的订单已进入排单，我们会加快生产，请耐心等待。", null));
+        order.setRemark(new WxNoticeDataItem("由于库存不足，您的订单已进入排单，请耐心等待。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -532,6 +532,33 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 处理排单提醒-提醒上级下级进入排单,需要补货
+     *
+     * @param user
+     * @param params (1,订单名称(可传商品名称);2,订单价格;3,订单数量;4,订单类型;5,订单状态)
+     * @return  返回是否成功调用
+     */
+    public Boolean dealWithOrderInQueueByUp(ComUser user, String[] params, String url) {
+        WxPFNewOrderDetail order = new WxPFNewOrderDetail();
+        WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
+
+        order.setFirst(new WxNoticeDataItem("您有新的订单。", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的库存不足，请及时补货，以免影响您的下级销售，点击补货。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        // 调用新订单提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        req.setUrl(url);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

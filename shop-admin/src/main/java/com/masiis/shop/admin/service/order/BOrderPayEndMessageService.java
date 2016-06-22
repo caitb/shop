@@ -73,7 +73,15 @@ public class BOrderPayEndMessageService {
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
         logger.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
-            pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+            if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+                logger.info("------升级订单进入排单发送微信------");
+                //发送微信通知
+                PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
+                Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccssEntryWaiting(pfBorder, pfBorderPayment, upgradeDetail);
+            }else{
+                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+            }
         } else if (pfBorder.getPayStatus().intValue() == 1) {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {

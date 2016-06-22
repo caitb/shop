@@ -20,7 +20,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>获取奖励订单</p>
         </header>
        <div class="sel">

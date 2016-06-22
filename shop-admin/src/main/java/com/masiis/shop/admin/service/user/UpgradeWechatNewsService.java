@@ -1,6 +1,8 @@
 package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
@@ -25,9 +27,41 @@ public class UpgradeWechatNewsService {
     @Resource
     private ComUserService comUserService;
 
+    /**
+     * 升级订单支付成功后，进入排单发送微信
+     * @param pfBorder
+     * @param pfBorderPayment
+     * @param upgradeDetail
+     * @return
+     */
+    public Boolean upgradeOrderPaySuccssEntryWaiting(PfBorder pfBorder,PfBorderPayment pfBorderPayment,BOrderUpgradeDetail upgradeDetail){
+        //给自己发
+        logger.info("升级订单给自己发--------userId----"+pfBorder.getUserId());
+        ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
+        ComUser pComUser = comUserService.getUserById(pfBorder.getUserPid());
+        String[] _param = new String[5];
+        _param[0] = upgradeDetail.getSkuName();
+        _param[1] = pfBorder.getPayAmount().toString();
+        _param[2] = pfBorder.getTotalQuantity()+"";
+        _param[3] = pfBorderPayment.getPayTypeName();
+        _param[4] = BOrderStatus.MPS.getDesc();
+        WxPFNoticeUtils.getInstance().orderInQueue(comUser,_param);
+        //给上级发
+        logger.info("升级订单给上级发--------pUserId----"+pfBorder.getUserPid());
+        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/" + pfBorder.getUserPid();
+        String[] param = new String[5];
+        param[0] = upgradeDetail.getSkuName();
+        param[1] = pfBorder.getPayAmount().toString();
+        param[2] = pfBorder.getTotalQuantity()+"";
+        param[3] = pfBorderPayment.getPayTypeName();
+        param[4] = BOrderStatus.MPS.getDesc();
+        WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);
+        return true;
+    }
+
 
     /**
-     * 升级订单支付成功后发送微信
+     * 升级订单支付成功后，没有进入排单发送微信
      * @param pfBorder
      * @param pfBorderPayment
      * @return

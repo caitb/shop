@@ -227,7 +227,7 @@ public class AgentUpGradeController extends BaseController {
     @RequestMapping(value = "/myApplyUpgrade.shtml")
     public ModelAndView myApplyUpgradeNotice(@RequestParam(value = "upgradeId") Long upgradeId,
                                              HttpServletRequest request) throws Exception{
-        logger.info("我的申请单升级信息页面展示");
+        logger.info("我的申请单升级信息页面展示-----upgradeId="+upgradeId);
         logger.info("upgradeId=" + upgradeId);
         ComUser user = getComUser(request);
         if (user == null){
@@ -267,7 +267,7 @@ public class AgentUpGradeController extends BaseController {
     @RequestMapping(value = "/upgradeInfo.shtml")
     public ModelAndView upgradeInformation(@RequestParam(value = "upgradeId",required = true) Long upgradeId,
                                            HttpServletRequest request)throws Exception{
-        logger.info("升级信息页面");
+        logger.info("升级信息页面 upgradeId="+upgradeId);
         ComUser comUser = getComUser(request);
         if (comUser == null){
             throw new BusinessException("用户未登录");
@@ -341,7 +341,7 @@ public class AgentUpGradeController extends BaseController {
     @RequestMapping(value = "/upgradeInfoNewUp.shtml")
     public ModelAndView upgradeInformationNewUp(@RequestParam(value = "upgradeId",required = true) Long upgradeId,
                                            HttpServletRequest request)throws Exception{
-        logger.info("升级信息页面(一次性返利跳转)");
+        logger.info("升级信息页面(一次性返利跳转)----upgradeId="+upgradeId);
         ComUser comUser = getComUser(request);
         if (comUser == null){
             throw new BusinessException("用户未登录");
@@ -416,6 +416,13 @@ public class AgentUpGradeController extends BaseController {
         //处理下级申请单据
         try {
             upgradeNoticeService.dealLowerUpgradeNotice(pfUserUpgradeNotice);
+            logger.info("更新新上级和处理状态页面展示");
+            pfUserUpgradeNotice = upgradeNoticeService.getPfUserUpGradeInfoByPrimaryKey(upgradeId);
+            logger.info("设置申请人申请状态 status="+UpGradeStatus.statusPickList.get(pfUserUpgradeNotice.getStatus()));
+            jsonObject.put("status",UpGradeStatus.statusPickList.get(pfUserUpgradeNotice.getStatus()));
+//            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+//            logger.info("设置申请人新上级");
+//            jsonObject.put("newUp",this.getNewUpAgent(upGradeInfoPo));
         }catch (Exception e){
             jsonObject.put("isTrue","false");
             jsonObject.put("message",e.getMessage());
@@ -554,7 +561,7 @@ public class AgentUpGradeController extends BaseController {
         ComUser applyUser = userService.getUserById(upgradeNotice.getUserId());
         ComUser oldUpUser = userService.getUserById(upgradeNotice.getUserPid());
         logger.info("代理暂不升级发送消息");
-        boolean oldBoolean = upgradeWechatNewsService.upgradeApplyResultNotice(oldUpUser, upGradeInfoPo, "/upgrade/upgradeInfoNewUp.shtml?upgradeId="+upgradeId);
+        boolean oldBoolean = upgradeWechatNewsService.upgradeApplyResultNotice(oldUpUser, upGradeInfoPo, "/upgrade/upgradeInfo.shtml?upgradeId="+upgradeId);
         logger.info("代理暂不升级给下级发送微信消息");
         boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(applyUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
         jsonObject.put("isTrue","true");

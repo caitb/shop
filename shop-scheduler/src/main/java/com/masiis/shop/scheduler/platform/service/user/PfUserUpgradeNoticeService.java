@@ -96,6 +96,7 @@ public class PfUserUpgradeNoticeService {
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             // 将上级处理状态置为暂不升级
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+            notice.setUpdateTime(new Date());
             int res = update(notice);
             if (res != 1) {
                 throw new BusinessException("更新升级单失败");
@@ -202,7 +203,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyTwoDayNotPayNotice(user, params, url);
     }
 
@@ -221,7 +222,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplySevenDayNotPayNotice(user, params, url);
     }
 
@@ -232,7 +233,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgradeInfo.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyNotHandleNotice(pUser, pParams, pUrl);
 
         // 给下级通知

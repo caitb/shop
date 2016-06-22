@@ -366,6 +366,7 @@ public class BOrderController extends BaseController {
             bOrderUpgradeDetail.setName(comUser.getRealName());
         }
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
+        mv.addObject("comUser",comUser);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
         return mv;
     }

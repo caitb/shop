@@ -504,7 +504,7 @@
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
-        FROM
+        FROM pf_border
         where
         order_type <![CDATA[ <> ]]> #{notOrderType,jdbcType=INTEGER}
         <if test="expiraTime != null">

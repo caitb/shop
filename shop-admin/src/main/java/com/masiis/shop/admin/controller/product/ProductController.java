@@ -193,13 +193,13 @@ public class ProductController {
                 comSkuExtension.setPoster(developPosterName);
 
                 productService.save(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
-                return "保存成功!";
+                return "success";
             }
         } catch(Exception e) {
             log.error("保存商品失败!");
             e.printStackTrace();
         }
-        return "保存失败!";
+        return "fail";
     }
 
     @RequestMapping("/update.do")
@@ -311,7 +311,7 @@ public class ProductController {
                 }
 
                 productService.update(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
-                return "修改商品成功!";
+                return "success";
             }
         } catch(Exception e){
             e.printStackTrace();

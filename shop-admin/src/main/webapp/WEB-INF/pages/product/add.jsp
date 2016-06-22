@@ -854,7 +854,13 @@
                         type: 'post',
                         data: $('#skuForm').serialize(),
                         success: function(msg){
-                            alert(msg);
+                            if(msg == 'success'){
+                                parent.window.$('#myTabbable').closeTab('tab2-2');
+                                parent.window.$('#myTabbable').add('tab2-2', '商品列表', '<%=basePath%>product/list.shtml');
+                                parent.window.$('#myTabbable').closeTab('tab2-1');
+                            }else{
+                                alert('添加商品失败');
+                            }
                         }
                     });
                 });

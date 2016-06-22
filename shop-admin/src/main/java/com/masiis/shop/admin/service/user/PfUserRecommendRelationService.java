@@ -53,7 +53,7 @@ public class PfUserRecommendRelationService {
      * @date 2016/6/15 17:42
      */
     public List<UserRecommend> findGiveSum(Long userId) {
-        return pfUserRecopmmenRelationMapper.selectGiveSum(userId);
+        return pfUserRecopmmenRelationMapper.selectGiveSum(userId,null);
     }
 
     /**

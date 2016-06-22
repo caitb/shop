@@ -17,12 +17,13 @@
         <main>
             <c:if test="${income == 1}">
                 <div class="floor3" id="floor3">
-                    <h1>您需要给 ${upGradeInfoPo.applyName}  的原上级${former} 进行一次性返利，具体数额请线下沟通 </h1>
+                    <h1>${upGradeInfoPo.applyName} 的新上级 ${newUp} 需要给您一次性返利，具体数额请线下沟通 </h1>
+
                 </div>
             </c:if>
             <c:if test="${income == 2}">
                 <div class="floor3" id="floor3">
-                    <h1>${upGradeInfoPo.applyName} 的新上级 ${newUp} 需要给您一次性返利，具体数额请线下沟通 </h1>
+                    <h1>您需要给 ${upGradeInfoPo.applyName}  的原上级${former} 进行一次性返利，具体数额请线下沟通 </h1>
                 </div>
             </c:if>
             <div class="floor">

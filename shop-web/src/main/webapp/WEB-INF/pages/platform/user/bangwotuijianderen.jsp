@@ -96,7 +96,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>帮我推荐</p>            
         </header>
         <main>
@@ -108,7 +108,7 @@
                         <select id="goods" class="myValue">
                             <option value="">全部</option>
                             <c:forEach items="${agentSkus}" var="sku">
-                                <option value="${sku.id}">${sku.name}</option>
+                                <option value="${sku.id}" <c:if test="${sku.id == skuId}">selected</c:if> >${sku.name}</option>
                             </c:forEach>
                         </select>
                     </label>
@@ -117,7 +117,7 @@
 
             <div class="floor2">
             <c:forEach items="${sumByUser}" var="sum">
-             <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/giveRecommend?userId=${sum.userId}&skuId=${sum.skuId}')">
+             <div class="sec1" onclick="javascript:window.location.href = '<%=basePath%>myRecommend/giveRecommend?userId=${sum.userId}&skuId=${sum.skuId}';">
                 <img src="${sum.wxHeadImg}" alt="">
                 <div>
                     <p>${sum.name}<b>推荐人数 ${sum.number}人</b></p>
@@ -136,8 +136,8 @@
            $("#goods").width(goodsWidth);
        })
        $("#goods").on("change",function(){
-           var tabVal=$("#goods option:selected").text();
-           $(".goods b").html(tabVal);
+           var skuId=$("#goods option:selected").val();
+           window.location.href = skuId ? '<%=basePath%>myRecommend/recommendGiveList?skuId='+skuId : '<%=basePath%>myRecommend/recommendGiveList';
        })
 
        $(".myValue").on("change",function(){

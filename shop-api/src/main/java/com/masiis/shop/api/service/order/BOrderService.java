@@ -361,7 +361,7 @@ public class BOrderService {
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
         //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
+        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1|| pfBorder.getOrderType() == 3) {
             comUserAccountService.countingByOrder(pfBorder);
         }
     }

@@ -7,10 +7,7 @@ import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.ComAgentLevelService;
-import com.masiis.shop.web.platform.service.user.PfUserSkuService;
-import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +41,8 @@ public class UserUpgradeNoticeController extends BaseController {
     private UserService userService;
     @Resource
     private PfUserSkuService pfUserSkuService;
+    @Resource
+    private PfUserRebateService pfUserRebateService;
     /**
      * jjh
      * 我的下级申请记录<默认>
@@ -179,13 +178,11 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserRebate.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
+                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                         if(pfUserRebate.getUserId().equals(comUser.getId())){
-                            pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
-                            pfUserUpGradeInfo.setRealName(comUser.getRealName());
                             pfUserUpGradeInfo.setStatusValue("获得返利");
                         }else{
-                            pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                            pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                             pfUserUpGradeInfo.setStatusValue("支付返利");
                         }
                         pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
@@ -242,26 +239,21 @@ public class UserUpgradeNoticeController extends BaseController {
                     for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
                         PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
                         pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
+                        PfUserRebate pfUserRebate =  pfUserRebateService.selectByupgradeId(pfUserUpgradeNotice.getId());
                         ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
+                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                         if (rebateType!=null && rebateType == 0) {
-                            pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
-                            pfUserUpGradeInfo.setRealName(comUser.getRealName());
                             pfUserUpGradeInfo.setStatusValue("获得返利");
                         } else if(rebateType!=null && rebateType ==1){
-                            pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                            pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                             pfUserUpGradeInfo.setStatusValue("支付返利");
                         }else{
-                           if(pfUserUpgradeNotice.getUserId().equals(comUser.getId())){//获取返利
-                               pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
-                               pfUserUpGradeInfo.setRealName(comUser.getRealName());
+                           if(pfUserRebate.getUserId().equals(comUser.getId())){//获取返利
                                pfUserUpGradeInfo.setStatusValue("获得返利");
                             }else {
-                               pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                               pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
                                pfUserUpGradeInfo.setStatusValue("支付返利");
                            }
                         }

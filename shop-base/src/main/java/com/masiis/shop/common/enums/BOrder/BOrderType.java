@@ -9,7 +9,7 @@ package com.masiis.shop.common.enums.BOrder;
  */
 public enum BOrderType {
 
-    agent(0, "合伙"), Supplement(1, "补货"), Take(2, "拿货"), UPGRADE(3, "升级");
+    agent(0, "合伙订单"), Supplement(1, "补货订单"), Take(2, "拿货订单"), UPGRADE(3, "升级订单");
 
     private Integer code;
     private String desc;
@@ -36,13 +36,22 @@ public enum BOrderType {
     }
 
     public static BOrderType getByCode(Integer code){
-        switch (code) {
-            case 0: return BOrderType.agent;
-            case 1: return BOrderType.Supplement;
-            case 2: return BOrderType.Take;
-            case 3: return BOrderType.UPGRADE;
+
+        if(code == null) return null;
+
+        for(BOrderType orderType : BOrderType.values()){
+            if(orderType.getCode().intValue() == code.intValue()) return orderType;
         }
 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "BOrderType{" +
+                "code=" + code +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
+
 }

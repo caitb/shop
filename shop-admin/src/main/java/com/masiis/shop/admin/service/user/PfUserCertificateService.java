@@ -27,6 +27,10 @@ public class PfUserCertificateService {
         return pfUserCertificateMapper.selectByUserIdAndSkuId(userId,skuId);
     }
 
+    public PfUserCertificate selectByUserSkuId(Integer pfUserSkuId){
+        return pfUserCertificateMapper.selectByUserSkuId(pfUserSkuId);
+    }
+
     /**
      * 生成证书编码
      * @param certificateInfo

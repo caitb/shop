@@ -121,8 +121,8 @@ public class WxPFNoticeUtils {
         WxPFPartnerJoin join = new WxPFPartnerJoin();
         WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
 
-        join.setFirst(new WxNoticeDataItem("您有一个新的下级加入", null));
-        join.setRemark(new WxNoticeDataItem("此人是通过升级方式加入到您的团队，您需要给他的原上级一次性奖励，具体金额请线下沟通。点击查看详情", null));
+        join.setFirst(new WxNoticeDataItem("您有一个新的下级", null));
+        join.setRemark(new WxNoticeDataItem("此人是通过升级方式成为您的下级，您需要给他的原上级一次性奖励，具体金额请线下沟通。点击查看详情", null));
         join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
         join.setKeyword2(new WxNoticeDataItem(joinTime, null));
         join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
@@ -281,10 +281,10 @@ public class WxPFNoticeUtils {
         WxPFNewOrder newOrder = new WxPFNewOrder();
         WxNoticeReq<WxPFNewOrder> req = new WxNoticeReq<>(newOrder);
 
-        newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到店铺查看", null));
+        newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到订单管理中查看", null));
         newOrder.setKeyword1(new WxNoticeDataItem(params[0], null));
         newOrder.setKeyword2(new WxNoticeDataItem(params[1], null));
-        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，请及时补货", null));
+        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，为了不影响下级销售，请及时补货。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         if(hasInventory) {
@@ -476,7 +476,7 @@ public class WxPFNoticeUtils {
         order.setKeyword3(new WxNoticeDataItem(params[2], null));
         order.setKeyword4(new WxNoticeDataItem(params[3], null));
         order.setKeyword5(new WxNoticeDataItem(params[4], null));
-        order.setRemark(new WxNoticeDataItem("由于库存不足，您的订单已进入排单，我们会加快生产，请耐心等待。", null));
+        order.setRemark(new WxNoticeDataItem("由于库存不足，您的订单已进入排单，请耐心等待。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -533,6 +533,33 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 处理排单提醒-提醒上级下级进入排单,需要补货
+     *
+     * @param user
+     * @param params (1,订单名称(可传商品名称);2,订单价格;3,订单数量;4,订单类型;5,订单状态)
+     * @return  返回是否成功调用
+     */
+    public Boolean dealWithOrderInQueueByUp(ComUser user, String[] params, String url) {
+        WxPFNewOrderDetail order = new WxPFNewOrderDetail();
+        WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
+
+        order.setFirst(new WxNoticeDataItem("您有新的订单。", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的库存不足，请及时补货，以免影响您的下级销售，点击补货。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        // 调用新订单提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        req.setUrl(url);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
@@ -757,7 +784,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 升级通知单撤销通知
+     * 升级通知单取消通知
      *
      * @param user 用户对象
      * @param params    (第一个,代理名称; 第二个,代理现等级; 第三个,代理申请等级;
@@ -769,12 +796,12 @@ public class WxPFNoticeUtils {
         WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
         WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您的升级申请已撤销。", null));
+        notice.setFirst(new WxNoticeDataItem("您的升级申请已取消。", null));
         notice.setKeyword1(new WxNoticeDataItem(params[0], null));
         notice.setKeyword2(new WxNoticeDataItem(params[1], null));
         notice.setKeyword3(new WxNoticeDataItem(params[2], null));
         notice.setKeyword4(new WxNoticeDataItem(params[3], null));
-        notice.setRemark(new WxNoticeDataItem("您的升级申请已撤销，升级未成功。", null));
+        notice.setRemark(new WxNoticeDataItem("您的升级申请已取消，升级未成功。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
@@ -784,7 +811,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 下级代理申请升级撤销通知
+     * 下级代理申请升级取消通知
      *
      * @param pUser 上级用户对象
      * @param params    (第一个,下级代理名称; 第二个,下级代理现等级; 第三个,下级代理申请等级;
@@ -796,12 +823,12 @@ public class WxPFNoticeUtils {
         WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
         WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您的下级升级申请已撤销。", null));
+        notice.setFirst(new WxNoticeDataItem("您的下级升级申请已取消。", null));
         notice.setKeyword1(new WxNoticeDataItem(params[0], null));
         notice.setKeyword2(new WxNoticeDataItem(params[1], null));
         notice.setKeyword3(new WxNoticeDataItem(params[2], null));
         notice.setKeyword4(new WxNoticeDataItem(params[3], null));
-        notice.setRemark(new WxNoticeDataItem("您的下级升级申请已撤销，升级未成功。", null));
+        notice.setRemark(new WxNoticeDataItem("您的下级升级申请已取消，升级未成功。", null));
 
         req.setTouser(getOpenIdByComUser(pUser));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
@@ -822,7 +849,7 @@ public class WxPFNoticeUtils {
         WxPFUpServiceCancelNotice notice = new WxPFUpServiceCancelNotice();
         WxNoticeReq<WxPFUpServiceCancelNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您有一单升级申请超过2天未处理，系统默认处理为不升级。", null));
+        notice.setFirst(new WxNoticeDataItem("您有一单下级升级申请超过2天未处理，系统默认处理为不升级。", null));
         notice.setKeyword1(new WxNoticeDataItem("升级申请", null));
         notice.setKeyword2(new WxNoticeDataItem(params[0], null));
         notice.setKeyword3(new WxNoticeDataItem("超过2天未处理，系统默认不升级。", null));
@@ -912,7 +939,7 @@ public class WxPFNoticeUtils {
 
         notice.setKeyword1(new WxNoticeDataItem(params[0] + "的升级申请", null));
         if(isApply) {
-            notice.setFirst(new WxNoticeDataItem("您好，在您的下级 " + params[0] + " 已成功升级。", null));
+            notice.setFirst(new WxNoticeDataItem("您好，您的下级 " + params[0] + " 已成功升级。", null));
             notice.setKeyword2(new WxNoticeDataItem("下级升级成功", null));
             notice.setRemark(new WxNoticeDataItem("您的下级已升级成功，ta已不是您的下级，您可以获得一次性奖励。点击查看详情。", null));
         } else {

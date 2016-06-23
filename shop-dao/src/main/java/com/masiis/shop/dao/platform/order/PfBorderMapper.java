@@ -38,14 +38,14 @@ public interface PfBorderMapper {
      * @author muchaofeng
      * @date 2016/6/16 14:25
      */
-    List<PfBorder> selectRecommend(Long userId);
+    List<PfBorder> selectRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     /**
      * 发出奖励订单
      * @author muchaofeng
      * @date 2016/6/16 16:43
      */
-    List<PfBorder> selectSendRecommend(Long userId);
+    List<PfBorder> selectSendRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
@@ -152,4 +152,13 @@ public interface PfBorderMapper {
                                                       @Param("orderStatus") Integer orderStatus,
                                                       @Param("payStatus") Integer payStatus,
                                                       @Param("orderType") Integer orderType);
+
+    /**
+     * 查询进货或出货订单
+     * @param userId       自己ID
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    List<Map<String, Object>> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
 }

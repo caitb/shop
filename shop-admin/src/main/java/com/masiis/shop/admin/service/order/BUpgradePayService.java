@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -80,14 +81,14 @@ public class BUpgradePayService {
         log.info("插入订单操作日志------start");
         insertOrderOperationLog(pfBorder);
         log.info("插入订单操作日志------end");
-        //修改上下级绑定关系和插入历史表
-        log.info("修改上下级关系插入历史-------start");
-        inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
-        log.info("修改上下级关系插入历史-------end");
         //修改证书和插入证书历史表
         log.info("修改证书插入历史-----start");
         inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(), pfBorderItems, null, rootPath);
         log.info("修改证书插入历史-----end");
+        //修改上下级绑定关系和插入历史表
+        log.info("修改上下级关系插入历史-------start");
+        inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
+        log.info("修改上下级关系插入历史-------end");
         //修改冻结库存
         log.info("修改冻结库存----start");
         updateFrozenStock(pfBorder, pfBorderItems);
@@ -238,17 +239,13 @@ public class BUpgradePayService {
                     log.info("父级的treeCode-----"+parent_treeCode);
                     parent_treeLevel = parentPfUserSku.getTreeLevel();
                 }
-                PfUserCertificate certificateInfo = new PfUserCertificate();
-                Calendar calendar = Calendar.getInstance();
-                certificateInfo.setSkuId(pfUserSku.getSkuId());
-                certificateInfo.setUserId(pfUserSku.getUserId());
-                certificateInfo.setBeginTime(calendar.getTime());
-                calendar.set(Calendar.MONTH, 11);
-                calendar.set(Calendar.DAY_OF_MONTH, 31);
-                certificateInfo.setEndTime(calendar.getTime());
-                certificateInfo.setAgentLevelId(orderItem.getAgentLevelId());
-                certificateInfo.setStatus(1);
-                pfUserSku.setCode(pfUserCertificateService.getCertificateCode(certificateInfo));
+                PfUserCertificate certificateInfo = pfUserCertificateService.selectByUserSkuId(pfUserSku.getId());
+                if (certificateInfo!=null){
+                    log.info("证书编码code--------"+certificateInfo.getCode());
+                    pfUserSku.setCode(certificateInfo.getCode());
+                }else{
+                    log.info("根据pfuserskuId-----"+pfUserSku.getId()+"-----查询证书失败");
+                }
                 pfUserSku.setPid(parent_id);
                 pfUserSku.setUserPid(parent_userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);
@@ -560,9 +557,17 @@ public class BUpgradePayService {
      */
     private void updateAllLowerNotice(Long userId) {
         log.info("修改所有下级为处理中的状态-----父id----" + userId);
-        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndStatus(userId, 1);
+        List<Integer> statusList = new ArrayList<Integer>();
+        statusList.add(UpGradeStatus.STATUS_Untreated.getCode());
+        statusList.add(UpGradeStatus.STATUS_Processing.getCode());
+        List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndInStatus(userId, statusList);
+        if (notices!=null){
+            log.info("下级的人数--------"+notices.size());
+        }else {
+            log.info("下级人数为null");
+        }
         for (PfUserUpgradeNotice notice : notices) {
-            log.info("下级id-------" + notice.getUserId());
+            log.info("下级id-------" + notice.getUserId()+"-----下级的状态status----"+notice.getStatus());
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);

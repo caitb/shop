@@ -33,7 +33,7 @@
             </label>
         </div>
         <div id="dengji">
-            <span>等级：</span>
+            <span>状态：</span>
             <label class="level">
                 <b></b>
                 <select id="level" class="search">
@@ -45,7 +45,7 @@
             </label>
         </div>
         <div id="fanli" style="display: none;">
-            <span>类型：</span>
+            <span>状态：</span>
             <label class="level1">
                 <b></b>
                 <select id="level1" class="search">
@@ -95,7 +95,9 @@
         $(".level1 b").html($("#level1 option:selected").text());
         $("#goods").width(goodsWidth);
         $("#level").width(levelsWidth);
+        $("#level1").width(levelsWidth);
         var myTabId = ${tabId};
+        tabId = myTabId;
         if (myTabId == 0) {
             $("nav p").eq(myTabId).addClass("on").siblings().removeClass("on");
             $(".floor").hide();
@@ -147,7 +149,6 @@
                 $("#main").empty().html(trHtml);
             }
         });
-        tabId = 0;
     })
 
     $("nav p").on("click",function(){

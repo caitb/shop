@@ -930,6 +930,9 @@
                                         $table.bootstrapTable('refresh');
                                     }
                                 });
+                            },
+                            'click .edit': function(e, value, row, index) {
+                                parent.window.$('#myTabbable').add('product-edit-'+row.comSku.id, '修改商品', '<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id);
                             }
                         }
                     }
@@ -997,7 +1000,7 @@
 
     function operateFormatter(value, row, index) {
         var arr = [];
-        arr.push('&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑</a>');
+        arr.push('&nbsp;<a class="edit" href="javascript:void(0);" title="Edit">编辑</a>');
         if(row.comSpu && row.comSpu.isSale == 0){
             arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">上架</a>');
         }else if(row.comSpu && row.comSpu.isSale == 1){

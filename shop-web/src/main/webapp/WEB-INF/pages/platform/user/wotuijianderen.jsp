@@ -20,7 +20,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>我推荐的人</p>            
         </header>
         <main>
@@ -52,7 +52,7 @@
             </div>
             <div class="floor2">
                 <c:forEach items="${sumByUserPid}" var="sumByUser">
-                    <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}')">
+                    <div class="sec1" onclick="javascript:window.location.href = '<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}';">
                         <img src="${sumByUser.wxHeadImg}" alt="">
                         <div>
                             <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>

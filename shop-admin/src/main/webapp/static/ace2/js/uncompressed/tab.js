@@ -21,6 +21,7 @@ jQuery.fn.extend({
 
                 this.tabParent().children('[key='+key+']').addClass('active');
                 this.tabContentParent().children('[key='+key+']').addClass('active in');
+                this.tabContentParent().children('div[key='+key+']').children('iframe').reload();
                 return;
             }
         }

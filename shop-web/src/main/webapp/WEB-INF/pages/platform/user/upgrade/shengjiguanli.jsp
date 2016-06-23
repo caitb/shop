@@ -33,7 +33,7 @@
             </label>
         </div>
         <div id="dengji">
-            <span>等级：</span>
+            <span>状态：</span>
             <label class="level">
                 <b></b>
                 <select id="level" class="search">
@@ -90,13 +90,12 @@
     $(document).ready(function(){
         var goodsWidth=$(".goods").width();
         var levelsWidth=$(".level").width();
-        var level1sWidth=$(".level1").width();
         $(".goods b").html($("#goods option:selected").text());
         $(".level b").html($("#level option:selected").text());
         $(".level1 b").html($("#level1 option:selected").text());
         $("#goods").width(goodsWidth);
         $("#level").width(levelsWidth);
-        $("#level1").width(level1sWidth);
+        $("#level1").width(levelsWidth);
         var myTabId = ${tabId};
         tabId = myTabId;
         if (myTabId == 0) {

@@ -93,7 +93,7 @@ public class WxPFNoticeUtils {
         WxPFPartnerJoin join = new WxPFPartnerJoin();
         WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
 
-        join.setFirst(new WxNoticeDataItem("下线代理加入通知", null));
+        join.setFirst(new WxNoticeDataItem("下级代理加入通知", null));
         join.setRemark(new WxNoticeDataItem("麦链合伙人，感谢有您!", null));
         join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
         join.setKeyword2(new WxNoticeDataItem(joinTime, null));
@@ -135,7 +135,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 下线加入通知(推荐方式加入)
+     * 下级加入通知(推荐方式加入)
      *
      * @param pUser 上级代理用户对象
      * @param user  下级代理用户对象
@@ -147,8 +147,8 @@ public class WxPFNoticeUtils {
         WxPFPartnerJoin join = new WxPFPartnerJoin();
         WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
 
-        join.setFirst(new WxNoticeDataItem("新下线加入通知", null));
-        join.setRemark(new WxNoticeDataItem("您有一个新的下线成功加入，ta的推荐人是" + params[0], null));
+        join.setFirst(new WxNoticeDataItem("新下级加入通知", null));
+        join.setRemark(new WxNoticeDataItem("您有一个新的下级成功加入，ta的推荐人是" + params[0], null));
         join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
         join.setKeyword2(new WxNoticeDataItem(params[1], null));
         join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
@@ -469,7 +469,7 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst(new WxNoticeDataItem("您的订单进入排单", null));
+        order.setFirst(new WxNoticeDataItem("恭喜您支付成功", null));
         order.setKeyword1(new WxNoticeDataItem(params[0], null));
         order.setKeyword2(new WxNoticeDataItem(params[1], null));
         order.setKeyword3(new WxNoticeDataItem(params[2], null));
@@ -1017,6 +1017,31 @@ public class WxPFNoticeUtils {
         profit.setKeyword1(new WxNoticeDataItem(params[0], null));
         profit.setKeyword2(new WxNoticeDataItem(params[1], null));
         profit.setRemark(new WxNoticeDataItem("您可以在\"获取奖励订单\"中查看，点击查看。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_PROFIT_IN);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 推荐佣金通知
+     *
+     * @param user 发出推荐奖励的用户对象
+     * @param params    (第一个,佣金金额; 第二个,时间; 第三个,被推荐人名; 第四个,获得推荐奖励人名)
+     * @param url   点击去获得奖励订单页面
+     * @return  是否调用成功
+     */
+    public Boolean recommendProfitOutNotice(ComUser user, String[] params, String url){
+        WxPFRecommendProfit profit = new WxPFRecommendProfit();
+        WxNoticeReq<WxPFRecommendProfit> req = new WxNoticeReq<>(profit);
+
+        profit.setFirst(new WxNoticeDataItem("您有一笔推荐佣金支出。", null));
+        profit.setKeyword1(new WxNoticeDataItem(params[0], null));
+        profit.setKeyword2(new WxNoticeDataItem(params[1], null));
+        profit.setRemark(new WxNoticeDataItem("您需要给 " + params[2] + " 的推荐人 " + params[3]
+                + " 支付一笔推荐佣金，系统已经扣除，详情请查看发出奖励订单。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RECOMMEND_PROFIT_IN);

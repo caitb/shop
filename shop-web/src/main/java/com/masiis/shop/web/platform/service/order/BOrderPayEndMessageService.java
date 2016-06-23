@@ -116,7 +116,7 @@ public class BOrderPayEndMessageService {
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
                 pushMessageRecommen(comUser, recommenUser);
             }
-            pushMessageRecommenRebate(recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
+            pushMessageRecommenRebate(pfBorder, comUser, recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
         }
     }
 
@@ -269,14 +269,28 @@ public class BOrderPayEndMessageService {
      * @param simpleDateFormat
      * @param numberFormat
      */
-    private void pushMessageRecommenRebate(ComUser recommenUser,
+    private void pushMessageRecommenRebate(PfBorder pfBorder,
+                                           ComUser comUser,
+                                           ComUser recommenUser,
                                            PfBorderRecommenReward pfBorderRecommenReward,
                                            SimpleDateFormat simpleDateFormat,
                                            NumberFormat numberFormat) {
+        // 给获得奖励的人发
         String[] param = new String[2];
         param[0] = numberFormat.format(pfBorderRecommenReward.getRewardTotalPrice());
         param[1] = simpleDateFormat.format(pfBorderRecommenReward.getCreateTime());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/getRewardBorder";
         WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
+
+        // 给发出推荐奖励的人发
+        String[] pParam = {
+                numberFormat.format(pfBorder.getRecommenAmount()),
+                simpleDateFormat.format(pfBorderRecommenReward.getCreateTime()),
+                comUser.getRealName(),
+                recommenUser.getRealName()
+        };
+        ComUser pUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/sendRewardBorder";
+        WxPFNoticeUtils.getInstance().recommendProfitOutNotice(pUser, pParam, pUrl);
     }
 }

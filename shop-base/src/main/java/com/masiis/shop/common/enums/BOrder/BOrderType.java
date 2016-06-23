@@ -36,6 +36,9 @@ public enum BOrderType {
     }
 
     public static BOrderType getByCode(Integer code){
+
+        if(code == null) return null;
+
         switch (code) {
             case 0: return BOrderType.agent;
             case 1: return BOrderType.Supplement;
@@ -45,4 +48,13 @@ public enum BOrderType {
 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "BOrderType{" +
+                "code=" + code +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
+
 }

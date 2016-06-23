@@ -102,7 +102,7 @@ public class PfBorderService {
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(bOrder, "订单完成");
         //订单类型(0代理1补货2拿货)
-        if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1) {
+        if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1 || bOrder.getOrderType() == 3) {
             comUserAccountService.countingByOrder(bOrder);
         }
     }

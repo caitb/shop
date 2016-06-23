@@ -28,6 +28,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -485,6 +486,17 @@ public class BOrderService {
         }
         logger.info("支付成功后查询订单信息----end");
         return upgradeDetail;
+    }
+
+    /**
+     * 查询进货订单或出货订单
+     * @param userId       自己ID
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    public List<Map<String, Object>> orderList(Long userId, Long userPid, Integer orderStatus) {
+        return pfBorderMapper.selectByUserIdOrUserPidAndOrderStatus(userId, userPid, orderStatus);
     }
 
 }

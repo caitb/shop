@@ -1,6 +1,9 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -32,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单管理
@@ -42,6 +46,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/borderManage")
 public class BorderManageController extends BaseController {
+
+    private final static Log log = LogFactory.getLog(BorderManageController.class);
 
     @Resource
     private SkuService skuService;
@@ -358,6 +364,40 @@ public class BorderManageController extends BaseController {
 //        modelAndView.setViewName("platform/order/jinhuodingdan");
 //        return modelAndView;
 //    }
+
+    /**
+     * 合伙订单列表
+     * @param request
+     * @param async        是否异步请求(0否;1是)
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    @RequestMapping("/orderList")
+    public ModelAndView orderList(
+                                    HttpServletRequest request,
+                                    Integer async,
+                                    @RequestParam(value = "userPid", required = false)Long userPid,
+                                    @RequestParam(value = "orderStatus", required = false)Integer orderStatus
+                                 ) {
+
+        String viewName = async.intValue()==0 ? "platform/order/orderList" : "platform/order/orderListTemplate";
+        ModelAndView mav = new ModelAndView(viewName);
+
+        Long userId = userPid==null ? getComUser(request).getId() : null;
+        try {
+            List<Map<String, Object>> orderMaps = bOrderService.orderList(userId, userPid, orderStatus);
+            mav.addObject("orderMaps", orderMaps);
+            mav.addObject("orderStatuses", BOrderStatus.values());
+            mav.addObject("orderTypes", BOrderType.values());
+        } catch (Exception e) {
+            log.error("查询订单列表失败![userPid="+userPid+"][orderStatus="+orderStatus+"][userId="+userId+"]"+e);
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
+        }
+
+        return mav;
+    }
 
     /**
      * 分段查询进货订单

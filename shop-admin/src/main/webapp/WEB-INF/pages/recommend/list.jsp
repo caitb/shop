@@ -78,59 +78,10 @@
 
                                 <div>
                                     <div id="toolbar">
-                                        <div class="form-inline">
+                                        <div class="form-inline" style="display: none;">
                                             <div class="form-group">
                                                 <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderCode">订单日期：</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <%--<div class="form-group">--%>
-                                                <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
-                                            <%--</div>--%>
-                                            <div class="form-group">
-                                                <label for="orderType">订单类型</label>
-                                                <select id="orderType" name="orderType">
-                                                    <option value="" selected="selected">所有订单</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payTypeId">支付方式</label>
-                                                <select id="payTypeId" name="payTypeId">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isCounting">是否结算：</label>
-                                                <select id="isCounting" name="isCounting">
-                                                    <option value="">全部</option>
-                                                    <option value="0">未结算</option>
-                                                    <option value="1">已结算</option>
-                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -363,6 +314,8 @@
                         formatter: function(value, row, index){
                             if(row.recommendUser && row.recommendUser.realName){
                                 return row.recommendUser.realName;
+                            }else{
+                                return '平台';
                             }
                         }
                     },
@@ -385,7 +338,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row.pfUserRecommenRelation && row.pfUserRecommenRelation.createTime){
-                                return row.pfUserRecommenRelation.createTime;
+                                return new Date(row.pfUserRecommenRelation.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     }

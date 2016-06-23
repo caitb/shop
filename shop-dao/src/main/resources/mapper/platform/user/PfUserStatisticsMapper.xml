@@ -134,14 +134,15 @@
             ust.recommen_send_fee recommenSendFee,
             (
                 SELECT
-                    COUNT(0) countPresentee
+                COUNT(0) countPresentee
                 FROM
-                    pf_user_recommen_relation
+                pf_user_recommen_relation urr2
+                LEFT JOIN pf_user_sku us ON us.user_id = urr2.user_id
                 WHERE
-                    user_id = pus.user_id
-                AND sku_id = pus.sku_id
-                AND user_pid != 0
-            ),
+                us.user_pid = pus.user_id
+                AND us.sku_id = pus.sku_id
+                AND us.user_pid != 0
+            ) countPresentee,
             (
                 SELECT
                     COUNT(0) countRecommend
@@ -150,7 +151,7 @@
                 WHERE
                     user_pid = pus.user_id
                 AND sku_id = pus.sku_id
-            )
+            ) countRecommend
         FROM
             pf_user_sku pus
         INNER JOIN com_sku sku ON pus.sku_id = sku.id

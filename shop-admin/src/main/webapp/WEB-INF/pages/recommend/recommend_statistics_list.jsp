@@ -313,7 +313,7 @@
                     },
                     {
                         field: 'countPresentee',
-                        title: '推荐我的人',
+                        title: '帮我推荐的人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){

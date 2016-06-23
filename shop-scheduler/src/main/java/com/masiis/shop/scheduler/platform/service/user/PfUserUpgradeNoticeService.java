@@ -208,7 +208,6 @@ public class PfUserUpgradeNoticeService {
         WxPFNoticeUtils.getInstance().upgradeApplyTwoDayNotPayNotice(user, params, url);
 
         // 发给上级的
-        // 发给上级的
         ComUser pUser = comUserMapper.selectByPrimaryKey(notice.getUserPid());
         ComAgentLevel org = comAgentLevelMapper.selectByPrimaryKey(notice.getOrgAgentLevelId());
         ComAgentLevel wish = comAgentLevelMapper.selectByPrimaryKey(notice.getWishAgentLevelId());
@@ -218,7 +217,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeNoticeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 
@@ -250,7 +249,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeNoticeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 

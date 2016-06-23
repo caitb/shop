@@ -243,7 +243,8 @@ public class AgentUpGradeController extends BaseController {
             throw new BusinessException("升级申请单id有误（不是当前用户申请）申请人id："+upGradeInfoPo.getApplyId()+" 当前用户id："+user.getId());
         }
         if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
-                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
+                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()
+                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
             mv.addObject("newUp",this.getNewUpAgent(upGradeInfoPo));
         }
         logger.info("查询当前上级用户信息 pid="+upGradeInfoPo.getApplyPid());

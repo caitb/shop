@@ -92,7 +92,7 @@
         })
         $("#goods").on("change",function(){
             var skuId=$("#goods option:selected").val();
-            window.location.href = skuId ? '<%=basePath%>myRecommend/getRewardBorder?skuId='+skuId : '<%=basePath%>myRecommend/getRewardBorder';
+            window.location.replace(skuId ? '<%=basePath%>myRecommend/getRewardBorder?skuId='+skuId : '<%=basePath%>myRecommend/getRewardBorder');
         })
 
         function blackShow(a,b,c,d){

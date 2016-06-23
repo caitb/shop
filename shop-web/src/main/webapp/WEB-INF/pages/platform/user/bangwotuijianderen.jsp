@@ -137,7 +137,7 @@
        })
        $("#goods").on("change",function(){
            var skuId=$("#goods option:selected").val();
-           window.location.href = skuId ? '<%=basePath%>myRecommend/recommendGiveList?skuId='+skuId : '<%=basePath%>myRecommend/recommendGiveList';
+           window.location.replace(skuId ? '<%=basePath%>myRecommend/recommendGiveList?skuId='+skuId : '<%=basePath%>myRecommend/recommendGiveList');
        })
 
        $(".myValue").on("change",function(){

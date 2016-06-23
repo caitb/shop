@@ -3,14 +3,12 @@ package com.masiis.shop.admin.service.upgrade;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.po.PfUserUpgradeNotice;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,8 +31,17 @@ public class UpgradeService {
     private ComUserMapper comUserMapper;
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
 
+    /**
+     * 查询升级列表
+     * @param pageNumber
+     * @param pageSize
+     * @param conditionMap
+     * @return
+     */
     public Map<String,Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String,Object> conditionMap) {
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectByMap(conditionMap);
@@ -55,8 +62,6 @@ public class UpgradeService {
             ComUser user = comUserMapper.selectByPrimaryKey(upgradeNotice.getUserId());
             if(user != null) {
                 upgradeNoticeWrap.put("userName", user.getRealName());
-
-
             }
 
             // 获取现上级名
@@ -68,11 +73,22 @@ public class UpgradeService {
                 }
             }
 
-
             // 原上级名称
             ComUser pUser = comUserMapper.selectByPrimaryKey(upgradeNotice.getUserPid());
             if(pUser != null) {
                 upgradeNoticeWrap.put("userOldParentName", pUser.getRealName());
+            }
+
+            // 原等级名称
+            ComAgentLevel orgLevel = comAgentLevelMapper.selectByPrimaryKey(upgradeNotice.getOrgAgentLevelId());
+            if (orgLevel != null) {
+                upgradeNoticeWrap.put("orgAgentLevelName", orgLevel.getName());
+            }
+
+            // 期望等级名称
+            ComAgentLevel wishLevel = comAgentLevelMapper.selectByPrimaryKey(upgradeNotice.getWishAgentLevelId());
+            if (wishLevel != null) {
+                upgradeNoticeWrap.put("wishAgentLevelName", wishLevel.getName());
             }
 
             upgradeNoticeWraps.add(upgradeNoticeWrap);

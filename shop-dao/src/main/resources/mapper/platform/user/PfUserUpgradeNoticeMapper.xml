@@ -96,6 +96,7 @@
         status, update_time, pf_border_id, remark, up_status
         from pf_user_upgrade_notice
         where user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY update_time desc
     </select>
 
     <select id="selectByUserPId" resultMap="BaseResultMap" parameterType="java.lang.Long" >

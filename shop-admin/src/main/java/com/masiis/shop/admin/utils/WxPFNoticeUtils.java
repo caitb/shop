@@ -783,7 +783,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 升级通知单撤销通知
+     * 升级通知单取消通知
      *
      * @param user 用户对象
      * @param params    (第一个,代理名称; 第二个,代理现等级; 第三个,代理申请等级;
@@ -795,12 +795,12 @@ public class WxPFNoticeUtils {
         WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
         WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您的升级申请已撤销。", null));
+        notice.setFirst(new WxNoticeDataItem("您的升级申请已取消。", null));
         notice.setKeyword1(new WxNoticeDataItem(params[0], null));
         notice.setKeyword2(new WxNoticeDataItem(params[1], null));
         notice.setKeyword3(new WxNoticeDataItem(params[2], null));
         notice.setKeyword4(new WxNoticeDataItem(params[3], null));
-        notice.setRemark(new WxNoticeDataItem("您的升级申请已撤销，升级未成功。", null));
+        notice.setRemark(new WxNoticeDataItem("您的升级申请已取消，升级未成功。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);
@@ -810,7 +810,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 下级代理申请升级撤销通知
+     * 下级代理申请升级取消通知
      *
      * @param pUser 上级用户对象
      * @param params    (第一个,下级代理名称; 第二个,下级代理现等级; 第三个,下级代理申请等级;
@@ -822,12 +822,12 @@ public class WxPFNoticeUtils {
         WxPFUpgradeApplyNotice notice = new WxPFUpgradeApplyNotice();
         WxNoticeReq<WxPFUpgradeApplyNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您的下级升级申请已撤销。", null));
+        notice.setFirst(new WxNoticeDataItem("您的下级升级申请已取消。", null));
         notice.setKeyword1(new WxNoticeDataItem(params[0], null));
         notice.setKeyword2(new WxNoticeDataItem(params[1], null));
         notice.setKeyword3(new WxNoticeDataItem(params[2], null));
         notice.setKeyword4(new WxNoticeDataItem(params[3], null));
-        notice.setRemark(new WxNoticeDataItem("您的下级升级申请已撤销，升级未成功。", null));
+        notice.setRemark(new WxNoticeDataItem("您的下级升级申请已取消，升级未成功。", null));
 
         req.setTouser(getOpenIdByComUser(pUser));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_APPLY_NOTICE);

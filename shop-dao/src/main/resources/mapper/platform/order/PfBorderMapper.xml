@@ -596,6 +596,7 @@
             </if>
         </where>
         GROUP BY bo.id
+        ORDER BY bo.create_time DESC
     </select>
 
 </mapper>

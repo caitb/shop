@@ -153,6 +153,12 @@ public interface PfBorderMapper {
                                                       @Param("payStatus") Integer payStatus,
                                                       @Param("orderType") Integer orderType);
 
-    int updateOrderCancelByIdAndOStatus(@Param("orderId") Long orderId,
-                                        @Param("ostatus") Integer ostatus);
+    /**
+     * 查询进货或出货订单
+     * @param userId       自己ID
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    List<Map<String, Object>> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
 }

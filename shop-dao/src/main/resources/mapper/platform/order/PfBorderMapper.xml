@@ -535,7 +535,7 @@
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
-        FROM
+        FROM pf_border
         where 1=1
         <if test="expiraTime != null">
             AND order_type = #{orderType,jdbcType=INTEGER}
@@ -562,5 +562,41 @@
         AND order_type = #{orderType,jdbcType=INTEGER}
         AND pay_status = #{payStatus,jdbcType=INTEGER}
     </update>
+
+    <!-- 查询进货或出货订单 -->
+    <select id="selectByUserIdOrUserPidAndOrderStatus" resultType="Map">
+        SELECT
+               bo.id                       id,
+               bo.order_code               orderCode,
+               bo.order_type               orderType,
+               bo.send_type                sendType,
+               bo.create_time              createTime,
+               bo.receivable_amount        receivableAmount,
+               bo.order_amount             orderAmount,
+               bo.pay_amount               payAmount,
+               bo.bail_amount              bailAmount,
+               bo.pay_time                 payTime,
+               GROUP_CONCAT(bi.sku_id)     skuIds,
+               GROUP_CONCAT(bi.unit_price) unitPrices,
+               GROUP_CONCAT(bi.quantity)   quantitys,
+               GROUP_CONCAT(sku.`name`)    skuNames
+        FROM
+               pf_border bo
+        LEFT JOIN pf_border_item bi   ON bi.pf_border_id = bo.id
+        LEFT JOIN com_sku        sku  ON sku.id = bi.sku_id
+        <where>
+            <if test="userId != null">
+                AND bo.user_id = #{userId}
+            </if>
+            <if test="userPid != null">
+                AND bo.user_pid = #{userPid}
+            </if>
+            <if test="orderStatus != null">
+                AND bo.order_status = #{orderStatus}
+            </if>
+        </where>
+        GROUP BY bo.id
+        ORDER BY bo.create_time DESC
+    </select>
 
 </mapper>

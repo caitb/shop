@@ -39,11 +39,8 @@ public enum BOrderType {
 
         if(code == null) return null;
 
-        switch (code) {
-            case 0: return BOrderType.agent;
-            case 1: return BOrderType.Supplement;
-            case 2: return BOrderType.Take;
-            case 3: return BOrderType.UPGRADE;
+        for(BOrderType orderType : BOrderType.values()){
+            if(orderType.getCode().intValue() == code.intValue()) return orderType;
         }
 
         return null;

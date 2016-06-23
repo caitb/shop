@@ -121,8 +121,8 @@ public class WxPFNoticeUtils {
         WxPFPartnerJoin join = new WxPFPartnerJoin();
         WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
 
-        join.setFirst(new WxNoticeDataItem("您有一个新的下级加入", null));
-        join.setRemark(new WxNoticeDataItem("此人是通过升级方式加入到您的团队，您需要给他的原上级一次性奖励，具体金额请线下沟通。点击查看详情", null));
+        join.setFirst(new WxNoticeDataItem("您有一个新的下级", null));
+        join.setRemark(new WxNoticeDataItem("此人是通过升级方式成为您的下级，您需要给他的原上级一次性奖励，具体金额请线下沟通。点击查看详情", null));
         join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
         join.setKeyword2(new WxNoticeDataItem(joinTime, null));
         join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
@@ -281,10 +281,10 @@ public class WxPFNoticeUtils {
         WxPFNewOrder newOrder = new WxPFNewOrder();
         WxNoticeReq<WxPFNewOrder> req = new WxNoticeReq<>(newOrder);
 
-        newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到店铺查看", null));
+        newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到订单管理中查看", null));
         newOrder.setKeyword1(new WxNoticeDataItem(params[0], null));
         newOrder.setKeyword2(new WxNoticeDataItem(params[1], null));
-        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，请及时补货", null));
+        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，为了不影响下级销售，请及时补货。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         if(hasInventory) {
@@ -849,7 +849,7 @@ public class WxPFNoticeUtils {
         WxPFUpServiceCancelNotice notice = new WxPFUpServiceCancelNotice();
         WxNoticeReq<WxPFUpServiceCancelNotice> req = new WxNoticeReq<>(notice);
 
-        notice.setFirst(new WxNoticeDataItem("您有一单升级申请超过2天未处理，系统默认处理为不升级。", null));
+        notice.setFirst(new WxNoticeDataItem("您有一单下级升级申请超过2天未处理，系统默认处理为不升级。", null));
         notice.setKeyword1(new WxNoticeDataItem("升级申请", null));
         notice.setKeyword2(new WxNoticeDataItem(params[0], null));
         notice.setKeyword3(new WxNoticeDataItem("超过2天未处理，系统默认不升级。", null));

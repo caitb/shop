@@ -305,7 +305,15 @@
         from pf_user_upgrade_notice n
         where n.update_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
         AND n.status = 2
-        AND (EXISTS (select 1 from pf_border b where b.order_status=0 and b.order_type = 3 and b.id=n.pf_border_id)
+        AND (EXISTS (SELECT
+                        1
+                    FROM
+                        pf_border b
+                    WHERE
+                        b.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+                    AND b.order_status = 0
+                    AND b.order_type = 3
+                    AND b.id = n.pf_border_id)
             OR n.pf_border_id is NULL )
     </select>
 
@@ -315,7 +323,15 @@
         from pf_user_upgrade_notice n
         where n.update_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
         AND n.status = 2
-        AND EXISTS (select 1 from pf_border b where b.order_status=9 and b.order_type = 3 and b.id=n.pf_border_id)
+        AND EXISTS (SELECT
+                        1
+                    FROM
+                        pf_border b
+                    WHERE
+                        b.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+                    AND b.order_status = 9
+                    AND b.order_type = 3
+                    AND b.id = n.pf_border_id)
     </select>
 
     <select id="selectAllSubByStatusAndPid" resultMap="BaseResultMap">

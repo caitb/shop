@@ -85,8 +85,8 @@ public class ComUserAccountService {
             // 验证订单的状态
             Integer orderType = order.getOrderType();
             Integer orderStatus = order.getOrderStatus();
-            if (orderType != 0 && orderType != 1) {
-                throw new BusinessException("订单类型不正确,当前订单状态为:" + orderType);
+            if (orderType != 0 && orderType != 1&& orderType != 3) {
+                throw new BusinessException("订单类型不正确,当前订单类型为:" + orderType);
             }
             if (orderStatus != 3) {
                 throw new BusinessException("订单状态不正确,当前订单状态为:" + orderStatus);

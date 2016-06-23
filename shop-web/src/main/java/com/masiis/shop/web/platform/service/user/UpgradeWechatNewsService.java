@@ -85,7 +85,7 @@ public class UpgradeWechatNewsService {
         logger.info("------订单id-------"+pfBorder.getId());
         logger.info("------通知单id-------"+upgradeDetail.getUpgradeNoticeId());
         String newPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
-        String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfoNewUp.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
+        String oldPuserUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/upgrade/upgradeInfo.shtml?upgradeId=" + upgradeDetail.getUpgradeNoticeId();
         //给升级人发微信
         ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
@@ -104,7 +104,7 @@ public class UpgradeWechatNewsService {
             logger.info("发送微信通知-----------上级没变化");
             String[] _param = new String[3];
             _param[0] = comUser.getRealName();
-            _param[1] = upgradeDetail.getApplyAgentLevel()+"";
+            _param[1] = upgradeDetail.getApplyAgentLevelName()+"";
             _param[2] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
             WxPFNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser,_param,oldPuserUrl);
         }else{
@@ -113,13 +113,12 @@ public class UpgradeWechatNewsService {
             //给原上级发微信
             String[] _param = new String[1];
             _param[0] = comUser.getRealName();
-            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,oldPuserUrl,true);
+            WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,newPuserUrl,true);
             //给新的上级发
             WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),newPuserUrl);
         }
         return true;
     }
-
     /**
      * 升级通知单提交通知
      * @param comUser

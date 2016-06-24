@@ -5,9 +5,12 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
@@ -20,8 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by lzh on 2016/3/23.
@@ -38,6 +43,12 @@ public class PfBorderService {
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private PfUserUpgradeNoticeService pfUserUpgradeNoticeService;
+    @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
+    private PfBorderItemMapper pfBorderItemMapper;
+    @Resource
+    private ComSkuMapper skuMapper;
 
 
     public List<PfBorder> findListByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
@@ -191,4 +202,28 @@ public class PfBorderService {
         return resList;
     }
 
+    /**
+     * 订单取消通知发送
+     *
+     * @param pfBorder
+     * @param day
+     */
+    public void sendWxNoitceByCancelBorder(PfBorder pfBorder, int day) {
+        ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
+        List<PfBorderItem> items = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+        ComSku sku = skuMapper.findBySkuId(items.get(0).getSkuId());
+        String[] params = {
+                pfBorder.getOrderCode(),
+                sku.getName(),
+                items.get(0).getQuantity() + "",
+                NumberFormat.getCurrencyInstance(Locale.CHINA).format(pfBorder.getOrderAmount())
+        };
+        if(day == 2) {
+            WxPFNoticeUtils.getInstance().orderUnpayTwoDayCancelNotice(user, params, null);
+        } else if(day == 3) {
+            WxPFNoticeUtils.getInstance().orderUnpayThreeDayCancelNotice(user, params, null);
+        } else if(day == 7) {
+            WxPFNoticeUtils.getInstance().orderUnpaySevenDayCancelNotice(user, params, null);
+        }
+    }
 }

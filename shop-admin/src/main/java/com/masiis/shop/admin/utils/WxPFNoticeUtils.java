@@ -297,6 +297,35 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 有新的下级补货订单
+     *
+     * @param user
+     * @param params   (1,订单编号(不是id);2,时间)
+     * @param orderUrl 查看新订单url
+     * @param hasInventory  库存是否充足
+     * @return  返回是否成功调用
+     */
+    public Boolean newSupplementOrderNotice(ComUser user, String[] params, String orderUrl, boolean hasInventory) {
+        WxPFNewOrder newOrder = new WxPFNewOrder();
+        WxNoticeReq<WxPFNewOrder> req = new WxNoticeReq<>(newOrder);
+
+        newOrder.setFirst(new WxNoticeDataItem("您有新的补货订单,请到订单管理中查看", null));
+        newOrder.setKeyword1(new WxNoticeDataItem(params[0], null));
+        newOrder.setKeyword2(new WxNoticeDataItem(params[1], null));
+        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，为了不影响下级销售，请及时补货。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        if(hasInventory) {
+            newOrder.setRemark(new WxNoticeDataItem("点击查看详情", null));
+            req.setUrl(orderUrl);
+        }
+        // 调用新订单提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_PF_ORDER);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 订单确认收货
      *
      * @param user

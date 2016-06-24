@@ -89,7 +89,7 @@ public class BOrderPayEndMessageService {
             } else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType().intValue() == 1) {
-                    pushMessageSupplementAndSendTypeI(comUser, pfBorder, pfBorderItems, numberFormat);
+                    pushMessageSupplementAndSendTypeI(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
@@ -148,8 +148,12 @@ public class BOrderPayEndMessageService {
             paramIn[0] = pfBorder.getOrderCode();
             paramIn[1] = simpleDateFormat.format(pfBorder.getCreateTime());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-            WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            if(pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()){
+                WxPFNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
+            }else {
+                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
+            }
         }
     }
 
@@ -204,8 +208,10 @@ public class BOrderPayEndMessageService {
      * @param numberFormat
      */
     private void pushMessageSupplementAndSendTypeI(ComUser comUser,
+                                                   ComUser pComUser,
                                                    PfBorder pfBorder,
                                                    List<PfBorderItem> pfBorderItems,
+                                                   SimpleDateFormat simpleDateFormat,
                                                    NumberFormat numberFormat) {
         String[] param = new String[4];
         param[0] = pfBorderItems.get(0).getSkuName();

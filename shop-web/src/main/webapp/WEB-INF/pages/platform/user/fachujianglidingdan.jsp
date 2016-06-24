@@ -1,26 +1,18 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/fachujianglidingdan.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/fachujianglidingdan.css">
 </head>
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="${basePath}myRecommend/feeList"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>发出奖励订单</p>            
         </header>
        <div class="sel">
@@ -83,8 +75,10 @@
            <button onclick="blackHide()">知道了</button>
        </div>
    </div>
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
     <script>
+        var path = "${path}";
+        var basePath = "${basePath}";
         $(document).ready(function(){
             var goodsWidth=$(".goods").width();
             $(".goods b").html($("#goods option:selected").text());
@@ -92,7 +86,7 @@
         })
         $("#goods").on("change",function(){
             var skuId=$("#goods option:selected").val();
-            window.location.replace(skuId ? '<%=basePath%>myRecommend/sendRewardBorder?skuId='+skuId : '<%=basePath%>myRecommend/sendRewardBorder');
+            window.location.replace(skuId ? basePath+'myRecommend/sendRewardBorder?skuId='+skuId : basePath+'myRecommend/sendRewardBorder');
         });
 
         function blackShow(a,b,c,d){

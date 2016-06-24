@@ -47,7 +47,7 @@
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>已完成</h1><p>亲，交易成功~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==6&& borderDetail.pfBorder.sendType==1}">
+                <c:if test="${borderDetail.pfBorder.orderStatus==6}">
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>排单中</h1><p>亲，订单排单中~~</p>
                 </c:if>

@@ -141,6 +141,10 @@
 //    })
     $(".b_que").on("tap", function () {
         i = $(".number").val();
+        if (i<=0) {
+            alert("数量不能低于0件！");
+            return;
+        }
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;

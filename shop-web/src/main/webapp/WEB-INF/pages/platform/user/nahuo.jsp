@@ -166,6 +166,10 @@
             alert("请输入拿货地址！");
             return;
         }
+        if (i<=0) {
+            alert("数量不能低于0件！");
+            return;
+        }
         if (checked == true) {
             if (afterLowerCount >= 0) {
                 $(".back").css("display", "-webkit-box");

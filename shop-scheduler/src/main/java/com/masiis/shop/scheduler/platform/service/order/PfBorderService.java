@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
+import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -97,10 +98,27 @@ public class PfBorderService {
         if (bOrder.getPayStatus() != 1) {
             throw new BusinessException("订单还未支付怎么能完成呢？");
         }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (bOrder.getSendType() == 1) {
+            if (!bOrder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())
+                    && !bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常");
+            }
+        } else if (bOrder.getSendType() == 2) {
+            if (!bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())
+                    && !bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常");
+            }
+        } else {
+            throw new BusinessException("订单拿货方式异常");
+        }
         bOrder.setOrderStatus(BOrderStatus.Complete.getCode());
+        bOrder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
+        bOrder.setIsReceipt(1);
+        bOrder.setReceiptTime(new Date());//收货时间
         borderMapper.updateById(bOrder);
         //添加订单日志
-        bOrderOperationLogService.insertBOrderOperationLog(bOrder, "订单完成");
+        bOrderOperationLogService.insertBOrderOperationLog(bOrder, "订单自动收货完成");
         //订单类型(0代理1补货2拿货)
         if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1 || bOrder.getOrderType() == 3) {
             comUserAccountService.countingByOrder(bOrder);

@@ -31,8 +31,6 @@ public class UpgradeWechatNewsService {
     private Logger logger = Logger.getLogger(UpgradeWechatNewsService.class);
     @Resource
     private UserService comUserService;
-    @Resource
-    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
 
 
 
@@ -54,7 +52,7 @@ public class UpgradeWechatNewsService {
         ComUser pComUser = comUserService.getUserById(pfBorder.getUserPid());
         String[] _param = new String[5];
         _param[0] = upgradeDetail.getSkuName();
-        _param[1] = pfBorder.getPayAmount().toString();
+        _param[1] = "￥"+pfBorder.getPayAmount().toString();
         _param[2] = upgradeDetail.getQuantity()+"";
         _param[3] = BOrderType.UPGRADE.getDesc();
         _param[4] = BOrderStatus.MPS.getDesc();
@@ -64,7 +62,7 @@ public class UpgradeWechatNewsService {
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/" + pfBorder.getUserPid();
         String[] param = new String[5];
         param[0] = upgradeDetail.getSkuName();
-        param[1] = pfBorder.getPayAmount().toString();
+        param[1] = "￥"+pfBorder.getPayAmount().toString();
         param[2] = upgradeDetail.getQuantity()+"";
         param[3] = BOrderType.UPGRADE.getDesc();
         param[4] = BOrderStatus.MPS.getDesc();
@@ -73,10 +71,8 @@ public class UpgradeWechatNewsService {
         return true;
     }
 
-
-
     /**
-     * 升级订单支付成功后发送微信
+     * 升级订单支付成功后，没有进入排单发送微信
      * @param pfBorder
      * @param pfBorderPayment
      * @return
@@ -91,7 +87,7 @@ public class UpgradeWechatNewsService {
         ComUser newComUser = comUserService.getUserById(pfBorder.getUserPid());
         ComUser oldUser = comUserService.getUserById(upgradeDetail.getOldPUserId());
         String[] param = new String[4];
-        param[0] = pfBorderPayment.getAmount().toString();
+        param[0] = "￥"+pfBorderPayment.getAmount().toString();
         param[1] = pfBorderPayment.getPayTypeName();
         param[2] = "升级"+upgradeDetail.getApplyAgentLevelName();
         param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);

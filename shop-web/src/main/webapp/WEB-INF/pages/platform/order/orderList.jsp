@@ -160,6 +160,44 @@
             param += orderStatus == undefined ? '' : '&orderStatus=' + orderStatus;
         window.location.replace('<%=basePath%>borderManage/orderList'+param);
     });
+
+    $(".fa").on("click",function(){
+        $(".back").css("display","-webkit-box");
+        $(".back_shouhuo").css("display","-webkit-box");
+    });
+
+    var oid = "";
+    function querenshouhuo(orderStatus,id) {
+        $(".back").css("display", "-webkit-box");
+        $(".back_shouhuo").css("display", "-webkit-box");
+        oid = id;
+    }
+    $(function(){
+        $(".que_que").on("click",function(){
+            $(".back_shouhuo").hide();
+            $(".back").hide();
+            var aa="querenshouhuo_"+oid;
+            $.ajax({
+                type:"POST",
+                url : "<%=path%>/borderManage/closeDeal.do",
+                data:{orderStatus:3,shipStatus:9,orderId:oid},
+                dataType:"Json",
+                success:function(date){
+//                            if(date.msgs){
+                    $("span[name="+aa+"]").attr("style","display:none");
+                    $("b."+aa+"").html("已完成");
+                    location.reload(true);
+//                            }else{
+//                                alert(date.message);
+//                            }
+                }
+            })
+        })
+    });
+    $(".que_qu").on("click",function(){
+        $(".back_shouhuo").hide();
+        $(".back").hide();
+    });
 </script>
 </body>
 </html>

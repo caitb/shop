@@ -217,7 +217,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/upgradeInfo.shtml?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 
@@ -249,7 +249,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/upgradeInfo.shtml?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 
@@ -274,7 +274,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(DateUtil.getDateNextdays(notice.getCreateTime(), 2), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(user, params, url);
 
     }

@@ -41,8 +41,10 @@
         </c:if>
         <main>
             <div class="all">
+
                 <c:forEach items="${orderMaps}" var="orderMap">
                     <section class="sec1">
+
                         <p>时间： <span><fmt:formatDate value="${orderMap.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                         <h2>
                             订单号：<span>${orderMap.orderCode}</span>
@@ -50,18 +52,19 @@
                                 <c:if test="${orderStatus.code == orderMap.orderStatus}"><b>${orderStatus.desc}</b></c:if>
                             </c:forEach>
                         </h2>
+
                         <c:forEach items="${orderMap.bItems}" var="bItem">
-                            <div class="shangpin">
-                                <p class="photo">
-                                    <a href="javascript:void(0);">
-                                        <img src="${imgUrlPrefix}${bItem.imgUrls.imgUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${bItem.skuName}</h2>
-                                    <h3><span>￥${bItem.unitPrice}</span><b>x${bItem.quantity}</b></h3>
-                                </div>
+                        <div class="shangpin">
+                            <p class="photo">
+                                <a href="javascript:void(0);">
+                                    <img src="${imgUrlPrefix}${bItem.imgUrls.imgUrl}" alt="">
+                                </a>
+                            </p>
+                            <div>
+                                <h2>${bItem.skuName}</h2>
+                                <h3><span>￥${bItem.unitPrice}</span><b>x${bItem.quantity}</b></h3>
                             </div>
+                        </div>
                         </c:forEach>
 
                         <h1>
@@ -84,7 +87,12 @@
                         </h1>
 
                         <div class="ding">
-                            <p><a href="<%=path%>/borderManage/borderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            <c:if test="${isShipment == 0}">
+                                <p><a href="<%=path%>/borderManage/borderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            </c:if>
+                            <c:if test="${isShipment == 1}">
+                                <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            </c:if>
                             <c:if test="${orderMap.sendType==0 && orderMap.orderStatus !=0}">
                                 <span class="jixu">选择拿货方式</span>
                             </c:if>
@@ -104,6 +112,7 @@
 
                     </section>
                 </c:forEach>
+
             </div>
         </main>
     </div>

@@ -213,6 +213,10 @@
 //            $(".back_g").hide();
 //            return;
 //        }
+        if (i <= 0) {
+            alert("请至少购买1件商品！");
+            return;
+        }
         $.ajax({
             url: "<%=basePath%>cart/addCart.do",
             type: "post",

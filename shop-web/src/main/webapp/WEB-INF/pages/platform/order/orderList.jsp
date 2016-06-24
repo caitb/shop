@@ -41,8 +41,10 @@
         </c:if>
         <main>
             <div class="all">
+
                 <c:forEach items="${orderMaps}" var="orderMap">
                     <section class="sec1">
+
                         <p>时间： <span><fmt:formatDate value="${orderMap.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                         <h2>
                             订单号：<span>${orderMap.orderCode}</span>
@@ -50,18 +52,19 @@
                                 <c:if test="${orderStatus.code == orderMap.orderStatus}"><b>${orderStatus.desc}</b></c:if>
                             </c:forEach>
                         </h2>
+
                         <c:forEach items="${orderMap.bItems}" var="bItem">
-                            <div class="shangpin">
-                                <p class="photo">
-                                    <a href="javascript:void(0);">
-                                        <img src="${imgUrlPrefix}${bItem.imgUrls.imgUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${bItem.skuName}</h2>
-                                    <h3><span>￥${bItem.unitPrice}</span><b>x${bItem.quantity}</b></h3>
-                                </div>
+                        <div class="shangpin">
+                            <p class="photo">
+                                <a href="javascript:void(0);">
+                                    <img src="${imgUrlPrefix}${bItem.imgUrls.imgUrl}" alt="">
+                                </a>
+                            </p>
+                            <div>
+                                <h2>${bItem.skuName}</h2>
+                                <h3><span>￥${bItem.unitPrice}</span><b>x${bItem.quantity}</b></h3>
                             </div>
+                        </div>
                         </c:forEach>
 
                         <h1>
@@ -104,6 +107,7 @@
 
                     </section>
                 </c:forEach>
+
             </div>
         </main>
     </div>

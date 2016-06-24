@@ -39,6 +39,7 @@ main .floor p span {
 }
 main .floor p span:last-child {
   color: #333;
+  -webkit-box-flex: 1;
 }
 main button.zhifu {
   background: #0FC420;

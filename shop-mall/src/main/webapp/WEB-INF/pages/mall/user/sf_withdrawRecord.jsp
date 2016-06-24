@@ -38,7 +38,7 @@
                 <div id="divall">
                     <c:forEach items="${list}" var="sfUserExtractApply">
                         <div>
-                            <p><span class="sd"><fmt:formatDate value="${sfUserExtractApply.applyTime}"  type="time" pattern="dd"/>日</span><span>-${sfUserExtractApply.extractFee}</span></p>
+                            <p><span class="sd"><fmt:formatDate value="${sfUserExtractApply.applyTime}"  type="time" pattern="dd"/>日</span><span>${sfUserExtractApply.extractFee}</span></p>
                             <h1>
                                 <span>微信提现</span>
                                 <c:if test="${sfUserExtractApply.auditType == 0}"><span>审核中</span></c:if>

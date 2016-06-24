@@ -1051,6 +1051,60 @@ public class WxPFNoticeUtils {
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
+    private Boolean orderUnpayCancelNoitce(ComUser user, String[] params, String url, String remark){
+        WxPFOrderCancelNotice notice = new WxPFOrderCancelNotice();
+        WxNoticeReq<WxPFOrderCancelNotice> req = new WxNoticeReq<WxPFOrderCancelNotice>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您的订单已取消。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        notice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        notice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        notice.setKeyword4(new WxNoticeDataItem(params[3], null));
+        notice.setRemark(new WxNoticeDataItem(remark, null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_ORDER_CANCEL_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 订单超过2天未支付
+     *
+     * @param user
+     * @param params    (第一个,订单编号; 第二个,商品名称; 第三个,商品数量; 第四个,订单金额)
+     * @param url
+     * @return
+     */
+    public Boolean orderUnpayTwoDayCancelNotice(ComUser user, String[] params, String url){
+        return orderUnpayCancelNoitce(user, params, url, "您的订单超过2天未支付，系统已经帮您取消。");
+    }
+
+    /**
+     * 订单超过3天未支付
+     *
+     * @param user
+     * @param params    (第一个,订单编号; 第二个,商品名称; 第三个,商品数量; 第四个,订单金额)
+     * @param url
+     * @return
+     */
+    public Boolean orderUnpayThreeDayCancelNotice(ComUser user, String[] params, String url){
+        return orderUnpayCancelNoitce(user, params, url, "您的订单超过3天未支付，系统已经帮您取消。");
+    }
+
+    /**
+     * 线下支付订单超过7天未支付
+     *
+     * @param user
+     * @param params    (第一个,订单编号; 第二个,商品名称; 第三个,商品数量; 第四个,订单金额)
+     * @param url
+     * @return
+     */
+    public Boolean orderUnpaySevenDayCancelNotice(ComUser user, String[] params, String url){
+        return orderUnpayCancelNoitce(user, params, url, "您的线下支付订单超过7天未支付，系统已经帮您取消。");
+    }
+
     private String getOpenIdByComUser(ComUser user) {
         if (user == null) {
             throw new BusinessException("user为空");

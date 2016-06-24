@@ -48,6 +48,7 @@ public class WxPFNoticeUtils {
     public Boolean wxNotice(String accessToken, WxNoticeReq noPay) {
         String url = WxConsPF.URL_WX_NOTICE + "?access_token=" + accessToken;
         String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
+        log.info("调用模板返回:" + result);
         WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
         if ("0".equals(res.getErrcode())) {
             return true;

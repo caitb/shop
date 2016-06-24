@@ -387,6 +387,11 @@ public class BorderManageController extends BaseController {
         if(isShipment == 0) userId  = getComUser(request).getId();
         if(isShipment == 1) userPid = getComUser(request).getId();
         try {
+            if (request.getSession().getAttribute("defaultBank") == null || request.getSession().getAttribute("defaultBank") == "") {
+                PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
+                request.getSession().setAttribute("defaultBank", defaultBank);
+            }
+
             List<BOrder> orderMaps = bOrderService.orderList(userId, userPid, orderStatus);
             mav.addObject("imgUrlPrefix", PropertiesUtils.getStringValue("index_product_220_220_url"));
             mav.addObject("orderStatus", orderStatus);

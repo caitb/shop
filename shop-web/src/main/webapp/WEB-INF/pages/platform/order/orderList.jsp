@@ -66,22 +66,21 @@
 
                         <h1>
                             <b style="color:#A5A5A5">合计：￥${orderMap.orderAmount}</b>
-                                                            <c:if test="${orderMap.orderType==0}">
-                                                                (保证金：￥${orderMap.bailAmount})
-                                                            </c:if>
+                                                            <c:if test="${orderMap.orderType==0}">(保证金：￥${orderMap.bailAmount})</c:if>
                                                             <c:if test="${orderMap.orderType==2}">(运费：到付)</c:if>
                         </h1>
 
                         <h1>
-                            <b>发货方：</b><span>
-                                                <c:if test="${orderMap.sendType == 0}">未选择</c:if>
-                                                <c:if test="${orderMap.sendType == 1}">平台代发</c:if>
-                                                <c:if test="${orderMap.sendType == 2}">自己发货</c:if>
-                                          </span>
+                            <b>发货方：</b>
+                            <span>
+                            <c:if test="${orderMap.sendType == 0}">未选择</c:if>
+                            <c:if test="${orderMap.sendType == 1}">平台代发</c:if>
+                            <c:if test="${orderMap.sendType == 2}">自己发货</c:if>
+                            </span>
                             <b>类型：</b>
-                                                <c:forEach items="${orderTypes}" var="orderType">
-                                                    <c:if test="${orderType.code == orderMap.orderType}"><span>${orderType.desc}</span></c:if>
-                                                </c:forEach>
+                            <c:forEach items="${orderTypes}" var="orderType">
+                                <c:if test="${orderType.code == orderMap.orderType}"><span>${orderType.desc}</span></c:if>
+                            </c:forEach>
                         </h1>
 
                         <div class="ding">

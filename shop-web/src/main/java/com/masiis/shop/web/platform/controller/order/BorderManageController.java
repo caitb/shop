@@ -8,6 +8,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
@@ -368,25 +369,33 @@ public class BorderManageController extends BaseController {
     /**
      * 合伙订单列表
      * @param request
-     * @param async        是否异步请求(0否;1是)
-     * @param userPid      上级ID
+     * @param isShipment   进出货(0进货;1出货)
      * @param orderStatus  订单状态
      * @return
      */
     @RequestMapping("/orderList")
     public ModelAndView orderList(
                                     HttpServletRequest request,
-                                    Integer async,
-                                    @RequestParam(value = "userPid", required = false)Long userPid,
+                                    @RequestParam(value = "isShipment", required = false, defaultValue = "0")Integer isShipment,
                                     @RequestParam(value = "orderStatus", required = false)Integer orderStatus
                                  ) {
 
-        String viewName = async.intValue()==0 ? "platform/order/orderList" : "platform/order/orderListTemplate";
-        ModelAndView mav = new ModelAndView(viewName);
+        ModelAndView mav = new ModelAndView("platform/order/orderList");
 
-        Long userId = userPid==null ? getComUser(request).getId() : null;
+        Long userId  = null;
+        Long userPid = null;
+        if(isShipment == 0) userId  = getComUser(request).getId();
+        if(isShipment == 1) userPid = getComUser(request).getId();
         try {
-            List<Map<String, Object>> orderMaps = bOrderService.orderList(userId, userPid, orderStatus);
+            if (request.getSession().getAttribute("defaultBank") == null || request.getSession().getAttribute("defaultBank") == "") {
+                PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
+                request.getSession().setAttribute("defaultBank", defaultBank);
+            }
+
+            List<BOrder> orderMaps = bOrderService.orderList(userId, userPid, orderStatus);
+            mav.addObject("imgUrlPrefix", PropertiesUtils.getStringValue("index_product_220_220_url"));
+            mav.addObject("orderStatus", orderStatus);
+            mav.addObject("isShipment", isShipment);
             mav.addObject("orderMaps", orderMaps);
             mav.addObject("orderStatuses", BOrderStatus.values());
             mav.addObject("orderTypes", BOrderType.values());

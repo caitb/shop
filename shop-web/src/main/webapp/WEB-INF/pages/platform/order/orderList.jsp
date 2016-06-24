@@ -27,16 +27,18 @@
         </header>
         <nav>
             <ul>
-                <li><a href="javascript:;" class="on">全部</a></li>
-                <li><a href="javascript:;">待付款</a></li>
-                <%--<li><a href="javascript:;">线下支付中</a></li>--%>
-                <li><a href="javascript:;">待发货</a></li>
-                <li><a href="javascript:;">待收货</a></li>
-                <li><a href="javascript:;">已完成</a></li>
-                <li><a href="javascript:;">排单中</a></li>
+                <li class="order-list" isShipment="${isShipment}"                ><a href="javascript:void(0);" <c:if test="${orderStatus == null}">class="on"</c:if> >全部</a></li>
+                <li class="order-list" isShipment="${isShipment}" orderStatus="0"><a href="javascript:void(0);" <c:if test="${orderStatus == 0}">class="on"</c:if> >待付款</a></li>
+                <li class="order-list" isShipment="${isShipment}" orderStatus="7"><a href="javascript:void(0);" <c:if test="${orderStatus == 7}">class="on"</c:if> >待发货</a></li>
+                <li class="order-list" isShipment="${isShipment}" orderStatus="8"><a href="javascript:void(0);" <c:if test="${orderStatus == 8}">class="on"</c:if> >待收货</a></li>
+                <li class="order-list" isShipment="${isShipment}" orderStatus="3"><a href="javascript:void(0);" <c:if test="${orderStatus == 3}">class="on"</c:if> >已完成</a></li>
+                <li class="order-list" isShipment="${isShipment}" orderStatus="6"><a href="javascript:void(0);" <c:if test="${orderStatus == 6}">class="on"</c:if> >排单中</a></li>
             </ul>
             <img src="${path}/static/images/youdao.png" alt="" class="you">
         </nav>
+        <c:if test="${isShipment == 1}">
+        <p><img src="/static/images/laba.png" alt="">您只可以查看直接下级的订单</p>
+        </c:if>
         <main>
             <div class="all">
                 <c:forEach items="${orderMaps}" var="orderMap">
@@ -48,39 +50,37 @@
                                 <c:if test="${orderStatus.code == orderMap.orderStatus}"><b>${orderStatus.desc}</b></c:if>
                             </c:forEach>
                         </h2>
-
-                        <c:forEach items="${orderMap.skuNames.split(',')}" var="skuName" varStatus="status">
+                        <c:forEach items="${orderMap.bItems}" var="bItem">
                             <div class="shangpin">
                                 <p class="photo">
                                     <a href="javascript:void(0);">
-                                        <img src="${pbi.skuUrl}" alt="">
+                                        <img src="${imgUrlPrefix}${bItem.imgUrls.imgUrl}" alt="">
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${skuName}</h2>
-                                    <h3><span>￥${orderMap.unitPrices.split(',')[status.index]}</span><b>x${orderMap.quantitys.split(',')[status.index]}</b></h3>
+                                    <h2>${bItem.skuName}</h2>
+                                    <h3><span>￥${bItem.unitPrice}</span><b>x${bItem.quantity}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
 
                         <h1>
                             <b style="color:#A5A5A5">合计：￥${orderMap.orderAmount}</b>
-                                                            <c:if test="${orderMap.orderType==0}">
-                                                                (保证金：￥${orderMap.bailAmount})
-                                                            </c:if>
+                                                            <c:if test="${orderMap.orderType==0}">(保证金：￥${orderMap.bailAmount})</c:if>
                                                             <c:if test="${orderMap.orderType==2}">(运费：到付)</c:if>
                         </h1>
 
                         <h1>
-                            <b>发货方：</b><span>
-                                                <c:if test="${orderMap.sendType == 0}">未选择</c:if>
-                                                <c:if test="${orderMap.sendType == 1}">平台代发</c:if>
-                                                <c:if test="${orderMap.sendType == 2}">自己发货</c:if>
-                                          </span>
+                            <b>发货方：</b>
+                            <span>
+                            <c:if test="${orderMap.sendType == 0}">未选择</c:if>
+                            <c:if test="${orderMap.sendType == 1}">平台代发</c:if>
+                            <c:if test="${orderMap.sendType == 2}">自己发货</c:if>
+                            </span>
                             <b>类型：</b>
-                                                <c:forEach items="${orderTypes}" var="orderType">
-                                                    <c:if test="${orderType.code == orderMap.orderType}"><span>${orderType.desc}</span></c:if>
-                                                </c:forEach>
+                            <c:forEach items="${orderTypes}" var="orderType">
+                                <c:if test="${orderType.code == orderMap.orderType}"><span>${orderType.desc}</span></c:if>
+                            </c:forEach>
                         </h1>
 
                         <div class="ding">
@@ -153,7 +153,51 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
+    $(document).on('click', '.order-list', function(){
+        var isShipment = $(this).attr('isShipment');
+        var orderStatus = $(this).attr('orderStatus');
+        var param  = isShipment  == undefined ? '' : '?isShipment=' + isShipment;
+            param += orderStatus == undefined ? '' : '&orderStatus=' + orderStatus;
+        window.location.replace('<%=basePath%>borderManage/orderList'+param);
+    });
 
+    $(".fa").on("click",function(){
+        $(".back").css("display","-webkit-box");
+        $(".back_shouhuo").css("display","-webkit-box");
+    });
+
+    var oid = "";
+    function querenshouhuo(orderStatus,id) {
+        $(".back").css("display", "-webkit-box");
+        $(".back_shouhuo").css("display", "-webkit-box");
+        oid = id;
+    }
+    $(function(){
+        $(".que_que").on("click",function(){
+            $(".back_shouhuo").hide();
+            $(".back").hide();
+            var aa="querenshouhuo_"+oid;
+            $.ajax({
+                type:"POST",
+                url : "<%=path%>/borderManage/closeDeal.do",
+                data:{orderStatus:3,shipStatus:9,orderId:oid},
+                dataType:"Json",
+                success:function(date){
+//                            if(date.msgs){
+                    $("span[name="+aa+"]").attr("style","display:none");
+                    $("b."+aa+"").html("已完成");
+                    location.reload(true);
+//                            }else{
+//                                alert(date.message);
+//                            }
+                }
+            })
+        })
+    });
+    $(".que_qu").on("click",function(){
+        $(".back_shouhuo").hide();
+        $(".back").hide();
+    });
 </script>
 </body>
 </html>

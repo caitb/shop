@@ -95,7 +95,7 @@ public class PfUserBillService {
             // 修改结算
             log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
             record.setPrevFee(account.getCountingFee());
-            account.setCountingFee(account.getCountingFee().subtract(bill.getBillAmount()));
+            account.setCountingFee(account.getCountingFee().subtract(bill.getBillAmount().subtract(rewardAmount)));
             log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
             record.setNextFee(account.getCountingFee());
             recordMapper.insert(record);
@@ -112,7 +112,7 @@ public class PfUserBillService {
             // 代理结算中减少
             ComUserAccountRecord recordAgentcount = createAccountRecord(account, bill, UserAccountRecordFeeType.PF_SUB_AGENT_COUNT_FEE.getCode());
             recordAgentcount.setPrevFee(account.getAgentBillAmount());
-            account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount().add(rewardAmount)));
+            account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount().subtract(rewardAmount)));
             log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getAgentBillAmount());
             recordAgentcount.setNextFee(account.getAgentBillAmount());
             recordMapper.insert(recordAgentcount);
@@ -120,11 +120,11 @@ public class PfUserBillService {
             if(rewardAmount.compareTo(BigDecimal.ZERO) > 0) {
                 // 推荐奖励结算中减少
                 ComUserAccountRecord recordRewardcount = createAccountRecord(account, bill, UserAccountRecordFeeType.PF_SUB_RECOMMEN_COUNT.getCode());
-                recordAgentcount.setPrevFee(account.getRecommenBillAmount());
+                recordRewardcount.setPrevFee(account.getRecommenBillAmount());
                 account.setRecommenBillAmount(account.getRecommenBillAmount().subtract(rewardAmount));
                 log.info("修改账户的推荐奖励结算金额,之后结算金额是:" + account.getAgentBillAmount());
-                recordAgentcount.setNextFee(account.getRecommenBillAmount());
-                recordMapper.insert(recordAgentcount);
+                recordRewardcount.setNextFee(account.getRecommenBillAmount());
+                recordMapper.insert(recordRewardcount);
             }
 
             int changeSize = accountMapper.updateByIdWithVersion(account);

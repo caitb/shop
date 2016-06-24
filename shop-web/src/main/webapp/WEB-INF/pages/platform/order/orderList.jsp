@@ -87,7 +87,12 @@
                         </h1>
 
                         <div class="ding">
-                            <p><a href="<%=path%>/borderManage/borderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            <c:if test="${isShipment == 0}">
+                                <p><a href="<%=path%>/borderManage/borderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            </c:if>
+                            <c:if test="${isShipment == 1}">
+                                <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
+                            </c:if>
                             <c:if test="${orderMap.sendType==0 && orderMap.orderStatus !=0}">
                                 <span class="jixu">选择拿货方式</span>
                             </c:if>

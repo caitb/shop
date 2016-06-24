@@ -19,7 +19,7 @@ $(function(){
                     for(var i = 0; data.resData.length; i++){
                         _contain.append($("<div><p>" +
                             "<span class='sd'>" + data.resData[i].applyTimeView + "</span>" +
-                            "<span>-" + data.resData[i].extractFeeView + "</span></p><h1>" +
+                            "<span>" + data.resData[i].extractFeeView + "</span></p><h1>" +
                             "<span>银行卡号</span><span>" + data.resData[i].bankCardView + "</span>" +
                             "<b>" + data.resData[i].auditTypeView + "</b></h1></div>"));
                     }

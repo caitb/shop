@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
@@ -495,7 +496,7 @@ public class BOrderService {
      * @param orderStatus  订单状态
      * @return
      */
-    public List<Map<String, Object>> orderList(Long userId, Long userPid, Integer orderStatus) {
+    public List<BOrder> orderList(Long userId, Long userPid, Integer orderStatus) {
         return pfBorderMapper.selectByUserIdOrUserPidAndOrderStatus(userId, userPid, orderStatus);
     }
 

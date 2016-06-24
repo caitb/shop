@@ -156,8 +156,8 @@ public class AgentUpGradeController extends BaseController {
      * @param upgradeLevel  申请代理等级
      * @param skuId         代理skuId
      * @param userPid       代理上级用户id
-     * @param request
-     * @return return
+     * @param request       request
+     * @return return       String
      */
     @RequestMapping(value = "/upGradeConfirm.do")
     @ResponseBody
@@ -207,7 +207,7 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 跳转申请成功页面（申请等级等于上级代理等级）
-     * @return
+     * @return mv
      */
     @RequestMapping(value = "/applicationComplete.shtml")
     public ModelAndView turnApplilcation(){
@@ -220,8 +220,8 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 我的申请单升级信息页面展示
      * @param upgradeId     升级申请信息id
-     * @param request
-     * @return
+     * @param request       request
+     * @return mv
      * @throws Exception
      */
     @RequestMapping(value = "/myApplyUpgrade.shtml")
@@ -261,8 +261,8 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 升级信息页面   (处理未完成)
      * @param upgradeId       升级申请表id
-     * @param request
-     * @return
+     * @param request         request
+     * @return                mv
      * @throws Exception
      */
     @RequestMapping(value = "/upgradeInfo.shtml")
@@ -302,7 +302,7 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 查找升级后的新上级
      * @param upGradeInfoPo  升级信息页面po
-     * @return
+     * @return               String
      * @throws Exception
      */
     private String getNewUpAgent(UpGradeInfoPo upGradeInfoPo) throws Exception{
@@ -335,8 +335,8 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 升级信息页面   (一次性返利跳转)
      * @param upgradeId       升级申请表id
-     * @param request
-     * @return
+     * @param request         request
+     * @return                mv
      * @throws Exception
      */
     @RequestMapping(value = "/upgradeInfoNewUp.shtml")
@@ -390,8 +390,8 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 代理暂不升级处理
      * @param upgradeId   升级申请表id
-     * @param request
-     * @return
+     * @param request     request
+     * @return            String
      * @throws Exception
      */
     @RequestMapping(value = "/temporarilyUpgrade.do")
@@ -439,7 +439,7 @@ public class AgentUpGradeController extends BaseController {
     /**
      * 用户撤销升级申请单
      * @param upgradeId     升级申请单id
-     * @param request
+     * @param request       request
      * @throws Exception
      */
     @RequestMapping(value = "/cannelUpgrade.do")
@@ -471,9 +471,9 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 通知界面跳转到订单界面
-     * @param upgradeNoticeId
-     * @param request
-     * @return
+     * @param upgradeNoticeId   升级申请单id
+     * @param request           request
+     * @return                  mv
      * @throws Exception
      */
     @RequestMapping(value = "/skipOrderPageGetNoticeInfo.html")
@@ -498,7 +498,7 @@ public class AgentUpGradeController extends BaseController {
      * @param upgradeLevel  申請代理等級
      * @param upAgentLevel  上級代理等級
      * @param upgradeId     通知单id
-     * @param request
+     * @param request       String
      */
     @RequestMapping(value = "/upgradeApplySubmitNotice.do")
     @ResponseBody
@@ -542,9 +542,9 @@ public class AgentUpGradeController extends BaseController {
 
     /**
      * 代理暂不升级发送微信消息
-     * @param upgradeId
-     * @param request
-     * @return
+     * @param upgradeId 升级申请单id
+     * @param request   request
+     * @return          String
      */
     @RequestMapping(value = "/notUpgradeMessage.do")
     @ResponseBody

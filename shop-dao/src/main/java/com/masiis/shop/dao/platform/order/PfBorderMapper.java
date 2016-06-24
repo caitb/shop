@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.po.PfBorder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -163,5 +164,5 @@ public interface PfBorderMapper {
      * @param orderStatus  订单状态
      * @return
      */
-    List<Map<String, Object>> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
+    List<BOrder> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
 }

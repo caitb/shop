@@ -148,8 +148,12 @@ public class BOrderPayEndMessageService {
             paramIn[0] = pfBorder.getOrderCode();
             paramIn[1] = simpleDateFormat.format(pfBorder.getCreateTime());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-            WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            if(pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()){
+                WxPFNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
+            }else {
+                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
+            }
         }
     }
 

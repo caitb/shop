@@ -654,6 +654,7 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("borderDetail", borderDetail);
         modelAndView.addObject("bOrderTypes", BOrderType.values());
+        modelAndView.addObject("bOrderStatuses", BOrderStatus.values());
         modelAndView.setViewName("platform/order/chuhuoxiangqing");
         return modelAndView;
     }

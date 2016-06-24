@@ -62,6 +62,10 @@
 <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath%>static/js/definedAlertWindow.js"></script>
 <script>
+    $(function(){
+        $('input[name="levelIds"]:checked').next('label').addClass('active');
+    });
+
     $('#getPoster').on('click', function(){
         var checkedCount = $('input[name="levelIds"]:checked').size();
         if(checkedCount <= 0){

@@ -334,10 +334,10 @@
                                 return '处理中';
                             }
                             if(row.upgradeNotice && row.upgradeNotice.status == 2){
-                                return '待支付';
+                                return '待付款';
                             }
                             if(row.upgradeNotice && row.upgradeNotice.status == 3){
-                                return '已完成';
+                                return '成功';
                             }
                             if(row.upgradeNotice && row.upgradeNotice.status == 4){
                                 return '已取消';

@@ -58,4 +58,6 @@ public interface PfUserRelationMapper {
                                           @Param("skuId") Integer skuId);
 
     List<PfUserRelation> selectByCondition(Map<String, Object> conditionMap);
+
+    List<PfUserRelation> selectRelationByUserId(Long userId);
 }

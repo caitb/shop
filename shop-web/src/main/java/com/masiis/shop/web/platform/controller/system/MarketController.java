@@ -69,11 +69,11 @@ public class MarketController extends BaseController {
         //增加逻辑，判断是否是BOSS
         List<IndexComSku> indexComS = null;
         List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系,Boss和小白没代理关系
-        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
+//        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
              indexComS = indexShowService.findIndexComSku(user.getId());
-        }else{//非BOSS
-            indexComS = indexShowService.findIndexComSkuNotBoss(user.getId());
-        }
+//        }else{//非BOSS
+//            indexComS = indexShowService.findIndexComSkuNotBoss(user.getId());
+//        }
         indexComS.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {

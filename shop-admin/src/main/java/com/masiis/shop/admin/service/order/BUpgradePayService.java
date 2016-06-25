@@ -10,6 +10,7 @@ import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
+import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,10 @@ public class BUpgradePayService {
     private PfUserSkuHistoryService pfUserSkuHistoryService;
     @Resource
     private PfUserCertificateHistoryService pfUserCertificateHistoryService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -525,9 +530,9 @@ public class BUpgradePayService {
         log.info("修改当前申请升级的通知单状态----end---当前用户id---"+userId);
         //判断当前升级是否有下级，有下级则修改下级的状态
         if (userId != null) {
-            log.info("当前升级是否有下级，有下级则修改下级的状态--start");
-            updateAllLowerNotice(userId);
-            log.info("当前升级是否有下级，有下级则修改下级的状态--end");
+            log.info("当前升级是否有下级，有下级则修改下级的状态并且给处理中的下级发送微信通知--start");
+            updateAllLowerNoticeAndSendLowerNotice(userId);
+            log.info("当前升级是否有下级，有下级则修改下级的状态并且给处理中的下级发送微信通知--end");
         } else {
             log.info("修改当前申请升级的通知单状态状态失败");
         }
@@ -551,11 +556,11 @@ public class BUpgradePayService {
     }
 
     /**
-     * 判断当前升级是否有下级，有下级则修改下级的状态
+     * 判断当前升级是否有下级，有下级则修改下级的状态,并且给处理中的下级发送微信通知
      *
      * @param userId
      */
-    private void updateAllLowerNotice(Long userId) {
+    private void updateAllLowerNoticeAndSendLowerNotice(Long userId) {
         log.info("修改所有下级为处理中的状态-----父id----" + userId);
         List<Integer> statusList = new ArrayList<Integer>();
         statusList.add(UpGradeStatus.STATUS_Untreated.getCode());
@@ -567,10 +572,27 @@ public class BUpgradePayService {
             log.info("下级人数为null");
         }
         for (PfUserUpgradeNotice notice : notices) {
+            UpGradeInfoPo upGradeInfoPo = null;
+            ComUser comUser = null;
+            log.info("通知单id------"+notice.getId()+"------通知单状态------"+notice.getStatus());
+            if (notice.getStatus()==UpGradeStatus.STATUS_Processing.getCode()){
+                log.info("上级升级成功给下级处理中的发送微信通知，获得下级信息----start");
+                comUser = comUserService.getUserById(notice.getUserId());
+                upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(notice.getId());
+                log.info("上级升级成功给下级处理中的发送微信通知，获得下级信息----end");
+            }
             log.info("下级id-------" + notice.getUserId()+"-----下级的状态status----"+notice.getStatus());
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
+            if (notice.getStatus()==UpGradeStatus.STATUS_Processing.getCode()){
+                Boolean bl = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser,upGradeInfoPo,"/upgrade/myApplyUpgrade.shtml?upgradeId="+notice.getId());
+                if (bl){
+                    log.info("上级升级成功给下级处理中的发送微信通知---success");
+                }else{
+                    log.info("上级升级成功给下级处理中的发送微信通知---fail");
+                }
+            }
         }
     }
 

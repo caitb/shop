@@ -6,6 +6,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
+import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderPayment;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -137,5 +139,32 @@ public class UpgradeWechatNewsService {
         param[2]=upgradeDetail.getApplyAgentLevel()+"";
         param[3]= DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
         return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+    }
+
+    /**
+     * 升级审核结果通知
+     * @param comUser       user
+     * @param upGradeInfoPo po
+     * @param url           url
+     * @return
+     */
+    public boolean upgradeApplyAuditPassNotice(ComUser comUser, UpGradeInfoPo upGradeInfoPo, String url){
+        logger.info("------------------------代理升级申请审核结果通知---------------------------");
+        String [] param = new String[5];
+        param[0] = upGradeInfoPo.getApplyName();
+        param[1] = upGradeInfoPo.getOrgAgentName();
+        param[2] = upGradeInfoPo.getWishAgentName();
+        param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,2);//日期加2天
+        param[4] = DateUtil.Date2String(calendar.getTime(),DateUtil.CHINESEALL_DATE_FMT);
+        logger.info("跳转url============"+PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        try {
+            return WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

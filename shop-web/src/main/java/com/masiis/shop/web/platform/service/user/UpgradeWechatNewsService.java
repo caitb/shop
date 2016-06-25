@@ -2,22 +2,23 @@ package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderPayment;
-import com.masiis.shop.dao.po.PfBorderRecommenReward;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
+import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,9 +32,8 @@ public class UpgradeWechatNewsService {
     private Logger logger = Logger.getLogger(UpgradeWechatNewsService.class);
     @Resource
     private UserService comUserService;
-
-
-
+    @Resource
+    private PfUserUpgradeNoticeService userUpgradeNoticeService;
 
     /**
      * 升级订单支付成功后，进入排单发送微信
@@ -67,6 +67,7 @@ public class UpgradeWechatNewsService {
         param[3] = BOrderType.UPGRADE.getDesc();
         param[4] = BOrderStatus.MPS.getDesc();
         WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);
+        //3给下级申请的发推送
 
         return true;
     }
@@ -115,6 +116,7 @@ public class UpgradeWechatNewsService {
         }
         return true;
     }
+
     /**
      * 升级通知单提交通知
      * @param comUser

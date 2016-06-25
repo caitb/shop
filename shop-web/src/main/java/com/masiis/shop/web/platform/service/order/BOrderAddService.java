@@ -163,12 +163,13 @@ public class BOrderAddService {
         BigDecimal orderAmount = BigDecimal.ZERO;
         if (bOrderAdd.getOrderType() == 3) {
             orderAmount = productAmount.add(bailChange).add(bOrderAdd.getShipAmount());
+            pfBorder.setBailAmount(bailChange);
         } else {
             orderAmount = productAmount.add(bailPrice).add(bOrderAdd.getShipAmount());
+            pfBorder.setBailAmount(bailPrice);
         }
         pfBorder.setReceivableAmount(orderAmount);
         pfBorder.setOrderAmount(orderAmount);
-        pfBorder.setBailAmount(bailPrice);
         pfBorder.setProductAmount(productAmount);
         pfBorder.setShipAmount(bOrderAdd.getShipAmount());
         pfBorder.setPayAmount(BigDecimal.ZERO);

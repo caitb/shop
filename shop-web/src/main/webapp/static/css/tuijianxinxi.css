@@ -50,10 +50,11 @@ main .floor2 .sec1 > div h1 span {
   color: #333;
 }
 main .floor2 .sec1 > div h1 img {
-  position: absolute;
+  /*position: absolute;*/
   left: 138px;
   top: 16px;
   width: 13px;
+  margin-right: 5px;
 }
 main .floor2 .sec1 > div h1 b {
   margin-left: 5px;

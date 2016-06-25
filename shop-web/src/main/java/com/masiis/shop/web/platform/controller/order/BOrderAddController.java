@@ -398,7 +398,7 @@ public class BOrderAddController extends BaseController {
         BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
         try{
             if (upgradeDetail!=null){
-                if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==1){
+                if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==2){
                     //订单存在重定向到收银台
                     jsonObject.put("isError", false);
                     jsonObject.put("isRedirect",true);
@@ -424,7 +424,9 @@ public class BOrderAddController extends BaseController {
                     orderAdd.setSkuId(upgradeDetail.getSkuId());
                     orderAdd.setQuantity(newSkuAgent.getQuantity());
                     log.info("订单数量---------"+newSkuAgent.getQuantity());
-                    orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+                    orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+                    orderAdd.setApplyAgentLevel(upgradeDetail.getApplyAgentLevel());
+                    log.info("原始等级--------"+upgradeDetail.getCurrentAgentLevel());
                     log.info("期望等级--------"+upgradeDetail.getApplyAgentLevel());
                     orderId = bOrderAddService.addBOrder(orderAdd);
                 }else{

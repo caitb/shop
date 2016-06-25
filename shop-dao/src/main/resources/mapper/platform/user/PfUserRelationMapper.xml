@@ -128,4 +128,20 @@
             </if>
         </where>
     </select>
+
+    <select id="selectRelationByUserId" parameterType="Long" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        sku_id,
+        user_id,
+        user_pid,
+        is_enable,
+        remark,
+        agent_level_ids
+        from
+        pf_user_relation
+        WHERE
+        user_id = #{userId}
+    </select>
 </mapper>

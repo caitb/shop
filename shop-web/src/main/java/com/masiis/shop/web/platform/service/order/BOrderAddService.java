@@ -94,7 +94,7 @@ public class BOrderAddService {
         retailPrice = comSku.getPriceRetail();
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
         if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
-            agentLevelId = bOrderAdd.getAgentLevelId();
+            agentLevelId = bOrderAdd.getApplyAgentLevel();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
             logger.info("------升级流程-----获得期望升级的等级--------" + agentLevelId);
         } else {
@@ -134,10 +134,14 @@ public class BOrderAddService {
             quantity = bOrderAdd.getQuantity();
         } else if (bOrderAdd.getOrderType() == 3) {
             logger.info("商品-----skuId----" + comSku.getId() + "-----等级------" + bOrderAdd.getAgentLevelId());
-            PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), bOrderAdd.getAgentLevelId());
-            logger.info("新代理保证金-------" + newPfSkuAgent.getBail());
-            logger.info("旧代理保证金-------" + pfSkuAgent.getBail());
-            bailChange = newPfSkuAgent.getBail().subtract(pfSkuAgent.getBail());
+            PfSkuAgent oldPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), bOrderAdd.getCurrentAgentLevel());
+            logger.info("新代理保证金-------" + pfSkuAgent.getBail());
+            logger.info("旧代理保证金-------" + oldPfSkuAgent.getBail());
+            bailChange = pfSkuAgent.getBail().subtract(oldPfSkuAgent.getBail());
+            if (bailChange.compareTo(BigDecimal.ZERO)<0){
+                logger.info("升级保证金不能为负数");
+                throw new BusinessException("升级保证金不能为负数");
+            }
             logger.info("保证金差额-------" + bailChange);
             quantity = pfSkuAgent.getQuantity();
         }
@@ -159,12 +163,13 @@ public class BOrderAddService {
         BigDecimal orderAmount = BigDecimal.ZERO;
         if (bOrderAdd.getOrderType() == 3) {
             orderAmount = productAmount.add(bailChange).add(bOrderAdd.getShipAmount());
+            pfBorder.setBailAmount(bailChange);
         } else {
             orderAmount = productAmount.add(bailPrice).add(bOrderAdd.getShipAmount());
+            pfBorder.setBailAmount(bailPrice);
         }
         pfBorder.setReceivableAmount(orderAmount);
         pfBorder.setOrderAmount(orderAmount);
-        pfBorder.setBailAmount(bailPrice);
         pfBorder.setProductAmount(productAmount);
         pfBorder.setShipAmount(bOrderAdd.getShipAmount());
         pfBorder.setPayAmount(BigDecimal.ZERO);

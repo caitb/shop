@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.PfUserRelation;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * PfUserRelationService
@@ -55,5 +56,9 @@ public class PfUserRelationService {
 
     public int updateAllToUnableByUserIdAndSkuId(Long userId, Integer skuId) {
         return pfUserRelationMapper.updateAllToUnableByUserIdAndSkuId(userId, skuId);
+    }
+
+    public List<PfUserRelation> getRelationByUserId(Long userId) {
+        return pfUserRelationMapper.selectRelationByUserId(userId);
     }
 }

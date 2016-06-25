@@ -460,7 +460,7 @@ public class UpgradeNoticeService {
                 PfSkuAgent newSkuAgent = getPfSkuAgent(comSku.getId(),upgradeNotice.getWishAgentLevelId());
                 if (oldSkuAgent!=null){
                     ComAgentLevel oldAgentLevel = getComAgentLeveal(oldSkuAgent.getAgentLevelId());
-                    upgradeDetail.setCurrentAgentLevel(newSkuAgent.getAgentLevelId());
+                    upgradeDetail.setCurrentAgentLevel(upgradeNotice.getOrgAgentLevelId());
                     upgradeDetail.setCurrentAgentLevelName(oldAgentLevel.getName());
                 }else{
                     logger.info("原始等级商品代理为null");

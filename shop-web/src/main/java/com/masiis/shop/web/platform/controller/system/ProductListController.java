@@ -55,11 +55,11 @@ public class ProductListController extends BaseController {
         //增加逻辑，判断是否是BOSS
         List<IndexComSku> indexComSk = null;
         List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系,Boss和小白没代理关系
-        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
+//        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
             indexComSk = indexShowService.findIndexComSku(user.getId());
-        }else{//非BOSS
-            indexComSk = indexShowService.findIndexComSkuNotBoss(user.getId());
-        }
+//        }else{//非BOSS
+//            indexComSk = indexShowService.findIndexComSkuNotBoss(user.getId());
+//        }
         indexComSk.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> Com =new ArrayList<IndexComSku>();
         for (IndexComSku indexComSku:indexComSk) {

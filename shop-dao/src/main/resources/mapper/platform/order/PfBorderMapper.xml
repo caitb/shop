@@ -594,8 +594,11 @@
             <if test="userPid != null">
                 AND bo.user_pid = #{userPid}
             </if>
-            <if test="orderStatus != null">
+            <if test="orderStatus != null and orderStatus != 0">
                 AND bo.order_status = #{orderStatus}
+            </if>
+            <if test="orderStatus != null and orderStatus == 0">
+                AND bo.order_status IN (0, 9)
             </if>
         </where>
         ORDER BY bo.create_time DESC, skui.img_url DESC

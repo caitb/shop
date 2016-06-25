@@ -23,7 +23,8 @@
     <div class="box">
         <header class="xq_header">
             <a href="<%=path%>/borderManage/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>我的订单</p>
+            <c:if test="${isShipment == 0}"><p>我的订单</p></c:if>
+            <c:if test="${isShipment == 1}"><p>下级合伙人订单</p></c:if>
         </header>
         <nav>
             <ul>
@@ -93,21 +94,22 @@
                             <c:if test="${isShipment == 1}">
                                 <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${orderMap.id}">查看订单详情</a></p>
                             </c:if>
-                            <c:if test="${orderMap.sendType==0 && orderMap.orderStatus !=0}">
+                            <c:if test="${orderMap.sendType==0 && orderMap.orderStatus !=0 && isShipment == 0}">
                                 <span class="jixu">选择拿货方式</span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==0 }">
+                            <c:if test="${orderMap.orderStatus ==0 && isShipment == 0 }">
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">继续支付</a></span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==9 }">
+                            <c:if test="${orderMap.orderStatus ==9 && isShipment == 0 }">
                                 <span class="jixu" onclick="xinxi('${orderMap.orderAmount}','${orderMap.payTime}','${orderMap.orderCode}')">支付信息</span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==8}">
+                            <c:if test="${orderMap.orderStatus ==8 && isShipment == 0}">
                                 <span class="fa" name="querenshouhuo_${orderMap.id}" onclick="querenshouhuo('${orderMap.orderStatus}','${orderMap.id}')">确认收货</span>
                             </c:if>
                             <c:if test="${orderMap.orderStatus ==9 && isShipment == 0}">
                                 <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">改变支付方式</a></span>
                             </c:if>
+                            <c:if test="${orderMap.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
                         </div>
 
                     </section>
@@ -168,6 +170,19 @@
         var param  = isShipment  == undefined ? '' : '?isShipment=' + isShipment;
             param += orderStatus == undefined ? '' : '&orderStatus=' + orderStatus;
         window.location.replace('<%=basePath%>borderManage/orderList'+param);
+    });
+
+    function xinxi(orderAmount,payTimes,ids){
+        $(".back").css("display","-webkit-box");
+        $(".back_pay").show();
+        $("#1").html(ids);
+        $("#3").html(orderAmount);
+        $("#2").html(payTimes);
+    }
+
+    $(".xinxn").on("click",function(){
+        $(".back_pay").hide();
+        $(".back").hide();
     });
 
     $(".fa").on("click",function(){

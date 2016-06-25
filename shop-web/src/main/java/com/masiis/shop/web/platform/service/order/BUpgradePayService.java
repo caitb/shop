@@ -10,6 +10,7 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.shop.SfShopSkuService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.commons.beanutils.BeanUtils;
@@ -73,6 +74,8 @@ public class BUpgradePayService {
     private UpgradeNoticeService upgradeNoticeService;
     @Resource
     private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private SkuAgentService skuAgentService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -226,7 +229,6 @@ public class BUpgradePayService {
      */
     private int updatePfUserSku(Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
         log.info("---修改商品的代理关系-----订单id-----" + borderId);
-        BigDecimal bailAmount = orderItem.getBailAmount();
         Integer skuId = orderItem.getSkuId();
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
@@ -259,7 +261,14 @@ public class BUpgradePayService {
                 pfUserSku.setIsPay(1);
                 pfUserSku.setIsCertificate(1);
                 pfUserSku.setPfBorderId(borderId);
-                pfUserSku.setBail(bailAmount);
+                log.info("skuId-----"+skuId+"-----期望等级agentLevelId-------"+agentLevelId);
+                PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId,agentLevelId);
+                if (newPfSkuAgent!=null){
+                    pfUserSku.setBail(newPfSkuAgent.getBail());
+                    log.info("新等级的保证金-----"+pfUserSku.getBail());
+                }else {
+                    throw new BusinessException("获取新的等级的保证金，代理商品为null");
+                }
                 i = pfUserSkuService.update(pfUserSku);
                 if (i <= 0) {
                     throw new BusinessException("分销关系树结构修改失败");

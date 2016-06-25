@@ -105,7 +105,7 @@
                             <c:if test="${orderMap.orderStatus ==8}">
                                 <span class="fa" name="querenshouhuo_${orderMap.id}" onclick="querenshouhuo('${orderMap.orderStatus}','${orderMap.id}')">确认收货</span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==9}">
+                            <c:if test="${orderMap.orderStatus ==9 && isShipment == 0}">
                                 <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">改变支付方式</a></span>
                             </c:if>
                         </div>

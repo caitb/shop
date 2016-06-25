@@ -15,10 +15,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
-import com.masiis.shop.web.platform.service.order.ComShipManService;
-import com.masiis.shop.web.platform.service.order.PfSupplierBankService;
+import com.masiis.shop.web.platform.service.order.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
@@ -66,6 +63,8 @@ public class BorderManageController extends BaseController {
     private ComShipManService comShipManService;
     @Resource
     private PfSupplierBankService pfSupplierBankService;
+    @Resource
+    private PfBorderConsigneeService pfBorderConsigneeService;
 
     /**
      * 确认收货
@@ -406,6 +405,25 @@ public class BorderManageController extends BaseController {
         }
 
         return mav;
+    }
+
+    /**
+     * 获取收货人信息
+     * @param bOrderId  代理订单ID
+     * @return
+     */
+    @RequestMapping("/getConsignee")
+    @ResponseBody
+    public Object getConsignee(Long bOrderId) {
+        PfBorderConsignee pfBorderConsignee = null;
+        try {
+            pfBorderConsignee = pfBorderConsigneeService.getByBOrderId(bOrderId);
+        } catch (Exception e) {
+            log.error("获取收货人信息失败![bOrderId="+bOrderId+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pfBorderConsignee;
     }
 
     /**

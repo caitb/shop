@@ -109,7 +109,8 @@
                             <c:if test="${orderMap.orderStatus ==9 && isShipment == 0}">
                                 <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">改变支付方式</a></span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==7 && orderMap.sendType==2}"><span class="fa" name="fahuo_${orderMap.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
+                            <c:if test="${orderMap.orderType   == 2 || orderMap.sendType==2 && isShipment == 1}"><p class="sh" onclick="shouhuorenxinxi(${orderMap.id})">收货人信息</p></c:if>
+                            <c:if test="${orderMap.orderStatus == 7 && orderMap.sendType==2 && isShipment == 1}"><span class="fa" name="fahuo_${orderMap.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
                         </div>
 
                     </section>
@@ -137,6 +138,7 @@
             <span class="que_que">确认</span>
         </h3>
     </div>
+
     <div class="back_pay">
         <div>
             <h1>订单号：<span id="1">1,000,000</span></h1>
@@ -153,6 +155,23 @@
         <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>
         <button class="xinxn">我知道了</button>
     </div>
+
+    <div class="back_que" style="display: none">
+        <p>确认发货?</p>
+        <h4>快递公司:<select id="select"><c:forEach items="${comShipMans}" var="comShipMans"><option value="${comShipMans.id}">${comShipMans.name}</option></c:forEach></select></h4>
+        <h4>快递单号:<input type="text" id="input"/></h4>
+        <h3 id="faHuo">发货</h3>
+    </div>
+
+    <div class="shouhuo" style="display: none">
+        <p>收货人信息</p>
+        <h4><span>姓　名:</span><span id="1"></span></h4>
+        <h4><span>地　址:</span><span id="2">阿斯科利的阿</span></h4>
+        <h4><span>手机号:</span><span id="3"></span></h4>
+        <h4><span>邮　编:</span><span id="4"></span></h4>
+        <h3 class="close">关闭</h3>
+    </div>
+
     <div class="back" style="display: none">
 
     </div>
@@ -218,6 +237,50 @@
             })
         })
     });
+
+    function shouhuorenxinxi(bOrderId){
+        $.ajax({
+            url: '<%=basePath%>borderManage/getConsignee',
+            data: {bOrderId: bOrderId},
+            success: function(data){
+                data = window.eval('('+data+')');
+                $(".back").css("display","-webkit-box");
+                $(".shouhuo").css("display","-webkit-box");
+                $("#1").html(data.pfBorderConsignee.consignee);
+                $("#2").html(data.pfBorderConsignee.provinceName);
+                $("#3").html(data.pfBorderConsignee.cityName);
+                $("#4").html(data.pfBorderConsignee.regionName);
+            },
+            error: function(){
+                alert('加载收货人信息失败!');
+            }
+        });
+    }
+
+    function fahuo(id){
+        $(".back").css("display","-webkit-box");
+        $(".back_que").css("display","-webkit-box");
+        $("#faHuo").on("click",function(){
+            $(".back_que").hide();
+            $(".back").hide();
+            var shipManId = $("#select option:selected").val();
+            var shipManName = $("#select option:selected").text();
+            var freight = $("#input").val();
+            var aa="fahuo_"+id;
+            $.ajax({
+                type:"POST",
+                url : "<%=path%>/borderManage/deliver.do",
+                data:{shipManName:shipManName,freight:freight,orderId:id,shipManId:shipManId},
+                dataType:"Json",
+                success:function(date){
+                    $("span[name=" + aa + "]").attr("style", "display:none");
+                    $("b." + aa + "").html("待收货");
+                    location.reload(true);
+                }
+            })
+        })
+    }
+
     $(".que_qu").on("click",function(){
         $(".back_shouhuo").hide();
         $(".back").hide();

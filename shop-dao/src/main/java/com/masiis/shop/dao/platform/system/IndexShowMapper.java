@@ -28,4 +28,12 @@ public interface IndexShowMapper {
      * @return
      */
     List<IndexComSku> selectTestListComSku(Long userId);
+
+    /**
+     * 展示代理商自己的商品
+     * @param userId
+     * @return
+     */
+    List<IndexComSku> selectAllIndexComSkuNotBoss(Long userId);
+
 }

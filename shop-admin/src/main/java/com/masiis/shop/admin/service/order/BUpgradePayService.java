@@ -585,7 +585,7 @@ public class BUpgradePayService {
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
-            if (notice.getStatus()==UpGradeStatus.STATUS_Processing.getCode()){
+            if (upGradeInfoPo!=null&&comUser!=null){
                 Boolean bl = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser,upGradeInfoPo,"/upgrade/myApplyUpgrade.shtml?upgradeId="+notice.getId());
                 if (bl){
                     log.info("上级升级成功给下级处理中的发送微信通知---success");

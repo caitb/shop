@@ -69,7 +69,7 @@
 
                         <h1>
                             <b style="color:#A5A5A5">合计：￥${orderMap.orderAmount}</b>
-                                                            <c:if test="${orderMap.orderType==0}">(保证金：￥${orderMap.bailAmount})</c:if>
+                                                            <c:if test="${orderMap.orderType==0 || orderMap.orderType==3}">(保证金：￥${orderMap.bailAmount})</c:if>
                                                             <c:if test="${orderMap.orderType==2}">(运费：到付)</c:if>
                         </h1>
 

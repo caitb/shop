@@ -109,7 +109,7 @@
                             <c:if test="${orderMap.orderStatus ==9 && isShipment == 0}">
                                 <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">改变支付方式</a></span>
                             </c:if>
-                            <c:if test="${orderMap.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
+                            <c:if test="${orderMap.orderStatus ==7 && orderMap.sendType==2}"><span class="fa" name="fahuo_${orderMap.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
                         </div>
 
                     </section>

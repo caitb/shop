@@ -75,10 +75,10 @@
             <p><span>实付金额：</span><span>${orderMallDetail.sfOrder.payAmount}</span></p>
             <p><span>订单状态：</span>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==0}">
-                    <span>未处理</span>
+                    <span>待付款</span>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==7}">
-                    <span>未发货</span>
+                    <span>待发货</span>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==3}">
                     <span>成功交易</span>

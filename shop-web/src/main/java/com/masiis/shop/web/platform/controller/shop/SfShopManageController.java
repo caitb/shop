@@ -250,7 +250,7 @@ public class SfShopManageController extends BaseController {
             //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
             if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
-            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
+            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(0L, shopId, null), qrcodeName, posterDirPath);
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";

@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.shop;
 
 import com.masiis.shop.common.constant.wx.WxConsPF;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -19,10 +20,12 @@ import com.masiis.shop.web.platform.service.order.SfShopStatisticsService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
+import com.masiis.shop.web.platform.service.shop.SfShopService;
 import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -72,6 +75,8 @@ public class SfShopManageController extends BaseController {
     private WeiXinQRCodeService weiXinQRCodeService;
     @Resource
     private SfShopStatisticsService sfShopStatisticsService;
+    @Resource
+    private SfShopService sfShopService;
 
     /**
      * 店铺管理首页
@@ -247,10 +252,24 @@ public class SfShopManageController extends BaseController {
 //            OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
             File headImgFile   = new File(posterDirPath+"/"+headImg);
             File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
+            File qrcodeFile    = new File(posterDirPath+"/"+qrcodeName);
             //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
             if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-            if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
-            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(0L, shopId, null), qrcodeName, posterDirPath);
+            if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", bgImgFile.getAbsolutePath());
+
+            SfShop sfShop = sfShopService.getSfShopById(shopId);
+            if(sfShop == null){
+                throw new BusinessException("店铺不存在[comUser="+comUser+"][shopId="+shopId+"]");
+            }
+            if(StringUtils.isBlank(sfShop.getQrCode())){
+                String qr_code_url = weiXinQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
+                if(qr_code_url == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
+                DownloadImage.download(qr_code_url, qrcodeName, posterDirPath);
+                OSSObjectUtils.uploadFile(qrcodeFile, "static/shop/shop_qrcode/");
+                sfShop.setQrCode(qrcodeFile.getName());
+                sfShopService.updateById(sfShop);
+            }
+            if(!qrcodeFile.exists()) OSSObjectUtils.downloadFile("static/shop/shop_qrcode/"+sfShop.getQrCode(), qrcodeFile.getAbsolutePath());
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
@@ -269,16 +288,16 @@ public class SfShopManageController extends BaseController {
             Element qrcodeImgElement = new Element(150, 184, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
             Element text1Element = new Element(134, 82, font1, new Color(247,60,140), "我是"+comUser.getWxNkName());
-            Element text2Element = new Element(34, 640, font2, new Color(102,102,102), "该二维码有效期:");
-            Element text3Element = new Element(34, 695, font2, new Color(102,102,102), startTime+"-"+endDate);
-            text3Element.setLineStyle(0);
+            //Element text2Element = new Element(34, 640, font2, new Color(102,102,102), "该二维码有效期:");
+            //Element text3Element = new Element(34, 695, font2, new Color(102,102,102), startTime+"-"+endDate);
+            //text3Element.setLineStyle(0);
             java.util.List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);
             drawElements.add(bgPosterImgElement);
             drawElements.add(qrcodeImgElement);
             drawElements.add(text1Element);
-            drawElements.add(text2Element);
-            drawElements.add(text3Element);
+            //drawElements.add(text2Element);
+            //drawElements.add(text3Element);
 
             DrawImageUtil.drawImage(520, 710, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 

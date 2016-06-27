@@ -109,8 +109,10 @@
                             <c:if test="${orderMap.orderStatus ==9 && isShipment == 0}">
                                 <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${orderMap.id}">改变支付方式</a></span>
                             </c:if>
-                            <c:if test="${orderMap.orderType   == 2 || orderMap.sendType==2 && isShipment == 1}"><p class="sh" onclick="shouhuorenxinxi(${orderMap.id})">收货人信息</p></c:if>
-                            <c:if test="${orderMap.orderStatus == 7 && orderMap.sendType==2 && isShipment == 1}"><span class="fa" name="fahuo_${orderMap.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
+                            <c:if test="${isShipment == 1}">
+                                <c:if test="${orderMap.orderType   == 2 || orderMap.sendType==2}"><p class="sh" onclick="shouhuorenxinxi(${orderMap.id})">收货人信息</p></c:if>
+                                <c:if test="${orderMap.orderStatus == 7 && orderMap.sendType==2}"><span class="fa" name="fahuo_${orderMap.id}" onclick="fahuo('${orderMap.id}')">发货</span></c:if>
+                            </c:if>
                         </div>
 
                     </section>

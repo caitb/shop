@@ -73,13 +73,13 @@ public class BOrderPayEndMessageService {
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
         logger.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
-            if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+            if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 logger.info("------升级订单进入排单发送微信------");
                 //发送微信通知
                 PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
                 BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                 Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccssEntryWaiting(pfBorder, pfBorderPayment, upgradeDetail);
-            }else{
+            } else {
                 pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
             }
         } else if (pfBorder.getPayStatus().intValue() == 1) {
@@ -89,11 +89,11 @@ public class BOrderPayEndMessageService {
             } else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType().intValue() == 1) {
-                    pushMessageSupplementAndSendTypeI(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+                    pushMessageSupplementAndSendTypeI(comUser, pfBorder, pfBorderItems, numberFormat);
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
-            }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+            } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
                 try {
@@ -101,7 +101,7 @@ public class BOrderPayEndMessageService {
                     PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
                     BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                     Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccessSendWXNotice(pfBorder, pfBorderPayment, upgradeDetail);
-                    if (!bl){
+                    if (!bl) {
                         logger.info("升级支付完发送消息失败");
                         throw new Exception("升级支付完发送消息失败");
                     }
@@ -110,13 +110,15 @@ public class BOrderPayEndMessageService {
                 }
             }
         }
-        if (pfBorder.getRecommenAmount().compareTo(BigDecimal.ZERO) > 0) {
-            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        if (pfBorderRecommenReward != null) {
             ComUser recommenUser = comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
                 pushMessageRecommen(comUser, recommenUser);
             }
-            pushMessageRecommenRebate(pfBorder, comUser, recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
+            if (pfBorderRecommenReward.getRewardTotalPrice().compareTo(BigDecimal.ZERO) > 0) {
+                pushMessageRecommenRebate(pfBorder, comUser, recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
+            }
         }
     }
 
@@ -149,9 +151,9 @@ public class BOrderPayEndMessageService {
             paramIn[1] = simpleDateFormat.format(pfBorder.getCreateTime());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-            if(pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()){
+            if (pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()) {
                 WxPFNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
-            }else {
+            } else {
                 WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             }
         }
@@ -185,8 +187,8 @@ public class BOrderPayEndMessageService {
         MobileMessageUtil.getInitialization("B").partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
         //给上级推送
         if (pComUser != null) {
-            if (pfBorder.getRecommenAmount().compareTo(BigDecimal.ZERO) > 0) {
-                PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+            if (pfBorderRecommenReward != null) {
                 ComUser recommenUser = comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
                 String[] paramsI = new String[2];
                 paramsI[0] = recommenUser.getWxNkName();
@@ -208,10 +210,8 @@ public class BOrderPayEndMessageService {
      * @param numberFormat
      */
     private void pushMessageSupplementAndSendTypeI(ComUser comUser,
-                                                   ComUser pComUser,
                                                    PfBorder pfBorder,
                                                    List<PfBorderItem> pfBorderItems,
-                                                   SimpleDateFormat simpleDateFormat,
                                                    NumberFormat numberFormat) {
         String[] param = new String[4];
         param[0] = pfBorderItems.get(0).getSkuName();

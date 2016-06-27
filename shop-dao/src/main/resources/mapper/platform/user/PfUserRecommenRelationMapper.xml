@@ -17,6 +17,7 @@
     <resultMap id="ComSkuMap" type="com.masiis.shop.dao.beans.user.UserRecommend" >
         <id column="id" property="userId" jdbcType="BIGINT" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="bid" property="borderId" jdbcType="BIGINT" />
         <result column="agentId" property="agentId" jdbcType="INTEGER" />
         <result column="real_name" property="name" jdbcType="VARCHAR" />
         <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR" />
@@ -159,7 +160,7 @@
     </select>
     <!-- 我推荐的人数 -->
     <select id="selectNumByUserPid" resultType="Integer"  parameterType="java.lang.Long" >
-        select COUNT(pid) from pf_user_recommen_relation where user_pid = #{userId}
+        select COUNT(DISTINCT user_id) from pf_user_recommen_relation where user_pid = #{userId}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >

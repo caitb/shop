@@ -178,7 +178,7 @@ public class BOrderStatisticsService {
         logger.info("总销售额-----增加了----" + ordAmount.subtract(bailAmount).intValue());
         //利润
         logger.info("利润-----之前----" + statistics.getProfitFee());
-        BigDecimal sumProfitFee = getSumProfitFee(userPid, pfBorderItem.getSkuId(), pfBorderItem.getUnitPrice(), pfBorderItem.getQuantity());
+        BigDecimal sumProfitFee = getSumProfitFee(userPid, pfBorderItem.getSkuId(), pfBorderItem.getUnitPrice(), pfBorderItem.getQuantity(),recommenAmount);
         if (statistics.getProfitFee() != null) {
             statistics.setProfitFee(statistics.getProfitFee().add(sumProfitFee));
         } else {
@@ -224,7 +224,7 @@ public class BOrderStatisticsService {
         BigDecimal bailAmount = order.getBailAmount();
         BigDecimal recommenAmount = order.getRecommenAmount();
         statistics.setIncomeFee(ordAmount.subtract(bailAmount));
-        BigDecimal sumProfitFee = getSumProfitFee(userPid, pfBorderItem.getSkuId(), pfBorderItem.getUnitPrice(), pfBorderItem.getQuantity());
+        BigDecimal sumProfitFee = getSumProfitFee(userPid, pfBorderItem.getSkuId(), pfBorderItem.getUnitPrice(), pfBorderItem.getQuantity(),recommenAmount);
         statistics.setProfitFee(sumProfitFee);
         statistics.setCostFee(new BigDecimal(0));
         statistics.setUpOrderCount(0);
@@ -243,14 +243,14 @@ public class BOrderStatisticsService {
     }
 
     /**
-     * 获得商品的利润
+     * 获得商品的利润  = 订单的商品单价 - （商品的成本 * 数量） - 推荐奖
      * @param userPid
      * @param skuId
      * @param unitPrice
      * @param quantity
      * @return
      */
-    private BigDecimal getSumProfitFee(Long userPid,Integer skuId,BigDecimal unitPrice,Integer quantity){
+    private BigDecimal getSumProfitFee(Long userPid,Integer skuId,BigDecimal unitPrice,Integer quantity,BigDecimal recommenAmount){
         PfUserSku pUserSku = null;
         PfSkuAgent pSkuAgent = null;
         BigDecimal sumProfitFee = BigDecimal.ZERO;
@@ -258,6 +258,7 @@ public class BOrderStatisticsService {
         logger.info("商品的skuId-------------"+skuId);
         logger.info("商品的购买价格-------------"+unitPrice);
         logger.info("商品的购买数量-------------"+quantity);
+        logger.info("商品的推荐奖-------------"+recommenAmount);
         pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPid, skuId);
         if (pUserSku!=null){
             logger.info("代理的商品等级表id------------"+pUserSku.getAgentLevelId());
@@ -274,7 +275,7 @@ public class BOrderStatisticsService {
             }else{
                 unit_profit= unitPrice;
             }
-            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity)));
+            sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(quantity))).subtract(recommenAmount);
         }else{
             logger.info("平台sku代理设置表为null-------用户id------"+userPid+"----------skuId----"+skuId);
         }

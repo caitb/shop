@@ -141,8 +141,8 @@
 
     <div class="back_pay">
         <div>
-            <h1>订单号：<span id="1">1,000,000</span></h1>
-            <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
+            <h1>订单号：<span id="11">1,000,000</span></h1>
+            <p>您需要在<span id="12">2016-4-30</span>前将￥<span id="13">1,000,000.00</span>转到麦链合伙人对公账户。</p>
         </div>
         <%--<div>--%>
         <%--<h1>￥1,000,000元</h1>--%>
@@ -194,9 +194,9 @@
     function xinxi(orderAmount,payTimes,ids){
         $(".back").css("display","-webkit-box");
         $(".back_pay").show();
-        $("#1").html(ids);
-        $("#3").html(orderAmount);
-        $("#2").html(payTimes);
+        $("#11").html(ids);
+        $("#13").html(orderAmount);
+        $("#12").html(payTimes);
     }
 
     $(".xinxn").on("click",function(){

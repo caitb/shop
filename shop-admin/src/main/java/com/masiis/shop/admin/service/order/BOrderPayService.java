@@ -128,6 +128,7 @@ public class BOrderPayService {
                 throw new BusinessException("代理商品表有误");
             }
             BigDecimal productAmount = BigDecimal.ZERO;
+            BigDecimal recommenAmount = BigDecimal.ZERO;
             for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
                 int quantity = payAmount.divide(pfBorderItem.getUnitPrice(), 0, BigDecimal.ROUND_DOWN).intValue();
                 pfBorderItem.setQuantity(quantity);
@@ -137,11 +138,21 @@ public class BOrderPayService {
                     throw new BusinessException("代理订单商品表操作失败id:" + pfBorderItem.getId());
                 }
                 productAmount = productAmount.add(pfBorderItem.getTotalPrice());
+                PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+                if (pfBorderRecommenReward != null) {
+                    pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
+                    pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                    if (pfBorderRecommenRewardService.update(pfBorderRecommenReward) != 1) {
+                        throw new BusinessException("代理订单推荐奖励表操作失败id:" + pfBorderRecommenReward.getId());
+                    }
+                    recommenAmount = recommenAmount.add(pfBorderRecommenReward.getRewardTotalPrice());
+                }
             }
             pfBorder.setReceivableAmount(productAmount);
             pfBorder.setOrderAmount(productAmount);
             pfBorder.setBailAmount(BigDecimal.ZERO);
             pfBorder.setShipAmount(BigDecimal.ZERO);
+            pfBorder.setRecommenAmount(recommenAmount);
             pfBorder.setProductAmount(productAmount);
             if (payAmount.compareTo(productAmount) > 0) {
                 pfBorder.setRemark(pfBorder.getRemark() + "；超出支付金额为:" + payAmount.subtract(productAmount));
@@ -192,7 +203,7 @@ public class BOrderPayService {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 3) {
             upgradePayService.paySuccessCallBack(pfBorderPayment, outOrderId, rootPath);
-        }else {
+        } else {
             throw new BusinessException("订单类型有误");
         }
 
@@ -670,7 +681,7 @@ public class BOrderPayService {
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
         //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1|| pfBorder.getOrderType() == 3) {
+        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1 || pfBorder.getOrderType() == 3) {
             comUserAccountService.countingByOrder(pfBorder);
         }
     }
@@ -712,17 +723,17 @@ public class BOrderPayService {
      * @return
      */
     public String uploadFile(String filePath,
-                              String fontPath,
-                              String certificateCode,
-                              String userName,
-                              String levelName,
-                              String skuName,
-                              String skuEName,
-                              String idCard,
-                              String mobile,
-                              String wxId,
-                              String beginDate,
-                              String endDate) {
+                             String fontPath,
+                             String certificateCode,
+                             String userName,
+                             String levelName,
+                             String skuName,
+                             String skuEName,
+                             String idCard,
+                             String mobile,
+                             String wxId,
+                             String beginDate,
+                             String endDate) {
         DrawPicUtil drawPicUtil = new DrawPicUtil();
         BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
         //宋体

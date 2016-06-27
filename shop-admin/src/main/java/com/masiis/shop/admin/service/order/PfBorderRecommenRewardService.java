@@ -28,6 +28,10 @@ public class PfBorderRecommenRewardService {
         return pfBorderRecommenRewardMapper.insert(po);
     }
 
+    public int update(PfBorderRecommenReward pfBorderRecommenReward) {
+        return pfBorderRecommenRewardMapper.updateByPrimaryKey(pfBorderRecommenReward);
+    }
+
     /**
      * 获得奖励订单
      *
@@ -50,7 +54,7 @@ public class PfBorderRecommenRewardService {
         return pfBorderRecommenRewardMapper.selectPBorders(userId);
     }
 
-    public PfBorderRecommenReward getRewardByOrderIdAndOrderItemIdAndSkuId(Long orderId,Long orderItemId,Integer skuId){
-        return pfBorderRecommenRewardMapper.getRewardByOrderIdAndOrderItemIdAndSkuId(orderId,orderItemId,skuId);
+    public PfBorderRecommenReward getRewardByOrderIdAndOrderItemIdAndSkuId(Long orderId, Long orderItemId, Integer skuId) {
+        return pfBorderRecommenRewardMapper.getRewardByOrderIdAndOrderItemIdAndSkuId(orderId, orderItemId, skuId);
     }
 }

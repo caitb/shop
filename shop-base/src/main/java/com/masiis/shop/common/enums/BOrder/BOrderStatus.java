@@ -9,7 +9,7 @@ package com.masiis.shop.common.enums.BOrder;
 
 public enum BOrderStatus {
 
-    NotPaid(0, "未付款"),
+    NotPaid(0, "待付款"),
     accountPaid(1, "已付款"),
     Disabled(2, "已取消"),
     Complete(3, "已完成"),

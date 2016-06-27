@@ -5,14 +5,12 @@ import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.PipedReader;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -42,8 +39,6 @@ public class BOrderAddService {
     private PfBorderItemMapper pfBorderItemMapper;
     @Resource
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
-    //    @Resource
-//    private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
@@ -68,8 +63,6 @@ public class BOrderAddService {
     private PfUserRecommendRelationService pfUserRecommendRelationService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
-    @Resource
-    private UpgradeNoticeService upgradeNoticeService;
     @Resource
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
 
@@ -110,7 +103,7 @@ public class BOrderAddService {
         }
         logger.info("agentLevelId------" + agentLevelId);
         logger.info("weiXinId------" + weiXinId);
-        //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
+        //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是推荐人的上级
         Long recommendUserId = 0l;
         PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
         if (bOrderAdd.getpUserId() != 0 && bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {

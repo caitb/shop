@@ -94,10 +94,12 @@ public class PfUserBillService {
             record.setUserAccountId(account.getId());
             // 修改结算
             log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
+            BigDecimal countFee = bill.getBillAmount().subtract(rewardAmount);
             record.setPrevFee(account.getCountingFee());
-            account.setCountingFee(account.getCountingFee().subtract(bill.getBillAmount().subtract(rewardAmount)));
+            account.setCountingFee(account.getCountingFee().subtract(countFee));
             log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
             record.setNextFee(account.getCountingFee());
+            record.setHandleFee(countFee);
             recordMapper.insert(record);
             // 修改可提现
             ComUserAccountRecord recordEx = createAccountRecord(account, bill, 4);
@@ -115,6 +117,7 @@ public class PfUserBillService {
             account.setAgentBillAmount(account.getAgentBillAmount().subtract(bill.getBillAmount().subtract(rewardAmount)));
             log.info("修改账户的代理端结算金额,之后结算金额是:" + account.getAgentBillAmount());
             recordAgentcount.setNextFee(account.getAgentBillAmount());
+            recordAgentcount.setHandleFee(bill.getBillAmount().subtract(rewardAmount));
             recordMapper.insert(recordAgentcount);
 
             if(rewardAmount.compareTo(BigDecimal.ZERO) > 0) {
@@ -124,6 +127,7 @@ public class PfUserBillService {
                 account.setRecommenBillAmount(account.getRecommenBillAmount().subtract(rewardAmount));
                 log.info("修改账户的推荐奖励结算金额,之后结算金额是:" + account.getAgentBillAmount());
                 recordRewardcount.setNextFee(account.getRecommenBillAmount());
+                recordRewardcount.setHandleFee(rewardAmount);
                 recordMapper.insert(recordRewardcount);
             }
 

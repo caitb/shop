@@ -99,7 +99,10 @@ public class WeiXinQRCodeService {
         }
 
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
-        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
+        //临时二维码ticket请求参数
+        //String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
+        //永久二维码ticket请求参数
+        String jsonParam = "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
 
         log.info("[WxConsPF.APPID="+WxConsPF.APPID+"], [WxConsPF.APPSECRET="+WxConsPF.APPSECRET+"]");
         log.info("开始请求二维码ticket:[scene_id="+scene_id+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
@@ -107,11 +110,14 @@ public class WeiXinQRCodeService {
         log.info("请求二维码ticket返回结果[result="+result+"]");
 
         Map<String, Object> resultMap = new JSONParser(result).parseMap();
-        if(resultMap.get("expire_seconds") != null){
-            String ticket = (String)resultMap.get("ticket");
-            return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
-        }
+//        if(resultMap.get("expire_seconds") != null){
+//            String ticket = (String)resultMap.get("ticket");
+//            return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
+//        }
+//
+//        return result;
 
-        return result;
+        String ticket = (String)resultMap.get("ticket");
+        return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
     }
 }

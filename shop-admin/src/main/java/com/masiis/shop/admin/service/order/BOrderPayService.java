@@ -352,8 +352,8 @@ public class BOrderPayService {
             log.info("<7>v1.2处理合伙推荐关系");
             PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (pfUserRecommenRelation == null) {
-                if (pfBorder.getUserPid() != 0 && pfBorder.getRecommenAmount().compareTo(BigDecimal.ZERO) > 0) {
-                    PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+                PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+                if (pfBorder.getUserPid() != 0 && pfBorderRecommenReward != null) {
                     PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorderRecommenReward.getRecommenUserId(), pfBorderItem.getSkuId());
                     pfUserRecommenRelation = new PfUserRecommenRelation();
                     pfUserRecommenRelation.setCreateTime(new Date());

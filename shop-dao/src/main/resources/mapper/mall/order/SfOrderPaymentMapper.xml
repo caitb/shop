@@ -69,6 +69,7 @@
         out_order_id, pay_serial_num, remark
         from sf_order_payment
         where sf_order_id = #{sfOrderId,jdbcType=BIGINT}
+              AND is_enabled=1
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.SfOrderPayment" resultMap="BaseResultMap">

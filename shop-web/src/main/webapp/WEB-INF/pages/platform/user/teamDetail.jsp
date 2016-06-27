@@ -26,7 +26,7 @@
         <p>${teamMap.skuName}团队</p>
     </header>
     <main>
-         <p style="background:#f3e658 ;color: #ff0000;padding: 5px;font-size: 12px;">团队列表上增加：您只可以查看直接下级成员！</p>
+         <p style="background:#f3e658 ;color: #ff0000;padding: 5px;font-size: 12px;margin-bottom: 10px;">您只可以查看直接下级成员！</p>
         <div class="nav">
             <p>
                 <span>${teamMap.totalChildren}</span>

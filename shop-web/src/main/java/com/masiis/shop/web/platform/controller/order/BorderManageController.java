@@ -496,6 +496,7 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index", index);
         modelAndView.addObject("pfBorders", pfBorders);
+        modelAndView.addObject("orderStatuses", BOrderStatus.values());
         modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;
@@ -563,6 +564,8 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pfBorders", pfBorders);
         modelAndView.addObject("borderNum10", borderNum);
+        modelAndView.addObject("orderStatuses", BOrderStatus.values());
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
 //        modelAndView.addObject("comShipMans",comShipMans);
         if (request.getSession().getAttribute("comShipMans") == null || request.getSession().getAttribute("comShipMans") == "") {
             List<ComShipMan> comShipMans = comShipManService.list();

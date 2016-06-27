@@ -65,8 +65,8 @@ public class PfUserRecommendRelationService {
      * @author muchaofeng
      * @date 2016/6/17 13:57
      */
-    public Integer findGiveNum(Long userId,Integer skuId) {
-        return pfUserRecopmmenRelationMapper.selectGiveNum(userId,skuId);
+    public Integer findGiveNum(Long userId,Integer skuId,Long borderId) {
+        return pfUserRecopmmenRelationMapper.selectGiveNum(userId,skuId,borderId);
     }
 
     /**

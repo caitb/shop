@@ -146,7 +146,7 @@
                    var trHtml = "";
                    $.each(data, function(i, userRecommend) {
                        trHtml+="<div class=\"sec1\" ";
-                       trHtml+="onclick=\"javascript:window.location.replace('"+basePath+"myRecommend/giveRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
+                       trHtml+="onclick=\"javascript:window.location.replace('"+basePath+"myRecommend/giveRecommend?skuId="+userRecommend.skuId+"')\" >";
                        trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
                        trHtml+="<div> <p>"+userRecommend.name+" <b>推荐人数 "+userRecommend.number+"</b></p>";
                        trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";

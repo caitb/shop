@@ -7,6 +7,7 @@ package com.masiis.shop.dao.beans.user;
 
 public class UserRecommend {
     private Long userId;
+    private Long borderId;
     private Integer skuId;
     private Integer agentId;
     private Integer number;
@@ -14,6 +15,14 @@ public class UserRecommend {
     private String wxHeadImg;
     private String skuName;
     private String agentName;
+
+    public Long getBorderId() {
+        return borderId;
+    }
+
+    public void setBorderId(Long borderId) {
+        this.borderId = borderId;
+    }
 
     public void setNumber(Integer number) {
         this.number = number;

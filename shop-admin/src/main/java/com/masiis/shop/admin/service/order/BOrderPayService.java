@@ -137,14 +137,16 @@ public class BOrderPayService {
                 if (pfBorderItemMapper.updateById(pfBorderItem) != 1) {
                     throw new BusinessException("代理订单商品表操作失败id:" + pfBorderItem.getId());
                 }
-                PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
-                pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
-                pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
-                if (pfBorderRecommenRewardService.update(pfBorderRecommenReward) != 1) {
-                    throw new BusinessException("代理订单推荐奖励表操作失败id:" + pfBorderRecommenReward.getId());
-                }
                 productAmount = productAmount.add(pfBorderItem.getTotalPrice());
-                recommenAmount = recommenAmount.add(pfBorderRecommenReward.getRewardTotalPrice());
+                PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+                if (pfBorderRecommenReward != null) {
+                    pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
+                    pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
+                    if (pfBorderRecommenRewardService.update(pfBorderRecommenReward) != 1) {
+                        throw new BusinessException("代理订单推荐奖励表操作失败id:" + pfBorderRecommenReward.getId());
+                    }
+                    recommenAmount = recommenAmount.add(pfBorderRecommenReward.getRewardTotalPrice());
+                }
             }
             pfBorder.setReceivableAmount(productAmount);
             pfBorder.setOrderAmount(productAmount);

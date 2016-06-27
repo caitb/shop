@@ -290,7 +290,7 @@ public class AgentUpGradeController extends BaseController {
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         Calendar cal = Calendar.getInstance();
         cal.setTime(upGradeInfoPo.getCreateTime());
-        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.DATE, 2);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mv.addObject("createTime",simpleDateFormat.format(upGradeInfoPo.getCreateTime()));
         mv.addObject("overdueDate", simpleDateFormat.format(cal.getTime()) );

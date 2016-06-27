@@ -268,4 +268,5 @@ footer .btm:nth-child(3) span img{
   top: 0;
   left: 0;
   display: none;
+  z-index:10;
 }

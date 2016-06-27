@@ -351,7 +351,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/fachujianglidingdan");
             return modelAndView;
         }catch (Exception e){
-            log.error("获取获得奖励订单列表失败!",e);
+            log.error("获取发出奖励订单列表失败!",e);
         }
         return null;
     }

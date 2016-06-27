@@ -6,12 +6,10 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComWxUser;
-import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.dao.po.SfUserShareParam;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.mall.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.mall.beans.wxauth.WxUserInfo;
@@ -45,6 +43,8 @@ public class WxEventService {
     private UserService userService;
     @Resource
     private WxUserService wxUserService;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
 
     /**
      * 处理微信事件推送
@@ -126,8 +126,22 @@ public class WxEventService {
 
         // 扫码注册用户
         ComUser user = scanEventUserSignUp(body);
-        // 绑定分销关系
-        userService.getShareUser(user.getId(), param.getfUserId());
+        if(param.getfUserId().longValue() != 0) {
+            // 绑定分销关系
+            userService.getShareUser(user.getId(), param.getfUserId());
+        } else {
+            SfUserRelation relation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
+            if(relation == null){
+                SfUserRelation sfNewUserRelation = new SfUserRelation();
+                sfNewUserRelation.setCreateTime(new Date());
+                sfNewUserRelation.setUserId(user.getId());
+                sfNewUserRelation.setTreeLevel(1);
+                sfNewUserRelation.setUserPid(0l);
+                sfUserRelationMapper.insert(sfNewUserRelation);
+                String treeCode = sfNewUserRelation.getId() + ",";
+                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+            }
+        }
 
         String url = null;
         if(param.getSkuId() != null && param.getSkuId().intValue() != 0){

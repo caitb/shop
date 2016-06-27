@@ -103,7 +103,7 @@
     <select id="selectGiveNum" resultType="Integer" >
         select COUNT(DISTINCT user_id)
         from pf_user_recommen_relation pbrr
-        WHERE pbrr.user_pid=#{userId} AND pbrr.sku_id = #{skuId} AND pbrr.pf_border_id = #{borderId}
+        WHERE pbrr.user_pid=#{userId} AND pbrr.sku_id = #{skuId}
     </select>
 
     <!--  帮我推荐的单人单品推荐人数  -->

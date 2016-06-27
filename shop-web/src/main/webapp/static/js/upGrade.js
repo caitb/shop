@@ -28,6 +28,7 @@ function changeSku(){
         $("#upGradePackage").html("<p>请选择产品</p>");
         $("#product").text("请选择产品");
         $("#currentLevel").text("请选择产品");
+        $(".nextbutton").hide();
         return;
     }
     var data = value.split("_");
@@ -50,6 +51,7 @@ function changeSku(){
                 $("#upAgentLevel").val(data.upAgentLevel);
                 if (data.isTrue == "true"){
                     $("#upGradePackage").html(data.message);
+                    $(".nextbutton").show();
                 }else {
                     $("#upGradePackage").html("<p>" + data.message + "</p>");
                 }
@@ -109,6 +111,10 @@ $(".que_que").on("click",function(){
     });
 });
 
+/**
+ * 升级申请成功发送微信消息
+ * @param keyProperty
+ */
 function upgradeApplySubmitNotice(keyProperty){
     var upgradeLevel = $("#upgradeLevel").val();
     var upAgentLevel = $("#upAgentLevel").val();

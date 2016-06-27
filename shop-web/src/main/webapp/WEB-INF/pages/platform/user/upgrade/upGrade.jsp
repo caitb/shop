@@ -31,7 +31,7 @@
                 </p>
                 <p>
                     <span>当前级别：</span>
-                    <span id="currentLevel">请选择产品</span>
+                    <span id="currentLevel"></span>
                 </p>
                 <p>
                     <span>申请级别</span>
@@ -42,9 +42,11 @@
                     请选择产品
                 </p>
             </div>
-            <button onclick="blackShow()">
-                下一步
-            </button>
+            <div class="nextbutton" style="display: none">
+                <button onclick="blackShow()">
+                    下一步
+                </button>
+            </div>
         </main>
     </div>
     <div class="black">

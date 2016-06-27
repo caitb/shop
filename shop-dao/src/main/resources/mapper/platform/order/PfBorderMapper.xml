@@ -223,7 +223,16 @@
         from pf_border pb
         inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
         inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
-        where pbrr.recommen_user_id = #{userId} AND pb.pay_status=1 AND pb.recommen_amount &gt;0
+        <where>
+            <if test="userId != null">
+                AND pbrr.recommen_user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND pbi.sku_id = #{skuId}
+            </if>
+                AND pb.recommen_amount &gt;0
+                AND pb.pay_status=1
+        </where>
         ORDER BY pb.id DESC
     </select>
 
@@ -233,7 +242,16 @@
         from pf_border pb
         inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
         inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
-        where pb.user_pid = #{userId} AND pb.pay_status=1 AND pb.recommen_amount >0
+        <where>
+            <if test="userId != null">
+                AND pb.user_pid = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND pbi.sku_id = #{skuId}
+            </if>
+            AND pb.pay_status=1
+            AND pb.recommen_amount >0
+        </where>
         ORDER BY pb.id DESC
     </select>
 
@@ -415,6 +433,17 @@
         AND pay_status = 0
     </update>
 
+    <update id="updateOrderCancelByIdAndOStatus">
+        update
+            pf_border
+        SET
+            order_status = 2
+        WHERE
+            id = #{orderId,jdbcType=BIGINT}
+        AND order_status = #{ostatus,jdbcType=BIGINT}
+        AND pay_status = 0
+    </update>
+
     <update id="updateOfflineBOrderCancelById">
         update
             pf_border
@@ -440,7 +469,7 @@
         WHERE
                border.user_id = #{userId}
                AND border.user_pid = #{userPid}
-               AND border.order_type IN (0,1)
+               AND border.order_type IN (0,1,3)
                AND border.pay_status = 1
                AND item.sku_id = #{skuId}
     </select>
@@ -486,7 +515,7 @@
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
-        FROM
+        FROM pf_border
         where
         order_type <![CDATA[ <> ]]> #{notOrderType,jdbcType=INTEGER}
         <if test="expiraTime != null">
@@ -506,9 +535,9 @@
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
-        FROM
+        FROM pf_border
         where 1=1
-        <if test="expiraTime != null">
+        <if test="orderType != null">
             AND order_type = #{orderType,jdbcType=INTEGER}
         </if>
         <if test="expiraTime != null">
@@ -533,5 +562,73 @@
         AND order_type = #{orderType,jdbcType=INTEGER}
         AND pay_status = #{payStatus,jdbcType=INTEGER}
     </update>
+
+    <!-- 查询进货或出货订单 -->
+    <select id="selectByUserIdOrUserPidAndOrderStatus" resultMap="orderMap">
+        SELECT
+               bo.id,
+               bo.order_code,
+               bo.order_status,
+               bo.order_type,
+               bo.send_type,
+               bo.create_time,
+               bo.receivable_amount,
+               bo.order_amount,
+               bo.pay_amount,
+               bo.bail_amount,
+               bo.pay_time,
+               bi.sku_id,
+               bi.unit_price,
+               bi.quantity,
+               sku.`name`,
+               skui.img_url
+        FROM
+               pf_border bo
+        LEFT JOIN pf_border_item bi   ON bi.pf_border_id = bo.id
+        LEFT JOIN com_sku        sku  ON sku.id = bi.sku_id
+        INNER JOIN com_sku_image  skui ON skui.sku_id = bi.sku_id
+        <where>
+            <if test="userId != null">
+                AND bo.user_id = #{userId}
+            </if>
+            <if test="userPid != null">
+                AND bo.user_pid = #{userPid}
+            </if>
+            <if test="orderStatus != null and orderStatus != 0">
+                AND bo.order_status = #{orderStatus}
+            </if>
+            <if test="orderStatus != null and orderStatus == 0">
+                AND bo.order_status IN (0, 9)
+            </if>
+        </where>
+        ORDER BY bo.create_time DESC, skui.img_url DESC
+    </select>
+    
+    <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">
+        <result property="id" column="id" />
+        <result property="orderStatus" column="order_status" />
+        <result property="orderCode" column="order_code" />
+        <result property="orderType" column="order_type" />
+        <result property="sendType" column="send_type" />
+        <result property="createTime" column="create_time" />
+        <result property="receivableAmount" column="receivable_amount" />
+        <result property="orderAmount" column="order_amount" />
+        <result property="payAmount" column="pay_amount" />
+        <result property="bailAmount" column="bail_amount" />
+        <result property="payTime" column="pay_time" />
+        <collection property="bItems" resultMap="orderItemMap" />
+    </resultMap>
+    
+    <resultMap id="orderItemMap" type="com.masiis.shop.dao.beans.order.BItem">
+        <result property="skuId" column="sku_id" />
+        <result property="unitPrice" column="unit_price" />
+        <result property="quantity" column="quantity" />
+        <result property="skuName" column="name" />
+        <collection property="imgUrls" resultMap="skuImgMap" />
+    </resultMap>
+
+    <resultMap id="skuImgMap" type="Map">
+        <result property="imgUrl" column="img_url" />
+    </resultMap>
 
 </mapper>

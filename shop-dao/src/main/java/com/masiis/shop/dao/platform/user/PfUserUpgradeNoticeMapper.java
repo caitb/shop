@@ -36,6 +36,8 @@ public interface PfUserUpgradeNoticeMapper {
 
     List<PfUserUpgradeNotice> selectByUserPidAndStatus(@Param("userPid")Long userPid, @Param("status")Integer status);
 
+    List<PfUserUpgradeNotice> selectByUserPidAndInStatus(@Param("userPid")Long userPid, @Param("statusList")List<Integer> statusList);
+
     List<PfUserUpgradeNotice> selectByMap(Map<String,Object> conditionMap);
 
     List<Map<String, Object>> selectUpgradeRecordByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
@@ -75,4 +77,6 @@ public interface PfUserUpgradeNoticeMapper {
      */
     List<PfUserUpgradeNotice> selectAllSubByStatusAndPid(@Param("status") Integer status,
                                                          @Param("userPid") Long userPid);
+
+    List<PfUserUpgradeNotice> selectBySkuIdAndRebateALLType(@Param("skuId") Integer skuId,@Param("userId") Long userId);
 }

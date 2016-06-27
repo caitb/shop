@@ -190,4 +190,8 @@ public class WxConsPF {
      * 推荐佣金提醒
      */
     public static final String WX_PF_TM_ID_RECOMMEND_PROFIT_IN = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_RECOMMEND_PROFIT_IN");
+    /**
+     * 订单取消通知
+     */
+    public static final String WX_PF_TM_ID_ORDER_CANCEL_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_ORDER_CANCEL_NOTICE");
 }

@@ -70,7 +70,7 @@
 .wrap main .floor2 p.on span {
   color: #f74a11;
 }
-.wrap main button {
+.wrap main .nextbutton button {
   display: block;
   background: #f74a11;
   padding: 10px 80px;

@@ -38,4 +38,8 @@ public class IndexShowService {
     public List<IndexComSku> findTestListComSku(Long userId) {
         return indexShowMapper.selectTestListComSku(userId);
     }
+
+    public List<IndexComSku> findIndexComSkuNotBoss(Long userId) throws Exception{
+        return indexShowMapper.selectAllIndexComSkuNotBoss(userId);
+    }
 }

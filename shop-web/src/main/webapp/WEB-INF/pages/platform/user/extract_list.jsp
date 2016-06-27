@@ -39,7 +39,7 @@
                 <div id="divall">
                     <c:forEach items="${exList}" var="ex">
                         <div>
-                            <p><span class="sd">${ex.applyTimeView}</span><span>-${ex.extractFee}</span></p>
+                            <p><span class="sd">${ex.applyTimeView}</span><span>${ex.extractFee}</span></p>
                             <h1><span>银行卡号</span><span>${ex.bankCardView}</span><b>${ex.auditTypeView}</b></h1>
                         </div>
                     </c:forEach>

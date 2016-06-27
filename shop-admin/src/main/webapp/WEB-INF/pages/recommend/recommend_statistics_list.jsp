@@ -84,7 +84,7 @@
                                                 <input type="text" class="form-control" id="code" name="code" placeholder="证书编号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="realName">证书编号</label>
+                                                <label for="realName">姓名</label>
                                                 <input type="text" class="form-control" id="realName" name="realName" placeholder="姓名">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -313,7 +313,7 @@
                     },
                     {
                         field: 'countPresentee',
-                        title: '推荐我的人',
+                        title: '帮我推荐的人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){

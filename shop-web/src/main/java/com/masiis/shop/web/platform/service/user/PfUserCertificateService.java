@@ -26,6 +26,9 @@ public class PfUserCertificateService {
     public PfUserCertificate selectByUserIdAndSkuId(Long userId,Integer skuId){
         return pfUserCertificateMapper.selectByUserIdAndSkuId(userId,skuId);
     }
+    public PfUserCertificate selectByUserSkuId(Integer pfUserSkuId){
+        return pfUserCertificateMapper.selectByUserSkuId(pfUserSkuId);
+    }
 
     /**
      * 生成证书编码

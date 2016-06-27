@@ -5,6 +5,7 @@
 <%@ page import="com.masiis.shop.scheduler.task.platform.PfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfShopTask" %>
+<%@ page import="com.masiis.shop.scheduler.task.platform.PfUpgradeTask" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,6 +32,15 @@
     } else if(type.equals("sfshop")){
         SfShopTask pfOrderTask = (SfShopTask) ac.getBean("sfShopTask");
         pfOrderTask.sfShopBillCountJob();
+    } else if(type.equals("upunsolved")){
+        PfUpgradeTask upgradeTask = (PfUpgradeTask) ac.getBean("pfUpgradeTask");
+        upgradeTask.unHandleUpgradeNoticeJob();
+    } else if(type.equals("upunpayTwo")){
+        PfUpgradeTask upgradeTask = (PfUpgradeTask) ac.getBean("pfUpgradeTask");
+        upgradeTask.upgradeNoticeTwoDayUnPay();
+    } else if(type.equals("upunpaySeven")){
+        PfUpgradeTask upgradeTask = (PfUpgradeTask) ac.getBean("pfUpgradeTask");
+        upgradeTask.upgradeNoticeSevenDayUnPay();
     }
 %>
 </body>

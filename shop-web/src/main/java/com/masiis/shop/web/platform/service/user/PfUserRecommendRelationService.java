@@ -56,8 +56,8 @@ public class PfUserRecommendRelationService {
      * @author muchaofeng
      * @date 2016/6/15 17:42
      */
-    public List<UserRecommend> findGiveSum(Long userId) {
-        return pfUserRecopmmenRelationMapper.selectGiveSum(userId);
+    public List<UserRecommend> findGiveSum(Long userId, Integer skuId) {
+        return pfUserRecopmmenRelationMapper.selectGiveSum(userId, skuId);
     }
 
     /**

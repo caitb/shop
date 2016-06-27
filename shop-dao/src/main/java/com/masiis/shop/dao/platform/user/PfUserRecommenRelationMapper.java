@@ -49,7 +49,7 @@ public interface PfUserRecommenRelationMapper {
      * @date 2016/6/17 13:45
      */
 
-    List<UserRecommend> selectGiveSum(Long  userId);
+    List<UserRecommend> selectGiveSum(@Param("userId")Long  userId, @Param("skuId")Integer skuId);
 
     /**
      * 帮我推荐的单人单品推荐人数

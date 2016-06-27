@@ -72,15 +72,15 @@
                                 <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
-                                    未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
+                                    <span>
+                                        <c:if test="${pb.sendType==1}">平台</c:if>
+                                        <c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>
+                                        <c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
-                                    <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
-                                    </span>
+                                    <b>类型：</b>
+                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
+                                    </c:forEach>
                                 </h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">
@@ -122,15 +122,15 @@
                                     <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1>
                                         <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
-                                        未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
-                                    </span>
-                                        <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
-                                    </span>
+                                        <span>
+                                            <c:if test="${pb.sendType==1}">平台</c:if>
+                                            <c:if test="${pb.sendType==0||pb.sendType==null}">未选择</c:if>
+                                            <c:if test="${pb.sendType==2}">自己发货</c:if>
+                                        </span>
+                                        <b>类型：</b>
+                                        <c:forEach items="${bOrderTypes}" var="orderType">
+                                            <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
+                                        </c:forEach>
                                     </h1>
                                     <div class="ding">
                                         <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">
@@ -173,15 +173,15 @@
                                 <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
-                                        未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
+                                    <span>
+                                        <c:if test="${pb.sendType==1}">平台</c:if>
+                                        <c:if test="${pb.sendType==0||pb.sendType==null}">未选择</c:if>
+                                        <c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
-                                    <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
-                                    </span>
+                                    <b>类型：</b>
+                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
+                                    </c:forEach>
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">
@@ -365,15 +365,15 @@
                                 <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
-                                        未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
+                                    <span>
+                                        <c:if test="${pb.sendType==1}">平台</c:if>
+                                        <c:if test="${pb.sendType==0||pb.sendType==null}">未选择</c:if>
+                                        <c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
-                                    <b>类型:</b>
-                                   <span>
-                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">申请拿货</c:if>
-                                    <c:if test="${pb.orderType==0}">下级合伙订单</c:if>
-                                    <c:if test="${pb.orderType==1}">下级补货</c:if>
-                                    </span>
+                                    <b>类型：</b>
+                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
+                                    </c:forEach>
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">

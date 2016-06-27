@@ -69,4 +69,12 @@
         from pf_user_rebate
         where user_upgrade_notice_id = #{upgradeId}
     </select>
+
+    <select id="selectByUserPIdOrUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_upgrade_notice_id, user_id, user_pid, pf_border_id,
+        remark
+        from pf_user_rebate
+        where user_pid = #{userId,jdbcType=BIGINT} or user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY create_time DESC
+    </select>
 </mapper>

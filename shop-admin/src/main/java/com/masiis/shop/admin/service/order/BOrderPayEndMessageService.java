@@ -73,7 +73,15 @@ public class BOrderPayEndMessageService {
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
         logger.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
-            pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+            if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+                logger.info("------升级订单进入排单发送微信------");
+                //发送微信通知
+                PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
+                Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccssEntryWaiting(pfBorder, pfBorderPayment, upgradeDetail);
+            }else{
+                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+            }
         } else if (pfBorder.getPayStatus().intValue() == 1) {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
@@ -86,6 +94,7 @@ public class BOrderPayEndMessageService {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
             }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())){
+                logger.info("未进入排单----升级订单发送短信-------");
                 //支付完成推送消息(发送失败不回滚事务)
                 try {
                     //发送微信通知
@@ -107,7 +116,7 @@ public class BOrderPayEndMessageService {
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
                 pushMessageRecommen(comUser, recommenUser);
             }
-            pushMessageRecommenRebate(recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
+            pushMessageRecommenRebate(pfBorder, comUser, recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
         }
     }
 
@@ -139,8 +148,12 @@ public class BOrderPayEndMessageService {
             paramIn[0] = pfBorder.getOrderCode();
             paramIn[1] = simpleDateFormat.format(pfBorder.getCreateTime());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-            WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            if(pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()){
+                WxPFNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
+            }else {
+                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
+            }
         }
     }
 
@@ -260,14 +273,28 @@ public class BOrderPayEndMessageService {
      * @param simpleDateFormat
      * @param numberFormat
      */
-    private void pushMessageRecommenRebate(ComUser recommenUser,
+    private void pushMessageRecommenRebate(PfBorder pfBorder,
+                                           ComUser comUser,
+                                           ComUser recommenUser,
                                            PfBorderRecommenReward pfBorderRecommenReward,
                                            SimpleDateFormat simpleDateFormat,
                                            NumberFormat numberFormat) {
+        // 给获得奖励的人发
         String[] param = new String[2];
         param[0] = numberFormat.format(pfBorderRecommenReward.getRewardTotalPrice());
         param[1] = simpleDateFormat.format(pfBorderRecommenReward.getCreateTime());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/getRewardBorder";
         WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
+
+        // 给发出推荐奖励的人发
+        String[] pParam = {
+                numberFormat.format(pfBorder.getRecommenAmount()),
+                simpleDateFormat.format(pfBorderRecommenReward.getCreateTime()),
+                comUser.getRealName(),
+                recommenUser.getRealName()
+        };
+        ComUser pUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/sendRewardBorder";
+        WxPFNoticeUtils.getInstance().recommendProfitOutNotice(pUser, pParam, pUrl);
     }
 }

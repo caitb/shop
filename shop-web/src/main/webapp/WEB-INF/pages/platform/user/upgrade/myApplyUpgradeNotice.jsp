@@ -31,7 +31,7 @@
                 </p>
                 <p>
                     <span>新上级：</span>
-                    <span>${curPName}</span>
+                    <span>${newUp}</span>
                 </p>
                 <p>
                     <span>当前等级：</span>

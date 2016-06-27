@@ -83,7 +83,7 @@
                                         <div class="form-inline">
 
                                             <div class="form-group">
-                                                <label for="orderCode">申请日期：</label>
+                                                <label for="beginTime">申请日期：</label>
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
@@ -93,13 +93,13 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="orderCode">升级编号</label>
+                                                <label for="code">升级编号</label>
                                                 <input type="text" class="form-control" id="code" name="code" placeholder="升级编号">
                                             </div>
 
 
                                             <div class="form-group">
-                                                <label for="payStatus">状态：</label>
+                                                <label for="status">状态：</label>
                                                 <select id="status" name="upgradeStatus">
                                                     <option value="">全部</option>
                                                     <option value="0">未处理</option>
@@ -291,8 +291,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.upgradeNotice && row.upgradeNotice.orgAgentLevelId){
-                                return row.upgradeNotice.orgAgentLevelId;
+                            if(row.orgAgentLevelName) {
+                                return row.orgAgentLevelName;
                             }
                         }
                     },
@@ -303,8 +303,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.upgradeNotice && row.upgradeNotice.wishAgentLevelId){
-                                return row.upgradeNotice.wishAgentLevelId;
+                            if(row.wishAgentLevelName){
+                                return row.wishAgentLevelName;
                             }
                         }
                     },
@@ -332,10 +332,15 @@
                             }
                             if(row.upgradeNotice && row.upgradeNotice.status == 1){
                                 return '处理中';
-                            }if(row.upgradeNotice && row.upgradeNotice.status == 2){
-                                return '待支付';
-                            }if(row.upgradeNotice && row.upgradeNotice.status == 3){
-                                return '已完成';
+                            }
+                            if(row.upgradeNotice && row.upgradeNotice.status == 2){
+                                return '待付款';
+                            }
+                            if(row.upgradeNotice && row.upgradeNotice.status == 3){
+                                return '成功';
+                            }
+                            if(row.upgradeNotice && row.upgradeNotice.status == 4){
+                                return '已取消';
                             }
                         }
                     }

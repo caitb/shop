@@ -96,6 +96,7 @@ public class PfUserUpgradeNoticeService {
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             // 将上级处理状态置为暂不升级
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode());
+            notice.setUpdateTime(new Date());
             int res = update(notice);
             if (res != 1) {
                 throw new BusinessException("更新升级单失败");
@@ -121,7 +122,7 @@ public class PfUserUpgradeNoticeService {
     }
 
     @Transactional
-    public void handleUnpayUpgradeNotice(PfUserUpgradeNotice notice) {
+    public void handleUnpayUpgradeNotice(PfUserUpgradeNotice notice, BOrderStatus bstatus) {
         try {
             // 校验升级通知单状态
             if (notice.getStatus().intValue() != UpGradeStatus.STATUS_NoPayment.getCode().intValue()) {
@@ -143,7 +144,7 @@ public class PfUserUpgradeNoticeService {
                 }
 
                 // 修改订单的状态为已取消状态
-                int result = pfBorderMapper.updateOrderCancelById(pfBorder.getId());
+                int result = pfBorderMapper.updateOrderCancelByIdAndOStatus(pfBorder.getId(), bstatus.getCode());
                 if (result != 1) {
                     pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorder.getId());
                     throw new BusinessException("订单取消失败,订单此时状态为:" + pfBorder.getOrderStatus()
@@ -197,13 +198,27 @@ public class PfUserUpgradeNoticeService {
      * @param notice
      */
     public void sendWxNoticeByTwoDayUnpayUpgradeNotice(PfUserUpgradeNotice notice) {
+        // 发给本人的
         ComUser user = comUserMapper.selectByPrimaryKey(notice.getUserId());
         String[] params = {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyTwoDayNotPayNotice(user, params, url);
+
+        // 发给上级的
+        ComUser pUser = comUserMapper.selectByPrimaryKey(notice.getUserPid());
+        ComAgentLevel org = comAgentLevelMapper.selectByPrimaryKey(notice.getOrgAgentLevelId());
+        ComAgentLevel wish = comAgentLevelMapper.selectByPrimaryKey(notice.getWishAgentLevelId());
+        String[] pParams = {user.getRealName(),
+                org.getName(),
+                wish.getName(),
+                DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
+        };
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 
     public List<PfUserUpgradeNotice> findAllSevenDayUnpayNoticesByDate(Date time) {
@@ -221,8 +236,21 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/myApplyUpgrade.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplySevenDayNotPayNotice(user, params, url);
+
+        // 发给上级的
+        ComUser pUser = comUserMapper.selectByPrimaryKey(notice.getUserPid());
+        ComAgentLevel org = comAgentLevelMapper.selectByPrimaryKey(notice.getOrgAgentLevelId());
+        ComAgentLevel wish = comAgentLevelMapper.selectByPrimaryKey(notice.getWishAgentLevelId());
+        String[] pParams = {user.getRealName(),
+                org.getName(),
+                wish.getName(),
+                DateUtil.Date2String(notice.getCreateTime(), DateUtil.SQL_TIME_FMT)
+        };
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
+        WxPFNoticeUtils.getInstance().subLineUpgradeApplyCancelNotice(pUser, pParams, pUrl);
     }
 
     public void sendWxNoticeByUnsolvedUpgradeNotice(PfUserUpgradeNotice notice) {
@@ -232,7 +260,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(new Date(), DateUtil.SQL_TIME_FMT)
         };
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgradeInfo.shtml?upgradeId=" + notice.getId();
+                + "/upgrade/upgradeInfo.shtml?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyNotHandleNotice(pUser, pParams, pUrl);
 
         // 给下级通知
@@ -246,7 +274,7 @@ public class PfUserUpgradeNoticeService {
                 DateUtil.Date2String(DateUtil.getDateNextdays(notice.getCreateTime(), 2), DateUtil.SQL_TIME_FMT)
         };
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId=" + notice.getId();
+                + "/upgrade/skipOrderPageGetNoticeInfo.html?upgradeId=" + notice.getId();
         WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(user, params, url);
 
     }

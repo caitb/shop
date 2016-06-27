@@ -141,6 +141,10 @@
 //    })
     $(".b_que").on("tap", function () {
         i = $(".number").val();
+        if (i<=0) {
+            alert("数量不能低于0件！");
+            return;
+        }
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;
@@ -159,14 +163,9 @@
                     if(data.stockStatus==2){
                         alert("库存不足，不可下单！");
                         return;
-                    }else if(data.stockStatus==1){
-                        alert("库存不足，将进入排单");
-                        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
                     }else{
                         window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
                     }
-                }else{
-                    alert(data.message);
                 }
             }
         });

@@ -13,7 +13,7 @@
    <div class="wrap">
         <header class="xq_header">
                   <a href="${path}/upgrade/init.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-                    <p>升级</p>            
+                    <p>升级</p>
         </header>
         <main>
             <c:if test="${upgradeDetail.upStatus == 3}">
@@ -22,31 +22,31 @@
             <p>升级信息：</p>
             <div class="floor">
                 <p>
-                    升级编号：
+                    <span>升级编号：</span>
                     <span>${upgradeDetail.upgradeOrderCode}</span>
                 </p>
                 <p>
-                    产品名：
+                    <span>产品名：</span>
                     <span>${upgradeDetail.skuName}</span>
                 </p>
                 <p>
-                    当前等级：
+                    <span>当前等级：</span>
                     <span>${upgradeDetail.currentAgentLevelName}</span>
                 </p>
                 <p>
-                    商品数量：
+                    <span>商品数量：</span>
                     <span>${upgradeDetail.quantity}</span>
                 </p>
                 <p>
-                    申请等级：
+                    <span>申请等级：</span>
                     <span>${upgradeDetail.applyAgentLevelName}</span>
                 </p>
                 <p>
-                    当前上级：
+                    <span>当前上级：</span>
                     <span>${upgradeDetail.oldPUserName}</span>
                 </p>
                 <p>
-                    升级后的上级：
+                    <span>升级后的上级：</span>
                     <span>${upgradeDetail.newPUserName}</span>
                 </p>
             </div>
@@ -65,22 +65,26 @@
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 </body>
 <script>
+    var promise =  $.Deferred().promise();
     function skipGenerateOrder(upgradeNoticeId){
-        $.ajax({
-            type:"POST",
-            url : "${path}/BOrderAdd/upgradeInsertOrder.do",
-            data:"upgradeNoticeId="+upgradeNoticeId,
-            dataType:"Json",
-            success:function(data){
-                if (data.isError == false) {
-                    if (data.isRedirect == true){
-                        window.location.href = "${basePath}"+data.redirectUrl;
-                    }else{
-                        window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+        if (promise.state()=="pending"){
+            $.ajax({
+                type:"POST",
+                url : "${path}/BOrderAdd/upgradeInsertOrder.do",
+                data:"upgradeNoticeId="+upgradeNoticeId,
+                dataType:"Json",
+                success:function(data){
+                    if (data.isError == false) {
+                        if (data.isRedirect == true){
+                            window.location.href = "${basePath}"+data.redirectUrl;
+                        }else{
+                            window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        promise.then()
     }
 </script>
 </html>

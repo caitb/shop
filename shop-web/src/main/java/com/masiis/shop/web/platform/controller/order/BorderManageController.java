@@ -1,19 +1,21 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
-import com.masiis.shop.web.platform.service.order.ComShipManService;
-import com.masiis.shop.web.platform.service.order.PfSupplierBankService;
+import com.masiis.shop.web.platform.service.order.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
@@ -31,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单管理
@@ -41,6 +44,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/borderManage")
 public class BorderManageController extends BaseController {
+
+    private final static Log log = LogFactory.getLog(BorderManageController.class);
 
     @Resource
     private SkuService skuService;
@@ -58,6 +63,8 @@ public class BorderManageController extends BaseController {
     private ComShipManService comShipManService;
     @Resource
     private PfSupplierBankService pfSupplierBankService;
+    @Resource
+    private PfBorderConsigneeService pfBorderConsigneeService;
 
     /**
      * 确认收货
@@ -359,6 +366,67 @@ public class BorderManageController extends BaseController {
 //    }
 
     /**
+     * 合伙订单列表
+     * @param request
+     * @param isShipment   进出货(0进货;1出货)
+     * @param orderStatus  订单状态
+     * @return
+     */
+    @RequestMapping("/orderList")
+    public ModelAndView orderList(
+                                    HttpServletRequest request,
+                                    @RequestParam(value = "isShipment", required = false, defaultValue = "0")Integer isShipment,
+                                    @RequestParam(value = "orderStatus", required = false)Integer orderStatus
+                                 ) {
+
+        ModelAndView mav = new ModelAndView("platform/order/orderList");
+
+        Long userId  = null;
+        Long userPid = null;
+        if(isShipment == 0) userId  = getComUser(request).getId();
+        if(isShipment == 1) userPid = getComUser(request).getId();
+        try {
+            if (request.getSession().getAttribute("defaultBank") == null || request.getSession().getAttribute("defaultBank") == "") {
+                PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
+                request.getSession().setAttribute("defaultBank", defaultBank);
+            }
+
+            List<BOrder> orderMaps = bOrderService.orderList(userId, userPid, orderStatus);
+            mav.addObject("imgUrlPrefix", PropertiesUtils.getStringValue("index_product_220_220_url"));
+            mav.addObject("orderStatus", orderStatus);
+            mav.addObject("isShipment", isShipment);
+            mav.addObject("orderMaps", orderMaps);
+            mav.addObject("orderStatuses", BOrderStatus.values());
+            mav.addObject("orderTypes", BOrderType.values());
+        } catch (Exception e) {
+            log.error("查询订单列表失败![userPid="+userPid+"][orderStatus="+orderStatus+"][userId="+userId+"]"+e);
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
+        }
+
+        return mav;
+    }
+
+    /**
+     * 获取收货人信息
+     * @param bOrderId  代理订单ID
+     * @return
+     */
+    @RequestMapping("/getConsignee")
+    @ResponseBody
+    public Object getConsignee(Long bOrderId) {
+        PfBorderConsignee pfBorderConsignee = null;
+        try {
+            pfBorderConsignee = pfBorderConsigneeService.getByBOrderId(bOrderId);
+        } catch (Exception e) {
+            log.error("获取收货人信息失败![bOrderId="+bOrderId+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pfBorderConsignee;
+    }
+
+    /**
      * 分段查询进货订单
      *
      * @author muchaofeng
@@ -428,6 +496,7 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index", index);
         modelAndView.addObject("pfBorders", pfBorders);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;
     }
@@ -500,6 +569,7 @@ public class BorderManageController extends BaseController {
             request.getSession().setAttribute("comShipMans", comShipMans);
         }
         modelAndView.addObject("index", index);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }
@@ -559,6 +629,7 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("stockNum", stockNum);
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("borderDetail", borderDetail);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuoxiangqing");
         return modelAndView;
     }
@@ -600,6 +671,8 @@ public class BorderManageController extends BaseController {
         List<ComShipMan> comShipMans = comShipManService.list();
         modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("borderDetail", borderDetail);
+        modelAndView.addObject("bOrderTypes", BOrderType.values());
+        modelAndView.addObject("bOrderStatuses", BOrderStatus.values());
         modelAndView.setViewName("platform/order/chuhuoxiangqing");
         return modelAndView;
     }

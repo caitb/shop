@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.platform.business.user;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
 import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -107,7 +108,7 @@ public class PfUserUpgradeTaskService {
             public Boolean doMyJob(Object obj) throws Exception {
                 PfUserUpgradeNotice notice = (PfUserUpgradeNotice) obj;
                 try{
-                    pfUserUpgradeNoticeService.handleUnpayUpgradeNotice(notice);
+                    pfUserUpgradeNoticeService.handleUnpayUpgradeNotice(notice, BOrderStatus.NotPaid);
                     log.info("处理未处理升级单成功");
                     synchronized (this) {
                         wxNotices.add(notice);
@@ -138,7 +139,7 @@ public class PfUserUpgradeTaskService {
     }
 
     /**
-     * 待支付升级单2天未支付(非线下支付)默认不升级
+     * 待支付升级单7天未支付(线下支付)默认不升级
      */
     public void handleSevenDayUnpayUpgradeNotice() {
         Date time = DateUtil.getDateNextdays(new Date(), -7);
@@ -159,7 +160,7 @@ public class PfUserUpgradeTaskService {
             public Boolean doMyJob(Object obj) throws Exception {
                 PfUserUpgradeNotice notice = (PfUserUpgradeNotice) obj;
                 try{
-                    pfUserUpgradeNoticeService.handleUnpayUpgradeNotice(notice);
+                    pfUserUpgradeNoticeService.handleUnpayUpgradeNotice(notice, BOrderStatus.offLineNoPay);
                     log.info("处理未处理升级单成功");
                     synchronized (this) {
                         wxNotices.add(notice);

@@ -50,12 +50,21 @@
         INNER JOIN sf_order b ON a.sf_order_id = b.id
         WHERE
 	      a.user_id = #{userId}
+	      and b.order_status <![CDATA[<>]]> 2
         GROUP BY
           b.pay_status
     </select>
 
     <select id="selectUserAmount" resultType="java.util.HashMap">
-        select sum(dis.distribution_amount) as sumAmount
+        SELECT
+          sum(a.distribution_amount) AS sumAmount
+        FROM
+	      sf_order_item_distribution a
+        INNER JOIN sf_order b ON a.sf_order_id = b.id
+        WHERE
+	      a.user_id = #{userId}
+	      and b.order_status <![CDATA[<>]]> 2
+        <!--select sum(dis.distribution_amount) as sumAmount
         from sf_order_item_distribution dis
             LEFT JOIN sf_order od on dis.sf_order_id = od.id
             LEFT JOIN com_user u on dis.user_id = u.id
@@ -63,7 +72,8 @@
             LEFT JOIN com_sku sku on sdis.sku_id = sku.id
         where dis.user_id = #{userId, jdbcType=BIGINT}
             and od.pay_status = 1
---          and dis.is_counting=1
+         and dis.is_counting=1-->
     </select>
+
 
 </mapper>

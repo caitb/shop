@@ -1,26 +1,17 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/wotuijianderen.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/wotuijianderen.css">
 </head>
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="<%=path%>/myRecommend/feeList"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="${basePath}myRecommend/feeList"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>我推荐的人</p>            
         </header>
         <main>
@@ -52,7 +43,7 @@
             </div>
             <div class="floor2">
                 <c:forEach items="${sumByUserPid}" var="sumByUser">
-                    <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}')">
+                    <div class="sec1" onclick="javascript:window.location.href = '${basePath}myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}';">
                         <img src="${sumByUser.wxHeadImg}" alt="">
                         <div>
                             <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
@@ -63,8 +54,10 @@
             </div>
         </main>
     </div>
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
    <script>
+       var path = "${path}";
+       var basePath = "${basePath}";
        $(document).ready(function(){
            var goodsWidth=$(".goods").width();
            var levelWidth=$(".level").width();
@@ -72,6 +65,11 @@
            $(".level b").html($("#level option:selected").text());
            $("#goods").width(goodsWidth);
            $("#level").width(levelWidth);
+           $("#level option").each(function (i) {
+               if(i==1){
+                   $("#level option").eq(i).remove();
+               }
+           })
        })
        $("#goods").on("change",function(){
            var tabVal=$("#goods option:selected").text();
@@ -88,14 +86,14 @@
            $(".floor2").html("");
            $.ajax({
                type:"POST",
-               url : "<%=path%>/myRecommend/myRecommendLike.do",
+               url : path + "/myRecommend/myRecommendLike.do",
                data:{skuId:skuId,agentLevelIdLong:agentLevelIdLong},
                dataType:"Json",
                success:function(data){
                    var trHtml = "";
                    $.each(data, function(i, userRecommend) {
                        trHtml+="<div class=\"sec1\" ";
-                       trHtml+="onclick=\"javascript:window.location.replace('<%=basePath%>myRecommend/myRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
+                       trHtml+="onclick=\"javascript:window.location.replace('"+basePath+"myRecommend/myRecommend?userId="+userRecommend.userId+"&skuId="+userRecommend.skuId+"')\" >";
                        trHtml+="<img src=\""+userRecommend.wxHeadImg+"\" alt=\"\">";
                        trHtml+="<div> <p>"+userRecommend.name+" <b>"+userRecommend.agentName+"</b></p>";
                        trHtml+="<p>"+userRecommend.skuName+"</p> </div> </div>";

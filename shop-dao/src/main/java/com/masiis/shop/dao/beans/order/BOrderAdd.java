@@ -60,6 +60,10 @@ public class BOrderAdd {
 
     private Long newPUserId;//新上级，升级增加订单时使用
 
+    private Integer currentAgentLevel;//当前级别，升级订单时使用
+
+    private Integer applyAgentLevel; //申请级别,升级订单时使用
+
     public Integer getOrderType() {
         return orderType;
     }
@@ -162,5 +166,21 @@ public class BOrderAdd {
 
     public void setNewPUserId(Long newPUserId) {
         this.newPUserId = newPUserId;
+    }
+
+    public Integer getCurrentAgentLevel() {
+        return currentAgentLevel;
+    }
+
+    public void setCurrentAgentLevel(Integer currentAgentLevel) {
+        this.currentAgentLevel = currentAgentLevel;
+    }
+
+    public Integer getApplyAgentLevel() {
+        return applyAgentLevel;
+    }
+
+    public void setApplyAgentLevel(Integer applyAgentLevel) {
+        this.applyAgentLevel = applyAgentLevel;
     }
 }

@@ -28,4 +28,6 @@ public interface PfUserRebateMapper {
     List<PfUserRebate> selectByUserPId(Long userPid);
 
     PfUserRebate selectByUpgradeId(@Param("upgradeId") Long upgradeId);
+
+    List<PfUserRebate> selectByUserPIdOrUserId(Long userId);
 }

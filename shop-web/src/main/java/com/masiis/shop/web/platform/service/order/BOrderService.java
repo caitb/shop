@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
@@ -28,6 +29,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -408,7 +410,7 @@ public class BOrderService {
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
         //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
+        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1|| pfBorder.getOrderType() == 3) {
             comUserAccountService.countingByOrder(pfBorder);
         }
 
@@ -438,8 +440,8 @@ public class BOrderService {
      * @date 2016/6/16 14:32
      */
 
-    public List<PfBorder> getRecommendPfBorder(Long userId) {
-        return pfBorderMapper.selectRecommend(userId);
+    public List<PfBorder> getRecommendPfBorder(Long userId, Integer skuId) {
+        return pfBorderMapper.selectRecommend(userId, skuId);
     }
 
     /**
@@ -447,8 +449,8 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/6/16 16:46
      */
-    public List<PfBorder> SendRecommendPfBorder(Long userId) {
-        return pfBorderMapper.selectSendRecommend(userId);
+    public List<PfBorder> SendRecommendPfBorder(Long userId, Integer skuId) {
+        return pfBorderMapper.selectSendRecommend(userId, skuId);
     }
 
 
@@ -485,6 +487,17 @@ public class BOrderService {
         }
         logger.info("支付成功后查询订单信息----end");
         return upgradeDetail;
+    }
+
+    /**
+     * 查询进货订单或出货订单
+     * @param userId       自己ID
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    public List<BOrder> orderList(Long userId, Long userPid, Integer orderStatus) {
+        return pfBorderMapper.selectByUserIdOrUserPidAndOrderStatus(userId, userPid, orderStatus);
     }
 
 }

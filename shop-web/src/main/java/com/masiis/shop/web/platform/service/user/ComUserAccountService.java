@@ -226,7 +226,8 @@ public class ComUserAccountService {
 
         item.setCreateDate(new Date());
         item.setOrderCreateDate(order.getCreateTime());
-        item.setOrderPayAmount(order.getPayAmount().subtract(order.getBailAmount()));
+        // 支付金额-保证金-推荐奖
+        item.setOrderPayAmount(order.getPayAmount().subtract(order.getBailAmount()).subtract(order.getRecommenAmount()));
         item.setOrderSubType(0);
         item.setOrderType(0);
         item.setPfBorderId(order.getId());

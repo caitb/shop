@@ -52,6 +52,7 @@ public class ReplenishStockService {
                 userId = Long.valueOf(map.get("userId").toString());
                 url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/" + userId;
                 logger.info("url:" + url);
+                if(stock < 0) stock = 0;
                 params = new String[3];
                 params[0] = skuId;
                 params[1] = skuName;

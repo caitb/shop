@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.mall.service.user.WxUserService;
 import com.masiis.shop.web.mall.utils.ApplicationContextUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.text.NumberFormat;
@@ -47,12 +48,19 @@ public class WxPFNoticeUtils {
      * @return  返回是否成功调用
      */
     public Boolean wxNotice(String accessToken, WxNoticeReq noPay) {
-        String url = WxConsPF.URL_WX_NOTICE + "?access_token=" + accessToken;
-        String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
-        log.info("调用模板返回:" + result);
-        WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
-        if ("0".equals(res.getErrcode())) {
-            return true;
+        try {
+            if(StringUtils.isBlank(noPay.getTouser())){
+                throw new BusinessException("查不到wxUser");
+            }
+            String url = WxConsPF.URL_WX_NOTICE + "?access_token=" + accessToken;
+            String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
+            log.info("调用模板返回:" + result);
+            WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
+            if ("0".equals(res.getErrcode())) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error(e);
         }
         log.error("发送模板消息失败");
         return false;
@@ -1136,12 +1144,18 @@ public class WxPFNoticeUtils {
     }
 
     private String getOpenIdByComUser(ComUser user) {
-        if (user == null) {
-            throw new BusinessException("user为空");
-        }
-        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
-        if (wxUser == null) {
-            throw new BusinessException("wxUser为空");
+        ComWxUser wxUser = null;
+        try {
+            if (user == null) {
+                throw new BusinessException("user为空");
+            }
+            wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
+            if (wxUser == null) {
+                throw new BusinessException("wxUser为空");
+            }
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            return null;
         }
         return wxUser.getOpenid();
     }

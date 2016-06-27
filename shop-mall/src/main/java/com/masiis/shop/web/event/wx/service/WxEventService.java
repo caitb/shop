@@ -151,7 +151,6 @@ public class WxEventService {
                     + param.getfUserId() + "/shop.shtml";
         }
 
-        ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
         SfShop shop = shopMapper.selectByPrimaryKey(param.getShopId());
 
         WxArticleRes res = new WxArticleRes();
@@ -162,7 +161,12 @@ public class WxEventService {
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
         Article article = new Article("点击继续", null);
-        article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
+        if(param.getfUserId().longValue() != 0) {
+            ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
+            article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
+        } else {
+            article.setDescription("您将要访问" + shop.getName() + "，点击前往");
+        }
         article.setUrl(url);
         articles.add(article);
         res.setArticles(articles);

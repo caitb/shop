@@ -56,7 +56,7 @@ public interface PfUserRecommenRelationMapper {
      * @author muchaofeng
      * @date 2016/6/17 13:55
      */
-    int selectGiveNum(@Param("userId") Long userId,@Param("skuId") Integer skuId,@Param("borderId")Long borderId);
+    int selectGiveNum(@Param("userId") Long userId,@Param("skuId") Integer skuId);
 
     /**
      * 帮我推荐的人id集合

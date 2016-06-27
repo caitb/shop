@@ -97,7 +97,7 @@ public class MyRecommendController extends BaseController{
             ComUser comUser = getComUser(request);
             List<UserRecommend> sumByUser = pfUserRecommendRelationService.findGiveSum(comUser.getId(), skuId);//推荐给我的
             for (UserRecommend userRecommend:sumByUser) {
-                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId(),userRecommend.getBorderId());
+                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
                 userRecommend.setNumber(giveNum);
             }
 
@@ -128,7 +128,7 @@ public class MyRecommendController extends BaseController{
 
             sumByUser = pfUserRecommendRelationService.findGiveSumByLike(skuId,comUser.getId());//推荐给我的
             for (UserRecommend userRecommend:sumByUser) {
-                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId(),userRecommend.getBorderId());
+                Integer giveNum = pfUserRecommendRelationService.findGiveNum(userRecommend.getUserId(), userRecommend.getSkuId());
                 userRecommend.setNumber(giveNum);
             }
         }catch (Exception e){

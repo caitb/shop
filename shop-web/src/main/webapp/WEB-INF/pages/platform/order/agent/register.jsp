@@ -102,7 +102,7 @@
             </c:otherwise>
         </c:choose>
         <h4><b>合伙人套餐:</b><span id="q_levelName"></span></h4>
-        <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
+        <h4><b>拿货门槛:</b><span id="q_amount"></span></h4>
         <h3>
             <span class="que_qu" id="getBack">返回修改</span>
             <span class="que_que" id="submit">我填的正确</span>

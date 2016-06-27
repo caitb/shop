@@ -142,24 +142,26 @@ public class WxEventService {
         //Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
         try {
             if (pUserId != null && pUserId > 0) {
-                PfUserRelation existRelation = pfUserRelationService
-                        .getRelationByUserIdAndSkuIdAndPUserId(user.getId(), skuId, pUserId);
-                pfUserRelationService.updateAllToUnableByUserIdAndSkuId(user.getId(), skuId);
-                if(existRelation == null) {
-                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                    userSkuService.checkParentData(user, pUserId, skuId);
-                    existRelation = new PfUserRelation();
-                    existRelation.setUserId(user.getId());
-                    existRelation.setSkuId(skuId);
-                    existRelation.setCreateTime(new Date());
-                    existRelation.setIsEnable(1);
-                    existRelation.setUserPid(pUserId);
-                    existRelation.setAgentLevelIds(usp.getAgentLevelIds());
-                    pfUserRelationService.insert(existRelation);
-                } else {
-                    existRelation.setAgentLevelIds(usp.getAgentLevelIds());
-                    existRelation.setIsEnable(1);
-                    pfUserRelationService.update(existRelation);
+                if(pUserId.longValue() != user.getId().longValue()) {
+                    PfUserRelation existRelation = pfUserRelationService
+                            .getRelationByUserIdAndSkuIdAndPUserId(user.getId(), skuId, pUserId);
+                    pfUserRelationService.updateAllToUnableByUserIdAndSkuId(user.getId(), skuId);
+                    if (existRelation == null) {
+                        //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                        userSkuService.checkParentData(user, pUserId, skuId);
+                        existRelation = new PfUserRelation();
+                        existRelation.setUserId(user.getId());
+                        existRelation.setSkuId(skuId);
+                        existRelation.setCreateTime(new Date());
+                        existRelation.setIsEnable(1);
+                        existRelation.setUserPid(pUserId);
+                        existRelation.setAgentLevelIds(usp.getAgentLevelIds());
+                        pfUserRelationService.insert(existRelation);
+                    } else {
+                        existRelation.setAgentLevelIds(usp.getAgentLevelIds());
+                        existRelation.setIsEnable(1);
+                        pfUserRelationService.update(existRelation);
+                    }
                 }
             }
         } catch (Exception e) {

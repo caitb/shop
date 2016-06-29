@@ -63,6 +63,7 @@
         INNER JOIN sf_order b ON a.sf_order_id = b.id
         WHERE
 	      a.user_id = #{userId}
+          and a.is_counting=1
 	      and b.order_status <![CDATA[<>]]> 2
           and b.pay_status = 1
         <!--select sum(dis.distribution_amount) as sumAmount

@@ -8,7 +8,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background: #f73c8c;
+  background: #333;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -26,7 +26,7 @@
 .wrap .tai h1,
 .wrap .tai p {
   text-indent: 4.5rem;
-  color: white;
+  color: #C7A467;
   font-size: 12px;
 }
 .wrap .tai h1{
@@ -42,7 +42,7 @@
   font-size: 12px;
 }
 .wrap .content h1 span {
-  color: #f73c8c;
+  color: #F7523C;
   font-size: 12px;
 }.wrap .sec1 {
    width: 100%;

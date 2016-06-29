@@ -29,7 +29,7 @@
                 </header>
                 <nav>
                     <ul>
-                        <li><a href="javascript:;" class="on">全部</a></li>
+                        <li class="active"><a href="javascript:;">全部</a></li>
                         <li><a href="javascript:;">待付款</a></li>
                         <li><a href="javascript:;">待发货</a></li>
                         <li><a href="javascript:;">待收货</a></li>
@@ -273,8 +273,8 @@
                    var index=$(this).index();
                    $(".all").html("");
                    $(".all").eq(index).show().siblings().hide();
-                   $("li").children("a").removeClass("on")
-                   $(this).children("a").addClass("on");
+                   $("li").removeClass("active");
+                   $(this).addClass("active");
                    $.ajax({
                        type:"POST",
                        url : "<%=path%>/sfOrderManagerController/clickSfOrderType.do",
@@ -339,8 +339,8 @@
 
             $(document).ready(function(){
                 var index=${index};
-                $("li").children("a").removeClass("on")
-                $("li").eq(index).children("a").addClass("on");
+                $("li").removeClass("active");
+                $("li").eq(index).addClass("active");
                 $(".all").eq(index).show().siblings().hide();
             });
             var oid = "";

@@ -5,7 +5,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background: #f73c8c;
+  background: #333;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -23,7 +23,7 @@
 .wrap .tai h1,
 .wrap .tai p {
   text-indent: 4.5rem;
-  color: white;
+  color: #C7A467;
   font-size: 12px;
 }
 .wrap .tai h1{
@@ -95,7 +95,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap .sec2 div {
   -webkit-box-flex: 1;
@@ -199,7 +199,7 @@
   text-align: left;
 }
 .wrap .sec4 p:nth-child(3) span{
-  color: #F73c8c;
+  color: #F7523C;
 }
 .wrap .sec4 p b {
   font-size: 12px;

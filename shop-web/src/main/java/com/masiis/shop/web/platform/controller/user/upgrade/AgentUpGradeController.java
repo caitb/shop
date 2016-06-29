@@ -490,7 +490,7 @@ public class AgentUpGradeController extends BaseController {
             upgradeDetail.setName(comUser.getRealName());
         }
         mv.addObject("upgradeDetail",upgradeDetail);
-        mv.addObject("payDate", DateUtil.addDays(SysConstants.UPGRADE_LATEST_TIME));
+        mv.addObject("payDate", DateUtil.delayDays(SysConstants.UPGRADE_LATEST_TIME));
         mv.setViewName("platform/user/upgrade/shengjishenhe");
         return mv;
     }

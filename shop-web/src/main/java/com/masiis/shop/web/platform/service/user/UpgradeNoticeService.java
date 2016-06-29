@@ -170,7 +170,7 @@ public class UpgradeNoticeService {
      * @auth:wbj
      * @throws Exception
      */
-    public Long dealAgentUpGrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
+    public PfUserUpgradeNotice dealAgentUpGrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
         logger.info("查询是否已经有申请单");
         List<PfUserUpgradeNotice> upgradeNotices = pfUserUpgradeNoticeMapper.selectBySkuIdAndUserIdAndUserPid(skuId, userPid, userId);
         if (upgradeNotices != null & upgradeNotices.size()>0){
@@ -227,7 +227,7 @@ public class UpgradeNoticeService {
      * @auth:wbj
      * @throws Exception
      */
-    public Long upAgentCanUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
+    public PfUserUpgradeNotice upAgentCanUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
         PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
         logger.info("生成申请单号begin");
         String code = OrderMakeUtils.makeOrder("U");
@@ -280,7 +280,7 @@ public class UpgradeNoticeService {
         }
         //创建申请单完成后处理下级代理申请单
         this.dealLowerUpgrades(userId, skuId, curAgentLevel);
-        return upgradeNotice.getId();
+        return upgradeNotice;
     }
 
     /**
@@ -295,7 +295,7 @@ public class UpgradeNoticeService {
      * @auth:wbj
      * @throws Exception
      */
-    public Long upAgentCannotUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
+    public PfUserUpgradeNotice upAgentCannotUpgrade(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId) throws Exception{
         PfUserUpgradeNotice upgradeNotice = new PfUserUpgradeNotice();
         logger.info("生成申请单号begin");
         String code = OrderMakeUtils.makeOrder("U");
@@ -317,7 +317,7 @@ public class UpgradeNoticeService {
         }
         //创建申请单完成后处理下级代理申请单
         this.dealLowerUpgrades(userId, skuId, curAgentLevel);
-        return upgradeNotice.getId();
+        return upgradeNotice;
     }
 
     /**

@@ -183,9 +183,9 @@ public class AgentUpGradeController extends BaseController {
         }
         Integer pAgentLevel = pfUserSku.getAgentLevelId();
         logger.info("查询用户上级代理等级id end");
-        Long keyProperty;
+        PfUserUpgradeNotice upgradeNotice;
         try {
-            keyProperty = upgradeNoticeService.dealAgentUpGrade(comUser.getId(), userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
+            upgradeNotice = upgradeNoticeService.dealAgentUpGrade(comUser.getId(), userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
         }catch (Exception e){
             logger.info(e.getMessage());
             jsonObject.put("isTrue","false");
@@ -194,9 +194,11 @@ public class AgentUpGradeController extends BaseController {
             return jsonObject.toJSONString();
         }
         jsonObject.put("isTrue","true");
-        jsonObject.put("keyProperty",keyProperty);
+        jsonObject.put("keyProperty",upgradeNotice.getId());
         logger.info("判断申请代理等级与上级代理等级（申请代理等级："+upgradeLevel+"，上级代理等级："+pAgentLevel+"）");
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
+            logger.info("判断上级是否可以升级，生成申请单id="+upgradeNotice.getId());
+            jsonObject.put("status",upgradeNotice.getStatus());
             jsonObject.put("isEquals","true");
         }else {
             jsonObject.put("isEquals","false");

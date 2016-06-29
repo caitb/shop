@@ -96,7 +96,11 @@ $(".que_que").on("click",function(){
                 if (data.isTrue == "true"){
                     upgradeApplySubmitNotice(data.keyProperty);
                     if (data.isEquals == "true"){
-                        window.location.href = basePath + "upgrade/applicationComplete.shtml";
+                        if (data.status == 2){
+                            window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
+                        }else {
+                            window.location.href = basePath + "upgrade/applicationComplete.shtml";
+                        }
                     }else {
                         window.location.href = basePath + "upgrade/skipOrderPageGetNoticeInfo.html?upgradeNoticeId="+data.keyProperty;
                     }

@@ -2,16 +2,16 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PbBanner;
-import com.masiis.shop.dao.po.PfUserRelation;
-import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
+import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +42,12 @@ public class MarketController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private SpuService spuService;
 
     @RequestMapping("/market")
     public ModelAndView marketList(HttpServletRequest request)throws Exception{
@@ -69,11 +75,11 @@ public class MarketController extends BaseController {
         //增加逻辑，判断是否是BOSS
         List<IndexComSku> indexComS = null;
         List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系,Boss和小白没代理关系
-//        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
+        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
              indexComS = indexShowService.findIndexComSku(user.getId());
-//        }else{//非BOSS
-//            indexComS = indexShowService.findIndexComSkuNotBoss(user.getId());
-//        }
+        }else{//非BOSS
+            indexComS = indexShowService.findIndexComSkuNotBoss(user.getId());
+        }
         indexComS.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
@@ -86,9 +92,9 @@ public class MarketController extends BaseController {
                 //判断会员权限
                 indexCom.setIsPartner(1);
                 //确定代理权限，显示优惠区间
-                indexCom.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
-                indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
-                indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));//保证金
+                indexCom.setMaxDiscount(productService.getMaxDiscount(indexCom.getId()));
+                indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getId())+"%");
+                indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getId()));//保证金
 //            }else{
 //                indexCom.setDiscountLevel("成为合伙人可查看利润");
 //            }

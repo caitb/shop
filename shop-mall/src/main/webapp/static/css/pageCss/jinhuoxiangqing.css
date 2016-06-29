@@ -278,13 +278,12 @@ body {
 }
 .wrap main .btn {
   display: block;
-  width: 90px;
+  width: 105px;
   height: 30px;
-  border-radius: 5px;
-  background: #f73c8c;
+  background: #333;
   text-align: center;
   line-height: 30px;
-  color: white;
+  color: #C7A467;
   margin: 0 auto;
 }
 .wrap main > h3 {
@@ -313,15 +312,16 @@ body {
 }
 .wrap .back .back_que p {
   margin: 0 10px;
-  color: #f73c8c;
-  border-bottom: 1px solid #f73c8c;
-  line-height: 30px;
+  color: #C7A467;
+  border-bottom: 1px solid #C7A467;
   margin-bottom: 10px;
+  padding: 10px 0;
 }
 .wrap .back .back_que h4 {
   margin: 0 15px;
   text-indent: 10px;
   letter-spacing: 1px;
+  padding: 5px 0;
 }
 .wrap .back .back_que h3 {
   margin-top: 10px;
@@ -335,7 +335,7 @@ body {
   display: block;
   -webkit-box-flex: 1;
   text-align: center;
-  line-height: 33px;
+  line-height: 40px;
 }
 .wrap .back .back_que h3 span:nth-child(1) {
   border-right: 1px solid #999;

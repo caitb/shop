@@ -16,12 +16,16 @@
   border: none;
 }
 .wrap button {
+  margin: 0 auto;
   display: block;
-  /* width: 100%; */
-  line-height: 35px;
-  background: #0fc420;
+  background: #5EC40B;
   color: white;
-  margin: 0 10px;
   margin-top: 10rem;
-  border-radius: 5px;
+  width: 70%;
+  padding: 10px 0;
+}
+.wrap button b{
+  background: url("/static/images/cweixin.png") no-repeat 0;
+  background-size:20px;
+  padding-left:30px ;
 }

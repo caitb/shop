@@ -58,28 +58,24 @@ html header p {
   line-height: 38px;
   font-size: 16px;
 }
-body .wrap,
-html .wrap {
-  -webkit-box-flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
+.wrap {
+  width:100%;
+  height:100%;
+  overflow: auto;
   color: #333;
+  overflow-x:hidden;
 }
-body footer,
-html footer {
+footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  -webkit-box-shadow: 0 0 8px 0px rgba(0,0,0,0.1);
+  background: #171717;
 }
-body footer div,
-html footer div {
+footer div {
   width: 100%;
   display: -webkit-box;
 }
-body footer div p,
-html footer div p {
+footer div p {
   -webkit-box-flex: 1;
   display: -webkit-box;
   width: 1px;
@@ -87,24 +83,24 @@ html footer div p {
   -webkit-box-align: center;
   -webkit-box-pack: center;
 }
-body footer div p span,
-html footer div p span {
+footer div p span {
   display: block;
-  font-size:12px;
-  color: #333;
+  color: #666;
+  font-size: 12px;
 }
-body footer div p span img,
-html footer div p span img {
+footer div p span:last-child{
+  padding-bottom:3px;
+}
+footer div p span img {
   display: block;
   width: 20px;
-  margin-top: 5px;
+  height: 20px;
+  margin: 8px 0 2px 0;
 }
-body footer div .active,
-html footer div .active {
-  color: #7D11F7;
-  background: url("/static/images/active.png") no-repeat;
-  background-size: 100% 100%;
+footer div .active {
+  color: #C8A66A;
 }
+
 .xinz {
   width: 100%;
   height: 40px;

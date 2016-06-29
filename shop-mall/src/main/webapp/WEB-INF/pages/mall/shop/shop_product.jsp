@@ -142,7 +142,7 @@
 <footer>
     <section class="sec3">
         <%--<p class="shi" id="share"><a>分享</a></p>--%>
-        <p style="background: rgba(247,60,140,0.9);color:#fff;"onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
+        <p onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
     </section>
 </footer>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>

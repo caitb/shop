@@ -27,7 +27,7 @@
         b{
             display: block;
             text-align: center;
-            color: #F73C8C;
+            color: #C7A467;
             width: 100%;
             margin-top: 5%;
         }
@@ -108,8 +108,8 @@
             top: 4px;
         }
         .floor{
-                background: url("/static/images/floorbg.png") no-repeat;
-                background-size: 100% 100%;
+            background: url("/static/images/floorbg.png") no-repeat;
+            background-size: 100% 100%;
             width:90%;
             margin:1em auto 0 auto;
             padding: 18% 0;

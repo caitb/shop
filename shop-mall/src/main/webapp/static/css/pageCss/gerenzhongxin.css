@@ -3,33 +3,40 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+.floor >img{
+  display: block;
+  width:100%;
+  position: relative;
+}
 .wrap .na {
-  width: 100%;
-  background: url("/static/images/qwe%20(2).png") no-repeat;
+  width:100%;
+  position: absolute;
+  top:0;
+  left:0;
   display: -webkit-box;
-  margin-bottom: 10px;
-  padding: 30px 10px;
-  background-size: 100% 100%;
+  -webkit-box-orient:vertical;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
 }
 .wrap .na p {
-  width: 50px;
-  height: 50px;
-  border-radius: 31px;
+  border-radius: 41px;
   background: #ccc;
   overflow: hidden;
-  border: 2px solid #fff;
-  box-shadow: 0px 2px 4px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 0px 3px rgba(255,255,255,0.2);
+  margin-top: 18px;
+  width: 60px;
+  height: 60px;
 }
 .wrap .na p img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: block;
 }
 .wrap .na h1 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-box-pack: center;
-  margin-left: 10px;
+  margin-top: 15px;
 }
 .wrap .na h1 span {
   display: block;
@@ -41,7 +48,7 @@
 
 }
 .wrap .na h1 span:first-child{
-  font-size: 14px;
+  font-size: 13px;
 }
 /*.wrap .Xin {
   display: -webkit-box;
@@ -147,22 +154,26 @@
 }
 .jiang{
   background:#fff;
-  padding:10px;
+  padding: 10px 0;
 }
 .jiang p{
   font-size:12px;
-  border-left:2px solid #F73D39;
-  line-height:15px;
-  padding-left:5px;
+  border-left: 3px solid #C29C5A;
+  margin-left: 15px;
+  padding-left: 5px;
+  line-height: 15px;
 }
 .jiang h1{
   text-align:center;
   font-size:12px;
-  color:#F73D39;
+  color: #C29C5A;
   background:url("/static/images/money.png") no-repeat center 30%;
   padding-top: 45px;
-  background-size: 20px;
+  margin-top: 10px;
+  background-size: 30px;
+  border-top: 1px solid #f6f6f6;
 }
 .jiang h1 span{
-  font-size:16px;
+  font-size: 20px;
+  font-weight: 600;
 }

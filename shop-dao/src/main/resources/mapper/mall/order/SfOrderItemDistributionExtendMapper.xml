@@ -64,6 +64,7 @@
         WHERE
 	      a.user_id = #{userId}
 	      and b.order_status <![CDATA[<>]]> 2
+          and b.pay_status = 1
         <!--select sum(dis.distribution_amount) as sumAmount
         from sf_order_item_distribution dis
             LEFT JOIN sf_order od on dis.sf_order_id = od.id

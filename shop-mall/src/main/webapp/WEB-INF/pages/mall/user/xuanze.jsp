@@ -41,7 +41,7 @@
                                 address +=jsonData[i].mobile;
                                 address +="</h3><p>";
                                 if(jsonData[i].isDefault==1){
-                                    address += "<b style='display:inline-block;color: #F74A11;' >【默认】</b><span>";
+                                    address += "<b style='display:inline-block;color: #C7A467;' >【默认】</b><span>";
                                 }else{
                                     address += "<b></b><span>";
                                 }

@@ -69,18 +69,14 @@
     </div>
 </div>
 <div id="contactSellerDivId" class="back_l">
-    <p>联系卖家</p>
-    <p>请联系客服</p>
-    <p>电话:<a href="tel:400-961-961">400-961-9616</a></p>
+    <h1>联系卖家</h1>
+    <p>请联系:<a href="tel:400-961-961">400-961-9616</a></p>
     <button  onclick="closeContactSeller()">知道了</button>
-    <span class="close" onclick="closeContactSeller()">×</span>
 </div>
 <div id="askForInvoiceDivId" class="back_l back_s">
-    <p>索要发票</p>
-    <p>请联系客服</p>
-    <p>电话:<a href="tel:400-961-961">400-961-9616</a></p>
-    <button onclick="closeAskForInvoice()">知道了</button>
-    <span onclick="closeAskForInvoice()" class="close">×</span>
+    <h1>索要发票</h1>
+    <p>请联系:<a href="tel:400-961-961">400-961-9616</a></p>
+    <button  onclick="closeAskForInvoice()">知道了</button>
 </div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

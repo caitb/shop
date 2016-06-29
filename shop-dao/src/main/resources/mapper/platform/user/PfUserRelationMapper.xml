@@ -143,5 +143,7 @@
         pf_user_relation
         WHERE
         user_id = #{userId}
+        and is_enable=1
     </select>
+
 </mapper>

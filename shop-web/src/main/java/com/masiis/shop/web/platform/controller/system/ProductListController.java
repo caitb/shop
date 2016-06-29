@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserRelation;
 import com.masiis.shop.dao.po.PfUserSku;
@@ -9,9 +11,11 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,6 +44,12 @@ public class ProductListController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private SpuService spuService;
 
     @RequestMapping("showProduct")
     public ModelAndView showProductList(HttpServletRequest request) throws Exception{
@@ -55,11 +65,11 @@ public class ProductListController extends BaseController {
         //增加逻辑，判断是否是BOSS
         List<IndexComSku> indexComSk = null;
         List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系,Boss和小白没代理关系
-//        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
+        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
             indexComSk = indexShowService.findIndexComSku(user.getId());
-//        }else{//非BOSS
-//            indexComSk = indexShowService.findIndexComSkuNotBoss(user.getId());
-//        }
+        }else{//非BOSS
+            indexComSk = indexShowService.findIndexComSkuNotBoss(user.getId());
+        }
         indexComSk.addAll(indexShowService.findTestListComSku(user.getId()));
         List<IndexComSku> Com =new ArrayList<IndexComSku>();
         for (IndexComSku indexComSku:indexComSk) {
@@ -75,9 +85,9 @@ public class ProductListController extends BaseController {
                 //确定代理权限
 //                indexComSku.setIsPartner(1);
                 //显示优惠区间
-                indexComSku.setMaxDiscount(productService.getMaxDiscount(indexComSku.getSkuId()));
-                indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexComSku.getSkuId())+"%");
-                indexComSku.setBailLevel(skuAgentService.getSkuAgentLevel(indexComSku.getSkuId()));
+                indexComSku.setMaxDiscount(productService.getMaxDiscount(indexComSku.getId()));
+                indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexComSku.getId())+"%");
+                indexComSku.setBailLevel(skuAgentService.getSkuAgentLevel(indexComSku.getId()));
 
 //            } else {
 //                indexComSku.setDiscountLevel("成为合伙人可查看");

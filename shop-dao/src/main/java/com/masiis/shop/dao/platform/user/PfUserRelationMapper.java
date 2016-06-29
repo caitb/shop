@@ -60,4 +60,7 @@ public interface PfUserRelationMapper {
     List<PfUserRelation> selectByCondition(Map<String, Object> conditionMap);
 
     List<PfUserRelation> selectRelationByUserId(Long userId);
+
+
+
 }

@@ -19,6 +19,7 @@ import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.QRCodeUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -250,7 +251,8 @@ public class DevelopingController extends BaseController {
                 File headImgFile   = new File(posterDirPath+"/"+headImg);
                 File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
                 //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
-                if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+                if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+                if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
                 if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
                 DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
 

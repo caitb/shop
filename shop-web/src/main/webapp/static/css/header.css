@@ -81,8 +81,7 @@
   height: 38px;
   background: white;
 }
-.admin img {
-  display: block;
+.admin p {
   float: left;
   margin-top: 4px;
   margin-left: 5px;

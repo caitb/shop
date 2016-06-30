@@ -44,7 +44,8 @@
         </div>
         <div class="index_login" style="display: block">
             <div class="admin" >
-                <img src="${user.wxHeadImg}" alt="">
+                <%--<img src="${user.wxHeadImg}" alt="">--%>
+                <p style="background: url('${user.wxHeadImg}') no-repeat;background-size: 100% 100%;"></p>
                 <h3>${user.wxNkName}—欢迎您登入</h3>
             </div>
             <c:if test="${user.isAgent==1}">

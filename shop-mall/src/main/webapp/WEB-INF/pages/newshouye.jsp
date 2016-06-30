@@ -61,7 +61,7 @@
                 <p>&nbsp;&nbsp;</p>
                 <div><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
             </div>
-        </div>      
+        </div>
     </div>
     <main>
         <h1>在售商品</h1>

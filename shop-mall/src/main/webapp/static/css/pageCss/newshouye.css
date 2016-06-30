@@ -3,9 +3,8 @@
   font-size: 62.5%;
 }
 .wrap {
-  height: 100%;
   overflow: auto;
-  padding-bottom: 54px;
+  padding-bottom: 15%;
 }
 .wrap .banner {
   width: 100%;
@@ -49,6 +48,7 @@
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
+  pointer-events: none;
 }
 .wrap .banner .banner_1 .br_1 {
   display: -webkit-box;
@@ -107,6 +107,7 @@
 }
 .wrap .banner .banner_1 .br_3 div {
   -webkit-box-flex: 1;
+  pointer-events: auto;
 }
 .wrap .banner .banner_1 .br_3 div img {
   display: block;

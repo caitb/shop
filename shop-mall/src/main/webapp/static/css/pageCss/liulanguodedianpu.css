@@ -59,6 +59,8 @@
 .wrap .sec1 div h2 span {
   font-size: 12px;
   float: left;
+  color: #333;
+  border-bottom: 1px solid #333;
 }
 .wrap .sec1 div h2:nth-child(1) {
   margin-bottom: 5px;
@@ -68,6 +70,7 @@
   float: right;
   margin-right: 5px;
   color: #666;
+  border:none;
 }
 .wrap .sec1 div h2:last-child {
   margin-top: 5px;

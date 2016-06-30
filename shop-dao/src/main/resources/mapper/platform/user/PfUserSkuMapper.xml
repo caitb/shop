@@ -440,6 +440,15 @@
         WHERE
                us.user_id = #{userId}
     </select>
+
+    <select id="selectByUserIdNotPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        from
+        pf_user_sku
+        where
+        user_id = #{userId,jdbcType=BIGINT} AND user_pid =0
+    </select>
 </mapper>
 
 

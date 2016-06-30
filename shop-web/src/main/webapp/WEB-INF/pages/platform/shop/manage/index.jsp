@@ -38,7 +38,7 @@
         </div>
         <img src="${sfShop.logo}" alt="">--%>
             <div>
-                <img src="${comUser.wxHeadImg}" alt="">
+                <h2 style="background:url('${comUser.wxHeadImg}');background-size: 100% 100%;"></h2>
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
                 <%--<h3>--%>

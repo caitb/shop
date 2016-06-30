@@ -3,8 +3,9 @@
   font-size: 62.5%;
 }
 .wrap {
+  height: 100%;
   overflow: auto;
-  padding-bottom: 15%;
+  padding-bottom: 54px;
 }
 .wrap .banner {
   width: 100%;

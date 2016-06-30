@@ -288,7 +288,7 @@ public class SfShopManageController extends BaseController {
 
             Element headImgElement = new Element(317, 201, 120, 120, ImageIO.read(new File(posterDirPath+"/"+headImg)));
             Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-            Element qrcodeImgElement = new Element(236, 600, 280, 280, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            Element qrcodeImgElement = new Element(236, 602, 280, 280, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
             String title = "Hi，我是"+comUser.getWxNkName();
             String desc1 = "正品特供，好友专享价，尽在我的麦链";

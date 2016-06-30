@@ -183,7 +183,7 @@ public class SfShopController extends BaseController {
 
             Element headImgElement = new Element(316, 200, 120, 120, ImageIO.read(new File(posterDirPath+"/"+headImg)));
             Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-            Element qrcodeImgElement = new Element(236, 444, 280, 280, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            Element qrcodeImgElement = new Element(236, 446, 280, 280, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             String title = "Hi，我是"+comUser.getWxNkName();
             String limit = "该二维码有效期为";
             String limitDate = startTime+"-"+endDate;

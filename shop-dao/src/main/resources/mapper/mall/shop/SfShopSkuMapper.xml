@@ -85,6 +85,7 @@
         bail,sale_num, share_num, qr_code, remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = 1
+        ORDER BY id DESC
     </select>
 
     <select id="selectByShopIdAndSaleType" resultMap="BaseResultMap">

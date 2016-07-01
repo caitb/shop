@@ -59,7 +59,7 @@
             <div class="br_3">
                 <div onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');"><img src="<%=path%>/static/images/woyao.png" alt=""></div>
                 <p>&nbsp;&nbsp;</p>
-                <div><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
+                <div onclick="javascript:window.location.replace('http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333&scene=0#wechat_redirect');"><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
             </div>
         </div>
     </div>

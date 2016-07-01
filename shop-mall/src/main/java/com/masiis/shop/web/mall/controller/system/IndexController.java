@@ -61,10 +61,21 @@ public class IndexController extends BaseController {
             throw new BusinessException("user不能为空");
         }
 
-        req.getSession().setAttribute("userPid", userPid);
-        req.getSession().setAttribute("shopId", shopId);
+        if(req.getSession().getAttribute("userPid")==null){
+            req.getSession().setAttribute("userPid", userPid);
+        }else{
+            req.getSession().removeAttribute("userPid");
+            req.getSession().setAttribute("userPid", userPid);
+        }
+        if(req.getSession().getAttribute("shopId")==null){
+            req.getSession().setAttribute("shopId", shopId);
+        }else{
+            req.getSession().removeAttribute("shopId");
+            req.getSession().setAttribute("shopId", shopId);
+        }
 
-        userService.getShareUser(user.getId(), userPid);//分销关系
+
+//        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
@@ -219,7 +230,7 @@ public class IndexController extends BaseController {
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
-        userService.getShareUser(user.getId(), userPid);//分销关系
+//        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 
         sfUserShopViewService.addShopView(user.getId(), shopId);

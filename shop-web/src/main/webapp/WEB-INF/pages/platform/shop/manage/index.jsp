@@ -14,6 +14,17 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>/static/css/wodedianpu.css">
+    <style>
+        .wrap .header > div h2 {
+            display: block;
+            width: 50px;
+            height: 50px;
+            border-radius: 60px;
+            box-shadow: 0px 4px 6px -2px rgba(0,0,0,0.3);
+            background:url('${comUser.wxHeadImg}');
+            background-size: 100% 100%;
+        }
+    </style>
 </head>
 <body>
 <div class="wrap" <c:if test="${sfShop==null}">style="display: none;"</c:if> >
@@ -38,7 +49,7 @@
         </div>
         <img src="${sfShop.logo}" alt="">--%>
             <div>
-                <h2 style="background:url('${comUser.wxHeadImg}');background-size: 100% 100%;"></h2>
+                <h2></h2>
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
                 <%--<h3>--%>

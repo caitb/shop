@@ -37,6 +37,10 @@
   font-size: 14px;
   margin-top:10px;
 }
+.xq_header a:last-child img {
+  width:24px;
+  margin-top:4px;
+}
 .xq_header p {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;

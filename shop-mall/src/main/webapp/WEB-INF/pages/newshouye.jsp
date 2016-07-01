@@ -19,14 +19,14 @@
 </head>
 <body>
    <div class="wrap">
-       <%--<c:if test="${userPid!=user.id && userPid != sfShop.userId && userPid !=null && userPid !=0}">--%>
-           <%--<div class="na">--%>
-               <%--<p><img src="${pUser.wxHeadImg}" alt=""></p>--%>
-               <%--<h1>--%>
-                   <%--<span>我是${pUser.wxNkName}<br>我为好友代言，跟我一起分享赚佣金！</span>--%>
-               <%--</h1>--%>
-           <%--</div>--%>
-       <%--</c:if>--%>
+       <c:if test="${userPid!=user.id && userPid != sfShop.userId && userPid !=null && userPid !=0}">
+           <div class="na">
+               <p style="background: url('${pUser.wxHeadImg}') no-repeat;background-size: 100% 100%"></p>
+               <h1>
+                   <span>我是${pUser.wxNkName}</span><br>我为好友代言，跟我一起分享赚佣金！
+               </h1>
+           </div>
+       </c:if>
    <div class="banner">
        <div class="swiper-container">
                 <div class="swiper-wrapper">

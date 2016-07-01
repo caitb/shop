@@ -6,6 +6,27 @@
   overflow: auto;
   padding-bottom: 15%;
 }
+.na{
+  background: #eeeeee;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  margin-left: 10px;
+  padding: 5px 0;
+}
+.na p{
+  width:34px;
+  height:34px;
+  border:1px solid #9d9d9d;
+  border-radius: 60px;
+}
+.na h1 {
+  margin-left: 10px;
+  font-size: 12px;
+}
+.na h1 span{
+  font-size: 12px;
+}
+
 .wrap .banner {
   width: 100%;
   position: relative;

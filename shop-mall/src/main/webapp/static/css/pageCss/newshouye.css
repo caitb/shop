@@ -134,6 +134,9 @@
   display: block;
   width: 100%;
 }
+.wrap main{
+  margin-top: 10px;
+}
 .wrap main > h1 {
   color: #C8A66A;
   font-size: 16px;

@@ -64,7 +64,6 @@
         </div>
     </div>
     <main>
-        <h1>在售商品</h1>
         <c:forEach items="${SfShopDetails}" var="sd">
         <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
         <div><img src="${sd.skuImageUrl}" alt=""></div>

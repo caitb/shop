@@ -89,7 +89,7 @@
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div><c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-            <botton class="btn" onclick="querenshouhuo('${orderMallDetail.sfOrder.id}')">
+            <botton class="btn">
                 确认收货
             </botton></c:if>
             <h3></h3>
@@ -122,8 +122,9 @@
 //        })
            var id = ${orderMallDetail.sfOrder.id};
             var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
+            var orderStatu ="";
         $(".btn").on("click",function(){
-            if(orderStatus!=8){
+            if(orderStatu==3){
                 $(".btn").prop("disabled", "disabled");
             }else{
                 $(".back").css("display","-webkit-box");
@@ -138,7 +139,7 @@
                         dataType:"Json",
                         success:function(date){
                             $(".btn").html("已完成");
-                            orderStatus=3;
+                            orderStatu=3;
 //                        location.reload(true);
                         }
                     })

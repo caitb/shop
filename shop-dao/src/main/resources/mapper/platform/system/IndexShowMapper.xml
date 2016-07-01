@@ -63,7 +63,7 @@
         SELECT
             sku_image.img_name,
             sku_image.img_url,
-            sku_image.sku_id,
+            sku.id,
             sku.name,
             sku.price_retail,
             sku_statistic.agent_num,

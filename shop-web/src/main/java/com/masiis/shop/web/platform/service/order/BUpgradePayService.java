@@ -361,6 +361,7 @@ public class BUpgradePayService {
                     pfUserCertificate.setStatus(1);
                     pfUserCertificate.setCode(pfUserCertificateService.getCertificateCode(pfUserCertificate));
                     ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                    String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
                     String picName = bOrderPayService.uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                             rootPath + "/static/font/",//字体路径
                             pfUserCertificate.getCode(),//certificateCode - 证书编号
@@ -368,7 +369,7 @@ public class BUpgradePayService {
                             comAgentLevel.getName(),//levelName - 代理等级名称
                             orderItem.getSkuName(),//skuName - 商品名称
                             orderItem.getSkuName(),
-                            comUser.getIdCard(),//idCard - 身份证号
+                            newIdCard,//idCard - 身份证号
                             comUser.getMobile(),//mobile - 手机号
                             pfUserCertificate.getWxId(),//wxId - 微信号
                             DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期

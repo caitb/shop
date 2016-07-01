@@ -255,6 +255,7 @@ public class BUpgradePayService {
                 }else{
                     log.info("根据pfuserskuId-----"+pfUserSku.getId()+"-----查询证书失败");
                 }
+                pfUserSku.setCreateTime(new Date());
                 pfUserSku.setPid(parent_id);
                 pfUserSku.setUserPid(parent_userPid);
                 pfUserSku.setAgentLevelId(agentLevelId);

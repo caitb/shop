@@ -107,7 +107,7 @@ public class SkuService {
      * @return
      */
     public ComSkuImage findDefaultComSkuImage(Integer skuId) throws Exception {
-        String productImgValue = PropertiesUtils.getStringValue("index_product_220_220_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
         ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
         if (comSkuImage != null) {
             comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

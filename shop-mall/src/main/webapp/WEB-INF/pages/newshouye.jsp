@@ -54,7 +54,7 @@
             </div>
             <div class="br_2">
                 <h1><b>已有</b><img src="<%=path%>/static/images/zuo.png" alt=""><span>${countByShopId}</span><img src="<%=path%>/static/images/you.png" alt=""><b>人</b></h1>
-                <p>为TA / 代言</p>
+                <p>成为TA店铺粉丝</p>
             </div>
             <div class="br_3">
                 <div onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');"><img src="<%=path%>/static/images/woyao.png" alt=""></div>

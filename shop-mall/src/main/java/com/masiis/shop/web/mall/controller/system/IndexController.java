@@ -23,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -123,7 +122,7 @@ public class IndexController extends BaseController {
         return modelAndView;
     }
 
-//    @RequestMapping("/index")
+    //    @RequestMapping("/index")
 //    public ModelAndView myindex(HttpServletRequest req,
 //                                Long shopId, Long userPid) throws Exception {
 //        ComUser user = getComUser(req);
@@ -226,7 +225,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         shopId =520L;
-        userPid = 0L;
+        userPid = 820L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

@@ -74,10 +74,13 @@ public class MarketController extends BaseController {
         //获取主页展示商品信息
         //增加逻辑，判断是否是BOSS
         List<IndexComSku> indexComS = null;
-        List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系,Boss和小白没代理关系
-        if(pfUserRelations==null || pfUserRelations.size()<=0){//是BOSS或者小白
+        List<PfUserRelation> pfUserRelations = pfUserRelationService.getRelationByUserId(user.getId());//临时代理关系
+        List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserIdNotPid(user.getId());
+        if((pfUserRelations==null || pfUserRelations.size()<=0) && pfUserSkuList.size()<=0){//小白
              indexComS = indexShowService.findIndexComSku(user.getId());
-        }else{//非BOSS
+        }else if (pfUserSkuList!=null && pfUserSkuList.size()>0){//BOSS
+            indexComS = indexShowService.findIndexComSku(user.getId());
+        }else {
             indexComS = indexShowService.findIndexComSkuNotBoss(user.getId());
         }
         indexComS.addAll(indexShowService.findTestListComSku(user.getId()));

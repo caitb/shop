@@ -50,11 +50,22 @@ public class SfUserShopViewService {
 
     /**
      * 查询总数
+     * @Author mcfeng
+     * @Date
      * @param userId
      * @return
      */
     public Integer findCountByUserId(Long userId){
         return sfUserShopViewExtendMapper.selectCountByUserId(userId);
+    }
+
+    /**
+     * 浏览量
+     * @Author mcfeng
+     * @Date
+     */
+    public Integer findCountByShopId(Long shopId){
+        return sfUserShopViewMapper.countByShopId(shopId);
     }
 
 

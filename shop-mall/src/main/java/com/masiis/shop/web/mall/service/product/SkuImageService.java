@@ -24,4 +24,13 @@ public class SkuImageService {
     public List<ComSkuImage> loadBySkuId(Integer skuId){
         return comSkuImageMapper.selectBySkuId(skuId);
     }
+
+    /**
+     * 获取sku默认图片
+     * @Author mcfeng
+     * @Date
+     */
+    public ComSkuImage defaultImg(Integer skuId){
+        return comSkuImageMapper.selectDefaultImgBySkuId(skuId);
+    }
 }

@@ -16,6 +16,9 @@
 }
 .alert h1{
     padding:20px 10px;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: "微软雅黑";
 }
 .alert button{
     display: block;
@@ -26,6 +29,7 @@
     border-top: 1px solid #f6f6f6;
     color: #007AFF;
     margin: 0 auto;
+    font-family: 微软雅黑;
 }
 .alert h2{
     text-align: center;

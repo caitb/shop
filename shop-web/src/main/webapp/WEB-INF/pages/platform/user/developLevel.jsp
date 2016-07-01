@@ -23,7 +23,7 @@
         <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
         <p>合伙人海报</p>
     </header>
-    <form id="levelIdForm" action="<%=basePath%>developing/sharelink" method="post">
+    <form id="levelIdForm" action="<%=basePath%>developing/sharelink" method="get">
     <input type="hidden" name="skuId" value="${skuId}" >
     <main>
         <h1>

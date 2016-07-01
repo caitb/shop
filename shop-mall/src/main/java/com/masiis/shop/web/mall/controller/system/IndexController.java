@@ -8,6 +8,7 @@ import com.masiis.shop.dao.mallBeans.SfShopDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuBackGroupImageService;
+import com.masiis.shop.web.mall.service.product.SkuImageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
@@ -22,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,7 +43,7 @@ public class IndexController extends BaseController {
     @Resource
     private SkuService skuService;
     @Resource
-    private SfShopSkuService sfShopSkuService;
+    private SkuImageService skuImageService;
     @Resource
     private SfShopShoutLogMapper sfShopShoutLogMapper;
     @Resource
@@ -59,23 +59,32 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        req.getSession().setAttribute("userPid", userPid);
-        req.getSession().setAttribute("shopId", shopId);
 
-        userService.getShareUser(user.getId(), userPid);//分销关系
+        if(req.getSession().getAttribute("userPid")==null){
+            req.getSession().setAttribute("userPid", userPid);
+        }else{
+            req.getSession().removeAttribute("userPid");
+            req.getSession().setAttribute("userPid", userPid);
+        }
+        if(req.getSession().getAttribute("shopId")==null){
+            req.getSession().setAttribute("shopId", shopId);
+        }else{
+            req.getSession().removeAttribute("shopId");
+            req.getSession().setAttribute("shopId", shopId);
+        }
+
+
+//        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
+        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         SfShop sfShop = null;
         List<SfShopSku> sfShopSkus = null;
-        boolean ok = true;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
-                ok = false;
-            }
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
@@ -83,18 +92,17 @@ public class IndexController extends BaseController {
         }
 
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
-//        BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
+            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail = new SfShopDetail();
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
+            sfShopDetail.setSkuImageUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
-            sfShopDetail.setSkuAssia(comSku.getAlias());//别名
             sfShopDetail.setSkuName(comSku.getName());
+            sfShopDetail.setSkuAssia(comSku.getAlias());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
-            sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
             sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
@@ -103,46 +111,112 @@ public class IndexController extends BaseController {
             SfShopDetails.add(sfShopDetail);
         }
 
-        String shoutNum= String.valueOf(sfShop.getShoutNum());
-        Long moth= sfShop.getShoutNum();
-        int length = shoutNum.length();
-        List num = new LinkedList();
-        if(length>5){
-            for (int i=0;i<length;i++) {
-                num.add(i,0);
-            }
-            for (int i=length-1;i>=0;i--) {
-                String s = String.valueOf(moth % 10);
-                num.remove(num.get(i));
-                num.add(i,s);
-                moth=moth/10;
-            }
-        }else{
-            for (int i=0;i<5;i++) {
-                num.add(i,0);
-            }
-            for (int i=4;i>=5-length;i--) {
-                String s = String.valueOf(moth % 10);
-                num.remove(num.get(i));
-                num.add(i,s);
-                moth=moth/10;
-            }
-        }
-
         ModelAndView modelAndView = new ModelAndView();
-//        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
-//        modelAndView.addObject("forcusSF",forcusSF);
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
+        modelAndView.addObject("countByShopId", countByShopId);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
-        modelAndView.addObject("num", num);
-        modelAndView.addObject("ok", ok);//保证金
         modelAndView.addObject("SfShopDetails", SfShopDetails);
-        modelAndView.setViewName("shouye");
+        modelAndView.setViewName("newshouye");
         return modelAndView;
     }
 
+    //    @RequestMapping("/index")
+//    public ModelAndView myindex(HttpServletRequest req,
+//                                Long shopId, Long userPid) throws Exception {
+//        ComUser user = getComUser(req);
+//        if (user == null) {
+//            throw new BusinessException("user不能为空");
+//        }
+//        shopId =336L;
+//        userPid = 539L;
+//        req.getSession().setAttribute("userPid", userPid);
+//        req.getSession().setAttribute("shopId", shopId);
+//
+//        userService.getShareUser(user.getId(), userPid);//分销关系
+//        ComUser pUser = userService.getUserById(userPid);
+//
+//        sfUserShopViewService.addShopView(user.getId(), shopId);
+//        SfShop sfShop = null;
+//        List<SfShopSku> sfShopSkus = null;
+////        BigDecimal ShipAmount=new BigDecimal(0);
+//        boolean ok = true;
+//        if (shopId == null) {
+//            throw new BusinessException("shopId不能为空");
+//        } else {
+//            sfShop = sfShopService.getSfShopById(shopId);
+//            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
+//                ok = false;
+//            }
+//            if (sfShop == null) {
+//                throw new BusinessException("进入方式异常，请联系管理员");
+//            }
+//            sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+//        }
+//
+//        List<SfShopDetail> SfShopDetails = new ArrayList<>();
+////        BigDecimal bail=new BigDecimal(0);
+//        for (SfShopSku sfShopSku : sfShopSkus) {
+//            ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
+//            ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
+//            ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
+//            SfShopDetail sfShopDetail = new SfShopDetail();
+//            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
+//            sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
+//            sfShopDetail.setSkuName(comSku.getName());
+//            sfShopDetail.setSkuAssia(comSku.getAlias());
+//            sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
+//            sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
+//            SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
+//            sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
+//            sfShopDetail.setSkuId(comSku.getId());
+//            sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
+////            bail=sfShopSku.getBail().add(bail);//保证金
+//
+//            SfShopDetails.add(sfShopDetail);
+//        }
+//
+//        String shoutNum= String.valueOf(sfShop.getShoutNum());
+//        Long moth= sfShop.getShoutNum();
+//        int length = shoutNum.length();
+//        List num = new LinkedList();
+//        if(length>5){
+//            for (int i=0;i<length;i++) {
+//                num.add(i,0);
+//            }
+//            for (int i=length-1;i>=0;i--) {
+//                String s = String.valueOf(moth % 10);
+//                num.remove(num.get(i));
+//                num.add(i,s);
+//                moth=moth/10;
+//            }
+//        }else{
+//            for (int i=0;i<5;i++) {
+//                num.add(i,0);
+//            }
+//            for (int i=4;i>=5-length;i--) {
+//                String s = String.valueOf(moth % 10);
+//                num.remove(num.get(i));
+//                num.add(i,s);
+//                moth=moth/10;
+//            }
+//        }
+//
+//        ModelAndView modelAndView = new ModelAndView();
+////        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+////        modelAndView.addObject("forcusSF",forcusSF);
+//        modelAndView.addObject("pUser", pUser);
+//        modelAndView.addObject("user", user);
+//        modelAndView.addObject("userPid", userPid);
+//        modelAndView.addObject("sfShop", sfShop);
+//        modelAndView.addObject("num", num);
+//        modelAndView.addObject("ok", ok);//保证金
+//        modelAndView.addObject("SfShopDetails", SfShopDetails);
+//        modelAndView.setViewName("shouye");
+//        return modelAndView;
+//    }
+//
     @RequestMapping("/index")
     public ModelAndView myindex(HttpServletRequest req,
                                 Long shopId, Long userPid) throws Exception {
@@ -150,26 +224,22 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =336L;
-        userPid = 539L;
+        shopId =527L;
+        userPid = 820L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
-        userService.getShareUser(user.getId(), userPid);//分销关系
+//        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
+        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         SfShop sfShop = null;
         List<SfShopSku> sfShopSkus = null;
-//        BigDecimal ShipAmount=new BigDecimal(0);
-        boolean ok = true;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
-                ok = false;
-            }
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
@@ -177,64 +247,33 @@ public class IndexController extends BaseController {
         }
 
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
-//        BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
+            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail = new SfShopDetail();
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
+            sfShopDetail.setSkuImageUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setSkuAssia(comSku.getAlias());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
-            sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
             sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
             sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
-//            bail=sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);
         }
 
-        String shoutNum= String.valueOf(sfShop.getShoutNum());
-        Long moth= sfShop.getShoutNum();
-        int length = shoutNum.length();
-        List num = new LinkedList();
-        if(length>5){
-            for (int i=0;i<length;i++) {
-                num.add(i,0);
-            }
-            for (int i=length-1;i>=0;i--) {
-                String s = String.valueOf(moth % 10);
-                num.remove(num.get(i));
-                num.add(i,s);
-                moth=moth/10;
-            }
-        }else{
-            for (int i=0;i<5;i++) {
-                num.add(i,0);
-            }
-            for (int i=4;i>=5-length;i--) {
-                String s = String.valueOf(moth % 10);
-                num.remove(num.get(i));
-                num.add(i,s);
-                moth=moth/10;
-            }
-        }
-
         ModelAndView modelAndView = new ModelAndView();
-//        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
-//        modelAndView.addObject("forcusSF",forcusSF);
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
+        modelAndView.addObject("countByShopId", countByShopId);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
-        modelAndView.addObject("num", num);
-        modelAndView.addObject("ok", ok);//保证金
         modelAndView.addObject("SfShopDetails", SfShopDetails);
-        modelAndView.setViewName("shouye");
+        modelAndView.setViewName("newshouye");
         return modelAndView;
     }
 

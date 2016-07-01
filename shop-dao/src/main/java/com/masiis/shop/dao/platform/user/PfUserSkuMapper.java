@@ -134,4 +134,6 @@ public interface PfUserSkuMapper {
      * @return
      */
     List<Map<String, Object>> selectAgentSku(Long userId);
+
+    List<PfUserSku> selectByUserIdNotPid(@Param("userId") Long userId);
 }

@@ -101,4 +101,8 @@ public class PfUserSkuService {
     public List<Map<String, Object>> listAgentSku(Long userId){
         return pfUserSkuMapper.selectAgentSku(userId);
     }
+
+    public List<PfUserSku> getPfUserSkuInfoByUserIdNotPid(Long UserId) {
+        return pfUserSkuMapper.selectByUserIdNotPid(UserId);
+    }
 }

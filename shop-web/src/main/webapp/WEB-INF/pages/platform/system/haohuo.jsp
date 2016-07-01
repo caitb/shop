@@ -51,7 +51,7 @@
         <div class="main">
             <div class="title"><img src="<%=path%>/static/images/haohuo_1.png" alt="">好货推荐</div>
             <c:forEach items="${indexComS}" var="Sku">
-                <a href="<%=path%>/product/skuDetails.shtml?skuId=${Sku.skuId}">
+                <a href="<%=path%>/product/skuDetails.shtml?skuId=${Sku.id}">
                     <section class="sec1">
                         <p class="photo">
                             <img src="${Sku.imgUrl}" alt="">

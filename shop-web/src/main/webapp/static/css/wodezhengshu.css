@@ -41,12 +41,14 @@
 }
 .wrap .sec1 div h1 {
     color: #333;
-    text-indent: 5px;
+    padding-left: 5px;
     display: block;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
     padding-right: 20px;
+    font-size: 12px;
+    margin: 4px 0;
 }
 .wrap .sec1 div h2 {
     font-size: 12px;
@@ -64,7 +66,7 @@
 .wrap .sec1 div h3 {
     text-indent: 5px;
     font-size: 12px;
-    padding-top: 5px;
+    padding-top: 3px;
 }
 .wrap .sec1 div h3 span {
     font-size: 12px;

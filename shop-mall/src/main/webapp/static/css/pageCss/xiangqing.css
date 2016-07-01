@@ -228,12 +228,12 @@ footer .sec3 p a {
 }
 .back_j .biao {
     margin: 0 5px;
-    border-bottom: 1px solid #f73c8c;
+    border-bottom: 1px solid #C7A467;
     text-indent: 10px;
     line-height: 50px;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #f73c8c;
+    color: #C7A467;
     letter-spacing: 1px;
 }
 .back_j div {
@@ -267,8 +267,8 @@ footer .sec3 p a {
     display: block;
     padding: 5px 10px;
     border-radius: 5px;
-    background: #f73c8c;
-    color: white;
+    background: transparent;
+    color: #C7A467;
     float: right;
     margin-top: 8px;
     font-size:12px;
@@ -284,11 +284,11 @@ footer .sec3 p a {
     width: 100px;
     height: 30px;
     line-height: 30px;
-    background: #f73c8c;
+    background: #333;
     margin: 40px auto 20px auto;
     text-align: center;
     border-radius: 5px;
-    color: white;
+    color: #C7A467;
 }
 .back_f{
     width: 90%;

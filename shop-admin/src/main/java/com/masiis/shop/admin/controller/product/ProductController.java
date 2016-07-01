@@ -178,7 +178,7 @@ public class ProductController {
                     comSkuImage.setCreateMan(pbUser.getId());
                     comSkuImage.setImgUrl(mainImgNames[i]);
                     comSkuImage.setImgName(mainImgOriginalNames[i]);
-                    comSkuImage.setIsDefault(i==1?1:0);
+                    comSkuImage.setIsDefault(i==0?1:0);
 
                     for(int px=0; px<imgPxs.length; px++){
                         comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
@@ -292,7 +292,7 @@ public class ProductController {
                         comSkuImage.setModifyMan(pbUser.getId());
                         comSkuImage.setImgUrl(mainImgNames[i]);
                         comSkuImage.setImgName(mainImgOriginalNames[i]);
-                        comSkuImage.setIsDefault(i==1?1:0);
+                        comSkuImage.setIsDefault(i==0?1:0);
 
                         for(int px=0; px<imgPxs.length; px++){
                             comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);

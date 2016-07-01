@@ -89,7 +89,7 @@
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div><c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-            <botton class="btn" onclick="querenshouhuo('${orderMallDetail.sfOrder.id}')">
+            <botton class="btn">
                 确认收货
             </botton></c:if>
             <h3></h3>
@@ -120,24 +120,33 @@
 //            $(".back").css("display","-webkit-box");
 //            $(".back_que").css("display","-webkit-box");
 //        })
-        function querenshouhuo(id){
-            $(".back").css("display","-webkit-box");
-            $(".back_que").css("display","-webkit-box");
-            $(".que_que").on("click",function(){
-                $(".back_que").hide();
-                $(".back").hide();
-                $.ajax({
-                    type:"POST",
-                    url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
-                    data:{orderId:id},
-                    dataType:"Json",
-                    success:function(date){
-                        $(".btn").html("已完成");
-                        location.reload(true);
-                    }
+           var id = ${orderMallDetail.sfOrder.id};
+            var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
+            var orderStatu ="";
+        $(".btn").on("click",function(){
+            if(orderStatu==3){
+                $(".btn").prop("disabled", "disabled");
+            }else{
+                $(".back").css("display","-webkit-box");
+                $(".back_que").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    $(".back_que").hide();
+                    $(".back").hide();
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
+                        data:{orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+                            $(".btn").html("已完成");
+                            orderStatu=3;
+//                        location.reload(true);
+                        }
+                    })
                 })
-            })
-        }
+            }
+
+        })
         $(".que_qu").on("click",function(){
             $(".back_shouhuo").hide();
             $(".back").hide();

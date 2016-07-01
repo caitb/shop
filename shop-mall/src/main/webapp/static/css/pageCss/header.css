@@ -33,9 +33,9 @@
 }
 .xq_header a:last-child h2 {
   text-align: right;
-  color: red;
+  color: #C7A467;
   font-size: 14px;
-  margin-top: 10px
+  margin-top: 10px;
 }
 .xq_header p {
   -webkit-box-flex: 1;

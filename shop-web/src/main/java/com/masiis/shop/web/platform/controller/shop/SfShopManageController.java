@@ -22,6 +22,7 @@ import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.service.shop.SfShopService;
 import com.masiis.shop.web.platform.utils.DownloadImage;
+import com.masiis.shop.web.platform.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by cai_tb on 16/4/13.
@@ -254,7 +256,8 @@ public class SfShopManageController extends BaseController {
             File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
             File qrcodeFile    = new File(posterDirPath+"/"+qrcodeName);
             //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
-            if(!headImgFile.exists())   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+            if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+            if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
             if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", bgImgFile.getAbsolutePath());
 
             SfShop sfShop = sfShopService.getSfShopById(shopId);
@@ -275,7 +278,7 @@ public class SfShopManageController extends BaseController {
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
             //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
             //font1.deriveFont(Font.PLAIN, 32);
-            Font font1 = new Font("华文细黑", Font.BOLD, 28);
+            Font font1 = new Font("华文细黑", Font.BOLD, 30);
             Font font2 = new Font("华文细黑", Font.PLAIN, 20);
             Date curDate = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -283,23 +286,35 @@ public class SfShopManageController extends BaseController {
             curDate.setDate(curDate.getDate()+30);
             String endDate = sdf.format(curDate);
 
-            Element headImgElement = new Element(34, 52, 90, 90, ImageIO.read(new File(posterDirPath+"/"+headImg)));
-            Element bgPosterImgElement = new Element(0, 0, 520, 710, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-            Element qrcodeImgElement = new Element(150, 184, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            Element headImgElement = new Element(317, 201, 120, 120, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+            Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+            Element qrcodeImgElement = new Element(236, 602, 280, 280, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
-            Element text1Element = new Element(134, 82, font1, new Color(247,60,140), "我是"+comUser.getWxNkName());
+            String title = "Hi，我是"+comUser.getWxNkName();
+            String desc1 = "正品特供，好友专享价，尽在我的麦链";
+            String desc2 = "商店，不是好友看不到哦~";
+            String desc3 = "长按二维码进来逛逛吧！";
+            Element text1Element = new Element((750-new DrawPicUtil().getStringPointSize(title, font1))/2, 376, font1, new Color(200, 166, 106), title);
+            Element text2Element = new Element((750-new DrawPicUtil().getStringPointSize(desc1, font1))/2, 420, font1, new Color(200, 166, 106), desc1);
+            Element text3Element = new Element((750-new DrawPicUtil().getStringPointSize(desc2, font1))/2, 464, font1, new Color(200, 166, 106), desc2);
+            Element text4Element = new Element((750-new DrawPicUtil().getStringPointSize(desc3, font1))/2, 508, font1, new Color(200, 166, 106), desc3);
+            text1Element.setLineStyle(0);
+            text2Element.setLineStyle(0);
+            text3Element.setLineStyle(0);
+            text4Element.setLineStyle(0);
             //Element text2Element = new Element(34, 640, font2, new Color(102,102,102), "该二维码有效期:");
             //Element text3Element = new Element(34, 695, font2, new Color(102,102,102), startTime+"-"+endDate);
-            //text3Element.setLineStyle(0);
-            java.util.List<Element> drawElements = new ArrayList<>();
+
+            List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);
             drawElements.add(bgPosterImgElement);
             drawElements.add(qrcodeImgElement);
             drawElements.add(text1Element);
-            //drawElements.add(text2Element);
-            //drawElements.add(text3Element);
+            drawElements.add(text2Element);
+            drawElements.add(text3Element);
+            drawElements.add(text4Element);
 
-            DrawImageUtil.drawImage(520, 710, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "我在麦链商城的小店");

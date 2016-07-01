@@ -120,24 +120,32 @@
 //            $(".back").css("display","-webkit-box");
 //            $(".back_que").css("display","-webkit-box");
 //        })
-        function querenshouhuo(id){
-            $(".back").css("display","-webkit-box");
-            $(".back_que").css("display","-webkit-box");
-            $(".que_que").on("click",function(){
-                $(".back_que").hide();
-                $(".back").hide();
-                $.ajax({
-                    type:"POST",
-                    url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
-                    data:{orderId:id},
-                    dataType:"Json",
-                    success:function(date){
-                        $(".btn").html("已完成");
+           var id = ${orderMallDetail.sfOrder.id};
+            var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
+        $(".btn").on("click",function(){
+            if(orderStatus!=8){
+                $(".btn").prop("disabled", "disabled");
+            }else{
+                $(".back").css("display","-webkit-box");
+                $(".back_que").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    $(".back_que").hide();
+                    $(".back").hide();
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
+                        data:{orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+                            $(".btn").html("已完成");
+                            orderStatus=3;
 //                        location.reload(true);
-                    }
+                        }
+                    })
                 })
-            })
-        }
+            }
+
+        })
         $(".que_qu").on("click",function(){
             $(".back_shouhuo").hide();
             $(".back").hide();

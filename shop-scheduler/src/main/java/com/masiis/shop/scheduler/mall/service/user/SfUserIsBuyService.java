@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.mall.service.user;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;

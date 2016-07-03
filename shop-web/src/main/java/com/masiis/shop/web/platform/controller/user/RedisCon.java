@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
-import com.masiis.shop.web.platform.beans.user.Student;
+import com.masiis.shop.common.beans.user.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

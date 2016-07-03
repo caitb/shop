@@ -1,10 +1,10 @@
 package com.masiis.shop.web.pay.controller.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.beans.wxpay.CallBackNotifyReq;
-import com.masiis.shop.common.beans.wxpay.CallBackNotifyRes;
+import com.masiis.shop.common.beans.wx.wxpay.CallBackNotifyReq;
+import com.masiis.shop.common.beans.wx.wxpay.CallBackNotifyRes;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import com.masiis.shop.web.common.utils.wx.WxSFBeanUtils;
 import com.masiis.shop.web.pay.service.wxpay.WxNotifyService;
 import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.thoughtworks.xstream.XStream;
@@ -62,7 +62,7 @@ public class WxNotifyController extends BaseController {
 
             // 对param进行签名验证
             try{
-                String sign = WXBeanUtils.toSignString(param);
+                String sign = WxSFBeanUtils.toSignString(param);
                 if(StringUtils.isBlank(sign)
                         || !sign.equals(param.getSign())){
                     throw new BusinessException("签名错误");

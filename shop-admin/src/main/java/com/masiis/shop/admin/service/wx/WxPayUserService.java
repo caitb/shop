@@ -4,7 +4,7 @@ import com.masiis.shop.admin.beans.wx.WxPayUserBeanReq;
 import com.masiis.shop.admin.beans.wx.WxPayUserBeanRes;
 import com.masiis.shop.admin.utils.WxBeanUtils;
 import com.masiis.shop.common.constant.wx.WxConsSF;
-import com.masiis.shop.common.enums.SfUserExtractAuditTypeEnum;
+import com.masiis.shop.common.enums.mall.SfUserExtractAuditTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.mall.user.*;

@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.filter;
 
-import com.masiis.shop.web.platform.beans.sysbeans.XSSRequestWrapper;
+import com.masiis.shop.common.beans.sysbeans.XSSRequestWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

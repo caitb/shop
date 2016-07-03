@@ -1,7 +1,7 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.UserAddressService;
 import org.springframework.stereotype.Controller;

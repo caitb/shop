@@ -1,10 +1,8 @@
 package com.masiis.shop.web.platform.controller.base;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.thoughtworks.xstream.XStream;
 import org.apache.log4j.Logger;
@@ -13,9 +11,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 基础controller,用来编写一些基础方法

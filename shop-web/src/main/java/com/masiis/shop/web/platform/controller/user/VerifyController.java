@@ -5,16 +5,15 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
-import com.masiis.shop.web.platform.beans.wxauth.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.constant.wx.WxConsPF;
-import com.masiis.shop.web.platform.constants.WxResCodeCons;
+import com.masiis.shop.common.constant.platform.WxResCodeCons;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.WxUserService;
-import com.masiis.shop.web.platform.utils.SpringRedisUtil;
-import com.masiis.shop.web.platform.utils.wx.WxAuthUrlUtils;
+import com.masiis.shop.web.common.utils.SpringRedisUtil;
+import com.masiis.shop.web.common.utils.wx.WxPFAuthUrlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -71,7 +70,7 @@ public class VerifyController extends BaseController {
         }
         // 获取access_token
         log.info("开始获取access_token...");
-        String url = WxAuthUrlUtils.createAccessTokenUrl(code);
+        String url = WxPFAuthUrlUtils.createAccessTokenUrl(code);
         String result = HttpClientUtils.httpGet(url);
         log.info("getAccessToken请求成功:" + result);
         AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
@@ -80,7 +79,7 @@ public class VerifyController extends BaseController {
                 log.info("微信访问授权成功{openid:" + res.getOpenid() + "}");
                 log.info("开始获取微信用户的信息...");
 
-                String infoUrl = WxAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
+                String infoUrl = WxPFAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
                 String infoRes = HttpClientUtils.httpGet(infoUrl);
 
                 System.out.println("info:" + infoRes);
@@ -156,7 +155,7 @@ public class VerifyController extends BaseController {
             Cookie cookie = CookieUtils.getCookie(request, SysConstants.COOKIE_WX_ID_NAME);
             if (cookie == null) {
                 // 静默授权
-                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                String auth_base_url = WxPFAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
                 return createRedirectRes(auth_base_url);
             }
             String val = cookie.getValue();
@@ -169,7 +168,7 @@ public class VerifyController extends BaseController {
                     throw new BusinessException("cookie中unionid信息为空!");
                 }
             } catch (Exception e) {
-                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                String auth_base_url = WxPFAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
                 return createRedirectRes(auth_base_url);
             }
             System.out.println("val:" + val);
@@ -178,14 +177,14 @@ public class VerifyController extends BaseController {
             ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConsPF.APPID);
             if(wxUser == null){
                 log.error("该unionid无效,需要重新对该用户授权!");
-                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                String auth_base_url = WxPFAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
                 return createRedirectRes(auth_base_url);
             }
             // 从redis获取token
             token = SpringRedisUtil.get(wxUser.getUnionid() + wxUser.getOpenid() + "_token", String.class);
             ComUser user = userService.getUserByUnionid(unionid);
             // 取得了openid和token,并进行验证有效期
-            String checkTokenUrl = WxAuthUrlUtils.createCheckTokenUrl(token, wxUser.getOpenid());
+            String checkTokenUrl = WxPFAuthUrlUtils.createCheckTokenUrl(token, wxUser.getOpenid());
             try {
                 String result = HttpClientUtils.httpGet(checkTokenUrl);
                 System.out.println("检查token是否有效,请求结果:" + result);
@@ -207,19 +206,19 @@ public class VerifyController extends BaseController {
                         throw new BusinessException("token超时,且redis取不到refreshtoken!");
                     }
 
-                    String rftoken_url = WxAuthUrlUtils.createRefreshTokenUrl(rftoken);
+                    String rftoken_url = WxPFAuthUrlUtils.createRefreshTokenUrl(rftoken);
                     String rfResult = HttpClientUtils.httpGet(rftoken_url);
                     ErrorRes rfRes = JSONObject.parseObject(rfResult, ErrorRes.class);
                     if (rfRes != null && StringUtils.isNotBlank(rfRes.getErrcode())) {
                         log.error("刷新token失败...");
                         // 静默授权
-                        String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                        String auth_base_url = WxPFAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
                         return createRedirectRes(auth_base_url);
                     }
                     log.info("刷新token成功,进行登录操作...");
                     RefreshTokenRes rfResBean = JSONObject.parseObject(rfResult, RefreshTokenRes.class);
                     // 刷新token成功,授权继续,此处保存access_token,refreshtoken和openid;
-                    String infoUrl = WxAuthUrlUtils.createUserInfoUrl(rfResBean.getAccess_token(),
+                    String infoUrl = WxPFAuthUrlUtils.createUserInfoUrl(rfResBean.getAccess_token(),
                             rfResBean.getOpenid());
                     // 发送请求,获取用户信息
                     String infoRes = HttpClientUtils.httpGet(infoUrl);
@@ -252,7 +251,7 @@ public class VerifyController extends BaseController {
         }
         // 创建微信授权链接,需用户点击确认
         session.setAttribute(stateStr, state);
-        String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, stateStr);
+        String redirect_url = WxPFAuthUrlUtils.createAuthorizeInfoUrl(basepath, stateStr);
         return "redirect:" + redirect_url;
     }
 
@@ -284,7 +283,7 @@ public class VerifyController extends BaseController {
 
         // 获取access_token
         log.info("bactk_开始获取access_token...");
-        String url = WxAuthUrlUtils.createAccessTokenUrl(code);
+        String url = WxPFAuthUrlUtils.createAccessTokenUrl(code);
         String result = HttpClientUtils.httpGet(url);
         log.info("bactk_getAccessToken请求成功:" + result);
         AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
@@ -292,7 +291,7 @@ public class VerifyController extends BaseController {
             ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(res.getOpenid(), WxConsPF.APPID);
             if(wxUser == null){
                 // 跳到授权页面
-                String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
+                String redirect_url = WxPFAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
                 return "redirect:" + redirect_url;
             }
             // 移除state
@@ -301,7 +300,7 @@ public class VerifyController extends BaseController {
             log.info("bactk_微信访问授权成功{openid:" + res.getOpenid() + "}");
             log.info("bactk_开始获取微信用户的信息...");
 
-            String infoUrl = WxAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
+            String infoUrl = WxPFAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
             String infoRes = HttpClientUtils.httpGet(infoUrl);
 
             System.out.println("bactk_info:" + infoRes);
@@ -329,7 +328,7 @@ public class VerifyController extends BaseController {
                 log.error(e);
                 // 跳到授权页面
                 session.setAttribute(state, stateStr);
-                String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
+                String redirect_url = WxPFAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
                 return createRedirectRes(redirect_url);
             }
             log.info("跳转目标页面,targetUrl:" + rp.getSurl());

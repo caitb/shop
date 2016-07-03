@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ page import="com.masiis.shop.common.util.PropertiesUtils" %>
-<%@ page import="com.masiis.shop.web.platform.constants.SysConstants" %>
+<%@ page import="com.masiis.shop.common.constant.platform.SysConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">

@@ -5,16 +5,13 @@ import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.event.wx.bean.event.*;
-import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
-import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.beans.wx.wxauth.AccessTokenRes;
+import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
-import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
+import com.masiis.shop.web.common.utils.wx.WxCredentialUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -24,10 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**

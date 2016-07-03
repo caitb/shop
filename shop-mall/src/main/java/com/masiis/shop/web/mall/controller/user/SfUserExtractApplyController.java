@@ -13,7 +13,7 @@ import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserExtractApplyService;
 import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
+import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;

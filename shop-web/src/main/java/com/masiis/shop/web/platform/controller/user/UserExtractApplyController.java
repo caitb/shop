@@ -13,7 +13,7 @@ import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;

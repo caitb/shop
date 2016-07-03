@@ -487,6 +487,7 @@
         <module>shop-scheduler</module>
         <module>shop-mall</module>
         <module>shop-api</module>
+        <module>shop-service</module>
     </modules>
 
 </project>

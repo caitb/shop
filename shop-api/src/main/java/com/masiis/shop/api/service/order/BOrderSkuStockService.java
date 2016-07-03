@@ -2,23 +2,18 @@ package com.masiis.shop.api.service.order;
 
 import com.masiis.shop.api.service.product.PfSkuStockService;
 import com.masiis.shop.api.service.product.PfUserSkuStockService;
-import com.masiis.shop.common.enums.product.SkuStockLogType;
-import com.masiis.shop.common.enums.product.UserSkuStockLogType;
+import com.masiis.shop.common.enums.platform.SkuStockLogType;
+import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.beans.order.StockManage;
 import com.masiis.shop.dao.mall.order.SfOrderItemMallMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 更改库存

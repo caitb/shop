@@ -14,7 +14,7 @@ import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserAddressService;
 import com.masiis.shop.api.service.user.UserCertificateService;
 import com.masiis.shop.api.service.user.UserSkuService;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;

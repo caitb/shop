@@ -1,19 +1,19 @@
 package com.masiis.shop.web.pay.service.wxpay;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.exceptions.OrderPaidException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.common.beans.wxpay.UnifiedOrderReq;
-import com.masiis.shop.common.beans.wxpay.UnifiedOrderRes;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderReq;
+import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderRes;
+import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.WxUserService;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +48,7 @@ public class WxPayService {
 
             res.setAppid(WxConsPF.APPID);
             res.setMch_id(WxConsPF.WX_PAY_MCHID);
-            res.setNonce_str(WXBeanUtils.createGenerateStr());
+            res.setNonce_str(WxPFBeanUtils.createGenerateStr());
             res.setNotify_url(WxConsPF.WX_PAY_URL_UNIORDER_NOTIFY);
             res.setOpenid(wxUser.getOpenid());
             // PC网页或公众号内支付传"WEB"

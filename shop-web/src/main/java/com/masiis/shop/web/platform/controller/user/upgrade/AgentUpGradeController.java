@@ -1,14 +1,14 @@
 package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;

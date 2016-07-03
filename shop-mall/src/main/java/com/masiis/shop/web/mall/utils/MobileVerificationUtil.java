@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.utils;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.web.common.utils.SpringRedisUtil;
 
 import java.util.Random;
 

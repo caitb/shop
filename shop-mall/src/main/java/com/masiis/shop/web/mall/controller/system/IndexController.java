@@ -204,7 +204,7 @@ public class IndexController extends BaseController {
 //        }
 //
 //        ModelAndView modelAndView = new ModelAndView();
-////        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+////        Boolean forcusSF = WxSFUserUtils.getInstance().isUserForcusSF(user);
 ////        modelAndView.addObject("forcusSF",forcusSF);
 //        modelAndView.addObject("pUser", pUser);
 //        modelAndView.addObject("user", user);

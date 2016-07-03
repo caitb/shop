@@ -1,14 +1,12 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.product.SkuStockLogType;
-import com.masiis.shop.common.enums.product.UserSkuStockLogType;
+import com.masiis.shop.common.enums.platform.BOrderShipStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.SkuStockLogType;
+import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.scheduler.platform.service.product.PfSkuStockService;
 import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;

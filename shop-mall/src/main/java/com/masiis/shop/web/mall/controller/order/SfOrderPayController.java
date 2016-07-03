@@ -6,11 +6,10 @@ package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.SfOrder;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
-import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
-import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

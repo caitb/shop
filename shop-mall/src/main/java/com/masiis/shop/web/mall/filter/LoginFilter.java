@@ -1,15 +1,14 @@
 package com.masiis.shop.web.mall.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.util.JdbcPropertiesUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.mall.beans.wxauth.RedirectParam;
-import com.masiis.shop.web.mall.constants.RedirectCons;
-import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.common.beans.wx.wxauth.RedirectParam;
+import com.masiis.shop.common.constant.mall.RedirectCons;
+import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.utils.ApplicationContextUtil;
-import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import com.masiis.shop.web.common.utils.ApplicationContextUtil;
+import com.masiis.shop.web.common.utils.wx.WxSFBeanUtils;
 import com.masiis.shop.web.system.init.SysUriInit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -97,7 +96,7 @@ public class LoginFilter implements Filter{
             RedirectParam rp = new RedirectParam();
             rp.setCode(RedirectCons.WX_CHECK_CODE);
             rp.setSurl(request.getRequestURL().toString() + "?" + request.getQueryString());
-            rp.setNonceStr(WXBeanUtils.createGenerateStr());
+            rp.setNonceStr(WxSFBeanUtils.createGenerateStr());
             rp.creatSign();
 
             String basepath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";

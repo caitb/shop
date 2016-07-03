@@ -1,7 +1,7 @@
 package com.masiis.shop.web.platform.controller.user.upgrade;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
+import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
 import com.masiis.shop.dao.po.*;

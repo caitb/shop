@@ -6,7 +6,7 @@ import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderConsignee;
 import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.dao.po.PfUserSkuStock;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;

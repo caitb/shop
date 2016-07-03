@@ -3,7 +3,7 @@ package com.masiis.shop.api.service.order;
 import com.masiis.shop.api.service.product.ProductService;
 import com.masiis.shop.api.service.user.UserAddressService;
 import com.masiis.shop.api.utils.SysSignUtils;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.wx.WxConsAPP;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;

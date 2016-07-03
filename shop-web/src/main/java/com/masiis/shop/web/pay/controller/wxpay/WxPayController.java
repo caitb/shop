@@ -4,16 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.exceptions.OrderPaidException;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.common.beans.wxpay.BrandWCPayReq;
-import com.masiis.shop.common.beans.wxpay.UnifiedOrderReq;
-import com.masiis.shop.common.beans.wxpay.UnifiedOrderRes;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wx.wxpay.BrandWCPayReq;
+import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderReq;
+import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderRes;
+import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.HttpsRequest;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -72,7 +72,7 @@ public class WxPayController extends BaseController{
         UnifiedOrderRes resObj = null;
         try {
             UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
-            uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
+            uniOrder.setSign(WxPFBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayPage:下预付单响应成功,response:" + res);
@@ -153,7 +153,7 @@ public class WxPayController extends BaseController{
         UnifiedOrderRes resObj = null;
         try {
             UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
-            uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
+            uniOrder.setSign(WxPFBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayJs:下预付单响应成功,response:" + res);
@@ -225,7 +225,7 @@ public class WxPayController extends BaseController{
             // 跳转错误页面,暂跳首页
             throw new BusinessException("参数错误,有部分参数为空!");
         }
-        if(!WXBeanUtils.toSignString(req).equals(req.getSign())){
+        if(!WxPFBeanUtils.toSignString(req).equals(req.getSign())){
             throw new BusinessException("签名错误");
         }
 
@@ -242,10 +242,10 @@ public class WxPayController extends BaseController{
         BrandWCPayReq payReq = new BrandWCPayReq();
         payReq.setAppId(WxConsPF.APPID);
         payReq.setTimeStamp(String.valueOf(new Date().getTime()));
-        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
+        payReq.setNonceStr(WxPFBeanUtils.createGenerateStr());
         payReq.setSignType("MD5");
         payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
-        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
+        payReq.setPaySign(WxPFBeanUtils.toSignString(payReq));
         return payReq;
     }
 

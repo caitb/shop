@@ -3,7 +3,7 @@ package com.masiis.shop.web.pay.service.wxpay;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.PfBorderPayment;
 import com.masiis.shop.dao.po.PfCorderPayment;
-import com.masiis.shop.common.beans.wxpay.CallBackNotifyReq;
+import com.masiis.shop.common.beans.wx.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;

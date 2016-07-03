@@ -1,8 +1,6 @@
 package com.masiis.shop.scheduler.mall.service.shop;
 
-import com.google.gson.annotations.SerializedName;
-import com.masiis.shop.common.enums.UserAccountRecordFeeType;
-import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
+import com.masiis.shop.common.enums.platform.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;

@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.platform.business.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;

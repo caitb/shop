@@ -1,18 +1,12 @@
 package com.masiis.shop.scheduler.platform.business.user;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
-import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
 import com.masiis.shop.scheduler.platform.service.user.PfUserUpgradeNoticeService;
-import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

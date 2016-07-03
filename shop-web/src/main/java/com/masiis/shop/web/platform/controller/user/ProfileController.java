@@ -1,7 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

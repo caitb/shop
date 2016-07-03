@@ -1,7 +1,7 @@
 package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

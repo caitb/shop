@@ -117,4 +117,21 @@ public class SfShopService {
     public SfShop getSfShopByUserId(Long userId){
         return sfShopMapper.selectByUserId(userId);
     }
+
+    /**
+     * 添加个人小铺
+     * @author ZhaoLiang
+     * @date 2016/4/11 11:25
+     */
+    public void AddSfShop(SfShop sfShop) {
+        sfShopMapper.insert(sfShop);
+    }
+
+    /**
+     * 更新店铺信息
+     * @param sfShop
+     */
+    public void updateById(SfShop sfShop){
+        sfShopMapper.updateByPrimaryKey(sfShop);
+    }
 }

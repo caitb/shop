@@ -2,7 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.dao.po.ComArea;
-import com.masiis.shop.web.platform.service.user.ComAreaService;
+import com.masiis.shop.web.common.service.ComAreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

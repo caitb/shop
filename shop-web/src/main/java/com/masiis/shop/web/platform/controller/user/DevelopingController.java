@@ -11,9 +11,9 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.web.platform.service.shop.JSSDKService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
+import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
@@ -69,9 +69,9 @@ public class DevelopingController extends BaseController {
     @Resource
     private UserCertificateService userCertificateService;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKPFService jssdkService;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinPFQRCodeService weiXinPFQRCodeService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -251,7 +251,7 @@ public class DevelopingController extends BaseController {
                 if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
                 if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
                 if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
-                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
+                DownloadImage.download(weiXinPFQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
 
 
                 //画图

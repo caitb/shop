@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

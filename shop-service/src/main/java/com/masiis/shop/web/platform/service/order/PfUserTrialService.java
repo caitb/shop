@@ -4,7 +4,7 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

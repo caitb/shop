@@ -3,7 +3,7 @@ package com.masiis.shop.web.platform.controller.base;
 import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.common.constant.platform.SysConstants;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.thoughtworks.xstream.XStream;
 import org.apache.log4j.Logger;
 

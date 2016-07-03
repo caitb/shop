@@ -8,7 +8,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfShopCartService;
-import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

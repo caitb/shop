@@ -4,7 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +24,7 @@ public class AgentQRCodeController extends BaseController {
     private final static Log log = LogFactory.getLog(AgentQRCodeController.class);
 
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinPFQRCodeService weiXinPFQRCodeService;
 
     @RequestMapping("/test")
     public String test(){
@@ -38,7 +38,7 @@ public class AgentQRCodeController extends BaseController {
         try {
             comUser = getComUser(request);
 
-            String qrcodeUrl = weiXinQRCodeService.createAgentQRCode(null, null, null);
+            String qrcodeUrl = weiXinPFQRCodeService.createAgentQRCode(null, null, null);
 
             return qrcodeUrl;
         } catch (Exception e) {

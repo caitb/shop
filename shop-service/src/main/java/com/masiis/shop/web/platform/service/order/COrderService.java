@@ -10,7 +10,7 @@ import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.service.product.ProductService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

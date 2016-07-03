@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.user.UserAddressService;
+import com.masiis.shop.web.common.service.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,11 +36,6 @@ public class UserAddressController extends BaseController {
     private static  final  int managePageToChooseAddressPageTag = 0;
     //管理地址跳转到个人中心界面
     private static  final  int managePageToPersonalInfoPageTag = 1;
-
-    //新增地址增加完跳转到订单界面
-    public static final int addAddressPageToOrderPage = 0;
-    //新增地址增加完跳转到管理地址界面
-    public static final int getAddAddressPageToPersonalInfoPage =1;
 
     /**
      * 跳转到新增地址界面
@@ -128,7 +123,7 @@ public class UserAddressController extends BaseController {
                                              HttpServletResponse response,
                                              @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId)throws Exception {
         String redirectHead = "redirect:";
-        String redirectBody = userAddressService.getOrderPagePath(request,selectedAddressId);
+        String redirectBody = userAddressService.getSFOrderPagePath(request,selectedAddressId);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);

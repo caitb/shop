@@ -8,7 +8,7 @@ import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.common.constant.platform.WxResCodeCons;
-import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.common.service.WxUserService;
 import com.masiis.shop.web.common.utils.ApplicationContextUtil;
 import org.apache.commons.lang.StringUtils;
 

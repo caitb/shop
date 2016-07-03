@@ -6,10 +6,10 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.common.beans.wx.wxauth.RedirectParam;
 import com.masiis.shop.common.constant.platform.RedirectCons;
 import com.masiis.shop.common.constant.platform.SysConstants;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.ApplicationContextUtil;
 import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
-import com.masiis.shop.web.system.init.SysUriInit;
+import com.masiis.shop.web.common.system.init.SysUriInit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -52,7 +52,7 @@ public class LoginFilter implements Filter{
             log.info("uri:" + uri);
             // 给开发组织一个默认的登录人
             UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
-            ComUser user = userService.getUserById(124L);
+            ComUser user = userService.getUserById(539L);
             request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
 
             chain.doFilter(request, response);

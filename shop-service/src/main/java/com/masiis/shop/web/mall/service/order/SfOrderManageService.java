@@ -8,7 +8,7 @@ import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.mall.SysConstants;
-import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;

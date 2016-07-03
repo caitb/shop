@@ -9,6 +9,7 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;

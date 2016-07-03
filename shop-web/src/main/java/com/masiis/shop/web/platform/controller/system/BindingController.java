@@ -1,7 +1,7 @@
 package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.utils.MobileVerificationUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;

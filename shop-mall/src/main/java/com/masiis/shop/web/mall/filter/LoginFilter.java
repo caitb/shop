@@ -6,10 +6,10 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.common.beans.wx.wxauth.RedirectParam;
 import com.masiis.shop.common.constant.mall.RedirectCons;
 import com.masiis.shop.common.constant.mall.SysConstants;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.ApplicationContextUtil;
 import com.masiis.shop.web.common.utils.wx.WxSFBeanUtils;
-import com.masiis.shop.web.system.init.SysUriInit;
+import com.masiis.shop.web.common.system.init.SysUriInit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

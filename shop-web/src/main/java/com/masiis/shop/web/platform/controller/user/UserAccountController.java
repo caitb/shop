@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserBillService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import org.apache.log4j.Logger;

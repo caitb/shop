@@ -7,9 +7,8 @@ import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.dao.po.PfBorderRecommenReward;
-import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
 import org.apache.log4j.Logger;
-import org.apache.taglibs.standard.tag.common.fmt.BundleSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

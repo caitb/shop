@@ -10,13 +10,12 @@ import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
 import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
-import com.masiis.shop.web.mall.beans.wxauth.*;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.common.constant.mall.WxResCodeCons;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.user.ComUserAccountService;
-import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.service.user.WxUserService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.service.WxUserService;
 import com.masiis.shop.web.common.utils.SpringRedisUtil;
 import com.masiis.shop.web.common.utils.wx.WxSFAuthUrlUtils;
 import com.masiis.shop.common.constant.wx.WxConsSF;
@@ -103,7 +102,7 @@ public class VerifyController extends BaseController {
                 ComUser user = null;
                 try{
                     // 用户登录逻辑
-                    user = userService.signWithCreateUserByWX(res, userRes);
+                    user = userService.signWithCreateUserByWX(res, userRes, WxConsSF.APPID);
                 } catch (Exception e) {
                     log.error("登录出错," + e.getMessage());
                     return "../../500";

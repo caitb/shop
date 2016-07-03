@@ -2,7 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

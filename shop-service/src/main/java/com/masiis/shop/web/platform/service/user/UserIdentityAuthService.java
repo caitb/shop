@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

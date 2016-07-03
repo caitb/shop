@@ -8,10 +8,11 @@ import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.constant.platform.WxResCodeCons;
+import com.masiis.shop.common.beans.wx.wxauth.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.ComUserAccountService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.service.WxUserService;
 import com.masiis.shop.web.common.utils.SpringRedisUtil;
 import com.masiis.shop.web.common.utils.wx.WxPFAuthUrlUtils;
 import org.apache.commons.lang.StringUtils;
@@ -98,7 +99,7 @@ public class VerifyController extends BaseController {
                 ComUser user = null;
                 try{
                     // 用户登录逻辑
-                    user = userService.signWithCreateUserByWX(res, userRes);
+                    user = userService.signWithCreateUserByWX(res, userRes, WxConsPF.APPID);
                 } catch (Exception e) {
                     log.error("登录出错," + e.getMessage());
                     return "common/500";

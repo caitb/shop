@@ -15,11 +15,11 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopStatistics;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.SfShopStatisticsService;
-import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.web.platform.service.shop.JSSDKService;
-import com.masiis.shop.web.platform.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
+import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
@@ -63,17 +63,15 @@ public class SfShopManageController extends BaseController {
     @Resource
     private SfOrderMapper sfOrderMapper;
     @Resource
-    private SfDistributionRecordMapper sfDistributionRecordMapper;
-    @Resource
     private SkuService skuService;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKPFService jssdkService;
     @Resource
     private SfUserShopViewMapper sfUserShopViewMapper;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinPFQRCodeService weiXinPFQRCodeService;
     @Resource
     private SfShopStatisticsService sfShopStatisticsService;
     @Resource
@@ -264,7 +262,7 @@ public class SfShopManageController extends BaseController {
                 throw new BusinessException("店铺不存在[comUser="+comUser+"][shopId="+shopId+"]");
             }
             if(StringUtils.isBlank(sfShop.getQrCode())){
-                String qr_code_url = weiXinQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
+                String qr_code_url = weiXinPFQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
                 if(qr_code_url == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
                 DownloadImage.download(qr_code_url, qrcodeName, posterDirPath);
                 OSSObjectUtils.uploadFile(qrcodeFile, "static/shop/shop_qrcode/");

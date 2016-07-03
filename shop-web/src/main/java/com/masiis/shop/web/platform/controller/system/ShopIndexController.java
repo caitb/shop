@@ -7,7 +7,7 @@ import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.shop.JSSDKService;
+import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class ShopIndexController extends BaseController {
     @Resource
     private BOrderService bOrderService;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKPFService jssdkService;
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {

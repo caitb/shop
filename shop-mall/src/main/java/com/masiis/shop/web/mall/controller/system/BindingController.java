@@ -1,7 +1,6 @@
 package com.masiis.shop.web.mall.controller.system;
 
-import com.masiis.shop.common.util.MobileMessageUtil;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.mall.utils.MobileVerificationUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;

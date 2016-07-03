@@ -2,7 +2,6 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
@@ -15,13 +14,12 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuImageService;
-import com.masiis.shop.web.mall.service.product.SkuService;
-import com.masiis.shop.web.mall.service.product.SpuService;
-import com.masiis.shop.web.mall.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.web.mall.service.shop.JSSDKService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.mall.service.qrcode.WeiXinSFQRCodeService;
+import com.masiis.shop.web.mall.service.shop.JSSDKSFService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.mall.utils.image.DrawImageUtil;
@@ -66,15 +64,13 @@ public class SfShopController extends BaseController {
     @Resource
     private SkuImageService skuImageService;
     @Resource
-    private SpuService spuService;
-    @Resource
     private UserService userService;
     @Resource
     private SfUserShopViewService sfUserShopViewService;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKSFService jssdkService;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinSFQRCodeService weiXinSFQRCodeService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
@@ -167,7 +163,7 @@ public class SfShopController extends BaseController {
             if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
             if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
-            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
+            DownloadImage.download(weiXinSFQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";

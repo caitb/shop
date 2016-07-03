@@ -9,7 +9,7 @@ import com.masiis.shop.web.mall.service.order.SfOrderService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserExtractApplyService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;

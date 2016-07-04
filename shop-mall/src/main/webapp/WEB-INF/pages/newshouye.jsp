@@ -31,9 +31,9 @@
        <div class="swiper-container">
                 <div class="swiper-wrapper">
                     <%--<div class="swiper-slide"><img src="<%=path%>/static/images/br1.png" alt=""></div>--%>
-                    <c:forEach items="${SfShopDetails}" var="SfShopDetails" begin="0" end="4">
-                    <div class="swiper-slide"><img src="${SfShopDetails.skuUrl}" alt=""></div>
-                    </c:forEach>
+                    <%--<c:forEach items="${SfShopDetails}" var="SfShopDetails" begin="0" end="4">--%>
+                    <%--<div class="swiper-slide"><img src="${SfShopDetails.skuUrl}" alt=""></div>--%>
+                    <%--</c:forEach>--%>
                     <%--<div class="swiper-slide"><img src="<%=path%>/static/images/br1.png" alt=""></div>--%>
                 </div>
                     <!-- 如果需要分页器 -->
@@ -44,12 +44,12 @@
             <div class="br_1">
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
-                <p>
-                    <img src="<%=path%>/static/images/1.png" alt="">
-                    <img src="<%=path%>/static/images/3.png" alt="">
-                    <c:forEach items="${SfShopDetails}" var="SfShopDetails">
-                    <img src="${SfShopDetails.icon}" alt="">
-                    </c:forEach>
+                <p id="icon">
+                    <%--<img src="<%=path%>/static/images/1.png" alt="">--%>
+                    <%--<img src="<%=path%>/static/images/3.png" alt="">--%>
+                    <%--<c:forEach items="${SfShopDetails}" var="SfShopDetails">--%>
+                    <%--<img src="${SfShopDetails.icon}" alt="">--%>
+                    <%--</c:forEach>--%>
                 </p>
             </div>
             <div class="br_2">
@@ -63,18 +63,18 @@
             </div>
         </div>
     </div>
-    <main>
-        <c:forEach items="${SfShopDetails}" var="sd">
-        <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
-        <div><img src="${sd.skuImageUrl}" alt=""></div>
-        <div>
-        <h1>${sd.skuAssia}</h1>
-        <p>-${sd.slogan}-</p>
-        <h1>￥${sd.priceRetail}</h1>
-        <button>立即购买</button>
-        </div>
-        </div>
-        </c:forEach>
+    <main id="main">
+        <%--<c:forEach items="${SfShopDetails}" var="sd">--%>
+        <%--<div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">--%>
+        <%--<div><img src="${sd.skuImageUrl}" alt=""></div>--%>
+        <%--<div>--%>
+        <%--<h1>${sd.skuAssia}</h1>--%>
+        <%--<p>-${sd.slogan}-</p>--%>
+        <%--<h1>￥${sd.priceRetail}</h1>--%>
+        <%--<button>立即购买</button>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</c:forEach>--%>
     </main>
     </div>
     <footer>
@@ -96,22 +96,50 @@
     <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
     <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
     <script>
-        $(function(){
-            var bWidth=$(".swiper-slide img").width(),
-                bHeight=$(".swiper-slide img").height();
-                $(".banner_b").width(bWidth);
-                $(".banner_b").height(bHeight);
-                $(".banner_1").width(bWidth);
-                $(".banner_1").height(bHeight);
-            var mySwiper = new Swiper ('.swiper-container', {
-                direction: 'horizontal',
-                loop: true,
-                 autoplay: 3000,
-                // 如果需要分页器
-                pagination: '.swiper-pagination'
-              }) 
-        })
-                
+$(function () {
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        autoplay: 3000,
+        // 如果需要分页器
+        pagination: '.swiper-pagination'
+    })
+    $.ajax({
+        type:"POST",
+        url : "<%=path%>/product.do",
+        dataType:"Json",
+        success:function(data){
+            var trHtml = "";
+            $.each(data, function(i, SfShopDetails) {
+                trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
+            })
+            $(".swiper-wrapper").html(trHtml);
+            var trHtml1 = "";
+            trHtml1+="<p id=\"icon\">";
+            trHtml1+="<img src=\"<%=path%>/static/images/1.png\" alt=\"\">";
+            trHtml1+="<img src=\"<%=path%>/static/images/3.png\" alt=\"\">";
+            $.each(data, function(i, SfShopDetails) {
+                trHtml1+="<img src=\""+SfShopDetails.icon+"\" alt=\"\">";
+            })
+            trHtml1+="</p>";
+            $("#icon").html(trHtml1);
+            var trHtml2 = "";
+            var shopId= ${sfShop.id};
+            $.each(data, function(i, SfShopDetails) {
+                trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"');\">";
+                trHtml2+="<div><img src=\""+SfShopDetails.skuImageUrl+"\" alt=\"\"></div>";
+                trHtml2+="<div><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h1>￥"+SfShopDetails.priceRetail+"</h1>";
+                trHtml2+="<button>立即购买</button> </div> </div>";
+            })
+            $("#main").html(trHtml2);
+            var bWidth=$(".swiper-slide").width(),
+                bHeight=$(".swiper-slide").height();
+                $(".banner_b").width(bWidth).height(bHeight);
+
+        }
+    })
+})
+
     </script>
 </body>
 </html>

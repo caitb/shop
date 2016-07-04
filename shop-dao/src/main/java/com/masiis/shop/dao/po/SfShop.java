@@ -61,6 +61,11 @@ public class SfShop {
     private BigDecimal agentShipAmount;
 
     /**
+     * 自己发货运费
+     */
+    private BigDecimal ownShipAmount;
+
+    /**
      * 消费者运费金额，0为包邮
      */
     private BigDecimal shipAmount;
@@ -202,5 +207,13 @@ public class SfShop {
 
     public void setWxQrCodeDescription(String wxQrCodeDescription) {
         this.wxQrCodeDescription = wxQrCodeDescription;
+    }
+
+    public BigDecimal getOwnShipAmount() {
+        return ownShipAmount;
+    }
+
+    public void setOwnShipAmount(BigDecimal ownShipAmount) {
+        this.ownShipAmount = ownShipAmount;
     }
 }

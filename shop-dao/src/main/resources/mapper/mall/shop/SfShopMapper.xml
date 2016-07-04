@@ -14,6 +14,7 @@
         <result column="sale_amount" property="saleAmount" jdbcType="DECIMAL" />
         <result column="ship_type" property="shipType" jdbcType="INTEGER" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="own_ship_amount" property="ownShipAmount" jdbcType="DECIMAL" />
         <result column="agent_ship_amount" property="agentShipAmount" jdbcType="DECIMAL" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -41,6 +42,7 @@
                     sale_amount,
                     ship_type,
                     ship_amount,
+                    own_ship_amount,
                     agent_ship_amount,
                     qr_code,
                     remark,
@@ -61,6 +63,7 @@
                     #{saleAmount,jdbcType=DECIMAL},
                     #{shipType,jdbcType=INTEGER},
                     #{shipAmount,jdbcType=DECIMAL},
+                    #{ownShipAmount,jdbcType=DECIMAL},
                     #{agentShipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR},
@@ -106,6 +109,9 @@
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
             </if>
+            <if test="ownShipAmount != null" >
+                own_ship_amount = #{ownShipAmount,jdbcType=DECIMAL},
+            </if>
             <if test="agentShipAmount != null" >
                 agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},
             </if>
@@ -142,6 +148,7 @@
                sale_amount,
                ship_type,
                ship_amount,
+               own_ship_amount,
                agent_ship_amount,
                qr_code,
                remark,
@@ -168,6 +175,7 @@
                sale_amount,
                ship_type,
                 ship_amount,
+                own_ship_amount,
                 agent_ship_amount,
                qr_code,
                remark,
@@ -192,6 +200,7 @@
         sale_amount,
         ship_type,
         ship_amount,
+        own_ship_amount,
         agent_ship_amount,
         qr_code,
         remark,
@@ -217,6 +226,7 @@
         sale_amount,
         ship_type,
         ship_amount,
+        own_ship_amount,
         agent_ship_amount,
         qr_code,
         remark,
@@ -231,24 +241,25 @@
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select
-                id,
-                create_time,
-                name,
-                user_id,
-                status,
-                logo,
-                explanation,
-                shout_num,
-                pageviews,
-                sale_amount,
-                ship_type,
-                ship_amount,
-                agent_ship_amount,
-                qr_code,
-                remark,
-                version,
-                wx_qr_code,
-                wx_qr_code_description
+        id,
+        create_time,
+        name,
+        user_id,
+        status,
+        logo,
+        explanation,
+        shout_num,
+        pageviews,
+        sale_amount,
+        ship_type,
+        ship_amount,
+        own_ship_amount,
+        agent_ship_amount,
+        qr_code,
+        remark,
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
                 sf_shop
         <where>
@@ -299,6 +310,9 @@
             </if>
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="ownShipAmount != null" >
+                own_ship_amount = #{ownShipAmount,jdbcType=DECIMAL},
             </if>
             <if test="agentShipAmount != null" >
                 agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},

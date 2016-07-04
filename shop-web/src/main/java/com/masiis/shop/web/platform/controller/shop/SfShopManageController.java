@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
@@ -44,6 +45,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -176,28 +178,29 @@ public class SfShopManageController extends BaseController {
 
     /**
      * 设置运费
+     * overwrite by JJH
      * @param request
      * @param response
+     * @param shipAmount :0 包邮
      * @return
      */
     @RequestMapping("/setupFreight")
-    public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("platform/shop/manage/setupFreight");
-
+    @ResponseBody
+    public String setupFreight(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam(value = "shipAmount",required = true) BigDecimal shipAmount){
+        JSONObject object = new JSONObject();
         SfShop sfShop = null;
         try {
             ComUser comUser = getComUser(request);
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
-
-            mav.addObject("sfShop", sfShop);
-
-            return mav;
+            sfShop.setOwnShipAmount(shipAmount);
+            sfShopMapper.updateByPrimaryKey(sfShop);
+            object.put("isError",false);
         } catch (Exception e) {
-            log.error("去运费设置页面失败![sfShop="+sfShop+"]");
-            e.printStackTrace();
+            object.put("isError",true);
+            log.info(e.getMessage());
         }
-
-        return mav;
+        return object.toJSONString();
     }
 
     /**

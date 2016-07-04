@@ -58,10 +58,6 @@
                 <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
                 <span>分享赚佣金</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
-                <span><img src="<%=path%>/static/images/geren2%20(1).png" alt=""></span>
-                <span>地址管理</span>
-            </li>
             <li> </li>
         </ul>
     </nav>

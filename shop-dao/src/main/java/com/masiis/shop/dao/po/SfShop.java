@@ -74,6 +74,17 @@ public class SfShop {
     private String remark;
     private Long version;
 
+    /**
+     * 店主微信二维码
+     */
+    private String wxQrCode;
+    /**
+     * 店主微信二维码描述
+     */
+    private String wxQrCodeDescription;
+
+
+
     public Long getId() {
         return id;
     }
@@ -175,5 +186,21 @@ public class SfShop {
 
     public void setAgentShipAmount(BigDecimal agentShipAmount) {
         this.agentShipAmount = agentShipAmount;
+    }
+
+    public String getWxQrCode() {
+        return wxQrCode;
+    }
+
+    public void setWxQrCode(String wxQrCode) {
+        this.wxQrCode = wxQrCode;
+    }
+
+    public String getWxQrCodeDescription() {
+        return wxQrCodeDescription;
+    }
+
+    public void setWxQrCodeDescription(String wxQrCodeDescription) {
+        this.wxQrCodeDescription = wxQrCodeDescription;
     }
 }

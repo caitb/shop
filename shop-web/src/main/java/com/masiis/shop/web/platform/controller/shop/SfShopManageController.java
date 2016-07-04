@@ -22,6 +22,7 @@ import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -76,6 +78,8 @@ public class SfShopManageController extends BaseController {
     private SfShopStatisticsService sfShopStatisticsService;
     @Resource
     private SfShopService sfShopService;
+    @Resource
+    private SfShopManQrCodeService sfShopManQrCodeService;
 
     /**
      * 店铺管理首页
@@ -155,9 +159,13 @@ public class SfShopManageController extends BaseController {
      * @return
      */
     @RequestMapping("/updateShop")
-    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop){
+    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop, MultipartFile qrImg){
 
         try {
+            String fileName = sfShopManQrCodeService.uploadWxQrCodeImg(qrImg);
+            if(StringUtils.isNotBlank(fileName)) {
+                sfShop.setWxQrCode(fileName);
+            }
             sfShopMapper.updateByPrimaryKey(sfShop);
         } catch (Exception e) {
             log.error("设置店铺失败![sfShop="+sfShop+"]");

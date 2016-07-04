@@ -40,6 +40,8 @@ public class OSSObjectUtils {
 
     public static final String OSS_CERTIFICATE_TEMP = PropertiesUtils.getStringValue("oss.OSS_CERTIFICATE_TEMP");//上传身份证临时文件目录
 
+    public static final String OSS_SHOPMAN_WX_QRCODE = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+
     // 删除一个Bucket和其中的Objects
     public static void deleteBucketFile(String fileName)
             throws OSSException, ClientException {

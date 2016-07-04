@@ -18,6 +18,8 @@
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="wx_qr_code" property="wxQrCode" jdbcType="VARCHAR" />
+        <result column="wx_qr_code_description" property="wxQrCodeDescription" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -42,7 +44,9 @@
                     agent_ship_amount,
                     qr_code,
                     remark,
-                    version
+                    version,
+                    wx_qr_code,
+                    wx_qr_code_description
                     )
         values      (
                     #{id,jdbcType=BIGINT},
@@ -60,7 +64,9 @@
                     #{agentShipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR},
-                    #{version,jdbcType=BIGINT}
+                    #{version,jdbcType=BIGINT},
+                    #{wxQrCode,jdbcType=VARCHAR},
+                    #{wxQrCodeDescription,jdbcType=VARCHAR}
                     )
     </insert>
 
@@ -112,6 +118,12 @@
             <if test="version != null" >
                 version = #{version,jdbcType=BIGINT},
             </if>
+            <if test="wxQrCode != null" >
+                wx_qr_code = #{wxQrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="wxQrCodeDescription != null" >
+                wx_qr_code_description = #{wxQrCodeDescription,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -133,7 +145,9 @@
                agent_ship_amount,
                qr_code,
                remark,
-               version
+               version,
+               wx_qr_code,
+               wx_qr_code_description
         from
                sf_shop
         where
@@ -157,7 +171,9 @@
                 agent_ship_amount,
                qr_code,
                remark,
-               version
+               version,
+               wx_qr_code,
+               wx_qr_code_description
         from
                sf_shop
     </select>
@@ -179,7 +195,9 @@
         agent_ship_amount,
         qr_code,
         remark,
-        version
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
         sf_shop
         where
@@ -202,7 +220,9 @@
         agent_ship_amount,
         qr_code,
         remark,
-        version
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
         sf_shop
         where
@@ -226,7 +246,9 @@
                 agent_ship_amount,
                 qr_code,
                 remark,
-                version
+                version,
+                wx_qr_code,
+                wx_qr_code_description
         from
                 sf_shop
         <where>

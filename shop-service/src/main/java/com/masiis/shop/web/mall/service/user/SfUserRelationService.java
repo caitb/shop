@@ -21,7 +21,7 @@ public class SfUserRelationService {
      * @author hanzengzhi
      * @date 2016/4/9 15:45
      */
-    public SfUserRelation getSfUserRelationByUserId(Long userId){
+    public List<SfUserRelation> getSfUserRelationByUserId(Long userId){
         return sfUserRelationMapper.getSfUserRelationByUserId(userId);
     }
 
@@ -35,18 +35,25 @@ public class SfUserRelationService {
         return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
     }
 
-    /**
-     * 根据userPid获得分销账户关系
-     * @author hanzengzhi
-     * @date 2016/4/12 11:46
-     */
-    public SfUserRelation getSfUserRelationByUserPid(Long userPid){
-        return sfUserRelationMapper.getSfUserRelationByUserPid(userPid);
-    }
-
     public List<SfUserRelation> threeDistributionList(Long userPid){
         return sfUserRelationMapper.getThreeDistributionList(userPid);
     }
 
-
+    /**
+     * 通过userId获取粉丝数量
+     * @param userId    用户id
+     * @return          Integer
+     */
+    public Integer getFansNum(Long userId){
+        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        Integer num = 0;
+        if (sfUserRelations == null || sfUserRelations.size() == 0){
+            return num;
+        }else {
+            for (SfUserRelation relation : sfUserRelations){
+                num += sfUserRelationMapper.selectFansNum(relation.getTreeCode());
+            }
+        }
+        return num;
+    }
 }

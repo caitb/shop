@@ -25,14 +25,19 @@ public interface SfUserRelationMapper {
 
     int updateByPrimaryKey(SfUserRelation record);
 
-    SfUserRelation getSfUserRelationByUserId(Long userId);
-
-    SfUserRelation getSfUserRelationByUserPid(Long userPid);
+    List<SfUserRelation> getSfUserRelationByUserId(Long userId);
 
     List<SfUserRelation> getThreeDistributionList(Long userPid);
 
     SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
                                                          @Param("shopId") Long shopId);
+
+    /**
+     * 通过treecode获取粉丝数量
+     * @param treeCode treeCode
+     * @return  Integer
+     */
+    Integer selectFansNum(@Param("treeCode") String treeCode);
 
     /**
      * 修改树形编码

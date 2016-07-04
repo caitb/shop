@@ -347,6 +347,8 @@ public class SfShopController extends BaseController {
         if (fromUserId != null) {
             sfUserShopViewService.addShopView(user.getId(), shopId);
         }
+        //获取店主二维码
+        sfShop.setWxQrCode(sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表

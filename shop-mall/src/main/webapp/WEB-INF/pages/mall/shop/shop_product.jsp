@@ -139,9 +139,20 @@
     </c:if>
     <span class="close">×</span>
 </div>
+<div class="black">
+    <div class="back_b"></div>
+    <div class="b_t">
+        <img src="${sfShop.wxQrCode}" alt="">
+        <p>
+            如有问题，请加我为好友！。
+        </p>
+        <b class="off" onclick="clickHide()">×</b>
+    </div>
+</div>
 <footer>
     <section class="sec3">
         <%--<p class="shi" id="share"><a>分享</a></p>--%>
+        <h1 onclick="clickShow()">联系店主</h1>
         <p onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
     </section>
 </footer>
@@ -189,6 +200,12 @@
         $(".back").hide();
         $(".back_g").hide()
     })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
     //check
     function clickbuy(a,b){
         $(".number").val(1);

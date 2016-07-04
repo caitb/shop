@@ -564,7 +564,7 @@ public class SfOrderPayService {
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems", orderItems);
             //获得用户的分销关系的父id
-            Long userPid = getUserPid(order.getUserId());
+            Long userPid = getUserPid(order.getUserId(),order.getShopId());
             map.put("userPid", userPid);
         } catch (Exception e) {
             throw new BusinessException(e);
@@ -608,8 +608,8 @@ public class SfOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/14 16:29
      */
-    private Long getUserPid(Long userId) {
-        SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserId(userId);
+    private Long getUserPid(Long userId,Long shopId) {
+        SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
         if (userRelation == null) {
             throw new BusinessException("支付成功后获得分销关系为null");
         } else {

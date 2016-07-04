@@ -11,7 +11,6 @@ import com.masiis.shop.dao.po.SfUserRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository
@@ -31,6 +30,9 @@ public interface SfUserRelationMapper {
     SfUserRelation getSfUserRelationByUserPid(Long userPid);
 
     List<SfUserRelation> getThreeDistributionList(Long userPid);
+
+    SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
+                                                         @Param("shopId") Long shopId);
 
     /**
      * 修改树形编码

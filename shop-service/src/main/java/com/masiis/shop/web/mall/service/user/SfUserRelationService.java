@@ -26,6 +26,16 @@ public class SfUserRelationService {
     }
 
     /**
+     * 获得唯一分销用户关系
+     * @param userId    userId
+     * @param shopId    shopId
+     * @return  SfUserRelation
+     */
+    public SfUserRelation getSfUserRelationByUserIdAndShopId(Long userId, Long shopId){
+        return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
+    }
+
+    /**
      * 根据userPid获得分销账户关系
      * @author hanzengzhi
      * @date 2016/4/12 11:46
@@ -37,4 +47,6 @@ public class SfUserRelationService {
     public List<SfUserRelation> threeDistributionList(Long userPid){
         return sfUserRelationMapper.getThreeDistributionList(userPid);
     }
+
+
 }

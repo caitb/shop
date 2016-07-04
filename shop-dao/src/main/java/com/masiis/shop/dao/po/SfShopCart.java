@@ -38,6 +38,11 @@ public class SfShopCart {
      * sku主键id
      */
     private Integer skuId;
+
+    /**
+     * 发货人
+     */
+    private Long sendMan;
     /**
      * 数量
      */
@@ -112,5 +117,13 @@ public class SfShopCart {
 
     public void setSpuId(Integer spuId) {
         this.spuId = spuId;
+    }
+
+    public Long getSendMan() {
+        return sendMan;
+    }
+
+    public void setSendMan(Long sendMan) {
+        this.sendMan = sendMan;
     }
 }

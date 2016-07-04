@@ -206,7 +206,7 @@ public class SfOrderPurchaseService {
                 //获得每款商品的分润信息
                 log.info("获得分润信息---start");
                 for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
-                    getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
+                    getDisDetail(shopId,purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
                 log.info("获得分润信息---end");
                 if (orderSumDisAmount.compareTo(skuTotalPrice) == 1) {
@@ -347,11 +347,11 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 17:44
      */
-    private void getDisDetail(Long purchaseUserId, Long shopUserId, Integer skuId, BigDecimal skuTotalPrice) {
+    private void getDisDetail(Long shopId,Long purchaseUserId, Long shopUserId, Integer skuId, BigDecimal skuTotalPrice) {
         List<SfSkuDistribution> sfSkuDistribution = sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         /* 获得当前用户的分销关系 */
         /* 获得当前用户的分销关系规则：父级在list第一位，父父级级在第二位 以此类推(这种排序和skuDis相对应起来) */
-        List<SfUserRelation> sfUserRelations = getSfUserRelation(purchaseUserId, null, null);
+        List<SfUserRelation> sfUserRelations = getSfUserRelation(shopId,purchaseUserId, null, null);
         if (sfUserRelations != null && sfUserRelations.size() != 0 && sfSkuDistribution != null && sfSkuDistribution.size() != 0) {
             log.info("获得购买人--id为" + purchaseUserId + "---的上级关系共有---" + sfUserRelations.size());
             /* 此处以realtions为维度，而不是skuDistrion为维度。因为只有关系存在才会商品的分润 但是商品的分润不能为0 */
@@ -589,20 +589,20 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 15:56
      */
-    private List<SfUserRelation> getSfUserRelation(Long userId, Long userPid, List<SfUserRelation> sfUserRelationList) {
+    private List<SfUserRelation> getSfUserRelation(Long shopId,Long userId, Long userPid, List<SfUserRelation> sfUserRelationList) {
         if (sfUserRelationList == null || sfUserRelationList.size() == 0) {
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
         if (userPid == null) {
-            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserId(userId);
+            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userId);
             userPid = _userRelation.getUserPid();
         }
-        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserId(userPid);
+        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userPid);
         if (sfUserRelation != null) {
             sfUserRelationList.add(sfUserRelation);
         }
         if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 3) {
-            getSfUserRelation(sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
+            getSfUserRelation(shopId,sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
         }
         log.info("关系----start");
         for (SfUserRelation sf : sfUserRelationList) {

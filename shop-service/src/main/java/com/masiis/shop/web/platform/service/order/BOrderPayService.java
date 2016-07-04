@@ -241,7 +241,7 @@ public class BOrderPayService {
             shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
+        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(comUser.getId(),sfShop.getId());
         if (sfUserRelation == null) {
             sfUserRelation = new SfUserRelation();
             sfUserRelation.setCreateTime(new Date());

@@ -37,17 +37,25 @@ public class SfShopCartController extends BaseController {
     @Resource
     private SfShopService sfShopService;
 
+
     /**
-     * @Author jjh
-     * @Date 2016/4/9 0009 下午 1:45
+     * jjh
      * 立即购买
+     * @param request
+     * @param response
+     * @param shopId :店铺
+     * @param skuId ：商品ID
+     * @param quantity:购买数量
+     * @param isOwnShip :是否自己发货
+     * @return
      */
     @RequestMapping("/addCart.do")
     @ResponseBody
     public String addProductToCart(HttpServletRequest request, HttpServletResponse response,
                                    @RequestParam(value="shopId",required = true) Long shopId,
                                    @RequestParam(value="skuId",required = true) Integer skuId,
-                                   @RequestParam(value="quantity",required = true) Integer quantity){
+                                   @RequestParam(value="quantity",required = true) Integer quantity,
+                                   @RequestParam(value="isOwnShip",required = true) Long isOwnShip){
         JSONObject object = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -56,7 +64,7 @@ public class SfShopCartController extends BaseController {
             if(sfShop==null){
                 throw new BusinessException("不存在该店铺！");
             }
-            sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
+            sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity,isOwnShip);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);

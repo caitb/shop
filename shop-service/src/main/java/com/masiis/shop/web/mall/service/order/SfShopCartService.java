@@ -56,7 +56,7 @@ public class SfShopCartService {
      * jjh
      * 添加商品到购物车
      */
-    public void addProductToCart(Long shopId,Long userId,Integer skuId,Integer quantity)throws Exception{
+    public void addProductToCart(Long shopId,Long userId,Integer skuId,Integer quantity,Long isOwnShip)throws Exception{
         SfShopCart ShopCart = new SfShopCart();
         //购物车功能，暂不使用
 //        SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
@@ -84,6 +84,7 @@ public class SfShopCartService {
         ShopCart.setQuantity(quantity);
         ShopCart.setIsCheck(1);
         ShopCart.setSort(0);
+        ShopCart.setSendMan(isOwnShip);//发货人信息 0平台 ：发货人userId
         sfShopCartMapper.insert(ShopCart);
         log.info("----加入cart 成功----");
     }

@@ -97,13 +97,7 @@
     <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
     <script>
 $(function () {
-    var mySwiper = new Swiper ('.swiper-container', {
-        direction: 'horizontal',
-        loop: true,
-        autoplay: 3000,
-        // 如果需要分页器
-        pagination: '.swiper-pagination'
-    })
+
     $.ajax({
         type:"POST",
         url : "<%=path%>/product.do",
@@ -135,7 +129,13 @@ $(function () {
             var bWidth=$(".swiper-slide").width(),
                 bHeight=$(".swiper-slide").height();
                 $(".banner_b").width(bWidth).height(bHeight);
-
+            var mySwiper = new Swiper ('.swiper-container', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay: 3000,
+                // 如果需要分页器
+                pagination: '.swiper-pagination'
+            })
         }
     })
 })

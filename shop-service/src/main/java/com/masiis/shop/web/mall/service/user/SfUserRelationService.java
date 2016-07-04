@@ -51,7 +51,7 @@ public class SfUserRelationService {
             return num;
         }else {
             for (SfUserRelation relation : sfUserRelations){
-                num += sfUserRelationMapper.selectFansNum(relation.getTreeCode());
+                num += sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num");
             }
         }
         return num;

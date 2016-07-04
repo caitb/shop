@@ -156,6 +156,8 @@
 }
 .wrap main .sec1 div img {
   width: 100%;
+  display: block;
+  height:auto;
 }
 .wrap main .sec1 div:last-child {
   display: -webkit-box;
@@ -182,4 +184,34 @@
   background: #fff;
   border-radius: 3px;
   margin-top: 4px;
+}
+@media screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2){
+  .swiper-slide{
+    width: 320px;
+    height: 375px;
+  }
+  .sec1 img{
+    width:152px;
+    height:152px;
+  }
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation : portrait) {
+  .swiper-slide{
+    width: 375px;
+    height: 440px;
+  }
+  .sec1 img{
+    width:172px;
+    height: 182px;
+  }
+}
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation : portrait) {
+  .swiper-slide{
+    width: 414px;
+    height:485px;
+  }
+  .sec1 img{
+    width:199px;
+    height: 202px;
+  }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserPromotionGiftMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserPromotionGift" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="promo_id" property="promoId" jdbcType="INTEGER" />
+        <result column="promo_rule_id" property="promoRuleId" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="gift_value" property="giftValue" jdbcType="INTEGER" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="promo_quantity" property="promoQuantity" jdbcType="INTEGER" />
+        <result column="upper_quantity" property="upperQuantity" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from sf_user_promotion_gift
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift" >
+        insert into sf_user_promotion_gift (id, promo_id, promo_rule_id, 
+            type, gift_value, quantity, 
+            promo_quantity, upper_quantity, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{promoId,jdbcType=INTEGER}, #{promoRuleId,jdbcType=INTEGER}, 
+            #{type,jdbcType=INTEGER}, #{giftValue,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
+            #{promoQuantity,jdbcType=INTEGER}, #{upperQuantity,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift" >
+        update sf_user_promotion_gift
+        set promo_id = #{promoId,jdbcType=INTEGER},
+            promo_rule_id = #{promoRuleId,jdbcType=INTEGER},
+            type = #{type,jdbcType=INTEGER},
+            gift_value = #{giftValue,jdbcType=INTEGER},
+            quantity = #{quantity,jdbcType=INTEGER},
+            promo_quantity = #{promoQuantity,jdbcType=INTEGER},
+            upper_quantity = #{upperQuantity,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, promo_id, promo_rule_id, type, gift_value, quantity, promo_quantity, upper_quantity, 
+        remark
+        from sf_user_promotion_gift
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, promo_id, promo_rule_id, type, gift_value, quantity, promo_quantity, upper_quantity, 
+        remark
+        from sf_user_promotion_gift
+    </select>
+
+</mapper>

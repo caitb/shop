@@ -63,4 +63,13 @@
         AND promo_rule_id = #{promoRuleId,jdbcType=INTEGER}
     </select>
 
+    <select id="getPromoGiftByPromoIdAndRuleIdAndGiftValue" resultMap="BaseResultMap" >
+        select id, promo_id, promo_rule_id, type, gift_value, quantity, promo_quantity, upper_quantity,
+        remark
+        from sf_user_promotion_gift
+        where promo_id = #{promoId,jdbcType=INTEGER}
+        AND promo_rule_id = #{promoRuleId,jdbcType=INTEGER}
+        AND gift_value = #{giftValue,jdbcType=INTEGER}
+    </select>
+
 </mapper>

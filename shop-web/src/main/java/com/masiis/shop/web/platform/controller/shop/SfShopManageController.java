@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
@@ -22,6 +23,7 @@ import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -42,6 +45,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -76,6 +80,8 @@ public class SfShopManageController extends BaseController {
     private SfShopStatisticsService sfShopStatisticsService;
     @Resource
     private SfShopService sfShopService;
+    @Resource
+    private SfShopManQrCodeService sfShopManQrCodeService;
 
     /**
      * 店铺管理首页
@@ -155,9 +161,13 @@ public class SfShopManageController extends BaseController {
      * @return
      */
     @RequestMapping("/updateShop")
-    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop){
+    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop, MultipartFile qrImg){
 
         try {
+            String fileName = sfShopManQrCodeService.uploadWxQrCodeImg(qrImg);
+            if(StringUtils.isNotBlank(fileName)) {
+                sfShop.setWxQrCode(fileName);
+            }
             sfShopMapper.updateByPrimaryKey(sfShop);
         } catch (Exception e) {
             log.error("设置店铺失败![sfShop="+sfShop+"]");
@@ -168,28 +178,29 @@ public class SfShopManageController extends BaseController {
 
     /**
      * 设置运费
+     * overwrite by JJH
      * @param request
      * @param response
+     * @param shipAmount :0 包邮
      * @return
      */
     @RequestMapping("/setupFreight")
-    public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("platform/shop/manage/setupFreight");
-
+    @ResponseBody
+    public String setupFreight(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam(value = "shipAmount",required = true) BigDecimal shipAmount){
+        JSONObject object = new JSONObject();
         SfShop sfShop = null;
         try {
             ComUser comUser = getComUser(request);
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
-
-            mav.addObject("sfShop", sfShop);
-
-            return mav;
+            sfShop.setOwnShipAmount(shipAmount);
+            sfShopMapper.updateByPrimaryKey(sfShop);
+            object.put("isError",false);
         } catch (Exception e) {
-            log.error("去运费设置页面失败![sfShop="+sfShop+"]");
-            e.printStackTrace();
+            object.put("isError",true);
+            log.info(e.getMessage());
         }
-
-        return mav;
+        return object.toJSONString();
     }
 
     /**

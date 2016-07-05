@@ -14,10 +14,13 @@
         <result column="sale_amount" property="saleAmount" jdbcType="DECIMAL" />
         <result column="ship_type" property="shipType" jdbcType="INTEGER" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="own_ship_amount" property="ownShipAmount" jdbcType="DECIMAL" />
         <result column="agent_ship_amount" property="agentShipAmount" jdbcType="DECIMAL" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
+        <result column="wx_qr_code" property="wxQrCode" jdbcType="VARCHAR" />
+        <result column="wx_qr_code_description" property="wxQrCodeDescription" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -39,10 +42,13 @@
                     sale_amount,
                     ship_type,
                     ship_amount,
+                    own_ship_amount,
                     agent_ship_amount,
                     qr_code,
                     remark,
-                    version
+                    version,
+                    wx_qr_code,
+                    wx_qr_code_description
                     )
         values      (
                     #{id,jdbcType=BIGINT},
@@ -57,10 +63,13 @@
                     #{saleAmount,jdbcType=DECIMAL},
                     #{shipType,jdbcType=INTEGER},
                     #{shipAmount,jdbcType=DECIMAL},
+                    #{ownShipAmount,jdbcType=DECIMAL},
                     #{agentShipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR},
-                    #{version,jdbcType=BIGINT}
+                    #{version,jdbcType=BIGINT},
+                    #{wxQrCode,jdbcType=VARCHAR},
+                    #{wxQrCodeDescription,jdbcType=VARCHAR}
                     )
     </insert>
 
@@ -100,6 +109,9 @@
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
             </if>
+            <if test="ownShipAmount != null" >
+                own_ship_amount = #{ownShipAmount,jdbcType=DECIMAL},
+            </if>
             <if test="agentShipAmount != null" >
                 agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},
             </if>
@@ -111,6 +123,12 @@
             </if>
             <if test="version != null" >
                 version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="wxQrCode != null" >
+                wx_qr_code = #{wxQrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="wxQrCodeDescription != null" >
+                wx_qr_code_description = #{wxQrCodeDescription,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -130,10 +148,13 @@
                sale_amount,
                ship_type,
                ship_amount,
+               own_ship_amount,
                agent_ship_amount,
                qr_code,
                remark,
-               version
+               version,
+               wx_qr_code,
+               wx_qr_code_description
         from
                sf_shop
         where
@@ -154,10 +175,13 @@
                sale_amount,
                ship_type,
                 ship_amount,
+                own_ship_amount,
                 agent_ship_amount,
                qr_code,
                remark,
-               version
+               version,
+               wx_qr_code,
+               wx_qr_code_description
         from
                sf_shop
     </select>
@@ -176,10 +200,13 @@
         sale_amount,
         ship_type,
         ship_amount,
+        own_ship_amount,
         agent_ship_amount,
         qr_code,
         remark,
-        version
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
         sf_shop
         where
@@ -199,10 +226,13 @@
         sale_amount,
         ship_type,
         ship_amount,
+        own_ship_amount,
         agent_ship_amount,
         qr_code,
         remark,
-        version
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
         sf_shop
         where
@@ -211,22 +241,25 @@
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select
-                id,
-                create_time,
-                name,
-                user_id,
-                status,
-                logo,
-                explanation,
-                shout_num,
-                pageviews,
-                sale_amount,
-                ship_type,
-                ship_amount,
-                agent_ship_amount,
-                qr_code,
-                remark,
-                version
+        id,
+        create_time,
+        name,
+        user_id,
+        status,
+        logo,
+        explanation,
+        shout_num,
+        pageviews,
+        sale_amount,
+        ship_type,
+        ship_amount,
+        own_ship_amount,
+        agent_ship_amount,
+        qr_code,
+        remark,
+        version,
+        wx_qr_code,
+        wx_qr_code_description
         from
                 sf_shop
         <where>
@@ -277,6 +310,9 @@
             </if>
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="ownShipAmount != null" >
+                own_ship_amount = #{ownShipAmount,jdbcType=DECIMAL},
             </if>
             <if test="agentShipAmount != null" >
                 agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},

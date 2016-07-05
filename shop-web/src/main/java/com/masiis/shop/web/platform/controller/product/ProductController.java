@@ -11,6 +11,7 @@ import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.PfUserAgentApplicationService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +56,8 @@ public class ProductController extends BaseController {
     private PfUserRelationService pfUserRelationService;
     @Resource
     private SkuAgentService skuAgentService;
+    @Resource
+    private PfUserAgentApplicationService pfUserAgentApplicationService;
     /**
      * 1 商品详细信息
      * 2 库存信息暂时都显示平台,与上级无关
@@ -273,5 +277,47 @@ public class ProductController extends BaseController {
         }
         mv.setViewName("platform/user/previewnahuo");
         return mv;
+    }
+
+    /**
+     * jjh
+     * 添加意向
+     * @param request
+     * @param response
+     * @param skuId :商品ID
+     * @param name：姓名
+     * @param wxId :微信号
+     * @param mobile：手机号
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/addAgent.do")
+    @ResponseBody
+    public String addAgentApplication(HttpServletRequest request,
+                             HttpServletResponse response,
+                             @RequestParam(value = "skuId",required = true) Integer skuId,
+                             @RequestParam(value = "name",required = true) String name,
+                             @RequestParam(value = "wxId",required = true) String wxId,
+                             @RequestParam(value = "mobile",required = true) String mobile
+    ) throws Exception {
+        JSONObject object = new JSONObject();
+        try{
+            ComUser comUser = getComUser(request);
+            PfUserAgentApplication pfUserAgentApplication = new PfUserAgentApplication();
+            pfUserAgentApplication.setCreateMan(comUser.getId());
+            pfUserAgentApplication.setCreateTime(new Date());
+            pfUserAgentApplication.setMobile(mobile);
+            pfUserAgentApplication.setName(name);
+            pfUserAgentApplication.setWxId(wxId);
+            pfUserAgentApplication.setSkuId(skuId);
+            pfUserAgentApplication.setStatus(0);
+            pfUserAgentApplication.setRemark("");
+            pfUserAgentApplicationService.addApplicationUser(pfUserAgentApplication);
+            object.put("isError", false);
+        }catch (Exception ex){
+            object.put("isError", true);
+            log.info(ex.getMessage());
+        }
+        return object.toJSONString();
     }
 }

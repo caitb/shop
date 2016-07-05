@@ -327,45 +327,6 @@ public class BOrderService {
         }
     }
 
-
-    /**
-     * 订单完成处理统一入口
-     *
-     * @author ZhaoLiang
-     * @date 2016/4/9 11:22
-     */
-    @Transactional
-    public void completeBOrder(PfBorder pfBorder) {
-        if (pfBorder == null) {
-            throw new BusinessException("订单为空对象");
-        }
-        if (pfBorder.getPayStatus() != 1) {
-            throw new BusinessException("订单还未支付怎么能完成呢？");
-        }
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())) {
-                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
-            }
-        } else if (pfBorder.getSendType() == 2) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
-                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.Ship.getCode());
-            }
-        } else {
-            throw new BusinessException("订单拿货方式异常");
-        }
-        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
-        pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
-        pfBorder.setReceiptTime(new Date());//收货时间
-        pfBorderMapper.updateById(pfBorder);
-        //添加订单日志
-        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-        //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1|| pfBorder.getOrderType() == 3) {
-            comUserAccountService.countingByOrder(pfBorder);
-        }
-    }
-
     /**
      * 获取排队订单数量
      *

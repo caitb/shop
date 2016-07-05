@@ -120,7 +120,7 @@ public class BUpgradePayService {
         log.info("修改通知单的状态----start");
         updateUpgradeNotice(pfBorder.getId());
         log.info("修改通知单的状态----end");
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             log.info("------处理平台发货类型订单----start");
             saveBOrderSendType(pfBorder);
@@ -158,7 +158,7 @@ public class BUpgradePayService {
         BigDecimal payAmount = pfBorderPayment.getAmount();
         if (pfBorder != null) {
             log.info("订单之前的状态-----"+pfBorder.getOrderStatus());
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());
+            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
             log.info("订单之后的状态-----"+pfBorder.getOrderStatus());
             pfBorder.setPayTime(new Date());
             pfBorder.setModifyTime(new Date());

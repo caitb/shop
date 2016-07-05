@@ -4,10 +4,12 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserRelation">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
+        <result column="is_buy" property="isBuy" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -16,45 +18,57 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" useGeneratedKeys="true" keyProperty="id">
-        insert into sf_user_relation (id, create_time, user_id, 
-            user_pid, tree_code, tree_level,
-            remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
-            #{userPid,jdbcType=BIGINT}, #{treeCode,jdbcType=VARCHAR}, #{treeLevel,jdbcType=INTEGER},
-            #{remark,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+        insert into sf_user_relation (id, create_time, shop_id, 
+            user_id, user_pid, tree_code, 
+            tree_level, is_buy, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{treeCode,jdbcType=VARCHAR}, 
+            #{treeLevel,jdbcType=INTEGER}, #{isBuy,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserRelation">
         update sf_user_relation
         set create_time = #{createTime,jdbcType=TIMESTAMP},
+            shop_id = #{shopId,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
             user_pid = #{userPid,jdbcType=BIGINT},
             tree_code = #{treeCode,jdbcType=VARCHAR},
             tree_level = #{treeLevel,jdbcType=INTEGER},
+            is_buy = #{isBuy,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, 
+        remark
         from sf_user_relation
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
     </select>
 
     <select id="getSfUserRelationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where user_id = #{userId}
+        and shop_id = #{shopId}
+    </select>
+
     <select id="getSfUserRelationByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
@@ -76,4 +90,14 @@
         update sf_user_relation set tree_code = SUBSTRING(tree_code,#{idIndex}),tree_level=tree_level-#{treeLevelDiff}
         where tree_code LIKE CONCAT(#{treeCode},'%')
     </update>
+
+    <select id="selectFansNum" resultType="java.util.HashMap">
+        select count(*)-1 as num from sf_user_relation where tree_code like CONCAT(#{treeCode},'%')
+    </select>
+
+    <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where user_id = #{userId} and shop_id = #{shopId}
+    </select>
 </mapper>

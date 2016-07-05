@@ -96,6 +96,9 @@
         bail,sale_num, share_num, qr_code, is_own_ship,remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = #{isSale,jdbcType=INTEGER}
+        <if test="isOwnShip!=null">
+            AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
+        </if>
     </select>
     <select id="selectBySkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,

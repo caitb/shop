@@ -11,10 +11,10 @@
 <head>
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/reset.css">--%>
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/header.css">--%>
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/base.css">--%>
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <div class="wrap">
@@ -148,7 +148,7 @@
         <p class="tishi" id="errorMessageId"></p>
         <h1 class="j_qu" id="nextPageId">下一步</h1>
     </div>
-    <div class="back" style="display:block;"></div>
+    <div class="back"></div>
     <div class="back_q">
         <h1>什么是排单期？</h1>
         <p>
@@ -170,6 +170,19 @@
         <button class="zhidao">我知道了</button>
     </div>
 </div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="message">
+        <h1>您需要通过您的上级发送给您的二维码才可以申请合伙人。如无上级，填写表单。</h1>
+        <p><em>姓　名：</em><input type="text"></p>
+        <p><em>微信号：</em><input type="text"></p>
+        <p><em>手机号：</em><input type="text"></p>
+        <h2>
+            <button onclick="clicHide()">取消</button>
+            <button>确定</button>
+        </h2>
+    </div>
+</div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/product.js"></script>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
@@ -189,6 +202,13 @@
         // 如果需要分页器
         pagination: '.swiper-pagination'
     })
+    //表单隐藏
+    function clickShow(){
+        $(".black").show();
+    }
+    function clicHide(){
+        $(".black").hide();
+    }
     $(".b_qu").on("click", function () {
         $(".back").css("display", "none");
         $(".back_b").hide();

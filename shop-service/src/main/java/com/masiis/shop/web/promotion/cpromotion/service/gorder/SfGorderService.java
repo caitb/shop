@@ -1,6 +1,9 @@
 package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -17,12 +20,14 @@ import java.util.Date;
 @Service
 public class SfGorderService {
 
+    private Log log = LogFactory.getLog(this.getClass());
+
     @Resource
     private SfGorderMapper sfGorderMapper;
 
 
 
-    public void addGorder(ComUser comUser, Integer promoId, Integer promoRuleId, Integer personType){
+    public Long addGorder(ComUser comUser, Integer promoId, Integer promoRuleId, Integer personType){
         SfGorder sfGorder = new SfGorder();
         sfGorder.setCreateTime(new Date());
         sfGorder.setCreateMan(comUser.getId());
@@ -41,5 +46,12 @@ public class SfGorderService {
         sfGorder.setIsShip(0);
         sfGorder.setIsReceipt(0);
         sfGorder.setRemark("领取奖励插入订单");
+        int  i = sfGorderMapper.insert(sfGorder);
+        if (i==1){
+            return sfGorder.getId();
+        }else{
+            log.info("领取奖励插入订单失败");
+            throw new BusinessException("领取奖励插入订单失败");
+        }
     }
 }

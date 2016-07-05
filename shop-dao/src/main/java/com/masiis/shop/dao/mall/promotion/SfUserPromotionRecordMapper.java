@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfUserPromotionRecord;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface SfUserPromotionRecordMapper {
@@ -20,4 +22,6 @@ public interface SfUserPromotionRecordMapper {
     List<SfUserPromotionRecord> selectAll();
 
     int updateByPrimaryKey(SfUserPromotionRecord record);
+
+    SfUserPromotionRecord getPromoRecordByUserIdAndPromoIdAndRuleId(@Param("userId") Long userId,@Param("promoId")  Integer promoId, @Param("promoRuleId") Integer promoRuleId);
 }

@@ -3,13 +3,13 @@ package com.masiis.shop.web.platform.service.product;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.druid.support.logging.SLF4JImpl;
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import org.springframework.stereotype.Service;
@@ -39,44 +39,42 @@ public class ManageShopProductService {
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
 
-    @Resource
-    private ComUserMapper ComUserMapper;
-
-
     /**
       * @Author JJH
       * @Date 2016/4/13 0013 上午 10:29
       * 小铺中商品列表
       */
-     public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId,Integer deliverType) throws Exception{
-
-         List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
+     public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId,Integer deliverType,int currentPage,int pageSize) throws Exception{
+         List<SfShopSku> sfShopSkuList =null;
+         if (currentPage == 0||pageSize == 0){
+              sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
+         }else {
+             PageHelper.startPage(currentPage, pageSize);
+             sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
+         }
          List<SkuInfo> skuInfoList = new ArrayList<>();
-         ComUser comUser = ComUserMapper.selectByPrimaryKey(userId);
          if(sfShopSkuList!=null){
              String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
              for(SfShopSku sfShopSku :sfShopSkuList){
                  SkuInfo skuInfo = new SkuInfo();
                  ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
                  ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
-                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
                  comSkuImage.setFullImgUrl(Value+comSkuImage.getImgUrl());
                  skuInfo.setComSku(comsku);
                  skuInfo.setComSkuImage(comSkuImage);
                  skuInfo.setShopSkuId(sfShopSku.getId());
                  skuInfo.setSaleNum(sfShopSku.getSaleNum());
+                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
                  if(pfUserSkuStock!=null){
-                     if(comUser.getSendType()==1){//平台代发
+                     if(sfShopSku.getIsOwnShip()==0){//平台代发
                          int useStock = pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock();
                          if(useStock >=0){
                              skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
                          }else{
                              skuInfo.setStock(0);
                          }
-                     }else if(comUser.getSendType()==2){//自己
-                         skuInfo.setStock(pfUserSkuStock.getCustomStock());
                      }else{
-                         throw new BusinessException("发货方式未选择！");
+                         skuInfo.setStock(pfUserSkuStock.getCustomStock());
                      }
                  }
                  skuInfoList.add(skuInfo);

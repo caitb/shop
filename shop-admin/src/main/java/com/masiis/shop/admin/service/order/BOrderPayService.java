@@ -383,6 +383,7 @@ public class BOrderPayService {
                     sfShopSku.setShopUserId(comUser.getId());
                     sfShopSku.setSpuId(pfBorderItem.getSpuId());
                     sfShopSku.setSkuId(pfBorderItem.getSkuId());
+                    sfShopSku.setIsOwnShip(0);
                     sfShopSku.setIsSale(1);
                     sfShopSku.setAgentLevelId(pfBorderItem.getAgentLevelId());
                     sfShopSku.setBail(pfBorderItem.getBailAmount());

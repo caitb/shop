@@ -184,12 +184,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单支付成功");
@@ -241,7 +236,7 @@ public class BOrderPayService {
             shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(comUser.getId(),sfShop.getId());
+        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(comUser.getId(), sfShop.getId());
         if (sfUserRelation == null) {
             sfUserRelation = new SfUserRelation();
             sfUserRelation.setCreateTime(new Date());
@@ -447,7 +442,7 @@ public class BOrderPayService {
         log.info("<14>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
         }
@@ -478,12 +473,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "");
@@ -521,7 +511,7 @@ public class BOrderPayService {
         log.info("<6>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
         }

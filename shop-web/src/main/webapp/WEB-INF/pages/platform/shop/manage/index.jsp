@@ -79,7 +79,12 @@
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/lookshop.png" alt="" style="margin-bottom: 5px"></span><span>预览商店</span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/feel.png" alt="" style="margin-bottom: 5px"></span><span>分享店铺</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
-            <p style="background: #eeeeee; border-bottom: none;"></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
+        </nav>
+        <nav style="margin: 0;">
+            <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
+            <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>预览商店</span></p>
+            <p style="background: #EEEEEE;border: none;"></p>
         </nav>
 </div>
 <c:if test="${sfShop==null}">
@@ -88,6 +93,20 @@
     </div>
 </c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
+<div class="black">
+    <div class="backb"></div>
+    <div class="set">
+        <h1>运费设置</h1>
+        <p>运费设置只适用于店主发货情况。如果设置包邮，则运费由您承担；若设置运费金额，则有消费者承担</p>
+        <div>
+            <h2><span>快递公司：</span></h2>
+            <h2><span>自定义：</span><input type="text"><b>元</b></h2>
+        </div>
+        <h3>
+            <button onclick="clicHide()">取消</button>
+            <button>确定</button></h3>
+    </div>
+</div>
 </body>
 <script src="<%=basePath%>static/js/zepto.min/js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -102,6 +121,12 @@
     $("body").on("swipeLeft", function () {
         location.href='<%=path%>/account/home';
     })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clicHide(){
+        $(".black").hide();
+    }
 </script>
 <script>
     $(document).ready(function(){

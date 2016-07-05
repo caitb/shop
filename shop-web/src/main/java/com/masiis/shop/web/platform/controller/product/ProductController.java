@@ -283,10 +283,9 @@ public class ProductController extends BaseController {
      * jjh
      * 添加意向
      * @param request
-     * @param response
      * @param skuId :商品ID
-     * @param name：姓名
-     * @param wxId :微信号
+     * @param applyName：姓名
+     * @param wxCode :微信号
      * @param mobile：手机号
      * @return
      * @throws Exception
@@ -294,12 +293,11 @@ public class ProductController extends BaseController {
     @RequestMapping("/addAgent.do")
     @ResponseBody
     public String addAgentApplication(HttpServletRequest request,
-                             HttpServletResponse response,
-                             @RequestParam(value = "skuId",required = true) Integer skuId,
-                             @RequestParam(value = "name",required = true) String name,
-                             @RequestParam(value = "wxId",required = true) String wxId,
-                             @RequestParam(value = "mobile",required = true) String mobile
-    ) throws Exception {
+                             @RequestParam(value = "applyName",required = true) String applyName,
+                             @RequestParam(value = "wxCode",required = true) String wxCode,
+                             @RequestParam(value = "mobile",required = true) String mobile,
+                             @RequestParam(value = "skuId",required = true) Integer skuId
+    ){
         JSONObject object = new JSONObject();
         try{
             ComUser comUser = getComUser(request);
@@ -307,8 +305,8 @@ public class ProductController extends BaseController {
             pfUserAgentApplication.setCreateMan(comUser.getId());
             pfUserAgentApplication.setCreateTime(new Date());
             pfUserAgentApplication.setMobile(mobile);
-            pfUserAgentApplication.setName(name);
-            pfUserAgentApplication.setWxId(wxId);
+            pfUserAgentApplication.setName(applyName);
+            pfUserAgentApplication.setWxId(wxCode);
             pfUserAgentApplication.setSkuId(skuId);
             pfUserAgentApplication.setStatus(0);
             pfUserAgentApplication.setRemark("");

@@ -19,5 +19,7 @@ public interface SfUserPromotionRuleMapper {
 
     List<SfUserPromotionRule> selectAll();
 
+    List<SfUserPromotionRule> getPromoRuleByPromoId(Integer promoId);
+
     int updateByPrimaryKey(SfUserPromotionRule record);
 }

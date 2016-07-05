@@ -7,6 +7,7 @@ import com.masiis.shop.dao.platform.material.ComSkuMaterialLibraryMapper;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialMapper;
 import com.masiis.shop.dao.po.ComSkuMaterial;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
+import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,24 +28,37 @@ public class MaterialService {
     @Resource
     private ComSkuMaterialLibraryMapper comSkuMaterialLibraryMapper;
 
-    public void addMaterial(ComSkuMaterial comSkuMaterial) {
-
-    }
-
-    public void addMaterialGroup(ComSkuMaterialGroup comSkuMaterialGroup) {
-        if(comSkuMaterialGroup == null) throw new BusinessException("素材模块数据为空!");
-        if(comSkuMaterialGroup.getMaterialLibraryId() == null) {
-
-        }
+    /**
+     * 加载所有素材库
+     * @return
+     */
+    public List<ComSkuMaterialLibrary> loadAll() {
+        return comSkuMaterialLibraryMapper.selectAll();
     }
 
     /**
-     * 获取所有素材库
+     * 保存素材库
+     * @param comSkuMaterialLibrary
+     */
+    public void saveMaterialLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
+        comSkuMaterialLibraryMapper.insert(comSkuMaterialLibrary);
+    }
+
+    /**
+     * 保存素材组
+     * @param comSkuMaterialGroup
+     */
+    public void saveMaterialGroup(ComSkuMaterialGroup comSkuMaterialGroup) {
+        comSkuMaterialGroupMapper.insert(comSkuMaterialGroup);
+    }
+
+    /**
+     * 获取所有素材库(包含素材组)
      * @return
      */
     public List<MaterialLibrary> listAllLibrary() {
 
-        //List<MaterialLibrary> materialLibraries = comSkuMaterialLibraryMapper.selectByCondition(null);
-        return null;
+        List<MaterialLibrary> materialLibraries = comSkuMaterialGroupMapper.selectMaterialLibrary();
+        return materialLibraries;
     }
 }

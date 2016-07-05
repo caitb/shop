@@ -152,6 +152,7 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity());
             }
+
             //统计更新信息
             updateStatistics(order,orderItems);
             //更新小铺用户结算中信息
@@ -563,7 +564,7 @@ public class SfOrderPayService {
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems", orderItems);
-            //获得用户的分销关系的父id
+            //获得购买人的分销关系并更新是否在小铺中购买isbuy字段
             Long userPid = getUserPid(order.getUserId(),order.getShopId());
             map.put("userPid", userPid);
         } catch (Exception e) {
@@ -603,7 +604,7 @@ public class SfOrderPayService {
     }
 
     /**
-     * 获得购买人的分销关系
+     * 获得购买人的分销关系并更新是否在小铺中购买isbuy字段
      *
      * @author hanzengzhi
      * @date 2016/4/14 16:29
@@ -613,6 +614,14 @@ public class SfOrderPayService {
         if (userRelation == null) {
             throw new BusinessException("支付成功后获得分销关系为null");
         } else {
+            userRelation.setIsBuy(1);
+            int i = sfUserRelationService.updateUserRelation(userRelation);
+            if (i==1){
+                log.info("更新是否在小铺中购买过成功");
+            }else{
+                log.info("更新是否在小铺中购买过失败");
+                throw new BusinessException("更新是否在小铺中购买过失败");
+            }
             return userRelation.getUserPid();
         }
     }

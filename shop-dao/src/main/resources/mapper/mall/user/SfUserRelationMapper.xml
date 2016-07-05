@@ -12,6 +12,17 @@
         <result column="is_buy" property="isBuy" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="DistributionResultMap" type="com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo">
+        <result column="wxName" property="wxName" jdbcType="VARCHAR"/>
+        <result column="headImg" property="headImg" jdbcType="VARCHAR"/>
+        <result column="ID" property="ID" jdbcType="VARCHAR"/>
+        <result column="sopkenMan" property="sopkenMan" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="userLevel" property="userLevel" jdbcType="INTEGER"/>
+        <result column="shopId" property="shopId" jdbcType="BIGINT"/>
+        <result column="isBuy" property="isBuy" jdbcType="INTEGER"/>
+    </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from sf_user_relation
@@ -99,5 +110,33 @@
         select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
         where user_id = #{userId} and shop_id = #{shopId}
+    </select>
+
+    <select id="selectFansPageView" resultMap="DistributionResultMap">
+        select * from (
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 3 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where 1=1
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
+        </if>
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        order by t.createTime desc
+    </select>
+
+    <select id="selectFansNumGroupByLevel" resultType="java.util.HashMap">
+        select count(*) as num,userLevel from (
+        select 1 as userLevel from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t group by t.userLevel;
     </select>
 </mapper>

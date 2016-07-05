@@ -171,7 +171,7 @@ public class SkuService {
      * sku 详细信息
      * jjh
      */
-    public SkuInfo getSkuInfoBySkuId(Long shopId, Integer skuId) throws Exception {
+    public SkuInfo getSkuInfoBySkuId(Long shopId, Integer skuId,Integer isOwnShip) throws Exception {
         SkuInfo skuInfo = new SkuInfo();
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (comSku != null) {
@@ -198,7 +198,7 @@ public class SkuService {
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
         if (pfUserSkuStock != null && sfShop != null) {
-            if (shopUser.getSendType() == 1) {//平台代发
+            if (isOwnShip == 0) {//平台代发
                 skuInfo.setShipAmount(sfShop.getShipAmount());
                 int currentStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
                 if(currentStock>=0){
@@ -207,10 +207,9 @@ public class SkuService {
                     skuInfo.setStock(0);
                 }
             }
-            if (shopUser.getSendType() == 2) {//自己发货
+            if (isOwnShip == 1) {//自己发货
                 skuInfo.setStock(pfUserSkuStock.getCustomStock());
             }
-
         }
         return skuInfo;
     }

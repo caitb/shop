@@ -36,7 +36,8 @@ public class ManageProductController extends BaseController {
      * jjh
      * 加载初始化小铺商品列表
      * @param request
-     * @param response
+     * @param paging
+     * @param pageTotalCount
      * @param shopId
      * @param isSale
      * @param deliverType 0:平台发货，1: 自己发货 null :全部
@@ -44,17 +45,26 @@ public class ManageProductController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/managePro.htmls")
-    public ModelAndView manageShopProduct(HttpServletRequest request, HttpServletResponse response,
-                                         @RequestParam(value="shopId",required = true) Long shopId,
-                                         @RequestParam(value="isSale",required = true) Integer isSale,
-                                         @RequestParam(value="deliverType",required = true) Integer deliverType) throws Exception{
-            ModelAndView mav = new ModelAndView("/platform/product/shop_product");
-            ComUser comUser = getComUser(request);
-            List<SkuInfo> skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(),deliverType);
-            mav.addObject("skuInfoList", skuInfoList);
-            mav.addObject("comUser", comUser);
-            mav.addObject("shopId", shopId);
-            return mav;
+    public ModelAndView manageShopProduct(HttpServletRequest request,
+                                          @RequestParam(value = "shopId", required = true) Long shopId,
+                                          @RequestParam(value = "isSale", required = true) Integer isSale,
+                                          @RequestParam(value = "deliverType", required = true) Integer deliverType,
+                                          @RequestParam(value = "paging", required = true) String paging,
+                                          @RequestParam(value = "pageTotalCount", required = true) String pageTotalCount) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/product/shop_product");
+        ComUser comUser = getComUser(request);
+        List<SkuInfo> skuInfoList = null;
+        if (paging.equals("Y")) { //执行分页查询
+            int pageSize = 5; //ajax请求时默认每页显示条数为5条
+            int currentPage = Integer.valueOf(pageTotalCount) / pageSize == 0 ? Integer.valueOf(pageTotalCount) / pageSize + 1 : Integer.valueOf(pageTotalCount) / pageSize + 2;
+            skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+        } else {//执行正常查询
+            skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, 0, 0);
+        }
+        mav.addObject("skuInfoList", skuInfoList);
+        mav.addObject("comUser", comUser);
+        mav.addObject("shopId", shopId);
+        return mav;
     }
 
     /**
@@ -96,12 +106,21 @@ public class ManageProductController extends BaseController {
     public String deliverProductSale(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(value="shopId",required = true) Long shopId,
                                     @RequestParam(value="isSale",required = true) Integer isSale,
-                                    @RequestParam(value="deliverType",required = true) Integer deliverType
+                                    @RequestParam(value="deliverType",required = true) Integer deliverType,
+                                    @RequestParam(value = "paging",required = true) String paging,
+                                    @RequestParam(value = "pageTotalCount",required = true) String pageTotalCount
     ){
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
-            List<SkuInfo> skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(),deliverType);
+            List<SkuInfo> skuInfoList = null;
+            if (paging.equals("Y")) { //执行分页查询
+                int pageSize = 5; //ajax请求时默认每页显示条数为5条
+                int currentPage = Integer.valueOf(pageTotalCount) / pageSize == 0 ? Integer.valueOf(pageTotalCount) / pageSize + 1 : Integer.valueOf(pageTotalCount) / pageSize + 2;
+                skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+            } else {//执行正常查询
+                skuInfoList = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, 0, 0);
+            }
             object.put("isError", false);
             object.put("skuInfoList",skuInfoList);
         }catch (Exception ex){

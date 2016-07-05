@@ -93,12 +93,9 @@
                         <form class="form-horizontal" role="form" id="skuForm">
 
                             <div class="form-group">
-                                <label for="materialLibrary" class="col-sm-2 control-label">素材库</label>
+                                <label for="lId" class="col-sm-2 control-label">素材库</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="materialLibrary" name="brandId">
-                                        <c:forEach items="${brands}" var="brand">
-                                            <option value="${brand.id}">${brand.cname}</option>
-                                        </c:forEach>
+                                    <select class="form-control" id="lId" name="lId">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
@@ -108,16 +105,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="materialGroup" class="col-sm-2 control-label">素材组</label>
+                                <label for="gId" class="col-sm-2 control-label">素材组</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="materialGroup" name="brandId">
-                                        <c:forEach items="${brands}" var="brand">
-                                            <option value="${brand.id}">${brand.cname}</option>
-                                        </c:forEach>
+                                    <select class="form-control" id="gId" name="gId">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <a href="#modal-group" role="button" class="btn btn-success" data-toggle="modal">添加素材组</a>
+                                    <button class="btn btn-success" id="addGroup" type="button">添加素材组</button>
                                 </div>
                             </div>
 
@@ -171,9 +165,9 @@
                                         <form class="form-horizontal" role="form" id="library">
 
                                             <div class="form-group">
-                                                <label for="materialLibrary" class="col-sm-3 control-label">商品名称</label>
+                                                <label for="sku" class="col-sm-3 control-label">商品名称</label>
                                                 <div class="col-sm-6">
-                                                    <select class="form-control" id="sku" name="sku">
+                                                    <select class="form-control" id="sku" name="skuId">
                                                     </select>
                                                 </div>
                                             </div>
@@ -181,7 +175,7 @@
                                             <div class="form-group">
                                                 <label for="title" class="col-sm-3 control-label">标题</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control" id="lName" name="name" placeholder="标题">
+                                                    <input type="text" class="form-control" id="lName" name="lName" placeholder="标题">
                                                 </div>
                                             </div>
                                         </form>
@@ -189,11 +183,10 @@
 
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-4">
-                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                                            <button class="btn btn-sm btn-danger pull-left" id="cancelSave" type="button" data-dismiss="modal">
                                                 取消
                                             </button>
-                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                                            <button class="btn btn-sm btn-info pull-left" id="saveLibrary" type="button">
                                                 保存
                                             </button>
                                         </div>
@@ -210,28 +203,39 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">×</span>
                                             </button>
-                                            添加素材库
+                                            添加素材组
                                         </div>
                                     </div>
 
                                     <div class="modal-body no-padding">
-                                        <form class="form-horizontal" role="form" id="library">
+                                        <form class="form-horizontal" role="form" id="group">
 
                                             <div class="form-group">
-                                                <label for="materialLibrary" class="col-sm-3 control-label">商品名称</label>
+                                                <label for="libraryId" class="col-sm-3 control-label">素材库</label>
                                                 <div class="col-sm-6">
-                                                    <select class="form-control" id="libraryId" name="brandId">
-                                                        <c:forEach items="${brands}" var="brand">
-                                                            <option value="${brand.id}">${brand.cname}</option>
-                                                        </c:forEach>
+                                                    <select class="form-control" id="libraryId" name="libraryId">
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="title" class="col-sm-3 control-label">标题</label>
+                                                <label for="gName" class="col-sm-3 control-label">标题</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control" id="lName" name="name" placeholder="标题">
+                                                    <input type="text" class="form-control" id="gName" name="gName" placeholder="标题">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="gName" class="col-sm-3 control-label">显示位置</label>
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="isBShow" value="1" type="checkbox" class="ace">
+                                                        <span class="lbl"> B端 </span>
+                                                    </label>
+                                                    <label>
+                                                        <input name="isCShow" value="1" type="checkbox" class="ace">
+                                                        <span class="lbl"> C端 </span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </form>
@@ -239,11 +243,10 @@
 
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-4">
-                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                                            <button class="btn btn-sm btn-danger pull-left" type="button" data-dismiss="modal">
                                                 取消
                                             </button>
-                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                                            <button class="btn btn-sm btn-info pull-left" id="saveGroup" type="button">
                                                 保存
                                             </button>
                                         </div>
@@ -343,6 +346,11 @@
 </script>
 </body>
 <script>
+    var librarys = null;
+    $(function(){
+        loadGroup('#lId', '#gId');
+    });
+    //添加素材库
     $('#addLibrary').on('click', function(){
         $.ajax({
             url: '<%=basePath%>material/loadSku.do',
@@ -350,7 +358,7 @@
                 data = window.eval('('+data+')');
                 var sHtml = '';
                 for(var i in data){
-                    sHtml += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                    sHtml += '<option value="'+data[i].id+','+data[i].spuId+'">'+data[i].name+'</option>';
                 }
                 $('#sku').html(sHtml);
                 $('#modal-library').modal('show');
@@ -359,6 +367,116 @@
                 alert(msg);
             }
         });
+    });
+
+    //添加素材组
+    $('#addGroup').on('click', function(){
+        loadLibrary('#libraryId');
+    });
+
+    function loadLibrary(selector) {
+        $.ajax({
+            url: '<%=basePath%>material/loadLibrary.do',
+            success: function(data) {
+                data = window.eval('('+data+')');
+                var sHtml = '';
+                for(var i in data){
+                    sHtml += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                }
+                $(selector).html(sHtml);
+            },
+            error: function(msg) {
+                alert(msg);
+            }
+        });
+    }
+
+    function loadGroup(lSelector, gSelector) {
+        $.ajax({
+            url: '<%=basePath%>material/loadGroup.do',
+            success: function(data) {
+                data = window.eval('('+data+')');
+                librarys = data;
+                var libraryHtml = '';
+                var groupHtml   = '';
+                for(var i in data){
+                    libraryHtml += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                }
+                for(var i in data[0].materialGroups){
+                    groupHtml += '<option value="'+data[0].materialGroups[i].id+'">'+data[0].materialGroups[i].name+'</option>';
+                }
+
+                $(lSelector).html(libraryHtml);
+                $(gSelector).html(groupHtml);
+            }
+        })
+    }
+
+    //保存素材库
+    $('#saveLibrary').on('click', function(){
+        var skuId = $('#library select').val().split(',')[0];
+        var spuId = $('#library select').val().split(',')[1];
+        var name  = $('#library input[name="lName"]').val();
+
+        $.ajax({
+            url: '<%=basePath%>material/saveLibrary.do',
+            data: {skuId: skuId, spuId: spuId, name: name},
+            type: 'post',
+            success: function (result) {
+                result = window.eval('('+result+')');
+                if(result.code == 'success'){
+                    loadGroup('#lId', '#gId');
+                    $('#modal-library').modal('hide');
+                }
+
+                $.gritter.add({
+                    title: '消息',
+                    text: result.msg,
+                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                });
+            }
+        })
+    });
+
+    //保存素材组
+    $('#saveGroup').on('click', function(){
+        var libraryId = $('#group select').val();
+        var name      = $('#group input[name="gName"]').val();
+        var isBShow   = $('#group input[name="isBShow"]:checked').val();
+            isBShow   = isBShow ? isBShow : 0;
+        var isCShow   = $('#group input[name="isCShow"]:checked').val();
+            isCShow   = isCShow ? isCShow : 0;
+
+        $.ajax({
+            url: '<%=basePath%>material/saveGroup.do',
+            data: {materialLibraryId: libraryId, name: name, isBShow: isBShow, isCShow: isCShow},
+            type: 'post',
+            success: function(result) {
+                result = window.eval('('+result+')');
+                if(result.code == 'success'){
+                    loadGroup('#lId', '#gId');
+                    $('#modal-group').modal('hide');
+                }
+
+                $.gritter.add({
+                    title: '消息',
+                    text: result.msg,
+                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                });
+            }
+        })
+    });
+
+    $('#lId').change(function(){
+        var lId = $(this).val();
+        var groupHtml = '';
+        for(var l in librarys){
+            if(lId == librarys[l].id){
+                for(var g in librarys[l].materialGroups)
+                groupHtml += '<option value="'+librarys[l].materialGroups[g].id+'">'+librarys[l].materialGroups[g].name+'</option>';
+            }
+        }
+        $('#gId').html(groupHtml);
     });
 </script>
 </html>

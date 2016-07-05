@@ -1,9 +1,20 @@
 package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfUserPromotionGiftMapper;
+import com.masiis.shop.dao.po.ComGift;
+import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.SfUserPromotionGift;
+import com.masiis.shop.web.common.service.ComGiftService;
+import com.masiis.shop.web.common.service.SkuService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 商城用户活动奖励表service
@@ -11,6 +22,35 @@ import javax.annotation.Resource;
 @Service
 public class SfUserPromotionGiftService {
 
+    private Log log = LogFactory.getLog(this.getClass());
+
     @Resource
     private SfUserPromotionGiftMapper sfUserPromotionGiftMapper;
+    @Resource
+    private ComGiftService comGiftService;
+
+
+    public List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(Integer promoId,Integer promoRuleId){
+        return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
+    }
+
+    public List<PromotionGiftInfo>  getPromoGiftInfoByPromoIdAndRuleId(Integer promoId,Integer promoRuleId,Boolean isGetImage){
+        List<SfUserPromotionGift> promoGifts =  getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
+        List<PromotionGiftInfo> detailInfos = new ArrayList<>();
+        for (SfUserPromotionGift promoGift : promoGifts){
+            log.info("获得奖品信息-----奖品id-----"+promoGift.getGiftValue());
+            ComGift comGift = comGiftService.getComGiftById(promoGift.getGiftValue());
+            PromotionGiftInfo giftInfo = new PromotionGiftInfo();
+            if (comGift!=null&&comGift.getStatus()==1){
+                giftInfo.setPromoGiftId(promoGift.getId());
+                giftInfo.setGiftId(comGift.getId());
+                giftInfo.setGiftName(comGift.getName());
+                giftInfo.setGiftQuantity(promoGift.getQuantity());
+            }else{
+                log.info("奖品为null或者奖品失效");
+            }
+            detailInfos.add(giftInfo);
+        }
+        return detailInfos;
+    }
 }

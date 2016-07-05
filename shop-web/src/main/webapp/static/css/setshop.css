@@ -2,44 +2,47 @@
 * {
   color: #333;
 }
-main {
+.wrap {
+  padding-bottom: 20px;
+}
+.wrap main {
   background: #fff;
   padding-bottom: 1px;
 }
-main .floor {
+.wrap main .floor {
   display: -webkit-box;
   position: relative;
   margin: 0 30px 20px 10px;
   -webkit-box-pack: justify;
   padding: 10px 0;
 }
-main .floor p {
+.wrap main .floor p {
   width: 90px;
 }
-main .floor input,
-main .floor textarea {
+.wrap main .floor input,
+.wrap main .floor textarea {
   display: block;
   -webkit-box-flex: 1;
   background: #F5F5F5;
   border: 1px solid #D2D2D2;
   height: 25px;
 }
-main .floor textarea {
+.wrap main .floor textarea {
   height: 80px;
 }
-main .floor h1 {
+.wrap main .floor h1 {
   position: absolute;
   bottom: -10px;
   right: 0;
   color: #666;
   font-size: 12px;
 }
-main .floor2 {
+.wrap main .floor2 {
   display: -webkit-box;
   margin: 20px 30px 40px 10px;
   position: relative;
 }
-main .floor2 h1 {
+.wrap main .floor2 h1 {
   position: absolute;
   left: 90px;
   bottom: -29px;
@@ -47,10 +50,10 @@ main .floor2 h1 {
   text-decoration: underline;
   color: #666;
 }
-main .floor2 p {
+.wrap main .floor2 p {
   width: 90px;
 }
-main .floor2 label {
+.wrap main .floor2 label {
   display: block;
   border: 1px solid #D2D2D2;
   border-radius: 4px;
@@ -58,32 +61,33 @@ main .floor2 label {
   box-shadow: 0px 1px 6px -2px rgba(0, 0, 0, 0.4);
   position: relative;
 }
-main .floor2 label img {
+.wrap main .floor2 label img {
   width: 70px;
 }
-main .floor2 label b {
+.wrap main .floor2 label b {
   position: absolute;
   color: #999;
-  right: -70px;
+  left: 100px;
+  width: 60px;
   font-size: 12px;
 }
-main .floor2 input {
+.wrap main .floor2 input {
   display: none;
 }
-.zhu {
+.wrap .zhu {
   display: -webkit-box;
   padding: 10px;
 }
-.zhu p {
+.wrap .zhu p {
   color: #F74A11;
   font-size: 12px;
 }
-.zhu h1 {
+.wrap .zhu h1 {
   -webkit-box-flex: 1;
   color: #666;
   font-size: 12px;
 }
-button {
+.wrap button {
   background: #f74a11;
   display: block;
   width: 80%;

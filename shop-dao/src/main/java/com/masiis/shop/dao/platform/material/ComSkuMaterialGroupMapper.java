@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.material;
 
 
+import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ComSkuMaterialGroupMapper {
     List<ComSkuMaterialGroup> selectAll();
 
     int updateByPrimaryKey(ComSkuMaterialGroup record);
+
+    List<MaterialLibrary> selectMaterialLibrary();
 }

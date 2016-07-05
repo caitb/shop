@@ -353,9 +353,11 @@
                                     <tr>
                                         <th>商品名称</th>
                                         <th>货号</th>
-                                        <th>商品属性</th>
+                                        <th>代理等级</th>
+                                        <%--<th>商品属性</th>--%>
                                         <th>市场价</th>
                                         <th>购买价格</th>
+                                        <th>代理门槛</th>
                                         <th>购买数量</th>
                                         <th>小计</th>
                                     </tr>
@@ -366,9 +368,11 @@
                                         <tr>
                                             <td>${product.comSku.name}</td>
                                             <td>${product.comSpu.artNo}</td>
-                                            <td>-</td>
+                                            <td>${product.comAgentLevel.name}</td>
+                                            <%--<td>-</td>--%>
                                             <td>${product.comSku.priceMarket}</td>
                                             <td>${order.pfBorderItems[0].unitPrice}</td>
+                                            <td>${product.pfSkuAgent.getUnitPrice().multiply(product.pfSkuAgent.getQuantity()).add(product.pfSkuAgent.getBail())}</td>
                                             <td>${order.pfBorderItems[0].quantity}</td>
                                             <td>${order.pfBorder.productAmount}</td>
                                         </tr>

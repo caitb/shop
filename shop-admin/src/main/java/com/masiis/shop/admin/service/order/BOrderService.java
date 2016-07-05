@@ -16,6 +16,7 @@ import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
@@ -59,6 +60,8 @@ public class BOrderService {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
 
     public int updatePfBorder(PfBorder pfBorder){
@@ -103,6 +106,7 @@ public class BOrderService {
         List<Order> orders = new ArrayList<>();
         for (PfBorder pbo : pfBorders) {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
+            ComUser pUser   = comUserMapper.selectByPrimaryKey(pbo.getUserPid());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
             PfBorderPayment pfBorderPayment = new PfBorderPayment();
             pfBorderPayment.setPfBorderId(pbo.getId());
@@ -116,6 +120,7 @@ public class BOrderService {
             Order order = new Order();
             order.setPfBorder(pbo);
             order.setComUser(comUser);
+            order.setpUser(pUser);
             order.setPfBorderConsignee(pfBorderConsignee);
             order.setPfBorderPayments(pfBorderPayments);
             order.setPfBorderItems(pfBorderItems);
@@ -147,10 +152,14 @@ public class BOrderService {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSku comSku = comSkuMapper.selectById(pfBorderItem.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(pfBorderItem.getSpuId());
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItem.getAgentLevelId());
+            PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
 
             ProductInfo productInfo = new ProductInfo();
             productInfo.setComSku(comSku);
             productInfo.setComSpu(comSpu);
+            productInfo.setComAgentLevel(comAgentLevel);
+            productInfo.setPfSkuAgent(pfSkuAgent);
 
             productInfos.add(productInfo);
         }

@@ -22,6 +22,10 @@ public class SfUserRelationService {
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
 
+    public int updateUserRelation(SfUserRelation userRelation){
+        return sfUserRelationMapper.updateByPrimaryKey(userRelation);
+    }
+
     /**
      * 根据userId获得分销账户关系
      * @author hanzengzhi

@@ -83,7 +83,7 @@
         </nav>
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
-            <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>预览商店</span></p>
+            <p onclick="clickShow()"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>运费设置</span></p>
             <p style="background: #EEEEEE;border: none;"></p>
         </nav>
 </div>

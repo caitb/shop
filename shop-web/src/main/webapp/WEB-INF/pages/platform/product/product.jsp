@@ -336,7 +336,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data.isError == false) {
-                    alert("您的申请已经提交，稍后会有客服与您取得联系");
+                    alert("您的申请已经提交，请耐心等待");
                     $(".black").hide();
                 }
             }

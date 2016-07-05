@@ -262,14 +262,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="priceRetail" class="col-sm-2 control-label">推荐人奖励单价</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="rewardUnitPrice" name="rewardUnitPrice"
-                                           placeholder="推荐人奖励单价">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label">是否允许试用</label>
                                 <div class="col-sm-9">
                                     <div class="radio">
@@ -324,7 +316,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -336,7 +328,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -348,13 +340,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="bails">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main" id="rewardUnitPrice">
 
                                                 </div>
                                             </div>
@@ -692,6 +696,7 @@
         var quantitys = '';
         var bails     = '';
         var totalPrices = '';
+        var rewardUnitPrice = '';
         for(var i=0; i<agentLevels.length; i++){
             if(i>levelCount){
                 break;
@@ -727,12 +732,23 @@
                                     </div>';
 
             totalPrices += '<input type="hidden" name="totalPrices" value="" />';
+
+            rewardUnitPrice    +=   '<div> \
+                                        <label for="rewardUnitPrice"> \
+                                            推荐人奖励单价 \
+                                        </label> \
+                                        <div> \
+                                            <input type="text" class="form-control" id="rewardUnitPrice" name="rewardUnitPrices" placeholder="推荐人奖励单价"> \
+                                        </div> \
+                                        &nbsp; \
+                                    </div>';
         }
 
         $('#unitPrices').append(unitPrices);
         $('#unitPrices').append(totalPrices);
         $('#quantitys').append(quantitys);
         $('#bails').append(bails);
+        $('#rewardUnitPrice').append(rewardUnitPrice);
     }
 
 

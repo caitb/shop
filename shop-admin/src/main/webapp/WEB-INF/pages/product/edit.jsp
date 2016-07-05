@@ -290,14 +290,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="priceRetail" class="col-sm-2 control-label">推荐人奖励单价</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="rewardUnitPrice" name="rewardUnitPrice" value="${productInfo.comSku.rewardUnitPrice}"
-                                           placeholder="推荐人奖励单价">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label">是否允许试用</label>
                                 <div class="col-sm-9">
                                     <div class="radio">
@@ -351,7 +343,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -376,7 +368,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -398,7 +390,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -412,6 +404,28 @@
                                                             </label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="advancedBail" name="bails" value="${pfSkuAgent.bail}" placeholder="">
+                                                            </div>
+                                                            &nbsp;
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main">
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                        <div>
+                                                            <label for="advancedBail">
+                                                                推荐人奖励单价
+                                                            </label>
+                                                            <div>
+                                                                <input type="text" class="form-control" id="rewardUnitPrices" name="rewardUnitPrices" value="${pfSkuAgent.rewardUnitPrice}" placeholder="">
                                                             </div>
                                                             &nbsp;
                                                         </div>

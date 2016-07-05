@@ -229,7 +229,7 @@ public class UserService {
      * @author muchaofeng
      * @date 2016/4/12 12:03
      */
-    public void getShareUser(Long userId, Long userPid) {
+    public void getShareUser(Long userId, Long userPid,Long shopId) {
         if (userPid == null) {
             userPid = 0l;
         }
@@ -238,9 +238,9 @@ public class UserService {
             return;
         }
         //获取自己的分销关系
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
         //获取上级分销关系
-        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPid);
+        SfUserRelation sfUserPRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
         if (sfUserRelation == null) { //来自于分享链接
             SfUserRelation sfNewUserRelation = new SfUserRelation();
             sfNewUserRelation.setCreateTime(new Date());

@@ -128,9 +128,9 @@ public class WxEventService {
         ComUser user = scanEventUserSignUp(body);
         if(param.getfUserId().longValue() != 0) {
             // 绑定分销关系
-            userService.getShareUser(user.getId(), param.getfUserId());
+            userService.getShareUser(user.getId(), param.getfUserId(),param.getShopId());
         } else {
-            SfUserRelation relation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
+            SfUserRelation relation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(user.getId(),param.getShopId());
             if(relation == null){
                 SfUserRelation sfNewUserRelation = new SfUserRelation();
                 sfNewUserRelation.setCreateTime(new Date());

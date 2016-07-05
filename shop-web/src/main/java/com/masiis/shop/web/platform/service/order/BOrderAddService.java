@@ -81,12 +81,12 @@ public class BOrderAddService {
         BigDecimal retailPrice = BigDecimal.ZERO;//微信零售价
         BigDecimal bailPrice = BigDecimal.ZERO;//代理保证金
         Integer quantity = 0;//数量
-        Integer agentLevelId = 0;//代理等级
-        String weiXinId = "";
+        Integer agentLevelId;//代理等级
+        String weiXinId;
         ComSku comSku = skuService.getSkuById(bOrderAdd.getSkuId());
         retailPrice = comSku.getPriceRetail();
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getUserId(), comSku.getId());
-        if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
+        if (bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
             agentLevelId = bOrderAdd.getApplyAgentLevel();
             weiXinId = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId()).getWxId();
             logger.info("------升级流程-----获得期望升级的等级--------" + agentLevelId);
@@ -104,7 +104,7 @@ public class BOrderAddService {
         logger.info("agentLevelId------" + agentLevelId);
         logger.info("weiXinId------" + weiXinId);
         //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是推荐人的上级
-        Long recommendUserId = 0l;
+        Long recommendUserId = 0L;
         PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
         if (bOrderAdd.getpUserId() != 0 && bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {
             if (_parentPfUserSku.getAgentLevelId().equals(bOrderAdd.getAgentLevelId())) {
@@ -131,7 +131,7 @@ public class BOrderAddService {
             logger.info("新代理保证金-------" + pfSkuAgent.getBail());
             logger.info("旧代理保证金-------" + oldPfSkuAgent.getBail());
             bailChange = pfSkuAgent.getBail().subtract(oldPfSkuAgent.getBail());
-            if (bailChange.compareTo(BigDecimal.ZERO)<0){
+            if (bailChange.compareTo(BigDecimal.ZERO) < 0) {
                 logger.info("升级保证金不能为负数");
                 throw new BusinessException("升级保证金不能为负数");
             }
@@ -153,7 +153,7 @@ public class BOrderAddService {
         //商品总金额=商品微信销售价*折扣*数量
         BigDecimal productAmount = unitPrice.multiply(BigDecimal.valueOf(quantity));
         //订单总金额=商品总金额+保证金+运费
-        BigDecimal orderAmount = BigDecimal.ZERO;
+        BigDecimal orderAmount;
         if (bOrderAdd.getOrderType() == 3) {
             orderAmount = productAmount.add(bailChange).add(bOrderAdd.getShipAmount());
             pfBorder.setBailAmount(bailChange);
@@ -205,7 +205,6 @@ public class BOrderAddService {
             PfBorderRecommenReward pfBorderRecommenReward = null;
             PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
             if (pfUserRecommenRelation != null && pfUserRecommenRelation.getPid() > 0) {
-                PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 pfBorderRecommenReward = new PfBorderRecommenReward();
                 pfBorderRecommenReward.setCreateTime(new Date());
                 pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
@@ -213,12 +212,11 @@ public class BOrderAddService {
                 pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
                 pfBorderRecommenReward.setRecommenUserId(pfUserRecommenRelation.getUserPid());
                 pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
-                pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
+                pfBorderRecommenReward.setRewardUnitPrice(pfSkuAgent.getRewardUnitPrice());
                 pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
                 pfBorderRecommenReward.setRemark("已经有了推荐关系的奖励");
             } else {
                 if (recommendUserId > 0 && !recommendUserId.equals(pfBorder.getUserPid())) {
-                    PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                     pfBorderRecommenReward = new PfBorderRecommenReward();
                     pfBorderRecommenReward.setCreateTime(new Date());
                     pfBorderRecommenReward.setPfBorderId(pfBorder.getId());
@@ -226,7 +224,7 @@ public class BOrderAddService {
                     pfBorderRecommenReward.setSkuId(pfBorderItem.getSkuId());
                     pfBorderRecommenReward.setRecommenUserId(recommendUserId);
                     pfBorderRecommenReward.setQuantity(pfBorderItem.getQuantity());
-                    pfBorderRecommenReward.setRewardUnitPrice(parentPfUserSku.getRewardUnitPrice());
+                    pfBorderRecommenReward.setRewardUnitPrice(pfSkuAgent.getRewardUnitPrice());
                     pfBorderRecommenReward.setRewardTotalPrice(pfBorderRecommenReward.getRewardUnitPrice().multiply(BigDecimal.valueOf(pfBorderRecommenReward.getQuantity())));
                     pfBorderRecommenReward.setRemark("新建推荐关系的奖励");
                 }
@@ -263,7 +261,7 @@ public class BOrderAddService {
             pfBorderConsignee.setZip(comUserAddress.getZip());
             pfBorderConsigneeMapper.insert(pfBorderConsignee);
         }
-        if (bOrderAdd.getOrderType() == BOrderType.UPGRADE.getCode()) {
+        if (bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
             PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPrimaryKey(bOrderAdd.getUpgradeNoticeId());
             pfUserUpgradeNotice.setStatus(2);//待支付
             pfUserUpgradeNotice.setPfBorderId(pfBorder.getId());
@@ -301,9 +299,9 @@ public class BOrderAddService {
             throw new BusinessException("发货方式不是平台代发，不能拿货");
         }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级
-        Long pUserId = 0l;//上级代理用户id
-        BigDecimal amount = BigDecimal.ZERO;//订单总金额
-        Long rBOrderId = 0l;//返回生成的订单id
+        Long pUserId = 0L;//上级代理用户id
+        BigDecimal amount;//订单总金额
+        Long rBOrderId;//返回生成的订单id
         //获取上级代理
         PfUserSku paremtUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), pfUserSku.getSkuId());
         if (paremtUserSku != null) {
@@ -358,7 +356,7 @@ public class BOrderAddService {
         logger.info("<2>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
         logger.info("<3>冻结usersku库存 用户加冻结库存存");
-        PfUserSkuStock pfUserSkuStock = null;
+        PfUserSkuStock pfUserSkuStock;
         //冻结usersku库存 用户加冻结库存
         pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
         if (pfUserSkuStock == null) {

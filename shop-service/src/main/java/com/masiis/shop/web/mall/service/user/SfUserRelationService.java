@@ -57,7 +57,7 @@ public class SfUserRelationService {
             return num;
         }else {
             for (SfUserRelation relation : sfUserRelations){
-                num += sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num");
+                num += sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue();
             }
         }
         return num;
@@ -71,7 +71,7 @@ public class SfUserRelationService {
      */
     public Integer getFansNumByUserIdAndShopId(Long userId, Long shopId){
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num");
+        return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue();
     }
 
     /**

@@ -321,16 +321,22 @@ public class SfShopController extends BaseController {
     }
 
     /**
-     * @Author jjh
-     * @Date 2016/4/8 0008 下午 5:50
-     * 商品详情
+     * jjh
+     * c 端 商品详情
+     * @param request
+     * @param response
+     * @param skuId 商品ID
+     * @param shopId 小铺ID
+     * @param isOwnShip 是否自己发货
+     * @return
+     * @throws Exception
      */
     @RequestMapping("/detail.shtml")
     public ModelAndView getSkuDetail(HttpServletRequest request,
                                      HttpServletResponse response,
                                      @RequestParam(value = "skuId", required = true) Integer skuId,
                                      @RequestParam(value = "shopId", required = true) Long shopId,
-                                     @RequestParam(value = "fromUserId", required = false) Long fromUserId) throws Exception {
+                                     @RequestParam(value = "isOwnShip", required = true) Integer isOwnShip) throws Exception {
         SfShop sfShop = sfShopService.getSfShopById(shopId);
         if (sfShop == null) {
             throw new BusinessException("该店铺不存在！");
@@ -343,10 +349,6 @@ public class SfShopController extends BaseController {
         List<ComSkuImage> comSkuImageList = skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);
-        //店铺浏览量
-        if (fromUserId != null) {
-            sfUserShopViewService.addShopView(user.getId(), shopId);
-        }
         //获取店主二维码
         sfShop.setWxQrCode(sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
@@ -356,6 +358,7 @@ public class SfShopController extends BaseController {
         mav.addObject("shopId", shopId);
         mav.addObject("loginUser", user);
         mav.addObject("sfShop", sfShop);
+        mav.addObject("isOwnShip", isOwnShip);
         return mav;
     }
 

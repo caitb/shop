@@ -119,10 +119,15 @@
         <span id="skuName">${skuInfo.comSku.name}</span>
         <span id="price"><b>￥</b>${skuInfo.comSku.priceRetail}</span>
     </p>
-    <%--<h1>--%>
-        <%--<span>库存：</span>--%>
-        <%--<span id="stock">${skuInfo.stock}</span>--%>
-    <%--</h1>--%>
+    <h1>
+        <span>发货类型：</span>
+        <c:if test="${isOwnShip==0}">
+            <span id="isOwnShip">平台发货</span>
+        </c:if>
+        <c:if test="${isOwnShip==1}">
+            <span id="isOwnShip">店主发货</span>
+        </c:if>
+    </h1>
     <h1>
         <span style="float:left">数量：</span>
         <p>
@@ -222,14 +227,17 @@
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
-        var currentStock = $("#stock").text();
-//        if(currentStock-i<0){
-//            alert("可用库存不足！");
-//            $(".shoping").hide();
-//            $(".back").hide();
-//            $(".back_g").hide();
-//            return;
-//        }
+        var isOwnShip = "${isOwnShip}";
+
+        var customerStock = "${}";
+        if(isOwnShip==1){//店主发货
+
+            alert("可用库存不足！");
+            $(".shoping").hide();
+            $(".back").hide();
+            $(".back_g").hide();
+            return;
+        }
         if (i <= 0) {
             alert("请至少购买1件商品！");
             return;

@@ -13,6 +13,32 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="materialGroup" type="com.masiis.shop.dao.beans.material.MaterialGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
+        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <collection property="materialGroups" resultMap="materialGroup" />
+    </resultMap>
+
+
+    <resultMap id="materialLibrary" type="com.masiis.shop.dao.beans.material.MaterialLibrary" >
+        <id column="ml_id" property="id" jdbcType="INTEGER" />
+        <result column="ml_create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="ml_create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="ml_name" property="name" jdbcType="VARCHAR" />
+        <result column="subscription_num" property="subscriptionNum" jdbcType="INTEGER" />
+        <result column="ml_sort" property="sort" jdbcType="INTEGER" />
+        <result column="ml_remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
         delete from com_sku_material_group
         where id = #{id,jdbcType=INTEGER}
@@ -53,6 +79,34 @@
         select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
         sort, remark
         from com_sku_material_group
+    </select>
+
+    <!-- 查询素材库(包含素材组) -->
+    <select id="selectMaterialLibrary" resultMap="materialLibrary">
+        SELECT
+               ml.id                ml_id,
+               ml.create_time       ml_create_time,
+               ml.create_man        ml_create_man,
+               ml.spu_id,
+               ml.sku_id,
+               ml.name              ml_name,
+               ml.subscription_num,
+               ml.sort              ml_sort,
+               ml.remark            ml_remark,
+
+               mg.id,
+               mg.create_time,
+               mg.create_man,
+               mg.material_library_id,
+               mg.name,
+               mg.is_b_show,
+               mg.is_c_show,
+               mg.sort,
+               mg.remark
+        from
+               com_sku_material_library ml
+        LEFT JOIN
+               com_sku_material_group   mg ON mg.material_library_id = ml.id
     </select>
 
 </mapper>

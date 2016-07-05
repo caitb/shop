@@ -35,8 +35,9 @@ public interface SfUserRelationMapper {
 
     /**
      * 通过treecode获取粉丝数量
+     *
      * @param treeCode treeCode
-     * @return  Integer
+     * @return Integer
      */
     Map<String, Integer> selectFansNum(@Param("treeCode") String treeCode);
 
@@ -51,10 +52,13 @@ public interface SfUserRelationMapper {
 
     /**
      * 批量修改树形编码
+     *
      * @param treeCode
      * @param idIndex
      * @param treeLevelDiff
      * @return
      */
     int updateTreeCodes(@Param("treeCode") String treeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
+
+    SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 }

@@ -466,7 +466,7 @@ public class BUpgradePayService {
      * @param pfBorder
      */
     public void saveBOrderSendType(PfBorder pfBorder) {
-        bOrderPayService.saveBOrderSendType(pfBorder);
+//        bOrderPayService.saveBOrderSendType(pfBorder);
     }
 
 

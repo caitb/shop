@@ -68,15 +68,6 @@ public class SfOrderShopService {
 
 
     /**
-     * 获取上级
-     * @author muchaofeng
-     * @date 2016/4/9 17:11
-     */
-    public SfUserRelation findSfUserRelationByUserId(Long userId){
-        return sfUserRelationMapper.getSfUserRelationByUserId(userId);
-    }
-
-    /**
      * 根据订单Id获取订单
      * @author muchaofeng
      * @date 2016/4/9 17:12

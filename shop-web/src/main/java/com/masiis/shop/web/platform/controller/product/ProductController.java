@@ -281,6 +281,7 @@ public class ProductController extends BaseController {
 
     /**
      * jjh
+     * 添加意向
      * @param request
      * @param response
      * @param skuId :商品ID

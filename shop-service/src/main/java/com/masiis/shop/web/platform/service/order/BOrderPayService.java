@@ -543,12 +543,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单已支付,拿货订单");
@@ -774,7 +769,7 @@ public class BOrderPayService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder != null) {
             Integer payStatus = pfBorder.getPayStatus();
-            if (payStatus.equals(BOrderStatus.accountPaid.getCode())) {
+            if (payStatus.equals(1)) {
                 throw new BusinessException("该订单已支付,无需再支付");
             }
             pfBorder.setOrderStatus(status);

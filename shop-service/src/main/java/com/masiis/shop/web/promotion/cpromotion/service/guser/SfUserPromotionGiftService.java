@@ -27,7 +27,7 @@ public class SfUserPromotionGiftService {
         return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
     }
 
-    public List<PromotionGiftInfo>  getPromoGiftInfoByPromoIdAndRuleId(Integer promoId,Integer promoRuleId){
+    public List<PromotionGiftInfo>  getPromoGiftInfoByPromoIdAndRuleId(Integer promoId,Integer promoRuleId,Boolean isGetImage){
         List<SfUserPromotionGift> promoGifts =  getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
         List<PromotionGiftInfo> detailInfos = new ArrayList<>();
         for (SfUserPromotionGift promoGift : promoGifts){

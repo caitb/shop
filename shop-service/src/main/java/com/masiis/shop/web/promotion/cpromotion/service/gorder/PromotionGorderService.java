@@ -2,12 +2,14 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 
 import javax.annotation.Resource;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +38,18 @@ public class PromotionGorderService {
         Map<String,Object> map = new HashMap<String,Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress( selectedAddressId, userId);
         log.info("获取奖品信息-----活动id----"+promoId+"-----规则id-----"+promoRuleId);
-        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId);
+        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,true);
         map.put("address",comUserAddress);
         map.put("gift",promotionGiftInfos);
         return map;
     }
+
+    public void receiveReward(Long addressId,Integer promoId,Integer promoRuleId){
+        //添加订单
+        //添加订单item
+        //添加订单操作日志
+        //添加地址
+    }
+
 
 }

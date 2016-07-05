@@ -76,25 +76,12 @@ public class BOrderSkuStockService {
      */
     public void updateOrderStock(SfOrder sfOrder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
-        PfSkuStock pfSkuStock = null;
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
-        if (sfUserRelation == null) {
-            throw new BusinessException("用户关系异常");
-        }
-        ComUser userPid = comUserMapper.selectByPrimaryKey(sfUserRelation.getUserPid());
-        if (userPid == null) {
-            throw new BusinessException("用户上级为空");
-        }
         for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
-            if (userPid.getId() == 0) {
-                throw new BusinessException("小铺PID不能为0");
+            pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
+            if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
+                pfUserSkuStockService.updateUserSkuStockWithLog(sfOrderItem.getQuantity(), pfUserSkuStock, sfOrder.getId(), UserSkuStockLogType.shopOrder);
             } else {
-                pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
-                if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
-                    pfUserSkuStockService.updateUserSkuStockWithLog(sfOrderItem.getQuantity(), pfUserSkuStock, sfOrder.getId(), UserSkuStockLogType.shopOrder);
-                } else {
-                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
-                }
+                throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
             }
         }
     }

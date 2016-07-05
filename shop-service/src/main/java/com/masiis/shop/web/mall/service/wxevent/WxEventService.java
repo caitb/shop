@@ -126,25 +126,10 @@ public class WxEventService {
 
         // 扫码注册用户
         ComUser user = scanEventUserSignUp(body);
-        if(param.getfUserId().longValue() != 0) {
-            // 绑定分销关系
-            userService.getShareUser(user.getId(), param.getfUserId());
-        } else {
-            SfUserRelation relation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
-            if(relation == null){
-                SfUserRelation sfNewUserRelation = new SfUserRelation();
-                sfNewUserRelation.setCreateTime(new Date());
-                sfNewUserRelation.setUserId(user.getId());
-                sfNewUserRelation.setTreeLevel(1);
-                sfNewUserRelation.setUserPid(0l);
-                sfUserRelationMapper.insert(sfNewUserRelation);
-                String treeCode = sfNewUserRelation.getId() + ",";
-                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
-            }
-        }
-
+        // 绑定分销关系
+        userService.getShareUser(user.getId(), param.getfUserId(), param.getShopId());
         String url = null;
-        if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
+        if (param.getSkuId() != null && param.getSkuId().intValue() != 0) {
             //url = "http://mall.qc.iimai.com/";
         } else {
             url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + param.getShopId() + "/"

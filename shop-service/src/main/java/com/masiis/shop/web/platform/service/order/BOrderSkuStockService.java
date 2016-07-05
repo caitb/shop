@@ -77,7 +77,7 @@ public class BOrderSkuStockService {
     public void updateOrderStock(SfOrder sfOrder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         PfSkuStock pfSkuStock = null;
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
+        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(user.getId(),sfOrder.getShopId());
         if (sfUserRelation == null) {
             throw new BusinessException("用户关系异常");
         }

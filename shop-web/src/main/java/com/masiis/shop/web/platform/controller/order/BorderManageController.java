@@ -62,6 +62,8 @@ public class BorderManageController extends BaseController {
     private PfSupplierBankService pfSupplierBankService;
     @Resource
     private PfBorderConsigneeService pfBorderConsigneeService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
     /**
      * 确认收货
@@ -71,11 +73,11 @@ public class BorderManageController extends BaseController {
      */
     @RequestMapping("/closeDeal.do")
     @ResponseBody
-    public String closeDeal(HttpServletRequest request, @RequestParam(required = true) Long orderId) {
+    public String closeDeal(@RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
             PfBorder border = bOrderService.getPfBorderById(orderId);
-            bOrderService.completeBOrder(border);
+            bOrderShipService.receiptBOrder(border);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -268,11 +270,11 @@ public class BorderManageController extends BaseController {
         for (PfBorder pfBord : pfBorderps) {
             if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorderp0.add(pfBord);//待付款
-            }  else if (pfBord.getOrderStatus() == 6) {
+            } else if (pfBord.getOrderStatus() == 6) {
                 pfBorderp6.add(pfBord);//排单中
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorderp3.add(pfBord);//代发货
-            }else if (pfBord.getOrderStatus() == 8) {
+            } else if (pfBord.getOrderStatus() == 8) {
                 pfBorderp8.add(pfBord);//待收货
             }
         }
@@ -364,24 +366,25 @@ public class BorderManageController extends BaseController {
 
     /**
      * 合伙订单列表
+     *
      * @param request
-     * @param isShipment   进出货(0进货;1出货)
-     * @param orderStatus  订单状态
+     * @param isShipment  进出货(0进货;1出货)
+     * @param orderStatus 订单状态
      * @return
      */
     @RequestMapping("/orderList")
     public ModelAndView orderList(
-                                    HttpServletRequest request,
-                                    @RequestParam(value = "isShipment", required = false, defaultValue = "0")Integer isShipment,
-                                    @RequestParam(value = "orderStatus", required = false)Integer orderStatus
-                                 ) {
+            HttpServletRequest request,
+            @RequestParam(value = "isShipment", required = false, defaultValue = "0") Integer isShipment,
+            @RequestParam(value = "orderStatus", required = false) Integer orderStatus
+    ) {
 
         ModelAndView mav = new ModelAndView("platform/order/orderList");
 
-        Long userId  = null;
+        Long userId = null;
         Long userPid = null;
-        if(isShipment == 0) userId  = getComUser(request).getId();
-        if(isShipment == 1) userPid = getComUser(request).getId();
+        if (isShipment == 0) userId = getComUser(request).getId();
+        if (isShipment == 1) userPid = getComUser(request).getId();
         try {
             if (request.getSession().getAttribute("defaultBank") == null || request.getSession().getAttribute("defaultBank") == "") {
                 PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
@@ -396,7 +399,7 @@ public class BorderManageController extends BaseController {
             mav.addObject("orderStatuses", BOrderStatus.values());
             mav.addObject("orderTypes", BOrderType.values());
         } catch (Exception e) {
-            log.error("查询订单列表失败![userPid="+userPid+"][orderStatus="+orderStatus+"][userId="+userId+"]"+e);
+            log.error("查询订单列表失败![userPid=" + userPid + "][orderStatus=" + orderStatus + "][userId=" + userId + "]" + e);
             e.printStackTrace();
             throw new BusinessException("网络错误", e);
         }
@@ -406,7 +409,8 @@ public class BorderManageController extends BaseController {
 
     /**
      * 获取收货人信息
-     * @param bOrderId  代理订单ID
+     *
+     * @param bOrderId 代理订单ID
      * @return
      */
     @RequestMapping("/getConsignee")
@@ -416,7 +420,7 @@ public class BorderManageController extends BaseController {
         try {
             pfBorderConsignee = pfBorderConsigneeService.getByBOrderId(bOrderId);
         } catch (Exception e) {
-            log.error("获取收货人信息失败![bOrderId="+bOrderId+"]"+e);
+            log.error("获取收货人信息失败![bOrderId=" + bOrderId + "]" + e);
             e.printStackTrace();
         }
 

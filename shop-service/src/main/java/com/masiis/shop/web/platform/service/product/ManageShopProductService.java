@@ -1,5 +1,8 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.druid.support.logging.SLF4JImpl;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +26,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ManageShopProductService {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private SfShopSkuMapper sfShopSkuMapper;
 
@@ -44,9 +48,9 @@ public class ManageShopProductService {
       * @Date 2016/4/13 0013 上午 10:29
       * 小铺中商品列表
       */
-     public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId) throws Exception{
+     public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId,Integer deliverType) throws Exception{
 
-         List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale);
+         List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
          List<SkuInfo> skuInfoList = new ArrayList<>();
          ComUser comUser = ComUserMapper.selectByPrimaryKey(userId);
          if(sfShopSkuList!=null){
@@ -92,5 +96,22 @@ public class ManageShopProductService {
             sfShopSku.setIsSale(isSale);
             sfShopSkuMapper.updateByPrimaryKey(sfShopSku);
         }
+    }
+
+    /**
+     * JJH
+     * @param shopSkuId
+     * @throws Exception
+     */
+    public void addSelfDeliverySku(Long shopSkuId)throws Exception{
+        SfShopSku sfShopSku = sfShopSkuMapper.selectByPrimaryKey(shopSkuId);
+        if (sfShopSku == null) {
+            throw new BusinessException("店铺商品异常");
+        }
+        sfShopSku.setIsOwnShip(1);
+        sfShopSku.setCreateTime(new Date());
+        sfShopSku.setId(null);
+        sfShopSkuMapper.insert(sfShopSku);
+        log.info("--添加自己发货的商品ok");
     }
 }

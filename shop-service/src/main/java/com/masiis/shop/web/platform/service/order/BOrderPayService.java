@@ -236,33 +236,31 @@ public class BOrderPayService {
             shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(comUser.getId(), sfShop.getId());
-        if (sfUserRelation == null) {
-            sfUserRelation = new SfUserRelation();
-            sfUserRelation.setCreateTime(new Date());
-            sfUserRelation.setUserPid(0l);
-            sfUserRelation.setUserId(comUser.getId());
-            sfUserRelation.setTreeLevel(1);
-            sfUserRelation.setRemark("代理人初始分销关系");
-            sfUserRelationMapper.insert(sfUserRelation);
-            String treeCode = sfUserRelation.getId() + ",";
-            sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
-        } else {
-            sfUserRelation.setUserPid(0l);
-            sfUserRelation.setRemark("代理人解除分销关系");
-            int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
-            if (i != 1) {
-                throw new BusinessException("分销关系修改失败");
-            }
-            Long id = sfUserRelation.getId();
-            String treeCode = sfUserRelation.getTreeCode();
-            Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
-            Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
-            i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
-            if (i <= 0) {
-                throw new BusinessException("分销关系树结构修改失败");
-            }
-        }
+        SfUserRelation sfUserRelation = new SfUserRelation();
+        sfUserRelation.setCreateTime(new Date());
+        sfUserRelation.setUserPid(0l);
+        sfUserRelation.setUserId(comUser.getId());
+        sfUserRelation.setShopId(sfShop.getId());
+        sfUserRelation.setIsBuy(0);
+        sfUserRelation.setTreeLevel(1);
+        sfUserRelation.setRemark("代理人初始分销关系");
+        sfUserRelationMapper.insert(sfUserRelation);
+        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
+        sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode);
+//                    sfUserRelation.setUserPid(0l);
+//                    sfUserRelation.setRemark("代理人解除分销关系");
+//                    int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+//                    if (i != 1) {
+//                        throw new BusinessException("分销关系修改失败");
+//                    }
+//                    Long id = sfUserRelation.getId();
+//                    String treeCode = sfUserRelation.getTreeCode();
+//                    Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+//                    Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
+//                    i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
+//                    if (i <= 0) {
+//                        throw new BusinessException("分销关系树结构修改失败");
+//                    }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<7>v1.2处理合伙推荐关系");
             PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
@@ -310,6 +308,7 @@ public class BOrderPayService {
                     sfShopSku.setShopUserId(comUser.getId());
                     sfShopSku.setSpuId(pfBorderItem.getSpuId());
                     sfShopSku.setSkuId(pfBorderItem.getSkuId());
+                    sfShopSku.setIsOwnShip(0);
                     sfShopSku.setIsSale(1);
                     sfShopSku.setAgentLevelId(pfBorderItem.getAgentLevelId());
                     sfShopSku.setBail(pfBorderItem.getBailAmount());
@@ -543,12 +542,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单已支付,拿货订单");
@@ -774,7 +768,7 @@ public class BOrderPayService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder != null) {
             Integer payStatus = pfBorder.getPayStatus();
-            if (payStatus.equals(BOrderStatus.accountPaid.getCode())) {
+            if (payStatus.equals(1)) {
                 throw new BusinessException("该订单已支付,无需再支付");
             }
             pfBorder.setOrderStatus(status);

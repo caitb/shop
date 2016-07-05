@@ -23,7 +23,6 @@
         <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <collection property="materialGroups" resultMap="materialGroup" />
     </resultMap>
 
 
@@ -37,6 +36,7 @@
         <result column="subscription_num" property="subscriptionNum" jdbcType="INTEGER" />
         <result column="ml_sort" property="sort" jdbcType="INTEGER" />
         <result column="ml_remark" property="remark" jdbcType="VARCHAR" />
+        <collection property="materialGroups" resultMap="materialGroup" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

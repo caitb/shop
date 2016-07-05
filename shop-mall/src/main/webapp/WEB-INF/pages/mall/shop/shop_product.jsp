@@ -221,7 +221,6 @@
         }
         validateCodeJS.applyTrial('buy');
     }
-
     function buy(){
         var cartData = {};
         cartData.shopId = "${shopId}";
@@ -229,10 +228,9 @@
         cartData.quantity = i;
         var isOwnShip = "${isOwnShip}";
 
-        var customerStock = "${}";
-        if(isOwnShip==1){//店主发货
-
-            alert("可用库存不足！");
+        var customerStock = "${skuInfo.stock}";
+        if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
+            alert("当前商品为店主发货，可用库存不足！");
             $(".shoping").hide();
             $(".back").hide();
             $(".back_g").hide();

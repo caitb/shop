@@ -346,6 +346,7 @@
 </script>
 </body>
 <script>
+    var librarys = null;
     $(function(){
         loadGroup('#lId', '#gId');
     });
@@ -395,6 +396,7 @@
             url: '<%=basePath%>material/loadGroup.do',
             success: function(data) {
                 data = window.eval('('+data+')');
+                librarys = data;
                 var libraryHtml = '';
                 var groupHtml   = '';
                 for(var i in data){
@@ -423,7 +425,7 @@
             success: function (result) {
                 result = window.eval('('+result+')');
                 if(result.code == 'success'){
-                    loadLibrary('#lId');
+                    loadGroup('#lId', '#gId');
                     $('#modal-library').modal('hide');
                 }
 
@@ -452,7 +454,7 @@
             success: function(result) {
                 result = window.eval('('+result+')');
                 if(result.code == 'success'){
-                    //loadLibrary('#lId');
+                    loadGroup('#lId', '#gId');
                     $('#modal-group').modal('hide');
                 }
 
@@ -463,6 +465,18 @@
                 });
             }
         })
+    });
+
+    $('#lId').change(function(){
+        var lId = $(this).val();
+        var groupHtml = '';
+        for(var l in librarys){
+            if(lId == librarys[l].id){
+                for(var g in librarys[l].materialGroups)
+                groupHtml += '<option value="'+librarys[l].materialGroups[g].id+'">'+librarys[l].materialGroups[g].name+'</option>';
+            }
+        }
+        $('#gId').html(groupHtml);
     });
 </script>
 </html>

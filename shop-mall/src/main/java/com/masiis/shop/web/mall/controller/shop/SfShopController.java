@@ -345,7 +345,7 @@ public class SfShopController extends BaseController {
         if (comSku == null) {
             throw new BusinessException("该Sku不存在！");
         }
-        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
+        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId,isOwnShip);
         List<ComSkuImage> comSkuImageList = skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);

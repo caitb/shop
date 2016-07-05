@@ -49,6 +49,7 @@ public class PromotionGorderService {
         //添加订单item
         //添加订单操作日志
         //添加地址
+        //插入用户活动参与记录表
     }
 
 

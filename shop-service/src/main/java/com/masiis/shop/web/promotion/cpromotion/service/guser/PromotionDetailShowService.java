@@ -6,7 +6,7 @@ import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionRuleInfo;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Transactional
 public class PromotionDetailShowService {
-    private Log log = LogFactory.getLog(this.getClass());
 
+    private Log log = LogFactory.getLog(this.getClass());
 
     @Resource
     private SfUserPromotionService promoService;
@@ -28,9 +28,10 @@ public class PromotionDetailShowService {
     @Resource
     private SfUserPromotionGiftService giftService;
     @Resource
-    private SkuService skuService;
-    @Resource
     private SfUserPromotionRecordService recordService;
+    @Resource
+    private SfUserRelationService userRelationService;
+
 
     private static Integer fansQuantity;
     private static Boolean isMeetPromoRequire = false;
@@ -39,6 +40,8 @@ public class PromotionDetailShowService {
         log.info("获取活动数据----start");
         ComUser comUser = null;
         //获取用户粉丝数
+        fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
+        log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有的活动
         List<SfUserPromotion> userPromotions = promoService.selectAll();
         List<PromotionInfo> promotionInfos = new ArrayList<PromotionInfo>();
@@ -51,9 +54,7 @@ public class PromotionDetailShowService {
             for (SfUserPromotionRule rule : rules){
                 //获取此规则对应的奖品信息
                 log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
-                List<SfUserPromotionGift> promoGifts = giftService.getPromoGiftByPromoIdAndRuleId(userPromotion.getId(),rule.getId());
-                //重新组织礼品信息
-                List<PromotionGiftInfo> giftInfos= generatePromoGiftDetailInfo(promoGifts);
+                List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),false);
                 //生成某个规则信息
                 PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule);
                 if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){
@@ -69,6 +70,7 @@ public class PromotionDetailShowService {
             promotionInfo.setPromoId(userPromotion.getId());
             promotionInfo.setFansQuantity(fansQuantity);
             promotionInfo.setRuleInfos(ruleInfos);
+            promotionInfo.setPresonType(userPromotion.getPersonType());
             promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
             promotionInfos.add(promotionInfo);
         }
@@ -102,23 +104,6 @@ public class PromotionDetailShowService {
             }
         }
         return  ruleInfo;
-    }
-
-    private List<PromotionGiftInfo> generatePromoGiftDetailInfo(List<SfUserPromotionGift> promoGifts){
-        List<PromotionGiftInfo> detailInfos = new ArrayList<>();
-        for (SfUserPromotionGift promoGift : promoGifts){
-            log.info("奖品id-------"+promoGift.getId());
-            ComSku comsku = skuService.getSkuById(promoGift.getGiftValue());
-            PromotionGiftInfo giftDetailInfo = new PromotionGiftInfo();
-            if (comsku!=null){
-                giftDetailInfo.setPromoGiftId(promoGift.getId());
-                giftDetailInfo.setSkuId(comsku.getId());
-                giftDetailInfo.setSkuName(comsku.getName());
-                giftDetailInfo.setSkuQuantity(promoGift.getQuantity());
-            }
-            detailInfos.add(giftDetailInfo);
-        }
-        return detailInfos;
     }
 
 }

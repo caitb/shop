@@ -111,7 +111,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap .box main .all .sec1 .shangpin div {
   -webkit-box-flex: 1;
@@ -159,6 +159,7 @@
 .wrap .box main .all .sec1 h1 b {
   color: #585858;
   font-size: 12px;
+  margin-left: 15px;
 }
 .wrap .box main .all .sec1 .shangpin div p {
   margin: 0 10px 0 0;

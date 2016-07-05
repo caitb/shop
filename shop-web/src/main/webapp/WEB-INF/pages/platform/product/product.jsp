@@ -20,8 +20,10 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:window.location.replace('<%=basePath%>marketGood/market')"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                               alt=""></a>
+            <a href="javascript:window.location.replace('<%=basePath%>marketGood/market')"><img
+                    src="<%=path%>/static/images/xq_rt.png"
+                    alt=""></a>
+
             <p>我要成为合伙人</p>
         </header>
         <div class="banner">
@@ -36,7 +38,9 @@
         </div>
         <div class="price">
             <p style="padding-right:30px">${productDetails.name}</p>
+
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
+
             <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
             </span><span style="color: #999999;float:right;margin:4px 0 0 0;">代理人数：
                 <c:if test="${productDetails.agentNum >9999}">
@@ -47,18 +51,20 @@
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
         <c:choose>
-        <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
-        <div class="dlpople">
-                    <p class="laba" style="margin-right: 10px;"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
+            <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
+                <div class="dlpople">
+                    <p class="laba" style="margin-right: 10px;"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b
+                            class="paidan">?</b>
                     </p>
-                <%--<c:otherwise>--%>
-                    <%--<p><span>${productDetails.stock}件</span></p>--%>
-                <%--</c:otherwise>--%>
-        </div>
-         </c:when>
+                        <%--<c:otherwise>--%>
+                        <%--<p><span>${productDetails.stock}件</span></p>--%>
+                        <%--</c:otherwise>--%>
+                </div>
+            </c:when>
         </c:choose>
         <div class="dlpople">
             <p>运费</p>
+
             <p><span>到付</span></p>
         </div>
         <nav>
@@ -82,11 +88,15 @@
                 <a name="1f">品牌介绍</a></h1>
             <%--<img src="${productDetails.logoUrl}" alt="">--%>
             <p>${productDetails.brand}</p>
+
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;">
                 <a name="2f">商业政策</a></h1>
+
             <p>${productDetails.policy}</p>
+
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;">
                 <a name="3f">商品详情</a></h1>
+
             <p>${productDetails.content}</p>
         </main>
         <div class="fixe">
@@ -110,33 +120,35 @@
 <footer>
     <section class="sec3">
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-      <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
+        <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
             <p>
-                <a class="first_p"onclick="validateCodeJS.applyTrial('trial')"><span>申请试用</span></a>
+                <a class="first_p" onclick="validateCodeJS.applyTrial('trial')"><span>申请试用</span></a>
                 <a class="first_p2"><span>已试用</span></a>
             </p>
         </c:if>
-            <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && empty pfBorder}"><!--未代理,链接进入><-->
-            <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
-            </p>
-            </c:if>
-            <c:if test="${empty pfUserSku && productDetails.isUserByLink==1 && empty pfBorder}"><!--未代理，小白进入><-->
-            <p><a class="last_p" onclick="showDialogOfCommonUser()">申请合伙人</a>
-            </p>
-            </c:if>
-            <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
-            <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
-            </p>
-            </c:if>
-            <c:if test="${not empty pfUserSku && pfUserSku.isPay==1}">
-                <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
-            </c:if>
+        <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && empty pfBorder}"><!--未代理,链接进入><-->
+        <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
+        </p>
+        </c:if>
+        <c:if test="${empty pfUserSku && productDetails.isUserByLink==1 && empty pfBorder}"><!--未代理，小白进入><-->
+        <p><a class="last_p" onclick="showDialogOfCommonUser()">申请合伙人</a>
+        </p>
+        </c:if>
+        <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
+        <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
+        </p>
+        </c:if>
+        <c:if test="${not empty pfUserSku && pfUserSku.isPay==1}">
+            <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
+        </c:if>
     </section>
 </footer>
 <div class="back_box">
     <div class="back_j" style="display: none">
         <span class="close">×</span>
+
         <p class="biao">绑定手机号</p>
+
         <div>
             <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
         </div>
@@ -146,11 +158,13 @@
             </p>
         </div>
         <p class="tishi" id="errorMessageId"></p>
+
         <h1 class="j_qu" id="nextPageId">下一步</h1>
     </div>
     <div class="back"></div>
     <div class="back_q">
         <h1>什么是排单期？</h1>
+
         <p>
             由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
         </p>
@@ -158,28 +172,36 @@
     </div>
     <div class="back_login" style="display:none;">
         <h2>您已合伙</h2>
+
         <p>您已合伙，如需要补货，请在库存管理中补货</p>
+
         <h1><span class="zhidao">我知道了</span><span
                 onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
         </h1>
     </div>
-    <div class="back_user">
-        <p>
-            您需要通过您的上级发给您的二维码才可以申请合伙人。如无上级，请联系客服：4009619616
-        </p>
-        <button class="zhidao">我知道了</button>
-    </div>
+    <%--<div class="back_user">--%>
+    <%--<p>--%>
+    <%--您需要通过您的上级发给您的二维码才可以申请合伙人。如无上级，请联系客服：4009619616--%>
+    <%--</p>--%>
+    <%--<button class="zhidao">我知道了</button>--%>
+    <%--</div>--%>
 </div>
 <div class="black">
     <div class="backb"></div>
     <div class="message">
         <h1>您需要通过您的上级发送给您的二维码才可以申请合伙人。如无上级，填写表单。</h1>
-        <p><em>姓　名：</em><input type="text"></p>
-        <p><em>微信号：</em><input type="text"></p>
-        <p><em>手机号：</em><input type="text"></p>
+
+        <p><em>姓　名：</em><input type="text" id="applyName"></p>
+
+        <p><em>微信号：</em><input type="text" id="wxCode"></p>
+
+        <p><em>手机号：</em><input type="text" id="mobile"></p>
+
+        <p class="tishi"><span id="applyErrorMessageId"></span></p>
+
         <h2>
             <button onclick="clicHide()">取消</button>
-            <button>确定</button>
+            <button onclick="submitApply()">确定</button>
         </h2>
     </div>
 </div>
@@ -189,6 +211,7 @@
 <script src="<%=path%>/static/js/validateCode.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     $(document).ready(function () {
         productJS.initPage();
@@ -203,10 +226,10 @@
         pagination: '.swiper-pagination'
     })
     //表单隐藏
-    function clickShow(){
+    function clickShow() {
         $(".black").show();
     }
-    function clicHide(){
+    function clicHide() {
         $(".black").hide();
     }
     $(".b_qu").on("click", function () {
@@ -267,10 +290,73 @@
     }
 
     //小白用户提醒
-    function showDialogOfCommonUser(){
-        $(".back_user").show();
-        $(".back_box").show();
-        $(".back").show();
+    function showDialogOfCommonUser() {
+        $("#applyErrorMessageId").empty();
+        $("#applyName").val("");
+        $("#wxCode").val("");
+        $("#mobile").val("");
+        $(".black").show();
+    }
+    //小白用户提交意向申请
+    function submitApply() {
+        var ApplyData = {};
+        ApplyData.applyName = $("#applyName").val();
+        ApplyData.wxCode = $("#wxCode").val();
+        ApplyData.mobile = $("#mobile").val();
+        ApplyData.skuId = '${productDetails.id}';
+        if (ApplyData.applyName == null || ApplyData.applyName == "") {
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("姓名不能为空");
+            return;
+        }
+        if (ApplyData.wxCode == null || ApplyData.wxCode == "") {
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("微信号不能为空");
+            return;
+        }
+        if (!isNumber(ApplyData.wxCode)) {
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("请输入6~20个字符，字母、数字、下划线或减号。");
+            return false;
+        }
+        if (ApplyData.mobile == null || ApplyData.mobile == "") {
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("手机号不能为空");
+            return;
+        }
+        if (!isMobile(ApplyData.mobile)) {
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("手机号格式不正确");
+            return;
+        }
+        $.ajax({
+            url: '<%=basePath%>product/addAgent.do',
+            type: 'post',
+            data: ApplyData,
+            dataType: 'json',
+            success: function (data) {
+                if (data.isError == false) {
+                    alert("您的申请已经提交，请耐心等待");
+                    $(".black").hide();
+                }
+            }
+        });
+    }
+
+    function isMobile(code) {
+        var patrn = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+        if (!patrn.exec(code)) {
+            return false;
+        }
+        $("#errorMessageId").attr("style", "display:none");
+        return true;
+    }
+    function isNumber(s) {
+        var patrn = /^[a-zA-Z0-9_-]{6,20}$/;
+        if (!patrn.exec(s)) {
+            return false;
+        }
+        return true;
     }
 </script>
 </body>

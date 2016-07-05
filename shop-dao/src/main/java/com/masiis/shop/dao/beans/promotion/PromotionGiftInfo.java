@@ -6,9 +6,9 @@ package com.masiis.shop.dao.beans.promotion;
 public class PromotionGiftInfo {
 
     private Integer promoGiftId; //礼物id
-    private Integer skuId;
-    private String skuName;
-    private Integer skuQuantity; //奖品数量
+    private Integer giftId;
+    private String giftName;
+    private Integer giftQuantity; //奖品数量
 
 
     public Integer getPromoGiftId() {
@@ -19,28 +19,27 @@ public class PromotionGiftInfo {
         this.promoGiftId = promoGiftId;
     }
 
-    public Integer getSkuId() {
-        return skuId;
+    public Integer getGiftId() {
+        return giftId;
     }
 
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
+    public void setGiftId(Integer giftId) {
+        this.giftId = giftId;
     }
 
-    public String getSkuName() {
-        return skuName;
+    public String getGiftName() {
+        return giftName;
     }
 
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
     }
 
-    public Integer getSkuQuantity() {
-        return skuQuantity;
+    public Integer getGiftQuantity() {
+        return giftQuantity;
     }
 
-    public void setSkuQuantity(Integer skuQuantity) {
-        this.skuQuantity = skuQuantity;
+    public void setGiftQuantity(Integer giftQuantity) {
+        this.giftQuantity = giftQuantity;
     }
-
 }

@@ -44,9 +44,9 @@
                 <span><img src="<%=path%>/static/images/my.png" alt=""><%--<b></b>--%></span>
                 <span>我的订单</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
-                <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
-                <span>佣金管理</span>
+            <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
+                <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
+                <span>分享赚佣金</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.do');">
                 <span><img src="<%=path%>/static/images/geren2%20(2).png" alt=""></span>
@@ -54,13 +54,31 @@
             </li>
         </ul>
         <ul>
-            <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
-                <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
-                <span>分享赚佣金</span>
+            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+                <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
+                <span>佣金管理</span>
             </li>
-            <li> </li>
+            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+                <span><img src="<%=path%>/static/images/fensi.png" alt=""></span>
+                <span>粉丝</span>
+            </li>
+            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+                <span><img src="<%=path%>/static/images/daiyanren.png" alt=""></span>
+                <span>代言人</span>
+            </li>
+        </ul>
+        <ul>
+            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+                <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt=""></span>
+                <span>消息中心</span>
+            </li>
+            <li style="background:#f3f4f5;border: none;"></li>
+            <li style="background:#f3f4f5;border: none;"></li>
         </ul>
     </nav>
+    <div class="banner">
+        <img src="${path}/static/images/activity.png" alt="">
+    </div>
 </div><c:if test="${fm!=0}">
     <footer>
         <div>

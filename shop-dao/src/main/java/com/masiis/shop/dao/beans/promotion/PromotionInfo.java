@@ -9,6 +9,7 @@ public class PromotionInfo {
     private Integer promoId;    //活动id
     private Boolean isMeetPromoRequire; //是否满足活动要求 (用户展示页面不同要求)
     private Integer fansQuantity;   //粉丝数量
+    private Integer presonType;     //活动对象
     private List<PromotionRuleInfo> ruleInfos;
 
 
@@ -42,5 +43,13 @@ public class PromotionInfo {
 
     public void setFansQuantity(Integer fansQuantity) {
         this.fansQuantity = fansQuantity;
+    }
+
+    public Integer getPresonType() {
+        return presonType;
+    }
+
+    public void setPresonType(Integer presonType) {
+        this.presonType = presonType;
     }
 }

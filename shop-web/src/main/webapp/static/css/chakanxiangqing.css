@@ -62,7 +62,7 @@
 .wrap main #box .sec3 {
   background: white;
   margin-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0;
 }
 .wrap main #box .sec3 .dizhi {
   width: 100%;

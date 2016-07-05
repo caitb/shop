@@ -182,3 +182,76 @@
   text-decoration: underline;
   color: #ff5200;
 }
+.set{
+  position: absolute;;
+  left: 50%;
+  top:50%;
+  margin-left: -45%;
+  margin-top: -125px;
+  background: #fff;
+  width:90%;
+  border-radius:5px;
+  padding-bottom: 10px;
+}
+.set h1{
+  text-align: center;
+  font-weight: 600;
+  color: #F74A11;
+  border-bottom: 1px solid #f74a11;
+  margin:0 5px;
+  line-height:40px;
+  margin-bottom: 10px;
+}
+.set p{
+  margin:0 15px;
+  color: #333;
+}
+.set div{
+  margin:15px 15px;
+  color: #333;
+}
+.set div h2{
+  margin-bottom: 15px;
+  display: -webkit-box;
+  padding-left: 20px;
+  background: url("/static/images/check.png") no-repeat 5px;
+  background-size: 13px 13px;
+}
+.set div h2.on{
+  background: url("/static/images/checked.png") no-repeat 5px;
+  background-size: 13px 13px;
+}
+.set div h2 span{
+  display: block;
+  width:75px;
+  text-indent: 5px;
+}
+.set div h2 input{
+  display: block;
+  width:120px;
+  margin:0 10px;
+  -webkit-box-flex:1;
+  padding:2px 0;
+  color: #333;
+}
+.set div h2 b{
+  display: block;
+}
+.set h3{
+  display: -webkit-box;
+  margin:20px 20px 0 20px;
+}
+.set h3 button{
+  display: block;
+  -webkit-box-flex:1;
+  width:1px;
+  border-radius: 5px;
+  background:#C2C2C2;
+  color: #333;
+  padding:6px 0;
+}
+.set h3 button:last-child{
+  background:#0FC420;
+  color:#fff;
+  margin-left:20px;
+}

@@ -550,3 +550,9 @@ body footer .sec3 p .last_p2{
     color:#fff;
     margin-left:20px;
 }
+.tishi span{
+    text-align: right;
+    display: block;
+    width: 96%;
+    color: red;
+}

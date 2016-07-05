@@ -105,6 +105,12 @@
         select count(*)-1 as num from sf_user_relation where tree_code like CONCAT(#{treeCode},'%')
     </select>
 
+    <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where user_id = #{userId} and shop_id = #{shopId}
+    </select>
+
     <select id="selectFansPageView" resultMap="DistributionResultMap">
         select * from (
         select u.wx_nk_name as wxName,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy

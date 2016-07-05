@@ -221,11 +221,11 @@ public class SfOrderManagerController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
+//        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
         /*if(sfUserRelation==null){
             throw new BusinessException("用户关系异常");
         }*/
-        ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
+//        ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
         Long shopId =(Long) request.getSession().getAttribute("shopId");
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
         List<SfOrder> sfOrders0 = new ArrayList<>();
@@ -249,7 +249,7 @@ public class SfOrderManagerController extends BaseController {
 //        modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
-        modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
+//        modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

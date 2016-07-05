@@ -261,7 +261,7 @@ public class BOrderManagementController extends BaseController {
         Long orderId = req.getOrderId();
         try {
             PfBorder border = bOrderService.getPfBorderById(orderId);
-            bOrderService.completeBOrder(border);
+//            bOrderService.completeBOrder(border);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception ex) {

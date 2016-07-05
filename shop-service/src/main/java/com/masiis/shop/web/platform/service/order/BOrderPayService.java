@@ -74,8 +74,6 @@ public class BOrderPayService {
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
-    private BOrderService bOrderService;
-    @Resource
     private SfShopMapper sfShopMapper;
     @Resource
     private SfShopSkuMapper sfShopSkuMapper;
@@ -107,6 +105,8 @@ public class BOrderPayService {
     private BUpgradePayService upgradePayService;
     @Resource
     private BOrderPayEndMessageService bOrderPayEndMessageService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
     /**
      * 订单支付回调入口
@@ -184,12 +184,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单支付成功");
@@ -241,33 +236,31 @@ public class BOrderPayService {
             shopStatisticsService.insert(shopStatistics);
         }
         log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(comUser.getId(),sfShop.getId());
-        if (sfUserRelation == null) {
-            sfUserRelation = new SfUserRelation();
-            sfUserRelation.setCreateTime(new Date());
-            sfUserRelation.setUserPid(0l);
-            sfUserRelation.setUserId(comUser.getId());
-            sfUserRelation.setTreeLevel(1);
-            sfUserRelation.setRemark("代理人初始分销关系");
-            sfUserRelationMapper.insert(sfUserRelation);
-            String treeCode = sfUserRelation.getId() + ",";
-            sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
-        } else {
-            sfUserRelation.setUserPid(0l);
-            sfUserRelation.setRemark("代理人解除分销关系");
-            int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
-            if (i != 1) {
-                throw new BusinessException("分销关系修改失败");
-            }
-            Long id = sfUserRelation.getId();
-            String treeCode = sfUserRelation.getTreeCode();
-            Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
-            Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
-            i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
-            if (i <= 0) {
-                throw new BusinessException("分销关系树结构修改失败");
-            }
-        }
+        SfUserRelation sfUserRelation = new SfUserRelation();
+        sfUserRelation.setCreateTime(new Date());
+        sfUserRelation.setUserPid(0l);
+        sfUserRelation.setUserId(comUser.getId());
+        sfUserRelation.setShopId(sfShop.getId());
+        sfUserRelation.setIsBuy(0);
+        sfUserRelation.setTreeLevel(1);
+        sfUserRelation.setRemark("代理人初始分销关系");
+        sfUserRelationMapper.insert(sfUserRelation);
+        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
+        sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode);
+//                    sfUserRelation.setUserPid(0l);
+//                    sfUserRelation.setRemark("代理人解除分销关系");
+//                    int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+//                    if (i != 1) {
+//                        throw new BusinessException("分销关系修改失败");
+//                    }
+//                    Long id = sfUserRelation.getId();
+//                    String treeCode = sfUserRelation.getTreeCode();
+//                    Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+//                    Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
+//                    i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
+//                    if (i <= 0) {
+//                        throw new BusinessException("分销关系树结构修改失败");
+//                    }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<7>v1.2处理合伙推荐关系");
             PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
@@ -447,9 +440,9 @@ public class BOrderPayService {
         log.info("<14>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
-            saveBOrderSendType(pfBorder);
+            bOrderShipService.shipAndReceiptBOrder(pfBorder);
         }
     }
 
@@ -478,12 +471,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "");
@@ -521,9 +509,9 @@ public class BOrderPayService {
         log.info("<6>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
-            saveBOrderSendType(pfBorder);
+            bOrderShipService.shipAndReceiptBOrder(pfBorder);
         }
     }
 
@@ -553,12 +541,7 @@ public class BOrderPayService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 2) {
-            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
-        } else {
-            pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());//已付款
-        }
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单已支付,拿货订单");
@@ -586,51 +569,6 @@ public class BOrderPayService {
             pfUserStatisticsService.updateByIdAndVersion(pfUserStatistics);
         }
 
-    }
-
-    /**
-     * 处理平台拿货类型订单
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/30 14:33
-     * 操作详情：
-     * <1>减少发货方库存 如果用户id是0操作平台库存
-     * <2>增加收货方库存
-     * <3>订单完成处理
-     */
-    public void saveBOrderSendType(PfBorder pfBorder) {
-        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-            if (pfBorderItem.getQuantity() > 0) {
-                log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
-                if (pfBorder.getUserPid() == 0) {
-                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
-                    if (pfSkuStock.getStock() < pfBorderItem.getQuantity()) {
-                        throw new BusinessException("库存不足，操作失败");
-                    }
-                    if (pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                        throw new BusinessException("库存冻结不足，操作失败");
-                    }
-                    pfSkuStockService.updateSkuStockWithLog(pfBorderItem.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.downAgent);
-                } else {
-                    PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                    if (parentSkuStock.getStock() < pfBorderItem.getQuantity()) {
-                        throw new BusinessException("库存不足，操作失败");
-                    }
-                    if (parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                        throw new BusinessException("库存冻结不足，操作失败");
-                    }
-                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderItem.getQuantity(), parentSkuStock, pfBorder.getId(), UserSkuStockLogType.downAgent);
-                }
-                log.info("<2>增加收货方库存");
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-                pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderItem.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.agent);
-            }
-        }
-        log.info("<3>订单完成处理");
-        pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());
-        pfBorder.setShipTime(new Date());
-        pfBorder.setIsShip(1);
-        bOrderService.completeBOrder(pfBorder);
     }
 
     /**
@@ -829,7 +767,7 @@ public class BOrderPayService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder != null) {
             Integer payStatus = pfBorder.getPayStatus();
-            if (payStatus.equals(BOrderStatus.accountPaid.getCode())) {
+            if (payStatus.equals(1)) {
                 throw new BusinessException("该订单已支付,无需再支付");
             }
             pfBorder.setOrderStatus(status);

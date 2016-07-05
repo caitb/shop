@@ -1,9 +1,13 @@
 package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfUserPromotionGiftMapper;
+import com.masiis.shop.dao.po.ComGift;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.SfUserPromotionGift;
+import com.masiis.shop.web.common.service.ComGiftService;
 import com.masiis.shop.web.common.service.SkuService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -18,10 +22,13 @@ import java.util.List;
 @Service
 public class SfUserPromotionGiftService {
 
+    private Log log = LogFactory.getLog(this.getClass());
+
     @Resource
     private SfUserPromotionGiftMapper sfUserPromotionGiftMapper;
     @Resource
-    private SkuService skuService;
+    private ComGiftService comGiftService;
+
 
     public List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(Integer promoId,Integer promoRuleId){
         return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
@@ -31,13 +38,16 @@ public class SfUserPromotionGiftService {
         List<SfUserPromotionGift> promoGifts =  getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
         List<PromotionGiftInfo> detailInfos = new ArrayList<>();
         for (SfUserPromotionGift promoGift : promoGifts){
-            ComSku comsku = skuService.getSkuById(promoGift.getGiftValue());
+            log.info("获得奖品信息-----奖品id-----"+promoGift.getGiftValue());
+            ComGift comGift = comGiftService.getComGiftById(promoGift.getGiftValue());
             PromotionGiftInfo giftInfo = new PromotionGiftInfo();
-            if (comsku!=null){
+            if (comGift!=null&&comGift.getStatus()==1){
                 giftInfo.setPromoGiftId(promoGift.getId());
-                giftInfo.setSkuId(comsku.getId());
-                giftInfo.setSkuName(comsku.getName());
-                giftInfo.setSkuQuantity(promoGift.getQuantity());
+                giftInfo.setGiftId(comGift.getId());
+                giftInfo.setGiftName(comGift.getName());
+                giftInfo.setGiftQuantity(promoGift.getQuantity());
+            }else{
+                log.info("奖品为null或者奖品失效");
             }
             detailInfos.add(giftInfo);
         }

@@ -50,6 +50,7 @@ public class PromotionGorderService {
         //添加订单操作日志
         //添加地址
         //插入用户活动参与记录表
+        //修改活动奖励表中的已发奖励数量
     }
 
 

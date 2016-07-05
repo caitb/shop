@@ -6,7 +6,6 @@ import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionRuleInfo;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.common.service.SkuService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -27,8 +26,6 @@ public class PromotionDetailShowService {
     private SfUserPromotionRuleService ruleService;
     @Resource
     private SfUserPromotionGiftService giftService;
-    @Resource
-    private SkuService skuService;
     @Resource
     private SfUserPromotionRecordService recordService;
 

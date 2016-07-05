@@ -118,11 +118,30 @@
                 <c:if test="${isFreeShipAmount==true}">包邮</c:if>
                 <c:if test="${isFreeShipAmount==false}">￥${skuTotalShipAmount}</c:if>
             </span></p>
+            <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
             <p><em>留言：</em><input id="userMessageId" type="text"></p>
             <h1>共需支付：<span>￥ ${totalPrice}</span></h1>
         </section>
         <a  onclick="submitOrder()" class="weixin">提交订单</a>
     </div>
-
+    <div class="black">
+        <div class="back_b"></div>
+        <div class="b_t">
+            <img src="${path}/static/images/al.png" alt="">
+            <p>
+                如有问题，请加我为好友！。
+            </p>
+            <b class="off" onclick="clickHide()">×</b>
+        </div>
+    </div>
+    <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+    <script>
+        function clickShow(){
+            $(".black").show();
+        }
+        function clickHide(){
+            $(".black").hide();
+        }
+    </script>
 </body>
 </html>

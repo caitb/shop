@@ -44,6 +44,14 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="getPromoRecordByUserIdAndPromoIdAndRuleId" resultMap="BaseResultMap">
+        select id, create_time, create_man, user_id, promo_id, promo_rule_id, status, remark
+        from sf_user_promotion_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        AND promo_id = #{promoId,jdbcType=INTEGER}
+        AND promo_rule_id = #{promoRuleId,jdbcType=INTEGER}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, user_id, promo_id, promo_rule_id, status, remark
         from sf_user_promotion_record

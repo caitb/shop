@@ -15,6 +15,8 @@ public class ShopProReq extends BaseReq{
 
     private Long shopSkuId;//库存id
 
+    private Integer isOwnShip;//是否自己发货
+
     public String getToken() {
         return token;
     }
@@ -45,5 +47,13 @@ public class ShopProReq extends BaseReq{
 
     public void setShopSkuId(Long shopSkuId) {
         this.shopSkuId = shopSkuId;
+    }
+
+    public Integer getIsOwnShip() {
+        return isOwnShip;
+    }
+
+    public void setIsOwnShip(Integer isOwnShip) {
+        this.isOwnShip = isOwnShip;
     }
 }

@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfUserPromotionGift;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface SfUserPromotionGiftMapper {
@@ -18,6 +20,8 @@ public interface SfUserPromotionGiftMapper {
     SfUserPromotionGift selectByPrimaryKey(Integer id);
 
     List<SfUserPromotionGift> selectAll();
+
+    List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(@Param("promoId") Integer promoId, @Param("promoRuleId") Integer promoRuleId);
 
     int updateByPrimaryKey(SfUserPromotionGift record);
 }

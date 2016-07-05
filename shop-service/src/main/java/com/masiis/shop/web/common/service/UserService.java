@@ -239,6 +239,7 @@ public class UserService {
         }
         //获取自己的分销关系
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
+
         //获取上级分销关系
         SfUserRelation sfUserPRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
         if (sfUserRelation == null) { //来自于分享链接

@@ -91,7 +91,7 @@
         where tree_code LIKE CONCAT(#{treeCode},'%')
     </update>
 
-    <select id="selectFansNum" resultMap="java.util.HashMapr">
+    <select id="selectFansNum" resultType="java.util.HashMap">
         select count(*)-1 as num from sf_user_relation where tree_code like CONCAT(#{treeCode},'%')
     </select>
 

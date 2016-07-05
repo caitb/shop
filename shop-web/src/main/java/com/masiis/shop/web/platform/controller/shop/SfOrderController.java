@@ -177,9 +177,6 @@ public class SfOrderController extends BaseController {
     @ResponseBody
     public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index,Integer sendType) {
         List<SfOrder> sfOrders=null;
-//        if(sendType==null){
-//            sendType=1;
-//        }
         try {
             ComUser user = getComUser(request);
             if (user == null) {

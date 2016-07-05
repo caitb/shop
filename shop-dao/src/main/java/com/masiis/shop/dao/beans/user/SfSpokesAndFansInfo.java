@@ -3,30 +3,19 @@ package com.masiis.shop.dao.beans.user;
 import java.util.Date;
 
 /**
- * mall 粉丝列表或代言人列表展示页面PO
- * Created by wangbingjian on 2016/7/4.
+ * 代言人、粉丝列表展示信息
+ * Created by wangbingjian on 2016/7/5.
  */
-public class SfSopkenAndFansPageViewPo {
-    /**
-     * 总数量
-     */
-    private Integer totalCount;
-    /**
-     * 第一级数量
-     */
-    private Integer firstCount;
-    /**
-     * 第二级数量
-     */
-    private Integer secondCount;
-    /**
-     * 第三极数量
-     */
-    private Integer thirdCount;
+public class SfSpokesAndFansInfo {
+
     /**
      * 用户微信昵称
      */
     private String wxName;
+    /**
+     * 头像路径
+     */
+    private String headImg;
     /**
      * 展示ID
      */
@@ -56,44 +45,20 @@ public class SfSopkenAndFansPageViewPo {
      */
     private Integer isBuy;
 
-    public Integer getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public Integer getFirstCount() {
-        return firstCount;
-    }
-
-    public void setFirstCount(Integer firstCount) {
-        this.firstCount = firstCount;
-    }
-
-    public Integer getSecondCount() {
-        return secondCount;
-    }
-
-    public void setSecondCount(Integer secondCount) {
-        this.secondCount = secondCount;
-    }
-
-    public Integer getThirdCount() {
-        return thirdCount;
-    }
-
-    public void setThirdCount(Integer thirdCount) {
-        this.thirdCount = thirdCount;
-    }
-
     public String getWxName() {
         return wxName;
     }
 
     public void setWxName(String wxName) {
         this.wxName = wxName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 
     public String getID() {

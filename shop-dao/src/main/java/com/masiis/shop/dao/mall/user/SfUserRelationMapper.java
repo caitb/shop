@@ -7,7 +7,7 @@
  */
 package com.masiis.shop.dao.mall.user;
 
-import com.masiis.shop.dao.beans.user.SfSopkenAndFansPageViewPo;
+import com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -34,7 +34,7 @@ public interface SfUserRelationMapper {
     SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
                                                          @Param("shopId") Long shopId);
 
-    List<SfSopkenAndFansPageViewPo> selectFansPageView(@Param("userPid") Long userPid,
+    List<SfSpokesAndFansInfo> selectFansPageView(@Param("userPid") Long userPid,
                                                        @Param("userLevel") Integer userLevel,
                                                        @Param("shopId") Long shopId);
 
@@ -65,5 +65,13 @@ public interface SfUserRelationMapper {
      */
     int updateTreeCodes(@Param("treeCode") String treeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
 
+    /**
+     * 通过userId和shopId获取分销关系
+     * @param userId
+     * @param shopId
+     * @return
+     */
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
+
+    List<Map<String, Integer>> selectFansNumGroupByLevel(@Param("userPid") Long userPid);
 }

@@ -72,8 +72,8 @@ public class SfOrderShopService {
      * @author muchaofeng
      * @date 2016/4/9 17:11
      */
-    public SfUserRelation findSfUserRelationByUserId(Long userId){
-        return sfUserRelationMapper.getSfUserRelationByUserId(userId);
+    public SfUserRelation findSfUserRelationByUserId(Long userId,Long shopId){
+        return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
     }
 
     /**

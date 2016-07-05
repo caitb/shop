@@ -11,8 +11,8 @@ import com.masiis.shop.dao.po.SfUserRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface SfUserRelationMapper {
@@ -26,11 +26,19 @@ public interface SfUserRelationMapper {
 
     int updateByPrimaryKey(SfUserRelation record);
 
-    SfUserRelation getSfUserRelationByUserId(Long userId);
-
-    SfUserRelation getSfUserRelationByUserPid(Long userPid);
+    List<SfUserRelation> getSfUserRelationByUserId(Long userId);
 
     List<SfUserRelation> getThreeDistributionList(Long userPid);
+
+    SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
+                                                         @Param("shopId") Long shopId);
+
+    /**
+     * 通过treecode获取粉丝数量
+     * @param treeCode treeCode
+     * @return  Integer
+     */
+    Map<String, Integer> selectFansNum(@Param("treeCode") String treeCode);
 
     /**
      * 修改树形编码

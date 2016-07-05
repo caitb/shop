@@ -142,7 +142,7 @@
 <div class="black">
     <div class="back_b"></div>
     <div class="b_t">
-        <img src="${path}/static/images/al.png" alt="">
+        <img src="${sfShop.wxQrCode}" alt="">
         <p>
             如有问题，请加我为好友！。
         </p>

@@ -9,6 +9,7 @@
         <result column="sf_shop_user_id" property="sfShopUserId" jdbcType="BIGINT" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="send_man" property="sendMan" jdbcType="BIGINT" />
         <result column="quantity" property="quantity" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="is_check" property="isCheck" jdbcType="INTEGER" />
@@ -26,11 +27,12 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopCart" >
         insert into sf_shop_cart (id, create_time, user_id, 
-            sf_shop_id, sf_shop_user_id,spu_id, sku_id,
+            sf_shop_id, sf_shop_user_id,spu_id, sku_id,send_man,
             quantity, sort, is_check
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
             #{sfShopId,jdbcType=BIGINT}, #{sfShopUserId,jdbcType=BIGINT},#{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER},
+            #{sendMan,jdbcType=BIGINT},
             #{quantity,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{isCheck,jdbcType=INTEGER}
             )
     </insert>
@@ -43,6 +45,7 @@
             sf_shop_user_id = #{sfShopUserId,jdbcType=BIGINT},
             spu_id = #{spuId,jdbcType=INTEGER},
             sku_id = #{skuId,jdbcType=INTEGER},
+            send_man = #{sendMan,jdbcType=BIGINT},
             quantity = #{quantity,jdbcType=INTEGER},
             sort = #{sort,jdbcType=INTEGER},
             is_check = #{isCheck,jdbcType=INTEGER}
@@ -50,14 +53,14 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id , sku_id, quantity, sort,
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id , sku_id,send_man, quantity, sort,
         is_check
         from sf_shop_cart
         where id = #{id,jdbcType=BIGINT}
     </select>
     <!--根据用户id获得用户的购物车中的商品信息  start-->
     <select id="getShopCartInfoByUserIdAndShopId" resultMap="BaseResultMap">
-        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, spu_id ,sku_id, quantity, sort,
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, spu_id ,sku_id,send_man, quantity, sort,
         is_check
         from sf_shop_cart
         where user_id = #{userId,jdbcType=BIGINT}
@@ -69,13 +72,13 @@
 
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, spu_id ,sku_id, quantity, sort,
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, spu_id ,sku_id, send_man,quantity, sort,
         is_check
         from sf_shop_cart
     </select>
     <!--用户在该小铺中的商品-->
     <select id="getProductInfoByUserIdAndShipIdAndSkuId" resultMap="BaseResultMap" >
-        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id, sku_id, quantity, sort,
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id, sku_id,send_man, quantity, sort,
         is_check
         from sf_shop_cart
         where user_id = #{userId,jdbcType=BIGINT} and sf_shop_id =  #{shopId,jdbcType=BIGINT}
@@ -83,7 +86,7 @@
     </select>
 
     <select id="getProductInfoByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id , sku_id, quantity, sort,
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id,spu_id , sku_id,send_man, quantity, sort,
         is_check
         from sf_shop_cart
         where user_id = #{userId,jdbcType=BIGINT}

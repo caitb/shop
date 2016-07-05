@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.shop;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -133,5 +134,18 @@ public class SfShopService {
      */
     public void updateById(SfShop sfShop){
         sfShopMapper.updateByPrimaryKey(sfShop);
+    }
+
+    /**
+     * jjh
+     * @param code 微信二维码文件名
+     * @return
+     */
+    public String getWXQRImgByCode(String code) {
+        String WXQRImg = null;
+        String baseValue = PropertiesUtils.getStringValue("oss.BASE_URL");
+        String shopValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+        WXQRImg = baseValue + shopValue + code;
+        return WXQRImg;
     }
 }

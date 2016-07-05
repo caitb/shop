@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-05-24 Created
+ * 2016-07-04 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -16,6 +16,10 @@ public class SfUserRelation {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 小铺id
+     */
+    private Long shopId;
     /**
      * 用户id
      */
@@ -33,6 +37,10 @@ public class SfUserRelation {
      */
     private Integer treeLevel;
     /**
+     * 是否在小铺中购买过(0否1是)
+     */
+    private Integer isBuy;
+    /**
      * 备注
      */
     private String remark;
@@ -48,6 +56,12 @@ public class SfUserRelation {
     }
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+    public Long getShopId() {
+        return shopId;
+    }
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
     public Long getUserId() {
         return userId;
@@ -72,6 +86,12 @@ public class SfUserRelation {
     }
     public void setTreeLevel(Integer treeLevel) {
         this.treeLevel = treeLevel;
+    }
+    public Integer getIsBuy() {
+        return isBuy;
+    }
+    public void setIsBuy(Integer isBuy) {
+        this.isBuy = isBuy;
     }
     public String getRemark() {
         return remark;

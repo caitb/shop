@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
+        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from com_sku_material_group
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        insert into com_sku_material_group (id, create_time, create_man, 
+            material_library_id, name, is_b_show, 
+            is_c_show, sort, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{materialLibraryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{isBShow,jdbcType=INTEGER}, 
+            #{isCShow,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        update com_sku_material_group
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            material_library_id = #{materialLibraryId,jdbcType=INTEGER},
+            name = #{name,jdbcType=VARCHAR},
+            is_b_show = #{isBShow,jdbcType=INTEGER},
+            is_c_show = #{isCShow,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
+        sort, remark
+        from com_sku_material_group
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
+        sort, remark
+        from com_sku_material_group
+    </select>
+
+</mapper>

@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Transactional
 public class PromotionDetailShowService {
-    private Log log = LogFactory.getLog(this.getClass());
 
+    private Log log = LogFactory.getLog(this.getClass());
 
     @Resource
     private SfUserPromotionService promoService;
@@ -51,9 +51,7 @@ public class PromotionDetailShowService {
             for (SfUserPromotionRule rule : rules){
                 //获取此规则对应的奖品信息
                 log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
-                List<SfUserPromotionGift> promoGifts = giftService.getPromoGiftByPromoIdAndRuleId(userPromotion.getId(),rule.getId());
-                //重新组织礼品信息
-                List<PromotionGiftInfo> giftInfos= generatePromoGiftDetailInfo(promoGifts);
+                List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId());
                 //生成某个规则信息
                 PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule);
                 if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){
@@ -102,23 +100,6 @@ public class PromotionDetailShowService {
             }
         }
         return  ruleInfo;
-    }
-
-    private List<PromotionGiftInfo> generatePromoGiftDetailInfo(List<SfUserPromotionGift> promoGifts){
-        List<PromotionGiftInfo> detailInfos = new ArrayList<>();
-        for (SfUserPromotionGift promoGift : promoGifts){
-            log.info("奖品id-------"+promoGift.getId());
-            ComSku comsku = skuService.getSkuById(promoGift.getGiftValue());
-            PromotionGiftInfo giftDetailInfo = new PromotionGiftInfo();
-            if (comsku!=null){
-                giftDetailInfo.setPromoGiftId(promoGift.getId());
-                giftDetailInfo.setSkuId(comsku.getId());
-                giftDetailInfo.setSkuName(comsku.getName());
-                giftDetailInfo.setSkuQuantity(promoGift.getQuantity());
-            }
-            detailInfos.add(giftDetailInfo);
-        }
-        return detailInfos;
     }
 
 }

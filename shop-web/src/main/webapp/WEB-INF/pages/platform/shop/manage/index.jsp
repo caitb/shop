@@ -98,8 +98,8 @@
     <div class="set">
         <h1>运费设置</h1>
         <p>运费设置只适用于店主发货情况。如果设置包邮，则运费由您承担；若设置运费金额，则有消费者承担</p>
-        <div>
-            <h2><span>快递公司：</span></h2>
+        <div class="money">
+            <h2><span>包邮：</span></h2>
             <h2><span>自定义：</span><input type="text"><b>元</b></h2>
         </div>
         <h3>
@@ -127,6 +127,9 @@
     function clicHide(){
         $(".black").hide();
     }
+    $(".money h2").on("click", function () {
+        $(this).addClass("on").siblings().removeClass("on");
+    })
 </script>
 <script>
     $(document).ready(function(){

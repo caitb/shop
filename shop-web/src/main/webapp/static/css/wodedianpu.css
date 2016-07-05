@@ -214,11 +214,11 @@
   margin-bottom: 15px;
   display: -webkit-box;
   padding-left: 20px;
-  background: url("/static/images/checkbox.png") no-repeat 0;
+  background: url("/static/images/check.png") no-repeat 5px;
   background-size: 13px 13px;
 }
 .set div h2.on{
-  background: url("/static/images/checked.png") no-repeat 0;
+  background: url("/static/images/checked.png") no-repeat 5px;
   background-size: 13px 13px;
 }
 .set div h2 span{
@@ -232,6 +232,7 @@
   margin:0 10px;
   -webkit-box-flex:1;
   padding:2px 0;
+  color: #333;
 }
 .set div h2 b{
   display: block;

@@ -14,11 +14,12 @@
         <result column="is_show" property="isShow" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade
+        back_img, is_show, remark, is_upgrade, reward_unit_price
         FROM
                pf_sku_agent
         WHERE
@@ -34,11 +35,11 @@
         insert into pf_sku_agent (id, sku_id, agent_level_id,
             icon, unit_price, quantity,
             total_price, bail, back_img,
-            is_show, remark, is_upgrade)
+            is_show, remark, is_upgrade, reward_unit_price)
         values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
             #{icon,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
             #{totalPrice,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{backImg,jdbcType=VARCHAR},
-            #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isUpgrade,jdbcType=INTEGER})
+            #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isUpgrade,jdbcType=INTEGER}, #{rewardUnitPrice,jdbcType=DECIMAL})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
@@ -53,20 +54,21 @@
             back_img = #{backImg,jdbcType=VARCHAR},
             is_show = #{isShow,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR},
-            is_upgrade = #{isUpgrade,jdbcType=INTEGER}
+            is_upgrade = #{isUpgrade,jdbcType=INTEGER},
+            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade
+        back_img, is_show, remark, is_upgrade, reward_unit_price
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade
+        back_img, is_show, remark, is_upgrade, reward_unit_price
         from pf_sku_agent
     </select>
 
@@ -84,14 +86,14 @@
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade
+        back_img, is_show, remark, is_upgrade, reward_unit_price
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade
+        back_img, is_show, remark, is_upgrade, reward_unit_price
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -131,6 +133,9 @@
             <if test="isUpgrade != null">
                 is_upgrade = #{isUpgrade,jdbcType=INTEGER},
             </if>
+            <if test="rewardUnitPrice != null">
+                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
+            </if>
         </set>
         where
         id = #{id,jdbcType=INTEGER}
@@ -163,6 +168,7 @@
         a.bail,
         a.back_img,
         a.is_show,
+        a.reward_unit_price
         b. NAME AS remark
         FROM
         pf_sku_agent a

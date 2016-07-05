@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.mall.user;
 
+import com.masiis.shop.dao.beans.user.SfSopkenAndFansPageViewPo;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,10 @@ public interface SfUserRelationMapper {
 
     SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
                                                          @Param("shopId") Long shopId);
+
+    List<SfSopkenAndFansPageViewPo> selectFansPageView(@Param("userPid") Long userPid,
+                                                       @Param("userLevel") Integer userLevel,
+                                                       @Param("shopId") Long shopId);
 
     /**
      * 通过treecode获取粉丝数量

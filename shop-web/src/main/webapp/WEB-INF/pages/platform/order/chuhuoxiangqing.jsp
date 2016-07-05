@@ -55,6 +55,10 @@
                     <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>线下支付中</h1><p>您的下级选择的是线下支付，请耐心等待~~</p>
                 </c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==2}">
+                    <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 35px;height: 37px;top: 14px;"><h1>已取消</h1>
+                    <p>亲，您的订单已取消~~</p>
+                </c:if>
             </div>
             <div class="sec2">
                 <p><span>订单编号：</span><span>${borderDetail.pfBorder.orderCode}</span></p>
@@ -70,11 +74,11 @@
                     <fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><c:forEach items="${borderDetail.pfBorderPayments}" var="pp"> <span>${pp.payTypeName}</span></c:forEach></p>
                 <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台发货</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></p>
-                <p>类    型：<span>
+                <p><span>类    型：</span>
                             <c:forEach items="${bOrderTypes}" var="orderType">
                                 <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>
                             </c:forEach>
-                            </span>
+                </p>
                 <p><span>物流状态：</span>
                     <c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}">
                         <span>已完成</span>
@@ -121,7 +125,7 @@
                     <p>
                         <span>订单状态：</span>
                         <c:forEach items="${bOrderStatuses}" var="os">
-                            <c:if test="${os.code == borderDetail.pfBorder.orderStatus}"><span>${os.desc}</span></c:if>
+                            <c:if test="${os.code == borderDetail.pfBorder.orderStatus}">< span>${os.desc}</span></c:if>
                         </c:forEach>
                     </p>
             </div>

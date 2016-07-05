@@ -322,3 +322,22 @@
   top: 0;
   left: 0;
 }
+.tapfix{
+  display:-webkit-box;
+  background:#fff;
+  padding:10px;
+}
+.tapfix h1{
+  padding:1px 0;
+}
+.tapfix p{
+  margin-left:20px;
+  padding:1px 8px;
+  border-radius:25px;
+
+}
+.tapfix p.on{
+  border:1px solid #f74a11;
+  color:#f74a11;
+}
+

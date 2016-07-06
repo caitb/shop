@@ -85,7 +85,7 @@
         </p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
             <span><img src="<%=path%>/static/images/dibu2.png" alt=""></span>
-            <span>我的二维码</span>
+            <span>二维码</span>
         </p>
         <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
             <span><img src="<%=path%>/static/images/dibu3.png" alt=""></span>

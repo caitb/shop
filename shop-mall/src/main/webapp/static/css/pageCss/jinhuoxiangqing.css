@@ -40,6 +40,21 @@ body {
 .wrap main .tai h1{
   font-size: 14px;
 }
+.wrap main .shop{
+  background: #fff url("/static/images/next.png") 98% no-repeat;
+  background-size:8px;
+  display: -webkit-box;
+  padding:10px;
+  margin-top:10px;;
+}
+.shop h1{
+  font-size:12px;
+}
+.shop p{
+  font-size:12px;
+  margin-left: 5px;
+  color: #C7A467;
+}
 .wrap main .kuaidi {
   background: white;
   text-indent: 10px;
@@ -276,7 +291,14 @@ body {
   margin-right: 15px;
   font-size: 12px;
 }
-.wrap main .btn {
+.wrap main .floor{
+  display: -webkit-box;
+  width:80%;
+  -webkit-box-pack:justify;
+  margin:0 auto;
+  padding-bottom: 2em;
+}
+.wrap main .floor button {
   display: block;
   width: 105px;
   height: 30px;
@@ -284,7 +306,6 @@ body {
   text-align: center;
   line-height: 30px;
   color: #C7A467;
-  margin: 0 auto;
 }
 .wrap main > h3 {
   padding-bottom: 20px;
@@ -345,4 +366,68 @@ body {
 }
 .sec1 p,.sec1 h2,.sec1 b,.sec1 span{
   font-size:12px
+}
+.b_t{
+  position: absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+  z-index:12;
+}
+.b_t img{
+  width:80%;
+  display: block;
+}
+.b_t p{
+  width:75%;
+  color: #fff;
+  text-align: center;
+  margin-top:10px;
+}
+.off{
+  display: block;
+  position: absolute;
+  right:10px;
+  top:10px;
+  width: 30px;
+  height: 30px;
+  border-radius:50px;
+  font-size:30px;
+  text-align: center;
+  line-height:25px;
+  background:#C7A467;
+  color: #666666;
+}
+.b_n{
+  position: absolute;
+  left:50%;
+  margin-left: -40%;
+  top:50%;
+  margin-top: -130px;
+  background: #fff;
+  width:80%;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+}
+.b_n img{
+  display: block;
+  width:100px;
+  margin:4em auto 15px auto;
+}
+.b_n p{
+  color: #666666;
+}
+.b_n button{
+  display: block;
+  margin: 20px auto;
+  background: #333;
+  color: #C7A467;
+  padding:6px 14px;
 }

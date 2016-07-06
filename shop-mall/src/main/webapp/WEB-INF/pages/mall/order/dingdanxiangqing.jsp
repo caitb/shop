@@ -13,7 +13,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
@@ -23,7 +23,7 @@
     <%--<script src="<%=path%>/static/js/iscroll.js"></script>--%>
 </head>
 <body>
-   
+
     <div class="wrap">
        <main>
             <header class="xq_header">
@@ -54,6 +54,10 @@
                 <%--<p>类    型：<span><c:if test="${orderMallDetail.sfOrder.orderType==0}">合伙人订单</c:if><c:if test="${orderMallDetail.sfOrder.orderType==1}">补货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1 && orderMallDetail.sfOrder.orderType==2}">申请拿货</c:if></span></p>--%>
                 ${stringBuffer}
             </div>
+           <div class="shop">
+               <h1>购买店铺：</h1>
+               <p>彪哥的小店</p>
+           </div>
             <section class="sec1">
                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                <div>
@@ -88,11 +92,23 @@
                 <p>创建时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-            </div><c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-            <botton class="btn">
-                确认收货
-            </botton></c:if>
-            <h3></h3>
+            </div>
+           <%--<c:if test="${orderMallDetail.sfOrder.orderStatus==8}">--%>
+            <div class="floor">
+                <button onclick="clickShow()">
+                    联系店主
+                </button>
+                <button class="btn">
+                    确认收货
+                </button>
+                <%--<button>--%>
+                    <%--继续支付--%>
+                <%--</button>--%>
+                <%--<button onclick="clickShow()">--%>
+                    <%--索要发票--%>
+                <%--</button>--%>
+            </div>
+           <%--</c:if>--%>
         </main>
         <div class="back">
                 <div class="back_que">
@@ -105,6 +121,25 @@
                     </h3>
                 </div>
     </div>
+    </div>
+    <div class="black">
+        <div class="back_b"></div>
+        <div class="b_t">
+            <img src="${sfShop.wxQrCode}" alt="">
+            <p>
+                如有问题，请加我为好友！。
+            </p>
+            <b class="off" onclick="clickHide()">×</b>
+        </div>
+    </div>
+    <div class="black nobady">
+        <div class="back_b"></div>
+        <div class="b_n">
+            <img src="${path}/static/images/nobady.png" alt="">
+            <p>该店主还未上传二维码，催他上传吧</p>
+            <button>留下邮箱</button>
+            <b class="off" onclick="clickHide()">×</b>
+        </div>
     </div>
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <%--<script src="<%=path%>/static/js/common/commonAjax.js"></script>--%>
@@ -151,6 +186,12 @@
             $(".back_shouhuo").hide();
             $(".back").hide();
         })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
     </script>
 </body>
 </html>

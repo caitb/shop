@@ -37,13 +37,46 @@ public class MaterialController extends BaseController {
         return "material/list";
     }
 
+    /**
+     * 素材库列表
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @return
+     */
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public Object list(
+                        Integer pageNumber,
+                        Integer pageSize,
+                        String sortName,
+                        String sortOrder
+                      ){
+
+        Map<String, Object> conditionMap = new HashMap<>();
+        Map<String, Object> pageMap = new HashMap<>();
+        try {
+            pageMap = materialService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+        } catch (Exception e) {
+            log.error("获取素材库列表失败![conditionMap="+conditionMap+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pageMap;
+    }
+
+    /**
+     * 保存素材页面
+     * @return
+     */
     @RequestMapping("/addMaterial.shtml")
     public ModelAndView addMaterial() {
         ModelAndView mav = new ModelAndView("material/add");
 
         try {
-            List<MaterialLibrary> materialLibraries = materialService.listAllLibrary();
-            mav.addObject("materialLibraries", materialLibraries);
+//            List<MaterialLibrary> materialLibraries = materialService.listAllLibrary();
+//            mav.addObject("materialLibraries", materialLibraries);
         } catch (Exception e) {
             log.error("获取素材库失败!"+e);
         }

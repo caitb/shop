@@ -1,5 +1,6 @@
 package com.masiis.shop.dao.beans.material;
 
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
 
 import java.util.List;
@@ -10,7 +11,17 @@ import java.util.List;
  */
 public class MaterialLibrary extends ComSkuMaterialLibrary {
 
+    private ComSku comSku;
+
     private List<MaterialGroup> materialGroups;
+
+    public ComSku getComSku() {
+        return comSku;
+    }
+
+    public void setComSku(ComSku comSku) {
+        this.comSku = comSku;
+    }
 
     public List<MaterialGroup> getMaterialGroups() {
         return materialGroups;

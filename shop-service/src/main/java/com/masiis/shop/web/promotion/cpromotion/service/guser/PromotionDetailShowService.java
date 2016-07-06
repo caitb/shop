@@ -6,6 +6,8 @@ import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionRuleInfo;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  *  活动页面信息
  */
+@Service
 @Transactional
 public class PromotionDetailShowService {
 
@@ -28,14 +31,18 @@ public class PromotionDetailShowService {
     private SfUserPromotionGiftService giftService;
     @Resource
     private SfUserPromotionRecordService recordService;
+    @Resource
+    private SfUserRelationService userRelationService;
+
 
     private static Integer fansQuantity;
     private static Boolean isMeetPromoRequire = false;
 
-    public List<PromotionInfo> getAllPromoDetail(){
+    public List<PromotionInfo> getAllPromoDetail(ComUser comUser){
         log.info("获取活动数据----start");
-        ComUser comUser = null;
         //获取用户粉丝数
+        fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
+        log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有的活动
         List<SfUserPromotion> userPromotions = promoService.selectAll();
         List<PromotionInfo> promotionInfos = new ArrayList<PromotionInfo>();

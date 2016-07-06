@@ -44,7 +44,7 @@ public interface SfUserRelationMapper {
      * @param treeCode treeCode
      * @return Integer
      */
-    Map<String, Integer> selectFansNum(@Param("treeCode") String treeCode);
+    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode);
 
     /**
      * 修改树形编码

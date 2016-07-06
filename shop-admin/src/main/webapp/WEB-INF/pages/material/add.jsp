@@ -90,12 +90,12 @@
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" role="form" id="skuForm">
+                        <form class="form-horizontal" role="form" id="materialForm">
 
                             <div class="form-group">
                                 <label for="lId" class="col-sm-2 control-label">素材库</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="lId" name="lId">
+                                    <select class="form-control" id="lId" name="materialLibraryId">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
@@ -107,7 +107,7 @@
                             <div class="form-group">
                                 <label for="gId" class="col-sm-2 control-label">素材组</label>
                                 <div class="col-sm-5">
-                                    <select class="form-control" id="gId" name="gId">
+                                    <select class="form-control" id="gId" name="materialGroupId">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
@@ -125,14 +125,14 @@
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">文字</label>
                                 <div class="col-sm-5">
-                                    <textarea id="content" name="content" rows="6" cols="53"></textarea>
+                                    <textarea id="content" name="content" rows="6" cols="51"></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="materialImg" class="col-sm-2 control-label">图片素材</label>
                                 <div class="col-sm-9">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/product_icon/" class="dropzone" id="materialImg">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/material/" class="dropzone" id="materialImg">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -145,7 +145,7 @@
                             <label class="col-sm-5"></label>
                             <div class="col-sm-6">
                                 <button type="reset" class="btn btn-lg btn-default">重置</button>
-                                <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
+                                <button type="submit" class="btn btn-lg btn-info" id="saveMaterial">保存</button>
                             </div>
                         </row>
 
@@ -323,9 +323,11 @@
                     }
 
                     var res = file.xhr.response ? window.eval('(' + file.xhr.response + ')') : '';
-                    $('#skuForm').find('input[value="'+res.url+'"]').remove();
-                    $('#skuForm').find('input[value="'+res.title+'"]').remove();
-                    $('#skuForm').find('input[value="'+res.original+'"]').remove();
+                    $('#materialForm').find('input[value="'+0+'"]').remove();
+                    $('#materialForm').find('input[value="'+res.original+'"]').remove();
+                    $('#materialForm').find('input[value="'+res.title+'"]').remove();
+                    $('#materialForm').find('input[value="'+res.type+'"]').remove();
+                    $('#materialForm').find('input[value="'+res.size+'"]').remove();
 
                     return this._updateMaxFilesReachedClass();
                 }
@@ -339,9 +341,11 @@
 
     initDropzone('#materialImg', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="mainImgUrls" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="mainImgNames" value="'+res.title+'" />');
-        $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
+        $('#materialForm').append('<input type="hidden" name="types" value="'+0+'" />');
+        $('#materialForm').append('<input type="hidden" name="fileNames" value="'+res.original+'" />');
+        $('#materialForm').append('<input type="hidden" name="fileUrls" value="'+res.title+'" />');
+        $('#materialForm').append('<input type="hidden" name="fileSuffixs" value="'+res.type+'" />');
+        $('#materialForm').append('<input type="hidden" name="fileSizes" value="'+res.size+'" />');
     });
 </script>
 </body>
@@ -384,6 +388,7 @@
                     sHtml += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
                 }
                 $(selector).html(sHtml);
+                $('#modal-group').modal('show');
             },
             error: function(msg) {
                 alert(msg);
@@ -477,6 +482,17 @@
             }
         }
         $('#gId').html(groupHtml);
+    });
+
+    $('#saveMaterial').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>material/saveMaterial.do',
+            data: $('#materialForm').serialize(),
+            type: 'post',
+            success: function(result){
+                alert(result);
+            }
+        })
     });
 </script>
 </html>

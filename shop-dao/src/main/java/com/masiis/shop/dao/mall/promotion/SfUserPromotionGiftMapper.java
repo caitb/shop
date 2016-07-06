@@ -23,5 +23,7 @@ public interface SfUserPromotionGiftMapper {
 
     List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(@Param("promoId") Integer promoId, @Param("promoRuleId") Integer promoRuleId);
 
+    SfUserPromotionGift getPromoGiftByPromoIdAndRuleIdAndGiftValue(@Param("promoId") Integer promoId, @Param("promoRuleId") Integer promoRuleId, @Param("giftValue") Integer giftValue);
+
     int updateByPrimaryKey(SfUserPromotionGift record);
 }

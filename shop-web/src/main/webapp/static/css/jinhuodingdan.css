@@ -177,6 +177,8 @@
   font-size: 12px;
   line-height: 30px;
   position: relative;
+  border-top: 1px solid #f6f6f6;
+  padding: 2px 0;
 }
 .wrap .box main .all .sec1 .ding p {
   text-indent: 10px;
@@ -199,9 +201,13 @@
   border-radius: 5px;
   border: 1px solid #FF0000;
   color: #FF5200;
+  padding-bottom: 2px;
+  font-size: 12px;
+  margin-top: 3px;
 }
 .wrap .box main .all .sec1 .ding span a{
   color: #FF5200;
+  font-size: 12px;
 }
 .wrap .box main .all .sec1 .ding .jixu,
 .wrap .box main .all .sec1 .ding .quxiao {

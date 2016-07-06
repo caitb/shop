@@ -19,7 +19,7 @@ public class ComSkuMaterialItem {
     /**
      * 创建人
      */
-    private String createMan;
+    private Long createMan;
     /**
      * 素材库id
      */
@@ -31,7 +31,7 @@ public class ComSkuMaterialItem {
     /**
      * 素材id
      */
-    private Long materialId;
+    private Integer materialId;
     /**
      * 文件类型(0:图片)
      */
@@ -57,73 +57,96 @@ public class ComSkuMaterialItem {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public String getCreateMan() {
+
+    public Long getCreateMan() {
         return createMan;
     }
-    public void setCreateMan(String createMan) {
-        this.createMan = createMan == null ? null : createMan.trim();
+
+    public void setCreateMan(Long createMan) {
+        this.createMan = createMan;
     }
+
     public Integer getMaterialLibraryId() {
         return materialLibraryId;
     }
+
     public void setMaterialLibraryId(Integer materialLibraryId) {
         this.materialLibraryId = materialLibraryId;
     }
+
     public Integer getMaterialGroupId() {
         return materialGroupId;
     }
+
     public void setMaterialGroupId(Integer materialGroupId) {
         this.materialGroupId = materialGroupId;
     }
-    public Long getMaterialId() {
+
+    public Integer getMaterialId() {
         return materialId;
     }
-    public void setMaterialId(Long materialId) {
+
+    public void setMaterialId(Integer materialId) {
         this.materialId = materialId;
     }
+
     public Integer getType() {
         return type;
     }
+
     public void setType(Integer type) {
         this.type = type;
     }
+
     public String getFileName() {
         return fileName;
     }
+
     public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
+        this.fileName = fileName;
     }
+
     public String getFileUrl() {
         return fileUrl;
     }
+
     public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl == null ? null : fileUrl.trim();
+        this.fileUrl = fileUrl;
     }
+
     public String getFileSuffix() {
         return fileSuffix;
     }
+
     public void setFileSuffix(String fileSuffix) {
-        this.fileSuffix = fileSuffix == null ? null : fileSuffix.trim();
+        this.fileSuffix = fileSuffix;
     }
+
     public Long getFileSize() {
         return fileSize;
     }
+
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 }

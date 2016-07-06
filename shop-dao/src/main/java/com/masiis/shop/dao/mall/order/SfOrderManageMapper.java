@@ -15,5 +15,5 @@ import java.util.List;
 public interface SfOrderManageMapper {
     List<SfOrder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId);
 
-    List<SfOrder> selectByShopUserId(@Param("shopUserId") Long shopUserId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId);
+    List<SfOrder> selectByShopUserId(@Param("shopUserId") Long shopUserId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId,@Param("sendType") Integer sendType);
 }

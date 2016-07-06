@@ -30,8 +30,14 @@
                 <li><a href="javascript:;">待发货</a></li>
                 <li><a href="javascript:;">待收货</a></li>
                 <li><a href="javascript:;">已完成</a></li>
+                <li><a href="javascript:;">已取消</a></li>
             </ul>
         </nav>
+        <div class="tapfix">
+            <h1>发货方式：</h1>
+            <p class="on">平台代发</p>
+            <p>店主发货</p>
+        </div>
         <main>
             <div class="all">
                 <c:forEach items="${sfOrders}" var="pb">
@@ -39,8 +45,8 @@
                         <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                         <h2>
                             订单号：<span>${pb.orderCode}</span>
-                            <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if>
-                            <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">待发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}">待付款</b ></c:if>
+                            <c:if test="${pb.orderStatus ==7}"><b class="fahuo_${pb.id}">待发货</b></c:if>
                             <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                             <c:if test="${pb.orderStatus ==2}"><b class="fahuo_${pb.id}">已取消</b></c:if>
@@ -218,6 +224,43 @@
                         </div>
                     </section></c:forEach>
             </div>
+            <div class="all">
+                <c:forEach items="${sfOrders}" var="pb">
+                    <section class="sec1">
+                        <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                        <h2>
+                            订单号：<span>${pb.orderCode}</span>
+                            <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}">待付款</b ></c:if>
+                            <c:if test="${pb.orderStatus ==7}"><b class="fahuo_${pb.id}">待发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
+                            <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                            <c:if test="${pb.orderStatus ==2}"><b class="fahuo_${pb.id}">已取消</b></c:if>
+                        </h2>
+                        <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                            <div class="shangpin">
+                                <p class="photo">
+                                    <a href="javascript:void(0);">
+                                        <img src="${pbi.skuUrl}" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                </div>
+                            </div> </c:forEach>
+                        <p class="money">合计：<span>￥${pb.orderAmount}</span><span>发货方：<b>
+                            <c:if test="${pb.sendType==1}">平台发货</c:if>
+                            <c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>
+                            <c:if test="${pb.sendType==2}">自己发货</c:if></b></span></p>
+                        <div class="ding">
+                            <p><a href="<%=path%>/sfOrderController/sfOrderDetal.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.sendType==1 || pb.sendType==2}">
+                            <p class="sh" onclick="shouhuorenxinxi('${pb.sfOrderConsignee.consignee}','${pb.sfOrderConsignee.provinceName} ${pb.sfOrderConsignee.cityName} ${pb.sfOrderConsignee.regionName} ${pb.sfOrderConsignee.address}','${pb.sfOrderConsignee.mobile}','${pb.sfOrderConsignee.zip}')">收货人信息</p></c:if>
+                            <c:if test="${pb.orderStatus ==7 && pb.sendType==2}">
+                                <button class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</button>
+                            </c:if>
+                        </div>
+                    </section></c:forEach>
+            </div>
         </main>
     </div>
 </div>
@@ -249,17 +292,13 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
-    //            $("li").on("click",function(){
-    //                var index=$(this).index();
-    //                $("li").children("a").removeClass("on")
-    //                $(this).children("a").addClass("on");
-    //                $(".all").eq(index).show().siblings().hide();
-    //            })
+
     $(document).ready(function(){
         var index=${index};
         $("li").children("a").removeClass("on")
         $("li").eq(index).children("a").addClass("on");
         $(".all").eq(index).show().siblings().hide();
+        $(".tapfix").hide();
     });
     function shouhuorenxinxi(a,b,c,d){
         $(".back").css("display","-webkit-box");
@@ -271,82 +310,100 @@
     }
 
     $(function(){
+        $(".tapfix p").on("click",function(){
+            var sendType = $(this).index();
+            $(this).addClass("on").siblings().removeClass("on");
+            ajaxAction(2,sendType);
+        })
+
         $("li").on("click",function(){
             var index=$(this).index();
+            var sendType = "";
+            if(index ==2){
+                $(".tapfix").show();
+                sendType=1;
+            }else{
+                $(".tapfix").hide();
+            }
             $(".all").html("");
             $(".all").eq(index).show().siblings().hide();
-            $("li").children("a").removeClass("on")
+            $("li").children("a").removeClass("on");
             $(this).children("a").addClass("on");
-            $.ajax({
-                type:"POST",
-                url : "<%=path%>/sfOrderController/clickSfOrder.do",
-                data:{index:index},
-                dataType:"Json",
-                success:function(data){
-                    var trHtml = "";
-                    var StatusName="";
-                    $.each(data, function(i, sfOrder) {
-                        var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
-                        trHtml+="<section class=\"sec1\">";
-                        trHtml+="<p>时间: <span>"+time2 +"</span></p>";
-                        if(sfOrder.orderStatus==0){
-                            StatusName="待付款";
-                        }else if(sfOrder.orderStatus ==7){
-                            StatusName="待发货";
-                        }else if(sfOrder.orderStatus ==8){
-                            StatusName="待收货";
-                        }else if(sfOrder.orderStatus ==3){
-                            StatusName="交易成功";
-                        }else if(sfOrder.orderStatus == 2){
-                            StatusName="已取消";
-                        }
-                        trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class=\"fahuo_"+sfOrder.id+"\">"+StatusName+"</b ></h2>";
-                        $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
-                            trHtml+="<div class=\"shangpin\">";
-                            trHtml+=" <p class=\"photo\">";
-                            trHtml+="<a href=\"javascript:void(0);\">";
-                            trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
-                            trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.skuMoney+"</span></p> </div> </div>";
-                        });
-                        trHtml+="<p class=\"money\">合计：<span>￥"+sfOrder.orderMoney+"</span><span>发货方：<b>";
-                        if(sfOrder.sendType==1){
-                            trHtml+="平台发货"
-                        }else if(sfOrder.sendType==0 ||sfOrder.sendType==null){
-                            trHtml+="未选择"
-                        }else if(sfOrder.sendType==2){
-                            trHtml+="自己发货";
-                        }
-                        trHtml+="</b></span></p>";
-                        trHtml+="<div class=\"ding\">";
-                        trHtml+="<p><a href=\"<%=path%>/sfOrderController/sfOrderDetal.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
-                        if(sfOrder.sendType==1 || sfOrder.sendType==2){
-                            if(sfOrder.sfOrderConsignee != null){
-                                trHtml+="<p class=\"sh\" onclick=\"shouhuorenxinxi('"
-                                        + sfOrder.sfOrderConsignee.consignee+"','"
-                                        + sfOrder.sfOrderConsignee.provinceName+""
-                                        + sfOrder.sfOrderConsignee.cityName+""
-                                        + sfOrder.sfOrderConsignee.regionName+""
-                                        + sfOrder.sfOrderConsignee.address+"','"
-                                        + sfOrder.sfOrderConsignee.mobile+"','"
-                                        + sfOrder.sfOrderConsignee.zip+"')\">收货人信息</p>";
-                            }else{
-                                trHtml+="";
-                            }
-                        }else{
-                            trHtml+="";
-                        }
-                        if(sfOrder.orderStatus ==7 && sfOrder.sendType==2){
-                            trHtml+="<button class=\"fa\" name=\"fahuo_"+sfOrder.id+"\" onclick=\"fahuo('"+sfOrder.id+"')\">发货</button>";
-                        }else{
-                            trHtml+="";
-                        }
-                        trHtml+="</div></section>";
-                    });
-                    $(".all").eq(index).html(trHtml);
-                }
-            })
+            ajaxAction(index,sendType);
         })
     })
+
+    function ajaxAction(index,sendType){
+        $.ajax({
+            type:"POST",
+            url : "<%=path%>/sfOrderController/clickSfOrder.do",
+            data:{index:index,sendType:sendType},
+            dataType:"Json",
+            success:function(data){
+                var trHtml = "";
+                var StatusName="";
+                $.each(data, function(i, sfOrder) {
+                    var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
+                    trHtml+="<section class=\"sec1\">";
+                    trHtml+="<p>时间: <span>"+time2 +"</span></p>";
+                    if(sfOrder.orderStatus==0){
+                        StatusName="待付款";
+                    }else if(sfOrder.orderStatus ==7){
+                        StatusName="待发货";
+                    }else if(sfOrder.orderStatus ==8){
+                        StatusName="待收货";
+                    }else if(sfOrder.orderStatus ==3){
+                        StatusName="交易成功";
+                    }else if(sfOrder.orderStatus == 2){
+                        StatusName="已取消";
+                    }
+                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class=\"fahuo_"+sfOrder.id+"\">"+StatusName+"</b ></h2>";
+                    $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
+                        trHtml+="<div class=\"shangpin\">";
+                        trHtml+=" <p class=\"photo\">";
+                        trHtml+="<a href=\"javascript:void(0);\">";
+                        trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
+                        trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.skuMoney+"</span></p> </div> </div>";
+                    });
+                    trHtml+="<p class=\"money\">合计：<span>￥"+sfOrder.orderMoney+"</span><span>发货方：<b>";
+                    if(sfOrder.sendType==1){
+                        trHtml+="平台发货"
+                    }else if(sfOrder.sendType==0 ||sfOrder.sendType==null){
+                        trHtml+="未选择"
+                    }else if(sfOrder.sendType==2){
+                        trHtml+="自己发货";
+                    }
+                    trHtml+="</b></span></p>";
+                    trHtml+="<div class=\"ding\">";
+                    trHtml+="<p><a href=\"<%=path%>/sfOrderController/sfOrderDetal.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
+                    if(sfOrder.sendType==1 || sfOrder.sendType==2){
+                        if(sfOrder.sfOrderConsignee != null){
+                            trHtml+="<p class=\"sh\" onclick=\"shouhuorenxinxi('"
+                                    + sfOrder.sfOrderConsignee.consignee+"','"
+                                    + sfOrder.sfOrderConsignee.provinceName+""
+                                    + sfOrder.sfOrderConsignee.cityName+""
+                                    + sfOrder.sfOrderConsignee.regionName+""
+                                    + sfOrder.sfOrderConsignee.address+"','"
+                                    + sfOrder.sfOrderConsignee.mobile+"','"
+                                    + sfOrder.sfOrderConsignee.zip+"')\">收货人信息</p>";
+                        }else{
+                            trHtml+="";
+                        }
+                    }else{
+                        trHtml+="";
+                    }
+                    if(sfOrder.orderStatus ==7 && sfOrder.sendType==2){
+                        trHtml+="<button class=\"fa\" name=\"fahuo_"+sfOrder.id+"\" onclick=\"fahuo('"+sfOrder.id+"')\">发货</button>";
+                    }else{
+                        trHtml+="";
+                    }
+                    trHtml+="</div></section>";
+                });
+                $(".all").eq(index).html(trHtml);
+            }
+        })
+    }
+
     function fahuo(id){
         $(".back").css("display","-webkit-box");
         $(".back_que").css("display","-webkit-box");

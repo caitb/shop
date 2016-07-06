@@ -36,7 +36,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorder" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorder" useGeneratedKeys="true" keyProperty="id">
         insert into sf_gorder (id, create_time, create_man, 
             promo_id, promo_rule_id, user_id, 
             gorder_code, gorder_type, gorder_status, 

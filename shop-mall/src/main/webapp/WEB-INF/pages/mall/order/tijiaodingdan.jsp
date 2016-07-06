@@ -112,13 +112,13 @@
                     <p>￥${skuDetail.comSku.priceRetail}</p>
                 </div>
             </section>
+            <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
         </c:forEach>
         <section class="sec3">
             <p><em>运费：</em><span>
                 <c:if test="${isFreeShipAmount==true}">包邮</c:if>
                 <c:if test="${isFreeShipAmount==false}">￥${skuTotalShipAmount}</c:if>
             </span></p>
-            <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
             <p><em>留言：</em><input id="userMessageId" type="text"></p>
             <h1>共需支付：<span>￥ ${totalPrice}</span></h1>
         </section>

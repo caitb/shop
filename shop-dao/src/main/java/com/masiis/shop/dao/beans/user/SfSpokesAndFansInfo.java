@@ -1,5 +1,6 @@
 package com.masiis.shop.dao.beans.user;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -25,9 +26,17 @@ public class SfSpokesAndFansInfo {
      */
     private Integer sopkenMan;
     /**
+     * 是否为代言人，页面展示
+     */
+    private String sopkenManView = "";
+    /**
      * 创建关系时间
      */
     private Date createTime;
+    /**
+     * 创建时间，页面展示
+     */
+    private String createTimeView;
     /**
      * 用户id
      */
@@ -36,6 +45,10 @@ public class SfSpokesAndFansInfo {
      * 用户粉丝级别
      */
     private Integer userLevel;
+    /**
+     * 页面展示粉丝级别
+     */
+    private String userLevelView;
     /**
      * 小铺id
      */
@@ -75,6 +88,12 @@ public class SfSpokesAndFansInfo {
 
     public void setSopkenMan(Integer sopkenMan) {
         this.sopkenMan = sopkenMan;
+        switch (sopkenMan){
+            case 1 : {
+                setSopkenManView("已代言");
+                break;
+            }
+        }
     }
 
     public Date getCreateTime() {
@@ -83,6 +102,8 @@ public class SfSpokesAndFansInfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        setCreateTimeView(format.format(createTime));
     }
 
     public Long getUserId() {
@@ -99,6 +120,20 @@ public class SfSpokesAndFansInfo {
 
     public void setUserLevel(Integer userLevel) {
         this.userLevel = userLevel;
+        switch (userLevel){
+            case 1 : {
+                setUserLevelView("一级粉丝");
+                break;
+            }
+            case 2 : {
+                setUserLevelView("二级粉丝");
+                break;
+            }
+            case 3 : {
+                setUserLevelView("三级粉丝");
+                break;
+            }
+        }
     }
 
     public Long getShopId() {
@@ -115,5 +150,29 @@ public class SfSpokesAndFansInfo {
 
     public void setIsBuy(Integer isBuy) {
         this.isBuy = isBuy;
+    }
+
+    public String getUserLevelView() {
+        return userLevelView;
+    }
+
+    public void setUserLevelView(String userLevelView) {
+        this.userLevelView = userLevelView;
+    }
+
+    public String getSopkenManView() {
+        return sopkenManView;
+    }
+
+    public void setSopkenManView(String sopkenManView) {
+        this.sopkenManView = sopkenManView;
+    }
+
+    public String getCreateTimeView() {
+        return createTimeView;
+    }
+
+    public void setCreateTimeView(String createTimeView) {
+        this.createTimeView = createTimeView;
     }
 }

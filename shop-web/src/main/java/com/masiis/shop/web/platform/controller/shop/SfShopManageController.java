@@ -180,20 +180,20 @@ public class SfShopManageController extends BaseController {
      * 设置运费
      * overwrite by JJH
      * @param request
-     * @param response
      * @param shipAmount :0 包邮
      * @return
      */
     @RequestMapping("/setupFreight")
     @ResponseBody
-    public String setupFreight(HttpServletRequest request, HttpServletResponse response,
-                               @RequestParam(value = "shipAmount",required = true) BigDecimal shipAmount){
+    public String setupFreight(HttpServletRequest request,
+                               @RequestParam(value = "shipAmount",required = true) String shipAmount){
         JSONObject object = new JSONObject();
         SfShop sfShop = null;
         try {
             ComUser comUser = getComUser(request);
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
-            sfShop.setOwnShipAmount(shipAmount);
+            BigDecimal bd = new BigDecimal(shipAmount);
+            sfShop.setOwnShipAmount(bd);
             sfShopMapper.updateByPrimaryKey(sfShop);
             object.put("isError",false);
         } catch (Exception e) {

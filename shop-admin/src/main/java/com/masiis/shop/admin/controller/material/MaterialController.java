@@ -8,16 +8,15 @@ import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 素材库
@@ -34,18 +33,88 @@ public class MaterialController extends BaseController {
     @Resource
     private SkuService skuService;
 
-    @RequestMapping("/list.shtml")
-    public String list() {
-        return "material/list";
+    @RequestMapping("/listLibrary.shtml")
+    public String listLibrary() {
+        return "material/listLibrary";
     }
 
+    @RequestMapping("/listGroup.shtml")
+    public String listGroup(Integer mlId, Model model) {
+        model.addAttribute("mlId", mlId);
+        return "material/listGroup";
+    }
+
+    /**
+     * 素材库列表
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @return
+     */
+    @RequestMapping("/listLibrary.do")
+    @ResponseBody
+    public Object listLibrary(
+                        Integer pageNumber,
+                        Integer pageSize,
+                        String sortName,
+                        String sortOrder
+                      ){
+
+        Map<String, Object> conditionMap = new HashMap<>();
+        Map<String, Object> pageMap = new HashMap<>();
+        try {
+            pageMap = materialService.listLibraryByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+        } catch (Exception e) {
+            log.error("获取素材库列表失败![conditionMap="+conditionMap+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pageMap;
+    }
+
+    /**
+     * 素材库模块列表
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @return
+     */
+    @RequestMapping("/listGroup.do")
+    @ResponseBody
+    public Object listGroup(
+                            Integer pageNumber,
+                            Integer pageSize,
+                            String sortName,
+                            String sortOrder,
+                            Integer mlId
+                           ){
+
+        Map<String, Object> conditionMap = new HashMap<>();
+        Map<String, Object> pageMap = new HashMap<>();
+        try {
+            conditionMap.put("mlId", mlId);
+            pageMap = materialService.listGroupByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+        } catch (Exception e) {
+            log.error("获取素材库列表失败![conditionMap="+conditionMap+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pageMap;
+    }
+
+    /**
+     * 添加素材页面
+     * @return
+     */
     @RequestMapping("/addMaterial.shtml")
     public ModelAndView addMaterial() {
         ModelAndView mav = new ModelAndView("material/add");
 
         try {
-            List<MaterialLibrary> materialLibraries = materialService.listAllLibrary();
-            mav.addObject("materialLibraries", materialLibraries);
+//            List<MaterialLibrary> materialLibraries = materialService.listAllLibrary();
+//            mav.addObject("materialLibraries", materialLibraries);
         } catch (Exception e) {
             log.error("获取素材库失败!"+e);
         }
@@ -84,6 +153,54 @@ public class MaterialController extends BaseController {
     }
 
     /**
+     * 更改素材库
+     * @param comSkuMaterialLibrary
+     * @return
+     */
+    @RequestMapping("/updateLibrary.do")
+    @ResponseBody
+    public Map<String, Object> updateLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            materialService.updateMaterialLibrary(comSkuMaterialLibrary);
+            resultMap.put("code", "success");
+            resultMap.put("msg", "更改成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "更改失败!");
+            log.error("更改素材库失败![comSkuMaterialLibrary="+comSkuMaterialLibrary+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 更改素材组
+     * @param comSkuMaterialGroup
+     * @return
+     */
+    @RequestMapping("/updateGroup.do")
+    @ResponseBody
+    public Map<String, Object> updateGroup(ComSkuMaterialGroup comSkuMaterialGroup) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            materialService.updateMaterialGroup(comSkuMaterialGroup);
+            resultMap.put("code", "success");
+            resultMap.put("msg", "更改成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "更改失败!");
+            log.error("更改素材组失败![comSkuMaterialGroup="+comSkuMaterialGroup+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    /**
      * 保存素材组
      * @param request
      * @param comSkuMaterialGroup
@@ -108,6 +225,59 @@ public class MaterialController extends BaseController {
             resultMap.put("code", "fail");
             resultMap.put("msg", "保存失败!");
             log.error("保存素材组失败![comSkuMaterialGroup="+comSkuMaterialGroup+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 保存素材
+     * @param comSkuMaterial
+     * @return
+     */
+    @RequestMapping("/saveMaterial.do")
+    @ResponseBody
+    public Map<String, Object> saveMaterial(
+                                            HttpServletRequest request,
+                                            ComSkuMaterial comSkuMaterial,
+                                            @RequestParam(value = "types",       required = false)Integer[] types,
+                                            @RequestParam(value = "fileNames",   required = false)String[]  fileNames,
+                                            @RequestParam(value = "fileUrls",    required = false)String[]  fileUrls,
+                                            @RequestParam(value = "fileSuffixs", required = false)String[]  fileSuffixs,
+                                            @RequestParam(value = "fileSizes",   required = false)Long[]  fileSizes) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            PbUser pbUser = getPbUser(request);
+
+            comSkuMaterial.setCreateTime(new Date());
+            comSkuMaterial.setCreateMan(pbUser.getId());
+            comSkuMaterial.setSort(0);
+            List<ComSkuMaterialItem> comSkuMaterialItems = new ArrayList<>();
+            for(int i=0; i<types.length; i++){
+                ComSkuMaterialItem comSkuMaterialItem = new ComSkuMaterialItem();
+                comSkuMaterialItem.setCreateTime(new Date());
+                comSkuMaterialItem.setCreateMan(pbUser.getId());
+                comSkuMaterialItem.setType(types[0]);
+                comSkuMaterialItem.setFileName(fileNames[i]);
+                comSkuMaterialItem.setFileUrl(fileUrls[i]);
+                comSkuMaterialItem.setFileSuffix(fileSuffixs[i]);
+                comSkuMaterialItem.setFileSize(fileSizes[i]);
+                comSkuMaterialItem.setMaterialLibraryId(comSkuMaterial.getMaterialLibraryId());
+                comSkuMaterialItem.setMaterialGroupId(comSkuMaterial.getMaterialGroupId());
+
+                comSkuMaterialItems.add(comSkuMaterialItem);
+            }
+
+            materialService.saveMaterial(comSkuMaterial, comSkuMaterialItems);
+
+            resultMap.put("code", "success");
+            resultMap.put("msg", "保存成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "保存失败!");
+            log.error("保存素材失败![comSkuMaterial="+comSkuMaterial+"]"+e);
             e.printStackTrace();
         }
 

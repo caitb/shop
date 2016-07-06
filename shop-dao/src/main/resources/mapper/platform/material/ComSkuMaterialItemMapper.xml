@@ -4,10 +4,10 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuMaterialItem" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="create_man" property="createMan" jdbcType="VARCHAR" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
         <result column="material_group_id" property="materialGroupId" jdbcType="INTEGER" />
-        <result column="material_id" property="materialId" jdbcType="BIGINT" />
+        <result column="material_id" property="materialId" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="file_name" property="fileName" jdbcType="VARCHAR" />
         <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
@@ -27,8 +27,8 @@
             type, file_name, file_url, 
             file_suffix, file_size, remark
             )
-        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=VARCHAR}, 
-            #{materialLibraryId,jdbcType=INTEGER}, #{materialGroupId,jdbcType=INTEGER}, #{materialId,jdbcType=BIGINT}, 
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
+            #{materialLibraryId,jdbcType=INTEGER}, #{materialGroupId,jdbcType=INTEGER}, #{materialId,jdbcType=INTEGER},
             #{type,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
             #{fileSuffix,jdbcType=VARCHAR}, #{fileSize,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
             )
@@ -37,10 +37,10 @@
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterialItem" >
         update com_sku_material_item
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=VARCHAR},
+            create_man = #{createMan,jdbcType=BIGINT},
             material_library_id = #{materialLibraryId,jdbcType=INTEGER},
             material_group_id = #{materialGroupId,jdbcType=INTEGER},
-            material_id = #{materialId,jdbcType=BIGINT},
+            material_id = #{materialId,jdbcType=INTEGER},
             type = #{type,jdbcType=INTEGER},
             file_name = #{fileName,jdbcType=VARCHAR},
             file_url = #{fileUrl,jdbcType=VARCHAR},

@@ -168,7 +168,7 @@
         a.bail,
         a.back_img,
         a.is_show,
-        a.reward_unit_price
+        a.reward_unit_price,
         b.name AS remark
         FROM
         pf_sku_agent a

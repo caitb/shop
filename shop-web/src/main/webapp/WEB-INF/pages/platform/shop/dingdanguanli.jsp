@@ -299,9 +299,6 @@
         $("li").eq(index).children("a").addClass("on");
         $(".all").eq(index).show().siblings().hide();
         $(".tapfix").hide();
-//        $(".tapfix p").on("click",function(){
-//            $(this).addClass("on").siblings().removeClass("on")
-//        })
     });
     function shouhuorenxinxi(a,b,c,d){
         $(".back").css("display","-webkit-box");

@@ -9,7 +9,6 @@ function queryFans(){
         dataType:"Json",
         success:function(data){
             var arr=eval(data);
-            var html = "";
             var firstCount = arr[0].firstCount;
             var secondCount = arr[0].secondCount;
             var thirdCount = arr[0].thirdCount;
@@ -24,15 +23,7 @@ function queryFans(){
             $("#currentPage").val(cur);
             $("#totalPage").val(totalPage);
             $("#totalCount").val(threeSum);
-            for (var i = 0; i < arr[0].infos.length; i++){
-                html += "<h1 style=\"background:url('"+ arr[0].infos[i].headImg +"');background-size:100% 100%;\"></h1>";
-                html += "<div>";
-                html += "<h2>" + arr[0].infos[i].wxName + "<span>" + arr[0].infos[i].userLevelView + "</span> <b>" + arr[0].infos[i].sopkenManView + "</b></h2>";
-                html += "<p>";
-                html += "<span>ID:" + arr[0].infos[i].ID + "</span>";
-                html += "<span>" + arr[0].infos[i].createTimeView + "</span>";
-                html += "</p></div>";
-            }
+            var html = createHtml(arr[0].infos);
             $("#distributions").html(html);
             if (threeSum <= $(".sec1").length){
                 $("#showMore").html("");
@@ -58,16 +49,7 @@ function viewMore(){
         dataType:"Json",
         success:function(data){
             var arr=eval(data);
-            var html = "";
-            for (var i = 0; i < arr[0].infos.length; i++){
-                html += "<h1 style=\"background:url('"+ arr[0].infos[i].headImg +"');background-size:100% 100%;\"></h1>";
-                html += "<div>";
-                html += "<h2>" + arr[0].infos[i].wxName + "<span>" + arr[0].infos[i].userLevelView + "</span> <b>" + arr[0].infos[i].sopkenManView + "</b></h2>";
-                html += "<p>";
-                html += "<span>ID:" + arr[0].infos[i].ID + "</span>";
-                html += "<span>" + arr[0].infos[i].createTimeView + "</span>";
-                html += "</p></div>";
-            }
+            var html = createHtml(arr[0].infos);
             var cur = arr[0].currentPage;
             $("#currentPage").val(cur);
             $("#distributions").append(html);
@@ -82,4 +64,18 @@ function viewMore(){
             alert("请求出错，请稍后再试");
         }
     });
+}
+
+function createHtml(infos){
+    var html = "";
+    for (var i = 0; i < infos.length; i++){
+        html += "<h1 style=\"background:url('"+ infos[i].headImg +"');background-size:100% 100%;\"></h1>";
+        html += "<div>";
+        html += "<h2>" + infos[i].wxName + "<span>" + infos[i].userLevelView + "</span> <b>" + infos[i].sopkenManView + "</b></h2>";
+        html += "<p>";
+        html += "<span>ID:" + infos[i].ID + "</span>";
+        html += "<span>" + infos[i].createTimeView + "</span>";
+        html += "</p></div>";
+    }
+    return html;
 }

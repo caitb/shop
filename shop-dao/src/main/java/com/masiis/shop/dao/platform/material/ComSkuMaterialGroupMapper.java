@@ -12,6 +12,7 @@ import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ComSkuMaterialGroupMapper {
     int deleteByPrimaryKey(Integer id);
@@ -24,5 +25,11 @@ public interface ComSkuMaterialGroupMapper {
 
     int updateByPrimaryKey(ComSkuMaterialGroup record);
 
-    List<MaterialLibrary> selectMaterialLibrary();
+    /**
+     * 条件查询素材库
+     * @param conditionMap  查询参数
+     * @return
+     */
+    List<MaterialLibrary> selectMaterialLibrary(Map<String, Object> conditionMap);
+
 }

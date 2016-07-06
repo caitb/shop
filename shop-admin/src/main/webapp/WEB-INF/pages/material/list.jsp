@@ -630,7 +630,6 @@
                                            data-page-list="[10, 25, 50, 100, ALL]"
                                            data-show-footer="false"
                                            data-side-pagination="server"
-                                           data-url="/product/list.do"
                                            data-response-handler="responseHandler">
                                     </table>
 
@@ -793,6 +792,7 @@
     function initTable() {
         $table.bootstrapTable({
             //height: getHeight(),
+            url: '<%=basePath%>material/list.do',
             locale: 'zh-CN',
             striped: true,
             //multipleSearch: true,
@@ -823,17 +823,28 @@
                         valign: 'middle'
                     }, {
                     title: 'ID',
-                    field: 'id',
+                    field: 'ml.id',
                     align: 'center',
                     valign: 'middle',
                     sortable: true,
                     footerFormatter: totalTextFormatter,
                     formatter: function(value, row, index){
-                        return row.comSku.id;
+                        return row.id;
                     }
                 },
                     {
-                        field: 'skuName',
+                        field: 'ml.name',
+                        title: '素材库名称',
+                        sortable: true,
+                        //editable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            return row.name;
+                        }
+                    },
+                    {
+                        field: 'sku.id',
                         title: '商品名称',
                         sortable: true,
                         //editable: true,
@@ -844,77 +855,16 @@
                         }
                     },
                     {
-                        field: 'categoryName',
-                        title: '商品分类',
+                        field: 'subscription_num',
+                        title: '订阅人数',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.categoryName){
-                                return row.comSpu.categoryName;
+                            if(row.subscriptionNum){
+                                return row.subscriptionNum;
                             }
-                        }
-                    },
-                    {
-                        field: 'priceRetail',
-                        title: '零售价',
-                        footerFormatter: totalNameFormatter,
-                        formatter: function (value, row, index) {
-                            return row.comSku.priceRetail;
-                        },
-                        align: 'center'
-                    },
-                    {
-                        field: 'store',
-                        title: '库存',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfSkuStock){
-                                return row.pfSkuStock.stock;
-                            }
-                        }
-                    },
-                    {
-                        field: 'pv',
-                        title: '浏览量',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center'
-                    },
-                    {
-                        field: 'age',
-                        title: '销售量',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center'
-                    },
-                    {
-                        field: 'upTime',
-                        title: '上架时间',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.upTime){
-                                return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
-                            }
-                        }
-                    },
-                    {
-                        field: 'status',
-                        title: '状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.status == 0){
-                                return '<span class="label label-sm label-warning">未审核</span>';
-                            }
-                            if(row.comSpu && row.comSpu.status == 1){
-                                return '<span class="label label-sm label-success">已审核</span>';
-                            }
+                            return 0;
                         }
                     },
                     {

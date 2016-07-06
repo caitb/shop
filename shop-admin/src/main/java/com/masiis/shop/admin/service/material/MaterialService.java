@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.material;
 
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialItemMapper;
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
+ * 素材业务
  * Created by cai_tb on 16/7/1.
  */
 @Service
@@ -75,7 +79,31 @@ public class MaterialService {
      */
     public List<MaterialLibrary> listAllLibrary() {
 
-        List<MaterialLibrary> materialLibraries = comSkuMaterialGroupMapper.selectMaterialLibrary();
+        List<MaterialLibrary> materialLibraries = comSkuMaterialGroupMapper.selectMaterialLibrary(null);
         return materialLibraries;
+    }
+
+    /**
+     * 条件分页查询素材库
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<MaterialLibrary> materialLibraries = comSkuMaterialGroupMapper.selectMaterialLibrary(conditionMap);
+        PageInfo<MaterialLibrary> pageInfo = new PageInfo<>(materialLibraries);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", materialLibraries);
+
+        return pageMap;
     }
 }

@@ -125,7 +125,7 @@
                     <p>
                         <span>订单状态：</span>
                         <c:forEach items="${bOrderStatuses}" var="os">
-                            <c:if test="${os.code == borderDetail.pfBorder.orderStatus}">< span>${os.desc}</span></c:if>
+                            <c:if test="${os.code == borderDetail.pfBorder.orderStatus}">${os.desc}</c:if>
                         </c:forEach>
                     </p>
             </div>

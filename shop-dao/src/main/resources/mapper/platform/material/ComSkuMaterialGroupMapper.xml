@@ -36,7 +36,27 @@
         <result column="subscription_num" property="subscriptionNum" jdbcType="INTEGER" />
         <result column="ml_sort" property="sort" jdbcType="INTEGER" />
         <result column="ml_remark" property="remark" jdbcType="VARCHAR" />
+        <association property="comSku" resultMap="comSku" />
         <collection property="materialGroups" resultMap="materialGroup" />
+    </resultMap>
+
+    <resultMap id="comSku" type="com.masiis.shop.dao.po.ComSku" >
+        <id column="sku_id" property="id" jdbcType="INTEGER" />
+        <result column="sku_name" property="name" jdbcType="VARCHAR" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+        <result column="e_name" property="eName" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="price_cost" property="priceCost" jdbcType="DECIMAL" />
+        <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
+        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -82,7 +102,7 @@
     </select>
 
     <!-- 查询素材库(包含素材组) -->
-    <select id="selectMaterialLibrary" resultMap="materialLibrary">
+    <select id="selectMaterialLibrary" parameterType="Map" resultMap="materialLibrary">
         SELECT
                ml.id                ml_id,
                ml.create_time       ml_create_time,
@@ -102,11 +122,38 @@
                mg.is_b_show,
                mg.is_c_show,
                mg.sort,
-               mg.remark
+               mg.remark,
+
+               sku.id              sku_id,
+               sku.name            sku_name
         from
                com_sku_material_library ml
         LEFT JOIN
                com_sku_material_group   mg ON mg.material_library_id = ml.id
+        LEFT JOIN com_sku sku ON sku.id = ml.sku_id
+        <where>
+            <if test="mlId != null">
+                AND ml.id = #{mlId}
+            </if>
+            <if test="mlName != null">
+                AND ml.name = #{mlName}
+            </if>
+            <if test="subscriptionNum != null">
+                AND ml.subscription_num = #{subscriptionNum}
+            </if>
+            <if test="mgId != null">
+                AND mg.id = #{mgId}
+            </if>
+            <if test="mgName != null">
+                AND mg.name = #{mgName}
+            </if>
+            <if test="isBShow != null">
+                AND mg.is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND mg.is_c_show = #{isCShow}
+            </if>
+        </where>
     </select>
 
 </mapper>

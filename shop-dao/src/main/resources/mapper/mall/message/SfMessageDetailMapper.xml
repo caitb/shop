@@ -58,4 +58,12 @@
         from sf_message_sr_relation
     </select>
 
+    <select id="queryFromUser" resultMap="BaseResultMap">
+        select id, create_time, sf_message_content_id, from_user, to_user, status, is_see,
+        remark
+        from sf_message_sr_relation
+        WHERE from_user = #{userId,jdbcType=BIGINT}
+        limit #{start,jdbcType=BIGINT}
+    </select>
+
 </mapper>

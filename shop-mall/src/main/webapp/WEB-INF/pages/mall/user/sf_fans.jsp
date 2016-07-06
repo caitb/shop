@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -8,6 +9,9 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/fans.css">
 </head>
 <body>
+<input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="totalPage" name="totalPage" value="${pageNums}"/>
+<input type="hidden" id="totalCount" name="totalCount" value="${threeSum}"/>
 <div class="wrap">
     <header class="xq_header">
         <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
@@ -42,50 +46,63 @@
         <h1>所属店铺：全部</h1>
         <nav>
             <p>
-                <span>${pageViewPo.totalCount}</span>
+                <span id="total">${pageViewPo.totalCount}</span>
                 <span>粉丝量</span>
             </p>
             <p>
-                <span>${pageViewPo.firstCount}</span>
+                <span id="first">${pageViewPo.firstCount}</span>
                 <span>一级粉丝</span>
             </p>
             <p>
-                <span>${pageViewPo.secondCount}</span>
+                <span id="second">${pageViewPo.secondCount}</span>
                 <span>二级粉丝</span>
             </p>
             <p>
-                <span>${pageViewPo.thirdCount}</span>
+                <span id="third">${pageViewPo.thirdCount}</span>
                 <span>三级粉丝</span>
             </p>
         </nav>
     </div>
     <main>
-        <div class="sec1">
-            <c:forEach items=""
-            <h1 style="background:url('${path}/static/images/admin.png');background-size:100% 100%;"></h1>
-            <div>
-                <h2>王平<span>一级粉丝</span> <b>已代言</b></h2>
-                <p>
-                    <span>ID:131231313213</span>
-                    <span>2021-2-22 23:22</span>
-                </p>
+        <div class="sec1" id="distributions">
+            <c:forEach items="${pageViewPo.sfSpokesAndFansInfos}" var="info">
+                <h1 style="background:url('${info.headImg}');background-size:100% 100%;"></h1>
+                <div class="fans">
+                    <h2>${info.wxName}<span>${info.userLevelView}</span> <b>${info.sopkenManView}</b></h2>
+                    <p>
+                        <span>ID:${info.ID}</span>
+                        <span>${info.createTimeView}</span>
+                    </p>
+                </div>
+            </c:forEach>
+            <div id="showMore" style="text-align: center;">
+                <c:if test="${pageViewPo.sfSpokesAndFansInfos != null && fn:length(pageViewPo.sfSpokesAndFansInfos) < threeSum}">
+                    <a href="#" onclick="viewMore()">查看更多></a>
+                </c:if>
             </div>
         </div>
     </main>
 </div>
 <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/pageJs/sf_fans.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
+    var path = "${path}";
+    var basepath = "${basePath}";
     $(document).ready(function(){
         $(".goods b").html($("#goods option:selected").text());
         $(".level b").html($("#level option:selected").text());
     })
     $("#goods").on("change",function(){
-        var tabVal=$("#goods option:selected").text();
+        var tabVal = $("#goods option:selected").text();
         $(".goods b").html(tabVal);
+        queryFans();
     })
     $("#level").on("change",function(){
         var tabVal=$("#level option:selected").text();
         $(".level b").html(tabVal);
+        queryFans();
     })
 </script>
 </body>

@@ -8,8 +8,10 @@ import java.util.List;
  */
 public class SfMessagePageList {
     private Integer cur;
-    private Integer totalSize;
+    private Long totalPage;
     private Integer pageSize;
+    private Integer isLast;
+    private Integer hasData;
     private List<SfMessageDetail> detailList;
 
     public Integer getCur() {
@@ -20,12 +22,12 @@ public class SfMessagePageList {
         this.cur = cur;
     }
 
-    public Integer getTotalSize() {
-        return totalSize;
+    public Long getTotalPage() {
+        return totalPage;
     }
 
-    public void setTotalSize(Integer totalSize) {
-        this.totalSize = totalSize;
+    public void setTotalPage(Long totalPage) {
+        this.totalPage = totalPage;
     }
 
     public Integer getPageSize() {
@@ -34,6 +36,22 @@ public class SfMessagePageList {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Integer getIsLast() {
+        return isLast;
+    }
+
+    public void setIsLast(Integer isLast) {
+        this.isLast = isLast;
+    }
+
+    public Integer getHasData() {
+        return hasData;
+    }
+
+    public void setHasData(Integer hasData) {
+        this.hasData = hasData;
     }
 
     public List<SfMessageDetail> getDetailList() {

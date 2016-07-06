@@ -190,7 +190,7 @@ public class SfOrderController extends BaseController {
             }else if(index==1){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 0, shopId,null);
             }else if(index==2){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 7, shopId,sendType);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 7, shopId, sendType);
             }else if(index==3){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 8, shopId,null);
             }else if(index==4){

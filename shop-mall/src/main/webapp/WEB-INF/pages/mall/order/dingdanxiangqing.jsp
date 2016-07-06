@@ -48,6 +48,10 @@
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="width: 27px;height: 29px; top: 16px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p>
                 </c:if>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==2 }">
+                    <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 27px;height: 29px; top: 16px;"><h1>已取消</h1>
+                    <p>亲，订单已取消~~</p>
+                </c:if>
             </div>
             <div class="kuaidi">
                 <p>拿货方式：<span><c:if test="${orderMallDetail.sfOrder.sendType==0}">未选择</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1}">平台代发</c:if><c:if test="${orderMallDetail.sfOrder.sendType==2}">自己发货</c:if></span></p>
@@ -56,7 +60,7 @@
             </div>
            <div class="shop">
                <h1>购买店铺：</h1>
-               <p>彪哥的小店</p>
+               <p>${orderMallDetail.buyerShopName}</p>
            </div>
             <section class="sec1">
                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
@@ -93,71 +97,69 @@
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div>
-           <%--<c:if test="${orderMallDetail.sfOrder.orderStatus==8}">--%>
             <div class="floor">
-                <button onclick="clickShow()">
-                    联系店主
-                </button>
+                <%--<button onclick="clickShow()">--%>
+                    <%--联系店主--%>
+                <%--</button>--%>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
                 <button class="btn">
                     确认收货
                 </button>
-                <%--<button>--%>
-                    <%--继续支付--%>
-                <%--</button>--%>
+                </c:if>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==0}">
+                <button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${orderMallDetail.sfOrder.id}')">
+                    继续支付
+                </button>
+                </c:if>
+                <%--<c:if test="${orderMallDetail.sfOrder.orderStatus==3}">--%>
                 <%--<button onclick="clickShow()">--%>
                     <%--索要发票--%>
                 <%--</button>--%>
+                <%--</c:if>--%>
             </div>
-           <%--</c:if>--%>
-        </main>
-        <div class="back">
-                <div class="back_que">
-                    <p>确认收货?</p>
-                    <h4>亲，请您核对商品后再操作确认收货</h4>
 
-                    <h3>
-                        <span class="que_qu">取消</span>
-                        <span class="que_que">确认</span>
-                    </h3>
+        </main>
+                <div class="back">
+                        <div class="back_que">
+                            <p>确认收货?</p>
+                            <h4>亲，请您核对商品后再操作确认收货</h4>
+
+                            <h3>
+                                <span class="que_qu">取消</span>
+                                <span class="que_que">确认</span>
+                            </h3>
+                        </div>
                 </div>
     </div>
-    </div>
-    <div class="black">
-        <div class="back_b"></div>
-        <div class="b_t">
-            <img src="${sfShop.wxQrCode}" alt="">
-            <p>
-                如有问题，请加我为好友！。
-            </p>
-            <b class="off" onclick="clickHide()">×</b>
-        </div>
-    </div>
-    <div class="black nobady">
-        <div class="back_b"></div>
-        <div class="b_n">
-            <img src="${path}/static/images/nobady.png" alt="">
-            <p>该店主还未上传二维码，催他上传吧</p>
-            <button>留下邮箱</button>
-            <b class="off" onclick="clickHide()">×</b>
-        </div>
-    </div>
+    <%--<div class="black">--%>
+        <%--<div class="back_b"></div>--%>
+        <%--<div class="b_t">--%>
+            <%--<img src="${sfShop.wxQrCode}" alt="">--%>
+            <%--<p>--%>
+                <%--如有问题，请加我为好友！。--%>
+            <%--</p>--%>
+            <%--<b class="off" onclick="clickHide()">×</b>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<div class="black nobady">--%>
+        <%--<div class="back_b"></div>--%>
+        <%--<div class="b_n">--%>
+            <%--<img src="${path}/static/images/nobady.png" alt="">--%>
+            <%--<p>该店主还未上传二维码，催他上传吧</p>--%>
+            <%--<button>留下邮箱</button>--%>
+            <%--<b class="off" onclick="clickHide()">×</b>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <%--<script src="<%=path%>/static/js/common/commonAjax.js"></script>--%>
     <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
     <script>
-//        var myScroll = new IScroll("main",{
-//            preventDefault: false
-//        })
 
-//        $(".btn").on("click",function(){
-//            $(".back").css("display","-webkit-box");
-//            $(".back_que").css("display","-webkit-box");
-//        })
-           var id = ${orderMallDetail.sfOrder.id};
-            var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
-            var orderStatu ="";
+        var id = ${orderMallDetail.sfOrder.id};
+        var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
+        var orderStatu ="";
         $(".btn").on("click",function(){
             if(orderStatu==3){
                 $(".btn").prop("disabled", "disabled");
@@ -186,12 +188,12 @@
             $(".back_shouhuo").hide();
             $(".back").hide();
         })
-    function clickShow(){
-        $(".black").show();
-    }
-    function clickHide(){
-        $(".black").hide();
-    }
+//        function clickShow(){
+        //            $(".black").show();
+        //        }
+        //        function clickHide(){
+        //            $(".black").hide();
+        //        }
     </script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.service.wxevent;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.beans.wx.event.event.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
@@ -62,8 +61,7 @@ public class WxEventService {
         switch (body.getEvent()){
             case "SCAN":
             case "subscribe":
-                handleQRScanEvent(body);
-                res = handleDefaultEventReturn(body);
+                res = handleQRScanEvent(body);
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);
@@ -71,15 +69,6 @@ public class WxEventService {
             default:
         }
         return res;
-    }
-
-    private WxBaseMessage handleDefaultEventReturn(WxEventBody body) {
-        String content = "欢迎关注麦链商城。请点击您想了解的内容，查看详情：\n\n" +
-                "<a href=\"http://mp.weixin.qq.com/s?__biz=MzIzNjM4MTE0MA==&tempkey=SqT0mTY7pFDU3%2BVOFVI7f1DZhgamDq6wS6MoRGwpirrF9w1UGrg%2F1WT9vZm%2FuB6cYSpaiJmEHmRBTTprGfio%2Brg%2FV%2FhuXFGEefTOPqshpRrpcr%2Bb8zdejjshCRSr8V18hW2Fkm%2F3R3RDYlyNDLEFjg%3D%3D&#rd\">1、麦链商城能为您做什么</a>\n\n" +
-                "<a href=\"http://mp.weixin.qq.com/s?__biz=MzIzNjM4MTE0MA==&tempkey=SqT0mTY7pFDU3%2BVOFVI7f1DZhgamDq6wS6MoRGwpirrF9w1UGrg%2F1WT9vZm%2FuB6cYSpaiJmEHmRBTTprGfio%2Brg%2FV%2FhuXFGEefTOPqshpRrpcr%2Bb8zdejjshCRSr8V18EAx%2BE960aUDptWaupsQoZA%3D%3D&#rd\">2、如何选购优质商品</a>\n\n" +
-                "<a href=\"http://mp.weixin.qq.com/s?__biz=MzIzNjM4MTE0MA==&tempkey=SqT0mTY7pFDU3%2BVOFVI7f1DZhgamDq6wS6MoRGwpirogCh8KVeUhnWnGrQpLYBMmRyajvcxIaImBhiggB96wA7pVIoWQdM6uc%2FoaC7dv4zbpcr%2Bb8zdejjshCRSr8V18GUVCES4GmJmTqgwBuIGw6A%3D%3D&#rd\">3、如何赚取佣金</a>\n\n" +
-                "<a href=\"http://mp.weixin.qq.com/s?__biz=MzIzNjM4MTE0MA==&tempkey=SqT0mTY7pFDU3%2BVOFVI7f1DZhgamDq6wS6MoRGwpiros3HOdRgCIxKUTBOKqi65JybENqzAX7W6RqtgZ82nQiSTeFBKFD%2BjLarlTnkSSuOfpcr%2Bb8zdejjshCRSr8V18RNIKuOtfM2245Yyj52twLw%3D%3D&#rd\">4、常见问题解答</a>";
-        return createDefaultSubscribeEventReturn(body, content);
     }
 
     /**
@@ -110,7 +99,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxBaseMessage handleQRScanEvent(final WxEventBody body) throws UnsupportedEncodingException {
+    private WxBaseMessage handleQRScanEvent(WxEventBody body) throws UnsupportedEncodingException {
         Integer pfUserSkuId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -178,28 +167,15 @@ public class WxEventService {
 
         log.info("处理代理关系结束");
         ComSku sku = skuService.getSkuById(skuId);
+//        ComSkuImage skuImage = skuService.findComSkuImage(skuId);
+//        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
+
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
                 + "/product/skuDetails.shtml?skuId=" + usp.getSkuId()
                 + "&pUserId=" + usp.getfUserId();
         WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), null);
-        final JSONObject mr = new JSONObject();
-        JSONObject news = new JSONObject();
-        mr.put("touser", res.getToUserName());
-        mr.put("msgtype", res.getMsgType());
-        mr.put("news", news);
-        news.put("articles", res.getArticles());
-        final String token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
-        // 起线程发送继续注册消息
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
-                String result = HttpClientUtils.httpPost(url, mr.toJSONString());
-                log.info("openId{" + body.getFromUserName() + "}的关注公众号自动回复消息响应结果:" + result);
-            }
-        }).start();
 
-        return null;
+        return res;
     }
 
     private WxBaseMessage createDefaultSubscribeEventReturn(WxEventBody body, String content) {
@@ -276,21 +252,14 @@ public class WxEventService {
         articles.add(new Article("点击继续注册",
                 PropertiesUtils.getStringValue("web.domain.name.address") + "/product/skuDetails.shtml?skuId=40&pUserId=11"));
         res.setArticles(articles);
-        /*XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         xStream.ignoreUnknownElements();
         xStream.processAnnotations(res.getClass());
         String result = xStream.toXML(res);
+        result = result.replaceAll("&amp;", "&");
         System.out.println(result);
 
-        WxArticleRes r = (WxArticleRes) xStream.fromXML(result);*/
-        JSONObject mr = new JSONObject();
-        JSONObject news = new JSONObject();
-        mr.put("touser", res.getToUserName());
-        mr.put("msgtype", res.getMsgType());
-        mr.put("news", news);
-        news.put("articles", res.getArticles());
-
-        String r = mr.toJSONString();
+        WxArticleRes r = (WxArticleRes) xStream.fromXML(result);
         System.out.println(r);
     }
 }

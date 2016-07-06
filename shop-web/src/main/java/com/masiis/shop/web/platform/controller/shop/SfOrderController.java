@@ -195,6 +195,8 @@ public class SfOrderController extends BaseController {
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 8, shopId,null);
             }else if(index==4){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 3, shopId,null);
+            }else if(index==5){
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 2, shopId,null);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

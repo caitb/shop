@@ -6,7 +6,6 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopShoutLog;
 import org.apache.log4j.Logger;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.awt.image.BufferStrategy;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;

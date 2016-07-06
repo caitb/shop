@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <%@include file="/WEB-INF/pages/common/head.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/dropload.css">
+    <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
 </head>
 <body>
@@ -17,16 +16,12 @@
         <p>素材库</p>
     </header>
     <main>
-        <c:forEach var="Library" items="${LibraryList}">
-            <p>
-                <span><img src="${Library.remark}" alt=""></span>
-                <span class="add"><b>+添加订阅</b> | 1234</span>
-            </p>
-        </c:forEach>
-
+        <p>
+            <span><img src="${path}/static/images/material/library.png" alt=""></span>
+            <span class="add"><b>+添加订阅</b> | 1234</span>
+        </p>
     </main>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div id="datePlugin"></div>
 </div>
 <div class="black">
     <div class="back_b"></div>
@@ -42,8 +37,6 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
-<script type="text/javascript" src="${path}/static/js/iscroll.js" ></script>
-<script type="text/javascript" src="${path}/static/js/dropload.min.js"></script>
 <script>
     var loginWidtn=$(".wrap").width()/2-1;
 
@@ -88,23 +81,6 @@
             }
         });
     }
-    //   下拉
-    $('body').dropload({
-        scrollArea : window,
-        loadDownFn : function(me){
-            $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
-                dataType: 'json',
-                success: function(data){
-                    // 代码执行后必须重置
-                },
-                error: function(xhr, type){
-                    me.resetload();
-                }
-            });
-        }
-    });
 </script>
 </body>
 </html>

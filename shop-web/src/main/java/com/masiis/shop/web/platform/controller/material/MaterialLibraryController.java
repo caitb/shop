@@ -2,14 +2,17 @@ package com.masiis.shop.web.platform.controller.material;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by jiajinghao on 2016/7/6.
@@ -26,14 +29,20 @@ public class MaterialLibraryController extends BaseController{
 
     /**
      * jjh
-     * 素材列表
+     * 素材列表B端
      * @param request
      * @return
      */
-    @RequestMapping(value = "/info")
-    public ModelAndView materialLibraryList(HttpServletRequest request){
+    @RequestMapping(value = "/infoB")
+    public ModelAndView materialLibraryList(HttpServletRequest request,
+                                            @RequestParam(value = "currentPage",required = true) int currentPage
+                                            ){
         ModelAndView mv = new ModelAndView("/platform/material/materialGroup");
         try{
+            int pageSize = 5; //ajax请求时默认每页显示条数为5条
+            currentPage = currentPage +1;
+            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(currentPage,pageSize);
+            mv.addObject("LibraryList",materialLibraryList);
 
         }catch (Exception e){
             log.info(e.getMessage());

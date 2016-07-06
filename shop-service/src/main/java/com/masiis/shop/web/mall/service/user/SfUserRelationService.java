@@ -127,12 +127,26 @@ public class SfUserRelationService {
                 }
             }
         }
+        //查询展示列表
+        List<SfSpokesAndFansInfo> infos = this.getSfSpokesAndFansInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId);
+        pageViewPo.setSfSpokesAndFansInfos(infos);
+        return pageViewPo;
+    }
+
+    /**
+     * 查询获取粉丝列表展示信息
+     * @param isPaging      是否分页标识
+     * @param currentPage   查询当前页
+     * @param pageSize      每页展示条数
+     * @param userId        用户ID
+     * @param fansLevel     粉丝级别
+     * @param shopId        小铺id
+     * @return
+     */
+    public List<SfSpokesAndFansInfo> getSfSpokesAndFansInfos(boolean isPaging, Integer currentPage, Integer pageSize, Long userId, Integer fansLevel, Long shopId){
         if (isPaging){
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
-        //查询展示列表
-        List<SfSpokesAndFansInfo> infos = sfUserRelationMapper.selectFansPageView(userId, userLevel, shopId);
-        pageViewPo.setSfSpokesAndFansInfos(infos);
-        return pageViewPo;
+        return sfUserRelationMapper.selectFansPageView(userId, fansLevel, shopId);
     }
 }

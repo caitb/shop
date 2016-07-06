@@ -10,6 +10,7 @@ package com.masiis.shop.dao.platform.gift;
 import com.masiis.shop.dao.po.ComGift;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ComGiftMapper {
@@ -18,6 +19,10 @@ public interface ComGiftMapper {
     int insert(ComGift record);
 
     ComGift selectByPrimaryKey(Integer id);
+
+    ComGift selectByImgUrl(String imgUrl);
+
+    List<ComGift> selectByMap(Map<String,Object> conditionMap);
 
     List<ComGift> selectAll();
 

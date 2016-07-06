@@ -7,9 +7,14 @@
  */
 package com.masiis.shop.dao.mall.message;
 
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfMessageSrRelation;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface SfMessageSrRelationMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -20,4 +25,6 @@ public interface SfMessageSrRelationMapper {
     List<SfMessageSrRelation> selectAll();
 
     int updateByPrimaryKey(SfMessageSrRelation record);
+
+    Integer countNumsFromUser(@Param("userId") Long userId);
 }

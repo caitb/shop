@@ -152,6 +152,11 @@ public class SfOrder extends BaseOrder {
      */
     private String remark;
 
+    /**
+     * 发货人
+     */
+    private Long sendMan;
+
     public Long getId() {
         return id;
     }
@@ -363,5 +368,13 @@ public class SfOrder extends BaseOrder {
 
     public void setAgentShipAmount(BigDecimal agentShipAmount) {
         this.agentShipAmount = agentShipAmount;
+    }
+
+    public Long getSendMan() {
+        return sendMan;
+    }
+
+    public void setSendMan(Long sendMan) {
+        this.sendMan = sendMan;
     }
 }

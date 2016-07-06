@@ -136,6 +136,7 @@ public class SfOrderPurchaseService {
             sfShopCartSkuDetail.setSfShopId(sfShopCart.getSfShopId());
             sfShopCartSkuDetail.setSfShopUserId(sfShopCart.getSfShopUserId());
             sfShopCartSkuDetail.setComSku(comSku);
+            sfShopCartSkuDetail.setSendMan(sfShopCart.getSendMan());
             sfShopCartSkuDetail.setQuantity(sfShopCart.getQuantity());
             sfShopCartSkuDetail.setSkuSumPrice(comSku.getPriceRetail().multiply(new BigDecimal(sfShopCart.getQuantity())));
             //获取sku主图片

@@ -112,7 +112,14 @@
                     <p>￥${skuDetail.comSku.priceRetail}</p>
                 </div>
             </section>
-            <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
+            <p><em>发货人：</em>
+                <c:if test="${skuDetail.sendMan==0}">
+                    <b>平台发货</b>
+                </c:if>
+                <c:if test="${skuDetail.sendMan!=0}">
+                    <b>店主发货</b>
+                </c:if>
+            </p>
         </c:forEach>
         <section class="sec3">
             <p><em>运费：</em><span>
@@ -124,24 +131,6 @@
         </section>
         <a  onclick="submitOrder()" class="weixin">提交订单</a>
     </div>
-    <div class="black">
-        <div class="back_b"></div>
-        <div class="b_t">
-            <img src="${path}/static/images/al.png" alt="">
-            <p>
-                如有问题，请加我为好友！。
-            </p>
-            <b class="off" onclick="clickHide()">×</b>
-        </div>
-    </div>
     <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
-    <script>
-        function clickShow(){
-            $(".black").show();
-        }
-        function clickHide(){
-            $(".black").hide();
-        }
-    </script>
 </body>
 </html>

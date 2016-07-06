@@ -173,11 +173,11 @@ public class PfBorderController extends BaseController {
                 resultMap.put("result_msg", "此订单不存在!");
                 return resultMap;
             }
-            if (payAmount.compareTo(pfBorder.getReceivableAmount())==-1 && pfBorder.getOrderType().intValue() != 0) {
-                resultMap.put("result_code", "1");
-                resultMap.put("result_msg", "此订单不是代理订单,必须全额支付!");
-                return resultMap;
-            }
+//            if (payAmount.compareTo(pfBorder.getReceivableAmount())==-1 && pfBorder.getOrderType().intValue() != 0) {
+//                resultMap.put("result_code", "1");
+//                resultMap.put("result_msg", "此订单不是代理订单,必须全额支付!");
+//                return resultMap;
+//            }
 
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
             bOrderPayService.payBOrderOffline(borderPayment, outOrderId, payAmount, request.getServletContext().getRealPath("/"), getPbUser(request));

@@ -328,4 +328,8 @@
         where id = #{id,jdbcType=BIGINT}
         and version = #{version,jdbcType=BIGINT}
     </update>
+
+    <select id="selectSharedShops" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select a.* from sf_shop a inner join sf_user_share_param b on a.id = b.shop_id where b.f_user_id = #{userId};
+    </select>
 </mapper>

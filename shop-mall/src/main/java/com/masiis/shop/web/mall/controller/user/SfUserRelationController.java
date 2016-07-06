@@ -3,7 +3,9 @@ package com.masiis.shop.web.mall.controller.user;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.user.SfSpokenAndFansPageViewPo;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 小铺分销关系Controller
@@ -24,6 +27,8 @@ public class SfUserRelationController extends BaseController {
 
     @Autowired
     private SfUserRelationService sfUserRelationService;
+    @Autowired
+    private SfShopService sfShopService;
 
     /**
      * 每页显示条数
@@ -43,6 +48,9 @@ public class SfUserRelationController extends BaseController {
             throw new BusinessException("用户未登陆");
         }
         ModelAndView mv = new ModelAndView();
+        //获取分享过的小铺列表
+        List<SfShop> shops = sfShopService.getSharedShops(comUser.getId());
+        mv.addObject("shops",shops);
         SfSpokenAndFansPageViewPo pageViewPo = sfUserRelationService.dealWithFansPageView(comUser.getId(), null, null, true, 1, pageSize);
         //用户分页使用，三级粉丝总数量
         Integer threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();

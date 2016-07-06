@@ -20,12 +20,10 @@
                 <label class="goods">
                     <b></b>
                     <select id="goods">
-                        <option value="">asdasd</option>
-                        <option value="">13242</option>
-                        <option value="">hgfds</option>
-                        <option value="">7654</option>
-                        <option value="">lkjhgfdsa</option>
-                        <option value="">oiuytrewASDFGHJKL</option>
+                        <option value="0">全部</option>
+                        <c:forEach items="${shops}" var="shop">
+                            <option value="${shop.id}">${shop.name}</option>
+                        </c:forEach>
                     </select>
                 </label>
                 <label class="level">
@@ -63,6 +61,7 @@
     </div>
     <main>
         <div class="sec1">
+            <c:forEach items=""
             <h1 style="background:url('${path}/static/images/admin.png');background-size:100% 100%;"></h1>
             <div>
                 <h2>王平<span>一级粉丝</span> <b>已代言</b></h2>

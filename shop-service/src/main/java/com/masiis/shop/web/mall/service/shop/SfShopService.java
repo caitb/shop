@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -147,5 +148,14 @@ public class SfShopService {
         String shopValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
         WXQRImg = baseValue + shopValue + code;
         return WXQRImg;
+    }
+
+    /**
+     * 查询分享过的小铺列表
+     * @param userId    用户id
+     * @return  list
+     */
+    public List<SfShop> getSharedShops(Long userId){
+        return sfShopMapper.selectSharedShops(userId);
     }
 }

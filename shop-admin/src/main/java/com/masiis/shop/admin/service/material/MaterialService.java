@@ -53,6 +53,22 @@ public class MaterialService {
     }
 
     /**
+     * 更改素材库
+     * @param comSkuMaterialLibrary
+     */
+    public void updateMaterialLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
+        comSkuMaterialLibraryMapper.updateByPrimaryKey(comSkuMaterialLibrary);
+    }
+
+    /**
+     * 更改素材组
+     * @param comSkuMaterialGroup
+     */
+    public void updateMaterialGroup(ComSkuMaterialGroup comSkuMaterialGroup) {
+        comSkuMaterialGroupMapper.updateByPrimaryKey(comSkuMaterialGroup);
+    }
+
+    /**
      * 保存素材组
      * @param comSkuMaterialGroup
      */
@@ -92,8 +108,8 @@ public class MaterialService {
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
-        String sort = "create_time desc";
+    public Map<String, Object> listLibraryByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "ml.create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
 
         PageHelper.startPage(pageNumber, pageSize, sort);
@@ -103,6 +119,30 @@ public class MaterialService {
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", materialLibraries);
+
+        return pageMap;
+    }
+
+    /**
+     * 条件分页查询素材库模块
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listGroupByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<ComSkuMaterialGroup> comSkuMaterialGroups = comSkuMaterialGroupMapper.selectMaterialGroup(conditionMap);
+        PageInfo<ComSkuMaterialGroup> pageInfo = new PageInfo<>(comSkuMaterialGroups);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", comSkuMaterialGroups);
 
         return pageMap;
     }

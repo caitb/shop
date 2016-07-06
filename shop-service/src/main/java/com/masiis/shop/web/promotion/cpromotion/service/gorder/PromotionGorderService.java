@@ -10,6 +10,8 @@ import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRecordService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,8 @@ import java.util.Map;
 /**
  * 活动订单
  */
+@Service
+@Transactional
 public class PromotionGorderService {
 
     private Log log = LogFactory.getLog(this.getClass());
@@ -61,6 +65,14 @@ public class PromotionGorderService {
         return map;
     }
 
+    /**
+     * 领取奖励
+     * @param comUser
+     * @param addressId  地址id
+     * @param promoId   活动id
+     * @param promoRuleId 活动规则id
+     * @param personType 订单类型
+     */
     public void receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId,Integer personType){
         //添加订单
         Long gorderId = gorderService.addGorder(comUser,promoId,promoRuleId,personType);

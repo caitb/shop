@@ -169,7 +169,7 @@
         a.back_img,
         a.is_show,
         a.reward_unit_price
-        b. NAME AS remark
+        b.name AS remark
         FROM
         pf_sku_agent a
         LEFT JOIN com_agent_level b ON a.agent_level_id = b.id

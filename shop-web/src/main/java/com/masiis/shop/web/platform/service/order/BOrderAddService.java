@@ -78,7 +78,7 @@ public class BOrderAddService {
         if (bOrderAdd == null) {
             throw new BusinessException("bOrderAdd为空");
         }
-        BigDecimal retailPrice = BigDecimal.ZERO;//微信零售价
+        BigDecimal retailPrice;//微信零售价
         BigDecimal bailPrice = BigDecimal.ZERO;//代理保证金
         Integer quantity = 0;//数量
         Integer agentLevelId;//代理等级

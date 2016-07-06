@@ -29,7 +29,7 @@ public class SfGorderItemService {
     @Resource
     private SfUserPromotionGiftService promotionGiftService;
 
-    public void addGorDerItem(Long gorderId,Integer gorderType,Integer promoId,Integer promoRuleId){
+    public List<PromotionGiftInfo> addGorDerItem(Long gorderId,Integer gorderType,Integer promoId,Integer promoRuleId){
         List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,false);
         for (PromotionGiftInfo giftInfo:promotionGiftInfos){
             SfGorderItem sfGorderItem = new SfGorderItem();
@@ -47,5 +47,6 @@ public class SfGorderItemService {
                 throw new BusinessException("---领取奖励插入订单明细失败----");
             }
         }
+        return promotionGiftInfos;
     }
 }

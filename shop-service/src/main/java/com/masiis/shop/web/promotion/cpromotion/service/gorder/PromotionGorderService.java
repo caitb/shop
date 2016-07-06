@@ -64,10 +64,10 @@ public class PromotionGorderService {
     /**
      * 领取奖励
      * @param comUser
-     * @param addressId
-     * @param promoId
-     * @param promoRuleId
-     * @param personType
+     * @param addressId  地址id
+     * @param promoId   活动id
+     * @param promoRuleId 活动规则id
+     * @param personType 订单类型
      */
     public void receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId,Integer personType){
         //添加订单

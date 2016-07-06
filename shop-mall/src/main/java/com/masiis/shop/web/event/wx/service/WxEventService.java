@@ -21,9 +21,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Date 2016/5/6
@@ -32,6 +30,13 @@ import java.util.List;
 @Service
 public class WxEventService {
     private Logger log = Logger.getLogger(this.getClass());
+    private final Map<String, String> subscribeMessageRes = new HashMap<>();
+    {
+        subscribeMessageRes.put("1、麦链模式", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483663&idx=1&sn=03733197c18a95dcbc3625606fcf340a&scene=0#rd");
+        subscribeMessageRes.put("2、如何选购优质商品", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333#rd");
+        subscribeMessageRes.put("3、如何赚取佣金", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483665&idx=1&sn=ae92270714303d6247ef459de53bc404&scene=0#wechat_redirect");
+        subscribeMessageRes.put("4、常见问题解答", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483664&idx=1&sn=1935f5fa95fb9405c54b2f01ef664714&scene=0#rd");
+    }
 
     @Resource
     private SfUserShareParamMapper paramMapper;
@@ -57,9 +62,10 @@ public class WxEventService {
         }
         WxBaseMessage res = null;
         switch (body.getEvent()){
-            case "SCAN":
             case "subscribe":
-                res = handleQRScanEvent(body);
+                handleQRScanEvent(body);
+            case "SCAN":
+                res = handleDefaultEventReturn(body);
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);
@@ -67,6 +73,15 @@ public class WxEventService {
             default:
         }
         return res;
+    }
+
+    private WxBaseMessage handleDefaultEventReturn(WxEventBody body) {
+        String content = "欢迎关注麦链商城。请点击您想了解的内容，查看详情：\n\n";
+        for(Map.Entry<String, String> map:subscribeMessageRes.entrySet()){
+            content += "<a href=\"" + map.getValue() + "\">" + map.getKey() + "</a>\n\n";
+        }
+        content = content.substring(0, content.lastIndexOf("\n\n"));
+        return createDefaultSubscribeEventReturn(body, content);
     }
 
     /**
@@ -97,7 +112,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(final WxEventBody body) {
         Long paramId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -171,7 +186,24 @@ public class WxEventService {
         articles.add(article);
         res.setArticles(articles);
 
-        return res;
+        final JSONObject mr = new JSONObject();
+        JSONObject news = new JSONObject();
+        mr.put("touser", res.getToUserName());
+        mr.put("msgtype", res.getMsgType());
+        mr.put("news", news);
+        news.put("articles", res.getArticles());
+        final String token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
+        // 起线程发送继续注册消息
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+                String result = HttpClientUtils.httpPost(url, mr.toJSONString());
+                log.info("openId{" + body.getFromUserName() + "}的关注公众号自动回复消息响应结果:" + result);
+            }
+        }).start();
+
+        return null;
     }
 
     private WxBaseMessage createDefaultSubscribeEventReturn(WxEventBody body, String content) {

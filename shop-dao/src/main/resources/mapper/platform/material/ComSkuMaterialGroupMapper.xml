@@ -13,18 +13,6 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <resultMap id="materialGroup" type="com.masiis.shop.dao.beans.material.MaterialGroup" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="create_man" property="createMan" jdbcType="BIGINT" />
-        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
-        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
-        <result column="sort" property="sort" jdbcType="INTEGER" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-    </resultMap>
-
 
     <resultMap id="materialLibrary" type="com.masiis.shop.dao.beans.material.MaterialLibrary" >
         <id column="ml_id" property="id" jdbcType="INTEGER" />
@@ -38,6 +26,18 @@
         <result column="ml_remark" property="remark" jdbcType="VARCHAR" />
         <association property="comSku" resultMap="comSku" />
         <collection property="materialGroups" resultMap="materialGroup" />
+    </resultMap>
+
+    <resultMap id="materialGroup" type="com.masiis.shop.dao.beans.material.MaterialGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
+        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="comSku" type="com.masiis.shop.dao.po.ComSku" >

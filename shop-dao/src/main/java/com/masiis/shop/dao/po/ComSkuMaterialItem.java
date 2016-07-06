@@ -53,6 +53,7 @@ public class ComSkuMaterialItem {
      */
     private Long fileSize;
     private String remark;
+    private Integer sort;
 
     public Integer getId() {
         return id;
@@ -148,5 +149,13 @@ public class ComSkuMaterialItem {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

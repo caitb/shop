@@ -8,9 +8,11 @@
 package com.masiis.shop.dao.platform.material;
 
 
+import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.po.ComSkuMaterial;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ComSkuMaterialMapper {
     int deleteByPrimaryKey(Integer id);
@@ -22,4 +24,11 @@ public interface ComSkuMaterialMapper {
     List<ComSkuMaterial> selectAll();
 
     int updateByPrimaryKey(ComSkuMaterial record);
+
+    /**
+     * 查找素材
+     * @param conditionMap
+     * @return
+     */
+    List<Material> selectMaterialItem(Map<String, Object> conditionMap);
 }

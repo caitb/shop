@@ -61,6 +61,14 @@ public class PromotionGorderService {
         return map;
     }
 
+    /**
+     * 领取奖励
+     * @param comUser
+     * @param addressId
+     * @param promoId
+     * @param promoRuleId
+     * @param personType
+     */
     public void receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId,Integer personType){
         //添加订单
         Long gorderId = gorderService.addGorder(comUser,promoId,promoRuleId,personType);

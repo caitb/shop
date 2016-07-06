@@ -36,9 +36,8 @@ public class PromotionDetailShowService {
     private static Integer fansQuantity;
     private static Boolean isMeetPromoRequire = false;
 
-    public List<PromotionInfo> getAllPromoDetail(){
+    public List<PromotionInfo> getAllPromoDetail(ComUser comUser){
         log.info("获取活动数据----start");
-        ComUser comUser = null;
         //获取用户粉丝数
         fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);

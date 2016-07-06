@@ -26,6 +26,7 @@
         <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
         <result column="ship_remark" property="shipRemark" jdbcType="VARCHAR" />
         <result column="send_type" property="sendType" jdbcType="INTEGER" />
+        <result column="send_man" property="sendMan" jdbcType="BIGINT" />
         <result column="order_type" property="orderType" jdbcType="INTEGER" />
         <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
         <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
@@ -52,7 +53,7 @@
             ship_amount,agent_ship_amount, receivable_amount, pay_amount,
             distribution_amount, pay_time, ship_man_id, 
             ship_man_name, ship_type, ship_time, 
-            ship_remark, send_type, order_type, 
+            ship_remark, send_type,send_man, order_type,
             order_status, ship_status, pay_status, 
             is_counting, is_ship, is_replace, 
             is_receipt, receipt_time, replace_order_id, 
@@ -64,7 +65,7 @@
             #{shipAmount,jdbcType=DECIMAL},#{agentShipAmount,jdbcType=DECIMAL}, #{receivableAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
             #{distributionAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, 
             #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, 
-            #{shipRemark,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, 
+            #{shipRemark,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{sendMan,jdbcType=BIGINT},  #{orderType,jdbcType=INTEGER},
             #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
             #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, 
             #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT}, 
@@ -144,6 +145,9 @@
             <if test="sendType != null">
                 send_type = #{sendType,jdbcType=INTEGER},
             </if>
+            <if test="sendMan != null">
+                send_man = #{sendMan,jdbcType=BIGINT},
+            </if>
             <if test="orderType != null">
                 order_type = #{orderType,jdbcType=INTEGER},
             </if>
@@ -186,7 +190,7 @@
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
         modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
+        ship_time, ship_remark, send_type,send_man, order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from sf_order
         where id = #{id,jdbcType=BIGINT}
@@ -196,7 +200,7 @@
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
         modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
+        ship_time, ship_remark, send_type, send_man, order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from sf_order
     </select>
@@ -205,7 +209,7 @@
       select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
         modify_time, modify_man, order_amount, product_amount, ship_amount, agent_ship_amount,receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
+        ship_time, ship_remark, send_type,send_man,  order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from sf_order
         where order_code = #{orderCode,jdbcType=VARCHAR}
@@ -241,7 +245,8 @@
                ship_time,
                ship_remark,
                send_type,
-               order_type,
+                send_man,
+                 order_type,
                order_status,
                ship_status,
                pay_status,
@@ -289,7 +294,7 @@
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
         modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
+        ship_time, ship_remark, send_type,send_man,  order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from sf_order
         where order_status = #{orderStatus,jdbcType=INTEGER}

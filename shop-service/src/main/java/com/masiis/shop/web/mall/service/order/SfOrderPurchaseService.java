@@ -61,6 +61,9 @@ public class SfOrderPurchaseService {
     private BigDecimal skuTotalPrice = null;
     private Integer totalQuantity = null;
 
+    private Boolean isExistPlatformSendGoods = false;
+    private Boolean isExistShopUserSendGoods = false;
+
     /**
      * 获得确认订单界面，地址信息和商品信息
      * <p/>
@@ -136,6 +139,13 @@ public class SfOrderPurchaseService {
             sfShopCartSkuDetail.setSfShopId(sfShopCart.getSfShopId());
             sfShopCartSkuDetail.setSfShopUserId(sfShopCart.getSfShopUserId());
             sfShopCartSkuDetail.setComSku(comSku);
+            if (sfShopCart.getSendMan()==0){
+                //平台发货
+                isExistPlatformSendGoods = true;
+            }else{
+                //店主自己发货
+                isExistShopUserSendGoods = true;
+            }
             sfShopCartSkuDetail.setSendMan(sfShopCart.getSendMan());
             sfShopCartSkuDetail.setQuantity(sfShopCart.getQuantity());
             sfShopCartSkuDetail.setSkuSumPrice(comSku.getPriceRetail().multiply(new BigDecimal(sfShopCart.getQuantity())));
@@ -171,8 +181,18 @@ public class SfOrderPurchaseService {
      */
     private BigDecimal getShopShipAmount(Long sfShopId) {
         SfShop sfShop = sfShopService.getSfShopById(sfShopId);
+        BigDecimal totalShipAmount = BigDecimal.ZERO;
         if (sfShop!=null){
-            return sfShop.getShipAmount();
+            if (isExistPlatformSendGoods){
+                log.info("存在商品平台发货");
+                totalShipAmount=totalShipAmount.add(sfShop.getShipAmount());
+            }
+            if (isExistShopUserSendGoods){
+                log.info("存在商品店主发货");
+                totalShipAmount = totalShipAmount.add(sfShop.getOwnShipAmount());
+            }
+            log.info("订单总运费--------"+totalShipAmount.toString());
+            return totalShipAmount;
         }else{
             log.info("获得小铺的运费时小铺不存在");
             throw new BusinessException("获得小铺的运费时小铺不存在");
@@ -406,7 +426,14 @@ public class SfOrderPurchaseService {
             sfOrder.setShopUserId(sfShopCartSkuDetail.getSfShopUserId());
             sfOrder.setShopId(sfShopCartSkuDetail.getSfShopId());
             sfOrder.setShopUserId(sfShopCartSkuDetail.getSfShopUserId());
-            sfOrder.setSendType(getSendType(sfShopCartSkuDetail.getSfShopUserId()));
+            if (sfShopCartSkuDetail.getSendMan()==0){//根据购物车中的sendMan判断
+                //平台发货
+                sfOrder.setSendType(1);
+            }else{
+                //自己发货
+                sfOrder.setSendType(2);
+            }
+            sfOrder.setSendMan(sfShopCartSkuDetail.getSendMan());
         }
         sfOrder.setCreateTime(new Date());
         sfOrder.setCreateMan(purchaseUserId);
@@ -420,6 +447,7 @@ public class SfOrderPurchaseService {
         SfShop sfShop = sfShopService.getSfShopById(sfOrder.getShopId());
         if (sfShop!=null){
             if (sfShop.getShipType().equals(1)){
+                //平台代发
                 sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
             }else{
                 sfOrder.setAgentShipAmount(new BigDecimal(0));

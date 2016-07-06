@@ -86,6 +86,9 @@
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
                     <span>待收货</span>
                 </c:if>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==2}">
+                    <span>已取消</span>
+                </c:if>
             </p>
         </div>
     </div>

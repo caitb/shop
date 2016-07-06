@@ -30,9 +30,9 @@ public class SfGorderItemService {
             sfGorderItem.setCreateTime(new Date());
             sfGorderItem.setSfGorderId(gorderId);
             sfGorderItem.setGiftId(giftInfo.getPromoGiftId());
-            sfGorderItem.setGiftName(giftInfo.getSkuName());
+            //sfGorderItem.setGiftName(giftInfo.getSkuName());
             sfGorderItem.setUnitPrice(BigDecimal.ZERO);
-            sfGorderItem.setQuantity(giftInfo.getSkuQuantity());
+            //sfGorderItem.setQuantity(giftInfo.getSkuQuantity());
             sfGorderItem.setTotalPrice(BigDecimal.ZERO);
             sfGorderItem.setRemark("领取奖励插入订单明细");
             sfGorderItemMapper.insert(sfGorderItem);

@@ -76,16 +76,36 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
-        update com_sku_material_group
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=BIGINT},
-            material_library_id = #{materialLibraryId,jdbcType=INTEGER},
-            name = #{name,jdbcType=VARCHAR},
-            is_b_show = #{isBShow,jdbcType=INTEGER},
-            is_c_show = #{isCShow,jdbcType=INTEGER},
-            sort = #{sort,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        update
+               com_sku_material_group
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="materialLibraryId != null">
+                material_library_id = #{materialLibraryId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="isBShow != null">
+                is_b_show = #{isBShow,jdbcType=INTEGER},
+            </if>
+            <if test="isCShow != null">
+                is_c_show = #{isCShow,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -152,6 +172,38 @@
             </if>
             <if test="isCShow != null">
                 AND mg.is_c_show = #{isCShow}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMaterialGroup" parameterType="Map" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               create_man,
+               material_library_id,
+               name,
+               is_b_show,
+               is_c_show,
+               sort,
+               remark
+        from
+               com_sku_material_group
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mlId != null">
+                AND material_library_id = #{mlId}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="isBShow != null">
+                AND is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND is_c_show = #{isCShow}
             </if>
         </where>
     </select>

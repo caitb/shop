@@ -32,4 +32,11 @@ public interface ComSkuMaterialGroupMapper {
      */
     List<MaterialLibrary> selectMaterialLibrary(Map<String, Object> conditionMap);
 
+    /**
+     * 条件查询素材库模块
+     * @param conditionMap  查询参数
+     * @return
+     */
+    List<ComSkuMaterialGroup> selectMaterialGroup(Map<String, Object> conditionMap);
+
 }

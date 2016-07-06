@@ -30,16 +30,36 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterialLibrary" >
-        update com_sku_material_library
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=BIGINT},
-            spu_id = #{spuId,jdbcType=INTEGER},
-            sku_id = #{skuId,jdbcType=INTEGER},
-            name = #{name,jdbcType=VARCHAR},
-            subscription_num = #{subscriptionNum,jdbcType=INTEGER},
-            sort = #{sort,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        update
+               com_sku_material_library
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="spuId != null">
+                spu_id = #{spuId,jdbcType=INTEGER},
+            </if>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="subscriptionNum != null">
+                subscription_num = #{subscriptionNum,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

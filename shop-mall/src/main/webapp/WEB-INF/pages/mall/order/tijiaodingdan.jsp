@@ -111,8 +111,8 @@
                     <h3>规格：<span>默认</span></h3>
                     <p>￥${skuDetail.comSku.priceRetail}</p>
                 </div>
-                <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
             </section>
+            <p><em>发货人：</em><b>店主发货</b><b class="tall" onclick="clickShow()">联系店主</b></p>
         </c:forEach>
         <section class="sec3">
             <p><em>运费：</em><span>

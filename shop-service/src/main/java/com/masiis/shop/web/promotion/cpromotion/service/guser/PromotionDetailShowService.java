@@ -7,6 +7,7 @@ import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionRuleInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  *  活动页面信息
  */
+@Service
 @Transactional
 public class PromotionDetailShowService {
 

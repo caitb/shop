@@ -8,6 +8,7 @@ import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,9 +33,15 @@ public class MaterialController extends BaseController {
     @Resource
     private SkuService skuService;
 
-    @RequestMapping("/list.shtml")
-    public String list() {
-        return "material/list";
+    @RequestMapping("/listLibrary.shtml")
+    public String listLibrary() {
+        return "material/listLibrary";
+    }
+
+    @RequestMapping("/listGroup.shtml")
+    public String listGroup(Integer mlId, Model model) {
+        model.addAttribute("mlId", mlId);
+        return "material/listGroup";
     }
 
     /**
@@ -45,9 +52,9 @@ public class MaterialController extends BaseController {
      * @param sortOrder
      * @return
      */
-    @RequestMapping("/list.do")
+    @RequestMapping("/listLibrary.do")
     @ResponseBody
-    public Object list(
+    public Object listLibrary(
                         Integer pageNumber,
                         Integer pageSize,
                         String sortName,
@@ -57,7 +64,7 @@ public class MaterialController extends BaseController {
         Map<String, Object> conditionMap = new HashMap<>();
         Map<String, Object> pageMap = new HashMap<>();
         try {
-            pageMap = materialService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            pageMap = materialService.listLibraryByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
         } catch (Exception e) {
             log.error("获取素材库列表失败![conditionMap="+conditionMap+"]"+e);
             e.printStackTrace();
@@ -67,7 +74,38 @@ public class MaterialController extends BaseController {
     }
 
     /**
-     * 保存素材页面
+     * 素材库模块列表
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @return
+     */
+    @RequestMapping("/listGroup.do")
+    @ResponseBody
+    public Object listGroup(
+                            Integer pageNumber,
+                            Integer pageSize,
+                            String sortName,
+                            String sortOrder,
+                            Integer mlId
+                           ){
+
+        Map<String, Object> conditionMap = new HashMap<>();
+        Map<String, Object> pageMap = new HashMap<>();
+        try {
+            conditionMap.put("mlId", mlId);
+            pageMap = materialService.listGroupByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+        } catch (Exception e) {
+            log.error("获取素材库列表失败![conditionMap="+conditionMap+"]"+e);
+            e.printStackTrace();
+        }
+
+        return pageMap;
+    }
+
+    /**
+     * 添加素材页面
      * @return
      */
     @RequestMapping("/addMaterial.shtml")
@@ -108,6 +146,54 @@ public class MaterialController extends BaseController {
             resultMap.put("code", "fail");
             resultMap.put("msg", "保存失败!");
             log.error("保存素材库失败![comSkuMaterialLibrary="+comSkuMaterialLibrary+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 更改素材库
+     * @param comSkuMaterialLibrary
+     * @return
+     */
+    @RequestMapping("/updateLibrary.do")
+    @ResponseBody
+    public Map<String, Object> updateLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            materialService.updateMaterialLibrary(comSkuMaterialLibrary);
+            resultMap.put("code", "success");
+            resultMap.put("msg", "更改成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "更改失败!");
+            log.error("更改素材库失败![comSkuMaterialLibrary="+comSkuMaterialLibrary+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 更改素材组
+     * @param comSkuMaterialGroup
+     * @return
+     */
+    @RequestMapping("/updateGroup.do")
+    @ResponseBody
+    public Map<String, Object> updateGroup(ComSkuMaterialGroup comSkuMaterialGroup) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            materialService.updateMaterialGroup(comSkuMaterialGroup);
+            resultMap.put("code", "success");
+            resultMap.put("msg", "更改成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "更改失败!");
+            log.error("更改素材组失败![comSkuMaterialGroup="+comSkuMaterialGroup+"]"+e);
             e.printStackTrace();
         }
 

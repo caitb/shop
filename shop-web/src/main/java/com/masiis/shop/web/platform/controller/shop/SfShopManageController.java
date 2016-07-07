@@ -324,6 +324,10 @@ public class SfShopManageController extends BaseController {
 
             DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
+            //二维码获取成功,更新com_user成为代言人
+            comUser.setIsSpokesman(1);
+            comUserMapper.updateByPrimaryKey(comUser);
+
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "我在麦链商城的小店");
             resultMap.put("shareDesc", "我是"+comUser.getWxNkName()+",邀请您来我的店铺逛逛~");

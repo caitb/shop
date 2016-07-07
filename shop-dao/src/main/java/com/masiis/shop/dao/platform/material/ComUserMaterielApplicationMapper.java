@@ -11,6 +11,7 @@ package com.masiis.shop.dao.platform.material;
 import com.masiis.shop.dao.po.ComUserMaterielApplication;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ComUserMaterielApplicationMapper {
     int deleteByPrimaryKey(Long id);
@@ -22,4 +23,11 @@ public interface ComUserMaterielApplicationMapper {
     List<ComUserMaterielApplication> selectAll();
 
     int updateByPrimaryKey(ComUserMaterielApplication record);
+
+    /**
+     * 根据条件查询
+     * @param conditionMap
+     * @return
+     */
+    List<Map<String, Object>> selectByCondition(Map<String, Object> conditionMap);
 }

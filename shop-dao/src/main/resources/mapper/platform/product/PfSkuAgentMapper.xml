@@ -55,7 +55,7 @@
             is_show = #{isShow,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR},
             is_upgrade = #{isUpgrade,jdbcType=INTEGER},
-            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
+            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
         where id = #{id,jdbcType=INTEGER}
     </update>
 

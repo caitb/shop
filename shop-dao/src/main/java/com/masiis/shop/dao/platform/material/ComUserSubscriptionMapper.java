@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.material;
 
 
 import com.masiis.shop.dao.po.ComUserSubscription;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface ComUserSubscriptionMapper {
     List<ComUserSubscription> selectAll();
 
     int updateByPrimaryKey(ComUserSubscription record);
+
+    ComUserSubscription selectByUserIdAndMaterialId(@Param("userId") Long userId,@Param("comSkuMaterialLibrary") Integer comSkuMaterialLibrary);
 }

@@ -47,4 +47,10 @@
         from com_user_subscription
     </select>
 
+    <select id="selectByUserIdAndMaterialId" resultMap="BaseResultMap" >
+        select id, create_time, modify_time, user_id, com_sku_material_library, status, remark
+        from com_user_subscription
+        where user_id = #{userId,jdbcType=BIGINT} AND com_sku_material_library = #{comSkuMaterialLibrary,jdbcType=BIGINT}
+    </select>
+
 </mapper>

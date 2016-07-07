@@ -73,7 +73,7 @@
         select id, create_time, create_man, spu_id, sku_id, name, subscription_num, sort, 
         remark
         from com_sku_material_library
-        ORDER BY sort DESC
+        ORDER BY sort ASC
     </select>
 
 </mapper>

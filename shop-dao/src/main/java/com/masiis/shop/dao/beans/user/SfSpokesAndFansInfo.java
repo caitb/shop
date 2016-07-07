@@ -57,6 +57,10 @@ public class SfSpokesAndFansInfo {
      * 是否已经在小铺购买
      */
     private Integer isBuy;
+    /**
+     * 是否已经购买，页面展示
+     */
+    private String isBuyView = "";
 
     public String getWxName() {
         return wxName;
@@ -150,6 +154,15 @@ public class SfSpokesAndFansInfo {
 
     public void setIsBuy(Integer isBuy) {
         this.isBuy = isBuy;
+        switch (isBuy.intValue()){
+            case 0 : {
+                break;
+            }
+            case 1 : {
+                setIsBuyView("已购买");
+                break;
+            }
+        }
     }
 
     public String getUserLevelView() {
@@ -174,5 +187,13 @@ public class SfSpokesAndFansInfo {
 
     public void setCreateTimeView(String createTimeView) {
         this.createTimeView = createTimeView;
+    }
+
+    public String getIsBuyView() {
+        return isBuyView;
+    }
+
+    public void setIsBuyView(String isBuyView) {
+        this.isBuyView = isBuyView;
     }
 }

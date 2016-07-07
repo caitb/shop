@@ -30,12 +30,17 @@ import java.util.*;
 @Service("cWxEventService")
 public class WxEventService {
     private Logger log = Logger.getLogger(this.getClass());
-    private final Map<String, String> subscribeMessageRes = new HashMap<>();
+    private final String[] titles = new String[4];
+    private final String[] urls = new String[4];
     {
-        subscribeMessageRes.put("1、麦链模式", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483663&idx=1&sn=03733197c18a95dcbc3625606fcf340a&scene=0#rd");
-        subscribeMessageRes.put("2、如何选购优质商品", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333#rd");
-        subscribeMessageRes.put("3、如何赚取佣金", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483665&idx=1&sn=ae92270714303d6247ef459de53bc404&scene=0#wechat_redirect");
-        subscribeMessageRes.put("4、常见问题解答", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483664&idx=1&sn=1935f5fa95fb9405c54b2f01ef664714&scene=0#rd");
+        titles[0] = "1、麦链模式";
+        urls[0] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333#rd";
+        titles[1] = "2、如何选购优质商品";
+        urls[1] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483663&idx=1&sn=03733197c18a95dcbc3625606fcf340a&scene=0#rd";
+        titles[2] = "3、如何赚取佣金";
+        urls[2] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483665&idx=1&sn=ae92270714303d6247ef459de53bc404&scene=0#wechat_redirect";
+        titles[3] = "4、常见问题解答";
+        urls[3] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483664&idx=1&sn=1935f5fa95fb9405c54b2f01ef664714&scene=0#rd";
     }
 
     @Resource
@@ -77,8 +82,8 @@ public class WxEventService {
 
     private WxBaseMessage handleDefaultEventReturn(WxEventBody body) {
         String content = "欢迎关注麦链商城。请点击您想了解的内容，查看详情：\n\n";
-        for(Map.Entry<String, String> map:subscribeMessageRes.entrySet()){
-            content += "<a href=\"" + map.getValue() + "\">" + map.getKey() + "</a>\n\n";
+        for(int i = 0; i < urls.length; i++){
+            content += "<a href=\"" + urls[i] + "\">" + titles[i] + "</a>\n\n";
         }
         content = content.substring(0, content.lastIndexOf("\n\n"));
         return createDefaultSubscribeEventReturn(body, content);
@@ -182,6 +187,11 @@ public class WxEventService {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
                 String result = HttpClientUtils.httpPost(url, mr.toJSONString());
                 log.info("openId{" + body.getFromUserName() + "}的关注公众号自动回复消息响应结果:" + result);

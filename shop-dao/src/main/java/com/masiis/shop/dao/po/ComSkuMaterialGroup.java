@@ -47,59 +47,104 @@ public class ComSkuMaterialGroup {
      * 备注
      */
     private String remark;
+    /**
+     * 图标
+     */
+    private String icon;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getCreateMan() {
         return createMan;
     }
+
     public void setCreateMan(Long createMan) {
         this.createMan = createMan;
     }
+
     public Integer getMaterialLibraryId() {
         return materialLibraryId;
     }
+
     public void setMaterialLibraryId(Integer materialLibraryId) {
         this.materialLibraryId = materialLibraryId;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
+
     public Integer getIsBShow() {
         return isBShow;
     }
+
     public void setIsBShow(Integer isBShow) {
         this.isBShow = isBShow;
     }
+
     public Integer getIsCShow() {
         return isCShow;
     }
+
     public void setIsCShow(Integer isCShow) {
         this.isCShow = isCShow;
     }
+
     public Integer getSort() {
         return sort;
     }
+
     public void setSort(Integer sort) {
         this.sort = sort;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+        return "ComSkuMaterialGroup{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", materialLibraryId=" + materialLibraryId +
+                ", name='" + name + '\'' +
+                ", isBShow=" + isBShow +
+                ", isCShow=" + isCShow +
+                ", sort=" + sort +
+                ", remark='" + remark + '\'' +
+                ", icon='" + icon + '\'' +
+                '}';
     }
 }

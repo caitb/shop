@@ -18,7 +18,7 @@ public class SfMessageSrRelationService {
     @Resource
     private SfMessageSrRelationMapper srRelationMapper;
 
-    public Integer countNumsFromUser(ComUser user) {
+    public Long countNumsFromUser(ComUser user) {
         return srRelationMapper.countNumsFromUser(user.getId());
     }
 }

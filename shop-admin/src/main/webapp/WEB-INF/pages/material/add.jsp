@@ -490,7 +490,12 @@
             data: $('#materialForm').serialize(),
             type: 'post',
             success: function(result){
-                alert(result);
+                result = window.eval('('+result+')');
+                if(result.code == 'success'){
+                    parent.window.$('#myTabbable').closeTab('materialItem');
+                    parent.window.$('#myTabbable').add('materialItem', result.materialGroup.name+' 的素材', '<%=basePath%>material/listMaterial.shtml?mgId='+ result.materialGroup.id);
+                    parent.window.$('#myTabbable').closeTab('tab14-1');
+                }
             }
         })
     });

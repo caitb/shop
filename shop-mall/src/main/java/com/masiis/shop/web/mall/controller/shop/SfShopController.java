@@ -199,6 +199,10 @@ public class SfShopController extends BaseController {
 
             DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
+            //二维码获取成功,更新com_user成为代言人
+            comUser.setIsSpokesman(1);
+            comUserMapper.updateByPrimaryKey(comUser);
+
 //            resultMap.put("appId", WxConsPF.APPID);
 //            resultMap.put("shareTitle", "我是"+comUser.getWxNkName()+",我为朋友代言!");
 //            resultMap.put("shareDesc", "这是ta在麦链商城认证的小店,识别二维码进店购买,获取自己的专属海报还可以赚钱");

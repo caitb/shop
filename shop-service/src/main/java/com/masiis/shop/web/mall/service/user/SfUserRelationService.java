@@ -68,6 +68,24 @@ public class SfUserRelationService {
     }
 
     /**
+     * 查询代言热总数
+     * @param userId 用户id
+     * @return      Integer
+     */
+    public Integer getSpokesManNumByUserId(Long userId){
+        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        Integer num = 0;
+        if (sfUserRelations == null || sfUserRelations.size() == 0){
+            return num;
+        }else {
+            for (SfUserRelation relation : sfUserRelations){
+                num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), userId).get("num").intValue();
+            }
+        }
+        return num;
+    }
+
+    /**
      * 通过userId和shopId获得粉丝数量
      * @param userId    用户id
      * @param shopId    小铺id
@@ -83,8 +101,12 @@ public class SfUserRelationService {
      * @param userId    用户id
      * @return  List map
      */
-    public List<Map<String, Integer>> getFansNumGroupByLevel(Long userId){
+    public List<Map<String, Number>> getFansNumGroupByLevel(Long userId){
         return sfUserRelationMapper.selectFansNumGroupByLevel(userId);
+    }
+
+    public List<Map<String, Number>> getSpokesManNumGroupByLevel(Long userId){
+        return sfUserRelationMapper.selectSpokesManNumGroupByLevel(userId);
     }
 
     /**
@@ -105,48 +127,116 @@ public class SfUserRelationService {
         SfSpokenAndFansPageViewPo pageViewPo = new SfSpokenAndFansPageViewPo();
         //查询粉丝总数量
         Integer totalCount = this.getFansNumByUserId(userId);
+        pageViewPo.setTotalCount(totalCount);
         logger.info("粉丝总数量："+totalCount);
         //查询三级粉丝数量
-        List<Map<String, Integer>> maps = this.getFansNumGroupByLevel(userId);
-        for (Map<String, Integer> map : maps){
-            switch (map.get("userLevel")) {
+        List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId);
+        for (Map<String, Number> map : maps){
+            switch (map.get("userLevel").intValue()) {
                 case 1 : {
                     logger.info("一级粉丝数量：" + map.get("num"));
-                    pageViewPo.setFirstCount(map.get("num"));
+                    pageViewPo.setFirstCount(map.get("num").intValue());
                     break;
                 }
                 case 2 : {
                     logger.info("二级粉丝数量：" + map.get("num"));
-                    pageViewPo.setSecondCount(map.get("num"));
+                    pageViewPo.setSecondCount(map.get("num").intValue());
                     break;
                 }
                 case 3 : {
                     logger.info("三级粉丝数量：" + map.get("num"));
-                    pageViewPo.setThirdCount(map.get("num"));
+                    pageViewPo.setThirdCount(map.get("num").intValue());
                     break;
                 }
             }
         }
         //查询展示列表
-        List<SfSpokesAndFansInfo> infos = this.getSfSpokesAndFansInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId);
+        List<SfSpokesAndFansInfo> infos = this.getSfFansInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId, null);
         pageViewPo.setSfSpokesAndFansInfos(infos);
         return pageViewPo;
     }
 
     /**
      * 查询获取粉丝列表展示信息
-     * @param isPaging      是否分页标识
+     * @param isPaging      是否分页标识   true 分页，false 不分页
      * @param currentPage   查询当前页
      * @param pageSize      每页展示条数
      * @param userId        用户ID
-     * @param fansLevel     粉丝级别
-     * @param shopId        小铺id
+     * @param fansLevel     粉丝级别    可以为null
+     * @param shopId        小铺id    可以为null
+     * @param isSpokesMan   是否为代言人（当为null时查询的是粉丝，当为1时查询的是代言人）
      * @return
      */
-    public List<SfSpokesAndFansInfo> getSfSpokesAndFansInfos(boolean isPaging, Integer currentPage, Integer pageSize, Long userId, Integer fansLevel, Long shopId){
+    public List<SfSpokesAndFansInfo> getSfFansInfos(boolean isPaging, Integer currentPage, Integer pageSize, Long userId, Integer fansLevel, Long shopId, Integer isSpokesMan){
         if (isPaging){
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
         return sfUserRelationMapper.selectFansPageView(userId, fansLevel, shopId);
+    }
+
+    /**
+     * 查询获取代言人列表展示信息
+     * @param isPaging      是否分页标识   true 分页，false 不分页
+     * @param currentPage   查询当前页
+     * @param pageSize      每页展示条数
+     * @param userId        用户ID
+     * @param fansLevel     粉丝级别    可以为null
+     * @param shopId        小铺id    可以为null
+     * @param isSpokesMan   是否为代言人（当为1时查询的是代言人）
+     * @return
+     */
+    public List<SfSpokesAndFansInfo> getSfSpokesManInfos(boolean isPaging, Integer currentPage, Integer pageSize, Long userId, Integer fansLevel, Long shopId, Integer isSpokesMan){
+        if (isPaging){
+            PageHelper.startPage(currentPage,pageSize); //分页插件
+        }
+        return sfUserRelationMapper.selectSpokesManPageView(userId, fansLevel, shopId, isSpokesMan);
+    }
+
+    /**
+     * 查询代言人列表展示页面信息
+     * @param userId        用户id
+     * @param userLevel     粉丝级别 可以为null
+     * @param shopId        小铺id   可以为null
+     * @param isPaging      是否分页  true：分页  false：不分页
+     * @param currentPage   当前页
+     * @param pageSize      每页展示条数
+     * @param isSpokesMan   是否为代言人 1
+     * @return
+     */
+    public SfSpokenAndFansPageViewPo dealWithSpokesManPageView(Long userId, Integer userLevel, Long shopId, boolean isPaging, Integer currentPage, Integer pageSize, Integer isSpokesMan){
+        logger.info("查询代言人列表展示页面信息");
+        logger.info("用户id：" + userId);
+        logger.info("粉丝级别：" + userLevel);
+        logger.info("小铺id：" + shopId);
+        SfSpokenAndFansPageViewPo pageViewPo = new SfSpokenAndFansPageViewPo();
+        //查询粉丝总数量
+        Integer totalCount = this.getSpokesManNumByUserId(userId);
+        pageViewPo.setTotalCount(totalCount);
+        logger.info("代言人总数量："+totalCount);
+        //查询三级粉丝数量
+        List<Map<String, Number>> maps = this.getSpokesManNumGroupByLevel(userId);
+        for (Map<String, Number> map : maps){
+            switch (map.get("userLevel").intValue()) {
+                case 1 : {
+                    logger.info("一级代言人数量：" + map.get("num"));
+                    pageViewPo.setFirstCount(map.get("num").intValue());
+                    break;
+                }
+                case 2 : {
+                    logger.info("二级代言人数量：" + map.get("num"));
+                    pageViewPo.setSecondCount(map.get("num").intValue());
+                    break;
+                }
+                case 3 : {
+                    logger.info("三级代言人数量：" + map.get("num"));
+                    pageViewPo.setThirdCount(map.get("num").intValue());
+                    break;
+                }
+            }
+        }
+        //查询展示列表
+        List<SfSpokesAndFansInfo> infos = this.getSfSpokesManInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId, isSpokesMan);
+        pageViewPo.setSfSpokesAndFansInfos(infos);
+        return pageViewPo;
     }
 }

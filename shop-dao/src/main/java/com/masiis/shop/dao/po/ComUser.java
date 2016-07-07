@@ -104,6 +104,11 @@ public class ComUser implements Serializable {
      */
     private Date appTokenExpire;
     private Integer isBuy;
+    private Integer isSpokesman;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Long getId() {
         return id;
@@ -126,7 +131,7 @@ public class ComUser implements Serializable {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+        this.mobile = mobile;
     }
 
     public String getUserMail() {
@@ -134,7 +139,7 @@ public class ComUser implements Serializable {
     }
 
     public void setUserMail(String userMail) {
-        this.userMail = userMail == null ? null : userMail.trim();
+        this.userMail = userMail;
     }
 
     public String getWxHeadImg() {
@@ -150,7 +155,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxNkName(String wxNkName) {
-        this.wxNkName = wxNkName == null ? null : wxNkName.trim();
+        this.wxNkName = wxNkName;
     }
 
     public Integer getSex() {
@@ -166,7 +171,7 @@ public class ComUser implements Serializable {
     }
 
     public void setRealName(String realName) {
-        this.realName = realName == null ? null : realName.trim();
+        this.realName = realName;
     }
 
     public String getIdCard() {
@@ -174,7 +179,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCard(String idCard) {
-        this.idCard = idCard == null ? null : idCard.trim();
+        this.idCard = idCard;
     }
 
     public String getIdCardFrontUrl() {
@@ -182,7 +187,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardFrontUrl(String idCardFrontUrl) {
-        this.idCardFrontUrl = idCardFrontUrl == null ? null : idCardFrontUrl.trim();
+        this.idCardFrontUrl = idCardFrontUrl;
     }
 
     public String getIdCardBackUrl() {
@@ -190,7 +195,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardBackUrl(String idCardBackUrl) {
-        this.idCardBackUrl = idCardBackUrl == null ? null : idCardBackUrl.trim();
+        this.idCardBackUrl = idCardBackUrl;
     }
 
     public String getWxId() {
@@ -198,7 +203,15 @@ public class ComUser implements Serializable {
     }
 
     public void setWxId(String wxId) {
-        this.wxId = wxId == null ? null : wxId.trim();
+        this.wxId = wxId;
+    }
+
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
     }
 
     public Integer getIsAgent() {
@@ -230,7 +243,7 @@ public class ComUser implements Serializable {
     }
 
     public void setAuditReason(String auditReason) {
-        this.auditReason = auditReason == null ? null : auditReason.trim();
+        this.auditReason = auditReason;
     }
 
     public String getWxUnionid() {
@@ -238,7 +251,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxUnionid(String wxUnionid) {
-        this.wxUnionid = wxUnionid == null ? null : wxUnionid.trim();
+        this.wxUnionid = wxUnionid;
     }
 
     public String getPassword() {
@@ -246,7 +259,7 @@ public class ComUser implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getPwdSalt() {
@@ -254,7 +267,7 @@ public class ComUser implements Serializable {
     }
 
     public void setPwdSalt(String pwdSalt) {
-        this.pwdSalt = pwdSalt == null ? null : pwdSalt.trim();
+        this.pwdSalt = pwdSalt;
     }
 
     public Integer getRegisterSource() {
@@ -263,14 +276,6 @@ public class ComUser implements Serializable {
 
     public void setRegisterSource(Integer registerSource) {
         this.registerSource = registerSource;
-    }
-
-    public Integer getIsBinding() {
-        return isBinding;
-    }
-
-    public void setIsBinding(Integer isBinding) {
-        this.isBinding = isBinding;
     }
 
     public String getAppToken() {
@@ -295,6 +300,14 @@ public class ComUser implements Serializable {
 
     public void setIsBuy(Integer isBuy) {
         this.isBuy = isBuy;
+    }
+
+    public Integer getIsSpokesman() {
+        return isSpokesman;
+    }
+
+    public void setIsSpokesman(Integer isSpokesman) {
+        this.isSpokesman = isSpokesman;
     }
 
     @Override
@@ -324,6 +337,7 @@ public class ComUser implements Serializable {
                 ", appToken='" + appToken + '\'' +
                 ", appTokenExpire=" + appTokenExpire +
                 ", isBuy=" + isBuy +
+                ", isSpokesman=" + isSpokesman +
                 '}';
     }
 }

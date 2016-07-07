@@ -58,9 +58,7 @@ html header p {
 }
 body .wrap,
 html .wrap {
-  -webkit-box-flex: 1;
   overflow-x: hidden;
-  overflow-y: auto;
   color: #333;
 }
 body footer,

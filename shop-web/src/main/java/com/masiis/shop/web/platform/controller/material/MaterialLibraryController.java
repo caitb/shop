@@ -2,10 +2,12 @@ package com.masiis.shop.web.platform.controller.material;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
+import com.masiis.shop.web.material.service.SkuMaterialService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,8 @@ public class MaterialLibraryController extends BaseController{
 
     @Resource
     private MaterialLibraryService materialLibraryService;
-
+    @Resource
+    private SkuMaterialService skuMaterialService;
 
     /**
      * jjh
@@ -71,5 +74,25 @@ public class MaterialLibraryController extends BaseController{
         return mv;
     }
 
-
+    /**
+     * jjh
+     * 素材图片展示B
+     * @param mgId
+     * @param currentPage
+     * @return
+     */
+    @RequestMapping(value = "/materialInfoB")
+    public ModelAndView materialList(@RequestParam(value = "mgId",required = true) Integer mgId,
+                                     @RequestParam(value = "currentPage",required = true) Integer currentPage){
+        ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
+        try {
+            int pageSize = 9; //ajax请求时默认每页显示条数为5条
+            currentPage = currentPage +1;
+            List<Material> materials = skuMaterialService.skuMaterial(mgId, currentPage, pageSize);
+            mv.addObject("groupList",materials);
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+        return mv;
+    }
 }

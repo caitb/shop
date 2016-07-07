@@ -294,7 +294,7 @@ body {
 .wrap main .floor{
   display: -webkit-box;
   width:80%;
-  -webkit-box-pack:justify;
+  -webkit-box-pack: center;
   margin:0 auto;
   padding-bottom: 2em;
 }

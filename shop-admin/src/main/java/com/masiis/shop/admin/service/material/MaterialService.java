@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.material;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialItemMapper;
@@ -143,6 +144,21 @@ public class MaterialService {
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", comSkuMaterialGroups);
+
+        return pageMap;
+    }
+
+    /**
+     * 素材列表
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listMaterialItem(Map<String, Object> conditionMap) {
+        List<Material> materials = comSkuMaterialMapper.selectMaterialItem(conditionMap);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", materials.size());
+        pageMap.put("rows", materials);
 
         return pageMap;
     }

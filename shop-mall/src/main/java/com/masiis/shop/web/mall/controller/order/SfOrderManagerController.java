@@ -86,6 +86,7 @@ public class SfOrderManagerController extends BaseController {
         ComUser user = getComUser(request);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         SfOrder order = sfOrderManageService.findOrderByOrderId(id);
+        SfShop sfShop = sfShopService.getSfShopById(order.getShopId());
         List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(id);
         StringBuffer stringBuffer =new StringBuffer();
         for (SfOrderItem sfOrderItem : sfOrderItems) {
@@ -107,6 +108,7 @@ public class SfOrderManagerController extends BaseController {
         //收货人
         SfOrderConsignee sfOrderConsignee = sfOrderManageService.findSfOrderConsignee(id);
         orderMallDetail.setSfOrder(order);
+        orderMallDetail.setBuyerShopName(sfShop.getName());
         orderMallDetail.setSfOrderItems(sfOrderItems);
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
@@ -185,6 +187,8 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null);
             }else if(index==4){
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
+            }else if(index==5){
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

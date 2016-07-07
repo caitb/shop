@@ -44,44 +44,39 @@ public class ManageShopProductService {
       * @Date 2016/4/13 0013 上午 10:29
       * 小铺中商品列表
       */
-     public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId,Integer deliverType,int currentPage,int pageSize) throws Exception{
-         List<SfShopSku> sfShopSkuList =null;
-         if (currentPage == 0||pageSize == 0){
-              sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
-         }else {
-             PageHelper.startPage(currentPage, pageSize);
-             sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,deliverType);
-         }
-         List<SkuInfo> skuInfoList = new ArrayList<>();
-         if(sfShopSkuList!=null){
-             String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-             for(SfShopSku sfShopSku :sfShopSkuList){
-                 SkuInfo skuInfo = new SkuInfo();
-                 ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
-                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
-                 comSkuImage.setFullImgUrl(Value+comSkuImage.getImgUrl());
-                 skuInfo.setComSku(comsku);
-                 skuInfo.setComSkuImage(comSkuImage);
-                 skuInfo.setShopSkuId(sfShopSku.getId());
-                 skuInfo.setSaleNum(sfShopSku.getSaleNum());
-                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
-                 if(pfUserSkuStock!=null){
-                     if(sfShopSku.getIsOwnShip()==0){//平台代发
-                         int useStock = pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock();
-                         if(useStock >=0){
-                             skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
-                         }else{
-                             skuInfo.setStock(0);
-                         }
-                     }else{
-                         skuInfo.setStock(pfUserSkuStock.getCustomStock());
-                     }
-                 }
-                 skuInfoList.add(skuInfo);
-             }
-         }
-         return skuInfoList;
-     }
+    public List<SkuInfo> getShopProductsList(Long shopId, Integer isSale, Long userId, Integer deliverType, int currentPage, int pageSize) throws Exception {
+        PageHelper.startPage(currentPage, pageSize);
+        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId, isSale, deliverType);
+        List<SkuInfo> skuInfoList = new ArrayList<>();
+        if (sfShopSkuList != null) {
+            String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            for (SfShopSku sfShopSku : sfShopSkuList) {
+                SkuInfo skuInfo = new SkuInfo();
+                ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
+                ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
+                comSkuImage.setFullImgUrl(Value + comSkuImage.getImgUrl());
+                skuInfo.setComSku(comsku);
+                skuInfo.setComSkuImage(comSkuImage);
+                skuInfo.setShopSkuId(sfShopSku.getId());
+                skuInfo.setSaleNum(sfShopSku.getSaleNum());
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, sfShopSku.getSkuId());
+                if (pfUserSkuStock != null) {
+                    if (sfShopSku.getIsOwnShip() == 0) {//平台代发
+                        int useStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
+                        if (useStock >= 0) {
+                            skuInfo.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());
+                        } else {
+                            skuInfo.setStock(0);
+                        }
+                    } else {
+                        skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                    }
+                }
+                skuInfoList.add(skuInfo);
+            }
+        }
+        return skuInfoList;
+    }
 
     /**
       * @Author JJH

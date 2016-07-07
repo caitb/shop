@@ -10,6 +10,7 @@ package com.masiis.shop.dao.platform.material;
 
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -38,5 +39,7 @@ public interface ComSkuMaterialGroupMapper {
      * @return
      */
     List<ComSkuMaterialGroup> selectMaterialGroup(Map<String, Object> conditionMap);
+
+    List<ComSkuMaterialGroup> selectMaterialGroupByMlId(@Param("mlId") Integer mlId,@Param("isBShow") Integer isBShow,@Param("isCShow") Integer isCShow);
 
 }

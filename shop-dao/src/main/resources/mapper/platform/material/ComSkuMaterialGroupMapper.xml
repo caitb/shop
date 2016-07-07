@@ -208,4 +208,27 @@
         </where>
     </select>
 
+
+    <select id="selectMaterialGroupByMlId" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        create_man,
+        material_library_id,
+        name,
+        is_b_show,
+        is_c_show,
+        sort,
+        remark
+        from
+        com_sku_material_group
+        WHERE material_library_id = #{mlId}
+            <if test="isBShow != null">
+                AND is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND is_c_show = #{isCShow}
+            </if>
+        ORDER BY sort ASC
+    </select>
 </mapper>

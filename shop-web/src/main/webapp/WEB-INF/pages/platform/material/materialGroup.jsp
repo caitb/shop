@@ -13,13 +13,11 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-
         <p>素材库</p>
     </header>
     <main>
         <c:forEach var="Library" items="${LibraryList}">
-            <p>
+            <p onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');">
                 <span><img src="${Library.remark}" alt=""></span>
                 <c:if test="${Library.isSubscript==0}">
                     <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | 1234</span>

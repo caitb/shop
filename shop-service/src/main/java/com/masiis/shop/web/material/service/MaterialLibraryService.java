@@ -56,6 +56,8 @@ public class MaterialLibraryService {
             ComSku comSku =comSkuMapper.selectByPrimaryKey(comSkuMaterialLibrary.getSkuId());
             ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(comSkuMaterialLibrary.getSkuId());
             materialLibrary.setComSku(comSku);
+            materialLibrary.setId(comSkuMaterialLibrary.getId());
+            materialLibrary.setCreateTime(comSkuMaterialLibrary.getCreateTime());
             materialLibrary.setRemark(Value+comSkuImage.getImgUrl());
             materialLibrary.setName(comSkuMaterialLibrary.getName());
             materialLibraryList.add(materialLibrary);

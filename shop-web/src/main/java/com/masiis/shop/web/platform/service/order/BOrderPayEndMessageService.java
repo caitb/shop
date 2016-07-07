@@ -226,8 +226,8 @@ public class BOrderPayEndMessageService {
             paramI[0] = pfBorderItems.get(0).getSkuName();
             paramI[1] = numberFormat.format(pfBorder.getOrderAmount());
             paramI[2] = pfBorderItems.get(0).getQuantity().toString();
-            paramI[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-            paramI[4] = BOrderType.getByCode(pfBorder.getOrderStatus()).getDesc();
+            paramI[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
+            paramI[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
             paramI[5] = comUser.getRealName();
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
             WxPFNoticeUtils.getInstance().supplementSuccessToUp(pComUser, paramI, url);

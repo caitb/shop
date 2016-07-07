@@ -88,7 +88,7 @@ public class BOrderPayEndMessageService {
             } else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType().intValue() == 1) {
-                    pushMessageSupplementAndSendTypeI(comUser, pfBorder, pfBorderItems, numberFormat);
+                    pushMessageSupplementAndSendTypeI(comUser, pComUser, pfBorder, pfBorderItems, numberFormat);
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
@@ -209,6 +209,7 @@ public class BOrderPayEndMessageService {
      * @param numberFormat
      */
     private void pushMessageSupplementAndSendTypeI(ComUser comUser,
+                                                   ComUser pComUser,
                                                    PfBorder pfBorder,
                                                    List<PfBorderItem> pfBorderItems,
                                                    NumberFormat numberFormat) {
@@ -216,9 +217,20 @@ public class BOrderPayEndMessageService {
         param[0] = pfBorderItems.get(0).getSkuName();
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
         param[2] = pfBorderItems.get(0).getQuantity().toString();
-        param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+        param[3] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
         WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
         MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
+        if (pfBorder.getUserPid() != 0) {
+            String[] paramI = new String[6];
+            paramI[0] = pfBorderItems.get(0).getSkuName();
+            paramI[1] = numberFormat.format(pfBorder.getOrderAmount());
+            paramI[2] = pfBorderItems.get(0).getQuantity().toString();
+            paramI[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+            paramI[4] = BOrderType.getByCode(pfBorder.getOrderStatus()).getDesc();
+            paramI[5] = comUser.getRealName();
+            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
+            WxPFNoticeUtils.getInstance().supplementSuccessToUp(pComUser, paramI, url);
+        }
     }
 
     /**
@@ -240,7 +252,7 @@ public class BOrderPayEndMessageService {
         param[0] = pfBorderItems.get(0).getSkuName();
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
         param[2] = pfBorderItems.get(0).getQuantity().toString();
-        param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+        param[3] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
         WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
         MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
         if (pfBorder.getUserPid() != 0) {

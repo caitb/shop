@@ -490,30 +490,32 @@ public class BOrderPayService {
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "");
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<4>处理发货库存");
-            if (pfBorder.getUserPid() == 0) {
-                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
-                //如果可售库存不足或者排单开关打开的情况下 订单进入排单
-                if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    //平台库存不足，排单处理
-                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
-                    pfBorderMapper.updateById(pfBorder);
-                }
-                //增加平台冻结库存
-                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
-                    throw new BusinessException("(平台发货)排队订单增加冻结量失败");
-                }
-            } else {
-                PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                //上级合伙人库存不足，排单处理
-                if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
-                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
-                    pfBorderMapper.updateById(pfBorder);
-                }
-                //增加平台冻结库存
-                parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
-                    throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+            if (pfBorderItem.getQuantity() > 0) {
+                if (pfBorder.getUserPid() == 0) {
+                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
+                    //如果可售库存不足或者排单开关打开的情况下 订单进入排单
+                    if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                        //平台库存不足，排单处理
+                        pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                        pfBorderMapper.updateById(pfBorder);
+                    }
+                    //增加平台冻结库存
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
+                        throw new BusinessException("(平台发货)排队订单增加冻结量失败");
+                    }
+                } else {
+                    PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                    //上级合伙人库存不足，排单处理
+                    if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
+                        pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                        pfBorderMapper.updateById(pfBorder);
+                    }
+                    //增加平台冻结库存
+                    parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
+                        throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+                    }
                 }
             }
         }

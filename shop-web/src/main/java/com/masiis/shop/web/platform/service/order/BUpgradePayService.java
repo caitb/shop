@@ -110,7 +110,7 @@ public class BUpgradePayService {
         log.info("修改用户统计中奖励金额----end");
         //插入一次性奖励
         log.info("插入一次性奖励----start");
-        insertUserRebate(pfBorder,pfUserUpgradeNotice);
+        insertUserRebate(pfBorder, pfUserUpgradeNotice);
         log.info("插入一次性奖励----end");
         //修改小铺商品信息
         log.info("修改小铺商品信息----start");
@@ -129,8 +129,8 @@ public class BUpgradePayService {
             log.info("------处理平台发货类型订单----start");
             saveBOrderSendType(pfBorder);
             log.info("------处理平台发货类型订单----end");
-        }else{
-            log.info("没有处理平台发货类型订单-----pfBorder.getSendType()======"+pfBorder.getSendType()+"------pfBorder.getOrderStatus()===="+pfBorder.getOrderStatus());
+        } else {
+            log.info("没有处理平台发货类型订单-----pfBorder.getSendType()======" + pfBorder.getSendType() + "------pfBorder.getOrderStatus()====" + pfBorder.getOrderStatus());
         }
 
 
@@ -161,9 +161,9 @@ public class BUpgradePayService {
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         BigDecimal payAmount = pfBorderPayment.getAmount();
         if (pfBorder != null) {
-            log.info("订单之前的状态-----"+pfBorder.getOrderStatus());
+            log.info("订单之前的状态-----" + pfBorder.getOrderStatus());
             pfBorder.setOrderStatus(BOrderStatus.accountPaid.getCode());
-            log.info("订单之后的状态-----"+pfBorder.getOrderStatus());
+            log.info("订单之后的状态-----" + pfBorder.getOrderStatus());
             pfBorder.setPayTime(new Date());
             pfBorder.setModifyTime(new Date());
             pfBorder.setPayStatus(1);
@@ -200,15 +200,15 @@ public class BUpgradePayService {
      */
     private void inserHistoryAndUpdatePfUserSku(Long userId, Long userPid, Long borderId, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem orderItem : pfBorderItems) {
-            log.info("修改商品的的代理关系-----userId---"+userId+"----skuId----"+orderItem.getSkuId());
+            log.info("修改商品的的代理关系-----userId---" + userId + "----skuId----" + orderItem.getSkuId());
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, orderItem.getSkuId());
             int i = insertUserSkuHistory(pfUserSku);
             if (i == 1) {
                 log.info("插入商品历史表成功----修改商品关系---start");
                 int _i = updatePfUserSku(userPid, borderId, orderItem, pfUserSku);
-                if (_i==1){
+                if (_i == 1) {
                     log.info("插入商品历史表成功----修改商品关系---end");
-                }else{
+                } else {
                     log.info("插入商品历史表成功----修改商品关系---失败");
                 }
             } else {
@@ -233,9 +233,9 @@ public class BUpgradePayService {
         Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
         if (pfUserSku != null) {
-            log.info("---修改商品的代理关系-----用户新上级-----userId----"+userPid+"-----skuId----"+skuId);
+            log.info("---修改商品的代理关系-----用户新上级-----userId----" + userPid + "-----skuId----" + skuId);
             PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
-            log.info("期望等级----"+agentLevelId+"-----原上级等级------"+parentPfUserSku.getAgentLevelId());
+            log.info("期望等级----" + agentLevelId + "-----原上级等级------" + parentPfUserSku.getAgentLevelId());
             if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())) {
                 Integer parent_id = 0;
                 Long parent_userPid = 0l;
@@ -245,15 +245,15 @@ public class BUpgradePayService {
                     parent_id = parentPfUserSku.getId();
                     parent_userPid = parentPfUserSku.getUserId();
                     parent_treeCode = parentPfUserSku.getTreeCode();
-                    log.info("父级的treeCode-----"+parent_treeCode);
+                    log.info("父级的treeCode-----" + parent_treeCode);
                     parent_treeLevel = parentPfUserSku.getTreeLevel();
                 }
                 PfUserCertificate certificateInfo = pfUserCertificateService.selectByUserSkuId(pfUserSku.getId());
-                if (certificateInfo!=null){
-                    log.info("证书编码code--------"+certificateInfo.getCode());
+                if (certificateInfo != null) {
+                    log.info("证书编码code--------" + certificateInfo.getCode());
                     pfUserSku.setCode(certificateInfo.getCode());
-                }else{
-                    log.info("根据pfuserskuId-----"+pfUserSku.getId()+"-----查询证书失败");
+                } else {
+                    log.info("根据pfuserskuId-----" + pfUserSku.getId() + "-----查询证书失败");
                 }
                 pfUserSku.setCreateTime(new Date());
                 pfUserSku.setPid(parent_id);
@@ -262,12 +262,12 @@ public class BUpgradePayService {
                 pfUserSku.setIsPay(1);
                 pfUserSku.setIsCertificate(1);
                 pfUserSku.setPfBorderId(borderId);
-                log.info("skuId-----"+skuId+"-----期望等级agentLevelId-------"+agentLevelId);
-                PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId,agentLevelId);
-                if (newPfSkuAgent!=null){
+                log.info("skuId-----" + skuId + "-----期望等级agentLevelId-------" + agentLevelId);
+                PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
+                if (newPfSkuAgent != null) {
                     pfUserSku.setBail(newPfSkuAgent.getBail());
-                    log.info("新等级的保证金-----"+pfUserSku.getBail());
-                }else {
+                    log.info("新等级的保证金-----" + pfUserSku.getBail());
+                } else {
                     throw new BusinessException("获取新的等级的保证金，代理商品为null");
                 }
                 i = pfUserSkuService.update(pfUserSku);
@@ -283,10 +283,10 @@ public class BUpgradePayService {
                     log.info("树结构更换只能挂在高于自己的树枝");
                     throw new BusinessException("树结构更换只能挂在高于自己的树枝");
                 }
-                log.info("之前的pfUserSku----的---treeCode-----"+treeCode);
-                log.info("要更变后的treeCode------parentTreeCode-----"+parentTreeCode);
-                log.info("id_index-----"+id_index);
-                log.info("treeLevel-----"+treeLevel);
+                log.info("之前的pfUserSku----的---treeCode-----" + treeCode);
+                log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
+                log.info("id_index-----" + id_index);
+                log.info("treeLevel-----" + treeLevel);
                 i = pfUserSkuService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
                 if (i <= 0) {
                     log.info("分销关系树结构修改失败");
@@ -427,33 +427,35 @@ public class BUpgradePayService {
      */
     private void updateFrozenStock(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
-            if (pfBorder.getUserPid() == 0) {
-                log.info("-----上级为平台-----");
-                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
-                //如果可售库存不足或者排单开关打开的情况下 订单进入排单
-                if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    //平台库存不足，排单处理
-                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
-                    log.info("平台库存不足进入排单");
-                    bOrderService.updatePfBorder(pfBorder);
-                }
-                //增加平台冻结库存
-                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
-                    throw new BusinessException("(平台发货)排队订单增加冻结量失败");
-                }
-            } else {
-                PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                //上级合伙人库存不足，排单处理
-                if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
-                    pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
-                    log.info("上级合伙人库存不足，排单处理");
-                    bOrderService.updatePfBorder(pfBorder);
-                }
-                //增加平台冻结库存
-                parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
-                    throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+            if (pfBorderItem.getQuantity() > 0) {
+                if (pfBorder.getUserPid() == 0) {
+                    log.info("-----上级为平台-----");
+                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
+                    //如果可售库存不足或者排单开关打开的情况下 订单进入排单
+                    if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                        //平台库存不足，排单处理
+                        pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                        log.info("平台库存不足进入排单");
+                        bOrderService.updatePfBorder(pfBorder);
+                    }
+                    //增加平台冻结库存
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
+                        throw new BusinessException("(平台发货)排队订单增加冻结量失败");
+                    }
+                } else {
+                    PfUserSkuStock parentSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                    //上级合伙人库存不足，排单处理
+                    if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
+                        pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
+                        log.info("上级合伙人库存不足，排单处理");
+                        bOrderService.updatePfBorder(pfBorder);
+                    }
+                    //增加平台冻结库存
+                    parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
+                        throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+                    }
                 }
             }
         }
@@ -477,11 +479,11 @@ public class BUpgradePayService {
      *
      * @param pfBorder
      */
-    private void insertUserRebate(PfBorder pfBorder,PfUserUpgradeNotice pfUserUpgradeNotice) {
-        log.info("插入一次性奖励-----orderId-----"+pfBorder.getId());
-        log.info("获得奖励人-------"+pfUserUpgradeNotice.getUserPid());
-        log.info("支付奖励用户-------"+pfBorder.getUserPid());
-        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid())){
+    private void insertUserRebate(PfBorder pfBorder, PfUserUpgradeNotice pfUserUpgradeNotice) {
+        log.info("插入一次性奖励-----orderId-----" + pfBorder.getId());
+        log.info("获得奖励人-------" + pfUserUpgradeNotice.getUserPid());
+        log.info("支付奖励用户-------" + pfBorder.getUserPid());
+        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid())) {
             //原上级和新上级不是同一个人。新上级给原上级发奖励
             PfUserRebate pfUserRebate = new PfUserRebate();
             pfUserRebate.setCreateTime(new Date());
@@ -490,7 +492,7 @@ public class BUpgradePayService {
                 pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
             }
             pfUserRebate.setUserUpgradeNoticeId(pfUserUpgradeNotice.getId());
-            log.info("通知单id--------"+pfUserUpgradeNotice.getId());
+            log.info("通知单id--------" + pfUserUpgradeNotice.getId());
             pfUserRebate.setUserId(pfUserUpgradeNotice.getUserPid());//获得奖励用户id
             pfUserRebate.setUserPid(pfBorder.getUserPid());//支付奖励用户id
             pfUserRebate.setPfBorderId(pfBorder.getId());
@@ -499,10 +501,11 @@ public class BUpgradePayService {
                 log.info("升级支付成功插入一次性奖励失败");
                 throw new BusinessException("升级支付成功插入一次性奖励失败");
             }
-        }else{
+        } else {
             log.info("原上级和新上级是同一个人不需要发送奖励");
         }
     }
+
     /**
      * 修改小铺商品信息
      *
@@ -514,12 +517,12 @@ public class BUpgradePayService {
             log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + orderItem.getSkuId());
             SfShopSku sfShopSku = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
             if (sfShopSku != null) {
-                log.info("修改前的小铺商品的代理等级---之前--"+orderItem.getAgentLevelId());
+                log.info("修改前的小铺商品的代理等级---之前--" + orderItem.getAgentLevelId());
                 sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
-                log.info("修改前的小铺商品的代理等级---之后--"+orderItem.getAgentLevelId());
-                log.info("修改前的小铺保证金-----"+sfShopSku.getBail());
+                log.info("修改前的小铺商品的代理等级---之后--" + orderItem.getAgentLevelId());
+                log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
                 sfShopSku.setBail(orderItem.getBailAmount());
-                log.info("修改后的小铺保证金-----"+orderItem.getBailAmount());
+                log.info("修改后的小铺保证金-----" + orderItem.getBailAmount());
                 int i = sfShopSkuService.update(sfShopSku);
                 if (i != 1) {
                     log.info("修改小铺商品的sku等级和保证金失败");
@@ -535,11 +538,11 @@ public class BUpgradePayService {
      * @param pfBorderId
      */
     private void updateUpgradeNotice(Long pfBorderId) {
-        log.info("修改通知单状态--------"+pfBorderId);
+        log.info("修改通知单状态--------" + pfBorderId);
         //修改当前申请升级的通知单状态
         log.info("修改当前申请升级的通知单状态----start");
         Long userId = updateCurrentNotice(pfBorderId);
-        log.info("修改当前申请升级的通知单状态----end---当前用户id---"+userId);
+        log.info("修改当前申请升级的通知单状态----end---当前用户id---" + userId);
         //判断当前升级是否有下级，有下级则修改下级的状态
         if (userId != null) {
             log.info("当前升级是否有下级，有下级则修改下级的状态并且给处理中的下级发送微信通知--start");
@@ -578,30 +581,30 @@ public class BUpgradePayService {
         statusList.add(UpGradeStatus.STATUS_Untreated.getCode());
         statusList.add(UpGradeStatus.STATUS_Processing.getCode());
         List<PfUserUpgradeNotice> notices = userUpgradeNoticeService.selectByUserPidAndInStatus(userId, statusList);
-        if (notices!=null){
-            log.info("下级的人数--------"+notices.size());
-        }else {
+        if (notices != null) {
+            log.info("下级的人数--------" + notices.size());
+        } else {
             log.info("下级人数为null");
         }
         for (PfUserUpgradeNotice notice : notices) {
             UpGradeInfoPo upGradeInfoPo = null;
             ComUser comUser = null;
-            log.info("通知单id------"+notice.getId()+"------通知单状态------"+notice.getStatus());
-            if (notice.getStatus()==UpGradeStatus.STATUS_Processing.getCode()){
+            log.info("通知单id------" + notice.getId() + "------通知单状态------" + notice.getStatus());
+            if (notice.getStatus() == UpGradeStatus.STATUS_Processing.getCode()) {
                 log.info("上级升级成功给下级处理中的发送微信通知，获得下级信息----start");
                 comUser = comUserService.getUserById(notice.getUserId());
                 upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(notice.getId());
                 log.info("上级升级成功给下级处理中的发送微信通知，获得下级信息----end");
             }
-            log.info("下级id-------" + notice.getUserId()+"-----下级的状态status----"+notice.getStatus());
+            log.info("下级id-------" + notice.getUserId() + "-----下级的状态status----" + notice.getStatus());
             notice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
             notice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
             userUpgradeNoticeService.update(notice);
-            if (upGradeInfoPo!=null&&comUser!=null){
-                Boolean bl = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser,upGradeInfoPo,"/upgrade/myApplyUpgrade.shtml?upgradeId="+notice.getId());
-                if (bl){
+            if (upGradeInfoPo != null && comUser != null) {
+                Boolean bl = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId=" + notice.getId());
+                if (bl) {
                     log.info("上级升级成功给下级处理中的发送微信通知---success");
-                }else{
+                } else {
                     log.info("上级升级成功给下级处理中的发送微信通知---fail");
                 }
             }

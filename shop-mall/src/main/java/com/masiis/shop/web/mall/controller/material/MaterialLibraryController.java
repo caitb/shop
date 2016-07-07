@@ -1,10 +1,10 @@
-package com.masiis.shop.web.platform.controller.material;
+package com.masiis.shop.web.mall.controller.material;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
+import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
-import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +16,11 @@ import java.util.List;
 
 /**
  * Created by jiajinghao on 2016/7/6.
- * 素材库列表controller B端
+ * 素材库列表controller C端
  */
 @Controller
 @RequestMapping("/materielList")
-public class MaterialLibraryController extends BaseController{
+public class MaterialLibraryController extends BaseController {
     private Log log = LogFactory.getLog(this.getClass());
 
     @Resource
@@ -33,7 +33,7 @@ public class MaterialLibraryController extends BaseController{
      * @param request
      * @return
      */
-    @RequestMapping(value = "/infoB")
+    @RequestMapping(value = "/infoC")
     public ModelAndView materialLibraryList(HttpServletRequest request,
                                             @RequestParam(value = "currentPage",required = true) int currentPage
                                             ){

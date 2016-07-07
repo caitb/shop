@@ -44,6 +44,16 @@ public class MaterialController extends BaseController {
         return "material/listGroup";
     }
 
+    @RequestMapping("/listMaterial.shtml")
+    public String listMaterial(Integer mgId, Model model) {
+        Map<String, Object> conditionMap = new HashMap<>();
+        conditionMap.put("mgId", mgId);
+
+        model.addAttribute("pageMap", materialService.listMaterialItem(conditionMap));
+        model.addAttribute("mgId", mgId);
+        return "material/materialItem";
+    }
+
     /**
      * 素材库列表
      * @param pageNumber
@@ -266,6 +276,7 @@ public class MaterialController extends BaseController {
                 comSkuMaterialItem.setFileSize(fileSizes[i]);
                 comSkuMaterialItem.setMaterialLibraryId(comSkuMaterial.getMaterialLibraryId());
                 comSkuMaterialItem.setMaterialGroupId(comSkuMaterial.getMaterialGroupId());
+                comSkuMaterialItem.setSort(0);
 
                 comSkuMaterialItems.add(comSkuMaterialItem);
             }

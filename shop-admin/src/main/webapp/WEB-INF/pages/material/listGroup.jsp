@@ -348,11 +348,11 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="view" href="javascript:void(0);">查看</a>';
+                            return '<a class="view" href="javascript:void(0);">查看素材</a>';
                         },
                         events: {
                             'click .view': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                                parent.window.$('#myTabbable').add('materialItem', row.name+' 的素材', '<%=basePath%>material/listMaterial.shtml?mgId='+ row.id);
                             }
                         }
                     }

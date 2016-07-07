@@ -40,7 +40,7 @@
                         <b>${agentLevel.name}</b>
                         <c:if test="${agentLevelId == agentLevel.id}">
                             <c:forEach items="${skuAgents}" var="skuAgent">
-                                <c:if test="${skuAgent.agentLevelId == agentLevel.id && skuAgent.getRewardUnitPrice().compareTo(BigDecimal.Zero) == 1}"><span>(平级推荐,可获得推荐奖励${skuAgent.rewardUnitPrice}元/件)</span></c:if>
+                                <c:if test="${skuAgent.agentLevelId == agentLevel.id && skuAgent.getRewardUnitPrice().compareTo(BigDecimal.Zero) == 1}"><span>(平级推荐,推荐奖励${skuAgent.rewardUnitPrice}元/件)</span></c:if>
                                 <c:if test="${skuAgent.agentLevelId == agentLevel.id && skuAgent.getRewardUnitPrice().compareTo(BigDecimal.Zero) == 0}"><span>(平级推荐,暂无奖励)</span></c:if>
                             </c:forEach>
                             <img src="${path}/static/images/i.png" alt="" onclick="blackShow()">

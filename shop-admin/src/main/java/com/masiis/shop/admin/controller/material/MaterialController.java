@@ -44,6 +44,12 @@ public class MaterialController extends BaseController {
         return "material/listGroup";
     }
 
+    /**
+     * 素材页面
+     * @param mgId
+     * @param model
+     * @return
+     */
     @RequestMapping("/listMaterial.shtml")
     public String listMaterial(Integer mgId, Model model) {
         Map<String, Object> conditionMap = new HashMap<>();
@@ -134,6 +140,7 @@ public class MaterialController extends BaseController {
 
     /**
      * 保存素材库
+     * @param request
      * @param comSkuMaterialLibrary
      * @return
      */
@@ -243,7 +250,13 @@ public class MaterialController extends BaseController {
 
     /**
      * 保存素材
+     * @param request
      * @param comSkuMaterial
+     * @param types
+     * @param fileNames
+     * @param fileUrls
+     * @param fileSuffixs
+     * @param fileSizes
      * @return
      */
     @RequestMapping("/saveMaterial.do")
@@ -276,13 +289,15 @@ public class MaterialController extends BaseController {
                 comSkuMaterialItem.setFileSize(fileSizes[i]);
                 comSkuMaterialItem.setMaterialLibraryId(comSkuMaterial.getMaterialLibraryId());
                 comSkuMaterialItem.setMaterialGroupId(comSkuMaterial.getMaterialGroupId());
-                comSkuMaterialItem.setSort(0);
+                comSkuMaterialItem.setSort(i);
 
                 comSkuMaterialItems.add(comSkuMaterialItem);
             }
 
             materialService.saveMaterial(comSkuMaterial, comSkuMaterialItems);
+            ComSkuMaterialGroup comSkuMaterialGroup = materialService.getGroup(comSkuMaterial.getMaterialGroupId());
 
+            resultMap.put("materialGroup", comSkuMaterialGroup);
             resultMap.put("code", "success");
             resultMap.put("msg", "保存成功!");
         } catch (Exception e) {
@@ -294,6 +309,32 @@ public class MaterialController extends BaseController {
 
         return resultMap;
     }
+
+    /**
+     * 删除素材
+     * @param mId
+     * @return
+     */
+    @RequestMapping("/deleteMaterial.do")
+    @ResponseBody
+    public Map<String, Object> deleteMaterial(Integer mId) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            materialService.deleteMaterial(mId);
+            resultMap.put("code", "success");
+            resultMap.put("msg", "删除成功!");
+        } catch (Exception e) {
+            resultMap.put("code", "fail");
+            resultMap.put("msg", "删除失败!");
+            log.error("删除素材失败![mId="+mId+"]"+e);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+    }
+
+
 
     /**
      * 加载商品

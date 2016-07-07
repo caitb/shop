@@ -342,6 +342,7 @@
                         },
                         events: {
                             'click .view': function(e, value, row, index){
+                                parent.window.$('#myTabbable').closeTab('group-list');
                                 parent.window.$('#myTabbable').add('group-list', row.name+' 素材库', '<%=basePath%>material/listGroup.shtml?mlId='+ row.id);
                             }
                         }

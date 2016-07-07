@@ -18,6 +18,11 @@ body {
     margin: 0 0 0px 30px;
     float: left;
 }
+.btn-container {
+    width: 200px;
+    margin: 0 242px;
+    float: left;
+}
 .lanrenzhijia {
     /*width:490px;*/
     /*margin:30px auto;*/

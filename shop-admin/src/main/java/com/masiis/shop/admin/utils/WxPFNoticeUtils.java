@@ -601,6 +601,35 @@ public class WxPFNoticeUtils {
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
+
+    /**
+     * 下级补货成功通知上级
+     *
+     * @param user
+     * @param params (1,订单名称(可传商品名称);2,订单价格;3,订单数量;4,订单类型;5,订单状态)
+     * @Param url   查看补货订单url
+     * @return  返回是否成功调用
+     */
+    public Boolean supplementSuccessToUp(ComUser user, String[] params, String url) {
+        WxPFNewOrderDetail order = new WxPFNewOrderDetail();
+        WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
+
+        order.setFirst(new WxNoticeDataItem("您有下级补货订单。", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的下级王平已经补货成功。点击查看详情。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        // 调用新订单提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
     /**
      * 库存不足提醒
      *

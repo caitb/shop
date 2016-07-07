@@ -54,7 +54,7 @@ public class UEditorController {
             String scale = request.getParameter("scale");//缩放
             String osspath = request.getParameter("osspath");//oss上传路径
                    osspath = osspath==null ? "static/product/detail_img/" : osspath;
-            String imgPath = rootPath.substring(0, rootPath.lastIndexOf("/"))+configMap.get("url");//本地图片路径
+            String imgPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator))+configMap.get("url");//本地图片路径
 
             //上传缩放后的图片到oss
             if(scale != null){

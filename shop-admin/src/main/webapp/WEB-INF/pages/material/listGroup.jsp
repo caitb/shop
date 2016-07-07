@@ -352,6 +352,7 @@
                         },
                         events: {
                             'click .view': function(e, value, row, index){
+                                parent.window.$('#myTabbable').closeTab('materialItem');
                                 parent.window.$('#myTabbable').add('materialItem', row.name+' 的素材', '<%=basePath%>material/listMaterial.shtml?mgId='+ row.id);
                             }
                         }

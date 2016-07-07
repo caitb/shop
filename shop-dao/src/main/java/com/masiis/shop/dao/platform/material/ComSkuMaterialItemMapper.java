@@ -22,4 +22,6 @@ public interface ComSkuMaterialItemMapper {
     List<ComSkuMaterialItem> selectAll();
 
     int updateByPrimaryKey(ComSkuMaterialItem record);
+
+    void deleteByMaterialId(Integer materialId);
 }

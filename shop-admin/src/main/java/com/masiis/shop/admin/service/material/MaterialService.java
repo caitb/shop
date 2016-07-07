@@ -46,6 +46,15 @@ public class MaterialService {
     }
 
     /**
+     * 获取素材组
+     * @param mgId
+     * @return
+     */
+    public ComSkuMaterialGroup getGroup(Integer mgId) {
+        return comSkuMaterialGroupMapper.selectByPrimaryKey(mgId);
+    }
+
+    /**
      * 保存素材库
      * @param comSkuMaterialLibrary
      */
@@ -88,6 +97,15 @@ public class MaterialService {
             comSkuMaterialItem.setMaterialId(comSkuMaterial.getId());
             comSkuMaterialItemMapper.insert(comSkuMaterialItem);
         }
+    }
+
+    /**
+     * 删除素材
+     * @param mId
+     */
+    public void deleteMaterial(Integer mId) {
+        comSkuMaterialMapper.deleteByPrimaryKey(mId);
+        comSkuMaterialItemMapper.deleteByMaterialId(mId);
     }
 
     /**

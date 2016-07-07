@@ -8,11 +8,13 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialLibraryMapper;
+import com.masiis.shop.dao.platform.material.ComUserSubscriptionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
+import com.masiis.shop.dao.po.ComUserSubscription;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +43,14 @@ public class MaterialLibraryService {
     private ComSkuMapper comSkuMapper;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
+    @Resource
+    private ComUserSubscriptionMapper comUserSubscriptionMapper;
     /**
      * 获取商品素材库
      * jjh
      * @return
      */
-    public List<MaterialLibrary> SkuMaterialLibraryList(int currentPage,int pageSize) throws Exception{
+    public List<MaterialLibrary> SkuMaterialLibraryList(int currentPage,int pageSize,Long UserId) throws Exception{
         List<MaterialLibrary> materialLibraryList = new ArrayList<>();
         PageHelper.startPage(currentPage, pageSize);
         List<ComSkuMaterialLibrary> comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAll();
@@ -55,11 +59,18 @@ public class MaterialLibraryService {
             MaterialLibrary materialLibrary = new MaterialLibrary();
             ComSku comSku =comSkuMapper.selectByPrimaryKey(comSkuMaterialLibrary.getSkuId());
             ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(comSkuMaterialLibrary.getSkuId());
+            ComUserSubscription comUserSubscription = comUserSubscriptionMapper.selectByUserIdAndMaterialId(UserId,comSkuMaterialLibrary.getId());
             materialLibrary.setComSku(comSku);
             materialLibrary.setId(comSkuMaterialLibrary.getId());
             materialLibrary.setCreateTime(comSkuMaterialLibrary.getCreateTime());
-            materialLibrary.setRemark(Value+comSkuImage.getImgUrl());
+            materialLibrary.setRemark(Value + comSkuImage.getImgUrl());
             materialLibrary.setName(comSkuMaterialLibrary.getName());
+            materialLibrary.setSubscriptionNum(comSkuMaterialLibrary.getSubscriptionNum());
+            if(comUserSubscription!=null){
+                materialLibrary.setIsSubscript(comUserSubscription.getStatus());
+            }else{
+                materialLibrary.setIsSubscript(0);
+            }
             materialLibraryList.add(materialLibrary);
         }
         return materialLibraryList;

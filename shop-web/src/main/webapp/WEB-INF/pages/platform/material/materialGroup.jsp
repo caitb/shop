@@ -21,7 +21,12 @@
         <c:forEach var="Library" items="${LibraryList}">
             <p>
                 <span><img src="${Library.remark}" alt=""></span>
-                <span class="add" onclick="subAdd('${Library.id}')"><b>+添加订阅</b> | 1234</span>
+                <c:if test="${Library.isSubscript==0}">
+                    <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | 1234</span>
+                </c:if>
+                <c:if test="${Library.isSubscript==1}">
+                    <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | 1234</span>
+                </c:if>
             </p>
         </c:forEach>
 
@@ -51,8 +56,8 @@
     var loginWidtn = $(".wrap").width() / 2 - 1;
 var index;
     $("main p").width(loginWidtn);
-    function subAdd(id) {
-        if ($(this).hasClass("on") != true) {
+    function subAdd(id,index) {
+        if ($("#"+index).hasClass("on") != true) {
             //添加订阅
             $.ajax({
                 url: '${basePath}subscribeB/do',
@@ -65,9 +70,9 @@ var index;
                     }
                 }
             });
-            $(this).addClass("on");
-            $(this).find("b").html("取消订阅");
-        } else if ($(this).hasClass("on") == true) {
+            $("#"+index).addClass("on");
+            $("#"+index).find("b").html("取消订阅");
+        } else if ($("#"+index).hasClass("on") == true) {
             //取消订阅
             $.ajax({
                 url: '${basePath}subscribeB/do',
@@ -80,8 +85,8 @@ var index;
                     }
                 }
             });
-            $(this).removeClass("on");
-            $(this).find("b").html("+添加订阅");
+            $("#"+index).removeClass("on");
+            $("#"+index).find("b").html("+添加订阅");
         }
     }
     function clickShow() {

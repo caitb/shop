@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.controller.material;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.material.service.UserSubscriptionService;
@@ -32,11 +33,14 @@ public class UserSubscriptionController extends BaseController {
     public String updateSubscriptionStatus(HttpServletRequest request,
                                            @RequestParam(value = "status",required = true) Integer status,
                                            @RequestParam(value = "materialId",required = true) Integer materialId
-                                           ){
+    ){
 
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
+            if(materialId==null){
+                throw new BusinessException("素材库id参数异常");
+            }
             userSubscriptionService.updateSubscriptionStatus(status,materialId,comUser.getId());
             object.put("isError",false);
         }catch (Exception e){

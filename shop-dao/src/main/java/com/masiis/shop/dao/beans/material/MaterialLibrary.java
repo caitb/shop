@@ -15,6 +15,8 @@ public class MaterialLibrary extends ComSkuMaterialLibrary {
 
     private List<MaterialGroup> materialGroups;
 
+    private Integer isSubscript;//是否被订阅
+
     public ComSku getComSku() {
         return comSku;
     }
@@ -29,5 +31,13 @@ public class MaterialLibrary extends ComSkuMaterialLibrary {
 
     public void setMaterialGroups(List<MaterialGroup> materialGroups) {
         this.materialGroups = materialGroups;
+    }
+
+    public Integer getIsSubscript() {
+        return isSubscript;
+    }
+
+    public void setIsSubscript(Integer isSubscript) {
+        this.isSubscript = isSubscript;
     }
 }

@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.controller.material;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
 import org.springframework.stereotype.Controller;
@@ -29,19 +30,20 @@ public class MaterialLibraryController extends BaseController {
 
     /**
      * jjh
-     * 素材列表B端
+     * 素材列表c端
      * @param request
      * @return
      */
-    @RequestMapping(value = "/infoC")
+    @RequestMapping(value = "/infoB")
     public ModelAndView materialLibraryList(HttpServletRequest request,
                                             @RequestParam(value = "currentPage",required = true) int currentPage
-                                            ){
+    ){
         ModelAndView mv = new ModelAndView("/platform/material/materialGroup");
         try{
+            ComUser comUser = getComUser(request);
             int pageSize = 5; //ajax请求时默认每页显示条数为5条
             currentPage = currentPage +1;
-            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(currentPage,pageSize);
+            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(currentPage,pageSize,comUser.getId());
             mv.addObject("LibraryList",materialLibraryList);
 
         }catch (Exception e){

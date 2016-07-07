@@ -34,10 +34,29 @@ public interface SfUserRelationMapper {
     SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
                                                          @Param("shopId") Long shopId);
 
+    /**
+     * 查询粉丝
+     * @param userPid   用户id
+     * @param userLevel 粉丝级别
+     * @param shopId    小铺id
+     * @return
+     */
     List<SfSpokesAndFansInfo> selectFansPageView(@Param("userPid") Long userPid,
-                                                       @Param("userLevel") Integer userLevel,
-                                                       @Param("shopId") Long shopId);
+                                                 @Param("userLevel") Integer userLevel,
+                                                 @Param("shopId") Long shopId);
 
+    /**
+     * 查询代言人信息
+     * @param userPid   用户id
+     * @param userLevel 粉丝级别
+     * @param shopId    小铺id
+     * @param spokenMan 是否为代言人 1为代言人
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectSpokesManPageView(@Param("userPid") Long userPid,
+                                                      @Param("userLevel") Integer userLevel,
+                                                      @Param("shopId") Long shopId,
+                                                      @Param("spokenMan") Integer spokenMan);
     /**
      * 通过treecode获取粉丝数量
      *
@@ -45,6 +64,15 @@ public interface SfUserRelationMapper {
      * @return Integer
      */
     Map<String, Number> selectFansNum(@Param("treeCode") String treeCode);
+
+    /**
+     * 查询代言人数量
+     * @param treeCode  treeCode
+     * @param userId    用户id
+     * @return  map
+     */
+    Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
+                                           @Param("userId") Long userId);
 
     /**
      * 修改树形编码
@@ -73,5 +101,7 @@ public interface SfUserRelationMapper {
      */
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
-    List<Map<String, Integer>> selectFansNumGroupByLevel(@Param("userPid") Long userPid);
+    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid);
+
+    List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid);
 }

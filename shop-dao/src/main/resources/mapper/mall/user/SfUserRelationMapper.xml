@@ -103,7 +103,11 @@
     </update>
 
     <select id="selectFansNum" resultType="java.util.HashMap">
-        select count(*)-1 as num from sf_user_relation where tree_code like CONCAT(#{treeCode},'%')
+        select count(*)-1 as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%')
+    </select>
+
+    <select id="selectSpokesManNum" resultType="java.util.HashMap">
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%') and u.is_spokesman = 1 and u.id <![CDATA[<>]]> #{userId}
     </select>
 
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
@@ -115,14 +119,31 @@
     <select id="selectFansPageView" resultMap="DistributionResultMap">
         select * from (
         select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
         union all
         select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
         union all
         select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 3 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r left join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
         )t where 1=1
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
+        </if>
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        order by t.createTime desc
+    </select>
+
+    <select id="selectSpokesManPageView" resultMap="DistributionResultMap">
+        select * from (
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        )t where t.sopkenMan = #{spokenMan}
         <if test="userLevel != null">
             and t.userLevel = #{userLevel}
         </if>
@@ -138,5 +159,14 @@
         union all select 2 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
         union all select 3 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
         )t group by t.userLevel;
+    </select>
+    
+    <select id="selectSpokesManNumGroupByLevel" resultType="java.util.HashMap">
+        select count(*) as num,userLevel from (
+        select 1 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where t.is_spokesman = 1
+        group by t.userLevel;
     </select>
 </mapper>

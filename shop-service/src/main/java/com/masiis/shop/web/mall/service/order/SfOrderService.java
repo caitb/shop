@@ -170,6 +170,7 @@ public class SfOrderService {
             sforderFreight.setSfOrderId(orderId);
             sforderFreight.setFreight(freight);
             sforderFreight.setShipManName(shipManName);
+            borderSkuStockService.updateOrderStock(sfOrder, user);
             sfOrderMapper.updateByPrimaryKey(sfOrder);
             sfOrderFreightMapper.insert(sforderFreight);
             //添加订单日志

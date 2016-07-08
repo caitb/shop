@@ -77,10 +77,10 @@ public class PromotionGorderService {
     public Integer receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId){
         //判断活动是否领取
         SfUserPromotionRecord record = recordService.getPromoRecordByUserIdAndPromoIdAndRuleId(comUser.getId(),promoId,promoRuleId);
-        if (record!=null){
+/*        if (record!=null){
             //活动已领取
             return 2;
-        }
+        }*/
         //添加订单
         SfGorder sfGorder = gorderService.addGorder(comUser,promoId,promoRuleId);
         //添加订单item

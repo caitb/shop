@@ -77,4 +77,14 @@ public class PromotionGorderController extends BaseController {
         Integer i = promotionGorderService.receiveReward(comUser,selectedAddressId,promoId,promoRuleId);
         return i+"";
     }
+
+    /**
+     * 领取奖励成功跳转到成功页面
+     * @return  页面地址
+     */
+    @RequestMapping("/skipReceiveRewardSuccessPage.html")
+    public String skipReceiveRewardSuccessPage(){
+        return "promotion/gorder/receiveRewardSuccess";
+    }
+
 }

@@ -18,7 +18,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="<%=path%>/showPromotion/getAllPromoDetail.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>领取奖励</p>            
         </header>
         <main>
@@ -66,6 +66,7 @@
             success: function (result) {
                 if (result==1){
                     //领取成功
+                    window.location.href="<%=path%>/promotionGorder/skipReceiveRewardSuccessPage.html";
                 }else if(result==2){
                     //已领取
                     alert("您已领取不能再重复领取");

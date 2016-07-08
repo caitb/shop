@@ -90,7 +90,7 @@ public class UserAddressService {
                 if (!StringUtils.isEmpty(comUserAddress.getId())) {
                     switch (addAddressJumpType) {
                         case addAddressPageToOrderPage:  //跳转到订单界面
-                            path = getPFOrderPagePath(request, comUserAddress.getId());
+                            path = getOrderPagePath(request, comUserAddress.getId());
                             break;
                         case getAddAddressPageToPersonalInfoPage://跳转到管理地址界面
                             path = "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType=" + addAddressJumpType;
@@ -117,56 +117,34 @@ public class UserAddressService {
             throw new BusinessException(e.getMessage());
         }
     }
-
-    /**
-     * 获得订单地址路径参数
-     *
-     * @author hanzengzhi
-     * @date 2016/4/2 11:34
-     */
-    public String getPFOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
-        try {
-            String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
-            Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
-            Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-            Long pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
-            String agentOrderForAddressJson = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM);
-            String supplementeOrderForAddress = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SUPPLEMENT_PARAM);
-            if (StringUtils.isEmpty(orderType)) {
-                return indexPath;
-            } else {
-                return getOrderAddress(orderType, agentOrderForAddressJson, supplementeOrderForAddress, orderId, skuId, selectedAddressId, pfUserSkuStockId);
-            }
-        } catch (Exception e) {
-            throw new BusinessException(e.getMessage());
-        }
-    }
-
     /**
      * 获得订单地址路径参数
      * @author hanzengzhi
      * @date 2016/4/2 11:34
      */
-    public String getSFOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
+    public String getOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
         try{
             String orderType = (String) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_ORDER_TYPE);
             Long orderId = (Long) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_ORDER_SKU_ID);
             Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
+            String agentOrderForAddressJson = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM);
+            String supplementeOrderForAddress = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SUPPLEMENT_PARAM);
             Long  shopId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
             Integer  promoId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
             Integer  promoRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId,promoId,promoRuleId);
+                return getOrderAddress(orderType,agentOrderForAddressJson, supplementeOrderForAddress,  orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId,promoId,promoRuleId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
         }
     }
 
-    /**
+	
+	/**
      * 获得具体的订单地址
      * 1:支付试用订单地址
      * 2：合伙人支付订单地址
@@ -174,7 +152,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, String agentOrderForAddressJson, String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType, String agentOrderForAddressJson, String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId,Integer promoId,Integer promoRuleId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -194,35 +172,6 @@ public class UserAddressService {
                 break;
             case SysConstants.SESSION_ORDER_SUPPLEMENT_TYPE_VALUE://补货订单
                 getSupplementOrderPageAddress(sb, supplementeOrderForAddress, selectedAddressId);
-                break;
-            default:
-                break;
-        }
-        return sb.toString();
-    }
-	
-	/**
-     * 获得具体的订单地址
-     * 1:支付试用订单地址
-     * 2：合伙人支付订单地址
-     *
-     * @author hanzengzhi
-     * @date 2016/3/22 12:13
-     */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId,Integer promoId,Integer promoRuleId) {
-        StringBuffer sb = new StringBuffer();
-        switch (orderType) {
-            case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
-                getTrialOrderAddress(sb, skuId, selectedAddressId);
-                break;
-            case SysConstants.SESSION_PAY_ORDER_TYPE_VALUE:
-                getPayBorderAddress(sb, orderId, selectedAddressId);
-                break;
-            case SysConstants.SESSION_ORDER_TAKE_GOODS_VALUE:
-                getTakeGoodsPageAddress(sb, orderId, selectedAddressId);
-                break;
-            case SysConstants.SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE://管理商品拿货
-                getManageGoodsTakeGoodsPageAddress(sb, pfUserSkuStockId, selectedAddressId);
                 break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER://小铺确认订单界面
                 getMallConfrimOrderPageAddress(sb, shopId, selectedAddressId);

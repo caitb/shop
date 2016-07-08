@@ -61,16 +61,18 @@ public interface SfUserRelationMapper {
     /**
      * 通过shopId查询所有代言人
      * @param shopId    小铺id
+     * @param spokesMan 是否已代言可以为null
      * @return
      */
-    List<SfSpokesAndFansInfo> selectAllSpokesManByShopId(@Param("shopId") Long shopId);
+    List<SfSpokesAndFansInfo> selectAllSpokesManByShopId(@Param("shopId") Long shopId, @Param("spokesMan") Integer spokesMan);
 
     /**
      * 通过shopId查询所有代言人数量
      * @param shopId    小铺id
+     * @param spokesMan 是否已代言可以为null
      * @return
      */
-    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId);
+    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId, @Param("spokesMan") Integer spokesMan);
 
     /**
      * 通过treecode获取粉丝数量
@@ -114,9 +116,11 @@ public interface SfUserRelationMapper {
      */
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
-    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid);
+    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid,
+                                                        @Param("shopId") Long shopId);
 
-    List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid);
+    List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid,
+                                                             @Param("shopId") Long shopId);
 
     /**
      * 通过ID查询小铺中的代言人信息
@@ -135,4 +139,17 @@ public interface SfUserRelationMapper {
      */
     Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
                                    @Param("ID") String ID);
+
+    SfSpokesAndFansInfo selectSfSpokesAndFansInfo(@Param("shopId") Long shopId,
+                                                  @Param("userId") Long userId);
+
+   /**
+    * 查询某个店铺所有粉丝数量(排除店主自己)
+    *
+    * @param shopId    店铺id
+    * @param userId
+    * @return
+    */
+    Integer selectFansNumsByShopId(@Param("shopId") Long shopId,
+                                   @Param("userId") Long userId);
 }

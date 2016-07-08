@@ -2,6 +2,9 @@ package com.masiis.shop.web.platform.controller.message;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.*;
+import com.fasterxml.jackson.databind.ser.std.NullSerializer;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.message.SfMessageDetail;
 import com.masiis.shop.dao.beans.message.SfMessagePageFList;
@@ -12,17 +15,23 @@ import com.masiis.shop.web.mall.service.message.SfMessageContentService;
 import com.masiis.shop.web.mall.service.message.SfMessageDetailService;
 import com.masiis.shop.web.mall.service.message.SfMessageSrRelationService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺消息controller
@@ -43,6 +52,8 @@ public class ShopMessageController extends BaseController {
     private SfMessageContentService contentService;
     @Resource
     private SfShopService sfShopService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
     @RequestMapping("/mycluster.shtml")
     public String toShopMessageList(){
@@ -113,8 +124,8 @@ public class ShopMessageController extends BaseController {
     }
 
     @RequestMapping("/toNew.shtml")
-    public String toNewMessage(){
+    public String toNewMessage(Model model){
+
         return "platform/shop/new_shop_cluster_message";
     }
-
 }

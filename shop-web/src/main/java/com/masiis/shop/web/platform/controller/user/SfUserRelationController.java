@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.beans.user.BfSpokesManDetailPo;
 import com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
@@ -63,16 +64,16 @@ public class SfUserRelationController extends BaseController{
         }else {
             Long shopId = sfShop.getId();
             logger.info("shopId = " + shopId);
-            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getAllSfSpokesManInfos(true, 1, pageSize, shopId);
+//            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getAllSfSpokesManInfos(true, 1, pageSize, shopId);
             Integer totalCount = sfUserRelationService.getAllSfSpokesManNum(shopId);
-            if (totalCount == 0 || infos == null || infos.size() == 0){
+            if (totalCount == 0 /*|| infos == null || infos.size() == 0*/){
                 logger.info("没有对应的代言人数据");
                 mv.addObject("totalPage", 0);
                 mv.addObject("currentPage", 0);
                 mv.addObject("totalCount", 0);
             }else {
                 Integer pageNums = totalCount%pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
-                mv.addObject("infos",infos);
+//                mv.addObject("infos",infos);
                 mv.addObject("totalPage", pageNums);
                 mv.addObject("currentPage", 1);
                 mv.addObject("totalCount", totalCount);
@@ -119,11 +120,14 @@ public class SfUserRelationController extends BaseController{
         }
         Long shopId = sfShop.getId();
         logger.info("shopId = " + shopId);
+        if (StringUtils.isEmpty(ID) || ID.equals("NaN")){ID = null;}
+        logger.info("ID = " + ID);
+        logger.info("currentPage = " + currentPage);
+        logger.info("pageNums = " + pageNums);
         switch (queryType.intValue()){
             //查询第一页
             case 0 : {
                 logger.info("查询第一页信息");
-                if (StringUtils.isEmpty(ID) || ID.equals("NaN")){ID = null;}
                 logger.info("ID = " + ID);
                 Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID);
                 logger.info("totalCount = " + totalCount);
@@ -145,10 +149,6 @@ public class SfUserRelationController extends BaseController{
             //查询下一页
             case 1 : {
                 logger.info("查询下一页信息");
-                if (StringUtils.isEmpty(ID) || ID.equals("NaN")){ID = null;}
-                logger.info("ID = " + ID);
-                logger.info("currentPage = " + currentPage);
-                logger.info("pageNums = " + pageNums);
                 if (currentPage + 1 > pageNums){
                     jsonObject.put("isTrue",false);
                     jsonObject.put("msg","已经是最后一页");
@@ -164,10 +164,6 @@ public class SfUserRelationController extends BaseController{
             //查询上一页
             case 2 : {
                 logger.info("查询上一页信息");
-                if (StringUtils.isEmpty(ID) || ID.equals("NaN")){ID = null;}
-                logger.info("ID = " + ID);
-                logger.info("currentPage = " + currentPage);
-                logger.info("pageNums = " + pageNums);
                 if (currentPage - 1 < 1){
                     jsonObject.put("isTrue",false);
                     jsonObject.put("msg","已经是第一页");
@@ -184,5 +180,38 @@ public class SfUserRelationController extends BaseController{
         jsonObject.put("isTrue",true);
         logger.info("result:"+jsonObject.toString());
         return jsonObject.toString();
+    }
+
+    /**
+     * 查看代言人详情
+     * @param request   request
+     * @param showUserId    查看人id
+     * @return  mv
+     * @throws Exception
+     */
+    @RequestMapping(value = "/spokesManDetail.shtml")
+    public ModelAndView querySpokesManDetail(HttpServletRequest request,
+                                             @RequestParam(value = "showUserId",required = true) Long showUserId)throws Exception{
+        logger.info("查看代言人详情");
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("用户未登陆");
+        }
+        Long userId = comUser.getId();
+        logger.info("userId = " + userId);
+        ModelAndView mv = new ModelAndView();
+        SfShop sfShop = sfShopService.getSfShopById(userId);
+        if (sfShop == null){
+            throw new BusinessException("不存在小铺信息");
+        }
+        BfSpokesManDetailPo detailPo = null;
+        try{
+            detailPo = sfUserRelationService.getSpokesManDetail(showUserId, sfShop.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        mv.addObject("detail",detailPo);
+        mv.setViewName("platform/user/spokesManDetail");
+        return mv;
     }
 }

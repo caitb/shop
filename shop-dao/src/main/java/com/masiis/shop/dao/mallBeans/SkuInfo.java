@@ -30,6 +30,8 @@ public class SkuInfo{
 
     private Long shopSkuId;
 
+    private Integer isOwnShip;//发货类型
+
     public ComSku getComSku() {
         return comSku;
     }
@@ -108,5 +110,13 @@ public class SkuInfo{
 
     public void setShopSkuId(Long shopSkuId) {
         this.shopSkuId = shopSkuId;
+    }
+
+    public Integer getIsOwnShip() {
+        return isOwnShip;
+    }
+
+    public void setIsOwnShip(Integer isOwnShip) {
+        this.isOwnShip = isOwnShip;
     }
 }

@@ -16,40 +16,36 @@
         <p>订阅列表</p>
     </header>
     <main>
-        <nav>
             <p>
-                <span><img src="../img/list_1.png" alt=""></span>
+                <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
                 <span>产品介绍</span>
-            </p><p>
-            <span><img src="../img/list_2.png" alt=""></span>
-            <span>产品图片</span>
+            </p>
+        <p>
+            <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+            <span>产品介绍</span>
         </p><p>
-            <span><img src="../img/list_3.png" alt=""></span>
-            <span>产品海报</span>
-        </p>
-        </nav>
-        <nav>
-            <p>
-                <span><img src="../img/list_4.png" alt=""></span>
-                <span>产品实拍图</span>
-            </p><p>
-            <span><img src="../img/list_5.png" alt=""></span>
-            <span>买家秀</span>
-        </p><p>
-            <span><img src="../img/list_6.png" alt=""></span>
-            <span>朋友圈案例</span>
-        </p>
-        </nav>
-        <nav>
-            <p>
-                <span><img src="../img/list_7.png" alt=""></span>
-                <span>招商信息</span>
-            </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p><p>
+        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+        <span>产品介绍</span>
+    </p>
 
-        </p><p>
-
-        </p>
-        </nav>
     </main>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
 </div>
@@ -69,6 +65,10 @@
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
+  $(function () {
+      var pWidth=$(".wrap").width()/3-1;
+      $("main p").width(pWidth)
+  })
     function clickShow(){
         $(".black").show();
     }

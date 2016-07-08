@@ -47,14 +47,14 @@ public class ManageProductController extends BaseController {
     public ModelAndView manageShopProduct(HttpServletRequest request,
                                           @RequestParam(value = "shopId", required = true) Long shopId,
                                           @RequestParam(value = "isSale", required = true) Integer isSale,
-                                          @RequestParam(value = "deliverType", required = true) Integer deliverType,
-                                          @RequestParam(value = "currentPage", required = true) int currentPage
+                                          @RequestParam(value = "deliverType", required = false) String deliverType,
+                                          @RequestParam(value = "currentPage", required = true) Integer currentPage
                                           ) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/shop_product");
         ComUser comUser = getComUser(request);
         int pageSize = 5; //ajax请求时默认每页显示条数为5条
         currentPage = currentPage +1;
-        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), Integer.parseInt(deliverType), currentPage, pageSize);
         mav.addObject("skuInfoList", skuInfoList);
         mav.addObject("comUser", comUser);
         mav.addObject("shopId", shopId);
@@ -100,7 +100,7 @@ public class ManageProductController extends BaseController {
     public String deliverProductSale(HttpServletRequest request, HttpServletResponse response,
                                     @RequestParam(value="shopId",required = true) Long shopId,
                                     @RequestParam(value="isSale",required = true) Integer isSale,
-                                    @RequestParam(value="deliverType",required = true) Integer deliverType,
+                                    @RequestParam(value="deliverType",required = false) Integer deliverType,
                                     @RequestParam(value = "currentPage", required = true) int currentPage
     ){
         JSONObject object = new JSONObject();

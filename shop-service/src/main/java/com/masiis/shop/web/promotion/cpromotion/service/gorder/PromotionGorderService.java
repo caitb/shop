@@ -7,6 +7,8 @@ import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.dao.po.SfGorder;
+import com.masiis.shop.dao.po.SfUserPromotionRecord;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRecordService;
@@ -71,23 +73,29 @@ public class PromotionGorderService {
      * @param addressId  地址id
      * @param promoId   活动id
      * @param promoRuleId 活动规则id
-     * @param personType 订单类型
      */
-    public void receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId,Integer personType){
+    public Integer receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId){
+        //判断活动是否领取
+        SfUserPromotionRecord record = recordService.getPromoRecordByUserIdAndPromoIdAndRuleId(comUser.getId(),promoId,promoRuleId);
+        if (record!=null){
+            //活动已领取
+            return 2;
+        }
         //添加订单
-        Long gorderId = gorderService.addGorder(comUser,promoId,promoRuleId,personType);
+        SfGorder sfGorder = gorderService.addGorder(comUser,promoId,promoRuleId);
         //添加订单item
-        List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(gorderId,personType,promoId,promoRuleId);
+        List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(sfGorder.getId(),sfGorder.getGorderType(),promoId,promoRuleId);
         //添加订单操作日志
-        gorderOperationLogService.addGorderOperationLog(gorderId,"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
+        gorderOperationLogService.addGorderOperationLog(comUser,sfGorder.getId(),"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
         //添加地址
-        gorderConsigneeService.addGorderConsignee(gorderId,addressId);
+        gorderConsigneeService.addGorderConsignee(sfGorder.getId(),addressId);
         //插入用户活动参与记录表
         recordService.addSfUserPromotionRecord(comUser.getId(),promoId,promoRuleId);
         //修改活动奖励表中的已发奖励数量
         for (PromotionGiftInfo promotionGiftInfo:promotionGiftInfos){
             promotionGiftService.addPromoQuantity(promotionGiftInfo.getGiftQuantity(),promoId,promoRuleId,promotionGiftInfo.getGiftId());
         }
+        return 1;
     }
 
 

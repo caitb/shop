@@ -18,4 +18,7 @@ public class SfUserPromotionService {
     public List<SfUserPromotion> selectAll(){
         return sfUserPromotionMapper.selectAll();
     }
+    public SfUserPromotion  selectByPrimaryKey(Integer id){
+        return sfUserPromotionMapper.selectByPrimaryKey(id);
+    };
 }

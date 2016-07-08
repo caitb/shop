@@ -47,7 +47,7 @@
                 </section>
             </c:forEach>
         </main>
-        <button>领取奖励</button>
+        <button onclick="receiveReward()">领取奖励</button>
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 </body>
@@ -55,6 +55,23 @@
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=receiveReward&selectedAddressId=" + selectedAddressId +"&promoId=${promoId}&promoRuleId=${promoRuleId}";
+    }
+    function receiveReward(){
+        $.ajax({
+            type: "POST",
+            url: "/promotionGorder/receiveReward.do",
+            async:false,
+            data: {selectedAddressId: ${comUserAddress.id}, promoId: ${promoId},promoRuleId: ${promoRuleId}},
+            dataType: "Json",
+            success: function (result) {
+                if (result==1){
+                    //领取成功
+                }else if(result==2){
+                    //已领取
+                    alert("您已领取不能再重复领取");
+                }
+            }
+        })
     }
 </script>
 </html>

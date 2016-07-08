@@ -60,7 +60,6 @@ public class PromotionGorderController extends BaseController {
      * @param selectedAddressId  地址id
      * @param promoId           活动id
      * @param promoRuleId       活动规则id
-     * @param personType        订单类型
      * @param request           请求
      * @return null
      */
@@ -69,14 +68,13 @@ public class PromotionGorderController extends BaseController {
     public String receiveReward(@RequestParam(required = false) Long selectedAddressId,
                                 @RequestParam(required = true) Integer promoId,
                                 @RequestParam(required = true) Integer promoRuleId,
-                                @RequestParam(required = true) Integer personType,
                                 HttpServletRequest request){
-        if (promoId==null||promoRuleId==null||personType==null){
+        if (promoId==null||promoRuleId==null){
           log.info("参数不合法");
           throw new BusinessException("参数不合法");
         }
         ComUser comUser =  getComUser(request);
-        promotionGorderService.receiveReward(comUser,selectedAddressId,promoId,promoRuleId,personType);
-        return null;
+        Integer i = promotionGorderService.receiveReward(comUser,selectedAddressId,promoId,promoRuleId);
+        return i+"";
     }
 }

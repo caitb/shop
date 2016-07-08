@@ -51,7 +51,7 @@
         from sf_message_sr_relation
     </select>
 
-    <select id="countNumsFromUser" resultType="java.lang.Integer">
+    <select id="countNumsFromUser" resultType="java.lang.Long">
         select count(id) from sf_message_sr_relation
         WHERE from_user = #{userId,jdbcType=BIGINT}
     </select>

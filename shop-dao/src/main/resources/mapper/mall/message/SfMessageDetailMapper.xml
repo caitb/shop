@@ -63,7 +63,16 @@
         remark
         from sf_message_sr_relation
         WHERE from_user = #{userId,jdbcType=BIGINT}
-        limit #{start,jdbcType=BIGINT}
+        AND id <![CDATA[<=]]> (select
+                                  id
+                               FROM
+                                  sf_message_sr_relation
+                               WHERE from_user = #{userId,jdbcType=BIGINT}
+                               ORDER BY
+                                  create_time DESC,id DESC
+                               limit #{start,jdbcType=BIGINT}, 1)
+        ORDER BY create_time DESC,id DESC
+        limit #{size,jdbcType=BIGINT}
     </select>
 
 </mapper>

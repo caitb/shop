@@ -66,8 +66,14 @@
                             <c:if test="${sku.isOwnShip==0 && empty sku.flagSelf}">
                                 <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
                                 </li>
-                                <li class="right myself" onclick="selfclick('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
-                                </li>
+                                <c:if test="${ not empty sku.wxqrCode}">
+                                    <li class="right myself" onclick="selfclick('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
+                                    </li>
+                                </c:if>
+                                <c:if test="${empty sku.wxqrCode}">
+                                    <li class="right myself" onclick="applyWXCode();"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
+                                    </li>
+                                </c:if>
                             </c:if>
                         </ul>
                     <c:if test="${sku.isOwnShip==1}">
@@ -125,6 +131,15 @@
             <button onclick="updateStock()">确认</button></h3>
     </div>
 </div>
+<div class="black wxcode">
+    <div class="backb"></div>
+    <div class="set">
+        <p>您还未上传店主二维码，请去店铺设置中上传</p>
+        <h3>
+            <button onclick="clickHide()">取消</button>
+            <button onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');">点击前往</button></h3>
+    </div>
+</div>
 <script src="<%=path%>/static/shop/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="${path}/static/js/repetitionForm.js"></script>
@@ -162,6 +177,9 @@
         $(".generate").show();
         index=$(this).parents(".floor").index();
         $("#shopSkuId").val(a);
+    }
+    function applyWXCode(){
+        $(".wxcode").show();
     }
     function showStock(a,b){
         $(".number").val(1);
@@ -301,7 +319,11 @@ function onsale(value){
                             zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
                             zijiHtml += "</li>";
-                            zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
+                            if(sku.wxqrCode==null){
+                                zijiHtml += "<li class=\"right myself\" onclick=\"applyWXCode()\">";
+                            }else{
+                                zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
+                            }
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";
                             zijiHtml += "</li>";
                         }else{
@@ -366,10 +388,14 @@ function outSale(value){
                     if (sku.isOwnShip == 0) {
                         fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity.png\" alt=\"\"><b>平台发货</b></h1>";
                         if(sku.flagSelf==null){
-                            zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
-                            zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
+                            zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
+                            zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                             zijiHtml += "</li>";
-                            zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
+                            if(sku.wxqrCode==null){
+                                zijiHtml += "<li class=\"right myself\" onclick=\"applyWXCode()\">";
+                            }else{
+                                zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
+                            }
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";
                             zijiHtml += "</li>";
                         }else{

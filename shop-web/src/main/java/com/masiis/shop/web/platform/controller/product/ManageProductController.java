@@ -5,6 +5,8 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfShop;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ManageShopProductService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -31,6 +33,9 @@ public class ManageProductController extends BaseController {
     private ManageShopProductService manageShopProductService;
     @Resource
     private ProductService productService;
+    @Resource
+    private SfShopService sfShopService;
+
 
     /**
      * jjh
@@ -55,9 +60,11 @@ public class ManageProductController extends BaseController {
         int pageSize = 6; //ajax请求时默认每页显示条数为6条
         currentPage = currentPage +1;
         List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+        SfShop sfShop = sfShopService.getSfShopById(shopId);
         mav.addObject("skuInfoList", skuInfoList);
         mav.addObject("comUser", comUser);
         mav.addObject("shopId", shopId);
+        mav.addObject("sfShop", sfShop);
         return mav;
     }
 

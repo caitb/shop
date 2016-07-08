@@ -34,6 +34,8 @@ public class SkuInfo{
 
     private String flagSelf;//自己发货的标志：null：只有平台发货
 
+    private String wxqrCode;//店铺二维码
+
     public ComSku getComSku() {
         return comSku;
     }
@@ -128,5 +130,13 @@ public class SkuInfo{
 
     public void setFlagSelf(String flagSelf) {
         this.flagSelf = flagSelf;
+    }
+
+    public String getWxqrCode() {
+        return wxqrCode;
+    }
+
+    public void setWxqrCode(String wxqrCode) {
+        this.wxqrCode = wxqrCode;
     }
 }

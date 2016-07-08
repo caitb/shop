@@ -6,6 +6,7 @@ import com.alibaba.druid.support.logging.SLF4JImpl;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
@@ -39,6 +40,9 @@ public class ManageShopProductService {
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
 
+    @Resource
+    private SfShopMapper sfShopMapper;
+
     /**
       * @Author JJH
       * @Date 2016/4/13 0013 上午 10:29
@@ -47,11 +51,13 @@ public class ManageShopProductService {
     public List<SkuInfo> getShopProductsList(Long shopId, Integer isSale, Long userId, Integer deliverType, int currentPage, int pageSize) throws Exception {
         PageHelper.startPage(currentPage, pageSize);
         List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId, isSale, deliverType);
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         List<SkuInfo> skuInfoList = new ArrayList<>();
         if (sfShopSkuList != null) {
             String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             for (SfShopSku sfShopSku : sfShopSkuList) {
                 SkuInfo skuInfo = new SkuInfo();
+                skuInfo.setWxqrCode(sfShop.getWxQrCode());
                 ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
                 comSkuImage.setFullImgUrl(Value + comSkuImage.getImgUrl());

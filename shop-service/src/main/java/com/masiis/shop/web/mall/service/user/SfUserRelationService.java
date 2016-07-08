@@ -1,6 +1,8 @@
 package com.masiis.shop.web.mall.service.user;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.beans.user.BfSpokesManDetailPo;
 import com.masiis.shop.dao.beans.user.SfSpokenAndFansPageViewPo;
 import com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
@@ -111,19 +113,21 @@ public class SfUserRelationService {
     /**
      * 查询用户下 一级、二级、三级粉丝数量
      * @param userId    用户id
+     * @param shopId    归宿小铺id(根据业务shopId可以null)
      * @return  List map
      */
-    public List<Map<String, Number>> getFansNumGroupByLevel(Long userId){
-        return sfUserRelationMapper.selectFansNumGroupByLevel(userId);
+    public List<Map<String, Number>> getFansNumGroupByLevel(Long userId, Long shopId){
+        return sfUserRelationMapper.selectFansNumGroupByLevel(userId,shopId);
     }
 
     /**
      * 查询用户下 一级、二级代言人数量
-     * @param userId
+     * @param userId    用户id
+
      * @return
      */
-    public List<Map<String, Number>> getSpokesManNumGroupByLevel(Long userId){
-        return sfUserRelationMapper.selectSpokesManNumGroupByLevel(userId);
+    public List<Map<String, Number>> getSpokesManNumGroupByLevel(Long userId, Long shopId){
+        return sfUserRelationMapper.selectSpokesManNumGroupByLevel(userId,shopId);
     }
 
     /**
@@ -147,7 +151,7 @@ public class SfUserRelationService {
         pageViewPo.setTotalCount(totalCount);
         logger.info("粉丝总数量："+totalCount);
         //查询三级粉丝数量
-        List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId);
+        List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId, null);
         for (Map<String, Number> map : maps){
             switch (map.get("userLevel").intValue()) {
                 case 1 : {
@@ -225,7 +229,7 @@ public class SfUserRelationService {
             logger.info("pageSize = " + pageSize);
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
-        List<SfSpokesAndFansInfo> infos = sfUserRelationMapper.selectAllSpokesManByShopId(shopId);
+        List<SfSpokesAndFansInfo> infos = sfUserRelationMapper.selectAllSpokesManByShopId(shopId,null);
         List<SfSpokesAndFansInfo> list = new LinkedList<>();
         for (SfSpokesAndFansInfo info : infos){
             info.setFansNum(getFansNumByUserIdAndShopId(info.getUserId(), shopId));
@@ -241,7 +245,7 @@ public class SfUserRelationService {
      * @return
      */
     public Integer getAllSfSpokesManNum(Long shopId){
-        return sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId);
+        return sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId,null);
     }
 
     /**
@@ -266,7 +270,7 @@ public class SfUserRelationService {
         pageViewPo.setTotalCount(totalCount);
         logger.info("代言人总数量："+totalCount);
         //查询三级粉丝数量
-        List<Map<String, Number>> maps = this.getSpokesManNumGroupByLevel(userId);
+        List<Map<String, Number>> maps = this.getSpokesManNumGroupByLevel(userId, null);
         for (Map<String, Number> map : maps){
             switch (map.get("userLevel").intValue()) {
                 case 1 : {
@@ -319,6 +323,73 @@ public class SfUserRelationService {
      */
     public Integer getSpokesManNumByID(Long shopId, String ID){
         return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID);
+    }
+
+    /**
+     * 查询代言人或粉丝详情
+     * @param userId
+     * @param shopId
+     * @return
+     */
+    public SfSpokesAndFansInfo getSfSpokesAndFansInfo(Long userId, Long shopId){
+        return sfUserRelationMapper.selectSfSpokesAndFansInfo(shopId, userId);
+    }
+
+    /**
+     * 查询展示代言人详情
+     * @param showUserId    展示人id
+     * @param shopId        小铺id
+     * @return
+     */
+    public BfSpokesManDetailPo getSpokesManDetail(Long showUserId, Long shopId) throws Exception{
+        BfSpokesManDetailPo detailPo = new BfSpokesManDetailPo();
+        logger.info("查询店铺三级粉丝");
+        logger.info("shopId = " + shopId);
+        List<Map<String, Number>> fans = this.getFansNumGroupByLevel(showUserId, shopId);
+        for (Map<String, Number> map : fans) {
+            switch (map.get("userLevel").intValue()) {
+                case 1: {
+                    logger.info("一级粉丝数量：" + map.get("num"));
+                    detailPo.setFirstFansNum(map.get("num").intValue());
+                    break;
+                }
+                case 2: {
+                    logger.info("二级粉丝数量：" + map.get("num"));
+                    detailPo.setSecondFansNum(map.get("num").intValue());
+                    break;
+                }
+                case 3: {
+                    logger.info("三级粉丝数量：" + map.get("num"));
+                    detailPo.setThirdFansNum(map.get("num").intValue());
+                    break;
+                }
+            }
+        }
+        List<Map<String, Number>> spokesMan = this.getSpokesManNumGroupByLevel(showUserId, shopId);
+        for (Map<String, Number> map : spokesMan){
+            switch (map.get("userLevel").intValue()) {
+                case 1 : {
+                    logger.info("一级代言人数量：" + map.get("num"));
+                    detailPo.setFirstSpokesManNum(map.get("num").intValue());
+                    break;
+                }
+                case 2 : {
+                    logger.info("二级代言人数量：" + map.get("num"));
+                    detailPo.setSecondSpokesManNum(map.get("num").intValue());
+                    break;
+                }
+            }
+        }
+        SfSpokesAndFansInfo info = this.getSfSpokesAndFansInfo(showUserId,shopId);
+        Integer fansCount = this.getFansNumByUserIdAndShopId(showUserId,shopId);
+        Integer spokesManCount = this.getSpokesManNumByUserIdAndShopId(showUserId,shopId);
+        info.setFansNum(fansCount);
+        info.setSpokesManNum(spokesManCount);
+        if (info == null){
+            throw new BusinessException("代言人信息不存在");
+        }
+        detailPo.setInfo(info);
+        return detailPo;
     }
 
     /**

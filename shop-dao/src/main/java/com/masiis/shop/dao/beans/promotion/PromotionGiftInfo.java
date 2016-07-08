@@ -9,6 +9,10 @@ public class PromotionGiftInfo {
     private Integer giftId;
     private String giftName;
     private Integer giftQuantity; //奖品数量
+    private Boolean isEnoughQuantity;  //是否还存在商品
+    private Integer sendedQuantity;   //已发放奖品的数量
+    private Integer noSendQuantity;  //未发送奖品的数量
+    private Integer maxQuantity;    //奖品数量上限
 
 
     public Integer getPromoGiftId() {
@@ -41,5 +45,37 @@ public class PromotionGiftInfo {
 
     public void setGiftQuantity(Integer giftQuantity) {
         this.giftQuantity = giftQuantity;
+    }
+
+    public Integer getSendedQuantity() {
+        return sendedQuantity;
+    }
+
+    public void setSendedQuantity(Integer sendedQuantity) {
+        this.sendedQuantity = sendedQuantity;
+    }
+
+    public Integer getNoSendQuantity() {
+        return noSendQuantity;
+    }
+
+    public void setNoSendQuantity(Integer noSendQuantity) {
+        this.noSendQuantity = noSendQuantity;
+    }
+
+    public Integer getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(Integer maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
+    public Boolean getIsEnoughQuantity() {
+        return isEnoughQuantity;
+    }
+
+    public void setIsEnoughQuantity(Boolean enoughQuantity) {
+        isEnoughQuantity = enoughQuantity;
     }
 }

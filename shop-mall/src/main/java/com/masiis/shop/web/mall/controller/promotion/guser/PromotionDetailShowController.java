@@ -13,11 +13,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.soap.MTOM;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 活动页面展示
  */
 @Controller
+@RequestMapping("/showPromotion")
 public class PromotionDetailShowController extends BaseController{
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -33,8 +35,9 @@ public class PromotionDetailShowController extends BaseController{
      */
     @RequestMapping("/getAllPromoDetail.html")
     public String getAllPromoDetail(HttpServletRequest request, Model model) {
-        List<PromotionInfo> promotionInfos = promotionDetailShowService.getAllPromoDetail(getComUser(request));
-        model.addAttribute("promotionInfos",promotionInfos);
-        return null;
+        Map<String,Object> map = promotionDetailShowService.getAllPromoDetail(getComUser(request));
+        model.addAttribute("promotionInfos",map.get("promotionInfos"));
+        model.addAttribute("fansQuantity",map.get("fansQuantity"));
+        return "promotion/guser/promotionShow";
     }
 }

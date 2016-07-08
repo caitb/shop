@@ -154,12 +154,12 @@ public class SfOrderController extends BaseController {
     @RequestMapping("/stockShipOrder")
     @ResponseBody
     @SignValid(paramType = OrderListPagingReq.class)
-    public OrderListPagingRes stockShipOrder(HttpServletRequest request, OrderListPagingReq req,ComUser comUser) throws Exception {
+    public OrderListPagingRes stockShipOrder(HttpServletRequest request, OrderListPagingReq req,ComUser comUser,Integer sendType) throws Exception {
         OrderListPagingRes res = new OrderListPagingRes();
         try{
             Integer orderStatus = req.getOrderStatus();
             Long shopId = req.getShopId();
-            List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId);
+            List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId,sendType);
             String index=null;
             if(orderStatus==null){
                 index="0";//全部
@@ -197,7 +197,7 @@ public class SfOrderController extends BaseController {
     @RequestMapping("/clickSfOrder.do")
     @ResponseBody
     @SignValid(paramType = OrderListPagingReq.class)
-    public OrderListPagingRes clickSfOrderType(HttpServletRequest request,OrderListPagingReq req,ComUser user) {
+    public OrderListPagingRes clickSfOrderType(HttpServletRequest request,OrderListPagingReq req,ComUser user,Integer sendType) {
         List<SfOrder> sfOrders=null;
         OrderListPagingRes res = new OrderListPagingRes();
         try {
@@ -206,15 +206,15 @@ public class SfOrderController extends BaseController {
             List<ComShipMan> comShipMans = comShipManService.list();
 //            request.getSession().setAttribute("comShipMans", comShipMans);
             if(index==0){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), null, shopId);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), null, shopId,null);
             }else if(index==1){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 0, shopId);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 0, shopId,null);
             }else if(index==2){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 7, shopId);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 7, shopId,sendType);
             }else if(index==4){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 3, shopId);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 3, shopId,null);
             }else if(index==3){
-                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 8, shopId);
+                sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 8, shopId,null);
             }
             res.setSfOrders(sfOrders);
             res.setComShipMans(comShipMans);

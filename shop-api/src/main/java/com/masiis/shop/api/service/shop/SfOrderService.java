@@ -60,8 +60,8 @@ public class SfOrderService {
     * @author muchaofeng
     * @date 2016/4/13 10:40
     */
-    public List<SfOrder> findOrdersByShopUserId(Long shopUserId,Integer orderStatus, Long shopId){
-        List<SfOrder> sfOrders = sfOrderManageMapper.selectByShopUserId(shopUserId, orderStatus, shopId);
+    public List<SfOrder> findOrdersByShopUserId(Long shopUserId,Integer orderStatus, Long shopId,Integer sendType){
+        List<SfOrder> sfOrders = sfOrderManageMapper.selectByShopUserId(shopUserId, orderStatus, shopId,sendType);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (SfOrder sfOrder : sfOrders) {
             SfOrderConsignee orderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());

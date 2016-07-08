@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * C端用户活动参与记录表 service
@@ -22,6 +23,7 @@ public class SfUserPromotionRecordService {
 
     public int addSfUserPromotionRecord(Long userId,Integer promoId,Integer promoRuleId){
         SfUserPromotionRecord record = new SfUserPromotionRecord();
+        record.setCreateTime(new Date());
         record.setCreateMan(userId);
         record.setUserId(userId);
         record.setPromoId(promoId);

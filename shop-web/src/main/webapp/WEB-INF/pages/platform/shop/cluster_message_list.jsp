@@ -9,6 +9,9 @@
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/message.css">
+    <script type="application/javascript">
+        var path = "${path}";
+    </script>
 </head>
 <body>
 
@@ -18,22 +21,22 @@
         <p>群发消息</p>
         <a href=""><img src="${path}/static/images/message/xiaoxi_1.jpg" alt=""></a>
     </header>
-    <main id="mlist">
-        <div class="sec1">
-            <p style="background:url('../images/admin.png');background-size:100% 100%;"></p>
-            <div class="s_b">
-                <h1>王平的小店</h1>
-                <div class="b_b">
-                    <img src="${path}/static/images/message/massage_r1_c1.png" alt="">
-                    <h1>阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的</h1>
-                    <p>
-                        <a href="">点击查看</a>
-                        <a>2016-4-44 14:23</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+    <main id="mlist" >
+
     </main>
+    <div id="more" style="display: none">
+        <br/>
+        <h3 align="center">加载更多</h3>
+    </div>
+    <div id="nomore" style="display: none">
+        <br/>
+        <h3 align="center">暂无更多数据</h3>
+    </div>
+    <div id="remore" style="display: none">
+        <br/>
+        <h3 align="center">点击重新加载</h3>
+    </div>
+    <br/>
 </div>
 </body>
 <script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js" ></script>

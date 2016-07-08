@@ -2,10 +2,12 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.promotion.SfGorderOperationLogMapper;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfGorderOperationLog;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * C端活动订单操作日志表 service
@@ -16,8 +18,10 @@ public class SfGorderOperationLogService {
     @Resource
     private SfGorderOperationLogMapper sfGorderOperationLogMapper;
 
-    public int addGorderOperationLog(Long gorderId,String orderOperateType,Integer oldOrderStatus,Integer newOrderStatus,String remark){
+    public int addGorderOperationLog(ComUser comUser,Long gorderId, String orderOperateType, Integer oldOrderStatus, Integer newOrderStatus, String remark){
         SfGorderOperationLog operationLog = new SfGorderOperationLog();
+        operationLog.setCreateTime(new Date());
+        operationLog.setCreateMan(comUser.getId());
         operationLog.setSfGorderId(gorderId);
         operationLog.setSfOrderStatus(newOrderStatus);
         StringBuffer sb = new StringBuffer(remark);

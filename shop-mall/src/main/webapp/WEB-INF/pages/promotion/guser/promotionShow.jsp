@@ -53,6 +53,7 @@
                                 <button onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
                             </c:if>
                             <c:if test="${promotionRule.status==2}">
+                                <button>已领取</button>
                             </c:if>
                         </div>
                     </c:forEach>

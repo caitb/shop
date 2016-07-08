@@ -141,5 +141,14 @@ public interface SfUserRelationMapper {
                                    @Param("ID") String ID);
 
     SfSpokesAndFansInfo selectSfSpokesAndFansInfo(@Param("shopId") Long shopId,
-                                                  @Param("userId") Long userId);
+
+   /**
+    * 查询某个店铺所有粉丝数量(排除店主自己)
+    *
+    * @param shopId    店铺id
+    * @param userId
+    * @return
+    */
+    Integer selectFansNumsByShopId(@Param("shopId") Long shopId,
+                                   @Param("userId") Long userId);                                              @Param("userId") Long userId);
 }

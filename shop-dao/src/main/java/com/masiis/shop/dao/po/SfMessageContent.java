@@ -7,6 +7,10 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 import java.util.Date;
 
 public class SfMessageContent {

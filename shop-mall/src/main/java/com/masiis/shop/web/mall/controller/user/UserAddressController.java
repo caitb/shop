@@ -123,7 +123,7 @@ public class UserAddressController extends BaseController {
                                              HttpServletResponse response,
                                              @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId)throws Exception {
         String redirectHead = "redirect:";
-        String redirectBody = userAddressService.getSFOrderPagePath(request,selectedAddressId);
+        String redirectBody = userAddressService.getOrderPagePath(request,selectedAddressId);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);

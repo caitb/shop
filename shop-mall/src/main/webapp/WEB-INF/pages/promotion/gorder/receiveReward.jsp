@@ -66,6 +66,7 @@
             success: function (result) {
                 if (result==1){
                     //领取成功
+                    window.location.href="<%=path%>/promotionGorder/skipReceiveRewardSuccessPage.html";
                 }else if(result==2){
                     //已领取
                     alert("您已领取不能再重复领取");

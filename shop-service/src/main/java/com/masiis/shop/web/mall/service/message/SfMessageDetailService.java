@@ -22,6 +22,6 @@ public class SfMessageDetailService {
 
 
     public List<SfMessageDetail> queryMessageDetailFromUser(ComUser user, Long start, Integer size) {
-        return detailMapper.queryFromUser(user.getId(), start, size);
+        return detailMapper.queryFromUser(user.getId(), start, size, 0);
     }
 }

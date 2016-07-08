@@ -57,4 +57,44 @@
         from sf_message_content
     </select>
 
+    <select id="queryNumsFromUser" resultType="java.lang.Integer" >
+        select count(0)
+        from sf_message_content
+        WHERE
+            user_id = #{params.userId,jdbcType=BIGINT}
+        <if test="params.types != null">
+            AND `type` IN
+            <foreach item="uid" index="index" collection="params.types" open="(" separator="," close=")">
+              #{uid}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectByFromUserAndType" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, `type`, content, content_url, status, update_time,
+        remark
+        from sf_message_content
+        WHERE user_id = #{params.userId,jdbcType=BIGINT}
+        <if test="params.types != null">
+            AND `type` IN
+            <foreach item="uid" index="index" collection="params.types" open="(" separator="," close=")">
+                #{uid}
+            </foreach>
+        </if>
+        AND id <![CDATA[ <= ]]>
+                (select id
+                from sf_message_content
+                WHERE user_id = #{params.userId,jdbcType=BIGINT}
+                <if test="params.types != null">
+                    AND `type` IN
+                    <foreach item="uid" index="index" collection="params.types" open="(" separator="," close=")">
+                        #{uid}
+                    </foreach>
+                </if>
+                order by create_time DESC, id DESC
+                limit #{params.start,jdbcType=INTEGER}, 1)
+        order by create_time DESC, id DESC
+        limit #{params.size,jdbcType=INTEGER}
+    </select>
+
 </mapper>

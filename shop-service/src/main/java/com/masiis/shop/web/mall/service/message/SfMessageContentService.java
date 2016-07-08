@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2016/7/5
@@ -19,7 +22,27 @@ public class SfMessageContentService {
     @Resource
     private SfMessageContentMapper sfMessageContentMapper;
 
+    /**
+     * 查询群发类型消息数量
+     *
+     * @param user
+     * @return
+     */
     public Integer queryNumsFromUser(ComUser user){
-        return sfMessageContentMapper.queryNumsFromUser(user.getId(), 0);
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", user.getId());
+        Integer[] types = {3, 4};
+        params.put("types", types);
+        return sfMessageContentMapper.queryNumsFromUser(params);
+    }
+
+    public List<SfMessageContent> queryContentFromUser(ComUser user, Integer start, Integer size) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", user.getId());
+        Integer[] types = {3, 4};
+        params.put("types", types);
+        params.put("start", start);
+        params.put("size", size);
+        return sfMessageContentMapper.selectByFromUserAndType(params);
     }
 }

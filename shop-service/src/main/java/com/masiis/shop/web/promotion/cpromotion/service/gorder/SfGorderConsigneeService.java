@@ -7,6 +7,7 @@ import com.masiis.shop.web.common.service.UserAddressService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * C端用户奖励订单收货人表service
@@ -24,6 +25,7 @@ public class SfGorderConsigneeService {
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
         if (comUserAddress!=null){
             SfGorderConsignee gorderConsignee = new SfGorderConsignee();
+            gorderConsignee.setCreateTime(new Date());
             gorderConsignee.setSfGorderId(gorderId);
             gorderConsignee.setUserId(comUserAddress.getUserId());
             gorderConsignee.setConsignee(comUserAddress.getName());

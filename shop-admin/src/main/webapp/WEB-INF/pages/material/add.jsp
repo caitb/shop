@@ -238,6 +238,17 @@
                                                     </label>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="materialImg" class="col-sm-3 control-label">图标</label>
+                                                <div class="col-sm-6">
+                                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/material/" class="dropzone" id="groupIcon">
+                                                        <div class="fallback">
+                                                            <input name="file" type="file" multiple=""/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
 
@@ -339,6 +350,11 @@
         }
     }
 
+    var groupIconMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>素材组图标</span> <br /> \
+                                     <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
+                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+
     initDropzone('#materialImg', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#materialForm').append('<input type="hidden" name="types" value="'+0+'" />');
@@ -346,6 +362,11 @@
         $('#materialForm').append('<input type="hidden" name="fileUrls" value="'+res.title+'" />');
         $('#materialForm').append('<input type="hidden" name="fileSuffixs" value="'+res.type+'" />');
         $('#materialForm').append('<input type="hidden" name="fileSizes" value="'+res.size+'" />');
+    });
+
+    initDropzone('#groupIcon', groupIconMessage, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#group').append('<input type="hidden" name="icon" value="'+res.title+'" />');
     });
 </script>
 </body>
@@ -414,7 +435,7 @@
                 $(lSelector).html(libraryHtml);
                 $(gSelector).html(groupHtml);
             }
-        })
+        });
     }
 
     //保存素材库
@@ -447,6 +468,7 @@
     $('#saveGroup').on('click', function(){
         var libraryId = $('#group select').val();
         var name      = $('#group input[name="gName"]').val();
+        var icon      = $('#group input[name="icon"]').val();
         var isBShow   = $('#group input[name="isBShow"]:checked').val();
             isBShow   = isBShow ? isBShow : 0;
         var isCShow   = $('#group input[name="isCShow"]:checked').val();
@@ -454,7 +476,7 @@
 
         $.ajax({
             url: '<%=basePath%>material/saveGroup.do',
-            data: {materialLibraryId: libraryId, name: name, isBShow: isBShow, isCShow: isCShow},
+            data: {materialLibraryId: libraryId, name: name, icon: icon, isBShow: isBShow, isCShow: isCShow},
             type: 'post',
             success: function(result) {
                 result = window.eval('('+result+')');

@@ -48,46 +48,63 @@ public class PfUserSkuStock {
      * 乐观锁
      */
     private Integer version;
+    /**
+     * 自发货冻结库存
+     */
+    private Integer frozenCustomStock;
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     public Integer getSpuId() {
         return spuId;
     }
+
     public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
+
     public Integer getSkuId() {
         return skuId;
     }
+
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
     public Integer getStock() {
         return stock;
     }
+
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
     public Integer getFrozenStock() {
         return frozenStock;
     }
+
     public void setFrozenStock(Integer frozenStock) {
         this.frozenStock = frozenStock;
     }
@@ -103,13 +120,24 @@ public class PfUserSkuStock {
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
     public Integer getVersion() {
         return version;
     }
+
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Integer getFrozenCustomStock() {
+        return frozenCustomStock;
+    }
+
+    public void setFrozenCustomStock(Integer frozenCustomStock) {
+        this.frozenCustomStock = frozenCustomStock;
     }
 }

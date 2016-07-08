@@ -99,6 +99,7 @@
         <if test="isOwnShip!=null">
             AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
         </if>
+        ORDER BY sku_id
     </select>
     <select id="selectBySkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,

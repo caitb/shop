@@ -67,7 +67,14 @@ public class SfUserPromotionGiftService {
                 giftInfo.setPromoGiftId(promoGift.getId());
                 giftInfo.setGiftId(comGift.getId());
                 giftInfo.setGiftName(comGift.getName());
+                giftInfo.setSendedQuantity(promoGift.getPromoQuantity());
+                giftInfo.setMaxQuantity(promoGift.getUpperQuantity());
                 giftInfo.setGiftQuantity(promoGift.getQuantity());
+                if (promoGift.getUpperQuantity()-promoGift.getPromoQuantity()<promoGift.getQuantity()){
+                    giftInfo.setIsEnoughQuantity(false);
+                }else{
+                    giftInfo.setIsEnoughQuantity(true);
+                }
             }else{
                 log.info("奖品为null或者奖品失效");
             }

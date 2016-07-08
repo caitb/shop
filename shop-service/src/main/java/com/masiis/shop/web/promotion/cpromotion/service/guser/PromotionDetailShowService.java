@@ -2,6 +2,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.dao.beans.promotion.PromotionRuleInfo;
@@ -12,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  活动页面信息
@@ -38,10 +41,12 @@ public class PromotionDetailShowService {
     private static Integer fansQuantity;
     private static Boolean isMeetPromoRequire = false;
 
-    public List<PromotionInfo> getAllPromoDetail(ComUser comUser){
+    public Map<String,Object> getAllPromoDetail(ComUser comUser){
         log.info("获取活动数据----start");
+        Map<String,Object> map = new HashMap<String, Object>();
         //获取用户粉丝数
         fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
+        fansQuantity = 19;
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有的活动
         List<SfUserPromotion> userPromotions = promoService.selectAll();
@@ -69,15 +74,18 @@ public class PromotionDetailShowService {
             log.info("isMeetPromoRequire-----"+isMeetPromoRequire);
             PromotionInfo promotionInfo = new PromotionInfo();
             promotionInfo.setPromoId(userPromotion.getId());
-            promotionInfo.setFansQuantity(fansQuantity);
             promotionInfo.setRuleInfos(ruleInfos);
             promotionInfo.setPresonType(userPromotion.getPersonType());
             promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
+            promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.DEFAULT_DATE_FMT_2));
+            promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.DEFAULT_DATE_FMT_2));
             promotionInfos.add(promotionInfo);
         }
+        map.put("promotionInfos",promotionInfos);
+        map.put("fansQuantity",fansQuantity);
         log.info("获取所有的活动---end");
         log.info("获取活动数据----end");
-        return promotionInfos;
+        return map;
     }
 
     private PromotionRuleInfo generatePromotionRuleInfo(Long userId, Integer promoId, SfUserPromotionRule rule){

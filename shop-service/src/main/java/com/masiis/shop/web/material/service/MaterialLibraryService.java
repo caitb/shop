@@ -11,10 +11,7 @@ import com.masiis.shop.dao.platform.material.ComSkuMaterialLibraryMapper;
 import com.masiis.shop.dao.platform.material.ComUserSubscriptionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
-import com.masiis.shop.dao.po.ComUserSubscription;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +35,6 @@ public class MaterialLibraryService {
 
     @Resource
     private ComSkuMaterialGroupMapper comSkuMaterialGroupMapper;
-
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
@@ -74,6 +70,10 @@ public class MaterialLibraryService {
             materialLibraryList.add(materialLibrary);
         }
         return materialLibraryList;
+    }
+
+    public List<ComSkuMaterialGroup> MaterialLibraryGroup(Integer materialId,Integer isBShow,Integer isCShow){
+        return comSkuMaterialGroupMapper.selectMaterialGroupByMlId(materialId, isBShow, isCShow);
     }
 
 }

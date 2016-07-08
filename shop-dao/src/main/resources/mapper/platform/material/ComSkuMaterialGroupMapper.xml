@@ -11,6 +11,7 @@
         <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
     </resultMap>
 
 
@@ -38,6 +39,7 @@
         <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="comSku" type="com.masiis.shop.dao.po.ComSku" >
@@ -67,11 +69,11 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
         insert into com_sku_material_group (id, create_time, create_man, 
             material_library_id, name, is_b_show, 
-            is_c_show, sort, remark
+            is_c_show, sort, remark, icon
             )
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
             #{materialLibraryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{isBShow,jdbcType=INTEGER}, 
-            #{isCShow,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            #{isCShow,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}
             )
     </insert>
 
@@ -103,6 +105,9 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR}
+            </if>
         </set>
         where
               id = #{id,jdbcType=INTEGER}
@@ -110,14 +115,14 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
-        sort, remark
+        sort, remark, icon
         from com_sku_material_group
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
-        sort, remark
+        sort, remark, icon
         from com_sku_material_group
     </select>
 
@@ -143,6 +148,7 @@
                mg.is_c_show,
                mg.sort,
                mg.remark,
+               mg.icon,
 
                sku.id              sku_id,
                sku.name            sku_name
@@ -186,7 +192,8 @@
                is_b_show,
                is_c_show,
                sort,
-               remark
+               remark,
+               icon
         from
                com_sku_material_group
         <where>
@@ -208,4 +215,28 @@
         </where>
     </select>
 
+
+    <select id="selectMaterialGroupByMlId" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        create_man,
+        material_library_id,
+        name,
+        is_b_show,
+        is_c_show,
+        sort,
+        remark,
+        icon
+        from
+        com_sku_material_group
+        WHERE material_library_id = #{mlId}
+            <if test="isBShow != null">
+                AND is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND is_c_show = #{isCShow}
+            </if>
+        ORDER BY sort ASC
+    </select>
 </mapper>

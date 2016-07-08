@@ -19,6 +19,7 @@ import java.util.Map;
  * 活动订单
  */
 @Controller
+@RequestMapping("/promotionGorder")
 public class PromotionGorderController extends BaseController {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -47,9 +48,11 @@ public class PromotionGorderController extends BaseController {
         }
         ComUser comUser = getComUser(request);
         Map<String, Object> map = promotionGorderService.getPromotionGorderPageInfo(comUser.getId(),selectedAddressId,promoId,promoRuleId);
-        model.addAttribute("address",map.get("address"));
-        model.addAttribute("gift",map.get("gift"));
-        return null;
+        model.addAttribute("comUserAddress",map.get("address"));
+        model.addAttribute("gifts",map.get("gifts"));
+        model.addAttribute("promoId",promoId);
+        model.addAttribute("promoRuleId",promoRuleId);
+        return "promotion/gorder/receiveReward";
     }
 
     /**
@@ -57,7 +60,6 @@ public class PromotionGorderController extends BaseController {
      * @param selectedAddressId  地址id
      * @param promoId           活动id
      * @param promoRuleId       活动规则id
-     * @param personType        订单类型
      * @param request           请求
      * @return null
      */
@@ -66,14 +68,13 @@ public class PromotionGorderController extends BaseController {
     public String receiveReward(@RequestParam(required = false) Long selectedAddressId,
                                 @RequestParam(required = true) Integer promoId,
                                 @RequestParam(required = true) Integer promoRuleId,
-                                @RequestParam(required = true) Integer personType,
                                 HttpServletRequest request){
-        if (promoId==null||promoRuleId==null||personType==null){
+        if (promoId==null||promoRuleId==null){
           log.info("参数不合法");
           throw new BusinessException("参数不合法");
         }
         ComUser comUser =  getComUser(request);
-        promotionGorderService.receiveReward(comUser,selectedAddressId,promoId,promoRuleId,personType);
-        return null;
+        Integer i = promotionGorderService.receiveReward(comUser,selectedAddressId,promoId,promoRuleId);
+        return i+"";
     }
 }

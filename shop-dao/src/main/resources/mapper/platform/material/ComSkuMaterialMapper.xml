@@ -122,6 +122,9 @@
         LEFT JOIN
                com_sku_material_item mi ON mi.material_id = m.id
         <where>
+            <if test="mId != null">
+                AND m.id = #{mId}
+            </if>
             <if test="mgId != null">
                 AND m.material_group_id = #{mgId}
             </if>

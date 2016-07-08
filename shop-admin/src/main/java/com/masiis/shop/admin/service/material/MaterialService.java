@@ -2,7 +2,9 @@ package com.masiis.shop.admin.service.material;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.beans.material.Material;
+import com.masiis.shop.dao.beans.material.MaterialItem;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialItemMapper;
@@ -104,6 +106,17 @@ public class MaterialService {
      * @param mId
      */
     public void deleteMaterial(Integer mId) {
+        Map<String, Object> conditionMap = new HashMap<>();
+        conditionMap.put("mId", mId);
+        List<Material> materials = comSkuMaterialMapper.selectMaterialItem(conditionMap);
+
+
+        for(Material material : materials){
+            for(MaterialItem materialItem : material.getMaterialItems()){
+                OSSObjectUtils.deleteBucketFile("static/material/"+materialItem.getFileUrl());
+            }
+        }
+
         comSkuMaterialMapper.deleteByPrimaryKey(mId);
         comSkuMaterialItemMapper.deleteByMaterialId(mId);
     }

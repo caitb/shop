@@ -60,6 +60,7 @@ public class ManageShopProductService {
                 skuInfo.setShopSkuId(sfShopSku.getId());
                 skuInfo.setSaleNum(sfShopSku.getSaleNum());
                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, sfShopSku.getSkuId());
+                skuInfo.setIsOwnShip(sfShopSku.getIsOwnShip());
                 if (pfUserSkuStock != null) {
                     if (sfShopSku.getIsOwnShip() == 0) {//平台代发
                         int useStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();

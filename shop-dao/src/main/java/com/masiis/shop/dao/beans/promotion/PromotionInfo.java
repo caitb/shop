@@ -8,8 +8,9 @@ import java.util.List;
 public class PromotionInfo {
     private Integer promoId;    //活动id
     private Boolean isMeetPromoRequire; //是否满足活动要求 (用户展示页面不同要求)
-    private Integer fansQuantity;   //粉丝数量
     private Integer presonType;     //活动对象
+    private String beginTime;       //活动开始时间
+    private String endTime;         //活动结束时间
     private List<PromotionRuleInfo> ruleInfos;
 
 
@@ -36,20 +37,27 @@ public class PromotionInfo {
     public void setRuleInfos(List<PromotionRuleInfo> ruleInfos) {
         this.ruleInfos = ruleInfos;
     }
-
-    public Integer getFansQuantity() {
-        return fansQuantity;
-    }
-
-    public void setFansQuantity(Integer fansQuantity) {
-        this.fansQuantity = fansQuantity;
-    }
-
     public Integer getPresonType() {
         return presonType;
     }
 
     public void setPresonType(Integer presonType) {
         this.presonType = presonType;
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

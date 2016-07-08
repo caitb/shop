@@ -17,70 +17,20 @@
         <p>产品图片</p>
     </header>
     <main>
-        <div class="floor">
-            <h1>抗引力面纱窗</h1>
-            <div class="sec1" id="imagelist">
-                <a href="#"><img data="http://img4.duitang.com/uploads/item/201507/16/20150716153743_CZzdx.thumb.224_0.jpeg" /></a>
-                <a href="#"><img data="http://img1.imgtn.bdimg.com/it/u=943168091,3200250248&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img5.imgtn.bdimg.com/it/u=1188657800,576317673&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=36366080,53989174&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=36366080,53989174&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img3.imgtn.bdimg.com/it/u=4013829689,453742184&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=2892528220,1782676932&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img4.duitang.com/uploads/item/201507/16/20150716153743_CZzdx.thumb.224_0.jpeg" /></a>
-                <a href="#"><img data="http://img1.imgtn.bdimg.com/it/u=943168091,3200250248&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img5.imgtn.bdimg.com/it/u=1188657800,576317673&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=36366080,53989174&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3705081017,1555495511&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img3.imgtn.bdimg.com/it/u=4013829689,453742184&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=2892528220,1782676932&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img1.imgtn.bdimg.com/it/u=943168091,3200250248&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img5.imgtn.bdimg.com/it/u=1188657800,576317673&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=36366080,53989174&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3705081017,1555495511&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img3.imgtn.bdimg.com/it/u=4013829689,453742184&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=2892528220,1782676932&fm=21&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
-                <a href="#"><img data="http://img0.imgtn.bdimg.com/it/u=3507454798,327279176&fm=23&gp=0.jpg" /></a>
+        <c:forEach var="mat" items="${materials}">
+            <div class="floor">
+                <h1>${mat.title}</h1>
+                <div class="sec1" id="imagelist">
+                    <c:forEach items="${mat.comSkuMaterialItems}" var="img">
+                        <a href="#"><img data="${img.fileName}" /></a>
+                    </c:forEach>
+                </div>
+                <p>${mat.content}</p>
             </div>
-            <p>阿斯兰迪卡拉斯柯达拉萨扩大拉什科达拉斯昆德拉所考虑的卡塞拉利萨卡德拉斯克</p>
-        </div>
-
+        </c:forEach>
         <div id="datePlugin"></div>
     </main>
-    <img src="../img/FAB.png" alt="" onclick="clickShow()">
+    <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
 </div>
 <div class="black">
     <div class="back_b"></div>

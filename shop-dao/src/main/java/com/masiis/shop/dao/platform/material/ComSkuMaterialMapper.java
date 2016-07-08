@@ -10,6 +10,7 @@ package com.masiis.shop.dao.platform.material;
 
 import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.po.ComSkuMaterial;
+import com.masiis.shop.dao.po.ComSkuMaterialItem;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +32,8 @@ public interface ComSkuMaterialMapper {
      * @return
      */
     List<Material> selectMaterialItem(Map<String, Object> conditionMap);
+
+    List<ComSkuMaterial> selectByMglId(Integer materialGroupId);
+
+    List<ComSkuMaterialItem> selectMaterialItemByMtId(Integer materialId);
 }

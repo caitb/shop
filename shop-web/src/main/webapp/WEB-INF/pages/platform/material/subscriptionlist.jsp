@@ -16,36 +16,12 @@
         <p>订阅列表</p>
     </header>
     <main>
-            <p>
+        <c:forEach items="${groupList}" var="group">
+            <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}&currentPage=0');">
                 <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-                <span>产品介绍</span>
+                <span>${group.name}</span>
             </p>
-        <p>
-            <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-            <span>产品介绍</span>
-        </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p><p>
-        <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
-        <span>产品介绍</span>
-    </p>
-
+        </c:forEach>
     </main>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
 </div>

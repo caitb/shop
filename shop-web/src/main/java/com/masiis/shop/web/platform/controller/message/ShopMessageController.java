@@ -15,6 +15,7 @@ import com.masiis.shop.web.mall.service.message.SfMessageContentService;
 import com.masiis.shop.web.mall.service.message.SfMessageDetailService;
 import com.masiis.shop.web.mall.service.message.SfMessageSrRelationService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.apache.log4j.Logger;
@@ -54,6 +55,8 @@ public class ShopMessageController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SfUserRelationService sfUserRelationService;
+    @Resource
+    private SfShopSkuService sfShopSkuService;
 
     @RequestMapping("/mycluster.shtml")
     public String toShopMessageList(){
@@ -124,8 +127,27 @@ public class ShopMessageController extends BaseController {
     }
 
     @RequestMapping("/toNew.shtml")
-    public String toNewMessage(Model model){
-
+    public String toNewMessage(){
         return "platform/shop/new_shop_cluster_message";
+    }
+
+    @RequestMapping("/toNewData.do")
+    public String toNewMessageData(HttpServletRequest request){
+        JSONObject res = new JSONObject();
+        try {
+            ComUser user = getComUser(request);
+            SfShop shop = sfShopService.getSfShopByUserId(user.getId());
+            // 店铺粉丝数量
+            Integer fansNum = sfUserRelationService.getFansNumsByShopId(shop.getId(), user.getId());
+            // 店铺代言人数量
+            Integer spokeManNum = sfUserRelationService.getAllSfSpokesManNum(shop.getId());
+
+
+            res.put("fansNum", fansNum);
+            res.put("spokeManNum", spokeManNum);
+        } catch (Exception e) {
+
+        }
+        return res.toJSONString();
     }
 }

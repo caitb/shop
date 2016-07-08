@@ -61,6 +61,14 @@ public class SfSpokesAndFansInfo {
      * 是否已经购买，页面展示
      */
     private String isBuyView = "";
+    /**
+     * 代言人数量
+     */
+    private Integer spokesManNum = 0;
+    /**
+     * 粉丝数量
+     */
+    private Integer fansNum = 0;
 
     public String getWxName() {
         return wxName;
@@ -195,5 +203,21 @@ public class SfSpokesAndFansInfo {
 
     public void setIsBuyView(String isBuyView) {
         this.isBuyView = isBuyView;
+    }
+
+    public Integer getSpokesManNum() {
+        return spokesManNum;
+    }
+
+    public void setSpokesManNum(Integer spokesManNum) {
+        this.spokesManNum = spokesManNum;
+    }
+
+    public Integer getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(Integer fansNum) {
+        this.fansNum = fansNum;
     }
 }

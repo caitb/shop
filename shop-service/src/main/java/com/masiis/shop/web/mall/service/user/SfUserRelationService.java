@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -97,6 +98,17 @@ public class SfUserRelationService {
     }
 
     /**
+     * 通过userId和shopId获得代言人数量
+     * @param userId    用户id
+     * @param shopId    小铺id
+     * @return
+     */
+    public Integer getSpokesManNumByUserIdAndShopId(Long userId, Long shopId){
+        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
+        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), userId).get("num").intValue();
+    }
+
+    /**
      * 查询用户下 一级、二级、三级粉丝数量
      * @param userId    用户id
      * @return  List map
@@ -105,6 +117,11 @@ public class SfUserRelationService {
         return sfUserRelationMapper.selectFansNumGroupByLevel(userId);
     }
 
+    /**
+     * 查询用户下 一级、二级代言人数量
+     * @param userId
+     * @return
+     */
     public List<Map<String, Number>> getSpokesManNumGroupByLevel(Long userId){
         return sfUserRelationMapper.selectSpokesManNumGroupByLevel(userId);
     }
@@ -157,7 +174,7 @@ public class SfUserRelationService {
     }
 
     /**
-     * 查询获取粉丝列表展示信息
+     * 查询获取粉丝列表展示信息（只查询三级粉丝）
      * @param isPaging      是否分页标识   true 分页，false 不分页
      * @param currentPage   查询当前页
      * @param pageSize      每页展示条数
@@ -175,7 +192,7 @@ public class SfUserRelationService {
     }
 
     /**
-     * 查询获取代言人列表展示信息
+     * 查询获取代言人列表展示信息  (只查询两级代言人)
      * @param isPaging      是否分页标识   true 分页，false 不分页
      * @param currentPage   查询当前页
      * @param pageSize      每页展示条数
@@ -190,6 +207,41 @@ public class SfUserRelationService {
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
         return sfUserRelationMapper.selectSpokesManPageView(userId, fansLevel, shopId, isSpokesMan);
+    }
+
+    /**
+     * 查询店铺所有代言人信息
+     * @param isPaging      是否分页  true 分页，false 不分页
+     * @param currentPage   当前页
+     * @param pageSize      每页展示条数
+     * @param shopId        小铺id
+     * @return
+     */
+    public List<SfSpokesAndFansInfo> getAllSfSpokesManInfos(boolean isPaging, int currentPage, int pageSize, Long shopId){
+        logger.info("查询店铺所有代言人信息");
+        logger.info("shopId = " + shopId);
+        if (isPaging){
+            logger.info("currentPage = " + currentPage);
+            logger.info("pageSize = " + pageSize);
+            PageHelper.startPage(currentPage,pageSize); //分页插件
+        }
+        List<SfSpokesAndFansInfo> infos = sfUserRelationMapper.selectAllSpokesManByShopId(shopId);
+        List<SfSpokesAndFansInfo> list = new LinkedList<>();
+        for (SfSpokesAndFansInfo info : infos){
+            info.setFansNum(getFansNumByUserIdAndShopId(info.getUserId(), shopId));
+            info.setSpokesManNum(getSpokesManNumByUserIdAndShopId(info.getUserId(), shopId));
+            list.add(info);
+        }
+        return list;
+    }
+
+    /**
+     * 根据shopid查询代言人数量
+     * @param shopId    小铺id
+     * @return
+     */
+    public Integer getAllSfSpokesManNum(Long shopId){
+        return sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId);
     }
 
     /**
@@ -238,5 +290,34 @@ public class SfUserRelationService {
         List<SfSpokesAndFansInfo> infos = this.getSfSpokesManInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId, isSpokesMan);
         pageViewPo.setSfSpokesAndFansInfos(infos);
         return pageViewPo;
+    }
+
+    /**
+     * 通过ID查询小铺中的代言人信息
+     * @param isPaging  是否分页  true 分页  false 不分页
+     * @param currentPage 查询当前页数
+     * @param pageSize  每页展示条数
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    public List<SfSpokesAndFansInfo> getShopSpokesManByID(boolean isPaging, Integer currentPage, Integer pageSize, Long shopId, String ID){
+        logger.info("通过ID查询小铺中的代言人信息");
+        logger.info("shopId = " + shopId);
+        logger.info("ID = " + ID);
+        if (isPaging){
+            PageHelper.startPage(currentPage,pageSize); //分页插件
+        }
+        return sfUserRelationMapper.selectSpokesManByID(shopId, ID);
+    }
+
+    /**
+     * 通过ID查询小铺中的代言人数量
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    public Integer getSpokesManNumByID(Long shopId, String ID){
+        return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID);
     }
 }

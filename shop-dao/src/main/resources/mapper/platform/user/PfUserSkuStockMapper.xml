@@ -2,16 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.user.PfUserSkuStockMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSkuStock">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
-        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
-        <result column="stock" property="stock" jdbcType="INTEGER"/>
-        <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
-        <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
-        <result column="version" property="version" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER" />
+        <result column="stock" property="stock" jdbcType="INTEGER" />
+        <result column="frozen_custom_stock" property="frozenCustomStock" jdbcType="INTEGER" />
+        <result column="custom_stock" property="customStock" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="INTEGER" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -21,13 +22,13 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStock">
         insert into pf_user_sku_stock (id, create_time, user_id, 
-            spu_id, sku_id, stock, 
-            frozen_stock,custom_stock, remark, version
-            )
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
-            #{frozenStock,jdbcType=INTEGER},#{customStock,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
-            )
+            spu_id, sku_id, frozen_stock,
+            stock, frozen_custom_stock, custom_stock,
+            remark, version)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{frozenStock,jdbcType=INTEGER},
+            #{stock,jdbcType=INTEGER}, #{frozenCustomStock,jdbcType=INTEGER}, #{customStock,jdbcType=INTEGER},
+            #{remark,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSkuStock">
@@ -36,22 +37,25 @@
             user_id = #{userId,jdbcType=BIGINT},
             spu_id = #{spuId,jdbcType=INTEGER},
             sku_id = #{skuId,jdbcType=INTEGER},
-            stock = #{stock,jdbcType=INTEGER},
             frozen_stock = #{frozenStock,jdbcType=INTEGER},
-            custom_stock= #{customStock,jdbcType=INTEGER},
+            stock = #{stock,jdbcType=INTEGER},
+            frozen_custom_stock = #{frozenCustomStock,jdbcType=INTEGER},
+            custom_stock = #{customStock,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock,custom_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, frozen_stock, stock, frozen_custom_stock,
+        custom_stock, remark, version
         from pf_user_sku_stock
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, custom_stock,remark, version
+        select id, create_time, user_id, spu_id, sku_id, frozen_stock, stock, frozen_custom_stock,
+        custom_stock, remark, version
         from pf_user_sku_stock
     </select>
 
@@ -60,6 +64,7 @@
         update pf_user_sku_stock
         set stock = #{stock,jdbcType=INTEGER},
         frozen_stock = #{frozenStock,jdbcType=INTEGER},
+        frozen_custom_stock = #{frozenCustomStock,jdbcType=INTEGER},
         custom_stock= #{customStock,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}+1
@@ -68,24 +73,16 @@
     </update>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock,custom_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, frozen_stock, stock, frozen_custom_stock,
+        custom_stock, remark, version
         from pf_user_sku_stock
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
-        select
-               id,
-               create_time,
-               user_id,
-               spu_id,
-               sku_id,
-               stock,
-               frozen_stock,
-               custom_stock,
-               remark,
-               version
+        select id, create_time, user_id, spu_id, sku_id, frozen_stock, stock, frozen_custom_stock,
+        custom_stock, remark, version
         from
                pf_user_sku_stock
         where

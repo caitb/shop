@@ -69,33 +69,44 @@ public class BOrderSkuStockService {
     }
 
     /**
-     * 更新出货库存(小铺发货)
+     * 更新出货库存(平台发货)
      *
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
     public void updateOrderStock(SfOrder sfOrder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
-        PfSkuStock pfSkuStock = null;
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(user.getId(),sfOrder.getShopId());
-        if (sfUserRelation == null) {
-            throw new BusinessException("用户关系异常");
-        }
-        ComUser userPid = comUserMapper.selectByPrimaryKey(sfUserRelation.getUserPid());
-        if (userPid == null) {
-            throw new BusinessException("用户上级为空");
-        }
-        for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
-            if (userPid.getId() == 0) {
-                throw new BusinessException("小铺PID不能为0");
-            } else {
-                pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
-                if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
-                    pfUserSkuStockService.updateUserSkuStockWithLog(sfOrderItem.getQuantity(), pfUserSkuStock, sfOrder.getId(), UserSkuStockLogType.shopOrder);
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (sfOrder.getSendType().equals(1) && sfOrder.getSendMan().equals(0)) {
+            for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
+                if (sfOrder.getShopUserId() == 0) {
+                    throw new BusinessException("小铺PID不能为0");
                 } else {
-                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+                    pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
+                    if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
+                        pfUserSkuStockService.updateUserSkuStockWithLog(sfOrderItem.getQuantity(), pfUserSkuStock, sfOrder.getId(), UserSkuStockLogType.shopOrder);
+                    } else {
+                        throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+                    }
                 }
             }
+        } else if (sfOrder.getSendType().equals(2) && sfOrder.getSendMan() > 0) {
+            for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
+                if (sfOrder.getShopUserId() == 0) {
+                    throw new BusinessException("小铺PID不能为0");
+                } else {
+                    pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
+                    if (pfUserSkuStock.getCustomStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenCustomStock() - sfOrderItem.getQuantity() >= 0) {
+                        pfUserSkuStock.setCustomStock(pfUserSkuStock.getCustomStock() - sfOrderItem.getQuantity());
+                        pfUserSkuStock.setFrozenCustomStock(pfUserSkuStock.getFrozenCustomStock() - sfOrderItem.getQuantity());
+                        pfUserSkuStockService.updateByIdAndVersions(pfUserSkuStock);
+                    } else {
+                        throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+                    }
+                }
+            }
+        } else {
+            throw new BusinessException("订单状态发货类型状态异常！");
         }
     }
 

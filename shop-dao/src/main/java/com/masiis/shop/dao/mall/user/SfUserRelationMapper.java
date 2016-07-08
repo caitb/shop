@@ -57,9 +57,23 @@ public interface SfUserRelationMapper {
                                                       @Param("userLevel") Integer userLevel,
                                                       @Param("shopId") Long shopId,
                                                       @Param("spokenMan") Integer spokenMan);
+
+    /**
+     * 通过shopId查询所有代言人
+     * @param shopId    小铺id
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectAllSpokesManByShopId(@Param("shopId") Long shopId);
+
+    /**
+     * 通过shopId查询所有代言人数量
+     * @param shopId    小铺id
+     * @return
+     */
+    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId);
+
     /**
      * 通过treecode获取粉丝数量
-     *
      * @param treeCode treeCode
      * @return Integer
      */
@@ -85,7 +99,6 @@ public interface SfUserRelationMapper {
 
     /**
      * 批量修改树形编码
-     *
      * @param treeCode
      * @param idIndex
      * @param treeLevelDiff
@@ -95,13 +108,31 @@ public interface SfUserRelationMapper {
 
     /**
      * 通过userId和shopId获取分销关系
-     * @param userId
-     * @param shopId
-     * @return
+     * @param userId    用户id
+     * @param shopId    小铺id
+     * @return  SfUserRelation
      */
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
     List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid);
 
     List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid);
+
+    /**
+     * 通过ID查询小铺中的代言人信息
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectSpokesManByID(@Param("shopId") Long shopId,
+                                                  @Param("ID") String ID);
+
+    /**
+     * 通过ID查询小铺中的代言人数量
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
+                                   @Param("ID") String ID);
 }

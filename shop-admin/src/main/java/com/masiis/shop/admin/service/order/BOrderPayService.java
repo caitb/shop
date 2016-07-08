@@ -477,6 +477,7 @@ public class BOrderPayService {
                 pfUserSkuStock.setSkuId(pfBorderItem.getSkuId());
                 pfUserSkuStock.setStock(0);
                 pfUserSkuStock.setFrozenStock(0);
+                pfUserSkuStock.setFrozenCustomStock(0);
                 pfUserSkuStock.setCustomStock(0);
                 pfUserSkuStock.setVersion(0);
                 pfUserSkuStockService.insert(pfUserSkuStock);

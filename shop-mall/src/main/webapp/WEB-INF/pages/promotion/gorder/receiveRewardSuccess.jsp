@@ -18,15 +18,14 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="${path}/sfOrderManagerController/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>领取成功</p>            
         </header>
         <main>
             <img src="<%=path%>/static/images/icon_66.png" alt="">
             <h1>领取成功</h1>
             <p>您的奖品已经领取成功，我们将尽快安排发货，请注意查收！</p>
-            <h2><a href="#">分享赚佣金</a></h2>
-            <h2><a href="#">返回个人中心</a></h2>
+            <h2><a href="${path}/sfOrderManagerController/borderManagement.html">返回个人中心</a></h2>
         </main>
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>

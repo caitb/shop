@@ -5,6 +5,8 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfShop;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ManageShopProductService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -31,6 +33,9 @@ public class ManageProductController extends BaseController {
     private ManageShopProductService manageShopProductService;
     @Resource
     private ProductService productService;
+    @Resource
+    private SfShopService sfShopService;
+
 
     /**
      * jjh
@@ -47,17 +52,19 @@ public class ManageProductController extends BaseController {
     public ModelAndView manageShopProduct(HttpServletRequest request,
                                           @RequestParam(value = "shopId", required = true) Long shopId,
                                           @RequestParam(value = "isSale", required = true) Integer isSale,
-                                          @RequestParam(value = "deliverType", required = false) String deliverType,
+                                          @RequestParam(value = "deliverType", required = false) Integer deliverType,
                                           @RequestParam(value = "currentPage", required = true) Integer currentPage
                                           ) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/shop_product");
         ComUser comUser = getComUser(request);
-        int pageSize = 5; //ajax请求时默认每页显示条数为5条
+        int pageSize = 6; //ajax请求时默认每页显示条数为6条
         currentPage = currentPage +1;
-        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), Integer.parseInt(deliverType), currentPage, pageSize);
+        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+        SfShop sfShop = sfShopService.getSfShopById(shopId);
         mav.addObject("skuInfoList", skuInfoList);
         mav.addObject("comUser", comUser);
         mav.addObject("shopId", shopId);
+        mav.addObject("sfShop", sfShop);
         return mav;
     }
 
@@ -92,7 +99,7 @@ public class ManageProductController extends BaseController {
      * @param request
      * @param response
      * @param shopId
-     * @param isSale
+     * @param isSale :上下架标志
      * @return
      */
     @RequestMapping("/deliverSale.do")
@@ -106,14 +113,14 @@ public class ManageProductController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
-            int pageSize = 5; //ajax请求时默认每页显示条数为5条
+            int pageSize = 6; //ajax请求时默认每页显示条数为6条
             currentPage = currentPage +1;
             List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
             object.put("isError", false);
             object.put("skuInfoList",skuInfoList);
         }catch (Exception ex){
             object.put("isError", true);
-            object.put("message", ex.getMessage());
+            log.info(ex.getMessage());
         }
         return object.toJSONString();
     }
@@ -151,17 +158,13 @@ public class ManageProductController extends BaseController {
             @RequestParam(required = true) Integer shopSkuId) {
         JSONObject object = new JSONObject();
         try {
-            if (stock > 100000) {
-                object.put("message", "可维护的库存数量不能高于10万！");
-                return object.toJSONString();
-            }
             productService.updateStock(stock, shopSkuId);
             object.put("isError", false);
-            object.put("message", "√库存更改成功 ");
         } catch (Exception ex) {
             object.put("isError", true);
-            object.put("message", ex.getMessage());
+            log.info(ex.getMessage());
         }
         return object.toJSONString();
     }
+
 }

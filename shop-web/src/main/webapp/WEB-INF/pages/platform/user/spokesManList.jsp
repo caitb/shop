@@ -35,9 +35,9 @@
         </div>
         <div class="main">
             <div class="sec1" id="disSpokesMan">
-            <c:forEach items="${infos}" var="info">
+            <%--<c:forEach items="${infos}" var="info">
                 <div class="s_t">
-                    <p style="background:url('${info.headImg}');background-size:100% 100%;"></p>
+                    <p onclick="toDetail(${info.userId})" style="background:url('${info.headImg}');background-size:100% 100%;"></p>
                     <div>
                         <p><span>${info.wxName}</span><span>${info.isBuyView}</span></p>
                         <p><span>ID：${info.ID}</span><span>${info.createTimeView}</span></p>
@@ -47,7 +47,7 @@
                     <b>代言人数：${info.spokesManNum}</b>
                     <b>粉丝数：${info.fansNum}</b>
                 </p>
-            </c:forEach>
+            </c:forEach>--%>
             </div>
         </div>
     </main>
@@ -68,6 +68,7 @@
 <script>
     var path = "${path}";
     var basePath = "${basePath}";
+    gohistory();
 </script>
 </body>
 </html>

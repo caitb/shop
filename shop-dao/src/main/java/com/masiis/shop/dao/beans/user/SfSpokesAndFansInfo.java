@@ -164,6 +164,7 @@ public class SfSpokesAndFansInfo {
         this.isBuy = isBuy;
         switch (isBuy.intValue()){
             case 0 : {
+                setIsBuyView("未购买");
                 break;
             }
             case 1 : {

@@ -116,6 +116,24 @@
         where user_id = #{userId} and shop_id = #{shopId}
     </select>
 
+    <select id="selectSfSpokesAndFansInfo" resultMap="DistributionResultMap">
+        SELECT
+			u.wx_nk_name AS wxName,
+			u.wx_head_img AS headImg,
+			LPAD(u.id, 10, 0) AS ID,
+			u.is_spokesman AS sopkenMan,
+			r.create_time AS createTime,
+			u.id AS userId,
+			1 AS userLevel,
+			r.shop_id AS shopId,
+			r.is_buy AS isBuy
+		FROM
+			sf_user_relation r
+		INNER JOIN com_user u ON r.user_id = u.id
+		WHERE
+			r.shop_id = #{shopId} and r.user_id = #{userId}
+    </select>
+
     <select id="selectFansPageView" resultMap="DistributionResultMap">
         select * from (
         select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
@@ -161,7 +179,9 @@
         INNER JOIN com_user u ON r.user_id = u.id
         WHERE
 	        r.shop_id = #{shopId}
-	    AND u.is_spokesman = 1
+        <if test="spokesMan != null">
+            AND u.is_spokesman = #{spokesMan}
+        </if>
     </select>
     <select id="selectAllSpokesManByShopId" resultMap="DistributionResultMap">
         SELECT
@@ -179,24 +199,33 @@
         INNER JOIN com_user u ON r.user_id = u.id
         WHERE
 	        r.shop_id = #{shopId}
-        AND u.is_spokesman = 1
+        <if test="spokesMan != null">
+            AND u.is_spokesman = #{spokesMan}
+        </if>
         ORDER BY r.create_time desc
     </select>
 
     <select id="selectFansNumGroupByLevel" resultType="java.util.HashMap">
         select count(*) as num,userLevel from (
-        select 1 as userLevel from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all select 2 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all select 3 as userLevel from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
-        )t group by t.userLevel
+        select 1 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where 1=1
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        group by t.userLevel
     </select>
     
     <select id="selectSpokesManNumGroupByLevel" resultType="java.util.HashMap">
         select count(*) as num,userLevel from (
-        select 1 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all select 2 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all select 3 as userLevel,u.is_spokesman from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        select 1 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
         )t where t.is_spokesman = 1
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
         group by t.userLevel
     </select>
 

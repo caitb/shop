@@ -1,4 +1,13 @@
-
+function gohistory(){
+    var cur = parseInt($("#currentPage").val());
+    var num = $("#pageNums").val();
+    var ID = parseFloat($("#ID").val());
+    var hiddenID = $("#hiddenID").val();
+    if (ID != hiddenID){
+        ID = hiddenID;
+    }
+    ajaxQuery(cur - 1,1,num,ID);
+}
 function checkInfo(){
     var ID = parseFloat($("#ID").val());
     var totalCount = $("#totalNum").val();
@@ -31,6 +40,7 @@ function lastPage(){
 function ajaxQuery(currentPage,queryType,pageNums,ID){
     $.ajax({
         type: 'POST',
+        async:true,
         url: basePath + 'distribution/findByID.do',
         dataType: 'json',
         data:{currentPage:currentPage, queryType:queryType, pageNums:pageNums, ID:ID},
@@ -50,17 +60,16 @@ function ajaxQuery(currentPage,queryType,pageNums,ID){
             }
         },
         error: function(){
-            alert("请稍后再试");
+            //alert("请稍后再试");
         }
     });
 }
 
 function createHtml(json){
     var html = "";
-    alert(json.length);
     for (var i = 0; i < json.length; i++){
         html += "<div class=\"s_t\">";
-        html += "<p style=\"background:url('"+json[i].headImg+"');background-size:100% 100%;\"></p>";
+        html += "<p onclick=\"toDetail("+json[i].userId+")\" style=\"background:url('"+json[i].headImg+"');background-size:100% 100%;\"></p>";
         html += "<div>";
         html += "<p><span>"+json[i].wxName+"</span><span>"+json[i].isBuyView+"</span></p>"
         html += "<p><span>ID："+json[i].ID+"</span><span>"+json[i].createTimeView+"</span></p>"
@@ -70,4 +79,9 @@ function createHtml(json){
         html += "<b>粉丝数："+json[i].fansNum+"</b></p>";
     }
     return html;
+}
+
+function toDetail(userId){
+    fullShow();
+    window.location.href = basePath + "distribution/spokesManDetail.shtml?showUserId="+userId;
 }

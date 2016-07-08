@@ -61,7 +61,7 @@ public class PromotionGorderService {
         log.info("获取奖品信息-----活动id----"+promoId+"-----规则id-----"+promoRuleId);
         List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,true);
         map.put("address",comUserAddress);
-        map.put("gift",promotionGiftInfos);
+        map.put("gifts",promotionGiftInfos);
         return map;
     }
 

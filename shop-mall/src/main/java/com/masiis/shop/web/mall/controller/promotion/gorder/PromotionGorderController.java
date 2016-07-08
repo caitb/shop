@@ -19,6 +19,7 @@ import java.util.Map;
  * 活动订单
  */
 @Controller
+@RequestMapping("/promotionGorder")
 public class PromotionGorderController extends BaseController {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -47,9 +48,11 @@ public class PromotionGorderController extends BaseController {
         }
         ComUser comUser = getComUser(request);
         Map<String, Object> map = promotionGorderService.getPromotionGorderPageInfo(comUser.getId(),selectedAddressId,promoId,promoRuleId);
-        model.addAttribute("address",map.get("address"));
-        model.addAttribute("gift",map.get("gift"));
-        return null;
+        model.addAttribute("comUserAddress",map.get("address"));
+        model.addAttribute("gifts",map.get("gifts"));
+        model.addAttribute("promoId",promoId);
+        model.addAttribute("promoRuleId",promoRuleId);
+        return "promotion/gorder/receiveReward";
     }
 
     /**

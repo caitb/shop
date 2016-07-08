@@ -130,6 +130,8 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
         return redirectHead+redirectBody;
     }
 
@@ -202,6 +204,8 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
                                       @RequestParam(value = "shopId", required = false) Long shopId,
+                                      @RequestParam(value = "promoId", required = false) Integer promoId,
+                                      @RequestParam(value = "promoRuleId", required = false) Integer promoRuleId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
@@ -209,6 +213,8 @@ public class UserAddressController extends BaseController {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
         request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID, shopId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID, promoId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID, promoRuleId);
         model.addAttribute("addressId", selectedAddressId);
         return "mall/user/xuanze";
     }

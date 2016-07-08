@@ -154,10 +154,12 @@ public class UserAddressService {
             Integer skuId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_ORDER_SKU_ID);
             Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
             Long  shopId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
+            Integer  promoId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
+            Integer  promoRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId);
+                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId,promoId,promoRuleId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
@@ -207,7 +209,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId) {
+    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId,Integer promoId,Integer promoRuleId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -224,6 +226,8 @@ public class UserAddressService {
                 break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER://小铺确认订单界面
                 getMallConfrimOrderPageAddress(sb, shopId, selectedAddressId);
+            case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_RECEIVE_REWARD://活动领取奖励界面
+                getReceiveRewardPageAddress(sb,promoId,promoRuleId ,selectedAddressId);
             default:
                 break;
         }
@@ -363,6 +367,26 @@ public class UserAddressService {
         sb.append("/orderPurchase/getShopCartInfo.html?");
         if (!StringUtils.isEmpty(shopId)) {
             sb.append("shopId=").append(shopId);
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("&selectedAddressId=").append(selectedAddressId);
+        }
+    }
+
+    /**
+     *  获取小铺端领取活动界面地址
+     * @param sb        地址字符串
+     * @param promoId   活动id
+     * @param promoRuleId       活动规则id
+     * @param selectedAddressId  当前选择的地址id
+     */
+    private void getReceiveRewardPageAddress(StringBuffer sb,Integer promoId,Integer promoRuleId, Long selectedAddressId) {
+        sb.append("/promotionGorder/getPromotionGorderPageInfo.html?");
+        if (!StringUtils.isEmpty(promoId)) {
+            sb.append("promoId=").append(promoId);
+        }
+        if (!StringUtils.isEmpty(promoRuleId)) {
+            sb.append("&promoRuleId=").append(promoRuleId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);

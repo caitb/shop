@@ -50,7 +50,7 @@
                                 <button class="on" disabled>还差${promotionRule.needFansQuantity}人</button>
                             </c:if>
                             <c:if test="${promotionRule.status==1}">
-                                <button>点击领取</button>
+                                <button onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
                             </c:if>
                             <c:if test="${promotionRule.status==2}">
                             </c:if>
@@ -71,12 +71,15 @@
 </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
-    function clickShow(){
-        $(".black").show();
-    }
-    function clickHide(){
-        $(".black").hide();
-    }
+        function skipPromotionGorderPage(promoId,promoRuleId){
+            window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
+        }
+        function clickShow(){
+            $(".black").show();
+        }
+        function clickHide(){
+            $(".black").hide();
+        }
     </script>
 </body>
 </html>

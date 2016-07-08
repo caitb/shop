@@ -320,4 +320,15 @@ public class SfUserRelationService {
     public Integer getSpokesManNumByID(Long shopId, String ID){
         return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID);
     }
+
+    /**
+     * 查询某个店铺所有粉丝数量(排除店主自己)
+     *
+     * @param shopId    店铺id
+     * @param userId
+     * @return
+     */
+    public Integer getFansNumsByShopId(Long shopId, Long userId){
+        return sfUserRelationMapper.selectFansNumsByShopId(shopId, userId);
+    }
 }

@@ -135,4 +135,14 @@ public interface SfUserRelationMapper {
      */
     Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
                                    @Param("ID") String ID);
+
+    /**
+     * 查询某个店铺所有粉丝数量(排除店主自己)
+     *
+     * @param shopId    店铺id
+     * @param userId
+     * @return
+     */
+    Integer selectFansNumsByShopId(@Param("shopId") Long shopId,
+                                   @Param("userId") Long userId);
 }

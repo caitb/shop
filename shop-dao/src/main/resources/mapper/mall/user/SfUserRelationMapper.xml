@@ -249,4 +249,15 @@
         </if>
         AND T.sopkenMan = 1
     </select>
+
+    <select id="selectFansNumsByShopId" resultType="java.lang.Integer">
+        select
+          count(id)
+        from
+          sf_user_relation
+        WHERE
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

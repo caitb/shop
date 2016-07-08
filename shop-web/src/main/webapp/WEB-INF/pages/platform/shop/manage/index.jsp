@@ -79,7 +79,7 @@
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/lookshop.png" alt="" style="margin-bottom: 5px"></span><span>预览商店</span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/feel.png" alt="" style="margin-bottom: 5px"></span><span>分享店铺</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
-            <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人粉丝</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
         </nav>
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>

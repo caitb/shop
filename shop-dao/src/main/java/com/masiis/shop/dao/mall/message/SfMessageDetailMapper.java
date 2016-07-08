@@ -18,7 +18,16 @@ public interface SfMessageDetailMapper {
 
     int updateByPrimaryKey(SfMessageDetail record);
 
+    /**
+     * 查询我发出去的消息
+     *
+     * @param userId
+     * @param start
+     * @param size
+     * @return
+     */
     List<SfMessageDetail> queryFromUser(@Param("userId") Long userId,
                                         @Param("start") Long start,
-                                        @Param("size") Integer size);
+                                        @Param("size") Integer size,
+                                        @Param("mType") Integer mType);
 }

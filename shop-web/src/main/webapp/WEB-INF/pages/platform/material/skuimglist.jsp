@@ -73,12 +73,17 @@
     $('body').dropload({
         scrollArea : window,
         loadDownFn : function(me){
+            var pageData = {};
+            pageData.mgId = '${mgId}';
+            pageData.currentPage = 1;
             $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
+                type: 'post',
+                url: '${path}/materielList/materialInfoB',
+                data: pageData,
                 dataType: 'json',
                 success: function(data){
-                    // 代码执行后必须重置
+                    alert(11);
+                    return;
                 },
                 error: function(xhr, type){
                     me.resetload();
@@ -110,7 +115,7 @@
             }
         }
         //如果因为网络或图片的原因发生异常，则显示该图片
-        img.onerror=function(){img.src="../images/admin.png"}
+        img.onerror=function(){img.src="${path}/static/images/admin.png"}
         img.src=val;
     }
 

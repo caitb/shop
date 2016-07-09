@@ -3,7 +3,6 @@ package com.masiis.shop.web.material.service;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
-import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialMapper;
 import com.masiis.shop.dao.po.ComSkuMaterial;
@@ -46,6 +45,11 @@ public class SkuMaterialService {
             SkuMaterial skuMaterial = new SkuMaterial();
             List<ComSkuMaterialItem> materialItemList = comSkuMaterialMapper.selectMaterialItemByMtId(comSkuMaterial.getId());
             skuMaterial.setComSkuMaterialItems(materialItemList);
+            skuMaterial.setCreateTime(comSkuMaterial.getCreateTime());
+            skuMaterial.setContent(comSkuMaterial.getContent());
+            skuMaterial.setTitle(comSkuMaterial.getTitle());
+            skuMaterial.setSort(comSkuMaterial.getSort());
+            skuMaterial.setId(comSkuMaterial.getId());
             materialList.add(skuMaterial);
         }
         return materialList;

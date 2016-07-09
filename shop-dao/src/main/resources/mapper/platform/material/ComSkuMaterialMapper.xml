@@ -139,7 +139,7 @@
         ORDER BY sort ASC
     </select>
 
-    <select id="selectMaterialItemByMtId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectMaterialItemByMtId" resultMap="materialItem" parameterType="java.lang.Integer" >
         select   mi.id                  mi_id,
                mi.create_time         mi_create_time,
                mi.create_man          mi_create_man,

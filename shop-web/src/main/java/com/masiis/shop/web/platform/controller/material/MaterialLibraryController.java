@@ -2,7 +2,6 @@ package com.masiis.shop.web.platform.controller.material;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.dao.beans.material.Material;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
@@ -87,10 +86,11 @@ public class MaterialLibraryController extends BaseController{
                                      @RequestParam(value = "currentPage",required = true) Integer currentPage){
         ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
         try {
-            int pageSize = 3; //ajax请求时默认每页显示条数为5条
-            currentPage = currentPage +1;
-            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, currentPage, pageSize);
+            int pageSize = 3; //ajax请求时默认每页显示条数为3条
+            Integer page = currentPage +1;
+            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, page, pageSize);
             mv.addObject("materials",materials);
+            mv.addObject("mgId",mgId);
         }catch (Exception e){
             log.info(e.getMessage());
         }

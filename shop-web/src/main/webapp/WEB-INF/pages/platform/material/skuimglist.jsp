@@ -16,13 +16,13 @@
         <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>产品图片</p>
     </header>
-    <main>
+    <main id="divall">
         <c:forEach var="mat" items="${materials}">
             <div class="floor">
                 <h1>${mat.title}</h1>
                 <div class="sec1" id="imagelist">
                     <c:forEach items="${mat.comSkuMaterialItems}" var="img">
-                        <a href="#"><img data="${img.fileName}" /></a>
+                        <a href="#"><img data="${img.fileUrl}" /></a>
                     </c:forEach>
                 </div>
                 <p>${mat.content}</p>
@@ -78,12 +78,28 @@
             pageData.currentPage = 1;
             $.ajax({
                 type: 'post',
-                url: '${path}/materielList/materialInfoB',
+                url: '${path}/materielList/materialInfoBPage',
                 data: pageData,
                 dataType: 'json',
                 success: function(data){
-                    alert(11);
-                    return;
+                    var _contain = $("#divall");
+                    if(data.materials==null || data.materials.length <=0){
+                        $(".dropload-down").remove();
+                        alert("没有更多了");
+                    }
+                    if(data.isError=false && data.materials.length>0){
+                        $.each(data.materials, function (i, mat) {
+                            var imgHtml ="";
+                            $.each(mat.comSkuMaterialItems, function (i, img){
+                                imgHtml += "<a href=\"#\"><img data=\""+img.fileUrl+"\" /></a>";
+                            });
+                            _contain.append("<div class=\"floor\">" +
+                            "<h1>"+mat.title+"</h1>" +
+                            "<div class=\"sec1\" id=\"imagelist\">"+imgHtml+"</div>" +
+                            "<p>"+mat.content+"</p>" +
+                            "</div>");
+                        });
+                    }
                 },
                 error: function(xhr, type){
                     me.resetload();

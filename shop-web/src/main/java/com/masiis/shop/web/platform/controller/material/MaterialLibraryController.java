@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.material;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
@@ -12,6 +13,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -87,13 +89,38 @@ public class MaterialLibraryController extends BaseController{
         ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
         try {
             int pageSize = 3; //ajax请求时默认每页显示条数为3条
-            Integer page = currentPage +1;
-            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, page, pageSize);
+            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, 1, pageSize);
             mv.addObject("materials",materials);
             mv.addObject("mgId",mgId);
         }catch (Exception e){
             log.info(e.getMessage());
         }
         return mv;
+    }
+
+    /**
+     * jjh
+     * 分页展示素材图片
+     * @param mgId
+     * @param currentPage
+     * @return
+     */
+    @RequestMapping(value = "/materialInfoBPage")
+    @ResponseBody
+    public String materialListPage(@RequestParam(value = "mgId",required = true) Integer mgId,
+                                     @RequestParam(value = "currentPage",required = true) Integer currentPage){
+        JSONObject object = new JSONObject();
+        try {
+            int pageSize = 3; //ajax请求时默认每页显示条数为3条
+            Integer page = currentPage +1;
+            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, page, pageSize);
+            object.put("materials",materials);
+            object.put("mgId",mgId);
+            object.put("isError",false);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            object.put("isError",true);
+        }
+        return object.toJSONString();
     }
 }

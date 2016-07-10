@@ -21,5 +21,7 @@ public interface SfUserPromotionRuleMapper {
 
     List<SfUserPromotionRule> getPromoRuleByPromoId(Integer promoId);
 
+    Integer maxId();
+
     int updateByPrimaryKey(SfUserPromotionRule record);
 }

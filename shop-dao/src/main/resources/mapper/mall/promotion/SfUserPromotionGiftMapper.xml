@@ -18,6 +18,11 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
+    <delete id="deleteByRuleId" parameterType="java.lang.Integer">
+        delete from sf_user_promotion_gift
+        where promo_rule_id = #{ruleId,jdbcType=INTEGER}
+    </delete>
+
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift" >
         insert into sf_user_promotion_gift (id, promo_id, promo_rule_id, 
             type, gift_value, quantity, 
@@ -33,12 +38,24 @@
         update sf_user_promotion_gift
         set promo_id = #{promoId,jdbcType=INTEGER},
             promo_rule_id = #{promoRuleId,jdbcType=INTEGER},
-            type = #{type,jdbcType=INTEGER},
-            gift_value = #{giftValue,jdbcType=INTEGER},
-            quantity = #{quantity,jdbcType=INTEGER},
-            promo_quantity = #{promoQuantity,jdbcType=INTEGER},
-            upper_quantity = #{upperQuantity,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="gift_value != null">
+                gift_value = #{giftValue,jdbcType=INTEGER},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="promo_quantity != null">
+                promo_quantity = #{promoQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="upper_quantity != null">
+                upper_quantity = #{upperQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -53,6 +70,10 @@
         select id, promo_id, promo_rule_id, type, gift_value, quantity, promo_quantity, upper_quantity, 
         remark
         from sf_user_promotion_gift
+    </select>
+
+    <select id="maxId" resultType="Integer">
+        select max(id) from sf_user_promotion_gift
     </select>
 
     <select id="getPromoGiftByPromoIdAndRuleId" resultMap="BaseResultMap" >
@@ -71,5 +92,14 @@
         AND promo_rule_id = #{promoRuleId,jdbcType=INTEGER}
         AND gift_value = #{giftValue,jdbcType=INTEGER}
     </select>
+
+    <select id="getPromoGiftByPromoId" resultMap="BaseResultMap" >
+        select id, promo_id, promo_rule_id, type, gift_value, quantity, promo_quantity, upper_quantity,
+        remark
+        from sf_user_promotion_gift
+        where promo_id = #{promoId,jdbcType=INTEGER}
+    </select>
+
+
 
 </mapper>

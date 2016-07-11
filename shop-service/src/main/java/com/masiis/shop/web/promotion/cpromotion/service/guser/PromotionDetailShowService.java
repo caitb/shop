@@ -48,8 +48,8 @@ public class PromotionDetailShowService {
         fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
         fansQuantity = 19;
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
-        //获取所有的活动
-        List<SfUserPromotion> userPromotions = promoService.selectAll();
+        //获取所有进行中的活动
+        List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         List<PromotionInfo> promotionInfos = new ArrayList<PromotionInfo>();
         log.info("获取所有的活动-----start");
         for(SfUserPromotion userPromotion:userPromotions){

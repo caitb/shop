@@ -19,6 +19,7 @@ public interface SfUserPromotionMapper {
     SfUserPromotion selectByPrimaryKey(Integer id);
 
     List<SfUserPromotion> selectAll();
+    List<SfUserPromotion> getPromotionByStatus(Integer status);
 
     List<SfUserPromotion> selectByCondition(Map<String, Object> condition);
 

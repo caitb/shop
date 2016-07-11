@@ -62,7 +62,10 @@ public class ManageShopProductService {
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
                 comSkuImage.setFullImgUrl(Value + comSkuImage.getImgUrl());
                 skuInfo.setComSku(comsku);
-                skuInfo.setComSkuImage(comSkuImage);
+                skuInfo.setSkuName(comsku.getName());
+                skuInfo.setPriceRetail(comsku.getPriceRetail());
+                skuInfo.setSkuId(comsku.getId());
+                skuInfo.setComSkuImageUrl(comSkuImage.getFullImgUrl());
                 skuInfo.setShopSkuId(sfShopSku.getId());
                 skuInfo.setSaleNum(sfShopSku.getSaleNum());
                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, sfShopSku.getSkuId());

@@ -38,7 +38,7 @@ public class SkuMaterialService {
      * @throws Exception
      */
     public List<SkuMaterial> skuMaterial(Integer mgId,Integer currentPage,Integer pageSize) throws Exception{
-        PageHelper.startPage(currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize,false);
         List<ComSkuMaterial> comSkuMaterials = comSkuMaterialMapper.selectByMglId(mgId);
         List<SkuMaterial> materialList = new ArrayList<>();
         for (ComSkuMaterial comSkuMaterial :comSkuMaterials){

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/dropload.css">
+    <%--<link rel="stylesheet" href="${path}/static/css/dropload.css">--%>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
 </head>
 <body>
@@ -29,9 +29,12 @@
         </c:forEach>
 
     </main>
+    <div class="nobady" style="display: none">
+        <img src="${path}/static/images/material/nodady.png" alt="">
+        <p>暂无上传素材</p>
+    </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-
-    <div id="datePlugin"></div>
+    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
     <div class="back_b"></div>
@@ -49,9 +52,9 @@
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
 <script type="text/javascript" src="${path}/static/js/iscroll.js"></script>
-<script type="text/javascript" src="${path}/static/js/dropload.min.js"></script>
 <script>
     var loginWidtn = $(".wrap").width() / 2 - 1;
+//    $(".nobady").css("display","-webkit-box");
 var index;
     $("main p").width(loginWidtn);
     function subAdd(id,index) {
@@ -120,22 +123,24 @@ var index;
         });
     }
     //   下拉
-    $('body').dropload({
-        scrollArea: window,
-        loadDownFn: function (me) {
-            $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
-                dataType: 'json',
-                success: function (data) {
-                    // 代码执行后必须重置
-                },
-                error: function (xhr, type) {
-                    me.resetload();
-                }
-            });
-        }
-    });
+    <%--$('body').dropload({--%>
+        <%--scrollArea: window,--%>
+        <%--loadDownFn: function (me) {--%>
+            <%--var currentPage--%>
+            <%--$.ajax({--%>
+                <%--type: 'post',--%>
+                <%--url: '${basePath}materielList/infoBPagenation',--%>
+                <%--data: {currentPage: 1},--%>
+                <%--dataType: 'json',--%>
+                <%--success: function (data) {--%>
+                    <%--// 代码执行后必须重置--%>
+                <%--},--%>
+                <%--error: function (xhr, type) {--%>
+                    <%--me.resetload();--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}--%>
+    <%--});--%>
 </script>
 </body>
 </html>

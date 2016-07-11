@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="floor2">
-        <h1>所属店铺：全部</h1>
+        <h1>所属店铺：<a id="shop">全部</a></h1>
         <nav>
             <p>
                 <span id="total">${pageViewPo.totalCount}</span>
@@ -59,9 +59,9 @@
             </p>
         </nav>
     </div>
-    <main>
-        <div class="sec1" id="distributions">
-            <c:forEach items="${pageViewPo.sfSpokesAndFansInfos}" var="info">
+    <main id="distributions">
+        <c:forEach items="${pageViewPo.sfSpokesAndFansInfos}" var="info">
+            <div class="sec1">
                 <h1 style="background:url('${info.headImg}');background-size:100% 100%;"></h1>
                 <div class="fans">
                     <h2>${info.wxName}<span>${info.userLevelView}</span> <b>${info.isBuyView}</b></h2>
@@ -70,14 +70,14 @@
                         <span>${info.createTimeView}</span>
                     </p>
                 </div>
-            </c:forEach>
-            <div id="showMore" style="text-align: center;">
-                <c:if test="${pageViewPo.sfSpokesAndFansInfos != null && fn:length(pageViewPo.sfSpokesAndFansInfos) < threeSum}">
-                    <a href="#" onclick="viewMore()">查看更多></a>
-                </c:if>
             </div>
-        </div>
+        </c:forEach>
     </main>
+    <div id="showMore" style="text-align: center;">
+        <c:if test="${pageViewPo.sfSpokesAndFansInfos != null && fn:length(pageViewPo.sfSpokesAndFansInfos) < twoSum}">
+            <a href="#" onclick="viewMore()">查看更多></a>
+        </c:if>
+    </div>
 </div>
 <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
@@ -95,12 +95,13 @@
     $("#goods").on("change",function(){
         var tabVal=$("#goods option:selected").text();
         $(".goods b").html(tabVal);
-        querySpokesMan();
+        $("#shop").html(tabVal);
+        querySpokesMan(1);
     })
     $("#level").on("change",function(){
         var tabVal=$("#level option:selected").text();
         $(".level b").html(tabVal);
-        querySpokesMan();
+        querySpokesMan(0);
     })
 </script>
 </body>

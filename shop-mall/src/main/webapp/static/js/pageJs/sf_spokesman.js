@@ -1,5 +1,5 @@
 
-function querySpokesMan(){
+function querySpokesMan(condition){
     var shopId = $("#goods").val();
     var spokeLevel = $("#level").val();
     $.ajax({
@@ -15,9 +15,11 @@ function querySpokesMan(){
             var threeSum = arr[0].threeSum;
             var totalPage = arr[0].totalPage;
             var cur = arr[0].currentPage;
-            $("#first").text(firstCount);
-            $("#second").text(secondCount);
-            $("#total").text(totalCount);
+            if (parseInt(condition) == 1&&parseInt(spokeLevel) == 0){
+                $("#first").text(firstCount);
+                $("#second").text(secondCount);
+                $("#total").text(totalCount);
+            }
             $("#currentPage").val(cur);
             $("#totalPage").val(totalPage);
             $("#totalCount").val(threeSum);
@@ -67,13 +69,14 @@ function viewMore(){
 function createHtml(infos){
     var html = "";
     for (var i = 0; i < infos.length; i++){
+        html += "<div class=\"sec1\">";
         html += "<h1 style=\"background:url('"+ infos[i].headImg +"');background-size:100% 100%;\"></h1>";
         html += "<div>";
         html += "<h2>" + infos[i].wxName + "<span>" + infos[i].userLevelView + "</span> <b>" + infos[i].isBuyView + "</b></h2>";
         html += "<p>";
         html += "<span>ID:" + infos[i].ID + "</span>";
         html += "<span>" + infos[i].createTimeView + "</span>";
-        html += "</p></div>";
+        html += "</p></div></div>";
     }
     return html;
 }

@@ -51,6 +51,7 @@ public class PromotionDetailShowService {
         //获取用户粉丝数
         SfShop sfShop = sfShopService.getSfShopByUserId(comUser.getId());
         if (sfShop!=null){
+            log.info("用户id------"+comUser.getId()+"----对应的小铺id-----"+sfShop.getId());
             fansQuantity = userRelationService.getFansNumByUserId(comUser.getId(),sfShop.getId());
             fansQuantity = 300;
             log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);

@@ -4,6 +4,7 @@ import com.masiis.shop.dao.mall.promotion.SfUserPromotionRecordMapper;
 import com.masiis.shop.dao.po.SfUserPromotionRecord;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * C端用户活动参与记录表 service
  */
 @Service
+@Transactional
 public class SfUserPromotionRecordService {
 
     @Resource

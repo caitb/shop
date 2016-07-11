@@ -49,6 +49,7 @@
         <button id="submit" class="btn">
             发送
         </button>
+        <p id="disable_p" style="display: none;align-self: center">暂无粉丝或代言人，无法群发消息</p>
     </main>
 </div>
 <div class="black">
@@ -139,9 +140,13 @@
                     }
                     if(fansNum > 0){
                         $("#fanId").parent().addClass("on");
-                    }
-                    if(spNum > 0){
+                    } else if(spNum > 0){
                         $("#spId").parent().addClass("on");
+                    } else {
+                        // 增加不能发送页面变化
+                        $("#submit").css("background", "#E6E6E6");
+                        $("#submit").attr("disabled", "disabled");
+                        $("#disable_p").show();
                     }
                 } else {
                     // 请求错误
@@ -173,6 +178,9 @@
         $(".black").show();
     }
 
+    /**
+     * 创建消息提交
+     */
     function message_submit(){
         var num = $(".floor div .on").size();
         if(num <= 0){

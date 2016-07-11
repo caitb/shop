@@ -69,7 +69,7 @@ public class PromotionDetailShowService {
                     log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
                     List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
                     //生成某个规则信息
-                    PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule);
+                    PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule,giftInfos);
                     if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){
                         log.info("奖品数量-------"+giftInfos.size());
                         ruleInfo.setGiftInfos(giftInfos);
@@ -99,7 +99,7 @@ public class PromotionDetailShowService {
         return map;
     }
 
-    private PromotionRuleInfo generatePromotionRuleInfo(Long userId, Integer promoId, SfUserPromotionRule rule){
+    private PromotionRuleInfo generatePromotionRuleInfo(Long userId, Integer promoId, SfUserPromotionRule rule,List<PromotionGiftInfo> giftInfos){
         PromotionRuleInfo ruleInfo = new PromotionRuleInfo();
         ruleInfo.setPromoRuleId(rule.getId());
         ruleInfo.setPromotionFansQuantity(rule.getRuleValue());
@@ -111,17 +111,29 @@ public class PromotionDetailShowService {
             ruleInfo.setNeedFansQuantity(rule.getRuleValue()-fansQuantity);
             ruleInfo.setStatus(0);
         }else{
-            SfUserPromotionRecord record =  recordService.getPromoRecordByUserIdAndPromoIdAndRuleId(userId,promoId,rule.getId());
-            if (record!=null){
-                //已领取
-                log.info("-----奖品已领取------");
-                ruleInfo.setStatus(2);
-            }else{
-                //达到活动要求未领取
-                log.info("-----未领取------");
-                isMeetPromoRequire = true;
-                ruleInfo.setStatus(1);
+            Boolean isEnoughQuantity = true;//此规则是否还有足够的商品供领取
+            for (PromotionGiftInfo promotionGiftInfo:giftInfos){
+                if (!promotionGiftInfo.getIsEnoughQuantity()){
+                    isEnoughQuantity = false;
+                }
             }
+            if (isEnoughQuantity){
+                SfUserPromotionRecord record =  recordService.getPromoRecordByUserIdAndPromoIdAndRuleId(userId,promoId,rule.getId());
+                if (record!=null){
+                    //已领取
+                    log.info("-----奖品已领取------");
+                    ruleInfo.setStatus(2);
+                }else{
+                    //达到活动要求未领取
+                    log.info("-----未领取------");
+                    isMeetPromoRequire = true;
+                    ruleInfo.setStatus(1);
+                }
+            }else{
+                //奖品领取完无法领取
+                ruleInfo.setStatus(3);
+            }
+
         }
         return  ruleInfo;
     }

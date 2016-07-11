@@ -55,6 +55,9 @@
                             <c:if test="${promotionRule.status==2}">
                                 <button class="on" >已领取</button>
                             </c:if>
+                            <c:if test="${promotionRule.status==3}">
+                                <button class="on" >奖品已被领取完</button>
+                            </c:if>
                         </div>
                     </c:forEach>
                 </c:forEach>

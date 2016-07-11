@@ -30,25 +30,25 @@
                 <h1>我的订单</h1>
                 <ul>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=7">
-                        <h1><img src="<%=path%>/static/images/fahuo.png" alt=""><c:if test="${pfBorders7 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/fahuo.png" alt=""><c:if test="${pfBorders7 !=0}"><span>${pfBorders7}</span></c:if></h1>
                         <h1>待发货</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=6">
-                        <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorders6 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorders6 !=0}"><span>${pfBorders6}</span></c:if></h1>
                         <h1>排单中</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
-                        <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span>${pfBorders0}</span></c:if></h1>
                         <h1>未付款</h1></a>
                     </li>
                 </ul>
                 <ul>
                 <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=8">
-                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders8 !=0}"><span></span></c:if></h1>
+                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders8 !=0}"><span>${pfBorders8}</span></c:if></h1>
                     <h1>待收货</h1></a>
                 </li>
                 <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=3">
-                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""></h1>
+                    <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders3 !=0}"><span>${pfBorders3}</span></c:if></h1>
                     <h1>已完成</h1></a>
                 </li>
                 <li><a href="<%=path%>/borderManage/stockDouckBorder">
@@ -61,15 +61,15 @@
                 <h1>下级合伙人订单</h1>
                 <ul>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=6">
-                        <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorderps6 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorderps6 !=0}"><span>${pfBorderps6}</span></c:if></h1>
                         <h1>排单中</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=0">
-                        <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorderps0 !=0}"><span></span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorderps0 !=0}"><span>${pfBorderps0}</span></c:if></h1>
                         <h1>下级未付款</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=3">
-                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""></h1>
+                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""><c:if test="${pfBorderps3 !=0}"><span>${pfBorderps3}</span></c:if></h1>
                         <h1>已完成</h1></a>
                     </li>
                 </ul>

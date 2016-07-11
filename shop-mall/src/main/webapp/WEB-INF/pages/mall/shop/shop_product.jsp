@@ -156,8 +156,9 @@
 </div>
 <footer>
     <section class="sec3">
-        <%--<p class="shi" id="share"><a>分享</a></p>--%>
-        <h1 onclick="clickShow()">联系店主</h1>
+        <c:if test="${isOwnShip==1}">
+            <h1 onclick="clickShow()">联系店主</h1>
+        </c:if>
         <p onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
     </section>
 </footer>

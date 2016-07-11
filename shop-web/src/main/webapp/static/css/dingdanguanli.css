@@ -53,10 +53,14 @@
   border-radius: 10px;
   background: red;
   position: absolute;
-  top: 0;
-  right: 10px;
-  height: 10px;
-  width: 10px;
+  top: -8px;
+  right: 4px;
+  height: 20px;
+  width: 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
 }
 .wrap main .sec1:nth-child(2) {
   margin-top: 10px;

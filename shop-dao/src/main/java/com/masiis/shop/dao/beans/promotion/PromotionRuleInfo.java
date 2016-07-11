@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class PromotionRuleInfo {
     private Integer promoRuleId;    //活动规则id
-    private Integer status; //奖品是否领取(0粉丝未达到要求 1粉丝达到要求未领取 2已领取)
+    private Integer status; //奖品是否领取(0粉丝未达到要求 1粉丝达到要求未领取 2已领取 3奖品领取完无法领取)
     private Integer promotionFansQuantity; //活动的粉丝数量
     private Integer needFansQuantity; //距离活动要求还需要的粉丝数量
     //详情信息

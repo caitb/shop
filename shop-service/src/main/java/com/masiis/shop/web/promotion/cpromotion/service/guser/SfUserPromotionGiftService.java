@@ -12,6 +12,7 @@ import com.masiis.shop.web.common.service.ComGiftService;
 import com.masiis.shop.web.common.service.SkuService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
  * 商城用户活动奖励表service
  */
 @Service
+@Transactional
 public class SfUserPromotionGiftService {
 
     private Log log = LogFactory.getLog(this.getClass());
@@ -42,6 +44,7 @@ public class SfUserPromotionGiftService {
         SfUserPromotionGift  gift = getPromoGiftByPromoIdAndRuleIdAndGiftValue(promoId,promoRuleId,giftValue);
         if (gift!=null){
             gift.setPromoQuantity(gift.getPromoQuantity()+quantity);
+            gift.setRemark("修改商城用户活动奖励表的已发放奖励数量");
             return sfUserPromotionGiftMapper.updateByPrimaryKey(gift);
         }else{
             return 0;

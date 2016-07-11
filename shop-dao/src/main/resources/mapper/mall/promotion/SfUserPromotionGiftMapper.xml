@@ -41,16 +41,16 @@
             <if test="type != null">
                 type = #{type,jdbcType=INTEGER},
             </if>
-            <if test="gift_value != null">
+            <if test="giftValue != null">
                 gift_value = #{giftValue,jdbcType=INTEGER},
             </if>
             <if test="quantity != null">
                 quantity = #{quantity,jdbcType=INTEGER},
             </if>
-            <if test="promo_quantity != null">
+            <if test="promoQuantity != null">
                 promo_quantity = #{promoQuantity,jdbcType=INTEGER},
             </if>
-            <if test="upper_quantity != null">
+            <if test="upperQuantity != null">
                 upper_quantity = #{upperQuantity,jdbcType=INTEGER},
             </if>
             <if test="remark != null">

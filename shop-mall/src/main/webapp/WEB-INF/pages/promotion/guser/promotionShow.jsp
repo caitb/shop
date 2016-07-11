@@ -34,11 +34,11 @@
         <main>
             <c:forEach items="${promotionInfos}" var="promotionInfo">
                 <h1>
-                    活动事件： ${promotionInfo.beginTime}——${promotionInfo.endTime}
                     <img src="<%=path%>/static/images/receive4.png" alt="">
+                    活动事件： ${promotionInfo.beginTime}——${promotionInfo.endTime}
                 </h1>
-                <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule">
-                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo"  varStatus="status">
+                <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule" varStatus="status">
+                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo">
                         <div class="floor">
                             <h1>${status.index+1}、粉丝达到<span class="people">${promotionRule.promotionFansQuantity}</span>人送 ${giftInfo.giftName}</h1>
                             <h2>(已领取<span>${giftInfo.sendedQuantity}</span>份，限领<span>${giftInfo.maxQuantity}</span>份)</h2>
@@ -53,7 +53,10 @@
                                 <button onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
                             </c:if>
                             <c:if test="${promotionRule.status==2}">
-                                <button>已领取</button>
+                                <button class="on" >已领取</button>
+                            </c:if>
+                            <c:if test="${promotionRule.status==3}">
+                                <button class="on" >奖品已被领取完</button>
                             </c:if>
                         </div>
                     </c:forEach>

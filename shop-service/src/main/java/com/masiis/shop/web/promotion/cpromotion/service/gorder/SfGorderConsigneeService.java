@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.dao.po.SfGorderConsignee;
 import com.masiis.shop.web.common.service.UserAddressService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  * C端用户奖励订单收货人表service
  */
 @Service
+@Transactional
 public class SfGorderConsigneeService {
 
     @Resource

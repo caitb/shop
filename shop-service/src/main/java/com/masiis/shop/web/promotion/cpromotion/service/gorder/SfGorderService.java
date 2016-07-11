@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.SfGorder;
 import com.masiis.shop.dao.po.SfUserPromotion;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.Date;
  * C端用户奖励订单表
  */
 @Service
+@Transactional
 public class SfGorderService {
 
     private Log log = LogFactory.getLog(this.getClass());

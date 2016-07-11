@@ -117,9 +117,11 @@ public interface SfUserRelationMapper {
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
     List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid,
+                                                        @Param("userLevel") Integer userLevel,
                                                         @Param("shopId") Long shopId);
 
     List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid,
+                                                             @Param("userLevel") Integer userLevel,
                                                              @Param("shopId") Long shopId);
 
     /**

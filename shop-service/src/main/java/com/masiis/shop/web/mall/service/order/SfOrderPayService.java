@@ -468,9 +468,18 @@ public class SfOrderPayService {
     private void updateStock(SfOrder order, List<SfOrderItem> orderItems) {
         for (SfOrderItem orderItem : orderItems) {
             PfUserSkuStock skuStock = skuStockService.selectByUserIdAndSkuId(order.getShopUserId(), orderItem.getSkuId());
-            log.info("更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之前冻结库存----" + skuStock.getFrozenStock());
-            skuStock.setFrozenStock(skuStock.getFrozenStock() + orderItem.getQuantity());
-            log.info("更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之后冻结库存----" + skuStock.getFrozenStock());
+            log.info("判断是平台发货还是店主自己发货------order.getSendMan()===="+order.getSendMan());
+            if (order.getSendMan()==0){
+                //平台发货
+                log.info("平台发货----更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之前冻结库存----" + skuStock.getFrozenStock());
+                skuStock.setFrozenStock(skuStock.getFrozenStock() + orderItem.getQuantity());
+                log.info("平台发货----更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之后冻结库存----" + skuStock.getFrozenStock());
+            }else{
+                //店主发货
+                log.info("店主自己发货----更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之前冻结库存----" + skuStock.getFrozenCustomStock());
+                skuStock.setFrozenCustomStock(skuStock.getFrozenCustomStock() + orderItem.getQuantity());
+                log.info("店主发货----更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "之后冻结库存----" + skuStock.getFrozenCustomStock());
+            }
             int i = skuStockService.updateByIdAndVersions(skuStock);
             if (i == 0) {
                 log.info("更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "失败");

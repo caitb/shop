@@ -13,6 +13,7 @@ public class PromotionGiftInfo {
     private Integer sendedQuantity;   //已发放奖品的数量
     private Integer noSendQuantity;  //未发送奖品的数量
     private Integer maxQuantity;    //奖品数量上限
+    private String giftImageUrl;    //奖品图片地址
 
 
     public Integer getPromoGiftId() {
@@ -77,5 +78,13 @@ public class PromotionGiftInfo {
 
     public void setIsEnoughQuantity(Boolean enoughQuantity) {
         isEnoughQuantity = enoughQuantity;
+    }
+
+    public String getGiftImageUrl() {
+        return giftImageUrl;
+    }
+
+    public void setGiftImageUrl(String giftImageUrl) {
+        this.giftImageUrl = giftImageUrl;
     }
 }

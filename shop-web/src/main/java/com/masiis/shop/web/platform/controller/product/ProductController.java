@@ -118,31 +118,6 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 自己发货，维护库存
-     */
-    @RequestMapping(value = "/selfUser/updateStock.do")
-    @ResponseBody
-    public String updateProductStock(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam(required = true) Integer stock,
-                                     @RequestParam(required = true) Integer id) {
-        JSONObject object = new JSONObject();
-        try {
-            if(stock>100000){
-                object.put("message", "可维护的库存数量不能高于10万！");
-                return object.toJSONString();
-            }
-            productService.updateStock(stock, id);
-            object.put("isError", false);
-            object.put("message", "√库存更改成功 ");
-        } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
-        }
-        return object.toJSONString();
-    }
-
-
-    /**
      * jjh
      * 平台发货，申请拿货
      */

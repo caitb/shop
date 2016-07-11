@@ -48,7 +48,7 @@
                 <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
                 <span>分享赚佣金</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.do');">
+            <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(2).png" alt=""></span>
                 <span>个人信息</span>
             </li>

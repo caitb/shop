@@ -181,7 +181,7 @@ public class UserAddressController extends BaseController {
                 break;
             case managePageToPersonalInfoPageTag:  //返回到到个人中心
                 basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
-                returnPage = "redirect:" + basePath +"/sfOrderManagerController/borderManagement.html";
+                returnPage = "redirect:" + basePath +"/user/getPersonalInfo.shtml";
                 break;
             default://返回到选择地址界面
                 break;

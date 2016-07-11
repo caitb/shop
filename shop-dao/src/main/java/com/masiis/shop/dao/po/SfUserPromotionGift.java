@@ -70,12 +70,15 @@ public class SfUserPromotionGift {
     public void setType(Integer type) {
         this.type = type;
     }
+
     public Integer getGiftValue() {
         return giftValue;
     }
+
     public void setGiftValue(Integer giftValue) {
         this.giftValue = giftValue;
     }
+
     public Integer getQuantity() {
         return quantity;
     }

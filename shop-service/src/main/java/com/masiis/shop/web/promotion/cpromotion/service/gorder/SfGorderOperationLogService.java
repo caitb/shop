@@ -5,6 +5,7 @@ import com.masiis.shop.dao.mall.promotion.SfGorderOperationLogMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfGorderOperationLog;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  * C端活动订单操作日志表 service
  */
 @Service
+@Transactional
 public class SfGorderOperationLogService {
 
     @Resource

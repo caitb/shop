@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.SfGorderItem;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import org.springframework.cglib.beans.BulkBeanException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.util.List;
  * C端用户奖励订单奖励明细表 service
  */
 @Service
+@Transactional
 public class SfGorderItemService {
 
     private Log log = LogFactory.getLog(this.getClass());

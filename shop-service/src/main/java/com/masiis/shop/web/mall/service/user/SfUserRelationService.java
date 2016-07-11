@@ -80,8 +80,9 @@ public class SfUserRelationService {
     }
 
     /**
-     * 查询代言热总数
+     * 查询代言人总数
      * @param userId 用户id
+     * @param shopId 小铺id  可以为null
      * @return      Integer
      */
     public Integer getSpokesManNumByUserId(Long userId, Long shopId){
@@ -168,7 +169,7 @@ public class SfUserRelationService {
         pageViewPo.setTotalCount(totalCount);
         logger.info("粉丝总数量："+totalCount);
         //查询三级粉丝数量
-        List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId, userLevel, shopId);
+        List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId, null, shopId);
         for (Map<String, Number> map : maps){
             switch (map.get("userLevel").intValue()) {
                 case 1 : {
@@ -286,7 +287,7 @@ public class SfUserRelationService {
         pageViewPo.setTotalCount(totalCount);
         logger.info("代言人总数量："+totalCount);
         //查询三级粉丝数量
-        List<Map<String, Number>> maps = this.getSpokesManNumGroupByLevel(userId, userLevel, shopId);
+        List<Map<String, Number>> maps = this.getSpokesManNumGroupByLevel(userId, null, shopId);
         for (Map<String, Number> map : maps){
             switch (map.get("userLevel").intValue()) {
                 case 1 : {

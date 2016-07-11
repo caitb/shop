@@ -101,7 +101,25 @@ public class SfUserRelationController extends BaseController {
             }
             SfSpokenAndFansPageViewPo pageViewPo = sfUserRelationService.dealWithFansPageView(comUser.getId(), fansLevel, shopId, true, 1, pageSize);
             //用户分页使用，三级粉丝总数量
-            Integer threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+            Integer threeSum = 0;
+            if (fansLevel == null){
+                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+            }else {
+                switch (fansLevel.intValue()){
+                    case 1 : {
+                        threeSum = pageViewPo.getFirstCount();
+                        break;
+                    }
+                    case 2 : {
+                        threeSum = pageViewPo.getSecondCount();
+                        break;
+                    }
+                    case 3 : {
+                        threeSum = pageViewPo.getThirdCount();
+                        break;
+                    }
+                }
+            }
             //获取总页数
             Integer pageNums = threeSum%pageSize == 0 ? threeSum/pageSize : threeSum/pageSize + 1;
             jsonObject.put("firstCount", pageViewPo.getFirstCount());
@@ -226,8 +244,26 @@ public class SfUserRelationController extends BaseController {
                 spokeLevel = null;
             }
             SfSpokenAndFansPageViewPo pageViewPo = sfUserRelationService.dealWithSpokesManPageView(comUser.getId(), spokeLevel, shopId, true, 1, pageSize, 1);
-            //用户分页使用，三级粉丝总数量
-            Integer threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+            //用户分页使用，两级代言人总数量
+            Integer threeSum = 0;
+            if (spokeLevel == null){
+                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+            }else {
+                switch (spokeLevel.intValue()){
+                    case 1 : {
+                        threeSum = pageViewPo.getFirstCount();
+                        break;
+                    }
+                    case 2 : {
+                        threeSum = pageViewPo.getSecondCount();
+                        break;
+                    }
+                    case 3 : {
+                        threeSum = pageViewPo.getThirdCount();
+                        break;
+                    }
+                }
+            }
             //获取总页数
             Integer pageNums = threeSum%pageSize == 0 ? threeSum/pageSize : threeSum/pageSize + 1;
             jsonObject.put("firstCount", pageViewPo.getFirstCount());

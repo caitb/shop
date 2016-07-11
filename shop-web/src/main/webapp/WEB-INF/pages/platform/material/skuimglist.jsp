@@ -85,6 +85,7 @@
                     var _contain = $("#divall");
                     if(data.materials==null || data.materials.length <=0){
                         $(".dropload-down").remove();
+                        me.noData();
                         alert("没有更多了");
                     }
                     if(data.isError=false && data.materials.length>0){

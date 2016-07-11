@@ -144,7 +144,7 @@ public class UserController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/21 10:23
      */
-    @RequestMapping(value = "getPersonalInfo.do")
+    @RequestMapping(value = "getPersonalInfo.shtml")
     public String getPersonalInfo(HttpServletRequest request, HttpServletResponse response,
                                   Model model) {
 

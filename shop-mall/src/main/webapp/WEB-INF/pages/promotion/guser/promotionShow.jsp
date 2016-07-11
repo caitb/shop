@@ -43,7 +43,7 @@
                             <h1>${status.index+1}、粉丝达到<span class="people">${promotionRule.promotionFansQuantity}</span>人送 ${giftInfo.giftName}</h1>
                             <h2>(已领取<span>${giftInfo.sendedQuantity}</span>份，限领<span>${giftInfo.maxQuantity}</span>份)</h2>
                             <p onclick="clickShow()">
-                                <img src="<%=path%>/static/images/admin.png" alt="">
+                                <img src="${giftInfo.giftImageUrl}" alt="">
                             </p>
                             <h3>${giftInfo.giftName}</h3>
                            <c:if test="${promotionRule.status==0}">
@@ -61,25 +61,14 @@
             </c:forEach>
         </main>
         <p>
-            注：一旦个店铺的粉丝数量为计算方法
+            注：以单个店铺的粉丝数量为计算方法
         </p>
-    </div>
-    <div class="black">
-    <div class="back_b"></div>
-    <div class="b_t">
-        <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
         function skipPromotionGorderPage(promoId,promoRuleId){
             window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
-        }
-        function clickShow(){
-            $(".black").show();
-        }
-        function clickHide(){
-            $(".black").hide();
         }
     </script>
 </body>

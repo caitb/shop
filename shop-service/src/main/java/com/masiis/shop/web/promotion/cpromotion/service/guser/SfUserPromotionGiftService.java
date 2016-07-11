@@ -2,6 +2,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfUserPromotionGiftMapper;
 import com.masiis.shop.dao.po.ComGift;
@@ -70,6 +71,9 @@ public class SfUserPromotionGiftService {
                 giftInfo.setSendedQuantity(promoGift.getPromoQuantity());
                 giftInfo.setMaxQuantity(promoGift.getUpperQuantity());
                 giftInfo.setGiftQuantity(promoGift.getQuantity());
+                if (isGetImage){
+                    giftInfo.setGiftImageUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
+                }
                 if (promoGift.getUpperQuantity()-promoGift.getPromoQuantity()<promoGift.getQuantity()){
                     giftInfo.setIsEnoughQuantity(false);
                 }else{

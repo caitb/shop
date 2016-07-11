@@ -209,10 +209,13 @@
         select count(*) as num,userLevel from (
         select 1 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
         union all select 2 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        /*union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))*/
         )t where 1=1
         <if test="shopId != null">
             and t.shopId = #{shopId}
+        </if>
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
         </if>
         group by t.userLevel
     </select>
@@ -225,6 +228,9 @@
         )t where t.is_spokesman = 1
         <if test="shopId != null">
             and t.shopId = #{shopId}
+        </if>
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
         </if>
         group by t.userLevel
     </select>

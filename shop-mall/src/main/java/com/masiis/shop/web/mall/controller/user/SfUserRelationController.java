@@ -144,9 +144,12 @@ public class SfUserRelationController extends BaseController {
         }
         JSONArray jsonArray = new JSONArray();
         try {
-            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfFansInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel, shopId, null);
+            logger.info("shopId = " + shopId);
+            logger.info("fansLevel = " + fansLevel);
+            logger.info("currentPage = " + currentPage);
+            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfFansInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel == 0?null:fansLevel, shopId == 0?null:shopId);
             JSONObject jsonObject = new JSONObject();
-            if (infos != null || infos.size() == 0){
+            if (infos == null || infos.size() == 0){
                 jsonObject.put("currentPage", currentPage);
             }else {
                 jsonObject.put("currentPage", currentPage.intValue() + 1);
@@ -214,8 +217,8 @@ public class SfUserRelationController extends BaseController {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         try {
-            logger.info("shopId:"+shopId);
-            logger.info("spokeLevel:"+spokeLevel);
+            logger.info("shopId = "+shopId);
+            logger.info("spokeLevel = "+spokeLevel);
             if (shopId.longValue() == 0){
                 shopId = null;
             }
@@ -265,11 +268,19 @@ public class SfUserRelationController extends BaseController {
         if (comUser == null){
             throw new BusinessException("用户未登陆");
         }
+        logger.info("shopId = " + shopId);
+        logger.info("fansLevel = " + fansLevel);
         JSONArray jsonArray = new JSONArray();
+        if (shopId.longValue() == 0){
+            shopId = null;
+        }
+        if (fansLevel.longValue() == 0){
+            fansLevel = null;
+        }
         try {
             List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfSpokesManInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel, shopId, 1);
             JSONObject jsonObject = new JSONObject();
-            if (infos != null || infos.size() == 0){
+            if (infos == null || infos.size() == 0){
                 jsonObject.put("currentPage", currentPage);
             }else {
                 jsonObject.put("currentPage", currentPage.intValue() + 1);

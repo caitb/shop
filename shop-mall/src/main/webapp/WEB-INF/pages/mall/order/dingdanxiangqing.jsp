@@ -131,16 +131,7 @@
                         </div>
                 </div>
     </div>
-    <%--<div class="black">--%>
-        <%--<div class="back_b"></div>--%>
-        <%--<div class="b_t">--%>
-            <%--<img src="${sfShop.wxQrCode}" alt="">--%>
-            <%--<p>--%>
-                <%--如有问题，请加我为好友！。--%>
-            <%--</p>--%>
-            <%--<b class="off" onclick="clickHide()">×</b>--%>
-        <%--</div>--%>
-    <%--</div>--%>
+
     <%--<div class="black nobady">--%>
         <%--<div class="back_b"></div>--%>
         <%--<div class="b_n">--%>
@@ -188,12 +179,8 @@
             $(".back_shouhuo").hide();
             $(".back").hide();
         })
-//        function clickShow(){
-        //            $(".black").show();
-        //        }
-        //        function clickHide(){
-        //            $(".black").hide();
-        //        }
+
+
     </script>
 </body>
 </html>

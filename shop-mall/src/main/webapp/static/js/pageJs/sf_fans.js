@@ -16,7 +16,7 @@ function queryFans(condition){
             var threeSum = arr[0].threeSum;
             var totalPage = arr[0].totalPage;
             var cur = arr[0].currentPage;
-            if (parseInt(condition) == 1&&parseInt(fansLevel) == 0){
+            if (parseInt(condition) == 1){
                 $("#first").text(firstCount);
                 $("#second").text(secondCount);
                 $("#third").text(thirdCount);

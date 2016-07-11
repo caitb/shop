@@ -45,10 +45,10 @@
 <%--    <div class="addressManage">
         <p>地址管理</p>
     </div>--%>
-    <%--<li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >--%>
-        <%--<span><img src="<%=path%>/static/images/geren2%20(1).png" alt=""></span>--%>
-        <%--<span>地址管理</span>--%>
-    <%--</li>--%>
+    <div class="address" onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
+        <p>地址管理</p>
+        <p><img src="${path}/static/images/next.png" alt=""></p>
+    </div>
     <p>Copyright2015-2016  麦链合伙人  iimai.com<br/>
         北京麦士网络科技有限公司</p>
 </div>
@@ -62,6 +62,7 @@
         <p>验证码：<input type="tel" id="validateNumberDataId">
             <button id="validateNumberId">获取验证码</button>
         </p>
+        
     </div>
     <p class="tishi" id="errorMessageId"></p>
     <h1 class="j_qu" id="nextPageId">下一步</h1>

@@ -41,21 +41,45 @@ public class MaterialLibraryController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/infoB")
-    public ModelAndView materialLibraryList(HttpServletRequest request,
-                                            @RequestParam(value = "currentPage",required = true) int currentPage
+    public ModelAndView materialLibraryList(HttpServletRequest request
                                             ){
         ModelAndView mv = new ModelAndView("/platform/material/materialGroup");
         try{
             ComUser comUser = getComUser(request);
-            int pageSize = 5; //ajax请求时默认每页显示条数为5条
-            currentPage = currentPage +1;
-            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(currentPage,pageSize,comUser.getId());
+            int pageSize = 4; //ajax请求时默认每页显示条数为4条
+            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(1,pageSize,comUser.getId());
             mv.addObject("LibraryList",materialLibraryList);
 
         }catch (Exception e){
             log.info(e.getMessage());
         }
         return mv;
+    }
+
+    /**
+     * 分页展示素材库B
+     * @param request
+     * @param currentPage
+     * @return
+     */
+    @RequestMapping(value = "/infoBPagenation")
+    @ResponseBody
+    public String materialLibraryListPagenation(HttpServletRequest request,
+                                            @RequestParam(value = "currentPage",required = true) int currentPage
+    ){
+        JSONObject object = new JSONObject();
+        try{
+            ComUser comUser = getComUser(request);
+            int pageSize = 4; //ajax请求时默认每页显示条数4条
+            currentPage = currentPage++;
+            List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(currentPage,pageSize,comUser.getId());
+            object.put("LibraryList", materialLibraryList);
+            object.put("isError",false);
+        }catch (Exception e){
+            object.put("isError",true);
+            log.info(e.getMessage());
+        }
+        return object.toJSONString();
     }
 
     /**
@@ -80,12 +104,10 @@ public class MaterialLibraryController extends BaseController{
      * jjh
      * 素材图片展示B
      * @param mgId
-     * @param currentPage
      * @return
      */
     @RequestMapping(value = "/materialInfoB")
-    public ModelAndView materialList(@RequestParam(value = "mgId",required = true) Integer mgId,
-                                     @RequestParam(value = "currentPage",required = true) Integer currentPage){
+    public ModelAndView materialList(@RequestParam(value = "mgId",required = true) Integer mgId){
         ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
         try {
             int pageSize = 3; //ajax请求时默认每页显示条数为3条
@@ -112,8 +134,7 @@ public class MaterialLibraryController extends BaseController{
         JSONObject object = new JSONObject();
         try {
             int pageSize = 3; //ajax请求时默认每页显示条数为3条
-            Integer page = currentPage +1;
-            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, page, pageSize);
+            List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, currentPage, pageSize);
             object.put("materials",materials);
             object.put("mgId",mgId);
             object.put("isError",false);

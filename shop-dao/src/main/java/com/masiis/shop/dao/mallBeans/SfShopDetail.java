@@ -16,6 +16,7 @@ public class SfShopDetail {
     private String skuUrl;//商品图片地址
     private BigDecimal priceRetail;//销售价
     private String slogan;
+    private Integer isWunShip;
     /**
      * 运费，0为包邮
      */
@@ -29,6 +30,14 @@ public class SfShopDetail {
      * 保证金
      */
     private BigDecimal bail;
+
+    public void setIsWunShip(Integer isWunShip) {
+        this.isWunShip = isWunShip;
+    }
+
+    public Integer getIsWunShip() {
+        return isWunShip;
+    }
 
     public void setSkuImageUrl(String skuImageUrl) {
         this.skuImageUrl = skuImageUrl;

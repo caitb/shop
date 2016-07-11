@@ -402,4 +402,37 @@ public class SfUserRelationService {
     public Integer getFansNumsByShopId(Long shopId, Long userId){
         return sfUserRelationMapper.selectFansNumsByShopId(shopId, userId);
     }
+
+    /**
+     * 查询某个店铺所有代言人数量(排除店主自己)
+     *
+     * @param shopId
+     * @param userId
+     * @return
+     */
+    public Integer getSfSpokesManNumByShopId(Long shopId, Long userId) {
+        return sfUserRelationMapper.selectSfSpokesManNumByShopId(shopId, userId);
+    }
+
+    /**
+     * 根据店铺id查找所有粉丝关系(排除店主)
+     *
+     * @param shopId
+     * @param userId
+     * @return
+     */
+    public List<SfUserRelation> findAllFansRelationByShopId(Long shopId, Long userId){
+        return sfUserRelationMapper.selectAllFansRelationByShopId(shopId, userId);
+    }
+
+    /**
+     * 根据店铺id查找所有代言人关系(排除店主)
+     *
+     * @param shopId
+     * @param userId
+     * @return
+     */
+    public List<SfUserRelation> findAllSpokeManRelationByShopId(Long shopId, Long userId) {
+        return sfUserRelationMapper.selectAllSpokeManRelationByShopId(shopId, userId);
+    }
 }

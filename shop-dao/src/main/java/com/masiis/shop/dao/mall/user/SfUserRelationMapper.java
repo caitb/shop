@@ -152,4 +152,33 @@ public interface SfUserRelationMapper {
     */
     Integer selectFansNumsByShopId(@Param("shopId") Long shopId,
                                    @Param("userId") Long userId);
+
+    /**
+     * 根据店铺id查找所有粉丝关系
+     *
+     * @param shopId
+     * @return
+     */
+    List<SfUserRelation> selectAllFansRelationByShopId(@Param("shopId") Long shopId,
+                                                       @Param("userId") Long userId);
+
+    /**
+     * 查询某个店铺所有代言人数量(排除店主自己)
+     *
+     * @param shopId
+     * @param userId
+     * @return
+     */
+    Integer selectSfSpokesManNumByShopId(@Param("shopId") Long shopId,
+                                         @Param("userId") Long userId);
+
+    /**
+     * 根据店铺id查找所有代言人关系(排除店主)
+     *
+     * @param shopId
+     * @param userId
+     * @return
+     */
+    List<SfUserRelation> selectAllSpokeManRelationByShopId(@Param("shopId") Long shopId,
+                                                           @Param("userId") Long userId);
 }

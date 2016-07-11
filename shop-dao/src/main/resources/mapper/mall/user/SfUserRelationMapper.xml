@@ -289,4 +289,43 @@
         AND
           user_id != #{userId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectSfSpokesManNumByShopId" resultType="java.lang.Integer">
+        select
+          count(r.id)
+        from
+          sf_user_relation r,com_user u
+        WHERE
+          r.user_id = u.id
+        AND
+          u.is_spokesman = 1
+        AND
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllFansRelationByShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where
+          shop_id = #{shopId}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllSpokeManRelationByShopId" resultMap="BaseResultMap">
+        select
+          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark
+        from
+          sf_user_relation r,com_user u
+        WHERE
+          r.user_id = u.id
+        AND
+          u.is_spokesman = 1
+        AND
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

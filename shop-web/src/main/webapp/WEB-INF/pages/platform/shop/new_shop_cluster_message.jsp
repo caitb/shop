@@ -16,20 +16,20 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="${path}/shopmessage/mycluster.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>新建群发</p>
     </header>
     <main>
         <div class="floor">
             <h1>推送给：</h1>
             <div>
-                <p class="on">
-                    <span>2000000</span>
+                <p id="p_1">
+                    <span id="fanId">0</span>
                     <span>全部粉丝</span>
                     <img src="${path}/static/images/message/message_4.jpg" alt="">
                 </p>
-                <p>
-                    <span>2000000</span>
+                <p id="p_2">
+                    <span id="spId">0</span>
                     <span>全部代言人</span>
                     <img src="${path}/static/images/message/message_4.jpg" alt="">
                 </p>
@@ -40,13 +40,13 @@
             <div>
                 <textarea id="textarea" onkeydown="LimitTextArea(this)" onkeyup="LimitTextArea(this)" onkeypress="LimitTextArea(this)"></textarea>
                 <button onclick="clickShow()">
-                    <b>跳转网址(已设置，跳转到您的店铺首页)</b>
+                    <b id="url_show">跳转网址(<span style='text-decoration:underline;color: blue;'>点击设置</span>)</b>
                 </button>
             </div>
         </div>
         <h1>您还可以输入<span class="textlength">140</span>/140字</h1>
         <p>*禁止发送与政治、色情、暴力、等违法内容，违者必究！</p>
-        <button class="btn">
+        <button id="submit" class="btn">
             发送
         </button>
     </main>
@@ -61,37 +61,103 @@
                 设置跳转地址：
             </div>
             <div class="b_r">
-                <p>
-                    <span class="on">您的店铺首页</span>
-                    <span>抗引力瘦脸精华详情页</span>
-                    <span>抗引力瘦脸精华2详情页</span>
+                <p id="url_setting">
+                    <span id="-1" class="on">不设置</span>
+                    <span id="0">您的店铺首页</span>
                 </p>
             </div>
         </div>
         <h2>
             <span onclick="clickHide()">取消</span>
-            <span >确定</span>
+            <span id="url_select">确定</span>
         </h2>
     </div>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/commonAjax.js"></script>
 <script>
     $(function(){
+        // 初始化页面数据
+        init();
+
         $(".b_r p").on("click","span",function(){
             $(this).addClass("on").siblings().removeClass("on");
         });
 
         $(".floor div").on("click","p",function(){
             $(this).addClass("on").siblings().removeClass("on");
+            var num = +$(this).children("span").first().html();
+            if(num <= 0){
+                $(this).removeClass("on");
+                alert("请不要选择没人的部分");
+            }
         });
+
+        $("#url_select").unbind("click").on("click", function(){
+            var thisSpan = $("#url_setting .on")[0];
+            urlFlag = +thisSpan.id;
+            if(urlFlag != -1){
+                $("#url_show").html("跳转网址(已设置，跳转到\"" + thisSpan.innerHTML.toLocaleString() + "\")");
+            } else {
+                $("#url_show").html("跳转网址(" + "<span style='text-decoration:underline;color: blue;'>点击设置</span>" + ")");
+            }
+            clickHide();
+        });
+
+        // 提交按钮
+        $("#submit").unbind("click").on("click", message_submit);
+
     });
+
+    var fansNum = 0;
+    var spNum = 0;
+    var urlFlag = -1;
+
+    function init(){
+        // 初始化方法
+        var options = {
+            url:"${path}/shopmessage/toNewData.do",
+            type:"post",
+            dataType:"json",
+            async:true,
+            success:function(data){
+                if(data.resCode == "success"){
+                    fansNum = data.fansNum;
+                    spNum = data.spokeManNum;
+                    $("#fanId").html(fansNum);
+                    $("#spId").html(spNum);
+                    for(var i=0; i < data.skus.length; i++) {
+                        var sendType = "";
+                        if(data.skus[i].isOwnShip == 0){
+                            sendType = "平台代发";
+                        } else if(data.skus[i].isOwnShip == 1) {
+                            sendType = "自己发货";
+                        }
+                        $("#url_setting").append($("<span id='" + data.skus[i].id + "'>"
+                                + data.skus[i].skuName + "_" + sendType + "_详情页</span>"));
+                    }
+                    if(fansNum > 0){
+                        $("#fanId").parent().addClass("on");
+                    }
+                    if(spNum > 0){
+                        $("#spId").parent().addClass("on");
+                    }
+                } else {
+                    // 请求错误
+                    alert(data.resMsg);
+                }
+            }
+        };
+        $.ajax(options);
+    }
+
 
     function LimitTextArea(field){
         var maxlimit = 140;
         var Length = field.value.length;
         if (Length > maxlimit) {
             field.value = field.value.substring(0, maxlimit);
-            alert("请不要超过最大长度:" + maxlimit);
         }
 
         if(Length >= maxlimit){
@@ -105,6 +171,44 @@
     }
     function clickShow(){
         $(".black").show();
+    }
+
+    function message_submit(){
+        var num = $(".floor div .on").size();
+        if(num <= 0){
+            alert("您未选择发送人群");
+            return;
+        }
+        if($("#textarea")[0].value.length <= 0){
+            alert("您未输入消息内容");
+            return;
+        }
+        var options = {
+            url:"${path}/shopmessage/newmessage.do",
+            type:"post",
+            dataType:"json",
+            async:true,
+            data:{
+                message:$("#textarea")[0].value,
+                urlType:urlFlag,
+                sendType:$(".floor div .on")[0].id.split("_")[1]
+            },
+            success:function(data){
+                if(data.resCode == "success"){
+                    // 创建群发消息成功
+                    window.location.href = "${path}/shopmessage/mycluster.shtml";
+                } else {
+                    // 请求错误
+                    alert(data.resMsg);
+                }
+            },
+            complete:function(){
+                $("#submit").unbind("click").on("click", message_submit);
+            }
+        };
+
+        $("#submit").unbind("click");
+        $.ajax(options);
     }
 </script>
 </body>

@@ -12,12 +12,14 @@
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
         <result column="bail" property="bail" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="is_own_ship" property="isOwnShip" jdbcType="INTEGER" />
         <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
         <result column="share_num" property="shareNum" jdbcType="BIGINT" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="icon" property="icon" jdbcType="VARCHAR"/>
         <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
+        <result column="skuName" property="skuName" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectShopviewByShopId" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -34,6 +36,15 @@
         LEFT JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id AND sku.sku_id=a.sku_id
         LEFT JOIN com_agent_level l on sku.agent_level_id = l.id
         where sku.shop_id = #{shopId,jdbcType=BIGINT} AND sku.sku_id=#{skuId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSfShopOnSaleSkuByShopId" resultMap="BaseResultMap">
+        select sku.id,sku.sku_id,l.name as skuName, sku.is_own_ship
+            from sf_shop_sku sku
+            LEFT JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id AND sku.sku_id=a.sku_id
+            LEFT JOIN com_sku l on sku.sku_id = l.id
+        where sku.shop_id = #{shopId,jdbcType=BIGINT}
+        AND sku.is_sale = 1
     </select>
 
 </mapper>

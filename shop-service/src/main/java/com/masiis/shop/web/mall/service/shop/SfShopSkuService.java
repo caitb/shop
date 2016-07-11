@@ -54,4 +54,12 @@ public class SfShopSkuService {
     public SfShopSku getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
         return shopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
     }
+
+    public List<SfShopSku> findSfShopOnSaleSkuByShopId(Long shopId){
+        return sfShopSkuExtendMapper.selectSfShopOnSaleSkuByShopId(shopId);
+    }
+
+    public SfShopSku findShopSkuById(Long urlType) {
+        return shopSkuMapper.selectByPrimaryKey(urlType);
+    }
 }

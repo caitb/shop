@@ -61,6 +61,7 @@
                 <p>&nbsp;&nbsp;</p>
                 <div onclick="javascript:window.location.replace('http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333&scene=0#wechat_redirect');"><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
             </div>
+            <div class="tallme">联系我</div>
         </div>
     </div>
     <main id="main">
@@ -93,6 +94,25 @@
         </p>
     </div>
 </footer>
+<div class="black">
+    <div class="back_b"></div>
+    <div class="b_t">
+        <img src="${sfShop.wxQrCode}" alt="">
+        <p>
+            如有问题，请加我为好友！。
+        </p>
+        <b class="off" onclick="clickHide()">×</b>
+    </div>
+</div>
+<div class="black nobady">
+    <div class="back_b"></div>
+    <div class="b_n">
+        <img src="${path}/static/images/nobady.png" alt="">
+        <p>该店主还未上传二维码，催他上传吧</p>
+        <button>留下邮箱</button>
+        <b class="off" onclick="clickHide()">×</b>
+    </div>
+</div>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
 <script>
@@ -122,7 +142,7 @@
                 $.each(data, function(i, SfShopDetails) {
                     trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"');\">";
                     trHtml2+="<div><img src=\""+SfShopDetails.skuImageUrl+"\" alt=\"\"></div>";
-                    trHtml2+="<div><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h1>￥"+SfShopDetails.priceRetail+"</h1>";
+                    trHtml2+="<div><h2><img src='${path}/static/images/ping.png' alt=''>店主发货</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h1>￥"+SfShopDetails.priceRetail+"</h1>";
                     trHtml2+="<button>立即购买</button> </div> </div>";
                 })
                 $("#main").html(trHtml2);

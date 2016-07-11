@@ -42,9 +42,6 @@
             <p>${comUser.mobile}<b>(已绑定)</b></p>
         </c:if>
     </div>
-<%--    <div class="addressManage">
-        <p>地址管理</p>
-    </div>--%>
     <div class="address" onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
         <p>地址管理</p>
         <p><img src="${path}/static/images/next.png" alt=""></p>

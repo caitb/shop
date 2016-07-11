@@ -67,7 +67,7 @@ public class PromotionDetailShowService {
                 for (SfUserPromotionRule rule : rules){
                     //获取此规则对应的奖品信息
                     log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
-                    List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),false);
+                    List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
                     //生成某个规则信息
                     PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule);
                     if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){

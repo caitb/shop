@@ -44,6 +44,7 @@ public class SfUserPromotionGiftService {
         SfUserPromotionGift  gift = getPromoGiftByPromoIdAndRuleIdAndGiftValue(promoId,promoRuleId,giftValue);
         if (gift!=null){
             gift.setPromoQuantity(gift.getPromoQuantity()+quantity);
+            gift.setRemark("修改商城用户活动奖励表的已发放奖励数量");
             return sfUserPromotionGiftMapper.updateByPrimaryKey(gift);
         }else{
             return 0;

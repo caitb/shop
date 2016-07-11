@@ -301,7 +301,7 @@ public class SfUserExtractApplyController extends BaseController{
         if (user.getMobile()==null || "".equals(user.getMobile())){
             mobile = MobileMessageUtil.getInitialization("C").withdrawRequestVerifyCustomer(user.getMobile(), SMSConstants.WITHDRAW_DAYS);
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         //提现申请成功发送微信
         String[] params = new String[]{"￥"+decimalFormat.format(money),dateFormat.format(new Date()),"审核中"};

@@ -46,7 +46,7 @@ public class PromotionDetailShowService {
         Map<String,Object> map = new HashMap<>();
         //获取用户粉丝数
         fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
-        fansQuantity = 19;
+        fansQuantity = 300;
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有进行中的活动
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);

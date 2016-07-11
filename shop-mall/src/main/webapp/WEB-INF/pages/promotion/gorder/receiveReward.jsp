@@ -22,23 +22,30 @@
                     <p>领取奖励</p>            
         </header>
         <main>
-           <h1>请选择您的收货地址</h1>
-            <section class="sec1">
-               <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-               <div onclick="toChooseAddressPage()">
-                   <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                   <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                    <a href="#"><p>收货地址： <span>
+            <div id="xz">
+                <div class="xinz" onclick = "toChooseAddressPage()">
+                    <p>选择收货地址</p>
+                </div>
+            </div>
+            <div id="sec1">
+                <section class="sec1" id="sec1">
+                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                    <div onclick="toChooseAddressPage()">
+                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址： <span>
                          ${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
                     </span></p></a>
-                </div>
-                <img src="<%=path%>/static/images/right.png" alt="">
-            </section>
+                    </div>
+                    <img src="<%=path%>/static/images/right.png" alt="">
+                </section>
+            </div>
+
             <h1>奖品信息：</h1>
             <c:forEach items="${gifts}" var="gift">
                 <section class="sec2">
                     <p>
-                        <img src="<%=path%>/static/images/admin.png" alt="">
+                        <img src="${gift.giftImageUrl}" alt="">
                     </p>
                 </section>
                 <section class="sec3">
@@ -52,16 +59,31 @@
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 </body>
 <script>
+    $(document).ready(function () {
+        var addressId = $("#addressId").val();
+        if (addressId == "") {
+            $("#xz").show();
+            $("#sec1").hide();
+        }else{
+            $("#xz").hide();
+            $("#sec1").show();
+        }
+    })
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=receiveReward&selectedAddressId=" + selectedAddressId +"&promoId=${promoId}&promoRuleId=${promoRuleId}";
     }
     function receiveReward(){
+        var addressId = $("#addressId").val();
+        if (addressId==""){
+            alert("请先选择收货地址");
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/promotionGorder/receiveReward.do",
             async:false,
-            data: {selectedAddressId: ${comUserAddress.id}, promoId: ${promoId},promoRuleId: ${promoRuleId}},
+            data: {selectedAddressId: addressId, promoId: ${promoId},promoRuleId: ${promoRuleId}},
             dataType: "Json",
             success: function (result) {
                 if (result==1){

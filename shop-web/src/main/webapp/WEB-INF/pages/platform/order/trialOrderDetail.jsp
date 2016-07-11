@@ -35,7 +35,7 @@
         <section class="sec2">
             <p class="photo">
                 <a>
-                    <img src="${path}/static/images/shenqing_1.png" alt="">
+                    <img src="${skuDefaultImg}" alt="">
                 </a>
             </p>
             <div>

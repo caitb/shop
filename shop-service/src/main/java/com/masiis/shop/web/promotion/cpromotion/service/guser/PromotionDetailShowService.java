@@ -43,14 +43,14 @@ public class PromotionDetailShowService {
 
     public Map<String,Object> getAllPromoDetail(ComUser comUser){
         log.info("获取活动数据----start");
-        Map<String,Object> map = new HashMap<String, Object>();
+        Map<String,Object> map = new HashMap<>();
         //获取用户粉丝数
         fansQuantity = userRelationService.getFansNumByUserId(comUser.getId());
         fansQuantity = 19;
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有进行中的活动
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
-        List<PromotionInfo> promotionInfos = new ArrayList<PromotionInfo>();
+        List<PromotionInfo> promotionInfos = new ArrayList<>();
         log.info("获取所有的活动-----start");
         for(SfUserPromotion userPromotion:userPromotions){
             //获取此活动对应的规则

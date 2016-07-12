@@ -96,3 +96,35 @@
   color: #fff;
   padding: 8px 0;
 }
+.set{
+  position:absolute;
+  left:0;
+  top:50%;
+  margin: 10px 20px;
+  margin-top: -255px;
+  background: #fff;
+  border-radius: 5px;
+}
+.set p{
+  height:400px;
+  overflow: auto;
+}
+.set h1{
+  color: #f74a11;
+  font-size:18px;
+  padding:10px 0;
+  text-align: center;
+}
+.set img{
+  display: block;
+  margin:0 auto;
+  width: 94%;
+}
+.set button{
+  background: #f74a11;
+  display: block;
+  margin:20px auto;
+  color: #fff;
+  padding: 5px 50px;
+  border-radius: 5px;
+}

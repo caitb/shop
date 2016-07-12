@@ -56,9 +56,15 @@
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="${path}/static/js/iscroll.js" ></script>
-<%--<script src="${path}/static/js/dropload.min.js"></script>--%>
 <script>
+    $(document).ready(function () {
+        var materials = ${materials};
+        if (materials.length <= 0) {
+            $(".nobady").css("display", "-webkit-box");
+            $("#divall").css("display", "hide");
+            $(".downloading").css("display", "hide");
+        }
+    });
     function clickShow(){
         $(".black").show();
     }
@@ -139,7 +145,7 @@
                         "<p>"+mat.content+"</p>" +
                         "</div>");
                     });
-                    pagelimit++;;
+                    pagelimit++;
                 }
             }
         });

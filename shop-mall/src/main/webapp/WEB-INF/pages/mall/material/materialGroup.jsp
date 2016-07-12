@@ -4,9 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
+    <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/dropload.css">
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
 </head>
 <body>
@@ -15,23 +14,25 @@
     <header class="xq_header">
         <p>素材库</p>
     </header>
-    <main>
+    <main id="divall">
         <c:forEach var="Library" items="${LibraryList}">
-            <p onclick="javascript:window.location.replace('${basePath}materielList/groupInfoC/?mlId=${Library.id}');">
+            <p onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');">
                 <span><img src="${Library.remark}" alt=""></span>
                 <c:if test="${Library.isSubscript==0}">
-                    <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | 1234</span>
+                    <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
                 </c:if>
                 <c:if test="${Library.isSubscript==1}">
-                    <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | 1234</span>
+                    <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | ${Library.subscriptionNum}</span>
                 </c:if>
             </p>
         </c:forEach>
-
     </main>
+    <div class="nobady" style="display: none">
+        <img src="${path}/static/images/material/nodady.png" alt="">
+        <p>暂无上传素材</p>
+    </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-
-    <div id="datePlugin"></div>
+    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
     <div class="back_b"></div>
@@ -48,9 +49,15 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
-<script type="text/javascript" src="${path}/static/js/iscroll.js"></script>
-<script type="text/javascript" src="${path}/static/js/dropload.min.js"></script>
 <script>
+    $(document).ready(function(){
+      var LibraryList = ${LibraryList};
+        if (LibraryList.length <= 0) {
+            $(".nobady").css("display", "-webkit-box");
+            $("#divall").css("display", "hide");
+            $(".downloading").css("display", "hide");
+        }
+    });
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;
     $("main p").width(loginWidtn);
@@ -119,23 +126,37 @@
             }
         });
     }
-    //   下拉
-    $('body').dropload({
-        scrollArea: window,
-        loadDownFn: function (me) {
-            $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
-                dataType: 'json',
-                success: function (data) {
-                    // 代码执行后必须重置
-                },
-                error: function (xhr, type) {
-                    me.resetload();
+// 分页查询
+    var pagelimit = 2;
+    $(".downloading").on("click", function () {
+        var _contain = $("#divall");
+        var basePath = ${basePath};
+        $.ajax({
+            type: 'post',
+            url: '${path}/materielList/infoBPagenation',
+            data: {currentPage:pagelimit},
+            dataType: 'json',
+            success: function(data){
+                if(data.LibraryList==null || data.LibraryList.length <=0){
+                    alert("没有更多了");
                 }
-            });
-        }
-    });
+                if(data.isError==false && data.LibraryList.length>0){
+                    $.each(data.LibraryList, function (i, Library) {
+                        var imgHtml ="";
+                        if(Library.isSubscript==0){
+                            imgHtml += "<span class=\"add\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>+添加订阅</b> | "+Library.subscriptionNum+"</span>";
+                        }
+                        if(Library.isSubscript==1){
+                            imgHtml += "<span class=\"add on\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>取消订阅</b> | "+Library.subscriptionNum+"</span>";
+                        }
+                        _contain.append("<p onclick=\"javascript:window.location.replace('"+basePath+"materielList/groupInfoB/?mlId="+Library.id+"');\">" +
+                        "<span><img src=\""+Library.remark+"\" alt=\"\"></span>"+imgHtml+"</p>");
+                    });
+                    pagelimit++;
+                }
+            }
+        });
+    })
 </script>
 </body>
 </html>

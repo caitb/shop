@@ -48,7 +48,7 @@ public class MaterialLibraryService {
      */
     public List<MaterialLibrary> SkuMaterialLibraryList(int currentPage,int pageSize,Long UserId) throws Exception{
         List<MaterialLibrary> materialLibraryList = new ArrayList<>();
-        PageHelper.startPage(currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize,false);
         List<ComSkuMaterialLibrary> comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAll();
         String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (ComSkuMaterialLibrary comSkuMaterialLibrary :comSkuMaterialLibraryList){

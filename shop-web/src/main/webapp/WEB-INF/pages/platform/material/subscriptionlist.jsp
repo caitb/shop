@@ -18,7 +18,7 @@
     <main>
         <c:forEach items="${groupList}" var="group">
             <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}');">
-                <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+                <span><img src="${group.icon}" alt=""></span>
                 <span>${group.name}</span>
             </p>
         </c:forEach>

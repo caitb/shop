@@ -49,7 +49,6 @@ public class MaterialLibraryController extends BaseController {
             int pageSize = 4; //ajax请求时默认每页显示条数为4条
             List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(1,pageSize,comUser.getId());
             mv.addObject("LibraryList",materialLibraryList);
-
         }catch (Exception e){
             log.info(e.getMessage());
         }
@@ -101,7 +100,7 @@ public class MaterialLibraryController extends BaseController {
 
     /**
      * jjh
-     * 素材图片展示B
+     * 素材图片展示C
      * @param mgId
      * @return
      */

@@ -1,4 +1,4 @@
-package com.masiis.shop.web.promotion.cpromotion.service.gorder;
+package com.masiis.shop.admin.service.promotion;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.promotion.SfGorderOperationLogMapper;

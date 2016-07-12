@@ -2,7 +2,8 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
@@ -50,7 +51,7 @@ public class SfGorderService {
         sfGorder.setGorderAmount(BigDecimal.ZERO);//订单金额
         sfGorder.setProductAmount(BigDecimal.ZERO);//奖品金额
         sfGorder.setShipAmount(BigDecimal.ZERO);//运费
-        sfGorder.setShipStatus(0);
+        sfGorder.setShipStatus(SfGorderShipStatus.WaitShip.getCode());
         sfGorder.setReceivableAmount(BigDecimal.ZERO);//应收费用
         sfGorder.setPayAmount(BigDecimal.ZERO);//已付金额
         sfGorder.setPayTime(new Date());//付款时间

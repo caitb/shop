@@ -73,7 +73,12 @@ public class MaterialLibraryService {
     }
 
     public List<ComSkuMaterialGroup> MaterialLibraryGroup(Integer materialId,Integer isBShow,Integer isCShow){
-        return comSkuMaterialGroupMapper.selectMaterialGroupByMlId(materialId, isBShow, isCShow);
+         List<ComSkuMaterialGroup> comSkuMaterialGroupList = comSkuMaterialGroupMapper.selectMaterialGroupByMlId(materialId, isBShow, isCShow);
+        String Value = PropertiesUtils.getStringValue("oss.OSS_MATERIAL");
+         for (ComSkuMaterialGroup comSkuMaterialGroup :comSkuMaterialGroupList){
+             comSkuMaterialGroup.setIcon(Value + comSkuMaterialGroup.getIcon());
+         }
+        return comSkuMaterialGroupList;
     }
 
 }

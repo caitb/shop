@@ -179,12 +179,6 @@
                 onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
         </h1>
     </div>
-    <%--<div class="back_user">--%>
-    <%--<p>--%>
-    <%--您需要通过您的上级发给您的二维码才可以申请合伙人。如无上级，请联系客服：4009619616--%>
-    <%--</p>--%>
-    <%--<button class="zhidao">我知道了</button>--%>
-    <%--</div>--%>
 </div>
 <div class="black">
     <div class="backb"></div>
@@ -327,6 +321,28 @@
         if (!isMobile(ApplyData.mobile)) {
             $("#applyErrorMessageId").empty();
             $("#applyErrorMessageId").html("手机号格式不正确");
+            return;
+        }
+        //check 手机号是否被绑定
+        var checkPhone =function(){
+            var isbinded = false;
+            $.ajax({
+                url: '<%=basePath%>product/checkBindedPhone.do',
+                type: 'post',
+                data: {phone:ApplyData.mobile},
+                dataType: 'json',
+                async:false,
+                success: function (data) {
+                    if (data.isError == true && data.isBinded == true) {
+                        isbinded = true;
+                    }
+                }
+            });
+            return isbinded;
+        }
+        if(checkPhone()){
+            $("#applyErrorMessageId").empty();
+            $("#applyErrorMessageId").html("改手机号已经申请过！");
             return;
         }
         $.ajax({

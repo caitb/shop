@@ -24,4 +24,8 @@ public class PfUserAgentApplicationService {
     public int addApplicationUser(PfUserAgentApplication pfUserAgentApplication) throws Exception{
        return pfUserAgentApplicationMapper.insert(pfUserAgentApplication);
     }
+
+    public PfUserAgentApplication getPfUserAgentApplicationByPhone(String phone){
+        return pfUserAgentApplicationMapper.selectByPhone(phone);
+    }
 }

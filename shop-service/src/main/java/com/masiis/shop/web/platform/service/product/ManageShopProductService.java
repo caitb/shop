@@ -80,7 +80,8 @@ public class ManageShopProductService {
                             skuInfo.setStock(0);
                         }
                     } else {
-                        skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                        int currentCustomerStock = pfUserSkuStock.getCustomStock() - pfUserSkuStock.getFrozenCustomStock();
+                        skuInfo.setStock(currentCustomerStock >= 0 ? currentCustomerStock : 0);
                     }
                 }
                 skuInfoList.add(skuInfo);

@@ -16,8 +16,8 @@
     </header>
     <main id="divall">
         <c:forEach var="Library" items="${LibraryList}">
-            <p onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');">
-                <span><img src="${Library.remark}" alt=""></span>
+            <p>
+                <span  onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
                 <c:if test="${Library.isSubscript==0}">
                     <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
                 </c:if>
@@ -35,7 +35,7 @@
     <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -50,14 +50,6 @@
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
-    $(document).ready(function(){
-      var LibraryList = ${LibraryList};
-        if (LibraryList.length <= 0) {
-            $(".nobady").css("display", "-webkit-box");
-            $("#divall").css("display", "hide");
-            $(".downloading").css("display", "hide");
-        }
-    });
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;
     $("main p").width(loginWidtn);
@@ -72,6 +64,7 @@
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
+                        window.location.reload()
                     }
                 }
             });
@@ -130,7 +123,7 @@
     var pagelimit = 2;
     $(".downloading").on("click", function () {
         var _contain = $("#divall");
-        var basePath = ${basePath};
+        var basePath = '${basePath}';
         $.ajax({
             type: 'post',
             url: '${path}/materielList/infoBPagenation',

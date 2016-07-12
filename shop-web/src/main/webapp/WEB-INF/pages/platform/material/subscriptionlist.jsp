@@ -26,7 +26,7 @@
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
 </div>
 <div class="black">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
         <p>

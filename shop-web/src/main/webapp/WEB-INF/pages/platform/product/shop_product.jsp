@@ -104,11 +104,6 @@
         <input type="text" id="shopSkuId" style="display: none">
         <h1>生成店主发货类型商品？</h1>
         <p>确认“我要自己发货”后，系统将生成一个店主发货类型的商品。此商品您可以编辑库存。当您想销售自己手中的商品时，可以使用此功能。</p>
-        <h2>
-            确认“我要自己发货”后，系统将生成一个店主发货类型的商品。此商品您可以编辑库存。当您想销售自己手中的商品时，可以使用此功能。确认“我要自己发货”后，系统将生成一个店主发货类型的商品。此商品您可以编辑库存。当您想销售自己手中的商品时，可以使用此功能。确认“我要自己发货”后，系统将生成一个店主发货类型的商品。此商品您可以编辑库存。当您想销售自己手中的商品时，可以使用此功能。确认“我要自己发货”后，系统将生成一个店主发货类型的商品。此商品您可以编辑库存。当您想销售自己手中的商品时，可以使用此功能。
-        </h2>
-        <input type="checkbox" id="check" checked/>
-        <label for="check">我已同意<a>《店主发货协议》</a></label>
         <h3>
             <button onclick="clickHide()">取消</button>
             <button class="queren">确认</button></h3>
@@ -198,11 +193,6 @@
     }
     $(".queren").on("click",function(){
         //生成自己的发货类型
-        var checked = document.getElementById("check").checked;
-        if(!checked){
-           alert("您需要同意店主发货协议");
-            return false;
-        }
         var shopSkuId = $("#shopSkuId").val();
         $.ajax({
             url: '<%=basePath%>shop/addSelfDelivery.do',

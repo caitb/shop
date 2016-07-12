@@ -19,6 +19,11 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </head>
+<script>
+    function skipToPromotionPage(){
+        window.location.href="";
+    }
+</script>
 <body>
 <div class="wrap">
     <div class="floor">
@@ -77,7 +82,7 @@
         </ul>
     </nav>
     <div class="banner">
-        <img src="${path}/static/images/activity.png" alt="">
+        <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
     </div>
 </div><c:if test="${fm!=0}">
     <footer>
@@ -98,4 +103,5 @@
     </footer>
 </c:if>
 </body>
+
 </html>

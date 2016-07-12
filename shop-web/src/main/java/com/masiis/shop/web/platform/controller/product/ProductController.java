@@ -293,4 +293,33 @@ public class ProductController extends BaseController {
         }
         return object.toJSONString();
     }
+
+    /**
+     * jjh
+     * 一个手机号只能发一次意向
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/checkBindedPhone.do")
+    @ResponseBody
+    public String isBindedPhone(@RequestParam(value = "phone", required = true) String phone) {
+        JSONObject obj = new JSONObject();
+        try {
+            PfUserAgentApplication pfUserAgentApplication = pfUserAgentApplicationService.getPfUserAgentApplicationByPhone(phone);
+            if (pfUserAgentApplication != null) {
+                obj.put("isError", true);
+                obj.put("isBinded", true);
+                obj.put("msg", "手机号已经被绑定请更换手机号");
+                return obj.toJSONString();
+            } else {
+                obj.put("isError", false);
+                return obj.toJSONString();
+            }
+        } catch (Exception e) {
+            obj.put("isError", true);
+            obj.put("isBinded", false);
+            obj.put("msg", "手机号查询是否被绑定失败:" + e.getMessage());
+            return obj.toJSONString();
+        }
+    }
 }

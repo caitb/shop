@@ -3,6 +3,8 @@ package com.masiis.shop.admin.controller.promotion;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageInfo;
+import com.masiis.shop.admin.controller.base.BaseController;
+import com.masiis.shop.admin.service.promotion.PromotionGorderService;
 import com.masiis.shop.admin.service.promotion.SfUserPromotionGiftService;
 import com.masiis.shop.admin.service.promotion.SfUserPromotionRuleService;
 import com.masiis.shop.admin.service.promotion.SfUserPromotionService;
@@ -29,7 +31,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/promotion")
-public class PromotionContorller {
+public class PromotionContorller  extends BaseController {
 
 
     private final static Log log = LogFactory.getLog(PromotionContorller.class);
@@ -40,6 +42,8 @@ public class PromotionContorller {
     private SfUserPromotionRuleService sfUserPromotionRuleService;
     @Resource
     private SfUserPromotionGiftService sfUserPromotionGiftService;
+    @Resource
+    private PromotionGorderService promotionGorderService;
 
     @RequestMapping("/add.shtml")
     public String addPage() {
@@ -103,6 +107,12 @@ public class PromotionContorller {
         return dataMap;
     }
 
+    /**
+     * 领取奖品发货
+     * @param request
+     * @param gorderFreight
+     * @return
+     */
     @RequestMapping("/deliveryGift.do")
     @ResponseBody
     public Object deliveryGift(HttpServletRequest request, SfGorderFreight gorderFreight){
@@ -114,12 +124,11 @@ public class PromotionContorller {
             if(StringUtils.isBlank(gorderFreight.getFreight())){
                 return "请填写运单号";
             }
-
+            promotionGorderService.deliveryGift(gorderFreight,getPbUser(request));
             return "success";
         } catch (Exception e) {
             log.error("发货出错![gorderFreight="+gorderFreight+"]");
             e.printStackTrace();
-
             return null;
         }
     }

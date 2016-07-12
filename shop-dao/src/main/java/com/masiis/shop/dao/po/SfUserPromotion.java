@@ -81,17 +81,22 @@ public class SfUserPromotion {
         this.setIntroduction(introduction);
 
         try {
-            Date beginTime = DateUtils.parseDate(beginTimeStr, new String[]{"yyyy-MM-dd HH:mm:ss"});
-            this.setBeginTime(beginTime);
+            this.beginTime = DateUtils.parseDate(beginTimeStr, new String[]{"yyyy-MM-dd HH:mm:ss"});
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         try {
-            Date endTime   = DateUtils.parseDate(endTimeStr,   new String[]{"yyyy-MM-dd HH:mm:ss"});
-            this.setEndTime(endTime);
+            this.endTime   = DateUtils.parseDate(endTimeStr,   new String[]{"yyyy-MM-dd HH:mm:ss"});
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        Date now = new Date();
+        if(now.getTime() < this.beginTime.getTime()) {
+            this.status = 1;
+        } else if(this.beginTime.getTime()<now.getTime() && now.getTime()<this.endTime.getTime()) {
+            this.status = 0;
         }
 
     }

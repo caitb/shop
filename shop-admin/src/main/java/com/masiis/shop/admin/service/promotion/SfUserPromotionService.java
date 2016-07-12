@@ -64,8 +64,6 @@ public class SfUserPromotionService {
 
         promotion.setCreateTime(new Date()); // 创建时间
 
-        promotion.setStatus(1); // 活动新建，即为暂停状态
-
         promotion.setType(0);    // 满赠
 
         promotion.setCode(PromotionMakeUtils.makeCode()); // 活动编码

@@ -183,7 +183,6 @@
                         <row>
                             <label class="col-sm-5"></label>
                             <div class="col-sm-6">
-                                <button type="reset" class="btn btn-lg btn-default">重置</button>
                                 <button type="submit" class="btn btn-lg btn-info" id="promotionSave">保存</button>
                             </div>
                         </row>
@@ -302,7 +301,10 @@
 
         }
 
-        loadPromotion(1);
+        var promotionId = '${param.promotionId}';
+        if(promotionId) {
+            loadPromotion(promotionId);
+        }
 
         // 刷新规则名
         function reflushRuleNames() {
@@ -367,7 +369,8 @@
                 var $rule = $(this);
                 $rule.find('.rule-name').css('color', '');
                 $rule.find("[name]:visible").each(function () {
-                    if (!$(this).val()) {
+                    var isNumber = /^\d*$/.test($(this).val());
+                    if (!$(this).val() || !isNumber) {
                         $(this).css("border-color", "#a94442");
                         $rule.find('.rule-name').css('color', '#a94442');
                         valid = false;
@@ -405,18 +408,44 @@
         }
 
         function checkTimeValue() {
-            var beginTimeStr = $('#beginTime');
-            console.log(beginTimeStr);
 
-            var beginTime = new Date(beginTimeStr.replace(/-/g,   "/"));
-            console.log(beginTime);
+            var isValid = true;
 
-            return false;
+            var beginTimeStr = $('#beginTime').val();
+            var endTimeStr = $('#endTime').val();
 
-            if($('#beginTime').val() >= $('#endTime')) {
-                alert("开始时间　大于　结束时间");
-                return false;
+            var beginTime = new Date(beginTimeStr);
+            var endTime   = new Date(endTimeStr);
+
+            if(beginTime.getTime() >= endTime.getTime()) {
+                alert("开始时间　不能大于　结束时间 ！");
+                isValid = false;
             }
+
+            $.ajax({
+                url : "<%=basePath%>common/now",
+                async : false,
+                dataType : 'json',
+                success : function(data) {
+                    console.log(data);
+                    console.log(endTime.getTime());
+                    console.log(data.time);
+
+                    if(endTime.getTime() < data.time) {
+                        isValid = false;
+                        alert("结束时间　不能小于　现在时间　！");
+                    }
+                }
+            });
+
+            var regex = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+            if(!regex.test(beginTimeStr) || !regex.test(endTimeStr)) {
+                isValid = false;
+                alert("时间格式错误！");
+            }
+
+            return isValid;
+
         }
 
         $('.promotion-rule [name]').on('keyup change',checkRule);

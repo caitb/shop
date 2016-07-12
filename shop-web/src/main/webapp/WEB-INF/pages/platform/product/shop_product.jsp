@@ -193,11 +193,6 @@
     }
     $(".queren").on("click",function(){
         //生成自己的发货类型
-        var checked = document.getElementById("check").checked;
-        if(!checked){
-           alert("您需要同意店主发货协议");
-            return false;
-        }
         var shopSkuId = $("#shopSkuId").val();
         $.ajax({
             url: '<%=basePath%>shop/addSelfDelivery.do',

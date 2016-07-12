@@ -36,8 +36,7 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift" >
         update sf_user_promotion_gift
-        set promo_id = #{promoId,jdbcType=INTEGER},
-            promo_rule_id = #{promoRuleId,jdbcType=INTEGER},
+        <set>
             <if test="type != null">
                 type = #{type,jdbcType=INTEGER},
             </if>
@@ -56,6 +55,7 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 

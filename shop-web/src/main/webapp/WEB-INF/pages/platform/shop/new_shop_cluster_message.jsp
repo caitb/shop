@@ -204,7 +204,7 @@
             success:function(data){
                 if(data.resCode == "success"){
                     // 创建群发消息成功
-                    window.location.href = "${path}/shopmessage/mycluster.shtml";
+                    window.location.href = "${path}/shopmessage/success.shtml";
                 } else {
                     // 请求错误
                     alert(data.resMsg);

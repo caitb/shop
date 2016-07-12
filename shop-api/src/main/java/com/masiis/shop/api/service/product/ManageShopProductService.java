@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.service.product;
+package com.masiis.shop.api.service.product;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;

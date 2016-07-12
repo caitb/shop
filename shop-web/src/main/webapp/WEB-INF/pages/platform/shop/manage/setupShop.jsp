@@ -38,7 +38,7 @@
             </div>
             <div class="floor2">
                 <p>店主微信：</p>
-                <label for="qrImg"><img src="<%=basePath%>static/images/images/set_1.png" alt=""><b class="set">未选择文件</b></label>
+                <label for="qrImg"><img src="<%=basePath%>static/images/images/set_1.png" alt=""><b class="wei">未选择文件</b></label>
                 <input type="file" id="qrImg" name="qrImg">
                 <h1 onclick="clickShow()">如何获取微信二维码？</h1>
             </div>
@@ -67,7 +67,7 @@
 <script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
     $("input").on("change",function(){
-        $(".set").html("已选择")
+        $(".wei").html("已选择")
     })
     $('input[name="name"]').keyup(function(){
         if($(this).val().length>10){

@@ -40,7 +40,7 @@
                 <p>店主微信：</p>
                 <label for="qrImg"><img src="<%=basePath%>static/images/images/set_1.png" alt=""><b class="set">未选择文件</b></label>
                 <input type="file" id="qrImg" name="qrImg">
-                <h1>如何获取微信二维码？</h1>
+                <h1 onclick="clickShow()">如何获取微信二维码？</h1>
             </div>
             <div class="floor">
                 <p>二维码描述：</p>
@@ -55,6 +55,14 @@
         <button>保存</button>
     </div>
 </form>
+<div class="black">
+    <div class="backb"></div>
+    <div class="set">
+        <h1>如何获取二维码？</h1>
+        <p><img src="${path}/static/images/wechat.png" alt=""></p>
+        <button onclick="clickHide()">我知道了</button>
+    </div>
+</div>
 </body>
 <script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
@@ -76,6 +84,11 @@
             $(this).val($(this).val().substring(0,30));
         }
     });
-
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
 </script>
 </html>

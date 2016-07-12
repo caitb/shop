@@ -208,7 +208,8 @@ public class SkuService {
                 }
             }
             if (isOwnShip == 1) {//自己发货
-                skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                int currentCustomerStock = pfUserSkuStock.getCustomStock()-pfUserSkuStock.getFrozenCustomStock();
+                skuInfo.setStock(currentCustomerStock >= 0 ? currentCustomerStock : 0);
             }
         }
         return skuInfo;

@@ -5,8 +5,11 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
+import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
 import com.masiis.shop.web.material.service.SkuMaterialService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -33,7 +36,8 @@ public class MaterialLibraryController extends BaseController{
     private MaterialLibraryService materialLibraryService;
     @Resource
     private SkuMaterialService skuMaterialService;
-
+    @Resource
+    private SkuService skuService;
     /**
      * jjh
      * 素材列表B端
@@ -92,7 +96,10 @@ public class MaterialLibraryController extends BaseController{
         ModelAndView mv = new ModelAndView("/platform/material/subscriptionlist");
         try {
             List<ComSkuMaterialGroup> comSkuMaterialGroupList = materialLibraryService.MaterialLibraryGroup(mlId, 1, null);
+            ComSkuMaterialLibrary comSkuMaterialLibrary = materialLibraryService.getComSkuMaterialLibraryByPrimaryId(mlId);
+            ComSku comSku = skuService.getComSkuBySkuId(comSkuMaterialLibrary.getSkuId());
             mv.addObject("groupList",comSkuMaterialGroupList);
+            mv.addObject("skuName",comSku.getName());
         }catch (Exception e){
             log.info(e.getMessage());
         }

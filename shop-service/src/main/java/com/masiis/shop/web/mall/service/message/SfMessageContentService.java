@@ -8,10 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Date 2016/7/5
@@ -66,5 +63,35 @@ public class SfMessageContentService {
 
     public void insert(SfMessageContent content) {
         sfMessageContentMapper.insert(content);
+    }
+
+    /**
+     * 查询关注的店铺未读消息数量和最新未读消息内容
+     * @param userId
+     */
+    public List<Map<String, String>> queryUnreadShopInfosByUser(Long userId){
+        List<Map<String, String>> returnList = new ArrayList<>();
+        List<Map<String, Long>> temp = sfMessageContentMapper.selectUnreadNumsAndFromByUser(userId);
+        Set<Long> difUserSet = new HashSet<>();
+        Map<Long, Map<String, Long>> difMap = new LinkedHashMap<>();
+        for(int i = 0; i < temp.size(); i++){
+            Long fromUser = temp.get(i).get("fromUser");
+            if(!difUserSet.contains(fromUser)){
+                difUserSet.add(fromUser);
+                Map<String, Long> tempMap = new LinkedHashMap<>();
+                tempMap.put("contentId", temp.get(i).get("contentId"));
+                tempMap.put("num", 1L);
+                difMap.put(fromUser, tempMap);
+            }else{
+                Map<String, Long> tempMap = difMap.get(fromUser);
+                tempMap.put("num", tempMap.get("num")+1);
+            }
+        }
+        for(Map<String, Long> valueMap : difMap.values()){
+            Map<String, String> infoMap = sfMessageContentMapper.selectShopInfoAndFirMsgByMsgId(valueMap.get("contentId"));
+            infoMap.put("num", valueMap.get("num").toString());
+            returnList.add(infoMap);
+        }
+        return returnList;
     }
 }

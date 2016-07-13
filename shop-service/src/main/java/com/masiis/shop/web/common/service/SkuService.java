@@ -180,7 +180,7 @@ public class SkuService {
             skuInfo.setSlogan(comSpu.getSlogan());
             skuInfo.setContent(comSpu.getContent());
         }
-        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId);
+        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId,isOwnShip);
         if (sfShopSku != null) {
 //            skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
@@ -208,7 +208,8 @@ public class SkuService {
                 }
             }
             if (isOwnShip == 1) {//自己发货
-                skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                int currentCustomerStock = pfUserSkuStock.getCustomStock()-pfUserSkuStock.getFrozenCustomStock();
+                skuInfo.setStock(currentCustomerStock >= 0 ? currentCustomerStock : 0);
             }
         }
         return skuInfo;

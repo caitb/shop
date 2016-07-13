@@ -49,6 +49,15 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByGorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_gorder_id, gift_id, gift_name, unit_price, quantity, total_price,
+        remark
+        from sf_gorder_item
+        where sf_gorder_id = #{gorderId,jdbcType=BIGINT}
+    </select>
+
+
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, sf_gorder_id, gift_id, gift_name, unit_price, quantity, total_price, 
         remark

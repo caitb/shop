@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserAgentApplication;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PfUserAgentApplicationMapper {
     int deleteByPrimaryKey(Long id);
@@ -21,4 +23,15 @@ public interface PfUserAgentApplicationMapper {
     List<PfUserAgentApplication> selectAll();
 
     int updateByPrimaryKey(PfUserAgentApplication record);
+
+    PfUserAgentApplication selectByPhone(@Param("mobile") String mobile);
+
+    /**
+     * 条件查询
+     * @param conditionMap
+     * @return
+     */
+    List<Map<String, Object>> selectByCondition(Map<String, Object> conditionMap);
+
+
 }

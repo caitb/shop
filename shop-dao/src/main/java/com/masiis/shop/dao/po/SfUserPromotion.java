@@ -7,6 +7,8 @@
  */
 package com.masiis.shop.dao.po;
 
+import org.apache.commons.lang.time.DateUtils;
+import java.text.ParseException;
 import java.util.Date;
 
 public class SfUserPromotion {
@@ -67,6 +69,37 @@ public class SfUserPromotion {
      * 备注
      */
     private String remark;
+
+    public SfUserPromotion() {
+    }
+
+    public SfUserPromotion(Integer id, String name, String remark, String introduction, Integer personType, String beginTimeStr, String endTimeStr) {
+        this.id = id;
+        this.name = name;
+        this.remark = remark;
+        this.personType = personType;
+        this.setIntroduction(introduction);
+
+        try {
+            this.beginTime = DateUtils.parseDate(beginTimeStr, new String[]{"yyyy-MM-dd HH:mm:ss"});
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.endTime   = DateUtils.parseDate(endTimeStr,   new String[]{"yyyy-MM-dd HH:mm:ss"});
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date now = new Date();
+        if(now.getTime() < this.beginTime.getTime()) {
+            this.status = 1;
+        } else if(this.beginTime.getTime()<now.getTime() && now.getTime()<this.endTime.getTime()) {
+            this.status = 0;
+        }
+
+    }
 
     public Integer getId() {
         return id;

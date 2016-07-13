@@ -3,3 +3,11 @@
 /target
 *.iml
 /AAA.txt
+/shop-admin/target/
+/shop-api/target/
+/shop-base/target/
+/shop-mall/target/
+/shop-scheduler/target/
+/shop-service/target/
+/shop-web/target/
+/shop-dao/target/

@@ -5,8 +5,11 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
+import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
 import com.masiis.shop.web.material.service.SkuMaterialService;
@@ -22,7 +25,7 @@ import java.util.List;
 
 /**
  * Created by jiajinghao on 2016/7/6.
- * 素材库列表controller B端
+ * 素材库列表controller c端
  */
 @Controller
 @RequestMapping("/materielList")
@@ -33,7 +36,8 @@ public class MaterialLibraryController extends BaseController {
     private MaterialLibraryService materialLibraryService;
     @Resource
     private SkuMaterialService skuMaterialService;
-
+    @Resource
+    private SkuService skuService;
     /**
      * jjh
      * 素材列表C端
@@ -49,7 +53,6 @@ public class MaterialLibraryController extends BaseController {
             int pageSize = 4; //ajax请求时默认每页显示条数为4条
             List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(1,pageSize,comUser.getId());
             mv.addObject("LibraryList",materialLibraryList);
-
         }catch (Exception e){
             log.info(e.getMessage());
         }
@@ -92,7 +95,10 @@ public class MaterialLibraryController extends BaseController {
         ModelAndView mv = new ModelAndView("/platform/material/subscriptionlist");
         try {
             List<ComSkuMaterialGroup> comSkuMaterialGroupList = materialLibraryService.MaterialLibraryGroup(mlId, null, 1);
+            ComSkuMaterialLibrary comSkuMaterialLibrary = materialLibraryService.getComSkuMaterialLibraryByPrimaryId(mlId);
+            ComSku comSku = skuService.getComSkuBySkuId(comSkuMaterialLibrary.getSkuId());
             mv.addObject("groupList",comSkuMaterialGroupList);
+            mv.addObject("skuName",comSku.getName());
         }catch (Exception e){
             log.info(e.getMessage());
         }
@@ -101,7 +107,7 @@ public class MaterialLibraryController extends BaseController {
 
     /**
      * jjh
-     * 素材图片展示B
+     * 素材图片展示C
      * @param mgId
      * @return
      */

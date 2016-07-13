@@ -23,10 +23,17 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserPromotionRule" >
         update sf_user_promotion_rule
-        set promo_id = #{promoId,jdbcType=INTEGER},
-            type = #{type,jdbcType=INTEGER},
-            rule_value = #{ruleValue,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="ruleValue != null">
+                rule_value = #{ruleValue,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -49,5 +56,6 @@
         select id, promo_id, type, rule_value, remark
         from sf_user_promotion_rule
         where promo_id = #{promoId,jdbcType=INTEGER}
+        order by rule_value asc
     </select>
 </mapper>

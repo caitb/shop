@@ -1,18 +1,13 @@
 package com.masiis.shop.web.mall.controller.promotion.guser;
 
-import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.PromotionDetailShowService;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.soap.MTOM;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +16,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/showPromotion")
 public class PromotionDetailShowController extends BaseController{
-
-    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private PromotionDetailShowService promotionDetailShowService;

@@ -13,7 +13,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>产品图片</p>
+        <p>素材图片</p>
     </header>
     <main id="divall">
         <c:forEach var="mat" items="${materials}">
@@ -57,14 +57,6 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(document).ready(function () {
-        var materials = ${materials};
-        if (materials.length <= 0) {
-            $(".nobady").css("display", "-webkit-box");
-            $("#divall").css("display", "hide");
-            $(".downloading").css("display", "hide");
-        }
-    });
     function clickShow(){
         $(".black").show();
     }

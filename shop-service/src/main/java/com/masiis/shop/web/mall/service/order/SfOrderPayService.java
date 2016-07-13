@@ -148,9 +148,18 @@ public class SfOrderPayService {
                 updateStock(order, orderItems);
             }
             log.info("支付成功更新库存---end");
+
             //更新小铺商品的总销量
+            Integer isOwnShip = null;
+            if (order.getSendMan()==0){
+                //平台发货
+                isOwnShip = 0;
+            }else{
+                //店主发货
+                isOwnShip = 1;
+            }
             for (SfOrderItem orderItem : orderItems) {
-                updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity());
+                updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity(),isOwnShip);
             }
 
             //统计更新信息
@@ -494,10 +503,10 @@ public class SfOrderPayService {
      * @author hanzengzhi
      * @date 2016/5/11 14:30
      */
-    private void updateShopSku(Long shopId, Integer skuId, Integer quantity) {
+    private void updateShopSku(Long shopId, Integer skuId, Integer quantity,Integer isOwnShip) {
         log.info("更新小铺商品表的总销量----start");
-        log.info("shopId------" + shopId + "----skuId---" + skuId + "----quantity----" + quantity);
-        SfShopSku shopSku = shopSkuService.selectByShopIdAndSkuId(shopId, skuId);
+        log.info("shopId------" + shopId + "----skuId---" + skuId +"----是否平台发货--isOwnShip-----"+isOwnShip+"----quantity----" + quantity);
+        SfShopSku shopSku = shopSkuService.selectByShopIdAndSkuId(shopId, skuId,isOwnShip);
         if (shopSku != null) {
             if (shopSku.getSaleNum() != null) {
                 shopSku.setSaleNum(shopSku.getSaleNum() + quantity);

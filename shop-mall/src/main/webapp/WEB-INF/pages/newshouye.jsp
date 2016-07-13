@@ -141,7 +141,7 @@
                 var shipName="";
                 var shopId= ${sfShop.id};
                 $.each(data, function(i, SfShopDetails) {
-                    trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"');\">";
+                    trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"&isOwnShip="+SfShopDetails.isWunShip+"');\">";
                     trHtml2+="<div><img src=\""+SfShopDetails.skuImageUrl+"\" alt=\"\"></div>";
                     if(SfShopDetails.isWunShip==1){
                         shipName="店主发货";

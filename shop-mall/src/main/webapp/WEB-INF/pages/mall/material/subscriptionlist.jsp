@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/readlist.css">
 </head>
@@ -13,12 +13,12 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/infoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>订阅列表</p>
+        <p>${skuName}</p>
     </header>
     <main>
         <c:forEach items="${groupList}" var="group">
             <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}');">
-                <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+                <span><img src="${group.icon}" alt=""></span>
                 <span>${group.name}</span>
             </p>
         </c:forEach>

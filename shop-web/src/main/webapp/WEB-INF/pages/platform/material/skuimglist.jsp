@@ -13,7 +13,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>产品图片</p>
+        <p>素材图片</p>
     </header>
     <main id="divall">
         <c:forEach var="mat" items="${materials}">

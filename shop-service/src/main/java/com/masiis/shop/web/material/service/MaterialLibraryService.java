@@ -81,4 +81,8 @@ public class MaterialLibraryService {
         return comSkuMaterialGroupList;
     }
 
+
+    public ComSkuMaterialLibrary getComSkuMaterialLibraryByPrimaryId(Integer mlId){
+        return comSkuMaterialLibraryMapper.selectByPrimaryKey(mlId);
+    }
 }

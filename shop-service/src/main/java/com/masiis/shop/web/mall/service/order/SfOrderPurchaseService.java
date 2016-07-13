@@ -82,6 +82,16 @@ public class SfOrderPurchaseService {
             //获得购物车中的商品信息
             List<SfShopCart> shopCarts = getShopCartInfoByUserIdAndShopId(userId, sfShopId, 1);
             map.put("shopCarts", shopCarts);
+            //商品发货类型
+            if (shopCarts!=null&&shopCarts.size()>0){
+                SfShopCart shopCart = shopCarts.get(0);
+                if (shopCart.getSendMan()==0){
+                    map.put("isOwnShip",0);
+                }else{
+                    map.put("isOwnShip",1);
+                }
+
+            }
             //获得商品的详情信息
             List<SfShopCartSkuDetail> shopCartSkuDetails = getShopCartSkuBySkuId(shopCarts);
             map.put("shopCartSkuDetails", shopCartSkuDetails);

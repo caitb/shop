@@ -13,7 +13,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/infoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>订阅列表</p>
+        <p>${skuName}</p>
     </header>
     <main>
         <c:forEach items="${groupList}" var="group">

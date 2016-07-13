@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
 </head>
@@ -13,7 +13,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>产品图片</p>
+        <p>素材图片</p>
     </header>
     <main id="divall">
         <c:forEach var="mat" items="${materials}">

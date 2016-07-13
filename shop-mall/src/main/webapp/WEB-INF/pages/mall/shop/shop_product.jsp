@@ -126,6 +126,7 @@
         </c:if>
         <c:if test="${isOwnShip==1}">
             <span id="isOwnShip">店主发货</span>
+            <span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>
         </c:if>
     </h1>
     <h1>

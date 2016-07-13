@@ -35,7 +35,7 @@
     <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 

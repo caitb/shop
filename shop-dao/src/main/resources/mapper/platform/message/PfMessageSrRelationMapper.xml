@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.message.PfMessageSrRelationMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfMessageSrRelation" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_message_content_id" property="pfMessageContentId" jdbcType="BIGINT" />
+        <result column="from_user" property="fromUser" jdbcType="BIGINT" />
+        <result column="to_user" property="toUser" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="m_type" property="mType" jdbcType="INTEGER" />
+        <result column="is_see" property="isSee" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="MessageGroupByToUser" type="com.masiis.shop.dao.beans.message.PfMessageCenterDetail">
+        <result column="isSeeNum" property="isSeeNum" jdbcType="INTEGER" />
+        <result column="headUrl" property="headUrl" jdbcType="VARCHAR" />
+        <result column="fromUserName" property="fromUserName" jdbcType="VARCHAR" />
+        <result column="fromUserId" property="fromUserId" jdbcType="VARCHAR" />
+        <result column="latestMessage" property="latestMessage" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_message_sr_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfMessageSrRelation" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_message_sr_relation (id, create_time, pf_message_content_id, 
+            from_user, to_user, status, 
+            m_type, is_see, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfMessageContentId,jdbcType=BIGINT}, 
+            #{fromUser,jdbcType=BIGINT}, #{toUser,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+            #{mType,jdbcType=INTEGER}, #{isSee,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfMessageSrRelation" >
+        update pf_message_sr_relation
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            pf_message_content_id = #{pfMessageContentId,jdbcType=BIGINT},
+            from_user = #{fromUser,jdbcType=BIGINT},
+            to_user = #{toUser,jdbcType=BIGINT},
+            status = #{status,jdbcType=INTEGER},
+            m_type = #{mType,jdbcType=INTEGER},
+            is_see = #{isSee,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_message_content_id, from_user, to_user, status, m_type, 
+        is_see, remark
+        from pf_message_sr_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pf_message_content_id, from_user, to_user, status, m_type, 
+        is_see, remark
+        from pf_message_sr_relation
+    </select>
+
+    <select id="querySrRelationNumsToUser" resultType="java.lang.Integer">
+        SELECT
+            COUNT(t.from_user)
+        FROM
+            (
+            SELECT
+                from_user
+            FROM
+                pf_message_sr_relation
+            WHERE
+                to_user = #{userId,jdbcType=BIGINT}
+            AND
+                m_type = #{mType,jdbcType=INTEGER}
+            GROUP BY
+                from_user
+            ) t
+    </select>
+
+    <select id="queryByToUserWithPaging" resultMap="MessageGroupByToUser">
+        SELECT
+          r2.notSeeNum as isSeeNum,
+          s.wx_head_img as headUrl,
+          s.real_name as fromUserName,
+          s.id as fromUserId,
+          (
+          SELECT
+            content
+          FROM
+            pf_message_content
+          WHERE
+            id = r2.pf_message_content_id
+          ) as latestMessage
+        FROM
+            (
+            SELECT
+              r1.pf_message_content_id,
+              r1.from_user,
+              (
+              SELECT
+                IFNULL(count(e1.id),0)
+              FROM
+                pf_message_sr_relation e1
+              WHERE
+                e1.from_user = r1.from_user
+              AND e1.to_user = #{userId,jdbcType=BIGINT}
+              AND e1.m_type = #{mType,jdbcType=INTEGER}
+              AND e1.is_see = 0
+              ) AS notSeeNum,
+              r1.create_time,
+              r1.is_see
+            FROM
+            (
+            SELECT
+              e.pf_message_content_id,
+              e.from_user,
+              e.to_user,
+              e.id,
+              e.is_see,
+              e.create_time
+            FROM
+              pf_message_sr_relation e
+            WHERE
+              e.id IN (
+                SELECT
+                  MAX(f.id) AS rid
+                FROM
+                  pf_message_sr_relation f
+                WHERE
+                  f.to_user = #{userId,jdbcType=BIGINT}
+                AND f.m_type= #{mType,jdbcType=INTEGER}
+                GROUP BY
+                  f.from_user
+                ORDER BY
+                  f.is_see DESC
+              )
+            ) r1
+            WHERE
+              r1.to_user = #{userId,jdbcType=BIGINT}
+            AND r1.id <![CDATA[ <= ]]> (
+                SELECT
+                  o.rid
+                FROM
+                (
+                SELECT
+                  MAX(r.id) AS rid
+                FROM
+                  pf_message_sr_relation r
+                WHERE
+                  r.to_user = #{userId,jdbcType=BIGINT}
+                AND r.m_type= #{mType,jdbcType=INTEGER}
+                GROUP BY
+                  r.from_user
+                ORDER BY
+                  r.is_see DESC
+                ) o
+                ORDER BY
+                  o.rid DESC
+                LIMIT #{start,jdbcType=INTEGER}, 1
+            )
+            GROUP BY
+              r1.from_user
+            ORDER BY
+              r1.create_time DESC,
+              r1.id DESC
+            LIMIT #{pageSize,jdbcType=INTEGER}
+            ) r2
+        INNER JOIN com_user s ON s.id = r2.from_user
+        ORDER BY
+          r2.is_see DESC,
+          r2.create_time DESC;
+    </select>
+</mapper>

@@ -1,18 +1,10 @@
 package com.masiis.shop.web.platform.controller.message;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.*;
-import com.fasterxml.jackson.databind.ser.std.NullSerializer;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.message.SfMessageDetail;
-import com.masiis.shop.dao.beans.message.SfMessagePageFList;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.message.SfMessageContentService;
-import com.masiis.shop.web.mall.service.message.SfMessageDetailService;
 import com.masiis.shop.web.mall.service.message.SfMessageSrRelationService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
@@ -21,15 +13,12 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -60,7 +49,7 @@ public class ShopMessageController extends BaseController {
 
     @RequestMapping("/mycluster.shtml")
     public String toShopMessageList(){
-        return "platform/shop/cluster_message_list";
+        return "platform/message/shopmessage/cluster_message_list";
     }
 
     /**
@@ -77,7 +66,6 @@ public class ShopMessageController extends BaseController {
         int pageSize = 10;
         JSONObject res = new JSONObject();
         List<SfMessageContent> resData = new ArrayList<>();
-        res.put("data", resData);
         try{
             ComUser user = getComUser(request);
             if(user == null){
@@ -128,7 +116,7 @@ public class ShopMessageController extends BaseController {
 
     @RequestMapping("/toNew.shtml")
     public String toNewMessage(){
-        return "platform/shop/new_shop_cluster_message";
+        return "platform/message/shopmessage/new_shop_cluster_message";
     }
 
     @RequestMapping("/toNewData.do")
@@ -240,6 +228,6 @@ public class ShopMessageController extends BaseController {
 
     @RequestMapping("/success.shtml")
     public String createSuccess(){
-        return "platform/shop/shop_message_create_success";
+        return "platform/message/shopmessage/shop_message_create_success";
     }
 }

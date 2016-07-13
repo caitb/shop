@@ -12,7 +12,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>素材图片</p>
     </header>
     <main id="divall">
@@ -36,7 +36,7 @@
     <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -49,13 +49,14 @@
     </div>
 </div>
 <div class="bigphp">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
     function clickShow(){
         $(".black").show();

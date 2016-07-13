@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
 </head>
 <body>
-
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>素材图片</p>
     </header>
     <main id="divall">
@@ -56,6 +55,7 @@
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
     function clickShow(){
         $(".black").show();

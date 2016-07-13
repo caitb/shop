@@ -39,7 +39,7 @@ public class PromotionGorderService {
         //修改订单的状态
         SfGorder sfGorder = gorderService.deliveryGiftAndUpdate(gorderFreight);
         //插入订单日志
-        gorderOperationLogService.addGorderOperationLog(pbUser.getId(),sfGorder.getId(),"update",SfGOrderPayStatusEnum.ORDER_PAID.getCode(),sfGorder.getGorderStatus(),"奖品发货修改订单状态，订单完成");
+        gorderOperationLogService.addGorderOperationLog(sfGorder.getUserId(),sfGorder.getId(),"update",SfGOrderPayStatusEnum.ORDER_PAID.getCode(),sfGorder.getGorderStatus(),"奖品发货修改订单状态，订单完成");
         //插入运单表
         gorderFreight.setCreateTime(new Date());
         gorderFreightService.insert(gorderFreight);

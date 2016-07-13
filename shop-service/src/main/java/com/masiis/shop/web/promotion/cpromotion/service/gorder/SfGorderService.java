@@ -2,7 +2,8 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
@@ -11,6 +12,7 @@ import com.masiis.shop.dao.po.SfGorder;
 import com.masiis.shop.dao.po.SfUserPromotion;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ import java.util.Date;
  * C端用户奖励订单表
  */
 @Service
+@Transactional
 public class SfGorderService {
 
     private Log log = LogFactory.getLog(this.getClass());
@@ -48,7 +51,7 @@ public class SfGorderService {
         sfGorder.setGorderAmount(BigDecimal.ZERO);//订单金额
         sfGorder.setProductAmount(BigDecimal.ZERO);//奖品金额
         sfGorder.setShipAmount(BigDecimal.ZERO);//运费
-        sfGorder.setShipStatus(0);
+        sfGorder.setShipStatus(SfGorderShipStatus.WaitShip.getCode());
         sfGorder.setReceivableAmount(BigDecimal.ZERO);//应收费用
         sfGorder.setPayAmount(BigDecimal.ZERO);//已付金额
         sfGorder.setPayTime(new Date());//付款时间

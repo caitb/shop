@@ -7,14 +7,13 @@
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
-    <link rel="stylesheet" href="${path}/static/css/dropload.css">
 </head>
 <body>
 
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>产品图片</p>
+        <p>素材图片</p>
     </header>
     <main id="divall">
         <c:forEach var="mat" items="${materials}">
@@ -28,12 +27,16 @@
                 <p>${mat.content}</p>
             </div>
         </c:forEach>
-        <div id="datePlugin"></div>
     </main>
+    <div class="nobady" style="display: none">
+        <img src="${path}/static/images/material/nodady.png" alt="">
+        <p>暂无上传素材</p>
+    </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
+    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -46,15 +49,13 @@
     </div>
 </div>
 <div class="bigphp">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="${path}/static/js/iscroll.js" ></script>
-<script src="${path}/static/js/dropload.min.js"></script>
 <script>
     function clickShow(){
         $(".black").show();
@@ -67,47 +68,9 @@
     }
     $(".sec1 img").on("click",function(){
         var imgSrc=$(this).attr("src");
-        $(".bigphp").show().find("img").attr("src",imgSrc);
+        $(".bigphp").show();
+        $(".bigphp img").attr("src",imgSrc);
     })
-    //   下拉
-    $('body').dropload({
-        scrollArea : window,
-        loadDownFn : function(me){
-            var pageData = {};
-            pageData.mgId = '${mgId}';
-            pageData.currentPage = 1;
-            $.ajax({
-                type: 'post',
-                url: '${path}/materielList/materialInfoBPage',
-                data: pageData,
-                dataType: 'json',
-                success: function(data){
-                    var _contain = $("#divall");
-                    if(data.materials==null || data.materials.length <=0){
-                        $(".dropload-down").remove();
-                        alert("没有更多了");
-                    }
-                    if(data.isError=false && data.materials.length>0){
-                        $.each(data.materials, function (i, mat) {
-                            var imgHtml ="";
-                            $.each(mat.comSkuMaterialItems, function (i, img){
-                                imgHtml += "<a href=\"#\"><img data=\""+img.fileUrl+"\" /></a>";
-                            });
-                            _contain.append("<div class=\"floor\">" +
-                            "<h1>"+mat.title+"</h1>" +
-                            "<div class=\"sec1\" id=\"imagelist\">"+imgHtml+"</div>" +
-                            "<p>"+mat.content+"</p>" +
-                            "</div>");
-                        });
-                    }
-                },
-                error: function(xhr, type){
-                    me.resetload();
-                }
-            });
-        }
-    });
-
     //判断浏览器
     var Browser=new Object();
     Browser.userAgent=window.navigator.userAgent.toLowerCase();
@@ -131,10 +94,9 @@
             }
         }
         //如果因为网络或图片的原因发生异常，则显示该图片
-        img.onerror=function(){img.src="${path}/static/images/admin.png"}
+        img.onerror=function(){img.src="${path}/static/images/material/Failed.png"}
         img.src=val;
     }
-
     //显示图片
     function checkimg(obj,imgid){
         document.getElementById(imgid).style.cssText="";
@@ -144,11 +106,43 @@
         var imageList=$("#imagelist");
         $(".sec1 img").each(function(i,n){
             $(".floor").find("img").eq(i).attr("id","img0"+i);
-            $(".floor").find("img").eq(i).attr("src","http://www.86y.org/images/loading.gif");
-            $(".floor").find("img").eq(i).css("background","url(http://www.86y.org/images/loading.gif) no-repeat center center");
+            $(".floor").find("img").eq(i).attr("src","${path}/static/images/material/imgloading.gif");
             Imagess($(".floor").find("img").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
         })
     }
+    var pagelimit = 2;
+    $(".downloading").on("click", function () {
+        var _contain = $("#divall");
+        var pageData = {};
+        pageData.mgId = '${mgId}';
+        pageData.currentPage = pagelimit;
+        $.ajax({
+            type: 'post',
+            url: '${path}/materielList/materialInfoBPage',
+            data: pageData,
+            dataType: 'json',
+            success: function(data){
+                if(data.materials==null || data.materials.length <=0){
+                    alert("没有更多了");
+                }
+                if(data.isError==false && data.materials.length>0){
+                    $.each(data.materials, function (i, mat) {
+                        var imgHtml ="";
+                        $.each(mat.comSkuMaterialItems, function (i, img){
+                            imgHtml += "<a href=\"#\"><img data=\""+img.fileUrl+"\" /></a>";
+                        });
+                        _contain.append("<div class=\"floor\">" +
+                        "<h1>"+mat.title+"</h1>" +
+                        "<div class=\"sec1\" id=\"imagelist\">"+imgHtml+"</div>" +
+                        "<p>"+mat.content+"</p>" +
+                        "</div>");
+                    });
+                    pagelimit++;
+                }
+            }
+        });
+    })
+
     $(function(){
         var bWidth=$(".sec1").width()/3-5;
         $(".sec1 a").css({

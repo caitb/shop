@@ -41,7 +41,7 @@ public class ManageShopProController extends BaseController{
     public ShopProRes manageShopProduct(HttpServletRequest request, ShopProReq req, ComUser user){
         ShopProRes shopProRe = new ShopProRes();
         try {
-            List<SkuInfo> skuInfoList = manageShopProductService.getShopProductsList(req.getShopId(), req.getIsSale(), user.getId(),req.getIsOwnShip());
+            List<SkuInfo> skuInfoList = manageShopProductService.getShopProductsList(req.getShopId(), req.getIsSale(), user.getId(),req.getIsOwnShip(),1,10);
             shopProRe.setSkuInfoList(skuInfoList);
             shopProRe.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             shopProRe.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

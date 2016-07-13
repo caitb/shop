@@ -5,6 +5,7 @@ import com.masiis.shop.dao.mall.promotion.SfGorderOperationLogMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfGorderOperationLog;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,15 +14,16 @@ import java.util.Date;
  * C端活动订单操作日志表 service
  */
 @Service
+@Transactional
 public class SfGorderOperationLogService {
 
     @Resource
     private SfGorderOperationLogMapper sfGorderOperationLogMapper;
 
-    public int addGorderOperationLog(ComUser comUser,Long gorderId, String orderOperateType, Integer oldOrderStatus, Integer newOrderStatus, String remark){
+    public int addGorderOperationLog(Long comUserId,Long gorderId, String orderOperateType, Integer oldOrderStatus, Integer newOrderStatus, String remark){
         SfGorderOperationLog operationLog = new SfGorderOperationLog();
         operationLog.setCreateTime(new Date());
-        operationLog.setCreateMan(comUser.getId());
+        operationLog.setCreateMan(comUserId);
         operationLog.setSfGorderId(gorderId);
         operationLog.setSfOrderStatus(newOrderStatus);
         StringBuffer sb = new StringBuffer(remark);

@@ -38,24 +38,38 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserPromotion" >
         update sf_user_promotion
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=BIGINT},
-
-            code = #{code,jdbcType=VARCHAR},
+        <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
-
             </if>
-
-            introduction = #{introduction,jdbcType=VARCHAR},
-            type = #{type,jdbcType=INTEGER},
-            person_type = #{personType,jdbcType=INTEGER},
-            status = #{status,jdbcType=INTEGER},
-            begin_time = #{beginTime,jdbcType=TIMESTAMP},
-            end_time = #{endTime,jdbcType=TIMESTAMP},
-            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-            modify_man = #{modifyMan,jdbcType=BIGINT},
-            remark = #{remark,jdbcType=VARCHAR}
+            <if test="introduction != null">
+                introduction = #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="personType != null">
+                person_type = #{personType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="beginTime != null">
+                begin_time = #{beginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyMan != null">
+                modify_man = #{modifyMan,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 

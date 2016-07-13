@@ -114,7 +114,7 @@ public class SfSpokesAndFansInfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         setCreateTimeView(format.format(createTime));
     }
 

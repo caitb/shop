@@ -35,8 +35,8 @@ public class SfShopSkuService {
         return sfShopSkuExtendMapper.selectShopviewByShopIdAndSkuId(shopId,skuId);
     }
 
-    public SfShopSku selectByShopIdAndSkuId(Long shopId,Integer skuId){
-        return shopSkuMapper.selectByShopIdAndSkuId(shopId,skuId);
+    public SfShopSku selectByShopIdAndSkuId(Long shopId,Integer skuId,Integer isOwnShip){
+        return shopSkuMapper.selectByShopIdAndSkuId(shopId,skuId,isOwnShip);
     }
     public int update(SfShopSku shopSku){
         return shopSkuMapper.updateByPrimaryKey(shopSku);
@@ -53,5 +53,13 @@ public class SfShopSkuService {
 
     public SfShopSku getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
         return shopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
+    }
+
+    public List<SfShopSku> findSfShopOnSaleSkuByShopId(Long shopId){
+        return sfShopSkuExtendMapper.selectSfShopOnSaleSkuByShopId(shopId);
+    }
+
+    public SfShopSku findShopSkuById(Long urlType) {
+        return shopSkuMapper.selectByPrimaryKey(urlType);
     }
 }

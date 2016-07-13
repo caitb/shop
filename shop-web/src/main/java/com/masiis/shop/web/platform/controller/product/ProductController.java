@@ -118,31 +118,6 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 自己发货，维护库存
-     */
-    @RequestMapping(value = "/selfUser/updateStock.do")
-    @ResponseBody
-    public String updateProductStock(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam(required = true) Integer stock,
-                                     @RequestParam(required = true) Integer id) {
-        JSONObject object = new JSONObject();
-        try {
-            if(stock>100000){
-                object.put("message", "可维护的库存数量不能高于10万！");
-                return object.toJSONString();
-            }
-            productService.updateStock(stock, id);
-            object.put("isError", false);
-            object.put("message", "√库存更改成功 ");
-        } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
-        }
-        return object.toJSONString();
-    }
-
-
-    /**
      * jjh
      * 平台发货，申请拿货
      */
@@ -317,5 +292,34 @@ public class ProductController extends BaseController {
             log.info(ex.getMessage());
         }
         return object.toJSONString();
+    }
+
+    /**
+     * jjh
+     * 一个手机号只能发一次意向
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/checkBindedPhone.do")
+    @ResponseBody
+    public String isBindedPhone(@RequestParam(value = "phone", required = true) String phone) {
+        JSONObject obj = new JSONObject();
+        try {
+            PfUserAgentApplication pfUserAgentApplication = pfUserAgentApplicationService.getPfUserAgentApplicationByPhone(phone);
+            if (pfUserAgentApplication != null) {
+                obj.put("isError", true);
+                obj.put("isBinded", true);
+                obj.put("msg", "手机号已经被绑定请更换手机号");
+                return obj.toJSONString();
+            } else {
+                obj.put("isError", false);
+                return obj.toJSONString();
+            }
+        } catch (Exception e) {
+            obj.put("isError", true);
+            obj.put("isBinded", false);
+            obj.put("msg", "手机号查询是否被绑定失败:" + e.getMessage());
+            return obj.toJSONString();
+        }
     }
 }

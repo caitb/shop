@@ -5,6 +5,7 @@ import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,8 @@ public class ProductService {
     private ComBrandMapper comBrandMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
-
+    @Resource
+    private PfUserSkuStockMapper pfUserSkuStockMapper;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -156,13 +158,13 @@ public class ProductService {
      * @Date 2016/3/16 0016 下午 7:38
      * 更新库存
      */
-    public void updateStock(Integer selfStock, Integer id) throws Exception {
+    public void updateStock(Integer selfStock, Integer skuId,Long userId) throws Exception {
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
         Map<String, Object> param = new HashMap<>();
-        Product product = productMapper.getProductStock(id);
-        if (product != null) {
-            param.put("selfStock", selfStock);
-            param.put("id", id);
-            param.put("version", product.getVersion());
+        if (pfUserSkuStock != null) {
+            param.put("selfStock", selfStock + pfUserSkuStock.getFrozenCustomStock());
+            param.put("id", pfUserSkuStock.getId());
+            param.put("version", pfUserSkuStock.getVersion());
             productMapper.updateStock(param);
         }
     }

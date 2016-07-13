@@ -1,4 +1,6 @@
-package com.masiis.shop.common.enums.mall;
+package com.masiis.shop.common.enums.promotion;
+
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 
 /**
  * Created by hzz on 2016/7/5.

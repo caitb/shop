@@ -97,4 +97,16 @@
         limit #{params.size,jdbcType=INTEGER}
     </select>
 
+    <select id="selectUnreadNumsAndFromByUser" resultType="java.util.HashMap" parameterType="java.lang.Long" >
+        select sf_message_content_id as contentId, from_user as fromUser
+        from sf_message_sr_relation
+        where to_user = #{userId,jdbcType=BIGINT} AND is_see = 0 order by sf_message_content_id desc
+    </select>
+
+    <select id="selectShopInfoAndFirMsgByMsgId" resultType="java.util.HashMap" parameterType="java.lang.Long" >
+        select shop.id shopId, shop.name shopName, shop.logo shopLogo, msg.content msgContent
+        from sf_shop shop, sf_message_content msg
+        where msg.id = #{msgId,jdbcType=BIGINT} AND shop.id = msg.shop_id
+    </select>
+
 </mapper>

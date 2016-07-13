@@ -17,4 +17,11 @@ public interface SfShopSkuExtendMapper {
 
     SfShopSku selectShopviewByShopIdAndSkuId(@Param("shopId") Long shopId,@Param("skuId") Integer skuId);
 
+    /**
+     * 查询店铺在售sku
+     *
+     * @param shopId
+     * @return
+     */
+    List<SfShopSku> selectSfShopOnSaleSkuByShopId(@Param("shopId") Long shopId);
 }

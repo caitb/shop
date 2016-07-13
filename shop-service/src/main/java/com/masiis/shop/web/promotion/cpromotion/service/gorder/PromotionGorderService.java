@@ -3,7 +3,8 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 
-import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
@@ -76,25 +77,51 @@ public class PromotionGorderService {
      */
     public Integer receiveReward(ComUser comUser,Long addressId, Integer promoId, Integer promoRuleId){
         //判断活动是否领取
+        log.info("领取奖励service-----------start");
+        log.info("service入口参数-------comUser的id-----"+comUser.getId()+"-----addressId----"+addressId+"-----promoId----"+promoId+"------promoRuleId-----"+promoRuleId);
         SfUserPromotionRecord record = recordService.getPromoRecordByUserIdAndPromoIdAndRuleId(comUser.getId(),promoId,promoRuleId);
-/*        if (record!=null){
+        if (record!=null){
             //活动已领取
             return 2;
-        }*/
+        }
         //添加订单
+        log.info("添加订单-------------start");
         SfGorder sfGorder = gorderService.addGorder(comUser,promoId,promoRuleId);
+        log.info("添加订单---------------end");
         //添加订单item
+        log.info("添加订单item------start");
+        log.info("订单id-------------"+sfGorder.getId());
         List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(sfGorder.getId(),sfGorder.getGorderType(),promoId,promoRuleId);
+        log.info("添加订单item-------end");
         //添加订单操作日志
-        gorderOperationLogService.addGorderOperationLog(comUser,sfGorder.getId(),"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
+        log.info("添加订单操作日志-------start");
+        gorderOperationLogService.addGorderOperationLog(comUser.getId(),sfGorder.getId(),"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
+        log.info("添加订单操作日志-------end");
         //添加地址
-        gorderConsigneeService.addGorderConsignee(sfGorder.getId(),addressId);
+        log.info("添加地址-------------start");
+        int i = gorderConsigneeService.addGorderConsignee(sfGorder.getId(),addressId);
+        if (i==1){
+            log.info("添加地址------成功-------end");
+        }else{
+            log.info("添加地址------失败-------end");
+            throw new BusinessException("添加地址------失败");
+        }
         //插入用户活动参与记录表
-        recordService.addSfUserPromotionRecord(comUser.getId(),promoId,promoRuleId);
+        log.info("插入用户东东参与记录表-------------start");
+        int ii=recordService.addSfUserPromotionRecord(comUser.getId(),promoId,promoRuleId);
+        if (ii==1){
+            log.info("插入用户东东参与记录表-------成功------end");
+        }else{
+            log.info("插入用户东东参与记录表------失败--------end");
+            throw new BusinessException("插入用户东东参与记录表------失败");
+        }
         //修改活动奖励表中的已发奖励数量
+        log.info("修改活动奖励表中的已发奖励数量----------start");
         for (PromotionGiftInfo promotionGiftInfo:promotionGiftInfos){
             promotionGiftService.addPromoQuantity(promotionGiftInfo.getGiftQuantity(),promoId,promoRuleId,promotionGiftInfo.getGiftId());
         }
+        log.info("修改活动奖励表中的已发奖励数量----------end");
+        log.info("领取奖励service-----------end");
         return 1;
     }
 

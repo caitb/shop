@@ -1,5 +1,6 @@
 package com.masiis.shop.dao.mallBeans;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 
@@ -26,7 +27,7 @@ public class SkuInfo{
 
     private Integer isSale;
 
-    private ComSkuImage comSkuImage;
+    private String comSkuImageUrl;
 
     private Long shopSkuId;
 
@@ -35,6 +36,12 @@ public class SkuInfo{
     private String flagSelf;//自己发货的标志：null：只有平台发货
 
     private String wxqrCode;//店铺二维码
+
+    private String skuName;//商品名称
+
+    private BigDecimal priceRetail;
+
+    private Integer skuId;
 
     public ComSku getComSku() {
         return comSku;
@@ -100,12 +107,12 @@ public class SkuInfo{
         this.isSale = isSale;
     }
 
-    public ComSkuImage getComSkuImage() {
-        return comSkuImage;
+    public String getComSkuImageUrl() {
+        return comSkuImageUrl;
     }
 
-    public void setComSkuImage(ComSkuImage comSkuImage) {
-        this.comSkuImage = comSkuImage;
+    public void setComSkuImageUrl(String comSkuImageUrl) {
+        this.comSkuImageUrl = comSkuImageUrl;
     }
 
     public Long getShopSkuId() {
@@ -138,5 +145,29 @@ public class SkuInfo{
 
     public void setWxqrCode(String wxqrCode) {
         this.wxqrCode = wxqrCode;
+    }
+
+    public String getSkuName() {
+        return skuName;
+    }
+
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
+    }
+
+    public BigDecimal getPriceRetail() {
+        return priceRetail;
+    }
+
+    public void setPriceRetail(BigDecimal priceRetail) {
+        this.priceRetail = priceRetail;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 }

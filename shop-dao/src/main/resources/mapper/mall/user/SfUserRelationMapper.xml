@@ -208,11 +208,14 @@
     <select id="selectFansNumGroupByLevel" resultType="java.util.HashMap">
         select count(*) as num,userLevel from (
         select 1 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all select 2 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 2 as userLevel,r.shop_id as shopId from sf_selectSpokesManNumGroupByLeveluser_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
         union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
         )t where 1=1
         <if test="shopId != null">
             and t.shopId = #{shopId}
+        </if>
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
         </if>
         group by t.userLevel
     </select>
@@ -225,6 +228,9 @@
         )t where t.is_spokesman = 1
         <if test="shopId != null">
             and t.shopId = #{shopId}
+        </if>
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
         </if>
         group by t.userLevel
     </select>
@@ -285,6 +291,45 @@
         from
           sf_user_relation
         WHERE
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectSfSpokesManNumByShopId" resultType="java.lang.Integer">
+        select
+          count(r.id)
+        from
+          sf_user_relation r,com_user u
+        WHERE
+          r.user_id = u.id
+        AND
+          u.is_spokesman = 1
+        AND
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllFansRelationByShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where
+          shop_id = #{shopId}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllSpokeManRelationByShopId" resultMap="BaseResultMap">
+        select
+          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark
+        from
+          sf_user_relation r,com_user u
+        WHERE
+          r.user_id = u.id
+        AND
+          u.is_spokesman = 1
+        AND
           shop_id = #{shopId,jdbcType=BIGINT}
         AND
           user_id != #{userId,jdbcType=BIGINT}

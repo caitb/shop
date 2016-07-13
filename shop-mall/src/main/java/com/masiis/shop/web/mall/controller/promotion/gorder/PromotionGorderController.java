@@ -56,7 +56,7 @@ public class PromotionGorderController extends BaseController {
     }
 
     /**
-     *
+     *  领取奖励
      * @param selectedAddressId  地址id
      * @param promoId           活动id
      * @param promoRuleId       活动规则id

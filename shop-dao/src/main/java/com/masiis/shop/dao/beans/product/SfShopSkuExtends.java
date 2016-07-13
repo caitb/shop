@@ -13,6 +13,10 @@ public class SfShopSkuExtends {
      * 代理等级名称
      */
     private String agentName;
+    /**
+     * sku名称
+     */
+    private String skuName;
 
     public String getIcon() {
         return icon;
@@ -28,5 +32,13 @@ public class SfShopSkuExtends {
 
     public void setAgentName(String agentName) {
         this.agentName = agentName;
+    }
+
+    public String getSkuName() {
+        return skuName;
+    }
+
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
     }
 }

@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.message;
 
 import com.masiis.shop.dao.mall.message.SfMessageSrRelationMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfMessageSrRelation;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,9 @@ public class SfMessageSrRelationService {
 
     public Long countNumsFromUser(ComUser user) {
         return srRelationMapper.countNumsFromUser(user.getId());
+    }
+
+    public void insert(SfMessageSrRelation sr) {
+        srRelationMapper.insert(sr);
     }
 }

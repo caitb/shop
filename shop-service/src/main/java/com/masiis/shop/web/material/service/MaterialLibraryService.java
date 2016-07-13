@@ -48,7 +48,7 @@ public class MaterialLibraryService {
      */
     public List<MaterialLibrary> SkuMaterialLibraryList(int currentPage,int pageSize,Long UserId) throws Exception{
         List<MaterialLibrary> materialLibraryList = new ArrayList<>();
-        PageHelper.startPage(currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize,false);
         List<ComSkuMaterialLibrary> comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAll();
         String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (ComSkuMaterialLibrary comSkuMaterialLibrary :comSkuMaterialLibraryList){
@@ -73,7 +73,16 @@ public class MaterialLibraryService {
     }
 
     public List<ComSkuMaterialGroup> MaterialLibraryGroup(Integer materialId,Integer isBShow,Integer isCShow){
-        return comSkuMaterialGroupMapper.selectMaterialGroupByMlId(materialId, isBShow, isCShow);
+         List<ComSkuMaterialGroup> comSkuMaterialGroupList = comSkuMaterialGroupMapper.selectMaterialGroupByMlId(materialId, isBShow, isCShow);
+        String Value = PropertiesUtils.getStringValue("oss.OSS_MATERIAL");
+         for (ComSkuMaterialGroup comSkuMaterialGroup :comSkuMaterialGroupList){
+             comSkuMaterialGroup.setIcon(Value + comSkuMaterialGroup.getIcon());
+         }
+        return comSkuMaterialGroupList;
     }
 
+
+    public ComSkuMaterialLibrary getComSkuMaterialLibraryByPrimaryId(Integer mlId){
+        return comSkuMaterialLibraryMapper.selectByPrimaryKey(mlId);
+    }
 }

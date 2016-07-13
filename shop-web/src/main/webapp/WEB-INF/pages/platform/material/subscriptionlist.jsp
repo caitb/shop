@@ -13,12 +13,12 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="${path}/materielList/infoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>订阅列表</p>
+        <p>${skuName}</p>
     </header>
     <main>
         <c:forEach items="${groupList}" var="group">
-            <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}&currentPage=0');">
-                <span><img src="${path}/static/images/material/list_1.png" alt=""></span>
+            <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}');">
+                <span><img src="${group.icon}" alt=""></span>
                 <span>${group.name}</span>
             </p>
         </c:forEach>
@@ -26,10 +26,9 @@
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
 </div>
 <div class="black">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
-
         <p>
             线下素材的图片像素比较大，请您留下您的邮箱地址，系统稍后会将线下素材的下载链接发到您的邮箱，请注意查收！
         </p>

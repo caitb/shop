@@ -359,11 +359,11 @@
                                    }
                                    trHtml+="</h1><h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
                                    if(pfBorder.orderType==2 && pfBorder.sendType==1){
-                                       orderTypeName="拿货";
+                                       orderTypeName="拿货订单";
                                    }else if(pfBorder.orderType==0){
                                        orderTypeName="合伙订单";
                                    }else if(pfBorder.orderType==1){
-                                       orderTypeName="补货";
+                                       orderTypeName="补货订单";
                                    }else if(pfBorder.orderType==3){
                                        orderTypeName="升级订单";
                                    }

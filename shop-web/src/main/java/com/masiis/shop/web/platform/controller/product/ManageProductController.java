@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.product;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
@@ -57,9 +58,8 @@ public class ManageProductController extends BaseController {
                                           ) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/shop_product");
         ComUser comUser = getComUser(request);
-        int pageSize = 6; //ajax请求时默认每页显示条数为6条
-        currentPage = currentPage +1;
-        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
+        int pageSize = 10; //ajax请求时默认每页显示条数为10条
+        List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage+1, pageSize);
         SfShop sfShop = sfShopService.getSfShopById(shopId);
         mav.addObject("skuInfoList", skuInfoList);
         mav.addObject("comUser", comUser);
@@ -86,7 +86,6 @@ public class ManageProductController extends BaseController {
      try {
          manageShopProductService.updateSale(shopSkuId,isSale);
          object.put("isError", false);
-
      }catch (Exception ex){
          object.put("isError", true);
          object.put("message", ex.getMessage());
@@ -113,8 +112,7 @@ public class ManageProductController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
-            int pageSize = 6; //ajax请求时默认每页显示条数为6条
-            currentPage = currentPage +1;
+            int pageSize = 10; //ajax请求时默认每页显示条数为6条
             List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
             object.put("isError", false);
             object.put("skuInfoList",skuInfoList);
@@ -148,17 +146,19 @@ public class ManageProductController extends BaseController {
      * JJH
      * c 端店主自己发货更新库存
      * @param stock
-     * @param shopSkuId
+     * @param skuId
      * @return
      */
     @RequestMapping(value = "/updateStockBySelf.do")
     @ResponseBody
     public String updateProductStock(
+            HttpServletRequest request,
             @RequestParam(required = true) Integer stock,
-            @RequestParam(required = true) Integer shopSkuId) {
+            @RequestParam(required = true) Integer skuId) {
         JSONObject object = new JSONObject();
         try {
-            productService.updateStock(stock, shopSkuId);
+            ComUser comUser = getComUser(request);
+            productService.updateStock(stock, skuId,comUser.getId());
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);

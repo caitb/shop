@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * Created by jiajinghao on 2016/7/6.
- * 素材库列表controller B端
+ * 素材库列表controller c端
  */
 @Controller
 @RequestMapping("/materielList")

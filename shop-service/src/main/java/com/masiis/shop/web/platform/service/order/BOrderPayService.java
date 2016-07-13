@@ -300,7 +300,7 @@ public class BOrderPayService {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {
                 log.info("<8>为小铺生成商品");
-                SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(sfShop.getId(), pfBorderItem.getSkuId());
+                SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(sfShop.getId(), pfBorderItem.getSkuId(),0);
                 if (sfShopSku == null) {
                     sfShopSku = new SfShopSku();
                     sfShopSku.setCreateTime(new Date());

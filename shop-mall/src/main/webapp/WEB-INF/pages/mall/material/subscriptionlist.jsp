@@ -12,12 +12,12 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/infoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="${path}/materielList/infoC"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>${skuName}</p>
     </header>
     <main>
         <c:forEach items="${groupList}" var="group">
-            <p onclick="javascript:window.location.replace('${basePath}materielList/materialInfoB/?mgId=${group.id}');">
+            <p onclick="javascript:window.location.replace('${path}/materielList/materialInfoB/?mgId=${group.id}');">
                 <span><img src="${group.icon}" alt=""></span>
                 <span>${group.name}</span>
             </p>
@@ -37,8 +37,8 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
   $(function () {
       var pWidth=$(".wrap").width()/3-1;
@@ -62,7 +62,7 @@
             return false;
         }
         $.ajax({
-            url: '${basePath}materielApply/addEmail.do',
+            url: '${path}materielApply/addEmail.do',
             type: 'post',
             data: {email: email},
             dataType: 'json',

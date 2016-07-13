@@ -17,7 +17,7 @@
     <main id="divall">
         <c:forEach var="Library" items="${LibraryList}">
             <p>
-                <span  onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
+                <span  onclick="javascript:window.location.replace('${path}/materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
                 <c:if test="${Library.isSubscript==0}">
                     <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
                 </c:if>
@@ -47,8 +47,8 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;
@@ -57,7 +57,7 @@
         if ($("#"+index).hasClass("on") != true) {
             //添加订阅
             $.ajax({
-                url: '${basePath}subscribeB/do',
+                url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 1, materialId: id},
                 dataType: 'json',
@@ -73,7 +73,7 @@
         } else if ($("#"+index).hasClass("on") == true) {
             //取消订阅
             $.ajax({
-                url: '${basePath}subscribeB/do',
+                url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 0, materialId: id},
                 dataType: 'json',
@@ -107,7 +107,7 @@
             return false;
         }
         $.ajax({
-            url: '${basePath}materielApply/addEmail.do',
+            url: '${path}/materielApply/addEmail.do',
             type: 'post',
             data: {email: email},
             dataType: 'json',

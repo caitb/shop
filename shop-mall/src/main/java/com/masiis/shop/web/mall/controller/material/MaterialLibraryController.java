@@ -47,7 +47,7 @@ public class MaterialLibraryController extends BaseController {
     @RequestMapping(value = "/infoC")
     public ModelAndView materialLibraryList(HttpServletRequest request
                                             ){
-        ModelAndView mv = new ModelAndView("/platform/material/materialGroup");
+        ModelAndView mv = new ModelAndView("/mall/material/materialGroup");
         try{
             ComUser comUser = getComUser(request);
             int pageSize = 4; //ajax请求时默认每页显示条数为4条
@@ -92,7 +92,7 @@ public class MaterialLibraryController extends BaseController {
      */
     @RequestMapping(value = "/groupInfoB")
     public ModelAndView materialLibraryGroup(@RequestParam(value = "mlId",required = true) Integer mlId){
-        ModelAndView mv = new ModelAndView("/platform/material/subscriptionlist");
+        ModelAndView mv = new ModelAndView("/mall/material/subscriptionlist");
         try {
             List<ComSkuMaterialGroup> comSkuMaterialGroupList = materialLibraryService.MaterialLibraryGroup(mlId, null, 1);
             ComSkuMaterialLibrary comSkuMaterialLibrary = materialLibraryService.getComSkuMaterialLibraryByPrimaryId(mlId);
@@ -113,7 +113,7 @@ public class MaterialLibraryController extends BaseController {
      */
     @RequestMapping(value = "/materialInfoB")
     public ModelAndView materialList(@RequestParam(value = "mgId",required = true) Integer mgId){
-        ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
+        ModelAndView mv = new ModelAndView("/mall/material/skuimglist");
         try {
             int pageSize = 3; //ajax请求时默认每页显示条数为3条
             List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, 1, pageSize);

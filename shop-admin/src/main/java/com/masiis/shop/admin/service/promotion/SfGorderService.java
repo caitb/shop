@@ -2,17 +2,21 @@ package com.masiis.shop.admin.service.promotion;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.promotion.SfGorderConsigneeMapper;
+import com.masiis.shop.dao.mall.promotion.SfGorderItemMapper;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
-import com.masiis.shop.dao.po.SfGorder;
-import com.masiis.shop.dao.po.SfGorderFreight;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by hzz on 2016/7/12.
@@ -25,6 +29,12 @@ public class SfGorderService {
 
     @Resource
     private SfGorderMapper sfGorderMapper;
+    @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
+    private SfGorderConsigneeMapper consigneeMapper;
+    @Resource
+    private SfGorderItemMapper sfGorderItemMapper;
 
     public SfGorder selectByPrimaryKey(Long id){
         return sfGorderMapper.selectByPrimaryKey(id);
@@ -60,4 +70,32 @@ public class SfGorderService {
         }
         return sfGorder;
     }
+
+    public Object  listByCondition(Integer pageNumber, Integer pageSize, Map<String,Object> condition) {
+        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+        List<SfGorder> gorderList = sfGorderMapper.selectByCondition(condition);
+        PageInfo<SfGorder> pageInfo = new PageInfo<>(gorderList);
+
+        List<Map<String,Object>> gorderWraps = new LinkedList<>();
+        for(SfGorder gorder : gorderList) {
+            ComUser comUser = comUserMapper.selectByPrimaryKey(gorder.getCreateMan());
+            SfGorderConsignee consignee =consigneeMapper.selectByGorderId(gorder.getId());
+            SfGorderItem gorderItem = sfGorderItemMapper.selectByGorderId(gorder.getId());
+
+
+            Map<String,Object> gorderWrap = new HashMap<>();
+            gorderWrap.put("gorder", gorder);
+            gorderWrap.put("comUser", comUser);
+            gorderWrap.put("consignee", consignee);
+            gorderWrap.put("item", gorderItem);
+            gorderWraps.add(gorderWrap);
+        }
+
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("total", pageInfo.getTotal());
+        dataMap.put("rows", gorderWraps);
+
+        return dataMap;
+    }
+
 }

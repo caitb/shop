@@ -4,7 +4,6 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.platform.OperationType;
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
-import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.po.PbOperationLog;
@@ -42,6 +41,7 @@ public class PromotionGorderService {
         //插入订单日志
         gorderOperationLogService.addGorderOperationLog(pbUser.getId(),sfGorder.getId(),"update",SfGOrderPayStatusEnum.ORDER_PAID.getCode(),sfGorder.getGorderStatus(),"奖品发货修改订单状态，订单完成");
         //插入运单表
+        gorderFreight.setCreateTime(new Date());
         gorderFreightService.insert(gorderFreight);
         //插入平台后台操作日志表
         PbOperationLog pbOperationLog = new PbOperationLog();

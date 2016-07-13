@@ -227,8 +227,8 @@
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
+        cartData.isOwnShip = "${isOwnShip}";
         var isOwnShip = "${isOwnShip}";
-
         var customerStock = "${skuInfo.stock}";
         if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
             alert("当前商品为店主发货，可用库存不足！");

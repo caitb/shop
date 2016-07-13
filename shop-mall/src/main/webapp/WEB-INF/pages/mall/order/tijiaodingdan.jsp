@@ -72,7 +72,7 @@
     }
     function returnPage(){
         var skuId = $("#skuId").val();
-        window.location.href = "<%=basePath%>shop/detail.shtml/?skuId="+skuId+"&shopId=${shopId}";
+        window.location.href = "<%=basePath%>shop/detail.shtml/?skuId="+skuId+"&shopId=${shopId}&isOwnShip=${isOwnShip}";
     }
 </script>
 <body>

@@ -3,7 +3,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 
-import com.masiis.shop.common.enums.mall.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.ComUser;
@@ -95,7 +95,7 @@ public class PromotionGorderService {
         log.info("添加订单item-------end");
         //添加订单操作日志
         log.info("添加订单操作日志-------start");
-        gorderOperationLogService.addGorderOperationLog(comUser,sfGorder.getId(),"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
+        gorderOperationLogService.addGorderOperationLog(comUser.getId(),sfGorder.getId(),"add",null, SfGOrderPayStatusEnum.ORDER_PAID.getCode(),"领取奖励插入订单操作");
         log.info("添加订单操作日志-------end");
         //添加地址
         log.info("添加地址-------------start");

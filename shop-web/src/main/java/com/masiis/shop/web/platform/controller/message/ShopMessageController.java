@@ -237,4 +237,9 @@ public class ShopMessageController extends BaseController {
 
         return res.toJSONString();
     }
+
+    @RequestMapping("/success.shtml")
+    public String createSuccess(){
+        return "platform/shop/shop_message_create_success";
+    }
 }

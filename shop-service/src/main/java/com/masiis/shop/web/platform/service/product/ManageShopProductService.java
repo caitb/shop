@@ -49,7 +49,7 @@ public class ManageShopProductService {
       * 小铺中商品列表
       */
     public List<SkuInfo> getShopProductsList(Long shopId, Integer isSale, Long userId, Integer deliverType, int currentPage, int pageSize) throws Exception {
-        PageHelper.startPage(currentPage, pageSize);
+        PageHelper.startPage(currentPage, pageSize,false);
         List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId, isSale, deliverType);
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         List<SkuInfo> skuInfoList = new ArrayList<>();
@@ -80,7 +80,8 @@ public class ManageShopProductService {
                             skuInfo.setStock(0);
                         }
                     } else {
-                        skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                        int currentCustomerStock = pfUserSkuStock.getCustomStock() - pfUserSkuStock.getFrozenCustomStock();
+                        skuInfo.setStock(currentCustomerStock >= 0 ? currentCustomerStock : 0);
                     }
                 }
                 skuInfoList.add(skuInfo);

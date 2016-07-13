@@ -58,7 +58,7 @@ public class ManageProductController extends BaseController {
                                           ) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/shop_product");
         ComUser comUser = getComUser(request);
-        int pageSize = 10; //ajax请求时默认每页显示条数为6条
+        int pageSize = 10; //ajax请求时默认每页显示条数为10条
         List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage+1, pageSize);
         SfShop sfShop = sfShopService.getSfShopById(shopId);
         mav.addObject("skuInfoList", skuInfoList);

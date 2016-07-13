@@ -162,7 +162,7 @@ public class ProductService {
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
         Map<String, Object> param = new HashMap<>();
         if (pfUserSkuStock != null) {
-            param.put("selfStock", selfStock);
+            param.put("selfStock", selfStock + pfUserSkuStock.getFrozenCustomStock());
             param.put("id", pfUserSkuStock.getId());
             param.put("version", pfUserSkuStock.getVersion());
             productMapper.updateStock(param);

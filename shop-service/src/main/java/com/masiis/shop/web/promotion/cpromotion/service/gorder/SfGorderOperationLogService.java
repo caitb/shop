@@ -20,10 +20,10 @@ public class SfGorderOperationLogService {
     @Resource
     private SfGorderOperationLogMapper sfGorderOperationLogMapper;
 
-    public int addGorderOperationLog(ComUser comUser,Long gorderId, String orderOperateType, Integer oldOrderStatus, Integer newOrderStatus, String remark){
+    public int addGorderOperationLog(Long comUserId,Long gorderId, String orderOperateType, Integer oldOrderStatus, Integer newOrderStatus, String remark){
         SfGorderOperationLog operationLog = new SfGorderOperationLog();
         operationLog.setCreateTime(new Date());
-        operationLog.setCreateMan(comUser.getId());
+        operationLog.setCreateMan(comUserId);
         operationLog.setSfGorderId(gorderId);
         operationLog.setSfOrderStatus(newOrderStatus);
         StringBuffer sb = new StringBuffer(remark);

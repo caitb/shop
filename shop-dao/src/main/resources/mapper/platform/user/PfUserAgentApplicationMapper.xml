@@ -53,4 +53,9 @@
         from pf_user_agent_application
     </select>
 
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark
+        from pf_user_agent_application
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.masiis.shop.web.material.service;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
 import com.masiis.shop.dao.platform.material.ComSkuMaterialMapper;
 import com.masiis.shop.dao.po.ComSkuMaterial;
@@ -38,12 +39,16 @@ public class SkuMaterialService {
      * @throws Exception
      */
     public List<SkuMaterial> skuMaterial(Integer mgId,Integer currentPage,Integer pageSize) throws Exception{
-        PageHelper.startPage(currentPage, pageSize,false);
+        PageHelper.startPage(currentPage, pageSize, false);
         List<ComSkuMaterial> comSkuMaterials = comSkuMaterialMapper.selectByMglId(mgId);
         List<SkuMaterial> materialList = new ArrayList<>();
+        String Value = PropertiesUtils.getStringValue("oss.OSS_MATERIAL");
         for (ComSkuMaterial comSkuMaterial :comSkuMaterials){
             SkuMaterial skuMaterial = new SkuMaterial();
             List<ComSkuMaterialItem> materialItemList = comSkuMaterialMapper.selectMaterialItemByMtId(comSkuMaterial.getId());
+            for (ComSkuMaterialItem comSkuMaterialItem : materialItemList) {
+                comSkuMaterialItem.setFileUrl(Value + comSkuMaterialItem.getFileUrl());
+            }
             skuMaterial.setComSkuMaterialItems(materialItemList);
             skuMaterial.setCreateTime(comSkuMaterial.getCreateTime());
             skuMaterial.setContent(comSkuMaterial.getContent());

@@ -18,9 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by jiajinghao on 2016/7/7.
  * 用户订阅素材controller
+ *
  */
 @Controller
-@RequestMapping("/subscribeC")
+@RequestMapping("/subscribeB")
 public class UserSubscriptionController extends BaseController {
 
     private Log log = LogFactory.getLog(this.getClass());
@@ -33,13 +34,13 @@ public class UserSubscriptionController extends BaseController {
     public String updateSubscriptionStatus(HttpServletRequest request,
                                            @RequestParam(value = "status",required = true) Integer status,
                                            @RequestParam(value = "materialId",required = true) Integer materialId
-    ){
+                                           ){
 
         JSONObject object = new JSONObject();
         try {
             ComUser comUser = getComUser(request);
             if(materialId==null){
-                throw new BusinessException("素材库id参数异常");
+              throw new BusinessException("素材库id参数异常");
             }
             userSubscriptionService.updateSubscriptionStatus(status,materialId,comUser.getId());
             object.put("isError",false);

@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.message;
 
+import com.masiis.shop.dao.po.PfMessageContent;
 import com.masiis.shop.dao.po.PfMessageSrRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,32 @@ public interface PfMessageSrRelationMapper {
                                  @Param("mType") Integer mType,
                                  @Param("start") Integer start,
                                  @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据消息来源用户和当前用户查询消息总条数
+     *
+     * @param userId
+     * @param fUserId
+     * @param mType
+     * @return
+     */
+    Integer queryNumsByFromUseAndToUserAndType(@Param("userId") Long userId,
+                                               @Param("fUserId") Long fUserId,
+                                               @Param("mType") Integer mType);
+
+    /**
+     * 根据消息来源和当前用户查询消息详情（带分页）
+     *
+     * @param userId
+     * @param fUserId
+     * @param mType
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<PfMessageContent> queryDetailByFromUserAndToUserWithPaging(@Param("userId") Long userId,
+                                                                    @Param("fUserId") Long fUserId,
+                                                                    @Param("mType") Integer mType,
+                                                                    @Param("start") Integer start,
+                                                                    @Param("pageSize") Integer pageSize);
 }

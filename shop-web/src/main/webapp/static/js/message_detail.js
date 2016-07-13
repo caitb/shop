@@ -5,17 +5,10 @@ $(function(){
 
     $("#remore").unbind("click").on("click", moreClick);
 
-    $(document).on("click", "#mlist .sec1", viewDetail);
 });
 var currentPageNum = -1;
 var pageNums = 0;
 var size = 0;
-
-function viewDetail(){
-    $("#mlist .sec1").unbind("click");
-    window.location.href = path + "/message/detail.shtml?userId=" + $(this).attr("id");
-    $(document).on("click", "#mlist .sec1", viewDetail);
-}
 
 function moreClick(){
     document.getElementById("more").onclick = "";
@@ -25,30 +18,32 @@ function moreClick(){
 
 function listMessage(){
     var options = {
-        url:path + "/message/centerlist.do",
+        url:path + "/message/detaillist.do",
         type:"post",
         dataType:"json",
         async:true,
-        data:{cur:currentPageNum + 1},
+        data:{cur:currentPageNum + 1, uid:uid},
         success:function(data){
             if(data.resCode == "success"){
                 $("#remore").hide();
                 currentPageNum = data.cur;
                 pageNums = data.totalPage;
                 size = data.pageSize;
+                $("#fromUserName").html(data.fromUserName);
                 if(data.hasData == true){
                     // 追加数据
                     for(var i=0; i < data.data.length; i++){
-                        var ele = "<div id='" + data.data[i].fromUserId + "' class=\"sec1\">"
-                                + "<h1><img src=\"" + data.data[i].headUrl + "\">";
-                                if(data.data[i].isSeeNum > 0) {
-                                    ele += "<span>" + data.data[i].isSeeNum + "</span></h1>";
-                                } else {
-                                    ele += "</h1>";
-                                }
-                                ele += "<div>"
-                                    + "<h2>" + data.data[i].fromUserName + "</h2>"
-                                    + "<p>" + data.data[i].latestMessage + "</p>"
+                        var ele =
+                            "<div class=\"sec1\">"
+                                + "<div class=\"s_b\">"
+                                    + "<div class=\"b_b\">"
+                                    + "<img src=\"" + path + "/static/images/message/massage_r1_c1.png\">"
+                                    + "<h1>" + data.data[i].content + "</h1>"
+                                    + "<p>"
+                                        + "<a href=\"" + data.data[i].contentUrl + "\">点击查看</a>"
+                                        + "<a>" + data.data[i].createTime + "</a>"
+                                    + "</p>"
+                                    + "</div>"
                                 + "</div>"
                             + "</div>";
                         $("#mlist").append($(ele));

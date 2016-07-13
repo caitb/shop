@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.platform.service.product;
 
-import com.masiis.shop.common.enums.product.UserSkuStockLogType;
+import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.product.PfUserSkuStockLogMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;

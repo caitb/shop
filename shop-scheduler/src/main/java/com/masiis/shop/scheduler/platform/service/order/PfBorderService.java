@@ -1,20 +1,15 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderShipStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
-import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserAccountService;
 import com.masiis.shop.scheduler.platform.service.user.PfUserUpgradeNoticeService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
@@ -93,46 +88,6 @@ public class PfBorderService {
         } catch (Exception e) {
             log.error("订单超72小时未支付订单取消失败," + e.getMessage(), e);
             throw new BusinessException(e.getMessage());
-        }
-    }
-
-    /**
-     * 订单发货7天后自动收货
-     *
-     * @param bOrder
-     */
-    @Transactional
-    public void confirmOrderReceive(PfBorder bOrder) {
-        if (bOrder == null) {
-            throw new BusinessException("订单为空对象");
-        }
-        if (bOrder.getPayStatus() != 1) {
-            throw new BusinessException("订单还未支付怎么能完成呢？");
-        }
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (bOrder.getSendType() == 1) {
-            if (!bOrder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())
-                    && !bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
-                throw new BusinessException("订单状态异常");
-            }
-        } else if (bOrder.getSendType() == 2) {
-            if (!bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())
-                    && !bOrder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
-                throw new BusinessException("订单状态异常");
-            }
-        } else {
-            throw new BusinessException("订单拿货方式异常");
-        }
-        bOrder.setOrderStatus(BOrderStatus.Complete.getCode());
-        bOrder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
-        bOrder.setIsReceipt(1);
-        bOrder.setReceiptTime(new Date());//收货时间
-        borderMapper.updateById(bOrder);
-        //添加订单日志
-        bOrderOperationLogService.insertBOrderOperationLog(bOrder, "订单自动收货完成");
-        //订单类型(0代理1补货2拿货)
-        if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1 || bOrder.getOrderType() == 3) {
-            comUserAccountService.countingByOrder(bOrder);
         }
     }
 

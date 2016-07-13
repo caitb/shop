@@ -2,11 +2,15 @@ package com.masiis.shop.common.util;
 
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.*;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author jipengkun
@@ -39,6 +43,11 @@ public class OSSObjectUtils {
     public static final String OSS_DOWN_LOAD_IMG_KEY = PropertiesUtils.getStringValue("oss.OSS_DOWN_LOAD_IMG_KEY");
 
     public static final String OSS_CERTIFICATE_TEMP = PropertiesUtils.getStringValue("oss.OSS_CERTIFICATE_TEMP");//上传身份证临时文件目录
+
+    public static final String OSS_SHOPMAN_WX_QRCODE = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+
+    public static final String OSS_GIFT = PropertiesUtils.getStringValue("oss.OSS_GIFT");
+    public static final String OSS_GIFT_URL = PropertiesUtils.getStringValue("gift_img_base_url");
 
     // 删除一个Bucket和其中的Objects
     public static void deleteBucketFile(String fileName)
@@ -76,6 +85,27 @@ public class OSSObjectUtils {
         client.putObject(BUCKET, imageFloder + file.getName(), input, objectMeta);
 
         uploadFile(file.getName(), file.length(), new FileInputStream(file), imageFloder);
+    }
+
+    // 上传文件
+    public static String uploadMultipartFile(MultipartFile multipartFile, String imageDir) {
+        if(multipartFile == null) {
+            return null;
+        }
+
+        try {
+            String suffix = StringUtils.substringAfterLast(multipartFile.getOriginalFilename(), ".");
+            long size = multipartFile.getSize();
+            if(size<1 || StringUtils.isEmpty(suffix)) {
+                return null;
+            }
+            String fileName = UUID.randomUUID().toString()+"."+suffix;
+            OSSObjectUtils.uploadFile(fileName, size, multipartFile.getInputStream(), imageDir);
+            return fileName;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // 上传文件

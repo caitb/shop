@@ -33,12 +33,12 @@
                         <%--<li><a href="javascript:;">待发货</a></li>--%>
                         <%--<li><a href="javascript:;">待收货</a></li>--%>
                         <li><a href="javascript:;">已完成</a></li>
+                        <li><a href="javascript:;">已取消</a></li>
                     </ul>
                     <img src="${paht}/static/images/youdao.png" alt="" class="you">
                 </nav>
                <p><img src="${path}/static/images/laba.png" alt="">您只可以查看直接下级的订单</p>
                 <main>
-                    <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>
                     <div class="all">
                         <c:forEach items="${pfBorders}" var="pb">
                         <section class="sec1">
@@ -213,6 +213,49 @@
                                 </div>
                             </section></c:forEach>
                     </div>
+                    <div class="all">
+                        <c:forEach items="${pfBorders}" var="pb">
+                            <section class="sec1">
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                <h2>
+                                    订单号：<span>${pb.orderCode}</span>
+                                    <c:forEach items="${orderStatuses}" var="orderStatus">
+                                        <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
+                                    </c:forEach>
+                                </h2>
+                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                    <div class="shangpin">
+                                        <p class="photo">
+                                            <a href="javascript:void(0);">
+                                                <img src="${pbi.skuUrl}" alt="">
+                                            </a>
+                                        </p>
+                                        <div>
+                                            <h2>${pbi.skuName}</h2>
+                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                                <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
+                                        </div>
+                                    </div> </c:forEach>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1>
+                                    <b>发货方:</b>
+                                    <span>
+                                        <c:if test="${pb.sendType==1}">平台</c:if>
+                                        <c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>
+                                        <c:if test="${pb.sendType==2}">自己发货</c:if>
+                                    </span>
+                                    <b>类型：</b>
+                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
+                                    </c:forEach>
+                                </h1>
+                                <div class="ding">
+                                    <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">
+                                    <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
+                                    <c:if test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:if>
+                                </div>
+                            </section></c:forEach>
+                    </div>
                 </main>
            </div>
        </div>
@@ -241,10 +284,7 @@
        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
        <script src="<%=path%>/static/js/hideWXShare.js"></script>
        <script>
-//               $('body').on('touchmove', function (event) {
-//                   var event=event||event.window;
-//                   event.prevtDefault();
-//               });
+
                function shouhuorenxinxi(a,b,c,d){
                    $(".back").css("display","-webkit-box");
                    $(".shouhuo").css("display","-webkit-box");
@@ -324,6 +364,8 @@
                                        orderTypeName="合伙订单";
                                    }else if(pfBorder.orderType==1){
                                        orderTypeName="补货";
+                                   }else if(pfBorder.orderType==3){
+                                       orderTypeName="升级订单";
                                    }
                                    trHtml+="<b>类型：</b><span>"+orderTypeName+"</span></h1>";
                                    trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/deliveryBorderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";

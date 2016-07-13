@@ -34,7 +34,6 @@
   -webkit-box-pack: justify;
   margin-top: 5px;
   padding: 10px 10px;
-  background: white;
 }
 .wrap > div p{
   font-size:12px;
@@ -139,6 +138,28 @@ body .back {
 }
 .wrap > div.phone{
   background: #fff url("/static/images/phone.png") no-repeat 14px;
+  background-size: 15px;
+  padding-left: 37px;
+  margin-top: 10px;
+}
+.wrap > div.address{
+  background:#fff url("/static/images/geren2%20(1).png") no-repeat 10px;
+  background-size: 24px;
+  padding-left: 37px;
+  margin-top: 10px;
+}
+.wrap > div.address p img{
+  width:8px;
+  margin-top: 2px;
+}
+.wrap > p{
+  text-align:center;
+  font-size:12px;
+  color:#999;
+  margin-top:10em;
+}
+.wrap > div.addressManage{
+  background: #fff url("/static/images/geren2%20(1).png") no-repeat 14px;
   background-size: 15px;
   padding-left: 37px;
   margin-top: 10px;

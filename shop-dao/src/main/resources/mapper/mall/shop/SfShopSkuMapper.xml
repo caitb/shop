@@ -14,6 +14,7 @@
         <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
         <result column="share_num" property="shareNum" jdbcType="BIGINT" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
+        <result column="is_own_ship" property="isOwnShip" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -27,12 +28,13 @@
             shop_user_id, spu_id, sku_id, 
             is_sale, agent_level_id, bail, 
             sale_num, share_num,
-            qr_code, remark)
+            qr_code, is_own_ship,remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
             #{shopUserId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
             #{isSale,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{bail,jdbcType=DECIMAL}, 
             #{saleNum,jdbcType=BIGINT}, #{shareNum,jdbcType=BIGINT},
-            #{qrCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+            #{qrCode,jdbcType=VARCHAR},#{isOwnShip,jdbcType=INTEGER},
+             #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopSku" >
@@ -48,33 +50,34 @@
             sale_num = #{saleNum,jdbcType=BIGINT},
             share_num = #{shareNum,jdbcType=BIGINT},
             qr_code = #{qrCode,jdbcType=VARCHAR},
+            is_own_ship = #{isOwnShip,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
-        bail, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
-        bail, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
     </select>
 
     <select id="selectByShopIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and sku_id = #{skuId,jdbcType=BIGINT}
     </select>
 
     <select id="getSfShopSkuByShopUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code, is_own_ship,remark
         from sf_shop_sku
         where shop_user_id = #{shopUserId,jdbcType=BIGINT} and sku_id = #{skuId,jdbcType=BIGINT}
     </select>
@@ -82,7 +85,7 @@
 
     <select id="selectByShopId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail,sale_num, share_num, qr_code, remark
+        bail,sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = 1
         ORDER BY id DESC
@@ -90,13 +93,17 @@
 
     <select id="selectByShopIdAndSaleType" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail,sale_num, share_num, qr_code, remark
+        bail,sale_num, share_num, qr_code, is_own_ship,remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = #{isSale,jdbcType=INTEGER}
+        <if test="isOwnShip!=null">
+            AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
+        </if>
+        ORDER BY sku_id
     </select>
     <select id="selectBySkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail,sale_num, share_num, qr_code, remark
+        bail,sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
         where sku_id = #{skuId,jdbcType=BIGINT}
 </select>

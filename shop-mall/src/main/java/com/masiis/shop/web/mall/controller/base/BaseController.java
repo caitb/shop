@@ -2,8 +2,8 @@ package com.masiis.shop.web.mall.controller.base;
 
 import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.mall.constants.SysConstants;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.common.constant.mall.SysConstants;
+import com.masiis.shop.web.common.service.UserService;
 import com.thoughtworks.xstream.XStream;
 import org.apache.log4j.Logger;
 

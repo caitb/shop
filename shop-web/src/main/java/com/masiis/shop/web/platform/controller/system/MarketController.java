@@ -7,12 +7,10 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
-import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.PfUserSkuService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,10 +42,6 @@ public class MarketController extends BaseController {
     private PfUserRelationService pfUserRelationService;
     @Resource
     private PfUserSkuService pfUserSkuService;
-    @Resource
-    private SkuService skuService;
-    @Resource
-    private SpuService spuService;
 
     @RequestMapping("/market")
     public ModelAndView marketList(HttpServletRequest request)throws Exception{

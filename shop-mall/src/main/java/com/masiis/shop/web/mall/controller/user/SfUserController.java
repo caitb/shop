@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

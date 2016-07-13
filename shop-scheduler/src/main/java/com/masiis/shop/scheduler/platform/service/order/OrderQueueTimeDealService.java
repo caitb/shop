@@ -1,7 +1,7 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -37,7 +37,7 @@ public class OrderQueueTimeDealService {
     @Autowired
     private ComUserService comUserService;
     @Autowired
-    private BOrderPayService bOrderPayService;
+    private BOrderShipService bOrderShipService;
 
     /**
      * 定时处理排单状态订单
@@ -101,7 +101,7 @@ public class OrderQueueTimeDealService {
             }
         }
         if (dealOrder){
-            bOrderPayService.saveBOrderSendType(pfBorder);
+            bOrderShipService.shipAndReceiptBOrder(pfBorder);
             this.sendMessage(pfBorder,orderItems);
         }
     }

@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.mall.service.user;
 
-import com.masiis.shop.common.enums.UserAccountRecordFeeType;
+import com.masiis.shop.common.enums.platform.UserAccountRecordFeeType;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
@@ -16,7 +16,6 @@ import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
-import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;

@@ -2,10 +2,9 @@ package com.masiis.shop.web.platform.utils;
 
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.constant.SMSConstants;
-import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.web.common.utils.SpringRedisUtil;
 
-import java.util.Date;
 import java.util.Random;
 
 /**

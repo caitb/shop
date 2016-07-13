@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.user.UserAddressService;
+import com.masiis.shop.web.common.service.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,11 +36,6 @@ public class UserAddressController extends BaseController {
     private static  final  int managePageToChooseAddressPageTag = 0;
     //管理地址跳转到个人中心界面
     private static  final  int managePageToPersonalInfoPageTag = 1;
-
-    //新增地址增加完跳转到订单界面
-    public static final int addAddressPageToOrderPage = 0;
-    //新增地址增加完跳转到管理地址界面
-    public static final int getAddAddressPageToPersonalInfoPage =1;
 
     /**
      * 跳转到新增地址界面
@@ -135,6 +130,8 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
         return redirectHead+redirectBody;
     }
 
@@ -184,7 +181,7 @@ public class UserAddressController extends BaseController {
                 break;
             case managePageToPersonalInfoPageTag:  //返回到到个人中心
                 basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
-                returnPage = "redirect:" + basePath +"/sfOrderManagerController/borderManagement.html";
+                returnPage = "redirect:" + basePath +"/user/getPersonalInfo.shtml";
                 break;
             default://返回到选择地址界面
                 break;
@@ -207,6 +204,8 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
                                       @RequestParam(value = "shopId", required = false) Long shopId,
+                                      @RequestParam(value = "promoId", required = false) Integer promoId,
+                                      @RequestParam(value = "promoRuleId", required = false) Integer promoRuleId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
@@ -214,6 +213,8 @@ public class UserAddressController extends BaseController {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
         request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID, shopId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID, promoId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID, promoRuleId);
         model.addAttribute("addressId", selectedAddressId);
         return "mall/user/xuanze";
     }

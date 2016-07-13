@@ -3,16 +3,14 @@ package com.masiis.shop.web.mall.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
-import com.masiis.shop.web.mall.service.user.SfUserAccountService;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -23,9 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +86,7 @@ public class SfOrderManagerController extends BaseController {
         ComUser user = getComUser(request);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         SfOrder order = sfOrderManageService.findOrderByOrderId(id);
+        SfShop sfShop = sfShopService.getSfShopById(order.getShopId());
         List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(id);
         StringBuffer stringBuffer =new StringBuffer();
         for (SfOrderItem sfOrderItem : sfOrderItems) {
@@ -111,6 +108,7 @@ public class SfOrderManagerController extends BaseController {
         //收货人
         SfOrderConsignee sfOrderConsignee = sfOrderManageService.findSfOrderConsignee(id);
         orderMallDetail.setSfOrder(order);
+        orderMallDetail.setBuyerShopName(sfShop.getName());
         orderMallDetail.setSfOrderItems(sfOrderItems);
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
@@ -189,6 +187,8 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null);
             }else if(index==4){
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
+            }else if(index==5){
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -225,11 +225,11 @@ public class SfOrderManagerController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
+//        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
         /*if(sfUserRelation==null){
             throw new BusinessException("用户关系异常");
         }*/
-        ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
+//        ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
         Long shopId =(Long) request.getSession().getAttribute("shopId");
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
         List<SfOrder> sfOrders0 = new ArrayList<>();
@@ -253,7 +253,7 @@ public class SfOrderManagerController extends BaseController {
 //        modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
-        modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
+//        modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

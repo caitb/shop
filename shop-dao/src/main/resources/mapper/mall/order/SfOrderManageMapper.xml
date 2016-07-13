@@ -75,6 +75,9 @@
         <if test="shopId != null">
             AND shop_id = #{shopId,jdbcType=BIGINT}
         </if>
+        <if test="sendType != null">
+            AND send_type = #{sendType,jdbcType=INTEGER}
+        </if>
         ORDER BY id DESC
     </select>
 </mapper>

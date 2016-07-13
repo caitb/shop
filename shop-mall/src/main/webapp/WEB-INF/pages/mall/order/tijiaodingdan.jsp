@@ -112,6 +112,14 @@
                     <p>￥${skuDetail.comSku.priceRetail}</p>
                 </div>
             </section>
+            <p><em>发货人：</em>
+                <c:if test="${skuDetail.sendMan==0}">
+                    <b>平台发货</b>
+                </c:if>
+                <c:if test="${skuDetail.sendMan!=0}">
+                    <b>店主发货</b>
+                </c:if>
+            </p>
         </c:forEach>
         <section class="sec3">
             <p><em>运费：</em><span>
@@ -123,6 +131,6 @@
         </section>
         <a  onclick="submitOrder()" class="weixin">提交订单</a>
     </div>
-
+    <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
 </body>
 </html>

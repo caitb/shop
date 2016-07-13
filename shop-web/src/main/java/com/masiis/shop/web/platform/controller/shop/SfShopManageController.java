@@ -1,11 +1,11 @@
 package com.masiis.shop.web.platform.controller.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
@@ -16,13 +16,14 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopStatistics;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.SfShopStatisticsService;
-import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.web.platform.service.shop.JSSDKService;
-import com.masiis.shop.web.platform.service.shop.SfShopService;
-import com.masiis.shop.web.platform.utils.DownloadImage;
-import com.masiis.shop.web.platform.utils.DrawPicUtil;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
+import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.common.utils.DownloadImage;
+import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -43,6 +45,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,21 +67,21 @@ public class SfShopManageController extends BaseController {
     @Resource
     private SfOrderMapper sfOrderMapper;
     @Resource
-    private SfDistributionRecordMapper sfDistributionRecordMapper;
-    @Resource
     private SkuService skuService;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKPFService jssdkService;
     @Resource
     private SfUserShopViewMapper sfUserShopViewMapper;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinPFQRCodeService weiXinPFQRCodeService;
     @Resource
     private SfShopStatisticsService sfShopStatisticsService;
     @Resource
     private SfShopService sfShopService;
+    @Resource
+    private SfShopManQrCodeService sfShopManQrCodeService;
 
     /**
      * 店铺管理首页
@@ -158,9 +161,13 @@ public class SfShopManageController extends BaseController {
      * @return
      */
     @RequestMapping("/updateShop")
-    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop){
+    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop, MultipartFile qrImg){
 
         try {
+            String fileName = sfShopManQrCodeService.uploadWxQrCodeImg(qrImg);
+            if(StringUtils.isNotBlank(fileName)) {
+                sfShop.setWxQrCode(fileName);
+            }
             sfShopMapper.updateByPrimaryKey(sfShop);
         } catch (Exception e) {
             log.error("设置店铺失败![sfShop="+sfShop+"]");
@@ -171,28 +178,29 @@ public class SfShopManageController extends BaseController {
 
     /**
      * 设置运费
+     * overwrite by JJH
      * @param request
-     * @param response
+     * @param shipAmount :0 包邮
      * @return
      */
     @RequestMapping("/setupFreight")
-    public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("platform/shop/manage/setupFreight");
-
+    @ResponseBody
+    public String setupFreight(HttpServletRequest request,
+                               @RequestParam(value = "shipAmount",required = true) String shipAmount){
+        JSONObject object = new JSONObject();
         SfShop sfShop = null;
         try {
             ComUser comUser = getComUser(request);
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
-
-            mav.addObject("sfShop", sfShop);
-
-            return mav;
+            BigDecimal bd = new BigDecimal(shipAmount);
+            sfShop.setOwnShipAmount(bd);
+            sfShopMapper.updateByPrimaryKey(sfShop);
+            object.put("isError",false);
         } catch (Exception e) {
-            log.error("去运费设置页面失败![sfShop="+sfShop+"]");
-            e.printStackTrace();
+            object.put("isError",true);
+            log.info(e.getMessage());
         }
-
-        return mav;
+        return object.toJSONString();
     }
 
     /**
@@ -265,7 +273,7 @@ public class SfShopManageController extends BaseController {
                 throw new BusinessException("店铺不存在[comUser="+comUser+"][shopId="+shopId+"]");
             }
             if(StringUtils.isBlank(sfShop.getQrCode())){
-                String qr_code_url = weiXinQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
+                String qr_code_url = weiXinPFQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
                 if(qr_code_url == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
                 DownloadImage.download(qr_code_url, qrcodeName, posterDirPath);
                 OSSObjectUtils.uploadFile(qrcodeFile, "static/shop/shop_qrcode/");
@@ -315,6 +323,10 @@ public class SfShopManageController extends BaseController {
             drawElements.add(text4Element);
 
             DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+
+            //二维码获取成功,更新com_user成为代言人
+            comUser.setIsSpokesman(1);
+            comUserMapper.updateByPrimaryKey(comUser);
 
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "我在麦链商城的小店");

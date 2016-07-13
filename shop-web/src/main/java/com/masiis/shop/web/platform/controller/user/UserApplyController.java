@@ -3,13 +3,13 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.beans.order.AgentSkuView;
+import com.masiis.shop.dao.beans.order.AgentSkuView;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,7 +97,7 @@ public class UserApplyController extends BaseController {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
-//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(user);
+//        boolean isUserForcus = WxPFUserUtils.getInstance().isUserForcusPF(user);
         res.addObject("user", userService.getUserById(user.getId()));
         res.addObject("skuId", skuId);
         res.addObject("isQueuing", isQueuing);

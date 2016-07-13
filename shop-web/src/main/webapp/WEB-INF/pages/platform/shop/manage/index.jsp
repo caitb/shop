@@ -72,14 +72,19 @@
         </nav>
     </div>
     <nav>
-        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&&isSale=1');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&isSale=1&currentPage=0');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/foot_icon%20(3).png" alt=""></span><span>店铺订单</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/foot_icon%20(2).png" alt=""></span><span>店铺设置</span></p>
     </nav>
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/lookshop.png" alt="" style="margin-bottom: 5px"></span><span>预览商店</span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/feel.png" alt="" style="margin-bottom: 5px"></span><span>分享店铺</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
-            <p style="background: #eeeeee; border-bottom: none;"></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人粉丝 </span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
+        </nav>
+        <nav style="margin: 0;">
+            <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
+            <p onclick="clickShow()"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>运费设置</span></p>
+            <p style="background: #EEEEEE;border: none;"></p>
         </nav>
 </div>
 <c:if test="${sfShop==null}">
@@ -88,19 +93,44 @@
     </div>
 </c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
+<div class="black">
+    <div class="backb"></div>
+    <div class="set">
+        <h1>运费设置</h1>
+        <p>运费设置只适用于店主发货情况。若设置包邮，则运费由您承担；若设置运费金额，则由消费者承担</p>
+        <div class="money">
+            <h2 id="1"><span>包邮：</span></h2>
+            <h2 id="2"><span>自定义：</span><input type="text" id="shipAmount"><b>元</b></h2>
+        </div>
+        <h3>
+            <button onclick="clicHide()">取消</button>
+            <button onclick="shipSubmit()">确定</button></h3>
+    </div>
+</div>
 </body>
-<script src="<%=basePath%>static/js/zepto.min/js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath%>static/js/hideWXShare.js"></script>
 <script src="<%=basePath%>static/js/jquery.zclip.js"></script>
-<script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
+    var index;
     $("body").on("swipeRight", function () {
         location.href='<%=path%>/index';
     })
     $("body").on("swipeLeft", function () {
         location.href='<%=path%>/account/home';
+    })
+    function clickShow(){
+        $("#shipAmount").val("");
+        $(".black").show();
+    }
+    function clicHide(){
+        $(".black").hide();
+    }
+    $(".money h2").on("click", function () {
+        $(this).addClass("on").siblings().removeClass("on");
+        index=$(this).index();
     })
 </script>
 <script>
@@ -124,5 +154,36 @@
             $(this).parent().hide();
         });
     });
+
+    //店铺运费设置
+     function shipSubmit(){
+        var shipAmount;
+         if(index==0){// 包邮
+             shipAmount = 0;
+         }else{
+             shipAmount = $("#shipAmount").val();
+         }
+         if(index==1 && (shipAmount==null || shipAmount=="")){
+             alert("运费不能为空");
+             return false;
+         }
+         var patrn =/^[+-]?\d+(\.\d+)?$/;
+         if (!patrn.exec(shipAmount)) {
+             alert("运费格式不正确");
+             return false;
+         }
+         $.ajax({
+             url: '<%=basePath%>shop/manage/setupFreight',
+             type: 'post',
+             data: {shipAmount: shipAmount},
+             dataType: 'json',
+             success: function (data) {
+                 if (data.isError == false) {
+                     alert("运费设置成功");
+                     $(".black").hide();
+                 }
+             }
+         });
+     }
 </script>
 </html>

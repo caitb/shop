@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.platform.service.user;
 
-import com.masiis.shop.common.enums.UserAccountRecordFeeType;
+import com.masiis.shop.common.enums.platform.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;

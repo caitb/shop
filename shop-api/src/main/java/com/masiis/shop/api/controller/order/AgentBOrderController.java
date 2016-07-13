@@ -1,8 +1,5 @@
 package com.masiis.shop.api.controller.order;
 
-import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.base.BaseReq;
-import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.order.BAgentOrderAddReq;
 import com.masiis.shop.api.bean.order.BAgentOrderAddRes;
 import com.masiis.shop.api.constants.SignValid;
@@ -16,7 +13,7 @@ import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.PfUserRelationService;
 import com.masiis.shop.api.service.user.UserAddressService;
 import com.masiis.shop.api.service.user.UserSkuService;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.po.ComUser;

@@ -11,9 +11,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
-import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import org.springframework.stereotype.Controller;
@@ -46,10 +44,6 @@ public class ProductListController extends BaseController {
     private PfUserRelationService pfUserRelationService;
     @Resource
     private PfUserSkuService pfUserSkuService;
-    @Resource
-    private SkuService skuService;
-    @Resource
-    private SpuService spuService;
 
     @RequestMapping("showProduct")
     public ModelAndView showProductList(HttpServletRequest request) throws Exception{

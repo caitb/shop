@@ -2,7 +2,7 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.web.mall.service.shop.JSSDKService;
+import com.masiis.shop.web.mall.service.shop.JSSDKSFService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +22,7 @@ public class HideWXShareController {
     private final static Log log = LogFactory.getLog(HideWXShareController.class);
 
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKSFService jssdkService;
 
     /**
      * 隐藏微信分享接口

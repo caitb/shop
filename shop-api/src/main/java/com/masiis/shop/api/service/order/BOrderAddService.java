@@ -4,7 +4,7 @@ import com.masiis.shop.api.service.product.PfUserSkuStockService;
 import com.masiis.shop.api.service.product.SkuAgentService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserAddressService;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;

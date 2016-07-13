@@ -56,6 +56,11 @@ public class SfShopSku extends SfShopSkuExtends {
      * 二维码图片全称(不包括路径)
      */
     private String qrCode;
+
+    /**
+     * 是否自己发货标志
+     */
+    private Integer isOwnShip;
     /**
      * 备注
      */
@@ -138,5 +143,13 @@ public class SfShopSku extends SfShopSkuExtends {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getIsOwnShip() {
+        return isOwnShip;
+    }
+
+    public void setIsOwnShip(Integer isOwnShip) {
+        this.isOwnShip = isOwnShip;
     }
 }

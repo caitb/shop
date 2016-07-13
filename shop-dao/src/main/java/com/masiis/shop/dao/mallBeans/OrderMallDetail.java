@@ -17,6 +17,15 @@ public class OrderMallDetail {
     private List<SfOrderFreight> sfOrderFreights;//快递公司信息
     private SfOrderConsignee sfOrderConsignee;//收货人
     private List<SfOrderPayment> sfOrderPayments;//支付方式
+    private String buyerShopName;
+
+    public void setBuyerShopName(String buyerShopName) {
+        this.buyerShopName = buyerShopName;
+    }
+
+    public String getBuyerShopName() {
+        return buyerShopName;
+    }
 
     public void setSfOrderItems(List<SfOrderItem> sfOrderItems) {
         this.sfOrderItems = sfOrderItems;

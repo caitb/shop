@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.message.SfMessageSrRelationMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfMessageSrRelation" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="sf_message_content_id" property="sfMessageContentId" jdbcType="BIGINT" />
+        <result column="from_user" property="fromUser" jdbcType="BIGINT" />
+        <result column="to_user" property="toUser" jdbcType="BIGINT" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="is_see" property="isSee" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_message_sr_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfMessageSrRelation" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_message_sr_relation (id, create_time, sf_message_content_id,
+            from_user, to_user, status, 
+            is_see, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{sfMessageContentId,jdbcType=BIGINT},
+            #{fromUser,jdbcType=BIGINT}, #{toUser,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+            #{isSee,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfMessageSrRelation" >
+        update sf_message_sr_relation
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sf_message_content_id = #{sfMessageContentId,jdbcType=BIGINT},
+            from_user = #{fromUser,jdbcType=BIGINT},
+            to_user = #{toUser,jdbcType=BIGINT},
+            status = #{status,jdbcType=INTEGER},
+            is_see = #{isSee,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_message_content_id, from_user, to_user, status, is_see,
+        remark
+        from sf_message_sr_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, sf_message_content_id, from_user, to_user, status, is_see,
+        remark
+        from sf_message_sr_relation
+    </select>
+
+    <select id="countNumsFromUser" resultType="java.lang.Long">
+        select count(id) from sf_message_sr_relation
+        WHERE from_user = #{userId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

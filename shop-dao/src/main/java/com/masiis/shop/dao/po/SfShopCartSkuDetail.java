@@ -30,6 +30,11 @@ public class SfShopCartSkuDetail {
     private ComSku comSku;
 
     /**
+     * 发货人
+     */
+    private Long sendMan;
+
+    /**
      * 商品主图
      */
     private String skuImg;
@@ -88,5 +93,13 @@ public class SfShopCartSkuDetail {
 
     public void setSkuImg(String skuImg) {
         this.skuImg = skuImg;
+    }
+
+    public Long getSendMan() {
+        return sendMan;
+    }
+
+    public void setSendMan(Long sendMan) {
+        this.sendMan = sendMan;
     }
 }

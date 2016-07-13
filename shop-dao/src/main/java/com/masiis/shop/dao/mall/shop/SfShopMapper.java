@@ -33,4 +33,6 @@ public interface SfShopMapper {
     List<SfShop> selectByMap(Map<String, Object> conditionMap);
 
     int updateWithVersion(SfShop sfShop);
+
+    List<SfShop> selectSharedShops(@Param("userId") Long userId);
 }

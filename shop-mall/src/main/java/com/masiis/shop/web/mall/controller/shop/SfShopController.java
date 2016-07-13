@@ -2,7 +2,6 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
@@ -15,15 +14,14 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuImageService;
-import com.masiis.shop.web.mall.service.product.SkuService;
-import com.masiis.shop.web.mall.service.product.SpuService;
-import com.masiis.shop.web.mall.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.web.mall.service.shop.JSSDKService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.mall.service.qrcode.WeiXinSFQRCodeService;
+import com.masiis.shop.web.mall.service.shop.JSSDKSFService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
-import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.utils.DownloadImage;
-import com.masiis.shop.web.mall.utils.DrawPicUtil;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.DownloadImage;
+import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.mall.utils.image.DrawImageUtil;
 import com.masiis.shop.web.mall.utils.image.Element;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
@@ -66,15 +64,13 @@ public class SfShopController extends BaseController {
     @Resource
     private SkuImageService skuImageService;
     @Resource
-    private SpuService spuService;
-    @Resource
     private UserService userService;
     @Resource
     private SfUserShopViewService sfUserShopViewService;
     @Resource
-    private JSSDKService jssdkService;
+    private JSSDKSFService jssdkService;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinSFQRCodeService weiXinSFQRCodeService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
@@ -167,7 +163,7 @@ public class SfShopController extends BaseController {
             if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
             if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
-            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
+            DownloadImage.download(weiXinSFQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
@@ -202,6 +198,10 @@ public class SfShopController extends BaseController {
             drawElements.add(text3Element);
 
             DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
+
+            //二维码获取成功,更新com_user成为代言人
+            comUser.setIsSpokesman(1);
+            comUserMapper.updateByPrimaryKey(comUser);
 
 //            resultMap.put("appId", WxConsPF.APPID);
 //            resultMap.put("shareTitle", "我是"+comUser.getWxNkName()+",我为朋友代言!");
@@ -325,16 +325,22 @@ public class SfShopController extends BaseController {
     }
 
     /**
-     * @Author jjh
-     * @Date 2016/4/8 0008 下午 5:50
-     * 商品详情
+     * jjh
+     * c 端 商品详情
+     * @param request
+     * @param response
+     * @param skuId 商品ID
+     * @param shopId 小铺ID
+     * @param isOwnShip 是否自己发货
+     * @return
+     * @throws Exception
      */
     @RequestMapping("/detail.shtml")
     public ModelAndView getSkuDetail(HttpServletRequest request,
                                      HttpServletResponse response,
                                      @RequestParam(value = "skuId", required = true) Integer skuId,
                                      @RequestParam(value = "shopId", required = true) Long shopId,
-                                     @RequestParam(value = "fromUserId", required = false) Long fromUserId) throws Exception {
+                                     @RequestParam(value = "isOwnShip", required = true) Integer isOwnShip) throws Exception {
         SfShop sfShop = sfShopService.getSfShopById(shopId);
         if (sfShop == null) {
             throw new BusinessException("该店铺不存在！");
@@ -343,14 +349,12 @@ public class SfShopController extends BaseController {
         if (comSku == null) {
             throw new BusinessException("该Sku不存在！");
         }
-        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
+        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId,isOwnShip);
         List<ComSkuImage> comSkuImageList = skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);
-        //店铺浏览量
-        if (fromUserId != null) {
-            sfUserShopViewService.addShopView(user.getId(), shopId);
-        }
+        //获取店主二维码
+        sfShop.setWxQrCode(sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
@@ -358,6 +362,7 @@ public class SfShopController extends BaseController {
         mav.addObject("shopId", shopId);
         mav.addObject("loginUser", user);
         mav.addObject("sfShop", sfShop);
+        mav.addObject("isOwnShip", isOwnShip);
         return mav;
     }
 

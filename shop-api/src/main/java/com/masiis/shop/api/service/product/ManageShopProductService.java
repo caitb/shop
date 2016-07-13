@@ -44,9 +44,9 @@ public class ManageShopProductService {
      * @Date 2016/4/13 0013 上午 10:29
      * 小铺中商品列表
      */
-    public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId) throws Exception{
+    public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId,Integer isOwnShip) throws Exception{
 
-        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale);
+        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale,isOwnShip);
         List<SkuInfo> skuInfoList = new ArrayList<>();
         ComUser comUser = ComUserMapper.selectByPrimaryKey(userId);
         if(sfShopSkuList!=null){

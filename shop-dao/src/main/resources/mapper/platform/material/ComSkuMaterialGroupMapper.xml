@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.material.ComSkuMaterialGroupMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
+        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <resultMap id="materialLibrary" type="com.masiis.shop.dao.beans.material.MaterialLibrary" >
+        <id column="ml_id" property="id" jdbcType="INTEGER" />
+        <result column="ml_create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="ml_create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="ml_name" property="name" jdbcType="VARCHAR" />
+        <result column="subscription_num" property="subscriptionNum" jdbcType="INTEGER" />
+        <result column="ml_sort" property="sort" jdbcType="INTEGER" />
+        <result column="ml_remark" property="remark" jdbcType="VARCHAR" />
+        <association property="comSku" resultMap="comSku" />
+        <collection property="materialGroups" resultMap="materialGroup" />
+    </resultMap>
+
+    <resultMap id="materialGroup" type="com.masiis.shop.dao.beans.material.MaterialGroup" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="is_b_show" property="isBShow" jdbcType="INTEGER" />
+        <result column="is_c_show" property="isCShow" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="comSku" type="com.masiis.shop.dao.po.ComSku" >
+        <id column="sku_id" property="id" jdbcType="INTEGER" />
+        <result column="sku_name" property="name" jdbcType="VARCHAR" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
+        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+        <result column="e_name" property="eName" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="price_cost" property="priceCost" jdbcType="DECIMAL" />
+        <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
+        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from com_sku_material_group
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        insert into com_sku_material_group (id, create_time, create_man, 
+            material_library_id, name, is_b_show, 
+            is_c_show, sort, remark, icon
+            )
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{materialLibraryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{isBShow,jdbcType=INTEGER}, 
+            #{isCShow,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+        update
+               com_sku_material_group
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="materialLibraryId != null">
+                material_library_id = #{materialLibraryId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="isBShow != null">
+                is_b_show = #{isBShow,jdbcType=INTEGER},
+            </if>
+            <if test="isCShow != null">
+                is_c_show = #{isCShow,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
+        sort, remark, icon
+        from com_sku_material_group
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, material_library_id, name, is_b_show, is_c_show, 
+        sort, remark, icon
+        from com_sku_material_group
+    </select>
+
+    <!-- 查询素材库(包含素材组) -->
+    <select id="selectMaterialLibrary" parameterType="Map" resultMap="materialLibrary">
+        SELECT
+               ml.id                ml_id,
+               ml.create_time       ml_create_time,
+               ml.create_man        ml_create_man,
+               ml.spu_id,
+               ml.sku_id,
+               ml.name              ml_name,
+               ml.subscription_num,
+               ml.sort              ml_sort,
+               ml.remark            ml_remark,
+
+               mg.id,
+               mg.create_time,
+               mg.create_man,
+               mg.material_library_id,
+               mg.name,
+               mg.is_b_show,
+               mg.is_c_show,
+               mg.sort,
+               mg.remark,
+               mg.icon,
+
+               sku.id              sku_id,
+               sku.name            sku_name
+        from
+               com_sku_material_library ml
+        LEFT JOIN
+               com_sku_material_group   mg ON mg.material_library_id = ml.id
+        LEFT JOIN com_sku sku ON sku.id = ml.sku_id
+        <where>
+            <if test="mlId != null">
+                AND ml.id = #{mlId}
+            </if>
+            <if test="mlName != null">
+                AND ml.name = #{mlName}
+            </if>
+            <if test="subscriptionNum != null">
+                AND ml.subscription_num = #{subscriptionNum}
+            </if>
+            <if test="mgId != null">
+                AND mg.id = #{mgId}
+            </if>
+            <if test="mgName != null">
+                AND mg.name = #{mgName}
+            </if>
+            <if test="isBShow != null">
+                AND mg.is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND mg.is_c_show = #{isCShow}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMaterialGroup" parameterType="Map" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               create_man,
+               material_library_id,
+               name,
+               is_b_show,
+               is_c_show,
+               sort,
+               remark,
+               icon
+        from
+               com_sku_material_group
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="mlId != null">
+                AND material_library_id = #{mlId}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="isBShow != null">
+                AND is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND is_c_show = #{isCShow}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectMaterialGroupByMlId" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        create_man,
+        material_library_id,
+        name,
+        is_b_show,
+        is_c_show,
+        sort,
+        remark,
+        icon
+        from
+        com_sku_material_group
+        WHERE material_library_id = #{mlId}
+            <if test="isBShow != null">
+                AND is_b_show = #{isBShow}
+            </if>
+            <if test="isCShow != null">
+                AND is_c_show = #{isCShow}
+            </if>
+        ORDER BY sort ASC
+    </select>
+</mapper>

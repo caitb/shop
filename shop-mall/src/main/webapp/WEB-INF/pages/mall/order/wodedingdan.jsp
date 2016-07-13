@@ -34,6 +34,7 @@
                         <li><a href="javascript:;">待发货</a></li>
                         <li><a href="javascript:;">待收货</a></li>
                         <li><a href="javascript:;">已完成</a></li>
+                        <li><a href="javascript:;">已取消</a></li>
                     </ul>
                 </nav>
                 <main>
@@ -232,6 +233,45 @@
                             </div>
                         </section></c:forEach>
                     </div>
+                    <div class="all"><c:forEach items="${sfOrders}" var="pb">
+                        <section class="sec1">
+                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                            <h2>
+                                订单号：<span>${pb.orderCode}</span>
+                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}">待付款</b ></c:if>
+                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
+                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">已付款</b ></c:if>
+                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
+                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
+                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
+                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
+                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
+                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                                <p class="photo">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
+                                        <img src="${pbi.skuUrl}" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                </div>
+                            </div></c:forEach>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                            <div class="ding">
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
+                                    <p>
+                                        <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
+                                    </p>
+                                </c:if>
+                            </div>
+                        </section></c:forEach>
+                    </div>
                 </main>
            </div>
        </div>
@@ -299,15 +339,15 @@
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已完成</b ></h2>";
                                }else if(sfOrder.orderStatus ==1){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已付款</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
+                               }else if(sfOrder.orderStatus ==2){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已取消</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
+                               }else if(sfOrder.orderStatus ==4){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >退款中</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
+                               }else if(sfOrder.orderStatus ==5){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已退款</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
+                               }else if(sfOrder.orderStatus ==6){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >排单中</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
+                               }else if(sfOrder.orderStatus ==9){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >线下支付</b ></h2>";
                                }
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
@@ -349,11 +389,6 @@
                 $(".back_shouhuo").css("display","-webkit-box");
                 oid = id;
             }
-           <%--var result="";--%>
-           <%--function xiaoshudian(id){--%>
-               <%--var tmp   =   ${sfOrder.orderAmount};--%>
-               <%--result   =   tmp.substr(0,tmp.indexOf(".")+3);--%>
-           <%--}--%>
 
            $(function(){
                $(".que_que").on("click",function(){

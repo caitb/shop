@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfGorderMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfGorder" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="promo_id" property="promoId" jdbcType="INTEGER" />
+        <result column="promo_rule_id" property="promoRuleId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="gorder_code" property="gorderCode" jdbcType="VARCHAR" />
+        <result column="gorder_type" property="gorderType" jdbcType="INTEGER" />
+        <result column="gorder_status" property="gorderStatus" jdbcType="INTEGER" />
+        <result column="gorder_amount" property="gorderAmount" jdbcType="DECIMAL" />
+        <result column="product_amount" property="productAmount" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="receivable_amount" property="receivableAmount" jdbcType="DECIMAL" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="ship_man_id" property="shipManId" jdbcType="INTEGER" />
+        <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR" />
+        <result column="ship_type" property="shipType" jdbcType="INTEGER" />
+        <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
+        <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
+        <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+        <result column="is_ship" property="isShip" jdbcType="INTEGER" />
+        <result column="is_receipt" property="isReceipt" jdbcType="INTEGER" />
+        <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_gorder
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorder" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_gorder (id, create_time, create_man, 
+            promo_id, promo_rule_id, user_id, 
+            gorder_code, gorder_type, gorder_status, 
+            gorder_amount, product_amount, ship_amount, 
+            receivable_amount, pay_amount, pay_time, 
+            ship_man_id, ship_man_name, ship_type, 
+            ship_time, ship_status, pay_status, 
+            is_ship, is_receipt, receipt_time, 
+            modify_time, modify_man, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{promoId,jdbcType=INTEGER}, #{promoRuleId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
+            #{gorderCode,jdbcType=VARCHAR}, #{gorderType,jdbcType=INTEGER}, #{gorderStatus,jdbcType=INTEGER}, 
+            #{gorderAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, 
+            #{receivableAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, 
+            #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, 
+            #{shipTime,jdbcType=TIMESTAMP}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
+            #{isShip,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP}, 
+            #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfGorder" >
+        update sf_gorder
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            promo_id = #{promoId,jdbcType=INTEGER},
+            promo_rule_id = #{promoRuleId,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            gorder_code = #{gorderCode,jdbcType=VARCHAR},
+            gorder_type = #{gorderType,jdbcType=INTEGER},
+            gorder_status = #{gorderStatus,jdbcType=INTEGER},
+            gorder_amount = #{gorderAmount,jdbcType=DECIMAL},
+            product_amount = #{productAmount,jdbcType=DECIMAL},
+            ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
+            pay_amount = #{payAmount,jdbcType=DECIMAL},
+            pay_time = #{payTime,jdbcType=TIMESTAMP},
+            ship_man_id = #{shipManId,jdbcType=INTEGER},
+            ship_man_name = #{shipManName,jdbcType=VARCHAR},
+            ship_type = #{shipType,jdbcType=INTEGER},
+            ship_time = #{shipTime,jdbcType=TIMESTAMP},
+            ship_status = #{shipStatus,jdbcType=INTEGER},
+            pay_status = #{payStatus,jdbcType=INTEGER},
+            is_ship = #{isShip,jdbcType=INTEGER},
+            is_receipt = #{isReceipt,jdbcType=INTEGER},
+            receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, promo_id, promo_rule_id, user_id, gorder_code, 
+        gorder_type, gorder_status, gorder_amount, product_amount, ship_amount, receivable_amount, 
+        pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time, ship_status, 
+        pay_status, is_ship, is_receipt, receipt_time, modify_time, modify_man, remark
+        from sf_gorder
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, promo_id, promo_rule_id, user_id, gorder_code, 
+        gorder_type, gorder_status, gorder_amount, product_amount, ship_amount, receivable_amount, 
+        pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time, ship_status, 
+        pay_status, is_ship, is_receipt, receipt_time, modify_time, modify_man, remark
+        from sf_gorder
+    </select>
+
+</mapper>

@@ -1,7 +1,6 @@
  package com.masiis.shop.api.controller.order;
 
  import com.alibaba.fastjson.JSONObject;
- import com.fasterxml.jackson.databind.ObjectMapper;
  import com.masiis.shop.api.bean.order.TrialApplyPayOrderDetailRes;
  import com.masiis.shop.api.bean.order.TrialApplyPayReq;
  import com.masiis.shop.api.bean.user.ComUserAddressReq;
@@ -11,8 +10,7 @@
  import com.masiis.shop.api.constants.SysResCodeCons;
  import com.masiis.shop.api.controller.base.BaseController;
  import com.masiis.shop.api.service.order.COrderService;
- import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
- import com.masiis.shop.common.exceptions.BusinessException;
+ import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
  import com.masiis.shop.common.util.PropertiesUtils;
  import com.masiis.shop.dao.beans.product.Product;
  import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
@@ -22,7 +20,6 @@
  import com.masiis.shop.dao.po.PfCorderConsignee;
  import org.apache.log4j.Logger;
  import org.springframework.stereotype.Controller;
- import org.springframework.ui.Model;
  import org.springframework.util.StringUtils;
  import org.springframework.web.bind.annotation.RequestMapping;
  import org.springframework.web.bind.annotation.RequestParam;

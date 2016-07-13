@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.common.service.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,10 +36,6 @@ public class UserAddressController extends BaseController {
     private static  final  int managePageToChooseAddressPageTag = 0;
     //管理地址跳转到个人中心界面
     private static  final  int managePageToPersonalInfoPageTag = 1;
-    //新增地址增加完跳转到订单界面
-    public static final int addAddressPageToOrderPage = 0;
-    //新增地址增加完跳转到管理地址界面
-    public static final int getAddAddressPageToPersonalInfoPage =1;
 
     /**
      * 跳转到新增地址界面

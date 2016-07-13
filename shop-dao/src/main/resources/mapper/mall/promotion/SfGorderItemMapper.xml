@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfGorderItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfGorderItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="sf_gorder_id" property="sfGorderId" jdbcType="BIGINT" />
+        <result column="gift_id" property="giftId" jdbcType="INTEGER" />
+        <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_gorder_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorderItem" >
+        insert into sf_gorder_item (id, create_time, sf_gorder_id, 
+            gift_id, gift_name, unit_price, 
+            quantity, total_price, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{sfGorderId,jdbcType=BIGINT}, 
+            #{giftId,jdbcType=INTEGER}, #{giftName,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
+            #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfGorderItem" >
+        update sf_gorder_item
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sf_gorder_id = #{sfGorderId,jdbcType=BIGINT},
+            gift_id = #{giftId,jdbcType=INTEGER},
+            gift_name = #{giftName,jdbcType=VARCHAR},
+            unit_price = #{unitPrice,jdbcType=DECIMAL},
+            quantity = #{quantity,jdbcType=INTEGER},
+            total_price = #{totalPrice,jdbcType=DECIMAL},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_gorder_id, gift_id, gift_name, unit_price, quantity, total_price, 
+        remark
+        from sf_gorder_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, sf_gorder_id, gift_id, gift_name, unit_price, quantity, total_price, 
+        remark
+        from sf_gorder_item
+    </select>
+
+</mapper>

@@ -109,6 +109,8 @@
    <script src="${path}/static/js/commonAjax.js"></script>
    <script src="${path}/static/js/definedAlertWindow.js"></script>
    <script src="${path}/static/js/upGradeInformation.js"></script>
+   <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+   <script src="${path}/static/js/pageJs/hideWXShare.js"></script>
    <script>
        var path = "${path}";
        var basePath = "${basePath}";

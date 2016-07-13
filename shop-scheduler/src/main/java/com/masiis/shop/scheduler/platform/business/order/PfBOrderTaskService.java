@@ -1,10 +1,11 @@
 package com.masiis.shop.scheduler.platform.business.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.scheduler.platform.service.order.BOrderShipService;
 import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class PfBOrderTaskService {
 
     @Resource
     private PfBorderService bOrderService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
     /**
      * 自动取消7天未支付的线下支付订单
@@ -129,7 +132,7 @@ public class PfBOrderTaskService {
             for(PfBorder bOrder:bList) {
                 try {
                     log.info("开始代理订单收货,订单号为:" + bOrder.getOrderCode());
-                    bOrderService.confirmOrderReceive(bOrder);
+                    bOrderShipService.shipAndReceiptBOrder(bOrder);
                     log.info("代理订单收货成功,订单号为:" + bOrder.getOrderCode());
                 } catch (Exception e) {
                     log.info("代理订单收货失败,订单号为:" + bOrder.getOrderCode());

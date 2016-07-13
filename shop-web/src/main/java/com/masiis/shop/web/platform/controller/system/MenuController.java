@@ -4,7 +4,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

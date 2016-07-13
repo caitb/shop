@@ -1,16 +1,15 @@
 package com.masiis.shop.web.platform.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.beans.wxauth.RedirectParam;
-import com.masiis.shop.web.platform.constants.RedirectCons;
-import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
-import com.masiis.shop.web.system.init.SysUriInit;
+import com.masiis.shop.common.beans.wx.wxauth.RedirectParam;
+import com.masiis.shop.common.constant.platform.RedirectCons;
+import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.ApplicationContextUtil;
+import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
+import com.masiis.shop.web.common.system.init.SysUriInit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -94,8 +93,11 @@ public class LoginFilter implements Filter{
             // cookie验证由controller来验证
             RedirectParam rp = new RedirectParam();
             rp.setCode(RedirectCons.WX_CHECK_CODE);
-            rp.setSurl(request.getRequestURL().toString() + "?" + request.getQueryString());
-            rp.setNonceStr(WXBeanUtils.createGenerateStr());
+            rp.setSurl(request.getRequestURL().toString());
+            if(request.getQueryString() != null) {
+                rp.setSurl(rp.getSurl() + "?" + request.getQueryString());
+            }
+            rp.setNonceStr(WxPFBeanUtils.createGenerateStr());
             rp.creatSign();
 
             String basepath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";

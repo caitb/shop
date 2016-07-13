@@ -1,14 +1,15 @@
 package com.masiis.shop.web.mall.controller.system;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuBackGroupImageService;
-import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
-import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,6 +93,13 @@ public class IndexController extends BaseController {
         return modelAndView;
     }
 
+
+    /**
+     * 小铺首页代理商品
+     * @author muchaofeng
+     * @date 2016/4/12 17:05
+     */
+
     @RequestMapping("/product.do")
     @ResponseBody
     public  List<SfShopDetail> findProduct(HttpServletRequest req){
@@ -105,6 +113,7 @@ public class IndexController extends BaseController {
                 ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
                 ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
                 SfShopDetail sfShopDetail = new SfShopDetail();
+                sfShopDetail.setIsWunShip(sfShopSku.getIsOwnShip());//自己发货
                 sfShopDetail.setSkuImageUrl(comSkuImage.getFullImgUrl());
                 sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
                 sfShopDetail.setSkuName(comSku.getName());
@@ -141,7 +150,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         shopId =336L;
-        userPid = 540L;
+        userPid = 541L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -155,6 +164,9 @@ public class IndexController extends BaseController {
             sfShop = sfShopService.getSfShopById(shopId);
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
+            }else{
+                String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
+                sfShop.setWxQrCode(productImgValue+sfShop.getWxQrCode());
             }
         }
 

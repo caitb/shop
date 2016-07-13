@@ -3,24 +3,22 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
-import com.masiis.shop.web.platform.service.user.ComUserAccountService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订单管理
@@ -65,6 +62,8 @@ public class BorderManageController extends BaseController {
     private PfSupplierBankService pfSupplierBankService;
     @Resource
     private PfBorderConsigneeService pfBorderConsigneeService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
     /**
      * 确认收货
@@ -74,11 +73,11 @@ public class BorderManageController extends BaseController {
      */
     @RequestMapping("/closeDeal.do")
     @ResponseBody
-    public String closeDeal(HttpServletRequest request, @RequestParam(required = true) Long orderId) {
+    public String closeDeal(@RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
             PfBorder border = bOrderService.getPfBorderById(orderId);
-            bOrderService.completeBOrder(border);
+            bOrderShipService.receiptBOrder(border);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -99,7 +98,6 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/clickType.do")
     @ResponseBody
     public List<PfBorder> clickType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
-//        JSONObject json = new JSONObject();
         List<PfBorder> pfBorder = null;
         try {
             ComUser user = getComUser(request);
@@ -121,6 +119,8 @@ public class BorderManageController extends BaseController {
                 }
             } else if (index == 2) {
                 pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
+            } else if (index == 6) {
+                pfBorder = bOrderService.findPfBorder(user.getId(), 2, null);
             } else if (index == 3) {
                 pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
             } else if (index == 4) {
@@ -177,8 +177,8 @@ public class BorderManageController extends BaseController {
                 }
 //            } else if (index == 2) {
 //                pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
-//            } else if (index == 3) {
-//                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
+            } else if (index == 4) {
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 2, null);
             } else if (index == 3) {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
             } else if (index == 1) {
@@ -271,11 +271,11 @@ public class BorderManageController extends BaseController {
         for (PfBorder pfBord : pfBorderps) {
             if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorderp0.add(pfBord);//待付款
-            }  else if (pfBord.getOrderStatus() == 6) {
+            } else if (pfBord.getOrderStatus() == 6) {
                 pfBorderp6.add(pfBord);//排单中
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorderp3.add(pfBord);//代发货
-            }else if (pfBord.getOrderStatus() == 8) {
+            } else if (pfBord.getOrderStatus() == 8) {
                 pfBorderp8.add(pfBord);//待收货
             }
         }
@@ -294,97 +294,26 @@ public class BorderManageController extends BaseController {
     }
 
     /**
-     * 进货订单
-     *
-     * @author muchaofeng
-     * @date 2016/3/16 11:37
-     */
-//    @RequestMapping("/stockBorder")
-//    public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
-//        ComUser comUser = getComUser(request);
-//        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
-//        List<PfBorder> pfBorders0 = new ArrayList<>();
-//        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
-//        List<PfBorder> pfBorders15 = new ArrayList<>();//待收货
-//        List<PfBorder> pfBorders3 = new ArrayList<>();//已完成
-//        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
-//        for (PfBorder pfBord : pfBorders) {
-//            if (pfBord.getOrderStatus() == 0) {
-//                pfBorders0.add(pfBord);//待付款
-//            } else if (pfBord.getOrderStatus() == 7) {
-//                pfBorders10.add(pfBord);//代发货
-//            }  else if (pfBord.getOrderStatus() == 6 && pfBord.getSendType()!=2){
-//                pfBorders6.add(pfBord);//排单中
-//            }else if (pfBord.getOrderStatus() == 8 && pfBord.getSendType()==2){
-//                pfBorders15.add(pfBord);//待收货
-//            } else if (pfBord.getOrderStatus() == 3) {
-//                pfBorders3.add(pfBord);//已完成
-//            }
-//        }
-//        List<List<PfBorder>> pfBorderss = new ArrayList<>();
-//        pfBorderss.add(0, pfBorders);
-//        pfBorderss.add(1, pfBorders0);
-//        pfBorderss.add(2, pfBorders10);
-//        pfBorderss.add(3, pfBorders15);
-//        pfBorderss.add(4, pfBorders3);
-//        pfBorderss.add(5, pfBorders6);
-//        for (List<PfBorder> pfBorderw : pfBorderss) {
-//            Iterator<PfBorder> chk_itw = pfBorderw.iterator();
-//            while (chk_itw.hasNext()) {
-//                PfBorder pfBorder = chk_itw.next();
-//                if (pfBorder.getUserId().longValue() != comUser.getId().longValue()) {//进货订单
-//                    chk_itw.remove();
-//                }
-//            }
-//        }
-//        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-//        for (List<PfBorder> pfsBorder : pfBorderss) {
-//            if (pfsBorder != null && pfsBorder.size() != 0) {
-//                for (PfBorder pfBorder : pfsBorder) {
-//                    List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
-//                    for (PfBorderItem pfBorderItem : pfBorderItems) {
-//                        ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-//                        pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
-//                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
-//                    }
-////                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
-////                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
-//                    if(pfBorder.getUserPid()==0){
-//                        pfBorder.setPidUserName("平台代理");
-//                    }else{
-//                        ComUser user = userService.getUserById(pfBorder.getUserPid());
-//                        pfBorder.setPidUserName(user.getRealName());
-//                    }
-//                    pfBorder.setPfBorderItems(pfBorderItems);
-//                }
-//            }
-//        }
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("pfBorders", pfBorderss);
-//        modelAndView.setViewName("platform/order/jinhuodingdan");
-//        return modelAndView;
-//    }
-
-    /**
      * 合伙订单列表
+     *
      * @param request
-     * @param isShipment   进出货(0进货;1出货)
-     * @param orderStatus  订单状态
+     * @param isShipment  进出货(0进货;1出货)
+     * @param orderStatus 订单状态
      * @return
      */
     @RequestMapping("/orderList")
     public ModelAndView orderList(
-                                    HttpServletRequest request,
-                                    @RequestParam(value = "isShipment", required = false, defaultValue = "0")Integer isShipment,
-                                    @RequestParam(value = "orderStatus", required = false)Integer orderStatus
-                                 ) {
+            HttpServletRequest request,
+            @RequestParam(value = "isShipment", required = false, defaultValue = "0") Integer isShipment,
+            @RequestParam(value = "orderStatus", required = false) Integer orderStatus
+    ) {
 
         ModelAndView mav = new ModelAndView("platform/order/orderList");
 
-        Long userId  = null;
+        Long userId = null;
         Long userPid = null;
-        if(isShipment == 0) userId  = getComUser(request).getId();
-        if(isShipment == 1) userPid = getComUser(request).getId();
+        if (isShipment == 0) userId = getComUser(request).getId();
+        if (isShipment == 1) userPid = getComUser(request).getId();
         try {
             if (request.getSession().getAttribute("defaultBank") == null || request.getSession().getAttribute("defaultBank") == "") {
                 PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
@@ -399,7 +328,7 @@ public class BorderManageController extends BaseController {
             mav.addObject("orderStatuses", BOrderStatus.values());
             mav.addObject("orderTypes", BOrderType.values());
         } catch (Exception e) {
-            log.error("查询订单列表失败![userPid="+userPid+"][orderStatus="+orderStatus+"][userId="+userId+"]"+e);
+            log.error("查询订单列表失败![userPid=" + userPid + "][orderStatus=" + orderStatus + "][userId=" + userId + "]" + e);
             e.printStackTrace();
             throw new BusinessException("网络错误", e);
         }
@@ -409,7 +338,8 @@ public class BorderManageController extends BaseController {
 
     /**
      * 获取收货人信息
-     * @param bOrderId  代理订单ID
+     *
+     * @param bOrderId 代理订单ID
      * @return
      */
     @RequestMapping("/getConsignee")
@@ -419,7 +349,7 @@ public class BorderManageController extends BaseController {
         try {
             pfBorderConsignee = pfBorderConsigneeService.getByBOrderId(bOrderId);
         } catch (Exception e) {
-            log.error("获取收货人信息失败![bOrderId="+bOrderId+"]"+e);
+            log.error("获取收货人信息失败![bOrderId=" + bOrderId + "]" + e);
             e.printStackTrace();
         }
 
@@ -523,7 +453,6 @@ public class BorderManageController extends BaseController {
                 }
             }
         }
-//        List<ComShipMan> comShipMans = comShipManService.list();
         String index = null;
         Integer borderNum = 0;
         if (orderStatus == null && sendType == null) {
@@ -553,7 +482,6 @@ public class BorderManageController extends BaseController {
                 List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
                 PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
                 for (PfBorderItem pfBorderItem : pfBorderItems) {
-//                        ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
                     pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                 }
@@ -566,13 +494,11 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("borderNum10", borderNum);
         modelAndView.addObject("orderStatuses", BOrderStatus.values());
         modelAndView.addObject("bOrderTypes", BOrderType.values());
-//        modelAndView.addObject("comShipMans",comShipMans);
         if (request.getSession().getAttribute("comShipMans") == null || request.getSession().getAttribute("comShipMans") == "") {
             List<ComShipMan> comShipMans = comShipManService.list();
             request.getSession().setAttribute("comShipMans", comShipMans);
         }
         modelAndView.addObject("index", index);
-        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }

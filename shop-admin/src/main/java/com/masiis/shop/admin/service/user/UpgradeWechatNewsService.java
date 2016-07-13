@@ -1,8 +1,8 @@
 package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;

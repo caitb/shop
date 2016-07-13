@@ -1,22 +1,22 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -109,9 +109,9 @@ public class BOrderController extends BaseController {
         WxPaySysParamReq req = new WxPaySysParamReq();
         req.setOrderId(pfBorder.getOrderCode());
         req.setSignType("MD5");
-        req.setNonceStr(WXBeanUtils.createGenerateStr());
+        req.setNonceStr(WxPFBeanUtils.createGenerateStr());
         req.setSuccessUrl(successURL);
-        req.setSign(WXBeanUtils.toSignString(req));
+        req.setSign(WxPFBeanUtils.toSignString(req));
         String param = URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8");
         System.out.println("payParam:" + param);
 
@@ -187,9 +187,9 @@ public class BOrderController extends BaseController {
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
-            req.setNonceStr(WXBeanUtils.createGenerateStr());
+            req.setNonceStr(WxPFBeanUtils.createGenerateStr());
             req.setSuccessUrl(successURL);
-            req.setSign(WXBeanUtils.toSignString(req));
+            req.setSign(WxPFBeanUtils.toSignString(req));
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
@@ -310,7 +310,7 @@ public class BOrderController extends BaseController {
         mav.addObject("isQueuing", isQueuing);
         mav.addObject("count", count);
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
-//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(comUser);
+//        boolean isUserForcus = WxPFUserUtils.getInstance().isUserForcusPF(comUser);
 //        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }

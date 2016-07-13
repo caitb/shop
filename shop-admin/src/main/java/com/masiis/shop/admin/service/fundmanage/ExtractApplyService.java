@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
-import com.masiis.shop.common.enums.BOrder.OperationType;
+import com.masiis.shop.common.enums.platform.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;

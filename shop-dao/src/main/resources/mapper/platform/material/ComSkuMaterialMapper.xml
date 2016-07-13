@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.material.ComSkuMaterialMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuMaterial" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="material_group_id" property="materialGroupId" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="material" type="com.masiis.shop.dao.beans.material.Material" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="material_group_id" property="materialGroupId" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <collection property="materialItems" resultMap="materialItem" />
+    </resultMap>
+
+    <resultMap id="materialItem" type="com.masiis.shop.dao.beans.material.MaterialItem" >
+        <id column="mi_id" property="id" jdbcType="INTEGER" />
+        <result column="mi_create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="mi_create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="mi_material_library_id" property="materialLibraryId" jdbcType="INTEGER" />
+        <result column="mi_material_group_id" property="materialGroupId" jdbcType="INTEGER" />
+        <result column="mi_material_id" property="materialId" jdbcType="INTEGER" />
+        <result column="mi_type" property="type" jdbcType="INTEGER" />
+        <result column="mi_file_name" property="fileName" jdbcType="VARCHAR" />
+        <result column="mi_file_url" property="fileUrl" jdbcType="VARCHAR" />
+        <result column="mi_file_suffix" property="fileSuffix" jdbcType="VARCHAR" />
+        <result column="mi_file_size" property="fileSize" jdbcType="BIGINT" />
+        <result column="mi_sort" property="sort" jdbcType="INTEGER" />
+        <result column="mi_remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from com_sku_material
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterial" keyProperty="id" useGeneratedKeys="true" >
+        insert into com_sku_material (id, create_time, create_man, 
+            material_library_id, material_group_id, title, 
+            content, sort, modify_time, 
+            modify_man, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{materialLibraryId,jdbcType=INTEGER}, #{materialGroupId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+            #{content,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
+            #{modifyMan,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuMaterial" >
+        update com_sku_material
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            material_library_id = #{materialLibraryId,jdbcType=INTEGER},
+            material_group_id = #{materialGroupId,jdbcType=INTEGER},
+            title = #{title,jdbcType=VARCHAR},
+            content = #{content,jdbcType=VARCHAR},
+            sort = #{sort,jdbcType=INTEGER},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, material_library_id, material_group_id, title, 
+        content, sort, modify_time, modify_man, remark
+        from com_sku_material
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, material_library_id, material_group_id, title, 
+        content, sort, modify_time, modify_man, remark
+        from com_sku_material
+    </select>
+
+    <select id="selectMaterialItem" parameterType="Map" resultMap="material" >
+        select
+               m.id,
+               m.create_time,
+               m.create_man,
+               m.material_library_id,
+               m.material_group_id,
+               m.title,
+               m.content,
+               m.sort,
+               m.modify_time,
+               m.modify_man,
+               m.remark,
+
+               mi.id                  mi_id,
+               mi.create_time         mi_create_time,
+               mi.create_man          mi_create_man,
+               mi.material_library_id mi_material_library_id,
+               mi.material_group_id   mi_material_group_id,
+               mi.material_id         mi_material_id,
+               mi.type                mi_type,
+               mi.file_name           mi_file_name,
+               mi.file_url            mi_file_url,
+               mi.file_suffix         mi_file_suffix,
+               mi.file_size           mi_file_size,
+               mi.sort                mi_sort,
+               mi.remark              mi_remark
+        from
+               com_sku_material m
+        LEFT JOIN
+               com_sku_material_item mi ON mi.material_id = m.id
+        <where>
+            <if test="mId != null">
+                AND m.id = #{mId}
+            </if>
+            <if test="mgId != null">
+                AND m.material_group_id = #{mgId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByMglId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, material_library_id, material_group_id, title,
+        content, sort, modify_time, modify_man, remark
+        from com_sku_material
+        where material_group_id = #{materialGroupId,jdbcType=INTEGER}
+        ORDER BY sort ASC
+    </select>
+
+    <select id="selectMaterialItemByMtId" resultMap="materialItem" parameterType="java.lang.Integer" >
+        select   mi.id                  mi_id,
+               mi.create_time         mi_create_time,
+               mi.create_man          mi_create_man,
+               mi.material_library_id mi_material_library_id,
+               mi.material_group_id   mi_material_group_id,
+               mi.material_id         mi_material_id,
+               mi.type                mi_type,
+               mi.file_name           mi_file_name,
+               mi.file_url            mi_file_url,
+               mi.file_suffix         mi_file_suffix,
+               mi.file_size           mi_file_size,
+               mi.sort                mi_sort,
+               mi.remark              mi_remark
+        from com_sku_material_item mi
+        where mi.material_id = #{materialId,jdbcType=INTEGER}
+        ORDER BY mi.sort ASC
+    </select>
+</mapper>

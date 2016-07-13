@@ -4,7 +4,7 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -144,7 +144,7 @@ public class UserController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/21 10:23
      */
-    @RequestMapping(value = "getPersonalInfo.do")
+    @RequestMapping(value = "getPersonalInfo.shtml")
     public String getPersonalInfo(HttpServletRequest request, HttpServletResponse response,
                                   Model model) {
 

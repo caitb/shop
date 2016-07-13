@@ -2,8 +2,8 @@ package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.admin.service.product.SkuAgentService;
 import com.masiis.shop.admin.service.product.SkuService;
-import com.masiis.shop.common.enums.upgrade.UpGradeStatus;
-import com.masiis.shop.common.enums.upgrade.UpGradeUpStatus;
+import com.masiis.shop.common.enums.platform.UpGradeStatus;
+import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;

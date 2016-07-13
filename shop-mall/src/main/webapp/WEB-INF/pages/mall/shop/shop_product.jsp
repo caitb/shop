@@ -119,10 +119,15 @@
         <span id="skuName">${skuInfo.comSku.name}</span>
         <span id="price"><b>￥</b>${skuInfo.comSku.priceRetail}</span>
     </p>
-    <%--<h1>--%>
-        <%--<span>库存：</span>--%>
-        <%--<span id="stock">${skuInfo.stock}</span>--%>
-    <%--</h1>--%>
+    <h1>
+        <span>发货类型：</span>
+        <c:if test="${isOwnShip==0}">
+            <span id="isOwnShip">平台发货</span>
+        </c:if>
+        <c:if test="${isOwnShip==1}">
+            <span id="isOwnShip">店主发货</span>
+        </c:if>
+    </h1>
     <h1>
         <span style="float:left">数量：</span>
         <p>
@@ -139,9 +144,20 @@
     </c:if>
     <span class="close">×</span>
 </div>
+<div class="black">
+    <div class="back_b"></div>
+    <div class="b_t">
+        <img src="${sfShop.wxQrCode}" alt="">
+        <p>
+            如有问题，请加我为好友！。
+        </p>
+        <b class="off" onclick="clickHide()">×</b>
+    </div>
+</div>
 <footer>
     <section class="sec3">
         <%--<p class="shi" id="share"><a>分享</a></p>--%>
+        <h1 onclick="clickShow()">联系店主</h1>
         <p onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
     </section>
 </footer>
@@ -189,6 +205,12 @@
         $(".back").hide();
         $(".back_g").hide()
     })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
     //check
     function clickbuy(a,b){
         $(".number").val(1);
@@ -199,20 +221,21 @@
         }
         validateCodeJS.applyTrial('buy');
     }
-
     function buy(){
         var cartData = {};
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
-        var currentStock = $("#stock").text();
-//        if(currentStock-i<0){
-//            alert("可用库存不足！");
-//            $(".shoping").hide();
-//            $(".back").hide();
-//            $(".back_g").hide();
-//            return;
-//        }
+        var isOwnShip = "${isOwnShip}";
+
+        var customerStock = "${skuInfo.stock}";
+        if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
+            alert("当前商品为店主发货，可用库存不足！");
+            $(".shoping").hide();
+            $(".back").hide();
+            $(".back_g").hide();
+            return;
+        }
         if (i <= 0) {
             alert("请至少购买1件商品！");
             return;

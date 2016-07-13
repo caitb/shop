@@ -1,6 +1,6 @@
 package com.masiis.shop.web.mall.filter;
 
-import com.masiis.shop.web.mall.beans.sysbeans.XSSRequestWrapper;
+import com.masiis.shop.common.beans.sysbeans.XSSRequestWrapper;
 
 import javax.servlet.Filter;
 import javax.servlet.*;

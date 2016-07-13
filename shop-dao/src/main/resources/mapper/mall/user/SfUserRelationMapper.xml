@@ -4,11 +4,24 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserRelation">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
+        <result column="is_buy" property="isBuy" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="DistributionResultMap" type="com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo">
+        <result column="wxName" property="wxName" jdbcType="VARCHAR"/>
+        <result column="headImg" property="headImg" jdbcType="VARCHAR"/>
+        <result column="ID" property="ID" jdbcType="VARCHAR"/>
+        <result column="sopkenMan" property="sopkenMan" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="userLevel" property="userLevel" jdbcType="INTEGER"/>
+        <result column="shopId" property="shopId" jdbcType="BIGINT"/>
+        <result column="isBuy" property="isBuy" jdbcType="INTEGER"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -16,45 +29,57 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" useGeneratedKeys="true" keyProperty="id">
-        insert into sf_user_relation (id, create_time, user_id, 
-            user_pid, tree_code, tree_level,
-            remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
-            #{userPid,jdbcType=BIGINT}, #{treeCode,jdbcType=VARCHAR}, #{treeLevel,jdbcType=INTEGER},
-            #{remark,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+        insert into sf_user_relation (id, create_time, shop_id, 
+            user_id, user_pid, tree_code, 
+            tree_level, is_buy, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{treeCode,jdbcType=VARCHAR}, 
+            #{treeLevel,jdbcType=INTEGER}, #{isBuy,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserRelation">
         update sf_user_relation
         set create_time = #{createTime,jdbcType=TIMESTAMP},
+            shop_id = #{shopId,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
             user_pid = #{userPid,jdbcType=BIGINT},
             tree_code = #{treeCode,jdbcType=VARCHAR},
             tree_level = #{treeLevel,jdbcType=INTEGER},
+            is_buy = #{isBuy,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, 
+        remark
         from sf_user_relation
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
     </select>
 
     <select id="getSfUserRelationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where user_id = #{userId}
+        and shop_id = #{shopId}
+    </select>
+
     <select id="getSfUserRelationByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, user_pid, tree_code, tree_level, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
         from sf_user_relation
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
@@ -76,4 +101,192 @@
         update sf_user_relation set tree_code = SUBSTRING(tree_code,#{idIndex}),tree_level=tree_level-#{treeLevelDiff}
         where tree_code LIKE CONCAT(#{treeCode},'%')
     </update>
+
+    <select id="selectFansNum" resultType="java.util.HashMap">
+        select count(*)-1 as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%')
+    </select>
+
+    <select id="selectSpokesManNum" resultType="java.util.HashMap">
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%') and u.is_spokesman = 1 and u.id <![CDATA[<>]]> #{userId}
+    </select>
+
+    <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        from sf_user_relation
+        where user_id = #{userId} and shop_id = #{shopId}
+    </select>
+
+    <select id="selectSfSpokesAndFansInfo" resultMap="DistributionResultMap">
+        SELECT
+			u.wx_nk_name AS wxName,
+			u.wx_head_img AS headImg,
+			LPAD(u.id, 10, 0) AS ID,
+			u.is_spokesman AS sopkenMan,
+			r.create_time AS createTime,
+			u.id AS userId,
+			1 AS userLevel,
+			r.shop_id AS shopId,
+			r.is_buy AS isBuy
+		FROM
+			sf_user_relation r
+		INNER JOIN com_user u ON r.user_id = u.id
+		WHERE
+			r.shop_id = #{shopId} and r.user_id = #{userId}
+    </select>
+
+    <select id="selectFansPageView" resultMap="DistributionResultMap">
+        select * from (
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 3 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where 1=1
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
+        </if>
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        order by t.createTime desc
+    </select>
+
+    <select id="selectSpokesManPageView" resultMap="DistributionResultMap">
+        select * from (
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all
+        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
+        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        )t where t.sopkenMan = #{spokenMan}
+        <if test="userLevel != null">
+            and t.userLevel = #{userLevel}
+        </if>
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        order by t.createTime desc
+    </select>
+
+    <select id="selectAllSopkesManCountByShopId" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            sf_user_relation r
+        INNER JOIN com_user u ON r.user_id = u.id
+        WHERE
+	        r.shop_id = #{shopId}
+        <if test="spokesMan != null">
+            AND u.is_spokesman = #{spokesMan}
+        </if>
+    </select>
+    <select id="selectAllSpokesManByShopId" resultMap="DistributionResultMap">
+        SELECT
+            u.wx_nk_name AS wxName,
+            u.wx_head_img AS headImg,
+            LPAD(u.id, 10, 0) AS ID,
+            u.is_spokesman AS sopkenMan,
+            r.create_time AS createTime,
+            u.id AS userId,
+            1 AS userLevel,
+            r.shop_id AS shopId,
+            r.is_buy AS isBuy
+        FROM
+            sf_user_relation r
+        INNER JOIN com_user u ON r.user_id = u.id
+        WHERE
+	        r.shop_id = #{shopId}
+        <if test="spokesMan != null">
+            AND u.is_spokesman = #{spokesMan}
+        </if>
+        ORDER BY r.create_time desc
+    </select>
+
+    <select id="selectFansNumGroupByLevel" resultType="java.util.HashMap">
+        select count(*) as num,userLevel from (
+        select 1 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where 1=1
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        group by t.userLevel
+    </select>
+    
+    <select id="selectSpokesManNumGroupByLevel" resultType="java.util.HashMap">
+        select count(*) as num,userLevel from (
+        select 1 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
+        union all select 2 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+        union all select 3 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t where t.is_spokesman = 1
+        <if test="shopId != null">
+            and t.shopId = #{shopId}
+        </if>
+        group by t.userLevel
+    </select>
+
+    <select id="selectSpokesManByID" resultMap="DistributionResultMap">
+        SELECT * FROM
+	    (
+            SELECT
+                u.wx_nk_name AS wxName,
+                u.wx_head_img AS headImg,
+                LPAD(u.id, 10, 0) AS ID,
+                u.is_spokesman AS sopkenMan,
+                r.create_time AS createTime,
+                u.id AS userId,
+                1 AS userLevel,
+                r.shop_id AS shopId,
+                r.is_buy AS isBuy
+            FROM
+                sf_user_relation r
+            INNER JOIN com_user u ON r.user_id = u.id
+            WHERE
+                r.shop_id = #{shopId}
+	    ) T WHERE 1=1
+	    <if test="ID != null">
+            AND T.ID like CONCAT('%',#{ID},'%')
+        </if>
+        AND T.sopkenMan = 1
+        ORDER BY T.createTime DESC
+    </select>
+    <select id="selectSpokesManNumByID" resultType="java.lang.Integer">
+        SELECT count(*) FROM
+        (
+        SELECT
+        u.wx_nk_name AS wxName,
+        u.wx_head_img AS headImg,
+        LPAD(u.id, 10, 0) AS ID,
+        u.is_spokesman AS sopkenMan,
+        r.create_time AS createTime,
+        u.id AS userId,
+        1 AS userLevel,
+        r.shop_id AS shopId,
+        r.is_buy AS isBuy
+        FROM
+        sf_user_relation r
+        INNER JOIN com_user u ON r.user_id = u.id
+        WHERE
+        r.shop_id = #{shopId}
+        ) T WHERE 1=1
+        <if test="ID != null">
+            AND T.ID like CONCAT('%',#{ID},'%')
+        </if>
+        AND T.sopkenMan = 1
+    </select>
+
+    <select id="selectFansNumsByShopId" resultType="java.lang.Integer">
+        select
+          count(id)
+        from
+          sf_user_relation
+        WHERE
+          shop_id = #{shopId,jdbcType=BIGINT}
+        AND
+          user_id != #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

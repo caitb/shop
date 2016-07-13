@@ -1,15 +1,12 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.asm.Opcodes;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.constants.AuditStatusEnum;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.common.enums.platform.AuditStatusEnum;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
-import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;

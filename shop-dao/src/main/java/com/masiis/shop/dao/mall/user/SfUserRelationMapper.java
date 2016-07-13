@@ -7,12 +7,13 @@
  */
 package com.masiis.shop.dao.mall.user;
 
+import com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface SfUserRelationMapper {
@@ -26,11 +27,68 @@ public interface SfUserRelationMapper {
 
     int updateByPrimaryKey(SfUserRelation record);
 
-    SfUserRelation getSfUserRelationByUserId(Long userId);
-
-    SfUserRelation getSfUserRelationByUserPid(Long userPid);
+    List<SfUserRelation> getSfUserRelationByUserId(Long userId);
 
     List<SfUserRelation> getThreeDistributionList(Long userPid);
+
+    SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
+                                                         @Param("shopId") Long shopId);
+
+    /**
+     * 查询粉丝
+     * @param userPid   用户id
+     * @param userLevel 粉丝级别
+     * @param shopId    小铺id
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectFansPageView(@Param("userPid") Long userPid,
+                                                 @Param("userLevel") Integer userLevel,
+                                                 @Param("shopId") Long shopId);
+
+    /**
+     * 查询代言人信息
+     * @param userPid   用户id
+     * @param userLevel 粉丝级别
+     * @param shopId    小铺id
+     * @param spokenMan 是否为代言人 1为代言人
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectSpokesManPageView(@Param("userPid") Long userPid,
+                                                      @Param("userLevel") Integer userLevel,
+                                                      @Param("shopId") Long shopId,
+                                                      @Param("spokenMan") Integer spokenMan);
+
+    /**
+     * 通过shopId查询所有代言人
+     * @param shopId    小铺id
+     * @param spokesMan 是否已代言可以为null
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectAllSpokesManByShopId(@Param("shopId") Long shopId, @Param("spokesMan") Integer spokesMan);
+
+    /**
+     * 通过shopId查询所有代言人数量
+     * @param shopId    小铺id
+     * @param spokesMan 是否已代言可以为null
+     * @return
+     */
+    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId, @Param("spokesMan") Integer spokesMan);
+
+    /**
+     * 通过treecode获取粉丝数量
+     * @param treeCode treeCode
+     * @return Integer
+     */
+    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode);
+
+    /**
+     * 查询代言人数量
+     * @param treeCode  treeCode
+     * @param userId    用户id
+     * @return  map
+     */
+    Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
+                                           @Param("userId") Long userId);
 
     /**
      * 修改树形编码
@@ -49,4 +107,49 @@ public interface SfUserRelationMapper {
      * @return
      */
     int updateTreeCodes(@Param("treeCode") String treeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
+
+    /**
+     * 通过userId和shopId获取分销关系
+     * @param userId    用户id
+     * @param shopId    小铺id
+     * @return  SfUserRelation
+     */
+    SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
+
+    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid,
+                                                        @Param("shopId") Long shopId);
+
+    List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid,
+                                                             @Param("shopId") Long shopId);
+
+    /**
+     * 通过ID查询小铺中的代言人信息
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    List<SfSpokesAndFansInfo> selectSpokesManByID(@Param("shopId") Long shopId,
+                                                  @Param("ID") String ID);
+
+    /**
+     * 通过ID查询小铺中的代言人数量
+     * @param shopId    小铺id
+     * @param ID        代言人ID
+     * @return
+     */
+    Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
+                                   @Param("ID") String ID);
+
+    SfSpokesAndFansInfo selectSfSpokesAndFansInfo(@Param("shopId") Long shopId,
+                                                  @Param("userId") Long userId);
+
+   /**
+    * 查询某个店铺所有粉丝数量(排除店主自己)
+    *
+    * @param shopId    店铺id
+    * @param userId
+    * @return
+    */
+    Integer selectFansNumsByShopId(@Param("shopId") Long shopId,
+                                   @Param("userId") Long userId);
 }

@@ -12,7 +12,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.system.ComBankService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

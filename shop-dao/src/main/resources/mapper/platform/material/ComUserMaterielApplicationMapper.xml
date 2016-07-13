@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.material.ComUserMaterielApplicationMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserMaterielApplication" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_mail" property="userMail" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_user_materiel_application
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserMaterielApplication" >
+        insert into com_user_materiel_application (id, create_time, modify_time, 
+            user_id, user_mail, status, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
+            #{userId,jdbcType=BIGINT}, #{userMail,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserMaterielApplication" >
+        update com_user_materiel_application
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userMail != null">
+                user_mail = #{userMail,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where
+                id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, modify_time, user_id, user_mail, status, remark
+        from com_user_materiel_application
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, modify_time, user_id, user_mail, status, remark
+        from com_user_materiel_application
+    </select>
+
+    <select id="selectByCondition" parameterType="Map" resultType="java.util.HashMap">
+        select
+               uma.id,
+               uma.create_time createTime,
+               uma.modify_time modifyTime,
+               uma.user_id userId,
+               uma.user_mail userMail,
+               uma.status,
+               uma.remark,
+               u.wx_nk_name wxNKName,
+               u.mobile
+        from
+               com_user_materiel_application uma
+        LEFT JOIN
+               com_user u ON u.id = uma.user_id
+        <where>
+            <if test="wxNKName != null">
+                AND u.wx_nk_name = #{wxNKName}
+            </if>
+            <if test="mobile != null">
+                AND u.mobile = #{mobile}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -34,7 +34,7 @@
                        </c:forEach>
                        <p>需付款　：<span>￥${order.receivableAmount}</span></p>
                     </main>
-                   <button id="wxBtn">微信支付</button>
+                   <button id="wxBtn"><b>微信支付</b></button>
         </div>
 </body>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>

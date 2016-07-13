@@ -11,6 +11,8 @@ public class ProductInfo {
 
     private ComSku comSku;
     private ComSpu comSpu;
+    private ComAgentLevel comAgentLevel;
+    private PfSkuAgent pfSkuAgent;
     private ComSkuExtension comSkuExtension;
     private PfSkuStock pfSkuStock;
     private PfSkuStatistic pfSkuStatistic;
@@ -32,6 +34,22 @@ public class ProductInfo {
 
     public void setComSpu(ComSpu comSpu) {
         this.comSpu = comSpu;
+    }
+
+    public ComAgentLevel getComAgentLevel() {
+        return comAgentLevel;
+    }
+
+    public void setComAgentLevel(ComAgentLevel comAgentLevel) {
+        this.comAgentLevel = comAgentLevel;
+    }
+
+    public PfSkuAgent getPfSkuAgent() {
+        return pfSkuAgent;
+    }
+
+    public void setPfSkuAgent(PfSkuAgent pfSkuAgent) {
+        this.pfSkuAgent = pfSkuAgent;
     }
 
     public ComSkuExtension getComSkuExtension() {

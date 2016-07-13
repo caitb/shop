@@ -44,4 +44,20 @@
         select MAX(id)
         from com_agent_level
     </select>
+
+    <select id="selectByIds" parameterType="List" resultMap="BaseResultMap">
+      select
+             id,
+             create_time,
+             name,
+             img_url,
+             remark
+        from
+             com_agent_level
+        WHERE
+             id IN
+             <foreach collection="list" open="(" separator="," close=")" item="id" index="index">
+                 #{id}
+             </foreach>
+    </select>
 </mapper>

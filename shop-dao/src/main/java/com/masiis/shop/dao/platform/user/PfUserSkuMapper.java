@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -113,4 +114,26 @@ public interface PfUserSkuMapper {
      */
     List<Long> selectAllTeamMember(String treeCode);
 
+    List<UserSkuAgent> selectCurrentAgentLevel(@Param("userId") Long userId);
+
+
+    List<PfUserSku> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * 批量修改树形编码
+     * @param treeCode
+     * @param idIndex
+     * @param treeLevelDiff
+     * @return
+     */
+    int updateTreeCodes(@Param("treeCode") String treeCode,@Param("parentTreeCode") String parentTreeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
+
+    /**
+     * 查询代理产品信息
+     * @param userId
+     * @return
+     */
+    List<Map<String, Object>> selectAgentSku(Long userId);
+
+    List<PfUserSku> selectByUserIdNotPid(@Param("userId") Long userId);
 }

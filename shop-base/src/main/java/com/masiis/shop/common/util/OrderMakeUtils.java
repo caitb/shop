@@ -20,7 +20,7 @@ public class OrderMakeUtils {
      */
 
     public static String makeOrder(String code) {
-        String[] str = new String[]{"B", "C", "S"};
+        String[] str = new String[]{"B", "C", "S", "U"};
         SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");
         String date = df.format(new Date());
         String s = "";

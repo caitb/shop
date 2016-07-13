@@ -19,18 +19,19 @@
         }
         img{
             display: block;
-            width: 100%
+            width: 95%;
+            margin:10px auto;
         }
         button{
             display: block;
-            width: 60%;
+            width:80%;
             line-height: 30px;
-            border: 1px solid #F73C8C;
-            background: #fff;
+            background: #C8A66A;
             margin: 0 auto;
             margin-top: 2em;
-            color: #F73C8C;
+            color: #fff;
             margin-bottom: 100px;
+            padding: 4px 0;
         }
     </style>
 </head>
@@ -44,15 +45,15 @@
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+            <span><img src="<%=path%>/static/images/dibu1.png" alt=""></span>
             <span>首页</span>
         </p>
-        <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
-            <span><img src="<%=path%>/static/images/footer_x%20(1).png" alt=""></span>
-            <span>分享赚钱</span>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
+            <span><img src="<%=path%>/static/images/dibu22.png" alt=""></span>
+            <span class="active" >二维码</span>
         </p>
-        <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');" >
-            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+        <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
+            <span><img src="<%=path%>/static/images/dibu3.png" alt=""></span>
             <span>个人中心</span>
         </p>
     </div>

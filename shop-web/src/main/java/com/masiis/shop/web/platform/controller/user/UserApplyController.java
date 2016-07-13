@@ -11,7 +11,6 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
-import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -54,8 +53,12 @@ public class UserApplyController extends BaseController {
     /**
      * 合伙人申请
      *
+     * @param request
+     * @param skuId
+     * @param pUserId
+     * @return
+     * @throws Exception
      * @author ZhaoLiang
-     * @date 2016/3/5 13:51
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView apply(HttpServletRequest request,
@@ -82,13 +85,6 @@ public class UserApplyController extends BaseController {
             if (pUserId != null && pUserId > 0) {
                 //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
                 userSkuService.checkParentData(user, pUserId, skuId);
-                PfUserRelation pfUserRelation = new PfUserRelation();
-                pfUserRelation.setUserId(user.getId());
-                pfUserRelation.setSkuId(skuId);
-                pfUserRelation.setCreateTime(new Date());
-                pfUserRelation.setIsEnable(1);
-                pfUserRelation.setUserPid(pUserId);
-                pfUserRelationService.insert(pfUserRelation);
             } else {
                 pUserId = 0l;
             }
@@ -141,10 +137,18 @@ public class UserApplyController extends BaseController {
         List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
         //上级代理等级
         Integer pUserLevelId = 0;
-        Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
-        if (pUserId > 0) {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-            pUserLevelId = pfUserSku.getAgentLevelId();
+        //v1.2 合伙人可以指定推送代理等级
+        Long pUserId = 0l;
+        String agentLevelIds = "";
+        PfUserRelation pfUserRelation = pfUserRelationService.getRelation(comUser.getId(), skuId);
+        if (pfUserRelation != null) {
+            pUserId = pfUserRelation.getUserPid();
+            agentLevelIds = pfUserRelation.getAgentLevelIds();
+            if (pUserId > 0) {
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+                pUserLevelId = pfUserSku.getAgentLevelId();
+
+            }
         }
         // 创建该sku代理商的代理门槛信息
         List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
@@ -169,6 +173,7 @@ public class UserApplyController extends BaseController {
         modelAndView.addObject("pUserLevelId", pUserLevelId);
         modelAndView.addObject("pUserId", pUserId);
         modelAndView.addObject("agentSkuViews", agentSkuViews);
+        modelAndView.addObject("agentLevelIds", agentLevelIds);
         Integer sendType = 0;
         if (comUser.getSendType() > 0) {
             sendType = comUser.getSendType();
@@ -207,15 +212,8 @@ public class UserApplyController extends BaseController {
                 ComUser comUser = getComUser(request);
                 Long temPUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
                 if (temPUserId == 0) {
-                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                    //校验上级合伙人数据是否合法
                     userSkuService.checkParentData(comUser, pUserId, skuId);
-                    PfUserRelation pfUserRelation = new PfUserRelation();
-                    pfUserRelation.setCreateTime(new Date());
-                    pfUserRelation.setUserId(comUser.getId());
-                    pfUserRelation.setSkuId(skuId);
-                    pfUserRelation.setIsEnable(1);
-                    pfUserRelation.setUserPid(pUserId);
-                    pfUserRelationService.insert(pfUserRelation);
                 }
             }
             jsonObject.put("isError", false);

@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.po.PfBorder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,20 @@ public interface PfBorderMapper {
     List<PfBorder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
+
+    /**
+     * 获得奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 14:25
+     */
+    List<PfBorder> selectRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
+
+    /**
+     * 发出奖励订单
+     * @author muchaofeng
+     * @date 2016/6/16 16:43
+     */
+    List<PfBorder> selectSendRecommend(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 
     List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
@@ -106,4 +121,48 @@ public interface PfBorderMapper {
      * @return
      */
     int updateOfflineBOrderCancelById(@Param("orderId") Long orderId);
+
+    int updateOrderCancelByIdAndOStatus(@Param("orderId") Long orderId,
+                                        @Param("ostatus") Integer ostatus);
+
+    /**
+     * 根据订单创建时间的上限,订单状态和支付状态来查询非升级订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    List<PfBorder> selectUnUpgradeByStatusAndDate(@Param("expiraTime") Date expiraTime,
+                                                  @Param("orderStatus") Integer orderStatus,
+                                                  @Param("payStatus") Integer payStatus,
+                                                  @Param("notOrderType") Integer notOrderType);
+
+    /**
+     * 根据订单创建时间的上限,订单状态和支付状态和订单状态来查询升级订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @param orderType
+     * @return
+     */
+    List<PfBorder> selectByStatusAndDateAndType(@Param("expiraTime") Date expiraTime,
+                                                @Param("orderStatus") Integer orderStatus,
+                                                @Param("payStatus") Integer payStatus,
+                                                @Param("orderType") Integer orderType);
+
+    int updateCancelByIdAndOStatusAndPStatusAndOType(@Param("orderId") Long orderId,
+                                                      @Param("orderStatus") Integer orderStatus,
+                                                      @Param("payStatus") Integer payStatus,
+                                                      @Param("orderType") Integer orderType);
+
+    /**
+     * 查询进货或出货订单
+     * @param userId       自己ID
+     * @param userPid      上级ID
+     * @param orderStatus  订单状态
+     * @return
+     */
+    List<BOrder> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
 }

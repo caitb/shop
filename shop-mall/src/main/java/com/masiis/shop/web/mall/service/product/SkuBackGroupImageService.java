@@ -28,7 +28,7 @@ public class SkuBackGroupImageService {
      * @return
      */
     public ComSkuExtension backGroupImage(Integer skuId){
-        String productImgValue = PropertiesUtils.getStringValue("index_product_background_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
         ComSkuExtension comSkuExtension1= comSkuExtensionMapper.selectBySkuId(skuId);
         if (comSkuExtension1.getSkuBackgroundImg() != null) {
             comSkuExtension1.setSkuBackgroundImg(productImgValue + comSkuExtension1.getSkuBackgroundImg());

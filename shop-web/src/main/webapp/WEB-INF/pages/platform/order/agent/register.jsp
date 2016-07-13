@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
@@ -63,7 +64,9 @@
                 <h2>选择合伙人套餐：</h2>
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
-                        <c:if test="${view.agent.agentLevelId > pUserLevelId && view.isShow==1}">
+                        <c:if test="${view.agent.agentLevelId >= pUserLevelId
+                        && view.isShow==1
+                        && (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">
                             <p levelId="${view.agent.agentLevelId}"
                                agentFee="${view.agentFee}"
                                agentBailFee="${view.agent.bail}">
@@ -99,7 +102,7 @@
             </c:otherwise>
         </c:choose>
         <h4><b>合伙人套餐:</b><span id="q_levelName"></span></h4>
-        <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
+        <h4><b>拿货门槛:</b><span id="q_amount"></span></h4>
         <h3>
             <span class="que_qu" id="getBack">返回修改</span>
             <span class="que_que" id="submit">我填的正确</span>
@@ -156,7 +159,8 @@
 
                 六、服务使用规范 
                 1、关于您的资料的规则 
-                1.1“您的资料”包括您在注册、发布信息或交易等过程中、在任何公开信息场合或通过任何电子邮件形式，向麦链合伙人或其他用户提供的任何资料 ，包括数据、文本、软件、音乐、声响、照片、图画、影像、词句或其他材料。您应对“您的资料”负全部责任，而麦链合伙人仅作为您在网上发布和刊登“您的资料”的被动渠道。 
+                1.1“您的资料”包括您在注册、发布信息或交易等过程中、在任何公开信息场合或通过任何电子邮件形式，向麦链合伙人或其他用户提供的任何资料
+                ，包括数据、文本、软件、音乐、声响、照片、图画、影像、词句或其他材料。您应对“您的资料”负全部责任，而麦链合伙人仅作为您在网上发布和刊登“您的资料”的被动渠道。 
                 1.2您同意并承诺，“您的资料”和您供在麦链合伙人上交易的任何“物品”（泛指一切可供依法交易的、有形的或无形的、以各种形态存在的某种具体的物品，或某种权利或利益，或某种票据或证券，或某种服务或行为。本协议中“物品”一词均含此义）:
                 a.不会有欺诈成份，与售卖伪造或盗窃无涉； 
                 b.不会侵犯任何第三者对该物品享有的物权，或版权、专利、商标、商业秘密或其他知识产权，或隐私权、名誉权；

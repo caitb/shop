@@ -6,12 +6,10 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComWxUser;
-import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.dao.po.SfUserShareParam;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.mall.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.mall.beans.wxauth.WxUserInfo;
@@ -23,9 +21,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Date 2016/5/6
@@ -34,6 +30,18 @@ import java.util.List;
 @Service
 public class WxEventService {
     private Logger log = Logger.getLogger(this.getClass());
+    private final String[] titles = new String[4];
+    private final String[] urls = new String[4];
+    {
+        titles[0] = "1、麦链模式";
+        urls[0] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333#rd";
+        titles[1] = "2、如何选购优质商品";
+        urls[1] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483663&idx=1&sn=03733197c18a95dcbc3625606fcf340a&scene=0#rd";
+        titles[2] = "3、如何赚取佣金";
+        urls[2] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483665&idx=1&sn=ae92270714303d6247ef459de53bc404&scene=0#wechat_redirect";
+        titles[3] = "4、常见问题解答";
+        urls[3] = "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483664&idx=1&sn=1935f5fa95fb9405c54b2f01ef664714&scene=0#rd";
+    }
 
     @Resource
     private SfUserShareParamMapper paramMapper;
@@ -45,6 +53,8 @@ public class WxEventService {
     private UserService userService;
     @Resource
     private WxUserService wxUserService;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
 
     /**
      * 处理微信事件推送
@@ -57,9 +67,10 @@ public class WxEventService {
         }
         WxBaseMessage res = null;
         switch (body.getEvent()){
-            case "SCAN":
             case "subscribe":
-                res = handleQRScanEvent(body);
+                res = handleDefaultEventReturn(body);
+            case "SCAN":
+                handleQRScanEvent(body);
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);
@@ -67,6 +78,15 @@ public class WxEventService {
             default:
         }
         return res;
+    }
+
+    private WxBaseMessage handleDefaultEventReturn(WxEventBody body) {
+        String content = "欢迎关注麦链商城。请点击您想了解的内容，查看详情：\n\n";
+        for(int i = 0; i < urls.length; i++){
+            content += "<a href=\"" + urls[i] + "\">" + titles[i] + "</a>\n\n";
+        }
+        content = content.substring(0, content.lastIndexOf("\n\n"));
+        return createDefaultSubscribeEventReturn(body, content);
     }
 
     /**
@@ -97,7 +117,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(final WxEventBody body) {
         Long paramId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -126,8 +146,22 @@ public class WxEventService {
 
         // 扫码注册用户
         ComUser user = scanEventUserSignUp(body);
-        // 绑定分销关系
-        userService.getShareUser(user.getId(), param.getfUserId());
+        if(param.getfUserId().longValue() != 0) {
+            // 绑定分销关系
+            userService.getShareUser(user.getId(), param.getfUserId());
+        } else {
+            SfUserRelation relation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
+            if(relation == null){
+                SfUserRelation sfNewUserRelation = new SfUserRelation();
+                sfNewUserRelation.setCreateTime(new Date());
+                sfNewUserRelation.setUserId(user.getId());
+                sfNewUserRelation.setTreeLevel(1);
+                sfNewUserRelation.setUserPid(0l);
+                sfUserRelationMapper.insert(sfNewUserRelation);
+                String treeCode = sfNewUserRelation.getId() + ",";
+                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+            }
+        }
 
         String url = null;
         if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
@@ -137,7 +171,6 @@ public class WxEventService {
                     + param.getfUserId() + "/shop.shtml";
         }
 
-        ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
         SfShop shop = shopMapper.selectByPrimaryKey(param.getShopId());
 
         WxArticleRes res = new WxArticleRes();
@@ -148,12 +181,39 @@ public class WxEventService {
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
         Article article = new Article("点击继续", null);
-        article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
+        if(param.getfUserId().longValue() != 0) {
+            ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
+            article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
+        } else {
+            article.setDescription("您将要访问" + shop.getName() + "，点击前往");
+        }
         article.setUrl(url);
         articles.add(article);
         res.setArticles(articles);
 
-        return res;
+        final JSONObject mr = new JSONObject();
+        JSONObject news = new JSONObject();
+        mr.put("touser", res.getToUserName());
+        mr.put("msgtype", res.getMsgType());
+        mr.put("news", news);
+        news.put("articles", res.getArticles());
+        final String token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
+        // 起线程发送继续注册消息
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
+                String result = HttpClientUtils.httpPost(url, mr.toJSONString());
+                log.info("openId{" + body.getFromUserName() + "}的关注公众号自动回复消息响应结果:" + result);
+            }
+        }).start();
+
+        return null;
     }
 
     private WxBaseMessage createDefaultSubscribeEventReturn(WxEventBody body, String content) {

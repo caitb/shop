@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * SkuService
@@ -105,5 +106,16 @@ public class SkuService {
     public PfSkuStock getPfSkuStockInfoBySkuId(Integer skuId) {
         return pfSkuStockService.selectBySkuId(skuId);
     }
+
+
+    public ComSku getSkuName(Integer skuId) {
+        return comSkuMapper.selectByPrimaryKey(skuId);
+    }
+
+    public List<ComSku> getAllSku() {
+        return comSkuMapper.selectAll();
+    }
+
+
 
 }

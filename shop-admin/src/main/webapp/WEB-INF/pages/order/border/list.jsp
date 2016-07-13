@@ -353,13 +353,13 @@
                         }
                     },
                     {
-                        field: 'consignee',
-                        title: '收货人',
+                        field: 'user_pid',
+                        title: '上级合伙人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorderConsignee && row.pfBorderConsignee.consignee){
-                                return row.pfBorderConsignee.consignee;
+                            if(row.pUser && row.pUser.realName){
+                                return row.pUser.realName;
                             }
                         }
                     },
@@ -420,6 +420,18 @@
                         formatter: function(value, row, index){
                             if(row.pfBorder){
                                 return row.pfBorder.payAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'recommen_amount',
+                        title: '推荐奖励金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder){
+                                return row.pfBorder.recommenAmount;
                             }
                         }
                     },

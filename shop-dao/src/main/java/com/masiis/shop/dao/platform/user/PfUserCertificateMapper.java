@@ -30,6 +30,8 @@ public interface PfUserCertificateMapper {
 
     PfUserCertificate selectByCode(String code);
 
+    PfUserCertificate selectByUserAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
+
     PfUserCertificate selectByUserSkuId(Integer pfuId);
 
     List<PfUserCertificate> selectByCondition(PfUserCertificate pfUserCertificate);

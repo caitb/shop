@@ -63,7 +63,7 @@
   color: #666;
 }
 .wrap > h1 span:first-child {
-  color: #F7398A;
+  color: #333333;
   font-weight: 600;
   font-size: 12px;
   margin-bottom: 10px;
@@ -140,7 +140,7 @@
 .footer{
   width:100%;
   padding: 10px 0;
-  background: #f73c8c;
+  background: #C7A467;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -148,7 +148,8 @@
 .footer a{
   display: block;
   text-align: center;
-  color: #fff;
+  color: #7B5F35;
+  font-weight: 600;
 }
 body .back_j {
   width: 90%;

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class BOrderAdd {
     /**
-     * 订单类型(0代理1补货2拿货)
+     * 订单类型(0代理1补货2拿货3升级)
      */
     private Integer orderType = 0;
     /**
@@ -53,6 +53,16 @@ public class BOrderAdd {
      * 用户收货信息
      */
     private Long userAddressId = 0l;
+    /**
+     * 通知单id 用于增加通知订单用
+     */
+    private Long upgradeNoticeId ;
+
+    private Long newPUserId;//新上级，升级增加订单时使用
+
+    private Integer currentAgentLevel;//当前级别，升级订单时使用
+
+    private Integer applyAgentLevel; //申请级别,升级订单时使用
 
     public Integer getOrderType() {
         return orderType;
@@ -140,5 +150,37 @@ public class BOrderAdd {
 
     public void setUserAddressId(Long userAddressId) {
         this.userAddressId = userAddressId;
+    }
+
+    public Long getUpgradeNoticeId() {
+        return upgradeNoticeId;
+    }
+
+    public void setUpgradeNoticeId(Long upgradeNoticeId) {
+        this.upgradeNoticeId = upgradeNoticeId;
+    }
+
+    public Long getNewPUserId() {
+        return newPUserId;
+    }
+
+    public void setNewPUserId(Long newPUserId) {
+        this.newPUserId = newPUserId;
+    }
+
+    public Integer getCurrentAgentLevel() {
+        return currentAgentLevel;
+    }
+
+    public void setCurrentAgentLevel(Integer currentAgentLevel) {
+        this.currentAgentLevel = currentAgentLevel;
+    }
+
+    public Integer getApplyAgentLevel() {
+        return applyAgentLevel;
+    }
+
+    public void setApplyAgentLevel(Integer applyAgentLevel) {
+        this.applyAgentLevel = applyAgentLevel;
     }
 }

@@ -110,6 +110,7 @@ public class ProductController {
                       @RequestParam(value = "totalPrices")String[] totalPrices,
                       @RequestParam("quantitys")Integer[] quantitys,
                       @RequestParam("bails")String[] bails,
+                      @RequestParam("rewardUnitPrices")String[] rewardUnitPrices,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       String proIconUrl,
                       String proIconName,
@@ -137,6 +138,7 @@ public class ProductController {
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
                 comSku.setIcon(proIconName);
+                comSku.setRewardUnitPrice(new BigDecimal(0));
                 log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
 
                 //代理分润
@@ -151,6 +153,8 @@ public class ProductController {
                     pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setIsShow(1);
                     pfSkuAgent.setIcon(iconImgNames[i]);
+                    pfSkuAgent.setIsUpgrade(1);
+                    pfSkuAgent.setRewardUnitPrice(new BigDecimal(rewardUnitPrices[i]));
 
                     pfSkuAgents.add(pfSkuAgent);
                 }
@@ -177,7 +181,7 @@ public class ProductController {
                     comSkuImage.setCreateMan(pbUser.getId());
                     comSkuImage.setImgUrl(mainImgNames[i]);
                     comSkuImage.setImgName(mainImgOriginalNames[i]);
-                    comSkuImage.setIsDefault(i==1?1:0);
+                    comSkuImage.setIsDefault(i==0?1:0);
 
                     for(int px=0; px<imgPxs.length; px++){
                         comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
@@ -192,13 +196,13 @@ public class ProductController {
                 comSkuExtension.setPoster(developPosterName);
 
                 productService.save(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
-                return "保存成功!";
+                return "success";
             }
         } catch(Exception e) {
             log.error("保存商品失败!");
             e.printStackTrace();
         }
-        return "保存失败!";
+        return "fail";
     }
 
     @RequestMapping("/update.do")
@@ -217,6 +221,7 @@ public class ProductController {
                          @RequestParam("totalPrices")String[]  totalPrices,
                          @RequestParam("quantitys")  Integer[] quantitys,
                          @RequestParam("bails")      String[]  bails,
+                         @RequestParam("rewardUnitPrices")String[] rewardUnitPrices,
                          @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                          @RequestParam(value = "proIconUrl", required = false)String proIconUrl,
                          @RequestParam(value = "proIconName", required = false)String proIconName,
@@ -259,6 +264,7 @@ public class ProductController {
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setRewardUnitPrice(new BigDecimal(rewardUnitPrices[i]));
                     pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setBackImg((i+1)+".png");
 
@@ -291,7 +297,7 @@ public class ProductController {
                         comSkuImage.setModifyMan(pbUser.getId());
                         comSkuImage.setImgUrl(mainImgNames[i]);
                         comSkuImage.setImgName(mainImgOriginalNames[i]);
-                        comSkuImage.setIsDefault(i==1?1:0);
+                        comSkuImage.setIsDefault(i==0?1:0);
 
                         for(int px=0; px<imgPxs.length; px++){
                             comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
@@ -310,7 +316,7 @@ public class ProductController {
                 }
 
                 productService.update(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
-                return "修改商品成功!";
+                return "success";
             }
         } catch(Exception e){
             e.printStackTrace();

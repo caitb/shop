@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shenqinghehu.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
@@ -93,10 +94,10 @@
             <%--<p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>--%>
         </section>
         <%--<c:if test="${isRate>0}">--%>
-            <%--<div class="floor">--%>
-                <%--<h1>亲，您是0元合伙用户，本次拿货需要支付金额(小于5000)：</h1>--%>
-                <%--<p><span>另需支付：</span><span class="totalNumber">${initPay}</span></p>--%>
-            <%--</div>--%>
+        <%--<div class="floor">--%>
+        <%--<h1>亲，您是0元合伙用户，本次拿货需要支付金额(小于5000)：</h1>--%>
+        <%--<p><span>另需支付：</span><span class="totalNumber">${initPay}</span></p>--%>
+        <%--</div>--%>
         <%--</c:if>--%>
         <section class="sec5">
             <div>
@@ -106,7 +107,7 @@
             </div>
             <input type="checkbox" id="active">
             <label for="active"><b>拿货风险：</b>请确认已了解申请拿货的部分不能继续发展下级，货物由我自行销售</label>
-                <button onclick="submit();">确认拿货</button>
+            <button onclick="submit();">确认拿货</button>
         </section>
     </main>
 </div>
@@ -115,7 +116,7 @@
     <h4><b>在线库存:</b><span id="currentStock">${productInfo.stock}</span></h4>
     <h4><b>拿货数量:</b><span id="applyStock"></span></h4>
     <%--<h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>--%>
-    <h4 style="color:#666666;"><em>注</em>您的拿货数量将不再能发展下级合伙人</h4>
+    <%--<h4 style="color:#666666;"><em>注</em>您的拿货数量将不再能发展下级合伙人</h4>--%>
 
     <h3>
         <span class="que_qu">返回修改</span>
@@ -130,12 +131,13 @@
 <script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script src="<%=path%>/static/js/repetitionForm.js"></script>
 <script type="text/javascript">
     var i = 1;
     var priceDiscount = ${priceDiscount}
-    $(".number").on("change", function () {
-        i = $(this).val();
-    })
+            $(".number").on("change", function () {
+                i = $(this).val();
+            })
 
     $(".jian").on("tap", function () {
         if (i <= 1) {
@@ -164,6 +166,10 @@
             alert("请输入拿货地址！");
             return;
         }
+        if (i<=0) {
+            alert("数量不能低于0件！");
+            return;
+        }
         if (checked == true) {
             if (afterLowerCount >= 0) {
                 $(".back").css("display", "-webkit-box");
@@ -184,22 +190,30 @@
         paraData.message = $("#msg").val();
         paraData.stock = $("#applyStock").text();
         paraData.id = ${productInfo.id};
-          $.ajax({
-              url: "<%=basePath%>/product/user/applyStock.do",
-              type: "post",
-              data: paraData,
-              dataType: "json",
-              success: function (data) {
-                  if (data.isError == false) {
-                      window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
-                  }
-                  else {
-                      $(".back").css("display", "none");
-                      $(".back_que").hide();
-                      alert(data.message);
-                  }
-              }
-          });
+        $.ajax({
+            url: "<%=basePath%>/product/user/applyStock.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            async:true,
+            beforeSend:function(){
+                fullShow();
+            },
+            success: function (data) {
+                if (data.isError == false) {
+                    CommonPerson.Base.LoadingPic = false;
+                    window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
+                }
+                else {
+                    $(".back").css("display", "none");
+                    $(".back_que").hide();
+                    alert(data.message);
+                }
+            },
+            complete:function(){
+                fullHide();
+            }
+        });
     }
 </script>
 </body>

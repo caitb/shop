@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
+import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lzh on 2016/3/31.
@@ -37,6 +39,8 @@ public class ComUserAccountService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private PfBorderRecommenRewardMapper recommenRewardMapper;
 
     /**
      * 订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
@@ -49,8 +53,8 @@ public class ComUserAccountService {
             // 验证订单的状态
             Integer orderType = order.getOrderType();
             Integer orderStatus = order.getOrderStatus();
-            if (orderType != 0 && orderType != 1) {
-                throw new BusinessException("订单类型不正确,当前订单状态为:" + orderType);
+            if (orderType.intValue() != 0 && orderType.intValue() != 1&& orderType.intValue() != 3) {
+                throw new BusinessException("订单类型不正确,当前订单类型为:" + orderType);
             }
             if (orderStatus != 3) {
                 throw new BusinessException("订单状态不正确,当前订单状态为:" + orderStatus);
@@ -107,6 +111,22 @@ public class ComUserAccountService {
                 }
                 log.info("更新出货人账户结算额和总销售额成功!");
             }
+            BigDecimal recommon = order.getRecommenAmount();
+            if(recommon != null && recommon.compareTo(BigDecimal.ZERO) > 0){
+                log.info("计算推荐奖励");
+                // 查询要计算的推荐奖励明细
+                List<PfBorderRecommenReward> rewards = recommenRewardMapper.selectByPfBorderId(order.getId());
+                if(rewards != null && rewards.size() > 0){
+                    // 循环处理推荐奖励
+                    for(PfBorderRecommenReward reward:rewards){
+                        log.info("创建推荐奖励账单子项,奖励用户:" + reward.getRecommenUserId()
+                                + ",推荐奖励额度:" + reward.getRewardTotalPrice());
+                        PfUserBillItem rewardItem = createBillItemByRecommenReward(reward);
+                        itemMapper.insert(rewardItem);
+                    }
+                }
+            }
+
             log.info("开始给进货人增加成本");
 
             ComUserAccount accountS = accountMapper.findByUserId(userId);
@@ -131,6 +151,27 @@ public class ComUserAccountService {
             log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage(), e);
             throw new BusinessException("订单完成进行账户总销售额和结算金额操作错误");
         }
+    }
+
+    /**
+     * 创建推荐奖励结算账单子项
+     *
+     * @param reward
+     * @return
+     */
+    private PfUserBillItem createBillItemByRecommenReward(PfBorderRecommenReward reward) {
+        PfUserBillItem item = new PfUserBillItem();
+
+        item.setCreateDate(new Date());
+        item.setOrderCreateDate(reward.getCreateTime());
+        item.setOrderPayAmount(reward.getRewardTotalPrice());
+        item.setOrderSubType(2);
+        item.setOrderType(0);
+        item.setPfBorderId(reward.getPfBorderId());
+        item.setUserId(reward.getRecommenUserId());
+        item.setIsCount(0);
+
+        return item;
     }
 
     /**
@@ -264,7 +305,7 @@ public class ComUserAccountService {
 
         item.setCreateDate(new Date());
         item.setOrderCreateDate(order.getCreateTime());
-        item.setOrderPayAmount(order.getPayAmount().subtract(order.getBailAmount()));
+        item.setOrderPayAmount(order.getPayAmount().subtract(order.getBailAmount()).subtract(order.getRecommenAmount()));
         item.setOrderSubType(0);
         item.setOrderType(0);
         item.setPfBorderId(order.getId());

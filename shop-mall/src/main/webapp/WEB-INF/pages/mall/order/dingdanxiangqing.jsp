@@ -33,19 +33,19 @@
             </header>
             <div class="tai">
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==0}">
-                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 36px;"><h1>未付款</h1>
+                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width:30px;height: 26px;top: 17px;"><h1>未付款</h1>
                     <p>亲，未付款的订单可以保留7天~~</p>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==7}">
-                    <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 50px;height: 36px;top: 14px;"><h1>待发货</h1>
+                    <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width:32px;height: 28px;top: 18px;"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 47px;height: 30px;top: 14px;left: 7px;"><h1>已发货</h1>
+                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 34px;height: 26px;top: 17px;"><h1>已发货</h1>
                     <p>亲，卖家已发货~~</p>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==3 }">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 47px;height: 49px;top: 9px;"><h1>已完成</h1>
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="width: 27px;height: 29px; top: 16px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p>
                 </c:if>
             </div>
@@ -89,7 +89,7 @@
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div><c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-            <botton class="btn" onclick="querenshouhuo('${orderMallDetail.sfOrder.id}')">
+            <botton class="btn">
                 确认收货
             </botton></c:if>
             <h3></h3>
@@ -120,24 +120,33 @@
 //            $(".back").css("display","-webkit-box");
 //            $(".back_que").css("display","-webkit-box");
 //        })
-        function querenshouhuo(id){
-            $(".back").css("display","-webkit-box");
-            $(".back_que").css("display","-webkit-box");
-            $(".que_que").on("click",function(){
-                $(".back_que").hide();
-                $(".back").hide();
-                $.ajax({
-                    type:"POST",
-                    url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
-                    data:{orderId:id},
-                    dataType:"Json",
-                    success:function(date){
-                        $(".btn").html("已完成");
-                        location.reload(true);
-                    }
+           var id = ${orderMallDetail.sfOrder.id};
+            var orderStatus = ${orderMallDetail.sfOrder.orderStatus};
+            var orderStatu ="";
+        $(".btn").on("click",function(){
+            if(orderStatu==3){
+                $(".btn").prop("disabled", "disabled");
+            }else{
+                $(".back").css("display","-webkit-box");
+                $(".back_que").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    $(".back_que").hide();
+                    $(".back").hide();
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
+                        data:{orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+                            $(".btn").html("已完成");
+                            orderStatu=3;
+//                        location.reload(true);
+                        }
+                    })
                 })
-            })
-        }
+            }
+
+        })
         $(".que_qu").on("click",function(){
             $(".back_shouhuo").hide();
             $(".back").hide();

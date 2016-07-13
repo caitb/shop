@@ -17,10 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="<%=path%>/static/js/hideWXShare.js"></script>
+
 </head>
 <body>
 <%--<c:if test="${forcusPF!=true}">--%>
@@ -47,7 +44,8 @@
         </div>
         <div class="index_login" style="display: block">
             <div class="admin" >
-                <img src="${user.wxHeadImg}" alt="">
+                <%--<img src="${user.wxHeadImg}" alt="">--%>
+                <p style="background: url('${user.wxHeadImg}') no-repeat;background-size: 100% 100%;"></p>
                 <h3>${user.wxNkName}—欢迎您登入</h3>
             </div>
             <c:if test="${user.isAgent==1}">
@@ -97,6 +95,21 @@
                 <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
                     <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
                     <span>我的授权书 </span></a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul>
+                <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower?tabId=0">
+                    <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
+                    </h1>
+                    <span>升级管理</span></a>
+                </li>
+                <li class="market"><a class="herf" href="<%=basePath%>myRecommend/feeList">
+                    <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
+                    <span>我的推荐</span></a>
+                </li>
+                <li class="market">
                 </li>
             </ul>
         </nav>
@@ -156,6 +169,10 @@
         </footer>
     </div>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
     <script>
        $("body").on("swipeLeft", function () {
            location.href='<%=path%>/shop/manage/index';

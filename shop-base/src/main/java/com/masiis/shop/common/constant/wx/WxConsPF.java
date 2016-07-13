@@ -166,4 +166,32 @@ public class WxConsPF {
      * 线下支付提醒
      */
     public static final String WX_PF_TM_ID_OFFLINE_PAY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_OFFLINE_PAY");
+    /**
+     * 升级申请通知
+     */
+    public static final String WX_PF_TM_ID_UP_APPLY_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_UP_APPLY_NOTICE");
+    /**
+     * 升级通知单或者升级订单取消通知
+     */
+    public static final String WX_PF_TM_ID_UP_CANCEL_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_UP_CANCEL_NOTICE");
+    /**
+     * 升级申请结果通知
+     */
+    public static final String WX_PF_TM_ID_UP_RESULT_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_UP_RESULT_NOTICE");
+    /**
+     * 升级成功给上级通知
+     */
+    public static final String WX_PF_TM_ID_UP_SUCCESS_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_UP_SUCCESS_NOTICE");
+    /**
+     * 推荐成功通知
+     */
+    public static final String WX_PF_TM_ID_RECOMMEND_SUCCESS_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_RECOMMEND_SUCCESS_NOTICE");
+    /**
+     * 推荐佣金提醒
+     */
+    public static final String WX_PF_TM_ID_RECOMMEND_PROFIT_IN = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_RECOMMEND_PROFIT_IN");
+    /**
+     * 订单取消通知
+     */
+    public static final String WX_PF_TM_ID_ORDER_CANCEL_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_ORDER_CANCEL_NOTICE");
 }

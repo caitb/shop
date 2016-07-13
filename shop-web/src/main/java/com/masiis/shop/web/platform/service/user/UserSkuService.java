@@ -12,10 +12,12 @@ import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -27,6 +29,9 @@ import java.util.List;
 @Service
 @Transactional
 public class UserSkuService {
+
+    private final static Logger log = Logger.getLogger(UserSkuService.class);
+
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
@@ -40,6 +45,31 @@ public class UserSkuService {
     @Resource
     private UserService userService;
 
+
+    /**
+     *  获得推荐单价
+     * @param pUserId   border里新上级puserId
+     * @param skuId     商品的skuId
+     * @return
+     */
+    public BigDecimal getRewardUnitPrice(Long pUserId, Integer skuId){
+        BigDecimal rewardUnitPrice = null;
+        try {
+            PfUserSku userSku = getUserSkuByUserIdAndSkuId(pUserId,skuId);
+            if (userSku!=null){
+                rewardUnitPrice = userSku.getRewardUnitPrice();
+            }else {
+                log.info("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
+                throw new BusinessException("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
+            }
+        }catch (Exception e){
+            log.info("获得奖励单价出错----"+e.getMessage());
+            throw new BusinessException("获得奖励单价出错----"+e.getMessage());
+        }
+        return rewardUnitPrice;
+    }
+
+
     /**
      * 获取用户产品代理关系
      *
@@ -49,7 +79,6 @@ public class UserSkuService {
     public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) throws Exception {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, SkuId);
     }
-
     /**
      * 获取下级合伙人
      * @author muchaofeng

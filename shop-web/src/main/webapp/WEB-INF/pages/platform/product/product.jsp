@@ -72,10 +72,6 @@
                     <span>合伙人优惠</span>
                 </li>
                 <li>
-                    <h1><img src="<%=path%>/static/images/xq_nav3.png" alt=""></h1>
-                    <span>七天退换</span>
-                </li>
-                <li>
                     <h1><img src="<%=path%>/static/images/xq_nav4.png" alt=""></h1>
                     <span>创业补贴</span>
                 </li>

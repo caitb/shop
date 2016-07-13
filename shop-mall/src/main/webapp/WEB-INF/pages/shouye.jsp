@@ -92,16 +92,16 @@
     </div>
     <footer>
         <div>
-            <p class="active" onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-                <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
-                <span>首页</span>
+            <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
+                <span><img src="<%=path%>/static/images/dibu11.png" alt=""></span>
+                <span class="active" >首页</span>
             </p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
-                <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>分享赚钱</span>
+                <span><img src="<%=path%>/static/images/dibu2.png" alt=""></span>
+                <span>二维码</span>
             </p>
             <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
-                <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                <span><img src="<%=path%>/static/images/dibu3.png" alt=""></span>
                 <span>个人中心</span>
             </p>
         </div>

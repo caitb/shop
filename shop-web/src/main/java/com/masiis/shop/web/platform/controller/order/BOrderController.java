@@ -6,6 +6,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -131,66 +132,68 @@ public class BOrderController extends BaseController {
      * @return
      * @throws Exception
      */
-//    @RequestMapping("/payBOrder.shtml")
-//    public String payBOrder(HttpServletRequest request,
-//                            RedirectAttributes attrs,
-//                            @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
-//        WxPaySysParamReq req = null;
-//        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-//        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode()) && !pfBorder.getOrderStatus().equals(BOrderStatus.offLineNoPay.getCode())) {
-//            throw new BusinessException("订单状态异常");
-//        }
-//        //切换开发模式和测试模式
-//        String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
-//        if (StringUtils.isBlank(enviromentkey)
-//                || enviromentkey.equals("0")) {
-//            String uuid = UUID.randomUUID().toString();
-//            PfBorderPayment payment = new PfBorderPayment();
-//            payment.setPfBorderId(bOrderId);
-//            payment.setAmount(pfBorder.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
-//            payment.setCreateTime(new Date());
-//            payment.setIsEnabled(0);
-//            // 给外部支付使用支付流水号
-//            payment.setPaySerialNum(uuid);
-//            payment.setPayTypeId(0);
-//            payment.setPayTypeName("微信支付");
-//            bOrderService.addBOrderPayment(payment);
-//            PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
-//            if (pfBorderPayment == null) {
-//                throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
-//            }
-//            if (pfBorderPayment.getIsEnabled() == 0) {
-//                // 调用borderService的方法处理
-//                payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
-//            }
-//            String successURL = "border/payBOrdersSuccessBefore.shtml";
-//            attrs.addAttribute("bOrderId", bOrderId);
-//            return "redirect:/" + successURL;
-//        } else if (enviromentkey.equals("1")) {
-//            String successURL = getBasePath(request);
-//            //订单类型(0代理1补货2拿货)
-//            if (pfBorder.getOrderType() == 0) {
-//                //拿货方式(0未选择1平台代发2自己发货)
-//                if (pfBorder.getSendType() == 0) {
-//                    successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
-//                } else {
-//                    successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
-//                }
-//            } else if (pfBorder.getOrderType() == 1) {
-//                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
-//            } else {
-//                throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
-//            }
-//            req = new WxPaySysParamReq();
-//            req.setOrderId(pfBorder.getOrderCode());
-//            req.setSignType("MD5");
-//            req.setNonceStr(WXBeanUtils.createGenerateStr());
-//            req.setSuccessUrl(successURL);
-//            req.setSign(WXBeanUtils.toSignString(req));
-//        }
-//        attrs.addAttribute("param", JSONObject.toJSONString(req));
-//        return "redirect:/wxpay/wtpay";
-//    }
+    @RequestMapping("/payBOrder.shtml")
+    public String payBOrder(HttpServletRequest request,
+                            RedirectAttributes attrs,
+                            @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
+        WxPaySysParamReq req = null;
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode()) && !pfBorder.getOrderStatus().equals(BOrderStatus.offLineNoPay.getCode())) {
+            throw new BusinessException("订单状态异常");
+        }
+        //切换开发模式和测试模式
+        String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
+        if (StringUtils.isBlank(enviromentkey)
+                || enviromentkey.equals("0")) {
+            String uuid = UUID.randomUUID().toString();
+            PfBorderPayment payment = new PfBorderPayment();
+            payment.setPfBorderId(bOrderId);
+            payment.setAmount(pfBorder.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+            payment.setCreateTime(new Date());
+            payment.setIsEnabled(0);
+            // 给外部支付使用支付流水号
+            payment.setPaySerialNum(uuid);
+            payment.setPayTypeId(0);
+            payment.setPayTypeName("微信支付");
+            bOrderService.addBOrderPayment(payment);
+            PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
+            if (pfBorderPayment == null) {
+                throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
+            }
+            if (pfBorderPayment.getIsEnabled() == 0) {
+                // 调用borderService的方法处理
+                payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
+            }
+            String successURL = "border/payBOrdersSuccessBefore.shtml";
+            attrs.addAttribute("bOrderId", bOrderId);
+            return "redirect:/" + successURL;
+        } else if (enviromentkey.equals("1")) {
+            String successURL = getBasePath(request);
+            //订单类型(0代理1补货2拿货)
+            if (pfBorder.getOrderType() == 0) {
+                //拿货方式(0未选择1平台代发2自己发货)
+                if (pfBorder.getSendType() == 0) {
+                    successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                } else {
+                    successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+                }
+            } else if (pfBorder.getOrderType() == 1) {
+                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 3){
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+            } else {
+                throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
+            }
+            req = new WxPaySysParamReq();
+            req.setOrderId(pfBorder.getOrderCode());
+            req.setSignType("MD5");
+            req.setNonceStr(WXBeanUtils.createGenerateStr());
+            req.setSuccessUrl(successURL);
+            req.setSign(WXBeanUtils.toSignString(req));
+        }
+        attrs.addAttribute("param", JSONObject.toJSONString(req));
+        return "redirect:/wxpay/wtpay";
+    }
 
     /**
      * 实时的获取订单的详情
@@ -338,11 +341,33 @@ public class BOrderController extends BaseController {
             successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
         } else if (pfBorder.getOrderType() == 2) {
             successURL += "product/replenishmentSelf.shtml?bOrderId=" + pfBorder.getId();
+        }else if (pfBorder.getOrderType() == 3){
+            successURL += "border/upgradePaySuccessSkipPage.shtml?bOrderId=" + pfBorder.getId();
         } else {
             throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
         }
         modelAndView.addObject("bOrderId", bOrderId);
         modelAndView.addObject("successURL", successURL);
         return modelAndView;
+    }
+
+    /**
+     * 升级支付成功回调
+     * @param bOrderId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/upgradePaySuccessSkipPage.shtml")
+    public ModelAndView upgradePaySuccessSkipPage(HttpServletRequest request,@RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception{
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        BOrderUpgradeDetail bOrderUpgradeDetail = bOrderService.getUpgradeOrderInfo(bOrderId);
+        if (comUser!=null){
+            bOrderUpgradeDetail.setName(comUser.getRealName());
+        }
+        mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
+        mv.addObject("comUser",comUser);
+        mv.setViewName("platform/order/agent/upgradePaySuccess");
+        return mv;
     }
 }

@@ -161,6 +161,42 @@ public enum UserAccountRecordFeeType {
         public String getDesc() {
             return "小铺店铺账单结算,可提现增加";
         }
+    },
+    PF_SUB_AGENT_COUNT_FEE{
+        public Integer getCode() {
+            return 17;
+        }
+
+        public String getDesc() {
+            return "代理结算中转可提现,减少代理结算中";
+        }
+    },
+    PF_SUB_DISTRIBUTION_COUNT_FEE{
+        public Integer getCode() {
+            return 18;
+        }
+
+        public String getDesc() {
+            return "店铺结算中转可提现,减少店铺结算中";
+        }
+    },
+    PF_ADD_RECOMMEN_COUNT{
+        public Integer getCode() {
+            return 19;
+        }
+
+        public String getDesc() {
+            return "推荐奖励结算中增加";
+        }
+    },
+    PF_SUB_RECOMMEN_COUNT{
+        public Integer getCode() {
+            return 20;
+        }
+
+        public String getDesc() {
+            return "推荐奖励结算中转可提现,结算中减少";
+        }
     };
 
     public abstract Integer getCode();

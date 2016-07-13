@@ -928,6 +928,17 @@ public class DateUtil {
 	}
 
 	/**
+	 * 往后推迟几天，精确到时分秒
+	 * @param days
+	 * @return
+     */
+	public static  String delayDays(int days){
+		Calendar calendar=Calendar.getInstance();
+		calendar.add(Calendar.DATE, days);
+		return Date2String(calendar.getTime(), SQL_TIME_FMT);
+	}
+
+	/**
 	 * 当前日期增加几天，返回字符串类型为 2016-05-03
 	 * @author hanzengzhi
 	 * @date 2016/4/26 10:31

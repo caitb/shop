@@ -16,6 +16,7 @@
         <result column="order_amount" property="orderAmount" jdbcType="DECIMAL"/>
         <result column="bail_amount" property="bailAmount" jdbcType="DECIMAL"/>
         <result column="product_amount" property="productAmount" jdbcType="DECIMAL"/>
+        <result column="recommen_amount" property="recommenAmount" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL"/>
         <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
@@ -45,7 +46,7 @@
             order_code, user_id, user_pid,
             user_message, supplier_id, modify_time,
             modify_man, receivable_amount, order_amount,
-            bail_amount, product_amount, ship_amount,
+            bail_amount, product_amount, recommen_amount, ship_amount,
             pay_amount, pay_time, ship_man_id,
             ship_man_name, ship_type, ship_time,
             send_type, order_type, order_status,
@@ -56,7 +57,7 @@
             #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
             #{userMessage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP},
             #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL},
-            #{bailAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL},
+            #{bailAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, #{recommenAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL},
             #{payAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER},
             #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP},
             #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER},
@@ -104,6 +105,9 @@
             </if>
             <if test="productAmount != null">
                 product_amount = #{productAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="recommenAmount != null">
+                recommen_amount = #{recommenAmount,jdbcType=DECIMAL},
             </if>
             <if test="shipAmount != null">
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
@@ -167,7 +171,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -177,7 +181,7 @@
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -196,7 +200,7 @@
     <select id="selectByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -213,11 +217,48 @@
         ORDER BY id DESC
     </select>
 
+    <!-- 获得奖励订单  -->
+    <select id="selectRecommend" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select pb.id, pb.create_time, pb.order_code, pb.user_id,pb.user_pid,pb.order_amount,pb.order_type,pb.recommen_amount
+        from pf_border pb
+        inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
+        inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
+        <where>
+            <if test="userId != null">
+                AND pbrr.recommen_user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND pbi.sku_id = #{skuId}
+            </if>
+                AND pb.recommen_amount &gt;0
+                AND pb.pay_status=1
+        </where>
+        ORDER BY pb.id DESC
+    </select>
+
+    <!-- 发出奖励订单  -->
+    <select id="selectSendRecommend" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select pb.id, pb.create_time, pb.order_code, pb.user_id,pbrr.recommen_user_id as user_pid,pb.order_amount,pb.order_type,pb.recommen_amount
+        from pf_border pb
+        inner join pf_border_item pbi ON pb.id=pbi.pf_border_id
+        inner join pf_border_recommen_reward pbrr on pbi.id=pbrr.pf_border_item_id
+        <where>
+            <if test="userId != null">
+                AND pb.user_pid = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND pbi.sku_id = #{skuId}
+            </if>
+            AND pb.pay_status=1
+            AND pb.recommen_amount >0
+        </where>
+        ORDER BY pb.id DESC
+    </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -226,7 +267,7 @@
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorder" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from
@@ -270,6 +311,9 @@
             </if>
             <if test="productAmount != null">
                 AND product_amount = #{productAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="recommenAmount != null">
+                AND recommen_amount = #{recommenAmount,jdbcType=DECIMAL}
             </if>
             <if test="shipAmount != null">
                 AND ship_amount = #{shipAmount,jdbcType=DECIMAL}
@@ -337,7 +381,7 @@
     <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -347,7 +391,7 @@
     <select id="selectUnCountingByUserAndDate" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -361,7 +405,7 @@
     <select id="selectByStatusAndDate" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         from pf_border
@@ -386,6 +430,17 @@
         WHERE
             id = #{orderId,jdbcType=BIGINT}
         AND order_status = 0
+        AND pay_status = 0
+    </update>
+
+    <update id="updateOrderCancelByIdAndOStatus">
+        update
+            pf_border
+        SET
+            order_status = 2
+        WHERE
+            id = #{orderId,jdbcType=BIGINT}
+        AND order_status = #{ostatus,jdbcType=BIGINT}
         AND pay_status = 0
     </update>
 
@@ -414,7 +469,7 @@
         WHERE
                border.user_id = #{userId}
                AND border.user_pid = #{userPid}
-               AND border.order_type IN (0,1)
+               AND border.order_type IN (0,1,3)
                AND border.pay_status = 1
                AND item.sku_id = #{skuId}
     </select>
@@ -445,7 +500,7 @@
     <select id="selectPfBOrderBySkuIdAndUserId" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
         is_ship, is_receipt, receipt_time, remark
         FROM pf_border pb
@@ -453,5 +508,127 @@
         AND pb.order_status IN (0,9)
         AND EXISTS(SELECT 0 FROM pf_border_item pbi WHERE pb.id=pbi.pf_border_id AND pbi.sku_id=#{skuId}) limit 1
     </select>
+
+    <select id="selectUnUpgradeByStatusAndDate" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
+        FROM pf_border
+        where
+        order_type <![CDATA[ <> ]]> #{notOrderType,jdbcType=INTEGER}
+        <if test="expiraTime != null">
+            AND create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="payStatus != null">
+            AND pay_status = #{payStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectByStatusAndDateAndType" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
+        FROM pf_border
+        where 1=1
+        <if test="orderType != null">
+            AND order_type = #{orderType,jdbcType=INTEGER}
+        </if>
+        <if test="expiraTime != null">
+            AND create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="payStatus != null">
+            AND pay_status = #{payStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <update id="updateCancelByIdAndOStatusAndPStatusAndOType">
+        update
+            pf_border
+        SET
+            order_status = 2
+        WHERE
+            id = #{orderId,jdbcType=BIGINT}
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+        AND order_type = #{orderType,jdbcType=INTEGER}
+        AND pay_status = #{payStatus,jdbcType=INTEGER}
+    </update>
+
+    <!-- 查询进货或出货订单 -->
+    <select id="selectByUserIdOrUserPidAndOrderStatus" resultMap="orderMap">
+        SELECT
+               bo.id,
+               bo.order_code,
+               bo.order_status,
+               bo.order_type,
+               bo.send_type,
+               bo.create_time,
+               bo.receivable_amount,
+               bo.order_amount,
+               bo.pay_amount,
+               bo.bail_amount,
+               bo.pay_time,
+               bi.sku_id,
+               bi.unit_price,
+               bi.quantity,
+               sku.`name`,
+               skui.img_url
+        FROM
+               pf_border bo
+        LEFT JOIN pf_border_item bi   ON bi.pf_border_id = bo.id
+        LEFT JOIN com_sku        sku  ON sku.id = bi.sku_id
+        INNER JOIN com_sku_image  skui ON skui.sku_id = bi.sku_id
+        <where>
+            <if test="userId != null">
+                AND bo.user_id = #{userId}
+            </if>
+            <if test="userPid != null">
+                AND bo.user_pid = #{userPid}
+            </if>
+            <if test="orderStatus != null and orderStatus != 0">
+                AND bo.order_status = #{orderStatus}
+            </if>
+            <if test="orderStatus != null and orderStatus == 0">
+                AND bo.order_status IN (0, 9)
+            </if>
+        </where>
+        ORDER BY bo.create_time DESC, skui.img_url DESC
+    </select>
+    
+    <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">
+        <result property="id" column="id" />
+        <result property="orderStatus" column="order_status" />
+        <result property="orderCode" column="order_code" />
+        <result property="orderType" column="order_type" />
+        <result property="sendType" column="send_type" />
+        <result property="createTime" column="create_time" />
+        <result property="receivableAmount" column="receivable_amount" />
+        <result property="orderAmount" column="order_amount" />
+        <result property="payAmount" column="pay_amount" />
+        <result property="bailAmount" column="bail_amount" />
+        <result property="payTime" column="pay_time" />
+        <collection property="bItems" resultMap="orderItemMap" />
+    </resultMap>
+    
+    <resultMap id="orderItemMap" type="com.masiis.shop.dao.beans.order.BItem">
+        <result property="skuId" column="sku_id" />
+        <result property="unitPrice" column="unit_price" />
+        <result property="quantity" column="quantity" />
+        <result property="skuName" column="name" />
+        <collection property="imgUrls" resultMap="skuImgMap" />
+    </resultMap>
+
+    <resultMap id="skuImgMap" type="Map">
+        <result property="imgUrl" column="img_url" />
+    </resultMap>
 
 </mapper>

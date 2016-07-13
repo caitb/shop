@@ -49,71 +49,135 @@ public class PfSkuAgent {
      */
     private Integer isShow;
     private String remark;
+    /**
+     * 是否支持升级，0否1是
+     */
+    private Integer isUpgrade;
+    /**
+     * 推荐奖励单价
+     */
+    private BigDecimal rewardUnitPrice;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Integer getSkuId() {
         return skuId;
     }
+
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
     public Integer getAgentLevelId() {
         return agentLevelId;
     }
+
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
+
     public String getIcon() {
         return icon;
     }
+
     public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
+        this.icon = icon;
     }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
+
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
+
     public Integer getQuantity() {
         return quantity;
     }
+
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
+
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
+
     public BigDecimal getBail() {
         return bail;
     }
+
     public void setBail(BigDecimal bail) {
         this.bail = bail;
     }
+
     public String getBackImg() {
         return backImg;
     }
+
     public void setBackImg(String backImg) {
-        this.backImg = backImg == null ? null : backImg.trim();
+        this.backImg = backImg;
     }
+
     public Integer getIsShow() {
         return isShow;
     }
+
     public void setIsShow(Integer isShow) {
         this.isShow = isShow;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    public Integer getIsUpgrade() {
+        return isUpgrade;
+    }
+
+    public void setIsUpgrade(Integer isUpgrade) {
+        this.isUpgrade = isUpgrade;
+    }
+
+    public BigDecimal getRewardUnitPrice() {
+        return rewardUnitPrice;
+    }
+
+    public void setRewardUnitPrice(BigDecimal rewardUnitPrice) {
+        this.rewardUnitPrice = rewardUnitPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "PfSkuAgent{" +
+                "id=" + id +
+                ", skuId=" + skuId +
+                ", agentLevelId=" + agentLevelId +
+                ", icon='" + icon + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
+                ", totalPrice=" + totalPrice +
+                ", bail=" + bail +
+                ", backImg='" + backImg + '\'' +
+                ", isShow=" + isShow +
+                ", remark='" + remark + '\'' +
+                ", isUpgrade=" + isUpgrade +
+                ", rewardUnitPrice=" + rewardUnitPrice +
+                '}';
     }
 }

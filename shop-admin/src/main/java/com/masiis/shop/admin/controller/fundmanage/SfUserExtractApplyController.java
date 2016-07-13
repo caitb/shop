@@ -64,8 +64,12 @@ public class SfUserExtractApplyController extends BaseController{
                         String auditCause){
         try {
             sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"),getPbUser(request));
-            // 发送微信通知
-            sfUserExtractApplyService.sendWxNotice(id);
+
+            if(auditType.intValue() == 1 || auditType.intValue() == 2){
+                // 发送微信通知
+                sfUserExtractApplyService.sendWxNotice(id);
+            }
+
             // 发送短信
             return "success";
         } catch (Exception e) {

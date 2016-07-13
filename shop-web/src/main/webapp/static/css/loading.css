@@ -42,7 +42,7 @@
     top: 50%;
     z-index: 111;
     text-align: center;
-    background: rgba(0, 0, 0, 0.7) url("../images/loading.gif") no-repeat center 22%;
+    background:#000 url("../images/loading.gif") no-repeat center 22%;
     background-size: 58px;
     border-radius: 5px;
 }

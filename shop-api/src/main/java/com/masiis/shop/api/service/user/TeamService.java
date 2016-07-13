@@ -59,17 +59,18 @@ public class TeamService {
 
     /**
      * 获取用户代理的所有产品
+     *
      * @param userId
      * @return
      */
-    public List<Map<String, Object>> listAgentSku(Long userId){
+    public List<Map<String, Object>> listAgentSku(Long userId) {
         PfUserSku pfUserSku = new PfUserSku();
         pfUserSku.setUserId(userId);
 
         List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(pfUserSku);
 
         List<Map<String, Object>> agentSkuMaps = new ArrayList<>();
-        for(PfUserSku pus : pfUserSkus){
+        for (PfUserSku pus : pfUserSkus) {
             ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
@@ -81,7 +82,7 @@ public class TeamService {
             agentSkuMap.put("skuId", comSku.getId());
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
-            agentSkuMap.put("manage", pus.getAgentLevelId()==skuAgentLevels?"no":"yes");//是否可管理
+            agentSkuMap.put("manage", pus.getAgentLevelId().equals(skuAgentLevels) ? "no" : "yes");//是否可管理
 
 //            Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
 //            Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
@@ -89,7 +90,7 @@ public class TeamService {
 //            agentSkuMap.put("countChild", countChild);      //团队人数(不包括自己)
 //            agentSkuMap.put("countSales", countSales==null?0:countSales);
 
-            List<Long> teamUserIds = pfUserSkuMapper.selectAllTeamMember(pus.getTreeCode()+"%");
+            List<Long> teamUserIds = pfUserSkuMapper.selectAllTeamMember(pus.getTreeCode() + "%");
             BigDecimal totalIncomeFee = comUserAccountMapper.totalIncomeFeeByUserIds(teamUserIds);
             agentSkuMap.put("countTeamMember", teamUserIds.size());
             agentSkuMap.put("totalIncomeFee", totalIncomeFee);
@@ -102,10 +103,11 @@ public class TeamService {
 
     /**
      * 统计团队人数
+     *
      * @param userSkuId
      * @return
      */
-    public Map<String, String> countChild(Integer userSkuId){
+    public Map<String, String> countChild(Integer userSkuId) {
         String curPIds = userSkuId.toString();
 //        String curPIds = ""+userSkuId+"";
         String curUserIds = "";
@@ -113,18 +115,18 @@ public class TeamService {
         StringBuilder userIds = new StringBuilder(4000);
 
 
-        while (curPIds != null){
+        while (curPIds != null) {
             Map<String, String> curMap = pfUserSkuMapper.countChild(curPIds);
-            if(curMap == null) curMap = new HashMap<>();
+            if (curMap == null) curMap = new HashMap<>();
             curPIds = curMap.get("sPIds");
             curUserIds = curMap.get("sUserIds");
 
-            if(curPIds != null)    childIds.append("," + curPIds);
-            if(curUserIds != null) userIds.append("," + curUserIds);
+            if (curPIds != null) childIds.append("," + curPIds);
+            if (curUserIds != null) userIds.append("," + curUserIds);
         }
 
-        if(childIds.length()>0) childIds.deleteCharAt(0);
-        if(userIds.length()>0)  userIds.deleteCharAt(0);
+        if (childIds.length() > 0) childIds.deleteCharAt(0);
+        if (userIds.length() > 0) userIds.deleteCharAt(0);
 
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("childIds", childIds.toString());
@@ -135,32 +137,33 @@ public class TeamService {
 
     /**
      * 获取团队列表
+     *
      * @param userSkuId
      * @return
      */
-    public Map<String, Object> teamDetail(Integer userSkuId){
+    public Map<String, Object> teamDetail(Integer userSkuId) {
         PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
         List<Long> userIds = pfUserSkuMapper.selectChildrenByPId(pfUserSku.getId());
         List<ComUser> comUsers = new ArrayList<>();
-        if(userIds != null && userIds.size() > 0){
+        if (userIds != null && userIds.size() > 0) {
             comUsers = comUserMapper.selectByIds(userIds);
         }
 
         /* 下级合伙人id */
-        List<Long> teamUserIds = pfUserSkuMapper.selectAllTeamMember(pfUserSku.getTreeCode()+"%");
+        List<Long> teamUserIds = pfUserSkuMapper.selectAllTeamMember(pfUserSku.getTreeCode() + "%");
         /* 团队总销售额 */
         BigDecimal totalIncomeFee = comUserAccountMapper.totalIncomeFeeByUserIds(teamUserIds);
         Map<String, Object> teamMap = new HashMap<>();
         /* 直接下级人数 */
         teamMap.put("countDirectly", userIds.size());
         /* 间接下级人数 */
-        teamMap.put("countIndirect", teamUserIds.size()-userIds.size());
+        teamMap.put("countIndirect", teamUserIds.size() - userIds.size());
         /* 总销售额 */
         teamMap.put("totalIncomeFee", totalIncomeFee);
 
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
-        for(ComUser comUser : comUsers){
+        for (ComUser comUser : comUsers) {
             PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfUserSku.getSkuId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
 
@@ -180,13 +183,12 @@ public class TeamService {
     }
 
     /**
-     *
      * @param code
      * @return
      */
-    public Map<String, Object> viewMember(String code){
+    public Map<String, Object> viewMember(String code) {
         PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByCode(code);
-        if(pfUserCertificate == null){//合伙人未填写证书申请
+        if (pfUserCertificate == null) {//合伙人未填写证书申请
             return null;
         }
 
@@ -196,7 +198,7 @@ public class TeamService {
         Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         Map<String, String> curMap = countChild(pfUserSku.getId());
-        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString()) ? 0 : curMap.get("childIds").split(",").length;
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("stock", statisticsBuy.get("stock"));
@@ -227,13 +229,14 @@ public class TeamService {
 
     /**
      * 证书审核
+     *
      * @param userSkuId
      * @param pfUserCertificateId
      * @param status
      * @param reason
      * @param rootPath
      */
-    public void audit(Integer userSkuId, Long pfUserCertificateId, Integer status, String reason, String rootPath){
+    public void audit(Integer userSkuId, Long pfUserCertificateId, Integer status, String reason, String rootPath) {
         PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByPrimaryKey(pfUserCertificateId);
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
@@ -241,11 +244,11 @@ public class TeamService {
         pfUserCertificate.setStatus(status);
         pfUserCertificate.setReason(reason);
 
-        if(status == 1){
+        if (status == 1) {
             pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
             Date curDate = new Date();
             pfUserCertificate.setBeginTime(curDate);
-            curDate.setYear(curDate.getYear()+1);
+            curDate.setYear(curDate.getYear() + 1);
             pfUserCertificate.setEndTime(curDate);
 
             String name = comUser.getRealName();
@@ -270,7 +273,7 @@ public class TeamService {
 
     }
 
-    private String getCertificateCode(PfUserCertificate pfUserCertificate){
+    private String getCertificateCode(PfUserCertificate pfUserCertificate) {
         String certificateCode = null;
         int num = 10000;
         StringBuffer Code = new StringBuffer("MASIIS");

@@ -182,6 +182,13 @@
                 pf_user_sku_id = #{userSkuId}
     </select>
 
+    <select id="selectByUserAndSkuId" resultMap="BaseResultMap">
+        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile,
+                wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,  reason, poster
+        from pf_user_certificate
+        where sku_id = #{skuId} AND user_id = #{userId}
+    </select>
+
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserCertificate" resultMap="BaseResultMap">
         select
         id,

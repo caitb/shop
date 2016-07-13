@@ -3,12 +3,10 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderConfirm;
-import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
-import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
+import com.masiis.shop.dao.beans.order.*;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -17,7 +15,9 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
+import java.util.Date;
 
 /**
  * BOrderAddController
@@ -40,6 +38,9 @@ import java.util.Locale;
 @Controller
 @RequestMapping("/BOrderAdd")
 public class BOrderAddController extends BaseController {
+
+    private final static Logger log = Logger.getLogger(BOrderAddController.class);
+
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -58,6 +59,10 @@ public class BOrderAddController extends BaseController {
     private UserCertificateService userCertificateService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
 
     /**
      * 代理订单确认订单页
@@ -375,4 +380,74 @@ public class BOrderAddController extends BaseController {
         }
         return jsonObject.toJSONString();
     }
+
+    /**
+     * 升级申请插入订单
+     * @param request
+     * @param upgradeNoticeId
+     */
+    @ResponseBody
+    @RequestMapping("/upgradeInsertOrder.do")
+    public String upgradeInsertOrder(HttpServletRequest request,
+                                    @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
+
+        log.info("生成订单数据----start");
+        Long orderId = null;
+        JSONObject jsonObject = new JSONObject();
+        ComUser comUser = getComUser(request);
+        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
+        try{
+            if (upgradeDetail!=null){
+                if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==2){
+                    //订单存在重定向到收银台
+                    jsonObject.put("isError", false);
+                    jsonObject.put("isRedirect",true);
+                    jsonObject.put("redirectUrl","border/goToPayBOrder.shtml?bOrderId="+upgradeDetail.getPfBorderId());
+                    jsonObject.put("bOrderId", upgradeDetail.getPfBorderId());
+                    return jsonObject.toJSONString();
+                }
+                if (upgradeDetail.getUpgradeStatus()!=2){
+                    log.info("通知单状态不对不能生成订单----状态---"+upgradeDetail.getUpgradeStatus());
+                    throw new BusinessException("通知单状态不对不能生成订单");
+                }
+                if (upgradeDetail.getApplyAgentLevel()!=0){
+                    //插入订单表
+                    PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+                    BOrderAdd  orderAdd = new BOrderAdd();
+                    orderAdd.setUpgradeNoticeId(upgradeNoticeId);
+                    log.info("升级订单对应的通知单id--------"+upgradeNoticeId);
+                    orderAdd.setOrderType(3);
+                    orderAdd.setUserId(comUser.getId());
+                    orderAdd.setpUserId(upgradeDetail.getNewPUserId());//设置新的上级
+                    log.info("新上级id----------"+upgradeDetail.getNewPUserId());
+                    orderAdd.setSendType(1);//拿货方式
+                    orderAdd.setSkuId(upgradeDetail.getSkuId());
+                    orderAdd.setQuantity(newSkuAgent.getQuantity());
+                    log.info("订单数量---------"+newSkuAgent.getQuantity());
+                    orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+                    orderAdd.setApplyAgentLevel(upgradeDetail.getApplyAgentLevel());
+                    log.info("原始等级--------"+upgradeDetail.getCurrentAgentLevel());
+                    log.info("期望等级--------"+upgradeDetail.getApplyAgentLevel());
+                    orderId = bOrderAddService.addBOrder(orderAdd);
+                }else{
+                    log.info("您已不能再升级----当前用户id---"+comUser.getId()+"----当前等级----"+upgradeDetail.getCurrentAgentLevelName());
+                    throw new BusinessException("您是最顶级不能再升级");
+                }
+            }
+        }catch (Exception e){
+            throw new BusinessException("生成订单数据失败------通知单id----"+upgradeNoticeId+"-----出错原因-----"+e.getMessage());
+        }
+        log.info("生成订单数据----end");
+        if (orderId!=null){
+            jsonObject.put("isError", false);
+            jsonObject.put("bOrderId", orderId);
+        }else{
+            jsonObject.put("isError", false);
+            jsonObject.put("bOrderId", orderId);
+        }
+        return jsonObject.toJSONString();
+    }
+
+
+
 }

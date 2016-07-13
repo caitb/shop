@@ -41,4 +41,21 @@ public class SfShopService {
     public SfShop getSfShopByUserId(Long userId){
         return sfShopMapper.selectByUserId(userId);
     }
+
+    /**
+     * 获取店铺
+     * @param shopId
+     * @return
+     */
+    public SfShop getSfShopById(Long shopId){
+        return sfShopMapper.selectByPrimaryKey(shopId);
+    }
+
+    /**
+     * 更新店铺信息
+     * @param sfShop
+     */
+    public void updateById(SfShop sfShop){
+        sfShopMapper.updateByPrimaryKey(sfShop);
+    }
 }

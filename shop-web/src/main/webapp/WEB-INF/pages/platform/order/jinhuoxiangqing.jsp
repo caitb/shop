@@ -49,7 +49,7 @@
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}">
+                <c:if test="${borderDetail.pfBorder.orderStatus==6}">
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>排单中</h1>
                     <p>亲，您的订单排单中~~</p>
                 </c:if>
@@ -60,7 +60,12 @@
             </div>
             <div class="kuaidi">
                 <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
-                <p>类    型：<span><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
+                <p>类    型：<span>
+                            <c:forEach items="${bOrderTypes}" var="orderType">
+                                <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>
+                            </c:forEach>
+                            </span>
+                </p>
                 <c:if test="${borderDetail.pfBorder.sendType!=1 || borderDetail.pfBorder.orderType==2}">
                 ${stringBuffer}
                 </c:if>

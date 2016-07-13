@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserUpgradeNotice" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_pid" property="userPid" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="org_agent_level_id" property="orgAgentLevelId" jdbcType="INTEGER" />
+        <result column="wish_agent_level_id" property="wishAgentLevelId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="up_status" property="upStatus" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="BaseUpgradeInfoResultMap" type="com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo" >
+        <id column="upgradeId" property="upgradeId" jdbcType="BIGINT" />
+        <result column="skuId" property="skuId" jdbcType="INTEGER" />
+        <result column="skuName" property="skuName" jdbcType="VARCHAR" />
+        <result column="applyId" property="applyId" jdbcType="BIGINT" />
+        <result column="applyPid" property="applyPid" jdbcType="BIGINT" />
+        <result column="applyName" property="applyName" jdbcType="VARCHAR" />
+        <result column="orgAgentId" property="orgAgentId" jdbcType="INTEGER" />
+        <result column="orgAgentName" property="orgAgentName" jdbcType="VARCHAR" />
+        <result column="wishAgentId" property="wishAgentId" jdbcType="INTEGER" />
+        <result column="wishAgentName" property="wishAgentName" jdbcType="VARCHAR" />
+        <result column="applyStatus" property="applyStatus" jdbcType="INTEGER" />
+        <result column="upStatus" property="upStatus" jdbcType="INTEGER" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="applyCode" property="applyCode" jdbcType="VARCHAR" />
+        <result column="pfBorderId" property="pfBorderId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_upgrade_notice
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_user_upgrade_notice (id, create_time, code, 
+            user_id, user_pid, sku_id, 
+            org_agent_level_id, wish_agent_level_id, status, update_time,
+            pf_border_id, remark, up_status
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, 
+            #{orgAgentLevelId,jdbcType=INTEGER}, #{wishAgentLevelId,jdbcType=INTEGER},
+            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+            #{pfBorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{upStatus,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice" >
+        update pf_user_upgrade_notice
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            code = #{code,jdbcType=VARCHAR},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            org_agent_level_id = #{orgAgentLevelId,jdbcType=INTEGER},
+            wish_agent_level_id = #{wishAgentLevelId,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR},
+            up_status = #{upStatus,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id, 
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByPfBorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where pf_border_id = #{orderId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id, 
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY update_time desc
+    </select>
+
+    <select id="selectByUserPId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        ORDER BY update_time desc
+    </select>
+
+    <select id="selectByUserPidAndStatus" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        AND status = #{status,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUserPidAndInStatus" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        AND status IN
+        <foreach collection="statusList" open="(" separator="," close=")" item="status" index="index">
+            #{status}
+        </foreach>
+    </select>
+
+
+    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        <where>
+            <if test="beginTime != null">
+                AND create_time &gt;=#{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;=#{endTime}
+            </if>
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUpgradeRecordByUserIdAndSkuId" resultType="Map">
+        SELECT
+               uun.create_time createTime,
+               org_al.name     orgLevelName,
+               wish_al.name    wishLevelName,
+               p_user.real_name pUserName,
+               r_user.real_name recommendUserName
+        FROM
+               pf_user_upgrade_notice uun
+        LEFT JOIN com_agent_level           org_al  ON org_al.id   = uun.org_agent_level_id
+        LEFT JOIN com_agent_level           wish_al ON wish_al.id  = uun.wish_agent_level_id
+        LEFT JOIN com_user                  p_user  ON p_user.id   = uun.user_pid
+        LEFT JOIN pf_user_recommen_relation urr     ON urr.user_id = uun.user_id AND urr.sku_id = uun.sku_id
+        LEFT JOIN com_user                  r_user  ON r_user.id   = urr.user_pid
+        <where>
+            <if test="userId != null">
+                AND uun.user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND uun.sku_id = #{skuId}
+            </if>
+        </where>
+        ORDER BY uun.create_time DESC
+    </select>
+    <!-->根据商品和状态查询<-->
+    <select id="selectByParam" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        <if test="skuId != null">
+            AND sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="upStatus != null">
+            AND status = #{upStatus,jdbcType=INTEGER}
+        </if>
+        ORDER BY update_time desc
+    </select>
+    <!-->根据商品和返利状态查询<-->
+    <select id="selectBySkuIdAndRebateType" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
+        b.status,b.update_time,b.pf_border_id, b.remark, b.up_status
+        from pf_user_rebate a
+        left join pf_user_upgrade_notice b ON a.user_upgrade_notice_id = b.id
+        where 1=1
+        <if test="skuId != null">
+            AND b.sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="userPid != null">
+            AND a.user_pid = #{userPid,jdbcType=BIGINT}
+        </if>
+        <if test="userId != null">
+            AND a.user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        ORDER BY b.update_time desc
+    </select>
+
+    <select id="selectUncalcelByUpStatusAndDate" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        WHERE status <![CDATA[ <> ]]> 4
+        <if test="upStatus != null">
+          and up_status = #{upStatus,jdbcType=INTEGER}
+        </if>
+        <if test="time != null">
+          AND create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="selectUpGradeInfoPoById" parameterType="java.lang.Long" resultMap="BaseUpgradeInfoResultMap">
+        SELECT
+            a.id AS upgradeId,
+            b.id AS skuId,
+            b. NAME AS skuName,
+            a.user_id AS applyId,
+            e.real_name AS applyName,
+            a.user_pid AS applyPid,
+            f.real_name AS applyPName,
+            a.org_agent_level_id AS orgAgentId,
+            c. NAME AS orgAgentName,
+            a.wish_agent_level_id AS wishAgentId,
+            d. NAME AS wishAgentName,
+            a. STATUS AS applyStatus,
+            a.up_status AS upStatus,
+            a.create_time AS createTime,
+            a. CODE AS applyCode,
+            IFNULL(a.pf_border_id,0) as pfBorderId
+        FROM
+	        pf_user_upgrade_notice a
+        LEFT JOIN com_sku b ON a.sku_id = b.id
+        LEFT JOIN com_agent_level c ON a.org_agent_level_id = c.id
+        LEFT JOIN com_agent_level d ON a.wish_agent_level_id = d.id
+        LEFT JOIN com_user e ON a.user_id = e.id
+        LEFT JOIN com_user f on a.user_pid = f.id
+        WHERE
+            a.id = #{Id}
+    </select>
+
+    <select id="selectBySkuIdAndUserIdAndUserPid" resultMap="BaseResultMap">
+        select * from pf_user_upgrade_notice
+        WHERE sku_id = #{skuId,jdbcType=INTEGER}
+        and user_pid = #{userPid,jdbcType=BIGINT}
+        and user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfUserUpgradeNotice">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        where 1=1
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="code != null">
+            and code = #{code,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="userPid != null">
+            and user_pid = #{userPid,jdbcType=BIGINT}
+        </if>
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="skuId != null">
+            and sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+        <if test="orgAgentLevelId != null">
+            and org_agent_level_id = #{orgAgentLevelId,jdbcType=INTEGER}
+        </if>
+        <if test="wishAgentLevelId != null">
+            and wish_agent_level_id = #{wishAgentLevelId,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="pfBorderId != null">
+            and pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+        </if>
+        <if test="upStatus != null">
+            and up_status = #{upStatus,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectLastUpgrade" resultMap="BaseResultMap">
+        select * from pf_user_upgrade_notice where id = (select max(id) from pf_user_upgrade_notice where user_pid = #{userPid} and wish_agent_level_id = #{wishLevelId} and sku_id = #{skuId});
+    </select>
+
+    <select id="selectAllUnpayNoticesByDate" resultMap="BaseResultMap">
+        select n.id, n.create_time, n.code, n.user_id, n.user_pid, n.sku_id, n.org_agent_level_id,
+        n.wish_agent_level_id, n.status, n.update_time, n.pf_border_id, n.remark, n.up_status
+        from pf_user_upgrade_notice n
+        where n.update_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+        AND n.status = 2
+        AND (EXISTS (SELECT
+                        1
+                    FROM
+                        pf_border b
+                    WHERE
+                        b.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+                    AND b.order_status = 0
+                    AND b.order_type = 3
+                    AND b.id = n.pf_border_id)
+            OR n.pf_border_id is NULL )
+    </select>
+
+    <select id="selectAllUnpayOfflineNoticesByDate" resultMap="BaseResultMap">
+        select n.id, n.create_time, n.code, n.user_id, n.user_pid, n.sku_id, n.org_agent_level_id,
+        n.wish_agent_level_id, n.status, n.update_time, n.pf_border_id, n.remark, n.up_status
+        from pf_user_upgrade_notice n
+        where n.update_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+        AND n.status = 2
+        AND EXISTS (SELECT
+                        1
+                    FROM
+                        pf_border b
+                    WHERE
+                        b.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+                    AND b.order_status = 9
+                    AND b.order_type = 3
+                    AND b.id = n.pf_border_id)
+    </select>
+
+    <select id="selectAllSubByStatusAndPid" resultMap="BaseResultMap">
+        select id, create_time, code, user_id, user_pid, sku_id, org_agent_level_id, wish_agent_level_id,
+        status, update_time, pf_border_id, remark, up_status
+        from pf_user_upgrade_notice
+        WHERE status = #{status,jdbcType=INTEGER}
+        AND user_pid = #{userPid,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectBySkuIdAndRebateALLType" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.code, b.user_id, b.user_pid, b.sku_id, b.org_agent_level_id, b.wish_agent_level_id,
+        b.status, b.update_time,b.pf_border_id, b.remark, b.up_status
+        from pf_user_rebate a
+        left join pf_user_upgrade_notice b ON a.user_upgrade_notice_id = b.id
+        where 1=1
+        <if test="skuId != null">
+            AND b.sku_id = #{skuId,jdbcType=INTEGER}
+        </if>
+            AND (a.user_pid = #{userId,jdbcType=BIGINT} OR a.user_id = #{userId,jdbcType=BIGINT})
+        ORDER BY b.update_time desc
+    </select>
+</mapper>

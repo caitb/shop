@@ -65,10 +65,15 @@ public class ComUserAccount {
     private String viewDistributionBillAmount = "￥0.00";
     private String viewExtractableFee = "￥0.00";
     private String viewAppliedFee = "￥0.00";
+    private String viewRecommenBillAmount = "￥0.00";
     /**
      * 乐观锁字段
      */
     private Long version;
+    /**
+     * 推荐奖励结算中
+     */
+    private BigDecimal recommenBillAmount;
 
     public Long getId() {
         return id;
@@ -235,6 +240,23 @@ public class ComUserAccount {
         this.viewAppliedFee = viewAppliedFee;
     }
 
+    public BigDecimal getRecommenBillAmount() {
+        return recommenBillAmount;
+    }
+
+    public void setRecommenBillAmount(BigDecimal recommenBillAmount) {
+        this.recommenBillAmount = recommenBillAmount == null?new BigDecimal(0):recommenBillAmount;
+        setViewRecommenBillAmount(rmbFormat.format(this.recommenBillAmount));
+    }
+
+    public String getViewRecommenBillAmount() {
+        return viewRecommenBillAmount;
+    }
+
+    public void setViewRecommenBillAmount(String viewRecommenBillAmount) {
+        this.viewRecommenBillAmount = viewRecommenBillAmount;
+    }
+
     @Override
     public String toString() {
         return "ComUserAccount{" +
@@ -246,11 +268,19 @@ public class ComUserAccount {
                 ", extractableFee=" + extractableFee +
                 ", appliedFee=" + appliedFee +
                 ", countingFee=" + countingFee +
+                ", agentBillAmount=" + agentBillAmount +
+                ", distributionBillAmount=" + distributionBillAmount +
                 ", bailFee=" + bailFee +
                 ", createdTime=" + createdTime +
                 ", changedTime=" + changedTime +
                 ", changedBy='" + changedBy + '\'' +
+                ", viewCountingFee='" + viewCountingFee + '\'' +
+                ", viewAgentBillAmount='" + viewAgentBillAmount + '\'' +
+                ", viewDistributionBillAmount='" + viewDistributionBillAmount + '\'' +
+                ", viewExtractableFee='" + viewExtractableFee + '\'' +
+                ", viewAppliedFee='" + viewAppliedFee + '\'' +
                 ", version=" + version +
+                ", recommenBillAmount=" + recommenBillAmount +
                 '}';
     }
 }

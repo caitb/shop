@@ -45,4 +45,16 @@ public interface PfSkuAgentMapper {
      * @return
      */
     Integer countSkuAgentLevel(Integer skuId);
+
+    List<PfSkuAgent> selectUpgradeAgents(@Param("skuId") Integer skuId,
+                                         @Param("agentLevelId") Integer agentLevelId,
+                                         @Param("pLevelId") Integer pLevelId);
+
+    /**
+     * 通过skuId查找代理等级id
+     * @param skuId
+     * @param isShow
+     * @return
+     */
+    List<Integer> selectLevelIdsBySkuIdAndIsShow(@Param("skuId")Integer skuId, @Param("isShow")Integer isShow);
 }

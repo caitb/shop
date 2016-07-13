@@ -5,7 +5,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background: #f73c8c;
+  background: #333;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -15,15 +15,15 @@
 .wrap .tai img {
   position: absolute;
   display: block;
-  width: 38px;
-  height: 36px;
-  left: 15px;
-  top: 14px;
+  width: 27px;
+  height: 29px;
+  top: 16px;
+  left:15px;
 }
 .wrap .tai h1,
 .wrap .tai p {
-  text-indent: 4.5rem;
-  color: white;
+  text-indent: 4rem;
+  color: #C7A467;
   font-size: 12px;
 }
 .wrap .tai h1{
@@ -95,7 +95,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap .sec2 div {
   -webkit-box-flex: 1;
@@ -199,7 +199,7 @@
   text-align: left;
 }
 .wrap .sec4 p:nth-child(3) span{
-  color: #F73c8c;
+  color: #F7523C;
 }
 .wrap .sec4 p b {
   font-size: 12px;
@@ -279,6 +279,13 @@
   top: 5px;
   text-align: center;
 }
+.back_l h1 {
+  font-size:16px;
+  margin:10px;
+  color:#C7A467;
+  padding-bottom:5px;
+  border-bottom:1px solid #C7A467;
+}
 .back_l p {
   text-align: center;
   margin-top: 2em;
@@ -287,9 +294,10 @@
   display: block;
   width: 70%;
   line-height: 30px;
-  background: #ccc;
+  background: #fff;
   margin: 2em auto;
-  border-radius: 5px;
+  border:1px solid #C7A467;
+  color:C7A467;
 }
 .back_s {
   display: none;

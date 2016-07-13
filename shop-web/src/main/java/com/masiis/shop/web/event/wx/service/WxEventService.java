@@ -13,10 +13,7 @@ import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.PfUserRelationService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
-import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.platform.service.user.*;
 import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -52,7 +49,7 @@ public class WxEventService {
     @Resource
     private SkuService skuService;
     @Resource
-    private ComSkuImageMapper imageMapper;
+    private PfUserShareParamService pfUserShareParamService;
 
     /**
      * 处理微信事件推送
@@ -127,8 +124,8 @@ public class WxEventService {
             throw new BusinessException();
         }
 
-        PfUserSku userSku = userSkuService.getUserSkuById(pfUserSkuId);
-        if(userSku == null){
+        PfUserShareParam usp = pfUserShareParamService.findById(Long.valueOf(pfUserSkuId));
+        if(usp == null){
             throw new BusinessException();
         }
 
@@ -140,27 +137,31 @@ public class WxEventService {
         }
         log.info("获取用户");
 
-        Integer skuId = userSku.getSkuId();
-        Long pUserId = userSku.getUserId();
+        Integer skuId = usp.getSkuId();
+        Long pUserId = usp.getfUserId();
         //Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
         try {
             if (pUserId != null && pUserId > 0) {
-                PfUserRelation existRelation = pfUserRelationService
-                        .getRelationByUserIdAndSkuIdAndPUserId(user.getId(), skuId, pUserId);
-                pfUserRelationService.updateAllToUnableByUserIdAndSkuId(user.getId(), skuId);
-                if(existRelation == null) {
-                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                    userSkuService.checkParentData(user, pUserId, skuId);
-                    PfUserRelation pfUserRelation = new PfUserRelation();
-                    pfUserRelation.setUserId(user.getId());
-                    pfUserRelation.setSkuId(skuId);
-                    pfUserRelation.setCreateTime(new Date());
-                    pfUserRelation.setIsEnable(1);
-                    pfUserRelation.setUserPid(pUserId);
-                    pfUserRelationService.insert(pfUserRelation);
-                } else {
-                    existRelation.setIsEnable(1);
-                    pfUserRelationService.update(existRelation);
+                if(pUserId.longValue() != user.getId().longValue()) {
+                    PfUserRelation existRelation = pfUserRelationService
+                            .getRelationByUserIdAndSkuIdAndPUserId(user.getId(), skuId, pUserId);
+                    pfUserRelationService.updateAllToUnableByUserIdAndSkuId(user.getId(), skuId);
+                    if (existRelation == null) {
+                        //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                        userSkuService.checkParentData(user, pUserId, skuId);
+                        existRelation = new PfUserRelation();
+                        existRelation.setUserId(user.getId());
+                        existRelation.setSkuId(skuId);
+                        existRelation.setCreateTime(new Date());
+                        existRelation.setIsEnable(1);
+                        existRelation.setUserPid(pUserId);
+                        existRelation.setAgentLevelIds(usp.getAgentLevelIds());
+                        pfUserRelationService.insert(existRelation);
+                    } else {
+                        existRelation.setAgentLevelIds(usp.getAgentLevelIds());
+                        existRelation.setIsEnable(1);
+                        pfUserRelationService.update(existRelation);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -173,8 +174,8 @@ public class WxEventService {
 //        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
 
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
-                + "&pUserId=" + userSku.getUserId();
+                + "/product/skuDetails.shtml?skuId=" + usp.getSkuId()
+                + "&pUserId=" + usp.getfUserId();
         WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), null);
 
         return res;

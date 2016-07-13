@@ -103,7 +103,7 @@
   font-size: 12px;
 }
 .wrap .sec2 div p {
-  color: #f73c8c;
+  color: #F7523C;
 }
 .wrap .sec3 {
   width: 100%;
@@ -117,7 +117,6 @@
   color: #666666;
   display: -webkit-box;
   padding: 8px 0;
-  -webkit-box-pack: justify;
   background: #fff;
 }
 .wrap .sec3 p em {
@@ -152,7 +151,7 @@
   margin-top: 10px;
 }
 .wrap .sec3 h1 span {
-  color: #f73c8c;
+  color: #F7523C;
   padding-right: 10px;
 }
 .wrap .sec3 h2 {
@@ -173,7 +172,7 @@
   display: block;
   background: #0fc420;
   border-radius: 5px;
-  padding: 5px 0 5px 0;
+  padding: 8px 0;
   color: white;
   text-align: center;
   font-size: 16px;

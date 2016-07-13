@@ -35,7 +35,7 @@
                 <span>进货次数</span>
             </p>
             <p>
-                <span>${memberMap.totalAmount}</span>
+                <span>￥${memberMap.totalAmount}</span>
                 <span>进货总额</span>
             </p>
             <p>
@@ -43,6 +43,7 @@
                 <span>ta的下级合伙人</span>
             </p>
         </div>
+        <a href="<%=basePath%>myteam/upgradeRecord?userId=${memberMap.userId}&skuId=${memberMap.skuId}"><img src="<%=basePath%>static/images/tuandui_1.png" alt="">升级记录</a>
         <div class="sec1">
             <div>
                 <p>下级合伙人信息详情</p>

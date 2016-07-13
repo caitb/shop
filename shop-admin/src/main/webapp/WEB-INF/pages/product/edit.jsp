@@ -288,6 +288,7 @@
                                     <input type="text" class="form-control" id="priceRetail" name="priceRetail" value="${productInfo.comSku.priceRetail}" placeholder="微信零售价">
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">是否允许试用</label>
                                 <div class="col-sm-9">
@@ -342,7 +343,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -367,7 +368,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -389,7 +390,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
@@ -403,6 +404,28 @@
                                                             </label>
                                                             <div>
                                                                 <input type="text" class="form-control" id="advancedBail" name="bails" value="${pfSkuAgent.bail}" placeholder="">
+                                                            </div>
+                                                            &nbsp;
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main">
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                        <div>
+                                                            <label for="advancedBail">
+                                                                推荐人奖励单价
+                                                            </label>
+                                                            <div>
+                                                                <input type="text" class="form-control" id="rewardUnitPrices" name="rewardUnitPrices" value="${pfSkuAgent.rewardUnitPrice}" placeholder="">
                                                             </div>
                                                             &nbsp;
                                                         </div>
@@ -797,7 +820,13 @@
                         type: 'post',
                         data: $('#skuForm').serialize(),
                         success: function(msg){
-                            alert(msg);
+                            if(msg == 'success'){
+                                parent.window.$('#myTabbable').closeTab('tab2-2');
+                                parent.window.$('#myTabbable').add('tab2-2', '商品列表', '<%=basePath%>product/list.shtml');
+                                parent.window.$('#myTabbable').closeTab('product-edit-${productInfo.comSku.id}');
+                            }else{
+                                alert('添加商品失败');
+                            }
                         }
                     });
                 });

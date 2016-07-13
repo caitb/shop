@@ -15,7 +15,7 @@
     </select>
 
     <select id="countOrderNum" resultMap="BaseResultMap">
-        SELECT SUM(b.down_order_count) orders FROM pf_user_sku a
+        SELECT SUM(b.down_order_count) as orders FROM pf_user_sku a
         INNER JOIN pf_user_statistics b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
         WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>

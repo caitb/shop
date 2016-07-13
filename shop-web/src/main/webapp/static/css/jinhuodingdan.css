@@ -17,6 +17,20 @@
   background: white;
   position: relative;
 }
+.wrap .box nav+p{
+  background: rgb(243,230,88);
+  color: rgb(255,0,0);
+  font-size:12px;
+  padding:5px 0;
+}
+.wrap .box nav+p img{
+  display:inline-block;
+  width:17px;
+  float:left;
+  margin-right:10px;
+  margin-top:2px;
+  margin-left: 10px;
+}
 .wrap .box nav ul {
   display: -webkit-box;
   width:100%;
@@ -54,6 +68,7 @@
 }
 .wrap .box main .all .sec1 {
   background: white;
+  margin-bottom: 15px;
 }
 .wrap .box main .all .sec1 > p {
   width: 100%;
@@ -115,11 +130,11 @@
   font-size: 12px;
   margin-top: -5px;
   line-height:25px;
-display: block;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis;
-padding-right: 20px;
+  display: block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right: 20px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
   font-size: 12px;

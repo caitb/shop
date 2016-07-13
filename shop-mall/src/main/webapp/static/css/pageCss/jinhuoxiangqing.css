@@ -16,7 +16,7 @@ body {
 }
 .wrap main .tai {
   width: 100%;
-  background: #f73c8c;
+  background: #333333;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -33,8 +33,8 @@ body {
 }
 .wrap main .tai h1,
 .wrap main .tai p {
-  text-indent: 5rem;
-  color: white;
+  text-indent: 4rem;
+  color: #C7A467;
   font-size: 12px;
 }
 .wrap main .tai h1{
@@ -109,14 +109,13 @@ body {
   -moz-box-pack: center;
   -moz-box-orient: vertical;
 }
-.wrap main .sec1 div h2 span {
-  float: right;
-  margin-right: 4em;
-}
+.wrap main .sec1 div h2 span {margin-left: 15px;}
 .wrap main .sec1 div p {
-  width: 100%;
-  overflow: hidden;
+  width: 88%;
   position: relative;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
 }
 .wrap main .sec1 div p span {
   font-size: 12px;
@@ -183,7 +182,7 @@ body {
   color: #999999;
 }
 .wrap main .sec2 div p span {
-  color: #f73c8c;
+  color: #F7523C;
   margin-right: 10px;
   font-size: 12px;
 }
@@ -251,7 +250,7 @@ body {
   text-align: right;
 }
 .wrap main .sec4 h1 span {
-  color: #f73c8c;
+  color: #F7523C;
   font-size: 12px;
 }
 .wrap main .sec4 h1 span:last-child {
@@ -279,13 +278,12 @@ body {
 }
 .wrap main .btn {
   display: block;
-  width: 90px;
+  width: 105px;
   height: 30px;
-  border-radius: 5px;
-  background: #f73c8c;
+  background: #333;
   text-align: center;
   line-height: 30px;
-  color: white;
+  color: #C7A467;
   margin: 0 auto;
 }
 .wrap main > h3 {
@@ -314,15 +312,16 @@ body {
 }
 .wrap .back .back_que p {
   margin: 0 10px;
-  color: #f73c8c;
-  border-bottom: 1px solid #f73c8c;
-  line-height: 30px;
+  color: #C7A467;
+  border-bottom: 1px solid #C7A467;
   margin-bottom: 10px;
+  padding: 10px 0;
 }
 .wrap .back .back_que h4 {
   margin: 0 15px;
   text-indent: 10px;
   letter-spacing: 1px;
+  padding: 5px 0;
 }
 .wrap .back .back_que h3 {
   margin-top: 10px;
@@ -336,7 +335,7 @@ body {
   display: block;
   -webkit-box-flex: 1;
   text-align: center;
-  line-height: 33px;
+  line-height: 40px;
 }
 .wrap .back .back_que h3 span:nth-child(1) {
   border-right: 1px solid #999;

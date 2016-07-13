@@ -90,6 +90,9 @@
 .floordown p:nth-child(1){
   border-bottom: 1px solid #D4D4D4;
 }
+.floordown p:nth-child(2){
+  border-bottom: 1px solid #D4D4D4;
+}
 .floordown p span{
   display: block;
   font-size: 12px;

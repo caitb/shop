@@ -35,4 +35,16 @@ public interface SfMessageContentMapper {
     Integer queryNumsFromUser(@Param("params")Map<String, Object> params);
 
     List<SfMessageContent> selectByFromUserAndType(@Param("params")Map<String, Object> params);
+
+    /**
+     * 查询店铺id和对应的未读消息数量
+     * @param userId
+     */
+    List<Map<String, Long>> selectUnreadNumsAndFromByUser(Long userId);
+
+    /**
+     * 查询店铺信息和最新的未读消息
+     * @param msgId
+     */
+    Map<String, String> selectShopInfoAndFirMsgByMsgId(Long msgId);
 }

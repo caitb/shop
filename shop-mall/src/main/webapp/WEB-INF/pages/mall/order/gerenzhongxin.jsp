@@ -73,7 +73,7 @@
             </li>
         </ul>
         <ul>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+            <li onclick="javascript:window.location.replace('<%=path%>/mallmessage/toMessageCenter.shtml');">
                 <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt=""></span>
                 <span>消息中心</span>
             </li>

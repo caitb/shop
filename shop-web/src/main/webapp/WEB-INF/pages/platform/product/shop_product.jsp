@@ -126,6 +126,7 @@
                 <b class="jia">+</b>
             </h4>
         </div>
+        <h5>*为了保证发货效率，请正确维护库存。麦链不会为此承担任何责任</h5>
         <h3>
             <button onclick="clickHide()">取消</button>
             <button onclick="updateStock()">确认</button></h3>

@@ -226,9 +226,14 @@ main .floor .on {
     text-align: center;
     color: #f74a11;
 }
+.set h5{
+    font-size:12px;
+    padding:20px 15px 0 15px;
+    color:red;
+}
 .set h3 {
     display: -webkit-box;
-    margin: 30px 20px 0 20px;
+    margin: 20px 20px 0 20px;
 }
 .set h3 button {
     display: block;

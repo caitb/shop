@@ -69,10 +69,9 @@ public class SfMessageContentService {
      * 查询关注的店铺未读消息数量和最新未读消息内容
      * @param userId
      */
-    public List<Map<String, String>> queryNumsAndFirstByUser(Long userId){
+    public List<Map<String, String>> queryUnreadShopInfosByUser(Long userId){
         List<Map<String, String>> returnList = new ArrayList<>();
         List<Map<String, Long>> temp = sfMessageContentMapper.selectUnreadNumsAndFromByUser(userId);
-        System.out.println("------------------------" + temp);
         Set<Long> difUserSet = new HashSet<>();
         Map<Long, Map<String, Long>> difMap = new LinkedHashMap<>();
         for(int i = 0; i < temp.size(); i++){
@@ -88,12 +87,9 @@ public class SfMessageContentService {
                 tempMap.put("num", tempMap.get("num")+1);
             }
         }
-        System.out.println("------++++++++++++++------------------" + difMap);
         for(Map<String, Long> valueMap : difMap.values()){
-            System.out.println(valueMap.get("contentId"));
             Map<String, String> infoMap = sfMessageContentMapper.selectShopInfoAndFirMsgByMsgId(valueMap.get("contentId"));
             infoMap.put("num", valueMap.get("num").toString());
-            System.out.println(infoMap);
             returnList.add(infoMap);
         }
         return returnList;

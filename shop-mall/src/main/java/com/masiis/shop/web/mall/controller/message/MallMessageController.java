@@ -1,6 +1,5 @@
 package com.masiis.shop.web.mall.controller.message;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -29,18 +28,18 @@ public class MallMessageController extends BaseController {
 
     @RequestMapping("/toMessageCenter.shtml")
     public String toMessageCenter(HttpServletRequest request, Model model){
-        JSONObject json = new JSONObject();
+        ComUser user = getComUser(request);
         try{
-            ComUser user = getComUser(request);
             if(user == null){
                 throw new BusinessException("怎么能没用户呢！");
             }
             Long userId = user.getId();
-            List<Map<String, String>> messageList = contentService.queryNumsAndFirstByUser(672L);
-            System.out.println("======" + messageList);
+            List<Map<String, String>> messageList = contentService.queryUnreadShopInfosByUser(userId);
             model.addAttribute("messageList", messageList);
         }catch(Exception e){
+            log.error("查询mall粉丝消息失败![userId=" + user.getId() + "]" + e);
             e.printStackTrace();
+            throw new BusinessException("网络错误", e);
         }
         return "mall/message/messageCenter";
     }

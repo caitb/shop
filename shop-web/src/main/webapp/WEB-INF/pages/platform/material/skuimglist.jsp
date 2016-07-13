@@ -57,14 +57,6 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(document).ready(function () {
-        var materials = ${materials};
-        if (materials.length <= 0) {
-            $(".nobady").css("display", "-webkit-box");
-            $("#divall").css("display", "hide");
-            $(".downloading").css("display", "hide");
-        }
-    });
     function clickShow(){
         $(".black").show();
     }

@@ -15,7 +15,7 @@ public class AgentUser {
     private ComUser parentUser;
     private ComSku comSku;
     private ComAgentLevel comAgentLevel;
-    private Integer lowerLevelCount;//直接下级人数
+    private Integer lowerLevelCount;//直接下级人数222
 
     public PfUserCertificate getPfUserCertificate() {
         return pfUserCertificate;

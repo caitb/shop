@@ -53,6 +53,7 @@ public class SfOrderPurchaseController extends BaseController {
         model.addAttribute("isFreeShipAmount",map.get("isFreeShipAmount"));
         model.addAttribute("totalQuantity",map.get("totalQuantity"));
         model.addAttribute("totalPrice",map.get("totalPrice"));
+        model.addAttribute("isOwnShip",map.get("isOwnShip"));
         return "mall/order/tijiaodingdan";
     }
     /**

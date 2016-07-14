@@ -114,7 +114,11 @@ public class SfUserRelationService {
      */
     public Integer getFansNumByUserIdAndShopId(Long userId, Long shopId){
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue();
+        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue() < 0){
+            return 0;
+        }else {
+            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue();
+        }
     }
 
     /**
@@ -399,7 +403,9 @@ public class SfUserRelationService {
         }
         SfSpokesAndFansInfo info = this.getSfSpokesAndFansInfo(showUserId,shopId);
         Integer fansCount = this.getFansNumByUserIdAndShopId(showUserId,shopId);
+        logger.info("粉丝总数量："+fansCount);
         Integer spokesManCount = this.getSpokesManNumByUserIdAndShopId(showUserId,shopId);
+        logger.info("代言人总数量："+spokesManCount);
         info.setFansNum(fansCount);
         info.setSpokesManNum(spokesManCount);
         if (info == null){

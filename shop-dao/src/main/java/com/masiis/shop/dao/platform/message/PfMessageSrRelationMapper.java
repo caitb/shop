@@ -7,14 +7,11 @@
  */
 package com.masiis.shop.dao.platform.message;
 
-import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.po.PfMessageContent;
 import com.masiis.shop.dao.po.PfMessageSrRelation;
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 @Repository
 public interface PfMessageSrRelationMapper {

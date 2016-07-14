@@ -42,4 +42,8 @@ public interface SfMessageContentMapper {
 
 
     List<Map<String, String>> selectShopInfoAndFirstMsg(@Param("userId") Long userId, @Param("start") Integer start, @Param("size") Integer size);
+
+    Integer queryNumsFromUserAndToUser(@Param("fromUser") Long fromUser, @Param("toUser") Long toUser);
+
+    List<SfMessageContent> queryDetailByFromUserAndToUserWithPaging(@Param("userId")Long userId, @Param("fUserId")Long fUserId, @Param("start")Integer start, @Param("pageSize")Integer pageSize);
 }

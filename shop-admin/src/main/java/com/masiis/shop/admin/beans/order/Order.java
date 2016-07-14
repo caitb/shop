@@ -16,6 +16,7 @@ public class Order {
     private PfCorder pfCorder;
     private SfOrder sfOrder;
     private ComUser pUser;   //上级id
+    private ComUser recommenUser;//推荐人
     private ComUser shopUser;//店铺主人
 
     private List<PfBorderItem> pfBorderItems;
@@ -73,6 +74,14 @@ public class Order {
 
     public void setpUser(ComUser pUser) {
         this.pUser = pUser;
+    }
+
+    public ComUser getRecommenUser() {
+        return recommenUser;
+    }
+
+    public void setRecommenUser(ComUser recommenUser) {
+        this.recommenUser = recommenUser;
     }
 
     public ComUser getShopUser() {
@@ -187,6 +196,7 @@ public class Order {
                 ", pfCorder=" + pfCorder +
                 ", sfOrder=" + sfOrder +
                 ", pUser=" + pUser +
+                ", recommenUser=" + recommenUser +
                 ", shopUser=" + shopUser +
                 ", pfBorderItems=" + pfBorderItems +
                 ", sfOrderItems=" + sfOrderItems +

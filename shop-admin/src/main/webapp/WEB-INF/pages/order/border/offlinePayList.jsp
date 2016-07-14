@@ -360,6 +360,17 @@
                         }
                     },
                     {
+                        field: 'recommenUser',
+                        title: '推荐人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.recommenUser && row.recommenUser.realName){
+                                return row.recommenUser.realName;
+                            }
+                        }
+                    },
+                    {
                         field: 'user_id',
                         title: '购买人',
                         footerFormatter: totalNameFormatter,

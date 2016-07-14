@@ -97,4 +97,17 @@
         WHERE pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectRecommenUser" parameterType="Long" resultType="com.masiis.shop.dao.po.ComUser">
+        SELECT
+               u.id,
+               u.wx_nk_name wxNkName,
+               u.real_name realName,
+               u.mobile
+        FROM
+               pf_border_recommen_reward brr
+        LEFT JOIN com_user u ON u.id = brr.recommen_user_id
+        WHERE
+              brr.pf_border_id = #{borderId}
+    </select>
+
 </mapper>

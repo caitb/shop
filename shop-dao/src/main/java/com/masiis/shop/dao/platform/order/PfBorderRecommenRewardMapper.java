@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorderRecommenReward;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -46,4 +47,11 @@ public interface PfBorderRecommenRewardMapper {
      * @return
      */
     List<PfBorderRecommenReward> selectByPfBorderId(@Param("pfBorderId") Long pfBorderId);
+
+    /**
+     * 根据订单id查找推荐人
+     * @param borderId
+     * @return
+     */
+    ComUser selectRecommenUser(Long borderId);
 }

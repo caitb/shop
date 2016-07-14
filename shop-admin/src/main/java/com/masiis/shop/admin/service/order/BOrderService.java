@@ -62,6 +62,8 @@ public class BOrderService {
     private PbOperationLogMapper pbOperationLogMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private PfBorderRecommenRewardMapper pfBorderRecommenRewardMapper;
 
 
     public int updatePfBorder(PfBorder pfBorder){
@@ -107,6 +109,7 @@ public class BOrderService {
         for (PfBorder pbo : pfBorders) {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
             ComUser pUser   = comUserMapper.selectByPrimaryKey(pbo.getUserPid());
+            ComUser recommenUser = pfBorderRecommenRewardMapper.selectRecommenUser(pbo.getId());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
             PfBorderPayment pfBorderPayment = new PfBorderPayment();
             pfBorderPayment.setPfBorderId(pbo.getId());
@@ -121,6 +124,7 @@ public class BOrderService {
             order.setPfBorder(pbo);
             order.setComUser(comUser);
             order.setpUser(pUser);
+            order.setRecommenUser(recommenUser);
             order.setPfBorderConsignee(pfBorderConsignee);
             order.setPfBorderPayments(pfBorderPayments);
             order.setPfBorderItems(pfBorderItems);

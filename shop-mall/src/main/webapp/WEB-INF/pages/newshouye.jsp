@@ -171,10 +171,16 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
+    var wxCode= ${sfShop.wxQrCode};
     $(".tallme").on("click",function(){
-        $(".black").show();
-        $(".b_t").show();
-        $(".back_b").show();
+        if(wxCode==null || wxCode==""){
+            alert("店主还没有上传二维码");
+        }else{
+            $(".black").show();
+            $(".b_t").show();
+            $(".back_b").show();
+        }
+
     })
 //    function clickShow(){
 //        $(".black").show();

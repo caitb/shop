@@ -84,7 +84,11 @@ public class SfShopCartService {
         ShopCart.setQuantity(quantity);
         ShopCart.setIsCheck(1);
         ShopCart.setSort(0);
-        ShopCart.setSendMan(isOwnShip);//发货人信息 0平台 ：发货人userId
+        if(isOwnShip==0){
+            ShopCart.setSendMan(isOwnShip);//发货人信息 0平台
+        }else {
+            ShopCart.setSendMan(sfShop.getUserId());//发货人userId
+        }
         sfShopCartMapper.insert(ShopCart);
         log.info("----加入cart 成功----");
     }

@@ -90,7 +90,16 @@ public class MallMessageController extends BaseController {
     }
 
     @RequestMapping("/toDetail.shtml")
-    public String toDetail(@RequestParam(required = true) Long userId, Model model){
+    public String toDetail(@RequestParam(required = true) Long userId, Model model, HttpServletRequest request){
+        ComUser user = getComUser(request);
+        if(user == null){
+            throw new BusinessException("用户怎么能没有呢");
+        }
+        ComUser fUser = userService.getUserById(userId);
+        if(fUser == null){
+            throw new BusinessException("消息来源用户为空");
+        }
+        contentService.updateRelationIsSeeByFromUserAndToUser(fUser.getId(), user.getId());
         model.addAttribute("userId", userId);
         return "mall/message/messageContent";
     }

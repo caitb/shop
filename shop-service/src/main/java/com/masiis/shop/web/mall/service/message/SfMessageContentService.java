@@ -82,6 +82,9 @@ public class SfMessageContentService {
         return sfMessageContentMapper.selectShopInfoAndFirstMsg(userId, start, size);
     }
 
+    public void updateRelationIsSeeByFromUserAndToUser(Long fromUser, Long toUser){
+        sfMessageContentMapper.updateRelationIsSeeByFromUserAndToUser(fromUser, toUser);
+    }
 
     /**
      * 根据消息来源用户和当前用户查询消息总条数

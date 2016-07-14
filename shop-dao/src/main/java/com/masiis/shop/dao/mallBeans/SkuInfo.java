@@ -31,7 +31,7 @@ public class SkuInfo{
 
     private Long shopSkuId;
 
-    private BigDecimal isOwnShip;//发货类型
+    private Integer isOwnShip;//发货类型
 
     private String flagSelf;//自己发货的标志：null：只有平台发货
 
@@ -42,6 +42,8 @@ public class SkuInfo{
     private BigDecimal priceRetail;
 
     private Integer skuId;
+
+    private BigDecimal ownShipAmount;//自己发货的运费
 
     public ComSku getComSku() {
         return comSku;
@@ -123,11 +125,11 @@ public class SkuInfo{
         this.shopSkuId = shopSkuId;
     }
 
-    public BigDecimal getIsOwnShip() {
+    public Integer getIsOwnShip() {
         return isOwnShip;
     }
 
-    public void setIsOwnShip(BigDecimal isOwnShip) {
+    public void setIsOwnShip(Integer isOwnShip) {
         this.isOwnShip = isOwnShip;
     }
 
@@ -169,5 +171,13 @@ public class SkuInfo{
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public BigDecimal getOwnShipAmount() {
+        return ownShipAmount;
+    }
+
+    public void setOwnShipAmount(BigDecimal ownShipAmount) {
+        this.ownShipAmount = ownShipAmount;
     }
 }

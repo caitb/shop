@@ -197,7 +197,7 @@ public class SkuService {
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
-        skuInfo.setIsOwnShip(sfShop.getOwnShipAmount());
+        skuInfo.setOwnShipAmount(sfShop.getOwnShipAmount());
         if (pfUserSkuStock != null && sfShop != null) {
             if (isOwnShip == 0) {//平台代发
                 skuInfo.setShipAmount(sfShop.getShipAmount());

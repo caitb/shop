@@ -286,6 +286,25 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">是否代理商发货</label>
+                                <div class="col-sm-9">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="isOwnShip" id="isOwnShip1" value="1" checked>
+                                            是
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="isOwnShip" id="isOwnShip2" value="0">
+                                            否
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="shipAmount" class="col-sm-2 control-label">运费设置</label>
                                 <div class="col-sm-9">

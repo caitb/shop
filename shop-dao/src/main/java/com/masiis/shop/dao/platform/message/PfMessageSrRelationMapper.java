@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.message;
 
+import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.po.PfMessageContent;
 import com.masiis.shop.dao.po.PfMessageSrRelation;
 import org.apache.ibatis.annotations.Param;

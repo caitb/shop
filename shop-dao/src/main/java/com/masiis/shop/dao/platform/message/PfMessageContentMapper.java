@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.message;
 
 import com.masiis.shop.dao.po.PfMessageContent;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,23 @@ public interface PfMessageContentMapper {
     List<PfMessageContent> selectAll();
 
     int updateByPrimaryKey(PfMessageContent record);
+
+    /**
+     * 查看发出的消息内容
+     *
+     * @param userId
+     * @return
+     */
+    List<PfMessageContent> queryByUserId(@Param("userId") Long userId,
+                                         @Param("type") Integer type);
+
+    /**
+     * 查询发出的最新一条消息
+     *
+     * @param userId
+     * @param type
+     * @return
+     */
+    PfMessageContent queryLatestByUserIdAndType(@Param("userId") Long userId,
+                                                @Param("type") Integer type);
 }

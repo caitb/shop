@@ -72,4 +72,5 @@ public class PfMessageSrRelationService {
                                                                            Integer mType, Integer start, Integer pageSize) {
         return srRelationMapper.queryDetailByFromUserAndToUserWithPaging(userId, fUserId, mType, start, pageSize);
     }
+
 }

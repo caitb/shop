@@ -99,3 +99,7 @@ body .wrap main .sec1 .s_b .b_b p a {
   color:#999999;
   font-size:18px;
 }
+.f_right{
+  -webkit-box-flex: 1;
+  text-align: right;
+}

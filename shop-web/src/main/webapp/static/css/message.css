@@ -50,3 +50,7 @@ main .sec1 .s_b .b_b p a {
   color: #666;
   font-size: 12px;
 }
+.f_right{
+  -webkit-box-flex: 1;
+  text-align: right;
+}

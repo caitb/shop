@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfMessageContent;
+import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.message.PfMessageContentService;
 import com.masiis.shop.web.platform.service.message.PfMessageSrRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,10 @@ public class PFMessageController extends BaseController {
     private PfMessageSrRelationService srRelationService;
     @Resource
     private UserService userService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SkuService skuService;
 
     @RequestMapping("/center.shtml")
     public String toCenter(HttpServletRequest request,
@@ -195,7 +200,11 @@ public class PFMessageController extends BaseController {
             res.put("fromUserName", fromUserName);
             int start = cur * pageSize;
             // 查询要展现的消息数据
-            resData = srRelationService.queryDetailByFromUserAndToUserWithPaging(tUserId, fUserId, 2, start, pageSize);
+            if(tUserId == null){
+                resData = pfMessageContentService.queryContentByUserIdAndTypeWithPaging(fUserId, 2, start, pageSize);
+            } else {
+                resData = srRelationService.queryDetailByFromUserAndToUserWithPaging(tUserId, fUserId, 2, start, pageSize);
+            }
             res.put("data", resData);
         } catch (Exception e) {
             String resMsg = res.getString("resMsg");
@@ -211,5 +220,94 @@ public class PFMessageController extends BaseController {
     @RequestMapping("/tonew.shtml")
     public String toNewPage(){
         return "platform/message/pf_message/message_create";
+    }
+
+    @RequestMapping("/tonew.do")
+    @ResponseBody
+    public String toNewPageData(HttpServletRequest request){
+        JSONObject res = new JSONObject();
+        try{
+            ComUser user = getComUser(request);
+            if(user == null){
+                throw new BusinessException("怎么能没用户呢");
+            }
+            if(user.getIsAgent().intValue() == 0){
+                // 还不是代理商
+                res.put("resCode", "fail");
+                res.put("resMsg", "该用户还不是代理商");
+                return res.toJSONString();
+            }
+
+            Integer childAgentNum = pfUserSkuService.getNumsByUserPid(user.getId());
+            List<UserSkuAgent> skus = pfUserSkuService.getCurrentAgentLevel(user.getId());
+
+            res.put("childAgentNum", childAgentNum);
+            res.put("skus", skus);
+            res.put("resCode", "success");
+        } catch (Exception e) {
+            res.put("resCode", "fail");
+            res.put("resMsg", "网络错误");
+        }
+
+        return res.toJSONString();
+    }
+
+    @RequestMapping("/newmessage.do")
+    @ResponseBody
+    public String newMessage(HttpServletRequest request,
+                             @RequestParam(required = true) String message,
+                             @RequestParam(required = true) Integer urlType){
+        JSONObject res = new JSONObject();
+        try{
+            if(StringUtils.isBlank(message)){
+                res.put("resMsg", "消息内容为空");
+                throw new BusinessException("消息内容为空");
+            }
+
+            String url = null;
+            ComSku sku = null;
+            ComUser user = getComUser(request);
+            if(urlType.intValue() != -1) {
+                sku = skuService.getSkuById(urlType);
+                if(sku == null){
+                    res.put("resMsg", "链接地址不正确");
+                    throw new BusinessException("链接地址不正确");
+                }
+                url = "product/skuDetails.shtml" + "?skuId=" + sku.getId();
+            }
+
+            List<Long> relations = pfUserSkuService.getChildUserIdByUserPid(user.getId());
+            if(relations == null || relations.size() <= 0){
+                res.put("resMsg", "暂无直接下级");
+                throw new BusinessException("暂无直接下级");
+            }
+
+            Integer messageType = 2;
+            String remark = "直接下级群发";
+
+            PfMessageContent content = pfMessageContentService.createMessageByType(user.getId(), message, messageType, remark, url);
+            pfMessageContentService.insert(content);
+
+            for(Long toUser:relations){
+                PfMessageSrRelation srRelation = srRelationService.createRelationByContent(content, toUser);
+                srRelationService.insert(srRelation);
+            }
+
+            res.put("resCode", "success");
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            if(StringUtils.isBlank(res.getString("resMsg"))){
+                res.put("resMsg", "网络错误");
+            }
+            res.put("resCode", "fail");
+        }
+
+        return res.toJSONString();
+    }
+
+    @RequestMapping("/success.shtml")
+    public String messageCreateSuccess(){
+        return "platform/message/pf_message/message_create_success";
     }
 }

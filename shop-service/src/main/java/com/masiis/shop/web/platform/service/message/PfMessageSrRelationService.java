@@ -4,10 +4,12 @@ import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.platform.message.PfMessageSrRelationMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfMessageContent;
+import com.masiis.shop.dao.po.PfMessageSrRelation;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,5 +83,24 @@ public class PfMessageSrRelationService {
      */
     public Integer updateRelationIsSeeByFromUserAndToUser(Long fUserId, Long tUserId) {
         return srRelationMapper.updateRelationIsSeeByFromUserAndToUser(fUserId, tUserId);
+    }
+
+    public PfMessageSrRelation createRelationByContent(PfMessageContent content, Long toUser) {
+        PfMessageSrRelation relation = new PfMessageSrRelation();
+
+        relation.setRemark(content.getRemark());
+        relation.setCreateTime(new Date());
+        relation.setStatus(1);
+        relation.setFromUser(content.getUserId());
+        relation.setIsSee(0);
+        relation.setmType(content.getType());
+        relation.setPfMessageContentId(content.getId());
+        relation.setToUser(toUser);
+
+        return relation;
+    }
+
+    public void insert(PfMessageSrRelation srRelation) {
+        srRelationMapper.insert(srRelation);
     }
 }

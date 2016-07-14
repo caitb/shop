@@ -110,7 +110,7 @@ public class SfUserRelationController extends BaseController{
         }
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         List<SfSpokesAndFansInfo> infos = null;
         if (sfShop == null){
             jsonObject.put("isTrue",false);

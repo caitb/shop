@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -63,7 +64,8 @@ public class SfOrderManageService {
      * @author muchaofeng
      * @date 2016/4/9 17:12
      */
-    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId){
+    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId,Integer currentPage,Integer pageSize){
+        PageHelper.startPage(currentPage, pageSize, false);
         List<SfOrder> sfOrders = sfOrderManageMapper.selectByUserId(userId, orderStatus, shopId);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (SfOrder sfOrder : sfOrders) {
@@ -93,8 +95,8 @@ public class SfOrderManageService {
      * @author muchaofeng
      * @date 2016/4/9 17:11
      */
-    public SfUserRelation findSfUserRelationByUserId(Long userId,Long shopId){
-        return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId,shopId);
+    public List<SfOrder> findSfOrderByUserId(Long userId){
+        return sfOrderMapper.selectByUserId(userId);
     }
 
     /**

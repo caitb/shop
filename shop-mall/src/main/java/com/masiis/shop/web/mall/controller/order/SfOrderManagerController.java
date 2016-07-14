@@ -127,21 +127,8 @@ public class SfOrderManagerController extends BaseController {
     @RequestMapping("/stockOrder")
     public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus) throws Exception {
         ComUser comUser = getComUser(request);
-//        Boolean OK =true;
-//        SfShop shop =null;
-//        Long shopId =(Long)request.getSession().getAttribute("shopId");
-//        if(shopId!= null){
-//            shop = sfShopService.getSfShopById(shopId);
-//            if (shop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
-//                OK = false;
-//            }
-//            String shipAmount=shop.getShipAmount().toString();
-//            DecimalFormat myformat=new DecimalFormat("0.00");
-//            String shipAmount = myformat.format(shop.getShipAmount());
-//            request.getSession().setAttribute("shipAmount", shipAmount);
-//        }
-//        request.getSession().setAttribute("OK",OK);
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null);
+        int pageSize = 3; //ajax请求时默认每页显示条数为3条
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null,1,pageSize);
         String index=null;
         if(orderStatus==null){
             index="0";//全部
@@ -157,8 +144,6 @@ public class SfOrderManagerController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
-//        modelAndView.addObject("OK", OK);
-//        modelAndView.addObject("shipAmount", shop.getShipAmount().toString());
         modelAndView.setViewName("mall/order/wodedingdan");
         return modelAndView;
     }
@@ -169,26 +154,27 @@ public class SfOrderManagerController extends BaseController {
      */
     @RequestMapping("/clickSfOrderType.do")
     @ResponseBody
-    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
+    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index,
+                                          @RequestParam(value = "currentPage",required = true) Integer currentPage) {
         List<SfOrder> sfOrders=null;
+        int pageSize = 3; //ajax请求时默认每页显示条数为3条
         try {
             ComUser user = getComUser(request);
             if (user == null) {
                 throw new BusinessException("user不能为空");
             }
-//            Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null,currentPage,pageSize);
             }else if(index==1){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null,currentPage,pageSize);
             }else if(index==2){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null,currentPage,pageSize);
             }else if(index==3){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null,currentPage,pageSize);
             }else if(index==4){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null,currentPage,pageSize);
             }else if(index==5){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null,currentPage,pageSize);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -225,13 +211,7 @@ public class SfOrderManagerController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-//        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
-        /*if(sfUserRelation==null){
-            throw new BusinessException("用户关系异常");
-        }*/
-//        ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
-        Long shopId =(Long) request.getSession().getAttribute("shopId");
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+        List<SfOrder> sfOrders = sfOrderManageService.findSfOrderByUserId(user.getId());
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();
@@ -244,16 +224,11 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders8.add(sfOrder);//待收货
             }
         }
-//        SfUserAccount accountByUserId = sfUserAccountService.findAccountByUserId(user.getId());
         Map<String, BigDecimal> stringBigDecimalMap = sfOrderItemDistributionService.selectUserAmounts(user.getId());
-//        Object serializable = stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("sfOrders0", sfOrders0.size()+sfOrders8.size());
-//        modelAndView.addObject("sfOrders7", sfOrders7.size());
-//        modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
-//        modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

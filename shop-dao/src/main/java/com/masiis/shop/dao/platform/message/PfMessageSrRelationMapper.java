@@ -12,7 +12,6 @@ import com.masiis.shop.dao.po.PfMessageSrRelation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 @Repository
 public interface PfMessageSrRelationMapper {

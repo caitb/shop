@@ -241,9 +241,9 @@
         SET
           is_see = 1
         WHERE
-          from_user = #{}
+          from_user = #{fUserId,jdbcType=BIGINT}
         AND
-          to_user = #{}
+          to_user = #{tUserId,jdbcType=BIGINT}
         AND
           is_see = 0
     </update>

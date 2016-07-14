@@ -253,7 +253,7 @@
                     window.location.href = "<%=basePath%>orderPurchase/getShopCartInfo.html?shopId="+cartData.shopId;
                 }
                 else {
-                    alert(data.message);
+                    alert("购买失败，请联系麦链相关客服");
                     window.location.reload(true);
                     return;
                 }

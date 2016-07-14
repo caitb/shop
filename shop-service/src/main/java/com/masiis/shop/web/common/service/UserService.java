@@ -246,18 +246,23 @@ public class UserService {
             sfNewUserRelation.setCreateTime(new Date());
             sfNewUserRelation.setUserId(userId);
             sfNewUserRelation.setShopId(shopId);
+            sfNewUserRelation.setIsBuy(0);
             if (sfUserPRelation == null) {
                 sfNewUserRelation.setTreeLevel(1);
                 sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
                 sfUserRelationMapper.insert(sfNewUserRelation);
                 String treeCode = sfNewUserRelation.getId() + ",";
-                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+                if(sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode)!=1){
+                    throw new BusinessException("treeCode修改失败");
+                }
             } else {
                 sfNewUserRelation.setTreeLevel(sfUserPRelation.getTreeLevel() + 1);
                 sfNewUserRelation.setUserPid(userPid);
                 sfUserRelationMapper.insert(sfNewUserRelation);
                 String treeCode = sfUserPRelation.getTreeCode() + sfNewUserRelation.getId() + ",";
-                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+                if(sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode)!=1){
+                    throw new BusinessException("treeCode修改失败");
+                }
             }
         }
 //        else {

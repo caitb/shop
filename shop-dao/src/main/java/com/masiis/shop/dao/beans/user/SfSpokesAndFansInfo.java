@@ -134,15 +134,15 @@ public class SfSpokesAndFansInfo {
         this.userLevel = userLevel;
         switch (userLevel){
             case 1 : {
-                setUserLevelView("一级粉丝");
+                setUserLevelView("一级");
                 break;
             }
             case 2 : {
-                setUserLevelView("二级粉丝");
+                setUserLevelView("二级");
                 break;
             }
             case 3 : {
-                setUserLevelView("三级粉丝");
+                setUserLevelView("三级");
                 break;
             }
         }

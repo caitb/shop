@@ -108,7 +108,7 @@
         $(".sec1 img").each(function(i,n){
             $(".floor").find("img").eq(i).attr("id","img0"+i);
             $(".floor").find("img").eq(i).attr("src","${path}/static/images/material/imgloading.gif");
-            Imagess($(".floor").find("img").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
+            Imagess($(".floor").find("img ").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
         })
     }
     var pagelimit = 2;

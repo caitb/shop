@@ -55,7 +55,7 @@ public class SfUserRelationController extends BaseController{
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
         ModelAndView mv = new ModelAndView();
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         if (sfShop == null){
             logger.info("该用户："+userId+"，没有对应的小铺信息");
             mv.addObject("totalPage", 0);
@@ -110,7 +110,7 @@ public class SfUserRelationController extends BaseController{
         }
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         List<SfSpokesAndFansInfo> infos = null;
         if (sfShop == null){
             jsonObject.put("isTrue",false);
@@ -200,7 +200,7 @@ public class SfUserRelationController extends BaseController{
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
         ModelAndView mv = new ModelAndView();
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         if (sfShop == null){
             throw new BusinessException("不存在小铺信息");
         }

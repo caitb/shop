@@ -22,16 +22,14 @@
     </header>
     <!--      消息list-->
     <main id="mlist">
-        <c:if test="${}">
-            <div class="sec1">
+        <c:if test="${content != null}">
+            <div id="${myId}" class="sec1">
                 <h1 id="imagelist">
-                    <img src="${path}/static/images/admin.png" alt="">
-                    <c:if test="${}">
-                        <span>${}</span></h1>
-                    </c:if>
+                    <img src="${myHeadUrl}" alt="">
+                </h1>
                 <div>
-                    <h2>某某的小店</h2>
-                    <p>最新的优惠信息是的哈哈时刻记得哈</p>
+                    <h2>我</h2>
+                    <p>${content.content}</p>
                 </div>
             </div>
         </c:if>

@@ -61,10 +61,21 @@
         from pf_message_content
         WHERE
           user_id = #{userId,jdbcType=BIGINT}
+        AND
+          `type` = #{type,jdbcType=BIGINT}
     </select>
 
     <select id="queryLatestByUserIdAndType" resultMap="BaseResultMap">
-
+        select id, create_time, user_id, type, content, content_url, status, update_time,
+          remark
+        from pf_message_content
+        WHERE
+          user_id = #{userId,jdbcType=BIGINT}
+        AND
+          `type` = #{type,jdbcType=BIGINT}
+        ORDER BY
+          create_time DESC
+        limit 1
     </select>
 
 </mapper>

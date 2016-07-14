@@ -7,7 +7,6 @@
  */
 package com.masiis.shop.dao.platform.message;
 
-import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.po.PfMessageContent;
 import com.masiis.shop.dao.po.PfMessageSrRelation;
 import org.apache.ibatis.annotations.Param;
@@ -76,4 +75,14 @@ public interface PfMessageSrRelationMapper {
                                                                     @Param("mType") Integer mType,
                                                                     @Param("start") Integer start,
                                                                     @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据来源用户和接收用户更新消息为已查看
+     *
+     * @param fUserId
+     * @param tUserId
+     * @return
+     */
+    Integer updateRelationIsSeeByFromUserAndToUser(@Param("fUserId") Long fUserId,
+                                                   @Param("tUserId") Long tUserId);
 }

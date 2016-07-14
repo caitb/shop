@@ -194,8 +194,10 @@
             pf_message_content c
         ON
             c.id=r.pf_message_content_id
-        WHERE
-            r.to_user = #{userId,jdbcType=BIGINT}
+        WHERE 1=1
+        <if test="userId != null">
+            AND  r.to_user = #{userId,jdbcType=BIGINT}
+        </if>
         AND r.from_user = #{fUserId,jdbcType=BIGINT}
         AND r.m_type = #{mType,jdbcType=INTEGER};
     </select>
@@ -215,15 +217,19 @@
               r.id
             FROM
               pf_message_sr_relation r
-            WHERE
-              r.to_user = #{userId,jdbcType=BIGINT}
+            WHERE 1=1
+            <if test="userId != null">
+                AND r.to_user = #{userId,jdbcType=BIGINT}
+            </if>
             AND r.m_type = #{mType,jdbcType=INTEGER}
             AND r.from_user = #{fUserId,jdbcType=BIGINT}
             ORDER BY
               r.id DESC
             LIMIT #{start,jdbcType=INTEGER}, 1
             )
-        AND r1.to_user = #{userId,jdbcType=BIGINT}
+        <if test="userId != null">
+          AND r1.to_user = #{userId,jdbcType=BIGINT}
+        </if>
         AND r1.m_type = #{mType,jdbcType=INTEGER}
         AND r1.from_user = #{fUserId,jdbcType=BIGINT}
         ORDER BY
@@ -234,5 +240,18 @@
         ORDER BY
           c.id DESC
     </select>
+
+    <update id="updateRelationIsSeeByFromUserAndToUser">
+        update
+          pf_message_sr_relation
+        SET
+          is_see = 1
+        WHERE
+          from_user = #{fUserId,jdbcType=BIGINT}
+        AND
+          to_user = #{tUserId,jdbcType=BIGINT}
+        AND
+          is_see = 0
+    </update>
 
 </mapper>

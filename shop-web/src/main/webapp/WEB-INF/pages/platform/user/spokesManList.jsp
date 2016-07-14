@@ -15,8 +15,8 @@
 <input type="hidden" id="hiddenID" name="hiddenID" value="">
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.location.href='${basepath}shop/manage/index'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>代言人</p>
+        <a href="javascript:window.location.href='${basePath}shop/manage/index'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p>代言人粉丝</p>
     </header>
     <main>
         <div class="top">

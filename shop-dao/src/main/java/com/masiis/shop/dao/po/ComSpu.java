@@ -114,156 +114,209 @@ public class ComSpu {
      * 商业政策
      */
     private String policy;
+    /**
+     * 是否代理商发货
+     */
+    private Integer isOwnShip;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
+
     public Integer getBrandId() {
         return brandId;
     }
+
     public void setBrandId(Integer brandId) {
         this.brandId = brandId;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getCreateMan() {
         return createMan;
     }
+
     public void setCreateMan(Long createMan) {
         this.createMan = createMan;
     }
+
     public Date getUpTime() {
         return upTime;
     }
+
     public void setUpTime(Date upTime) {
         this.upTime = upTime;
     }
+
     public Date getDownTime() {
         return downTime;
     }
+
     public void setDownTime(Date downTime) {
         this.downTime = downTime;
     }
+
     public Date getModifyTime() {
         return modifyTime;
     }
+
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
     public Long getModifyMan() {
         return modifyMan;
     }
+
     public void setModifyMan(Long modifyMan) {
         this.modifyMan = modifyMan;
     }
+
     public Integer getCategoryId() {
         return categoryId;
     }
+
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
     public String getCategoryName() {
         return categoryName;
     }
+
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName == null ? null : categoryName.trim();
+        this.categoryName = categoryName;
     }
+
     public Integer getStatus() {
         return status;
     }
+
     public void setStatus(Integer status) {
         this.status = status;
     }
+
     public String getSlogan() {
         return slogan;
     }
+
     public void setSlogan(String slogan) {
-        this.slogan = slogan == null ? null : slogan.trim();
+        this.slogan = slogan;
     }
+
     public Integer getIsSale() {
         return isSale;
     }
+
     public void setIsSale(Integer isSale) {
         this.isSale = isSale;
     }
+
     public Integer getIsDelete() {
         return isDelete;
     }
+
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
     public Integer getIsTrial() {
         return isTrial;
     }
+
     public void setIsTrial(Integer isTrial) {
         this.isTrial = isTrial;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
+
     public Long getWeight() {
         return weight;
     }
+
     public void setWeight(Long weight) {
         this.weight = weight;
     }
+
     public Long getPackLength() {
         return packLength;
     }
+
     public void setPackLength(Long packLength) {
         this.packLength = packLength;
     }
+
     public Long getPackWidth() {
         return packWidth;
     }
+
     public void setPackWidth(Long packWidth) {
         this.packWidth = packWidth;
     }
+
     public Long getPackHeight() {
         return packHeight;
     }
+
     public void setPackHeight(Long packHeight) {
         this.packHeight = packHeight;
     }
+
     public BigDecimal getShipAmount() {
         return shipAmount;
     }
+
     public void setShipAmount(BigDecimal shipAmount) {
         this.shipAmount = shipAmount;
     }
+
     public String getArtNo() {
         return artNo;
     }
+
     public void setArtNo(String artNo) {
-        this.artNo = artNo == null ? null : artNo.trim();
+        this.artNo = artNo;
     }
+
     public Integer getUnit() {
         return unit;
     }
+
     public void setUnit(Integer unit) {
         this.unit = unit;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public String getPolicy() {
@@ -272,6 +325,14 @@ public class ComSpu {
 
     public void setPolicy(String policy) {
         this.policy = policy;
+    }
+
+    public Integer getIsOwnShip() {
+        return isOwnShip;
+    }
+
+    public void setIsOwnShip(Integer isOwnShip) {
+        this.isOwnShip = isOwnShip;
     }
 
     @Override
@@ -303,6 +364,7 @@ public class ComSpu {
                 ", unit=" + unit +
                 ", remark='" + remark + '\'' +
                 ", policy='" + policy + '\'' +
+                ", isOwnShip=" + isOwnShip +
                 '}';
     }
 }

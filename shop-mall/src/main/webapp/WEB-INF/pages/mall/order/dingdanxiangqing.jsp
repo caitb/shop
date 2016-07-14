@@ -70,7 +70,7 @@
                 </div>
             </section>
            <c:forEach items="${orderMallDetail.sfOrderItems}" var="bdpi">
-            <section class="sec2" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${bdpi.skuId}&shopId=${orderMallDetail.sfOrder.shopId}')" >
+            <section class="sec2" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${bdpi.skuId}&shopId=${orderMallDetail.sfOrder.shopId}&isOwnShip=${orderMallDetail.sfOrder.sendType}')" >
                 <p class="photo">
                    <a href="javascript:;">
                         <img src="${bdpi.skuUrl}" alt="">

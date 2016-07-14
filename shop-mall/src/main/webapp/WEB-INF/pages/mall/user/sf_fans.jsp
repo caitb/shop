@@ -68,7 +68,7 @@
         <div class="sec1" >
                 <h1 style="background:url('${info.headImg}');background-size:100% 100%;"></h1>
                 <div class="fans">
-                    <h2>${info.wxName}<span>${info.userLevelView}</span> <b>${info.sopkenManView}</b></h2>
+                    <h2>${info.wxName}<span>${info.userLevelView}粉丝</span> <b>${info.sopkenManView}</b></h2>
                     <p>
                         <span>ID:${info.ID}</span>
                         <span>${info.createTimeView}</span>

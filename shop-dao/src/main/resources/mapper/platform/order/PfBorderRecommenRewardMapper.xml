@@ -97,6 +97,7 @@
         WHERE pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
 
+    <!--根据订单查找推荐人-->
     <select id="selectRecommenUser" parameterType="Long" resultType="com.masiis.shop.dao.po.ComUser">
         SELECT
                u.id,

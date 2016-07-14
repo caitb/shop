@@ -23,12 +23,12 @@
     <!--      消息list-->
     <main id="mlist">
         <c:if test="${content != null}">
-            <div class="sec1">
+            <div id="${myId}" class="sec1">
                 <h1 id="imagelist">
                     <img src="${myHeadUrl}" alt="">
                 </h1>
                 <div>
-                    <h2>${userName}</h2>
+                    <h2>我</h2>
                     <p>${content.content}</p>
                 </div>
             </div>

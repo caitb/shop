@@ -18,25 +18,25 @@
             <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>佣金管理</p>
         </header>
-        <p>我的分享</p>
-        <nav>
-            <ul>
-                <li>
-                    <p>${oneShare}人(${oneBuy}人购买)</p>
-                    <p>一级分享</p>
-                    <span></span>
-                </li>
-                <li>
-                    <p>${twoShare}人(${twoBuy}人购买)</p>
-                    <p>二级分享</p>
-                    <span></span>
-                </li>
-                <li>
-                    <p>${threeShare}人(${threeBuy}人购买)</p>
-                    <p>三级分享</p>
-                </li>
-            </ul>
-        </nav>
+        <%--<p>我的分享</p>--%>
+        <%--<nav>--%>
+            <%--<ul>--%>
+                <%--<li>--%>
+                    <%--<p>${oneShare}人(${oneBuy}人购买)</p>--%>
+                    <%--<p>一级分享</p>--%>
+                    <%--<span></span>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<p>${twoShare}人(${twoBuy}人购买)</p>--%>
+                    <%--<p>二级分享</p>--%>
+                    <%--<span></span>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<p>${threeShare}人(${threeBuy}人购买)</p>--%>
+                    <%--<p>三级分享</p>--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</nav>--%>
         <p>我的财富</p>
         <h1>
             <span>￥<b><fmt:formatNumber value="${userAccount.extractableFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></span>

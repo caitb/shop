@@ -15,7 +15,7 @@
 <input type="hidden" id="totalCount" name="totalCount" value="${twoSum}"/>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>代言人</p>
     </header>
     <div class="floor">

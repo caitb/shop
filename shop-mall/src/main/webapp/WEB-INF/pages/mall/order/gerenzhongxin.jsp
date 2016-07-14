@@ -63,11 +63,11 @@
                 <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
                 <span>佣金管理</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+            <li onclick="javascript:window.location.replace('<%=path%>/distribution/fansHome.shtml');">
                 <span><img src="<%=path%>/static/images/fensi.png" alt=""></span>
                 <span>粉丝</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
+            <li onclick="javascript:window.location.replace('<%=path%>/distribution/spokesManHome.shtml');">
                 <span><img src="<%=path%>/static/images/daiyanren.png" alt=""></span>
                 <span>代言人</span>
             </li>

@@ -91,38 +91,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="viewFreightDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">快递信息</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="sfGorderId" />
-
-                    <div class="form-group">
-                        <label for="shipManId" class="control-label col-sm-4">快递公司</label>
-
-                        <div class="col-sm-6">
-                            <select name="shipManId" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">运单号</label>
-                        <div class="col-sm-6">
-                            < type="text" name="freight" class="form-control">
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -273,12 +241,13 @@
     function sendDialog(gorderId) {
         $sendDialog.modal();
         loadShipMan();
-        $('[name=sfGorderId]').val(gorderId);
 
         $sendDialog.find('[name]').each(function() {
             $(this).css("border-color", "");
             $(this).val('');
         })
+
+        $('[name=sfGorderId]').val(gorderId);
     }
 
     $sendDialog.find('[name]').on('change keydown',function() {
@@ -313,10 +282,11 @@
 
         $.ajax({
             url : '<%=basePath%>promotion/deliveryGift.do',
+            type : 'post',
             data : $sendForm.serialize(),
             success : function(data) {
                 if(data == 'success') {
-                    $sendDialog.moal('hide');
+                    $sendDialog.modal('hide');
                     $table.bootstrapTable('refresh');
                 }
             }

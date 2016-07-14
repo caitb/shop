@@ -42,4 +42,18 @@ public interface PfMessageContentMapper {
      */
     PfMessageContent queryLatestByUserIdAndType(@Param("userId") Long userId,
                                                 @Param("type") Integer type);
+
+    /**
+     * 根据消息创建者和类型查询消息（带分页）
+     *
+     * @param userId
+     * @param type
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<PfMessageContent> queryByUserIdAndTypeWithPaging(@Param("userId") Long userId,
+                                                          @Param("type") Integer type,
+                                                          @Param("start") Integer start,
+                                                          @Param("pageSize") Integer pageSize);
 }

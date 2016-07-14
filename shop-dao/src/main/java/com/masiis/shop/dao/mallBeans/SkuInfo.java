@@ -43,6 +43,8 @@ public class SkuInfo{
 
     private Integer skuId;
 
+    private BigDecimal ownShipAmount;//自己发货的运费
+
     public ComSku getComSku() {
         return comSku;
     }
@@ -169,5 +171,13 @@ public class SkuInfo{
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public BigDecimal getOwnShipAmount() {
+        return ownShipAmount;
+    }
+
+    public void setOwnShipAmount(BigDecimal ownShipAmount) {
+        this.ownShipAmount = ownShipAmount;
     }
 }

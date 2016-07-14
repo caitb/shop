@@ -79,7 +79,8 @@ public interface SfUserRelationMapper {
      * @param treeCode treeCode
      * @return Integer
      */
-    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode);
+    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode,
+                                      @Param("shopId") Long shopId);
 
     /**
      * 查询代言人数量
@@ -88,7 +89,8 @@ public interface SfUserRelationMapper {
      * @return  map
      */
     Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
-                                           @Param("userId") Long userId);
+                                           @Param("userId") Long userId,
+                                           @Param("shopId") Long shopId);
 
     /**
      * 修改树形编码
@@ -131,7 +133,8 @@ public interface SfUserRelationMapper {
      * @return
      */
     List<SfSpokesAndFansInfo> selectSpokesManByID(@Param("shopId") Long shopId,
-                                                  @Param("ID") String ID);
+                                                  @Param("ID") String ID,
+                                                  @Param("sopkenMan") Integer sopkenMan);
 
     /**
      * 通过ID查询小铺中的代言人数量

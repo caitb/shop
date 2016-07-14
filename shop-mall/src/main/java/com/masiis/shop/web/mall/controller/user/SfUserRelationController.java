@@ -247,7 +247,8 @@ public class SfUserRelationController extends BaseController {
             //用户分页使用，两级代言人总数量
             Integer threeSum = 0;
             if (spokeLevel == null){
-                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+//                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
             }else {
                 switch (spokeLevel.intValue()){
                     case 1 : {

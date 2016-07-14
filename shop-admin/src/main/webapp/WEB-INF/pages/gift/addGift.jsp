@@ -144,7 +144,6 @@
                         <row>
                             <label class="col-sm-5"></label>
                             <div class="col-sm-6">
-                                <input type="reset" class="btn btn-lg btn-default">重置</input>
                                 <button type="submit" class="btn btn-lg btn-info" id="giftSave">保存</button>
                             </div>
                         </row>

@@ -18,6 +18,7 @@
     <header class="xq_header">
         <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>消息中心</p>
+        <a href="${path}/message/tonew.shtml"><img src="${path}/static/images/message/xiaoxi_1.jpg" alt=""></a>
     </header>
     <!--      消息list-->
     <main id="mlist">

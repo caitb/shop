@@ -81,4 +81,28 @@ public class SfMessageContentService {
     public List<Map<String, String>> queryUnreadShopInfosByUser(Long userId, Integer start, Integer size){
         return sfMessageContentMapper.selectShopInfoAndFirstMsg(userId, start, size);
     }
+
+
+    /**
+     * 根据消息来源用户和当前用户查询消息总条数
+     * @param fromUser
+     * @param toUser
+     * @return
+     */
+    public Integer queryNumsFromUserAndToUser(Long fromUser, Long toUser){
+        return sfMessageContentMapper.queryNumsFromUserAndToUser(fromUser, toUser);
+    }
+
+    /**
+     * 根据消息来源和当前用户查询消息详情（带分页）
+     *
+     * @param userId
+     * @param fUserId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    public List<SfMessageContent> queryDetailByFromUserAndToUserWithPaging(Long userId, Long fUserId, Integer start, Integer pageSize){
+        return sfMessageContentMapper.queryDetailByFromUserAndToUserWithPaging(userId, fUserId, start, pageSize);
+    }
 }

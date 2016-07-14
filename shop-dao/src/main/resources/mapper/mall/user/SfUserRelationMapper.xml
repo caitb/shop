@@ -29,7 +29,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_relation (id, create_time, shop_id, 
             user_id, user_pid, tree_code, 
             tree_level, is_buy, remark

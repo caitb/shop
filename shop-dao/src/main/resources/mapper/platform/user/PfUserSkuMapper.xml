@@ -449,6 +449,23 @@
         where
         user_id = #{userId,jdbcType=BIGINT} AND user_pid =0
     </select>
+
+    <select id="selectChildNumByUserPid" resultType="java.lang.Integer">
+        SELECT count(t.user_id)
+        FROM
+        (select DISTINCT user_id
+        FROM pf_user_sku
+        WHERE
+          user_pid = #{userPid,jdbcType=BIGINT}
+        ) t
+    </select>
+
+    <select id="selectChildByUserPid" resultType="java.lang.Long">
+        select DISTINCT user_id
+        FROM pf_user_sku
+        WHERE
+          user_pid = #{userPid,jdbcType=BIGINT}
+    </select>
 </mapper>
 
 

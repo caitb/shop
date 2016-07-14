@@ -105,7 +105,7 @@
     <select id="selectShopInfoAndFirstMsg" resultType="java.util.HashMap">
         SELECT
         r2.notSeeNum,
-        s.id, s.name, s.logo, (
+        s.user_id id, s.name, s.logo, (
         SELECT
         content
         FROM
@@ -180,5 +180,65 @@
         ) r2
         INNER JOIN sf_shop s ON s.user_id = r2.from_user;
     </select>
+
+    <select id="queryNumsFromUserAndToUser" resultType="java.lang.Integer">
+      SELECT
+            count(c.id)
+        FROM
+            sf_message_sr_relation r
+        LEFT JOIN
+            sf_message_content c
+        ON
+            c.id=r.sf_message_content_id
+        WHERE
+            r.from_user = #{fromUser,jdbcType=BIGINT}
+        AND r.to_user = #{toUser,jdbcType=BIGINT};
+    </select>
+
+    <select id="queryDetailByFromUserAndToUserWithPaging" resultMap="BaseResultMap">
+      SELECT
+          c.*
+        FROM
+        (
+        SELECT
+          *
+        FROM
+          sf_message_sr_relation r1
+        WHERE
+          r1.id <![CDATA[ <= ]]> (
+            SELECT
+              r.id
+            FROM
+              sf_message_sr_relation r
+            WHERE
+              r.to_user = #{userId,jdbcType=BIGINT}
+            AND r.from_user = #{fUserId,jdbcType=BIGINT}
+            ORDER BY
+              r.id DESC
+            LIMIT #{start,jdbcType=INTEGER}, 1
+            )
+        AND r1.to_user = #{userId,jdbcType=BIGINT}
+        AND r1.from_user = #{fUserId,jdbcType=BIGINT}
+        ORDER BY
+          r1.id DESC
+        LIMIT #{pageSize,jdbcType=INTEGER}
+        ) r2
+        LEFT JOIN sf_message_content c ON c.id = r2.sf_message_content_id
+        ORDER BY
+          c.id DESC
+    </select>
+
+    <update id="updateRelationIsSeeByFromUserAndToUser">
+        update
+          sf_message_sr_relation
+        SET
+          is_see = 1
+        WHERE
+          from_user = #{fromUser,jdbcType=BIGINT}
+        AND
+          to_user = #{toUser,jdbcType=BIGINT}
+        AND
+          is_see = 0
+    </update>
 
 </mapper>

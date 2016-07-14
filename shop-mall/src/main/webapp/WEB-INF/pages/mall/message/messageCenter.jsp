@@ -18,6 +18,9 @@
 
         $(function(){
             shopMsgList();
+
+            $(document).on("click", "#shopList .sec1", viewDetail);
+
         });
 
         function shopMsgList(){
@@ -32,7 +35,11 @@
                         var tempHtml = '';
                         for (var i = 0; i < messageList.length; i++) {
                             tempHtml += '<div class="sec1" id="' + messageList[i].id + '">' +
-                                    '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt=""><span>' + messageList[i].notSeeNum + '</span></h1>' +
+                                    '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt="">';
+                            if(messageList[i].notSeeNum > 0){
+                                tempHtml += '<span>' + messageList[i].notSeeNum + '</span>';
+                            }
+                            tempHtml += '</h1>' +
                                     '<div>' +
                                     '<h2>' + messageList[i].name + '</h2>' +
                                     '<p>' + messageList[i].content + '</p>' +
@@ -49,12 +56,17 @@
                 }
             });
         }
-                        </script>
+
+        function viewDetail(){
+            window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
+        }
+
+        </script>
                     </head>
                     <body>
                     <div class="wrap">
                         <header class="xq_header">
-                            <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                            <a href="#" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                             <p>消息中心</p>
                         </header>
                         <!--      消息list-->

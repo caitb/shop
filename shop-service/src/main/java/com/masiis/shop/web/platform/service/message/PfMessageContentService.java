@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,5 +41,36 @@ public class PfMessageContentService {
      */
     public PfMessageContent queryContentLatestByUserId(Long userId, Integer type) {
         return contentMapper.queryLatestByUserIdAndType(userId, type);
+    }
+
+    public PfMessageContent createMessageByType(Long userId, String message, Integer messageType, String remark, String url) {
+        PfMessageContent content = new PfMessageContent();
+        content.setType(messageType);
+        content.setStatus(1);
+        content.setCreateTime(new Date());
+        content.setContent(message);
+        content.setContentUrl(url);
+        content.setRemark(remark);
+        content.setUpdateTime(new Date());
+        content.setUserId(userId);
+        return content;
+    }
+
+    public void insert(PfMessageContent content) {
+        contentMapper.insert(content);
+    }
+
+    /**
+     * 根据消息创建者和类型查询消息（带分页）
+     *
+     * @param fUserId
+     * @param type
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    public List<PfMessageContent> queryContentByUserIdAndTypeWithPaging(Long fUserId, Integer type,
+                                                                        Integer start, Integer pageSize) {
+        return contentMapper.queryByUserIdAndTypeWithPaging(fUserId, type, start, pageSize);
     }
 }

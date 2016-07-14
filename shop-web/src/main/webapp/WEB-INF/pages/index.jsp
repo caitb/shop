@@ -109,7 +109,7 @@
                     <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
                     <span>我的推荐</span></a>
                 </li>
-                <li class="market"><a class="herf" href="#">
+                <li class="market"><a class="herf" href="<%=basePath%>message/center.shtml">
                     <h1><img src="<%=path%>/static/images/s4.png" alt=""></h1>
                     <span>消息中心</span></a>
                 </li>

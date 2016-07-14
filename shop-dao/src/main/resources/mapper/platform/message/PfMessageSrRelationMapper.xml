@@ -187,7 +187,7 @@
 
     <select id="queryNumsByFromUseAndToUserAndType" resultType="java.lang.Integer">
         SELECT
-            count(c.id)
+            count(DISTINCT c.id)
         FROM
             pf_message_sr_relation r
         LEFT JOIN

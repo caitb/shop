@@ -31,7 +31,7 @@ main .sec1 .s_b .b_b img {
   position: absolute;
   left: -15px;
   top: 0;
-  width: 15px;
+  width: 17px;
 }
 main .sec1 .s_b .b_b h1 {
   margin: 0 10px;
@@ -49,4 +49,8 @@ main .sec1 .s_b .b_b p a {
   display: block;
   color: #666;
   font-size: 12px;
+}
+.f_right{
+  -webkit-box-flex: 1;
+  text-align: right;
 }

@@ -49,13 +49,13 @@ public class PfMessageSrRelationService {
     /**
      * 根据消息来源用户和当前用户查询消息总条数
      *
-     * @param user
+     * @param tUserId
      * @param fUserId
      * @param mType
      * @return
      */
-    public Integer queryNumsFromUserAndToUser(ComUser user, Long fUserId, Integer mType) {
-        return srRelationMapper.queryNumsByFromUseAndToUserAndType(user.getId(), fUserId, mType);
+    public Integer queryNumsFromUserAndToUser(Long tUserId, Long fUserId, Integer mType) {
+        return srRelationMapper.queryNumsByFromUseAndToUserAndType(tUserId, fUserId, mType);
     }
 
     /**

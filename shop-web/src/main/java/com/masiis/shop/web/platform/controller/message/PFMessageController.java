@@ -50,6 +50,7 @@ public class PFMessageController extends BaseController {
         model.addAttribute("content", content);
         model.addAttribute("myHeadUrl", user.getWxHeadImg());
         model.addAttribute("userName", user.getRealName());
+        model.addAttribute("myId", user.getId());
         return "platform/message/pf_message/message_center_platform";
     }
 
@@ -134,6 +135,9 @@ public class PFMessageController extends BaseController {
         JSONObject res = new JSONObject();
         List<PfMessageContent> resData = null;
         int pageSize = 10;
+        String fromUserName = "";
+        Long tUserId = null;
+        Long fUserId = null;
         try{
             ComUser user = getComUser(request);
             if(user == null){
@@ -153,7 +157,16 @@ public class PFMessageController extends BaseController {
                 res.put("resMsg", "消息来源用户找不到");
                 throw new BusinessException("消息来源用户找不到");
             }
-            int totalNums = srRelationService.queryNumsFromUserAndToUser(user, fUser.getId(), 2);
+            fUserId = uid;
+            if(uid.longValue() == user.getId().longValue()){
+                // 查看自己发出的消息
+                fromUserName = "我";
+                tUserId = null;
+            } else {
+                fromUserName = fUser.getRealName();
+                tUserId = user.getId();
+            }
+            int totalNums = srRelationService.queryNumsFromUserAndToUser(tUserId, fUserId, 2);
             if(totalNums == 0){
                 res.put("hasData", false);
                 res.put("resCode", "success");
@@ -179,10 +192,10 @@ public class PFMessageController extends BaseController {
             res.put("hasData", true);
             res.put("pageSize", pageSize);
             res.put("totalPage",pageNums);
-            res.put("fromUserName", fUser.getRealName());
+            res.put("fromUserName", fromUserName);
             int start = cur * pageSize;
             // 查询要展现的消息数据
-            resData = srRelationService.queryDetailByFromUserAndToUserWithPaging(user.getId(), fUser.getId(), 2, start, pageSize);
+            resData = srRelationService.queryDetailByFromUserAndToUserWithPaging(tUserId, fUserId, 2, start, pageSize);
             res.put("data", resData);
         } catch (Exception e) {
             String resMsg = res.getString("resMsg");

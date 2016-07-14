@@ -634,10 +634,10 @@ public class SfOrderPurchaseService {
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
         if (userPid == null) {
-            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userId);
+            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
             userPid = _userRelation.getUserPid();
         }
-        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userPid);
+        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userPid,shopId);
         if (sfUserRelation != null) {
             sfUserRelationList.add(sfUserRelation);
         }

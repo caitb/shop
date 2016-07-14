@@ -21,7 +21,7 @@ public class ComGiftController {
 
     @RequestMapping("/getGiftDetailInfo.do")
     @ResponseBody
-    public String getGiftDetailInfo(@RequestParam(required = false) Integer giftId, Model model){
+    public String getGiftDetailInfo(@RequestParam(required = true) Integer giftId, Model model){
         ComGift comGift = comGiftService.getComGiftById(giftId);
         model.addAttribute("comGift",comGift);
         return null;

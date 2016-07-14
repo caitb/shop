@@ -127,8 +127,8 @@ public class SfOrderManagerController extends BaseController {
     @RequestMapping("/stockOrder")
     public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus) throws Exception {
         ComUser comUser = getComUser(request);
-        int pageSize = 3; //ajax请求时默认每页显示条数为3条
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null,1,pageSize);
+//        int pageSize = 3; //ajax请求时默认每页显示条数为3条
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null);
         String index=null;
         if(orderStatus==null){
             index="0";//全部
@@ -154,8 +154,7 @@ public class SfOrderManagerController extends BaseController {
      */
     @RequestMapping("/clickSfOrderType.do")
     @ResponseBody
-    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index,
-                                          @RequestParam(value = "currentPage",required = true) Integer currentPage) {
+    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
         List<SfOrder> sfOrders=null;
         int pageSize = 3; //ajax请求时默认每页显示条数为3条
         try {
@@ -164,17 +163,17 @@ public class SfOrderManagerController extends BaseController {
                 throw new BusinessException("user不能为空");
             }
             if(index==0){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
             }else if(index==1){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null);
             }else if(index==2){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null);
             }else if(index==3){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null);
             }else if(index==4){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
             }else if(index==5){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null,currentPage,pageSize);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

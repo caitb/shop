@@ -64,8 +64,8 @@ public class SfOrderManageService {
      * @author muchaofeng
      * @date 2016/4/9 17:12
      */
-    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId,Integer currentPage,Integer pageSize){
-        PageHelper.startPage(currentPage, pageSize, false);
+    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId){
+//        PageHelper.startPage(currentPage, pageSize, false);
         List<SfOrder> sfOrders = sfOrderManageMapper.selectByUserId(userId, orderStatus, shopId);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (SfOrder sfOrder : sfOrders) {

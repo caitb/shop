@@ -105,4 +105,24 @@ public class PfUserSkuService {
     public List<PfUserSku> getPfUserSkuInfoByUserIdNotPid(Long UserId) {
         return pfUserSkuMapper.selectByUserIdNotPid(UserId);
     }
+
+    /**
+     * 根据父用户id查询下级代理人数
+     *
+     * @param userPid
+     * @return
+     */
+    public Integer getNumsByUserPid(Long userPid) {
+        return pfUserSkuMapper.selectChildNumByUserPid(userPid);
+    }
+
+    /**
+     * 根据userPid查询直接下级
+     *
+     * @param userId
+     * @return
+     */
+    public List<Long> getChildUserIdByUserPid(Long userId) {
+        return pfUserSkuMapper.selectChildByUserPid(userId);
+    }
 }

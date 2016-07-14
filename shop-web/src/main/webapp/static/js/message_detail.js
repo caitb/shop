@@ -38,10 +38,12 @@ function listMessage(){
                                 + "<div class=\"s_b\">"
                                     + "<div class=\"b_b\">"
                                     + "<img src=\"" + path + "/static/images/message/massage_r1_c1.png\">"
-                                    + "<h1>" + data.data[i].content + "</h1>"
-                                    + "<p>"
-                                        + "<a href=\"" + data.data[i].contentUrl + "\">点击查看</a>"
-                                        + "<a>" + data.data[i].createTime + "</a>"
+                                    + "<h1>"  + data.data[i].content + "</h1>"
+                                    + "<p>";
+                                if(data.data[i].contentUrl != "" && data.data[i].contentUrl != null && data.data[i].contentUrl != undefined){
+                                    ele += "<a href=\"" + path + "/" + data.data[i].contentUrl + "\">点击查看</a>";
+                                }
+                                    ele += "<a class='f_right'>" + data.data[i].createTime + "</a>"
                                     + "</p>"
                                     + "</div>"
                                 + "</div>"

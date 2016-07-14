@@ -136,4 +136,20 @@ public interface PfUserSkuMapper {
     List<Map<String, Object>> selectAgentSku(Long userId);
 
     List<PfUserSku> selectByUserIdNotPid(@Param("userId") Long userId);
+
+    /**
+     * 根据父用户id查询下级代理人数
+     *
+     * @param userPid
+     * @return
+     */
+    Integer selectChildNumByUserPid(@Param("userPid") Long userPid);
+
+    /**
+     * 根据userPid查询直接下级
+     *
+     * @param userId
+     * @return
+     */
+    List<Long> selectChildByUserPid(Long userId);
 }

@@ -30,16 +30,21 @@
                     if(data.resCode == "success"){
                         var messageList = data.messageList;
                         var tempHtml = '';
-                        for(var i = 0; i < messageList.length; i++){
-                            tempHtml += '<div class="sec1">' +
-                                                '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt=""><span>' + messageList[i].notSeeNum + '</span></h1>' +
-                                                '<div>' +
-                                                '<h2>' + messageList[i].name + '</h2>' +
-                                                '<p>' + messageList[i].content + '</p>' +
-                                                '</div>' +
-                                            '</div>';
+                        for (var i = 0; i < messageList.length; i++) {
+                            tempHtml += '<div class="sec1" id="' + messageList[i].id + '">' +
+                                    '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt=""><span>' + messageList[i].notSeeNum + '</span></h1>' +
+                                    '<div>' +
+                                    '<h2>' + messageList[i].name + '</h2>' +
+                                    '<p>' + messageList[i].content + '</p>' +
+                                    '</div>' +
+                                    '</div>';
                         }
                         $("#shopList").append(tempHtml);
+                        if(data.isLast == true){
+                            $("#more").hide();
+                        } else {
+                            $("#more").show();
+                        }
                     }
                 }
             });
@@ -72,9 +77,9 @@
             </div>
         </c:if>
     <!--        点击加载-->
-    <c:if test="${isLast}">
-        <div class="downloading" onclick="shopMsgList();"><img src="${path}/static/images/downloading.png" alt=""></div>
-    <</c:if>
+    <%--<c:if test="${isLast}">--%>
+        <div id="more" class="downloading" onclick="shopMsgList();"><img src="${path}/static/images/downloading.png" alt=""></div>
+    <%--<</c:if>--%>
 </div>
 <script>
     /*var Browser=new Object();

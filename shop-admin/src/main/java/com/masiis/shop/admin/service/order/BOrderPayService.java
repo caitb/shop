@@ -291,6 +291,7 @@ public class BOrderPayService {
             sfShop.setShoutNum(0l);
             sfShop.setVersion(0l);
             sfShop.setRemark("");
+            sfShop.setOwnShipAmount(BigDecimal.ZERO);
             sfShopMapper.insert(sfShop);
         }
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(comUser.getId());

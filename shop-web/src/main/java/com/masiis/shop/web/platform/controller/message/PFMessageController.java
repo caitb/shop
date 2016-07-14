@@ -175,4 +175,9 @@ public class PFMessageController extends BaseController {
 
         return JSON.toJSONStringWithDateFormat(res, "yyyy-MM-dd HH:mm:ss");
     }
+
+    @RequestMapping("/tonew.shtml")
+    public String toNewPage(){
+        return "platform/message/pf_message/message_create";
+    }
 }

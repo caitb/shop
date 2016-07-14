@@ -19,7 +19,6 @@
     <header class="xq_header">
         <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p id="fromUserName"></p>
-        <a href=""><img src="${path}/static/images/message/xiaoxi_1.jpg" alt=""></a>
     </header>
     <main id="mlist">
     </main>

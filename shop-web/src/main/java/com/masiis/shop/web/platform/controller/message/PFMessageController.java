@@ -40,7 +40,13 @@ public class PFMessageController extends BaseController {
     private UserService userService;
 
     @RequestMapping("/center.shtml")
-    public String toCenter(){
+    public String toCenter(HttpServletRequest request,
+                           Model model){
+        ComUser user = getComUser(request);
+        if(user == null){
+            throw new BusinessException("怎么能没有用户呢");
+        }
+        PfMessageContent content = pfMessageContentService.queryContentLatestByUserId(user.getId(), 2);
         return "platform/message/pf_message/message_center_platform";
     }
 

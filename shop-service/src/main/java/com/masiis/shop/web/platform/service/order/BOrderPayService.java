@@ -316,6 +316,7 @@ public class BOrderPayService {
                     sfShopSku.setShareNum(0l);
                     sfShopSku.setQrCode("");
                     sfShopSku.setRemark("");
+                    sfShop.setOwnShipAmount(BigDecimal.ZERO);
                     sfShopSkuMapper.insert(sfShopSku);
                 }
                 log.info("<9>修改用户sku代理关系数据");

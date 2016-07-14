@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserShareParam;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface SfUserShareParamMapper {
     int deleteByPrimaryKey(Long id);
 

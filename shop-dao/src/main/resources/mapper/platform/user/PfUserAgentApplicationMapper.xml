@@ -31,15 +31,34 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserAgentApplication" >
         update pf_user_agent_application
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=BIGINT},
-            sku_id = #{skuId,jdbcType=INTEGER},
-            name = #{name,jdbcType=VARCHAR},
-            wx_id = #{wxId,jdbcType=VARCHAR},
-            mobile = #{mobile,jdbcType=VARCHAR},
-            status = #{status,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="wxId != null">
+                wx_id = #{wxId,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -57,5 +76,30 @@
         select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark
         from pf_user_agent_application
         where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCondition" parameterType="Map" resultType="Map">
+        select
+               uaa.id,
+               uaa.create_time createTime,
+               uaa.create_man  createMan,
+               uaa.name        name,
+               uaa.wx_id       wxId,
+               uaa.mobile      mobile,
+               uaa.status      status,
+               uaa.remark      remark,
+               sku.id          skuId,
+               sku.name        skuName
+        from
+               pf_user_agent_application uaa
+        LEFT JOIN com_sku                sku ON sku.id = uaa.sku_id
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+        </where>
     </select>
 </mapper>

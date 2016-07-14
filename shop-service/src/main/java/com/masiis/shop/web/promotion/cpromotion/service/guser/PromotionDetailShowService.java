@@ -53,7 +53,6 @@ public class PromotionDetailShowService {
         if (sfShop!=null){
             log.info("用户id------"+comUser.getId()+"----对应的小铺id-----"+sfShop.getId());
             fansQuantity = userRelationService.getFansNumByUserId(comUser.getId(),sfShop.getId());
-            fansQuantity = 300;
             log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
             //获取所有进行中的活动
             List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);

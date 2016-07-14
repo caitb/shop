@@ -180,7 +180,7 @@ public class SkuService {
             skuInfo.setSlogan(comSpu.getSlogan());
             skuInfo.setContent(comSpu.getContent());
         }
-        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId);
+        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId,isOwnShip);
         if (sfShopSku != null) {
 //            skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());

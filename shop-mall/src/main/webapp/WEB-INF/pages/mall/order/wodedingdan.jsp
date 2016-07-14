@@ -54,7 +54,7 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo">
                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -93,7 +93,7 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo">
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -132,7 +132,7 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo">
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -171,9 +171,9 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -210,9 +210,9 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo" >
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -249,9 +249,9 @@
                                 <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}')">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}')">
                                 <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=${pb.sendType}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -351,9 +351,9 @@
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >线下支付</b ></h2>";
                                }
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
-                                   trHtml+="<div class=\"shangpin\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+" ')\">";
+                                   trHtml+="<div class=\"shangpin\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+"&isOwnShip="+sfOrder.sendType+ ')\">";
                                    trHtml+=" <p class=\"photo\">";
-                                   trHtml+="<a href=\"<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+"\">";
+                                   trHtml+="<a href=\"<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+"&isOwnShip="+sfOrder.sendType+"\">";
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#333;\">￥"+sfOrderItem.skuMoney+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
                                })

@@ -17,6 +17,8 @@ public interface SfGorderItemMapper {
 
     SfGorderItem selectByPrimaryKey(Long id);
 
+    SfGorderItem selectByGorderId(Long gorderId);
+
     List<SfGorderItem> selectAll();
 
     int updateByPrimaryKey(SfGorderItem record);

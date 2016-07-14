@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
 </head>
@@ -12,8 +12,8 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>产品图片</p>
+        <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p>素材图片</p>
     </header>
     <main id="divall">
         <c:forEach var="mat" items="${materials}">
@@ -36,7 +36,7 @@
     <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -49,13 +49,14 @@
     </div>
 </div>
 <div class="bigphp">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
     function clickShow(){
         $(".black").show();

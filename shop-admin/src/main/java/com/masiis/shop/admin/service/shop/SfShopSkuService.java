@@ -35,8 +35,8 @@ public class SfShopSkuService {
         return sfShopSkuExtendMapper.selectShopviewByShopIdAndSkuId(shopId,skuId);
     }
 
-    public SfShopSku selectByShopIdAndSkuId(Long shopId,Integer skuId){
-        return shopSkuMapper.selectByShopIdAndSkuId(shopId,skuId);
+    public SfShopSku selectByShopIdAndSkuId(Long shopId,Integer skuId,Integer isOwnShip){
+        return shopSkuMapper.selectByShopIdAndSkuId(shopId,skuId,isOwnShip);
     }
     public int update(SfShopSku shopSku){
         return shopSkuMapper.updateByPrimaryKey(shopSku);

@@ -5,8 +5,11 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.beans.material.MaterialLibrary;
 import com.masiis.shop.dao.beans.material.SkuMaterial;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuMaterialGroup;
+import com.masiis.shop.dao.po.ComSkuMaterialLibrary;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.material.service.MaterialLibraryService;
 import com.masiis.shop.web.material.service.SkuMaterialService;
@@ -33,7 +36,8 @@ public class MaterialLibraryController extends BaseController {
     private MaterialLibraryService materialLibraryService;
     @Resource
     private SkuMaterialService skuMaterialService;
-
+    @Resource
+    private SkuService skuService;
     /**
      * jjh
      * 素材列表C端
@@ -43,7 +47,7 @@ public class MaterialLibraryController extends BaseController {
     @RequestMapping(value = "/infoC")
     public ModelAndView materialLibraryList(HttpServletRequest request
                                             ){
-        ModelAndView mv = new ModelAndView("/platform/material/materialGroup");
+        ModelAndView mv = new ModelAndView("/mall/material/materialGroup");
         try{
             ComUser comUser = getComUser(request);
             int pageSize = 4; //ajax请求时默认每页显示条数为4条
@@ -88,10 +92,13 @@ public class MaterialLibraryController extends BaseController {
      */
     @RequestMapping(value = "/groupInfoB")
     public ModelAndView materialLibraryGroup(@RequestParam(value = "mlId",required = true) Integer mlId){
-        ModelAndView mv = new ModelAndView("/platform/material/subscriptionlist");
+        ModelAndView mv = new ModelAndView("/mall/material/subscriptionlist");
         try {
             List<ComSkuMaterialGroup> comSkuMaterialGroupList = materialLibraryService.MaterialLibraryGroup(mlId, null, 1);
+            ComSkuMaterialLibrary comSkuMaterialLibrary = materialLibraryService.getComSkuMaterialLibraryByPrimaryId(mlId);
+            ComSku comSku = skuService.getComSkuBySkuId(comSkuMaterialLibrary.getSkuId());
             mv.addObject("groupList",comSkuMaterialGroupList);
+            mv.addObject("skuName",comSku.getName());
         }catch (Exception e){
             log.info(e.getMessage());
         }
@@ -106,7 +113,7 @@ public class MaterialLibraryController extends BaseController {
      */
     @RequestMapping(value = "/materialInfoB")
     public ModelAndView materialList(@RequestParam(value = "mgId",required = true) Integer mgId){
-        ModelAndView mv = new ModelAndView("/platform/material/skuimglist");
+        ModelAndView mv = new ModelAndView("/mall/material/skuimglist");
         try {
             int pageSize = 3; //ajax请求时默认每页显示条数为3条
             List<SkuMaterial> materials = skuMaterialService.skuMaterial(mgId, 1, pageSize);

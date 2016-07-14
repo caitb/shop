@@ -27,7 +27,7 @@ public interface SfShopSkuMapper {
 
     SfShopSku getSfShopSkuByShopUserIdAndSkuId(@Param("shopUserId") Long shopUserId, @Param("skuId") Integer skuId);
 
-    SfShopSku selectByShopIdAndSkuId(@Param("shopId") Long shopId, @Param("skuId") Integer skuId);
+    SfShopSku selectByShopIdAndSkuId(@Param("shopId") Long shopId, @Param("skuId") Integer skuId,@Param("isOwnShip") Integer isOwnShip);
 
     List<SfShopSku> selectByShopId(Long shopId);
 

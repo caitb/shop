@@ -126,6 +126,7 @@
         </c:if>
         <c:if test="${isOwnShip==1}">
             <span id="isOwnShip">店主发货</span>
+            <span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>
         </c:if>
     </h1>
     <h1>
@@ -227,8 +228,8 @@
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
+        cartData.isOwnShip = "${isOwnShip}";
         var isOwnShip = "${isOwnShip}";
-
         var customerStock = "${skuInfo.stock}";
         if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
             alert("当前商品为店主发货，可用库存不足！");

@@ -31,7 +31,7 @@ public class SkuInfo{
 
     private Long shopSkuId;
 
-    private Integer isOwnShip;//发货类型
+    private BigDecimal isOwnShip;//发货类型
 
     private String flagSelf;//自己发货的标志：null：只有平台发货
 
@@ -123,11 +123,11 @@ public class SkuInfo{
         this.shopSkuId = shopSkuId;
     }
 
-    public Integer getIsOwnShip() {
+    public BigDecimal getIsOwnShip() {
         return isOwnShip;
     }
 
-    public void setIsOwnShip(Integer isOwnShip) {
+    public void setIsOwnShip(BigDecimal isOwnShip) {
         this.isOwnShip = isOwnShip;
     }
 

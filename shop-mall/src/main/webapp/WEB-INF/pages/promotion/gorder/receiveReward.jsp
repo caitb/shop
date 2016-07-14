@@ -13,7 +13,7 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reward.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/receiveReward.css">
 </head>
 <body>
    <div class="wrap">

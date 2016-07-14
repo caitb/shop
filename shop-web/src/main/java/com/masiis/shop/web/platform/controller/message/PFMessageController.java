@@ -47,6 +47,9 @@ public class PFMessageController extends BaseController {
             throw new BusinessException("怎么能没有用户呢");
         }
         PfMessageContent content = pfMessageContentService.queryContentLatestByUserId(user.getId(), 2);
+        model.addAttribute("content", content);
+        model.addAttribute("myHeadUrl", user.getWxHeadImg());
+        model.addAttribute("userName", user.getRealName());
         return "platform/message/pf_message/message_center_platform";
     }
 
@@ -107,8 +110,18 @@ public class PFMessageController extends BaseController {
     }
 
     @RequestMapping("/detail.shtml")
-    public String detail(@RequestParam(required = true) Long userId,
+    public String detail(HttpServletRequest request,
+                         @RequestParam(required = true) Long userId,
                          Model model){
+        ComUser user = getComUser(request);
+        if(user == null){
+            throw new BusinessException("用户怎么能没有呢");
+        }
+        ComUser fUser = userService.getUserById(userId);
+        if(fUser == null){
+            throw new BusinessException("消息来源用户为空");
+        }
+        srRelationService.updateRelationIsSeeByFromUserAndToUser(fUser.getId(), user.getId());
         model.addAttribute("userId", userId);
         return "platform/message/pf_message/message_detail";
     }

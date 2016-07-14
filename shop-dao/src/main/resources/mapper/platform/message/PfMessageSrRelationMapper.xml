@@ -235,4 +235,17 @@
           c.id DESC
     </select>
 
+    <update id="updateRelationIsSeeByFromUserAndToUser">
+        update
+          pf_message_sr_relation
+        SET
+          is_see = 1
+        WHERE
+          from_user = #{}
+        AND
+          to_user = #{}
+        AND
+          is_see = 0
+    </update>
+
 </mapper>

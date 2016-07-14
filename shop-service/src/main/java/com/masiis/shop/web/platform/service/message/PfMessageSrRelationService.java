@@ -73,4 +73,13 @@ public class PfMessageSrRelationService {
         return srRelationMapper.queryDetailByFromUserAndToUserWithPaging(userId, fUserId, mType, start, pageSize);
     }
 
+    /**
+     * 根据来源用户和接收用户更新消息为已查看
+     *
+     * @param fUserId
+     * @param tUserId
+     */
+    public Integer updateRelationIsSeeByFromUserAndToUser(Long fUserId, Long tUserId) {
+        return srRelationMapper.updateRelationIsSeeByFromUserAndToUser(fUserId, tUserId);
+    }
 }

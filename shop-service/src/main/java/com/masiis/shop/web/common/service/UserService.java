@@ -252,13 +252,17 @@ public class UserService {
                 sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
                 sfUserRelationMapper.insert(sfNewUserRelation);
                 String treeCode = sfNewUserRelation.getId() + ",";
-                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+                if(sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode)!=1){
+                    throw new BusinessException("treeCode修改失败");
+                }
             } else {
                 sfNewUserRelation.setTreeLevel(sfUserPRelation.getTreeLevel() + 1);
                 sfNewUserRelation.setUserPid(userPid);
                 sfUserRelationMapper.insert(sfNewUserRelation);
                 String treeCode = sfUserPRelation.getTreeCode() + sfNewUserRelation.getId() + ",";
-                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+                if(sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode)!=1){
+                    throw new BusinessException("treeCode修改失败");
+                }
             }
         }
 //        else {

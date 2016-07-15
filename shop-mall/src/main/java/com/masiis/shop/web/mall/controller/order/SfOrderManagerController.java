@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,14 @@ public class SfOrderManagerController extends BaseController {
         for (SfOrderItem sfOrderItem : sfOrderItems) {
             sfOrderItem.setSkuUrl(skuValue + sfOrderManageService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
             order.setTotalQuantity(order.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+        }
+
+        if (order.getShipAmount().compareTo(BigDecimal.ZERO)==0) {
+            order.setShipMoney("(包邮)");
+        }else{
+            DecimalFormat myFormat=new DecimalFormat("0.00");
+            String shipAmount = myFormat.format(order.getShipAmount());
+            order.setShipMoney("￥"+shipAmount);
         }
         //快递公司信息
         List<SfOrderFreight> sfOrderFreights = sfOrderManageService.findSfOrderFreight(id);

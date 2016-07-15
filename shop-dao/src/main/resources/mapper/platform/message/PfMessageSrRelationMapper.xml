@@ -252,4 +252,15 @@
           is_see = 0
     </update>
 
+    <select id="queryNoSeeNumsByToUserAndType" resultType="java.lang.Integer">
+        SELECT
+            COUNT(0)
+        FROM
+            pf_message_sr_relation r
+        WHERE
+            r.to_user = #{toUserId,jdbcType=BIGINT}
+        AND r.m_type = #{mType,jdbcType=INTEGER}
+        AND r.is_see = 0;
+    </select>
+
 </mapper>

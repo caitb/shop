@@ -68,7 +68,7 @@
                     }
                 }
             });
-            window.location.reload();
+            window.location.reload(true);
             $("#"+index).addClass("on");
             $("#"+index).find("b").html("取消订阅");
         } else if ($("#"+index).hasClass("on") == true) {

@@ -64,17 +64,20 @@ public class SfUserRelationService {
         if (sfUserRelations == null || sfUserRelations.size() == 0){
             return num;
         }else {
+            Integer fansNum = 0;
             if (shopId == null){
                 for (SfUserRelation relation : sfUserRelations){
-                    if (sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue() > 0){
-                        num += sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue();
+                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                    if (fansNum > 0){
+                        num += fansNum;
                     }
                 }
             }else {
                 for (SfUserRelation relation : sfUserRelations){
                     if (shopId.longValue() == relation.getShopId().longValue()){
-                        if (sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue() > 0){
-                            num += sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue();
+                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                        if (fansNum > 0){
+                            num += fansNum;
                         }
                     }
                 }
@@ -97,12 +100,12 @@ public class SfUserRelationService {
         }else {
             if (shopId == null){
                 for (SfUserRelation relation : sfUserRelations){
-                    num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), userId).get("num").intValue();
+                    num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), userId, relation.getShopId()).get("num").intValue();
                 }
             }else {
                 for (SfUserRelation relation : sfUserRelations){
                     if (shopId.longValue() == relation.getShopId().longValue()){
-                        num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), userId).get("num").intValue();
+                        num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), userId, relation.getShopId()).get("num").intValue();
                     }
                 }
             }
@@ -118,10 +121,10 @@ public class SfUserRelationService {
      */
     public Integer getFansNumByUserIdAndShopId(Long userId, Long shopId){
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue() < 0){
+        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() < 0){
             return 0;
         }else {
-            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode()).get("num").intValue();
+            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue();
         }
     }
 
@@ -133,7 +136,7 @@ public class SfUserRelationService {
      */
     public Integer getSpokesManNumByUserIdAndShopId(Long userId, Long shopId){
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), userId).get("num").intValue();
+        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), userId, shopId).get("num").intValue();
     }
 
     /**
@@ -337,7 +340,7 @@ public class SfUserRelationService {
         if (isPaging){
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
-        return sfUserRelationMapper.selectSpokesManByID(shopId, ID);
+        return sfUserRelationMapper.selectSpokesManByID(shopId, ID, null);
     }
 
     /**

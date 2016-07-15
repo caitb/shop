@@ -17,7 +17,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/message/center.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:void(0)" onclick="javascript:window.history.back()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p id="fromUserName"></p>
     </header>
     <main id="mlist">

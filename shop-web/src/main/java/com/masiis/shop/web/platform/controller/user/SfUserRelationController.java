@@ -143,7 +143,6 @@ public class SfUserRelationController extends BaseController{
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", 1);
                 jsonObject.put("totalCount", totalCount);
-                jsonObject.put("infos",infos);
                 break;
             }
             //查询下一页
@@ -158,7 +157,6 @@ public class SfUserRelationController extends BaseController{
                 infos = sfUserRelationService.getShopSpokesManByID(true, currentPage + 1, pageSize, shopId, ID);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage + 1);
-                jsonObject.put("infos",infos);
                 break;
             }
             //查询上一页
@@ -173,10 +171,17 @@ public class SfUserRelationController extends BaseController{
                 infos = sfUserRelationService.getShopSpokesManByID(true, currentPage - 1, pageSize, shopId, ID);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage - 1);
-                jsonObject.put("infos",infos);
                 break;
             }
         }
+        SfSpokesAndFansInfo info;
+        for (int i = 0; i < infos.size(); i++){
+            info = infos.get(i);
+            info.setFansNum(sfUserRelationService.getFansNumByUserId(info.getUserId(), null));
+            info.setSpokesManNum(sfUserRelationService.getSpokesManNumByUserId(info.getUserId(), null));
+            infos.set(i,info);
+        }
+        jsonObject.put("infos",infos);
         jsonObject.put("isTrue",true);
         logger.info("result:"+jsonObject.toString());
         return jsonObject.toString();

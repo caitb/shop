@@ -17,7 +17,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:void(0)" onclick="javascript:window.history.back()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>群发消息</p>
         <a href="${path}/shopmessage/toNew.shtml"><img src="${path}/static/images/message/xiaoxi_1.jpg" alt=""></a>
     </header>

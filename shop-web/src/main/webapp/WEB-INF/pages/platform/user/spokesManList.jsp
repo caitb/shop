@@ -25,7 +25,7 @@
                 <p>
                        <span id="totalCount">${totalCount}</span>
                 </p>
-                <h2>位代言人</h2>
+                <h2>位代言人及粉丝</h2>
             </div>
         </div>
         <div class="t_b">

@@ -63,7 +63,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="#" onclick="javascript:window.location.replace('/mallmessage/toMessageCenter.shtml?cur=0');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p id="nameP"></p>
     </header>
     <main id="msgList">

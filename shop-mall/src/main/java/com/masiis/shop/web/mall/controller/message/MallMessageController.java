@@ -36,7 +36,6 @@ public class MallMessageController extends BaseController {
 
     @RequestMapping("/toMessageCenter.shtml")
     public String toMessageCenter(Model model){
-        //model.addAttribute("cur", 0);
         return "mall/message/messageCenter";
     }
 

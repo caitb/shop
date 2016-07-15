@@ -19,7 +19,7 @@
         $(function(){
             shopMsgList();
 
-            $(document).on("click", "#shopList .sec1", viewDetail);
+            //$(document).on("click", "#shopList .sec1", viewDetail);
 
         });
 
@@ -48,6 +48,9 @@
                                         '</div>';
                             }
                             $("#shopList").append(tempHtml);
+                            $("#shopList .sec1").click(function(){
+                                window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
+                            });
                         }
                         if(data.isLast == true){
                             $("#more").hide();
@@ -64,16 +67,16 @@
             });
         }
 
-        function viewDetail(){
+        /*function viewDetail(){
             window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
-        }
+        }*/
 
         </script>
                     </head>
                     <body>
                     <div class="wrap">
                         <header class="xq_header">
-                            <a href="#" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                            <a href="javascript:void(0)" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                             <p>消息中心</p>
                         </header>
                         <!--      消息list-->

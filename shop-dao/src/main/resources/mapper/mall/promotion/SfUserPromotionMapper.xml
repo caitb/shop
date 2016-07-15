@@ -23,7 +23,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotion" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotion"  useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_promotion (id, create_time, create_man, 
             code, name, introduction, 
             type, person_type, status, 

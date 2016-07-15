@@ -53,7 +53,7 @@
                 </p>
             </div>
             <div class="br_2">
-                <h1><b>已有</b><img src="<%=path%>/static/images/zuo.png" alt=""><span>${countByShopId}</span><img src="<%=path%>/static/images/you.png" alt=""><b>人</b></h1>
+                <h1><b>已有</b><img src="<%=path%>/static/images/zuo.png" alt=""><span>${allSfSpokesManNum}</span><img src="<%=path%>/static/images/you.png" alt=""><b>人</b></h1>
                 <p>成为TA店铺粉丝</p>
             </div>
             <div class="br_3">

@@ -20,11 +20,6 @@ public class SfUserPromotionGiftService {
 
     public void insertOrUpdate(SfUserPromotionGift promotionGift) {
         if(promotionGift.getId() == null) {
-            Integer maxId = sfUserPromotionGiftMapper.maxId();
-            if(maxId == null) {
-                maxId = 0;
-            }
-            promotionGift.setId(maxId + 1);
             promotionGift.setPromoQuantity(0);
             sfUserPromotionGiftMapper.insert(promotionGift);
         } else {

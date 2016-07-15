@@ -35,9 +35,9 @@
             <c:forEach items="${promotionInfos}" var="promotionInfo">
                 <h1>
                     <img src="<%=path%>/static/images/receive4.png" alt="">
-                    活动事件： ${promotionInfo.beginTime}——${promotionInfo.endTime}
+                    活动时间： ${promotionInfo.beginTime}—${promotionInfo.endTime}
                 </h1>
-                <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule" varStatus="status">
+               <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule" varStatus="status">
                     <c:forEach items="${promotionRule.giftInfos}" var="giftInfo">
                         <div class="floor">
                             <h1>${status.index+1}、粉丝达到<span class="people">${promotionRule.promotionFansQuantity}</span>人送 ${giftInfo.giftName}</h1>

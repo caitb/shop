@@ -5,7 +5,7 @@ $(function(){
 
     $("#remore").unbind("click").on("click", moreClick);
 
-    $(document).on("click", "#mlist .sec1", viewDetail);
+    $("#mlist").on("click", ".sec1", viewDetail);
 });
 var currentPageNum = -1;
 var pageNums = 0;
@@ -61,14 +61,16 @@ function listMessage(){
                         $("#nomore").show();
                     }
                 }
-                if(data.isLast == true){
-                    // 去掉加载更多
-                    $("#more").hide();
-                    $("#nomore").show();
-                } else {
-                    // 显示加载更多
-                    $("#more").show();
-                    $("#nomore").hide();
+                if(data.isLast != undefined){
+                    if(data.isLast == true){
+                        // 去掉加载更多
+                        $("#more").hide();
+                        $("#nomore").show();
+                    } else {
+                        // 显示加载更多
+                        $("#more").show();
+                        $("#nomore").hide();
+                    }
                 }
             } else {
                 // 网络错误,显示重新加载

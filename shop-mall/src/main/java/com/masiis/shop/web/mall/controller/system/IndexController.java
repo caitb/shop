@@ -9,6 +9,7 @@ import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuBackGroupImageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,8 @@ public class IndexController extends BaseController {
     private SfUserShopViewService sfUserShopViewService;
     @Resource
     private SkuBackGroupImageService skuBackGroupImageService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
     /**
      * 小铺首页
@@ -75,7 +78,8 @@ public class IndexController extends BaseController {
 
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
-        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
+//        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
+        Integer allSfSpokesManNum = sfUserRelationService.getAllSfSpokesManNum(shopId);
         SfShop sfShop = null;
         if (shopId != null) {
             sfShop = sfShopService.getSfShopById(shopId);
@@ -92,7 +96,7 @@ public class IndexController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
-        modelAndView.addObject("countByShopId", countByShopId);
+        modelAndView.addObject("allSfSpokesManNum", allSfSpokesManNum);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
         modelAndView.setViewName("newshouye");
@@ -162,7 +166,8 @@ public class IndexController extends BaseController {
 
         ComUser pUser = userService.getUserById(userPid);
         sfUserShopViewService.addShopView(user.getId(), shopId);
-        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
+//        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
+        Integer allSfSpokesManNum = sfUserRelationService.getAllSfSpokesManNum(shopId);
         SfShop sfShop = null;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
@@ -179,7 +184,7 @@ public class IndexController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
-        modelAndView.addObject("countByShopId", countByShopId);
+        modelAndView.addObject("allSfSpokesManNum", allSfSpokesManNum);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
         modelAndView.setViewName("newshouye");

@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.SfUserPromotionGift;
 import com.masiis.shop.web.common.service.ComGiftService;
 import com.masiis.shop.web.common.service.SkuService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,33 +61,41 @@ public class SfUserPromotionGiftService {
         return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
     }
 
-    public List<PromotionGiftInfo>  getPromoGiftInfoByPromoIdAndRuleId(Integer promoId,Integer promoRuleId,Boolean isGetImage){
+    public List<PromotionGiftInfo>  getPromoGiftInfosByPromoIdAndRuleId(Integer promoId,Integer promoRuleId,Boolean isGetImage){
         List<SfUserPromotionGift> promoGifts =  getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
         List<PromotionGiftInfo> detailInfos = new ArrayList<>();
         for (SfUserPromotionGift promoGift : promoGifts){
-            log.info("获得奖品信息-----奖品id-----"+promoGift.getGiftValue());
-            ComGift comGift = comGiftService.getComGiftById(promoGift.getGiftValue());
-            PromotionGiftInfo giftInfo = new PromotionGiftInfo();
-            if (comGift!=null&&comGift.getStatus()==1){
-                giftInfo.setPromoGiftId(promoGift.getId());
-                giftInfo.setGiftId(comGift.getId());
-                giftInfo.setGiftName(comGift.getName());
-                giftInfo.setSendedQuantity(promoGift.getPromoQuantity());
-                giftInfo.setMaxQuantity(promoGift.getUpperQuantity());
-                giftInfo.setGiftQuantity(promoGift.getQuantity());
-                if (isGetImage){
-                    giftInfo.setGiftImageUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
-                }
-                if (promoGift.getUpperQuantity()-promoGift.getPromoQuantity()<promoGift.getQuantity()){
-                    giftInfo.setIsEnoughQuantity(false);
-                }else{
-                    giftInfo.setIsEnoughQuantity(true);
-                }
-            }else{
-                log.info("奖品为null或者奖品失效");
-            }
+            PromotionGiftInfo giftInfo = getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,isGetImage,null,promoGift);
             detailInfos.add(giftInfo);
         }
         return detailInfos;
+    }
+
+    public PromotionGiftInfo getPromoGiftInfoByPromoIdAndRuleId(Integer promoId,Integer promoRuleId,Boolean isGetImage,Integer giftId,SfUserPromotionGift promoGift){
+        if (giftId!=null){
+            promoGift = getPromoGiftByPromoIdAndRuleIdAndGiftValue(promoId,promoRuleId,giftId);
+        }
+        log.info("获得奖品信息-----奖品id-----"+giftId);
+        ComGift comGift = comGiftService.getComGiftById(giftId);
+        PromotionGiftInfo giftInfo = new PromotionGiftInfo();
+        if (comGift!=null&&comGift.getStatus()==1){
+            giftInfo.setPromoGiftId(giftId);
+            giftInfo.setGiftId(comGift.getId());
+            giftInfo.setGiftName(comGift.getName());
+            giftInfo.setSendedQuantity(promoGift.getPromoQuantity());
+            giftInfo.setMaxQuantity(promoGift.getUpperQuantity());
+            giftInfo.setGiftQuantity(promoGift.getQuantity());
+            if (isGetImage){
+                giftInfo.setGiftImageUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
+            }
+            if (promoGift.getUpperQuantity()-promoGift.getPromoQuantity()<promoGift.getQuantity()){
+                giftInfo.setIsEnoughQuantity(false);
+            }else{
+                giftInfo.setIsEnoughQuantity(true);
+            }
+        }else{
+            log.info("奖品为null或者奖品失效");
+        }
+        return giftInfo;
     }
 }

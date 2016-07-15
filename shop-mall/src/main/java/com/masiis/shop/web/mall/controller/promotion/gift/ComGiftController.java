@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.controller.promotion.gift;
 
+import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.ComGift;
 import com.masiis.shop.web.common.service.ComGiftService;
 import org.springframework.stereotype.Controller;
@@ -21,12 +22,12 @@ public class ComGiftController {
 
     @RequestMapping("/getGiftDetailInfo.do")
     @ResponseBody
-    public String getGiftDetailInfo(@RequestParam(required = true) Integer giftId,
+    public String getPromotionGiftDetailInfo(@RequestParam(required = true) Integer giftId,
                                     @RequestParam(required = true) Integer promoId,
                                     @RequestParam(required = true) Integer promoRuleId,
                                     Model model){
-        ComGift comGift = comGiftService.getComGiftById(giftId);
-        model.addAttribute("comGift",comGift);
+        PromotionGiftInfo promotionGiftInfo = comGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,giftId);
+        model.addAttribute("promotionGiftInfo",promotionGiftInfo);
         model.addAttribute("promoId",promoId);
         model.addAttribute("promoRuleId",promoRuleId);
         return null;

@@ -22,8 +22,8 @@
                     <p>奖品详情</p>            
         </header>
         <banner>
-            <img src="<%=path%>/static/images/gfd.png" alt="">
-            <h1>抗引力-萨德利科技<button onclick="skipPromotionGorderPage()">点击领取</button></h1>
+            <img src="${promotionGiftInfo.giftImageUrl}" alt="">
+            <h1>${promotionGiftInfo.giftName}<button onclick="skipPromotionGorderPage()">点击领取</button></h1>
         </banner>
         <main>
             <h1>

@@ -62,7 +62,7 @@ public class PromotionGorderService {
         Map<String,Object> map = new HashMap<String,Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress( selectedAddressId, userId);
         log.info("获取奖品信息-----活动id----"+promoId+"-----规则id-----"+promoRuleId);
-        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,true);
+        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfosByPromoIdAndRuleId(promoId,promoRuleId,true);
         map.put("address",comUserAddress);
         map.put("gifts",promotionGiftInfos);
         return map;

@@ -25,6 +25,7 @@
             <p>店铺设置</p>
         </header>
         <main>
+            <input type="hidden" name="Referer" value="<%=request.getHeader("Referer")%>" >
             <div class="floor">
                 <p>店铺名称：</p>
                 <input type="hidden" name="id" value="${sfShop.id}">

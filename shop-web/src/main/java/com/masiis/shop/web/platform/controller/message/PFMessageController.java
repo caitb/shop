@@ -171,7 +171,12 @@ public class PFMessageController extends BaseController {
                 fromUserName = fUser.getRealName();
                 tUserId = user.getId();
             }
-            int totalNums = srRelationService.queryNumsFromUserAndToUser(tUserId, fUserId, 2);
+            int totalNums = 0;
+            if(tUserId == null){
+                totalNums = pfMessageContentService.queryNumsByUserIdAndType(fUserId, 2);
+            } else {
+                totalNums = srRelationService.queryNumsFromUserAndToUser(tUserId, fUserId, 2);
+            }
             if(totalNums == 0){
                 res.put("hasData", false);
                 res.put("resCode", "success");

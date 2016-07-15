@@ -194,10 +194,8 @@
             pf_message_content c
         ON
             c.id=r.pf_message_content_id
-        WHERE 1=1
-        <if test="userId != null">
-            AND  r.to_user = #{userId,jdbcType=BIGINT}
-        </if>
+        WHERE
+            r.to_user = #{userId,jdbcType=BIGINT}
         AND r.from_user = #{fUserId,jdbcType=BIGINT}
         AND r.m_type = #{mType,jdbcType=INTEGER};
     </select>

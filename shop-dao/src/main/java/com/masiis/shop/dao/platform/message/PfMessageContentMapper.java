@@ -56,4 +56,14 @@ public interface PfMessageContentMapper {
                                                           @Param("type") Integer type,
                                                           @Param("start") Integer start,
                                                           @Param("pageSize") Integer pageSize);
+
+    /**
+     * 根据消息发送者和消息类型查询消息总数
+     *
+     * @param fUserId
+     * @param type
+     * @return
+     */
+    Integer queryNumsByUserIdAndType(@Param("fUserId") Long fUserId,
+                                     @Param("type") Integer type);
 }

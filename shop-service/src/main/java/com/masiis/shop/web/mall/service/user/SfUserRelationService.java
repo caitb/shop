@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,22 @@ public class SfUserRelationService {
     }
 
     /**
+     * 根据shopId查询代言人活粉丝数量
+     * @param shopId        小铺id
+     * @param isSpoken      是否为代言人  true：代言人  false：粉丝
+     * @return
+     */
+    public Integer getFansOrSpokesMansNum(Long shopId, boolean isSpoken){
+        Integer num = 0;
+        if (isSpoken){
+            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, 1);
+        }else {
+            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, null);
+        }
+        return num;
+    }
+
+    /**
      * 通过userId获取粉丝总数量
      * @param userId    用户id
      * @param shopId    小铺id 可以为null
@@ -69,6 +86,7 @@ public class SfUserRelationService {
                 for (SfUserRelation relation : sfUserRelations){
                     fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
                     if (fansNum > 0){
+                        logger.info("粉丝数量：" + num);
                         num += fansNum;
                     }
                 }
@@ -86,6 +104,26 @@ public class SfUserRelationService {
         return num;
     }
 
+    /**
+     * 通过userId获取所有分享过的店铺的粉丝数量
+     * @param userId    用户id
+     * @return  map
+     */
+    public Map<String, Integer> getFansNumByUserId(Long userId){
+        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        Integer num;
+        Integer maxNum = 0;
+        Map<String, Integer> map = new HashMap<>();
+        for (SfUserRelation relation : sfUserRelations){
+            num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+            if (maxNum < num){
+                maxNum = num;
+            }
+            map.put(String.valueOf(relation.getShopId()), num);
+        }
+        map.put("maxNum",maxNum);
+        return map;
+    }
     /**
      * 查询代言人总数
      * @param userId 用户id

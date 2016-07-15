@@ -103,11 +103,22 @@
     </update>
 
     <select id="selectFansNum" resultType="java.util.HashMap">
-        select count(*)-1 as num from sf_user_relation r inner join com_user u on r.user_id = u.id where r.shop_id = #{shopId} and tree_code like CONCAT(#{treeCode},'%')
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where
+        tree_code like CONCAT(#{treeCode},'%')
+        <if test="shopId != null">
+            and r.shop_id = #{shopId}
+        </if>
     </select>
 
     <select id="selectSpokesManNum" resultType="java.util.HashMap">
-        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where r.shop_id = #{shopId} and tree_code like CONCAT(#{treeCode},'%') and u.is_spokesman = 1 and u.id <![CDATA[<>]]> #{userId}
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
+        where
+        u.is_spokesman = 1
+        <if test="shopId != null">
+            and r.shop_id = #{shopId}
+        </if>
+        and tree_code like CONCAT(#{treeCode},'%')
+        and u.id <![CDATA[<>]]> #{userId}
     </select>
 
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">

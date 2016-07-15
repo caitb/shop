@@ -206,6 +206,7 @@ public class SfUserRelationController extends BaseController{
         logger.info("userId = " + userId);
         ModelAndView mv = new ModelAndView();
         SfShop sfShop = sfShopService.getSfShopByUserId(userId);
+        logger.info("shopId = " + sfShop.getId());
         if (sfShop == null){
             throw new BusinessException("不存在小铺信息");
         }

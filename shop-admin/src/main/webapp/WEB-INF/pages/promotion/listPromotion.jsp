@@ -161,6 +161,71 @@
             $remove = $('#remove'),
             selections = [];
 
+    function hasGifts(promotionId) {
+        var has;
+        $.ajax({
+            url : '<%=basePath%>promotion/hasGifts.do?promotionId='+promotionId,
+            async : false,
+            success : function(data) {
+                if(data==true || data=='true') {
+                    has = true;
+                } else {
+                    has = false;
+                }
+            }
+        });
+
+        return has;
+    }
+
+    function getServerTime() {
+        var time;
+        $.ajax({
+            url : "<%=basePath%>common/now",
+            async : false,
+            dataType : 'json',
+            success : function(data) {
+                time = data.time;
+            }
+        });
+        return time;
+    }
+
+    var serverTime = getServerTime();
+
+    function changePromotionStatus(promotion, target) {
+
+        var promotionId = promotion.id;
+        var promotionStatus = $(target).attr('status');
+
+        if(promotionStatus == '0' && getServerTime()>promotion.endTime) {
+            alert("该活动已经过时，不可以再重启！");
+            $(target).remove();
+        }
+
+        var param = {
+            id : promotionId,
+            status :promotionStatus
+        }
+
+        bootbox.confirm("确定"+$(target).text()+"活动？",function(result) {
+            if(result) {
+                $.ajax({
+                    url : '<%=basePath%>promotion/changeStatus.do',
+                    type : 'post',
+                    data : param,
+                    success : function(data) {
+                        if(data == 'success') {
+                            $table.bootstrapTable('refresh');
+                        } else {
+                            alert('不可操作 ！');
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     function initTable() {
         $table.bootstrapTable({
             url: '<%=basePath%>promotion/list.do',
@@ -275,12 +340,25 @@
                         title: '操作',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="edit" href="javascript:void(0);">修改</a>';
+                            var operate = '';
+                            if(row.status == 0 ) {
+                                operate = '<a href="javascript:void(0);" class="operate" status="2">结束</a>';
+                            } else if(row.status == 2) {
+                                var now = <%=new Date().getTime()%>;
+                                if(row.beginTime<now && now < row.endTime && hasGifts(row.id)) {
+                                    operate = '<a href="javascript:void(0);" class="operate" status="0">重启</a>';
+                                }
+                            }
+
+                            return '<a class="view" href="javascript:void(0);">查看</a> &nbsp;&nbsp;&nbsp;&nbsp; '+operate;
                         },
                         events: {
-                            'click .edit': function(e, value, row, index){
+                            'click .view': function(e, value, row, index){
                                 parent.window.$('#myTabbable').closeTab('promotion-edit');
-                                parent.window.$('#myTabbable').add('promotion-edit', '修改活动', '<%=basePath%>promotion/add.shtml?promotionId='+row.id);
+                                parent.window.$('#myTabbable').add('promotion-edit', '查看活动', '<%=basePath%>promotion/add.shtml?promotionId='+row.id);
+                            },
+                            'click .operate' : function(e, value, row, index) {
+                                changePromotionStatus(row, this);
                             }
                         }
                     }

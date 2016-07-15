@@ -134,4 +134,16 @@ public class SfUserPromotionService {
         }
     }
 
+    public boolean hasGifts(Integer promotionId) {
+        List<SfUserPromotionGift> promotionGifts = sfUserPromotionGiftMapper.getPromoGiftByPromoId(promotionId);
+
+        for(SfUserPromotionGift promotionGift : promotionGifts) {
+            if(promotionGift.getPromoQuantity() < promotionGift.getUpperQuantity()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

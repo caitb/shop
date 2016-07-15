@@ -66,7 +66,7 @@
 .wrap main .sec2 p {
   width: 122px;
   height: 122px;
-  background: url("../img/reward.png") no-repeat;
+  background: url("../../images/reward.png") no-repeat;
   background-size: 100% 100%;
   margin: 10px auto;
 }

@@ -21,9 +21,14 @@ public class ComGiftController {
 
     @RequestMapping("/getGiftDetailInfo.do")
     @ResponseBody
-    public String getGiftDetailInfo(@RequestParam(required = true) Integer giftId, Model model){
+    public String getGiftDetailInfo(@RequestParam(required = true) Integer giftId,
+                                    @RequestParam(required = true) Integer promoId,
+                                    @RequestParam(required = true) Integer promoRuleId,
+                                    Model model){
         ComGift comGift = comGiftService.getComGiftById(giftId);
         model.addAttribute("comGift",comGift);
+        model.addAttribute("promoId",promoId);
+        model.addAttribute("promoRuleId",promoRuleId);
         return null;
     }
 }

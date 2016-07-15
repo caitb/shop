@@ -5,7 +5,7 @@ $(function(){
 
     $("#remore").unbind("click").on("click", moreClick);
 
-    $(document).on("click", "#mlist .sec1", viewDetail);
+    $("#mlist").on("click", ".sec1", viewDetail);
 });
 var currentPageNum = -1;
 var pageNums = 0;

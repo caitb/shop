@@ -172,6 +172,10 @@
              alert("运费格式不正确");
              return false;
          }
+         if(shipAmount>10000){
+             alert("运费金额不能超过10000");
+             return false;
+         }
          $.ajax({
              url: '<%=basePath%>shop/manage/setupFreight',
              type: 'post',

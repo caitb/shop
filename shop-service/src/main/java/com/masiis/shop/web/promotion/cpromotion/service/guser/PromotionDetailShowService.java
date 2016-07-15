@@ -83,8 +83,8 @@ public class PromotionDetailShowService {
                 promotionInfo.setRuleInfos(ruleInfos);
                 promotionInfo.setPresonType(userPromotion.getPersonType());
                 promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
-                promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.DEFAULT_DATE_FMT_2));
-                promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.DEFAULT_DATE_FMT_2));
+                promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.SQL_TIME_FMT));
+                promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.SQL_TIME_FMT));
                 promotionInfos.add(promotionInfo);
             }
             map.put("promotionInfos",promotionInfos);

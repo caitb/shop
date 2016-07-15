@@ -76,7 +76,7 @@
                     <body>
                     <div class="wrap">
                         <header class="xq_header">
-                            <a href="#" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                            <a href="javascript:void(0)" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                             <p>消息中心</p>
                         </header>
                         <!--      消息list-->

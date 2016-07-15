@@ -33,8 +33,8 @@
             <input type="tel" id="ID">
             <b onclick="checkInfo()">查找</b>
         </div>
-        <div class="main">
-            <div class="sec1" id="disSpokesMan">
+        <div class="main" id="disSpokesMan">
+
             <%--<c:forEach items="${infos}" var="info">
                 <div class="s_t">
                     <p onclick="toDetail(${info.userId})" style="background:url('${info.headImg}');background-size:100% 100%;"></p>

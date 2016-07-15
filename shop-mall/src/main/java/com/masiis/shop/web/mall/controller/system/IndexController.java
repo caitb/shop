@@ -86,8 +86,9 @@ public class IndexController extends BaseController {
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                String productImgValue = PropertiesUtils.getStringValue("shopman_wx_qrcode_url");
-                sfShop.setWxQrCode(productImgValue+sfShop.getWxQrCode());
+                String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
+                String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+                sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
             }
         } else {
             throw new BusinessException("shopId不能为空");

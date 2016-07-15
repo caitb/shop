@@ -311,7 +311,7 @@ public class DevelopingController extends BaseController {
                     Element qrcodeImgElement = new Element(256, 778, 236, 236, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                     String desc1 = "我是"+comSku.getName()+"的"+comAgentLevel.getName();
-                    //String desc2 = comAgentLevel.getName();
+                    //String desc2 = comAgentLevel.getName();//
                     String desc3 = "我在麦链实现了创业梦想!";
 
                     font1.deriveFont(Font.PLAIN, 36);

@@ -85,6 +85,7 @@ public class SfUserPromotionGiftService {
             giftInfo.setSendedQuantity(promoGift.getPromoQuantity());
             giftInfo.setMaxQuantity(promoGift.getUpperQuantity());
             giftInfo.setGiftQuantity(promoGift.getQuantity());
+            giftInfo.setContent(comGift.getContent());
             if (isGetImage){
                 giftInfo.setGiftImageUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
             }

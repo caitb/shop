@@ -29,15 +29,15 @@
             <h1>
                 <span></span>
                 <b>奖品描述</b>
-                <span></span>
+                <span>${promotionGiftInfo.content}</span>
             </h1>
-            <p>阿克苏了解到拉萨空间打开拉萨觉得绿卡时间的卡拉司机打开拉萨觉得卡拉斯进口量跌价阿斯科利大家阿斯科利的艰苦拉萨机</p>
+            <p></p>
        </main>
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
-        function skipPromotionGorderPage(promoId,promoRuleId){
-            window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
+        function skipPromotionGorderPage(){
+            window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId=${promoId}&promoRuleId=${promoRuleId}";
         }
     </script>
 </body>

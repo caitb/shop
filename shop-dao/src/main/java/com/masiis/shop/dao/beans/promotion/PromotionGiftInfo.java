@@ -14,6 +14,7 @@ public class PromotionGiftInfo {
     private Integer noSendQuantity;  //未发送奖品的数量
     private Integer maxQuantity;    //奖品数量上限
     private String giftImageUrl;    //奖品图片地址
+    private String content;        //奖品描述
 
 
     public Integer getPromoGiftId() {
@@ -86,5 +87,13 @@ public class PromotionGiftInfo {
 
     public void setGiftImageUrl(String giftImageUrl) {
         this.giftImageUrl = giftImageUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

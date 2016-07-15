@@ -25,11 +25,14 @@ public class ComGiftController {
     public String getPromotionGiftDetailInfo(@RequestParam(required = true) Integer giftId,
                                     @RequestParam(required = true) Integer promoId,
                                     @RequestParam(required = true) Integer promoRuleId,
+                                    @RequestParam(required = true) Boolean isMayReceive,
                                     Model model){
         PromotionGiftInfo promotionGiftInfo = comGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,giftId);
         model.addAttribute("promotionGiftInfo",promotionGiftInfo);
         model.addAttribute("promoId",promoId);
         model.addAttribute("promoRuleId",promoRuleId);
-        return null;
+        model.addAttribute("giftId",giftId);
+        model.addAttribute("isMayReceive",isMayReceive);
+        return "promotion/guser/promotionGiftDetail";
     }
 }

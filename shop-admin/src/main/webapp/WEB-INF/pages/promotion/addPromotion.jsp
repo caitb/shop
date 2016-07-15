@@ -261,6 +261,9 @@
                 $('textarea[name=promotionIntroduction]').val(promotion.introduction);
                 $('input[name=promotionBeginTime]').val(new Date(promotion.beginTime).pattern("yyyy-MM-dd HH:mm:ss"));
                 $('input[name=promotionEndTime]').val(new Date(promotion.endTime).pattern("yyyy-MM-dd HH:mm:ss"));
+
+                $('input,select,textarea').attr("disabled", true);
+                $('button').remove();
             }
 
             function viewRuleWraps(ruleWraps) {

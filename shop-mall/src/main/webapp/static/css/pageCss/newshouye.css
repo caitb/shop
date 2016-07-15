@@ -78,7 +78,8 @@
   color:#fff;
   border-radius:5px;
   border:1px solid #fff;
-  padding:2px 15px;
+  padding:3px 15px 2px 15px;
+    line-height: 20px;
 }
 .wrap .banner .banner_1 .br_1 {
   display: -webkit-box;

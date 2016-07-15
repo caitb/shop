@@ -38,14 +38,17 @@
             <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
         </div>
         <div class="dlpople">
-            <p>运费：
-                <c:if test="${sfShop.shipType==1 || skuInfo.ownShipAmount==0}">
+            <p>运费
+                <c:if test="${isOwnShip==0 && sfShop.shipType==1}">
+                <span>包邮</span></p>
+            </c:if>
+            <c:if test="${isOwnShip==1 && skuInfo.ownShipAmount eq '0.00'}">
                 <span>包邮</span></p>
             </c:if>
             <c:if test="${isOwnShip==0 && sfShop.shipType==0}">
                 <span>${skuInfo.shipAmount}</span></p>
             </c:if>
-            <c:if test="${isOwnShip==1}">
+            <c:if test="${isOwnShip==1  && skuInfo.ownShipAmount ne '0.00'}">
                 <span>${skuInfo.ownShipAmount}</span></p>
             </c:if>
             <p>总销量：<b>${skuInfo.saleNum}</b></p>

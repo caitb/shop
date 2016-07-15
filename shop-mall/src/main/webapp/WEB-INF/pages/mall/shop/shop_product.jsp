@@ -38,7 +38,7 @@
             <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
         </div>
         <div class="dlpople">
-            <p>运费
+            <p>运费:
                 <c:if test="${isOwnShip==0 && sfShop.shipType==1}">
                 <span>包邮</span></p>
             </c:if>

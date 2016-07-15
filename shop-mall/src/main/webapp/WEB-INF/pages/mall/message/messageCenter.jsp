@@ -19,12 +19,12 @@
         $(function(){
             shopMsgList();
 
-            //$(document).on("click", "#shopList .sec1", viewDetail);
+            //$("#shopList").on("click", ".sec1", viewDetail);
 
         });
 
         function shopMsgList(){
-            $("#shopList").empty();
+            //$("#shopList").empty();
             $.ajax({
                 type: 'get',
                 url: path + '/mallmessage/shopMsgList.shtml?cur=' + cur++,
@@ -48,6 +48,7 @@
                                         '</div>';
                             }
                             $("#shopList").append(tempHtml);
+                            $("#shopList .sec1").unbind("click");
                             $("#shopList .sec1").click(function(){
                                 window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
                             });

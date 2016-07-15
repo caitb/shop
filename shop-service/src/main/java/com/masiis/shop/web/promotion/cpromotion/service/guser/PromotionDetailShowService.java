@@ -53,48 +53,48 @@ public class PromotionDetailShowService {
         if (sfShop!=null){
             log.info("用户id------"+comUser.getId()+"----对应的小铺id-----"+sfShop.getId());
             fansQuantity = userRelationService.getFansNumByUserId(comUser.getId(),sfShop.getId());
-            log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
-            //获取所有进行中的活动
-            List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
-            List<PromotionInfo> promotionInfos = new ArrayList<>();
-            log.info("获取所有的活动-----start");
-            for(SfUserPromotion userPromotion:userPromotions){
-                //获取此活动对应的规则
-                log.info("获取此活动对应的规则-----活动id-----"+userPromotion.getId());
-                List<SfUserPromotionRule> rules = ruleService.getPromoRuleByPromoId(userPromotion.getId());
-                List<PromotionRuleInfo> ruleInfos = new ArrayList<>();
-                for (SfUserPromotionRule rule : rules){
-                    //获取此规则对应的奖品信息
-                    log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
-                    List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
-                    //生成某个规则信息
-                    PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule,giftInfos);
-                    if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){
-                        log.info("奖品数量-------"+giftInfos.size());
-                        ruleInfo.setGiftInfos(giftInfos);
-                    }
-                    ruleInfos.add(ruleInfo);
-                }
-                //生成某个活动信息
-                log.info("粉丝数量-----"+fansQuantity);
-                log.info("isMeetPromoRequire-----"+isMeetPromoRequire);
-                PromotionInfo promotionInfo = new PromotionInfo();
-                promotionInfo.setPromoId(userPromotion.getId());
-                promotionInfo.setRuleInfos(ruleInfos);
-                promotionInfo.setPresonType(userPromotion.getPersonType());
-                promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
-                promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.SQL_TIME_FMT));
-                promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.SQL_TIME_FMT));
-                promotionInfos.add(promotionInfo);
-            }
-            map.put("promotionInfos",promotionInfos);
-            map.put("fansQuantity",fansQuantity);
-            log.info("获取所有的活动---end");
-            log.info("获取活动数据----end");
         }else{
             log.info("获得小铺信息为null---comUser的id-----"+comUser.getId());
-            throw new BusinessException("获得小铺信息为null---comUser的id-----"+comUser.getId());
+            fansQuantity = 0;
         }
+        log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
+        //获取所有进行中的活动
+        List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
+        List<PromotionInfo> promotionInfos = new ArrayList<>();
+        log.info("获取所有的活动-----start");
+        for(SfUserPromotion userPromotion:userPromotions){
+            //获取此活动对应的规则
+            log.info("获取此活动对应的规则-----活动id-----"+userPromotion.getId());
+            List<SfUserPromotionRule> rules = ruleService.getPromoRuleByPromoId(userPromotion.getId());
+            List<PromotionRuleInfo> ruleInfos = new ArrayList<>();
+            for (SfUserPromotionRule rule : rules){
+                //获取此规则对应的奖品信息
+                log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
+                List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
+                //生成某个规则信息
+                PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule,giftInfos);
+                if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){
+                    log.info("奖品数量-------"+giftInfos.size());
+                    ruleInfo.setGiftInfos(giftInfos);
+                }
+                ruleInfos.add(ruleInfo);
+            }
+            //生成某个活动信息
+            log.info("粉丝数量-----"+fansQuantity);
+            log.info("isMeetPromoRequire-----"+isMeetPromoRequire);
+            PromotionInfo promotionInfo = new PromotionInfo();
+            promotionInfo.setPromoId(userPromotion.getId());
+            promotionInfo.setRuleInfos(ruleInfos);
+            promotionInfo.setPresonType(userPromotion.getPersonType());
+            promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
+            promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.SQL_TIME_FMT));
+            promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.SQL_TIME_FMT));
+            promotionInfos.add(promotionInfo);
+        }
+        map.put("promotionInfos",promotionInfos);
+        map.put("fansQuantity",fansQuantity);
+        log.info("获取所有的活动---end");
+        log.info("获取活动数据----end");
         return map;
     }
 

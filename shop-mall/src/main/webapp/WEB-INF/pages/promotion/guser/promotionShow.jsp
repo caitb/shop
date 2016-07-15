@@ -46,7 +46,11 @@
                             <h1><b>${status.index+1}</b></h1>
                             <p>粉丝数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}</p>
                             <div class="f_box">
-                                <div class="f_l"><img src="${giftInfo.giftImageUrl}" alt=""></div>
+                                <div class="f_l">
+                                    <img src="${giftInfo.giftImageUrl}"
+                                         onclick="skipPromotionGiftDetailPage(${promotionInfo.promoId},${promotionRule.promoRuleId},${giftInfo.giftId},${promotionRule.status})"
+                                         />
+                                </div>
                                 <div class="f_r">
                                     <h1>${giftInfo.giftName}</h1>
                                     <p>(已领取<b>${giftInfo.sendedQuantity}</b>件，限购<b>${giftInfo.maxQuantity}</b>份)</p>
@@ -81,6 +85,9 @@
         $(".f_l img").width(imgSize).height(imgSize)
         function skipPromotionGorderPage(promoId,promoRuleId){
             window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
+        }
+        function skipPromotionGiftDetailPage(promoId,promoRuleId,giftId,isMayReceive){
+            window.location.href="<%=path%>/comGift/getPromotionGiftDetailInfo.shtml?promoId="+promoId+"&promoRuleId="+promoRuleId+"&giftId="+giftId+"&isMayReceive="+isMayReceive;
         }
     </script>
 </body>

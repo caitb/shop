@@ -18,6 +18,7 @@ public class ComGiftService {
     @Resource
     private ComGiftMapper comGiftMapper;
 
+    @Resource
     private SfUserPromotionGiftService promotionGiftService;
 
     public ComGift getComGiftById(Integer id){

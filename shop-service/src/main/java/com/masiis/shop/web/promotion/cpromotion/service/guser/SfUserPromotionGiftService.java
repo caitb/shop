@@ -76,10 +76,10 @@ public class SfUserPromotionGiftService {
             promoGift = getPromoGiftByPromoIdAndRuleIdAndGiftValue(promoId,promoRuleId,giftId);
         }
         log.info("获得奖品信息-----奖品id-----"+giftId);
-        ComGift comGift = comGiftService.getComGiftById(giftId);
+        ComGift comGift = comGiftService.getComGiftById(promoGift.getGiftValue());
         PromotionGiftInfo giftInfo = new PromotionGiftInfo();
         if (comGift!=null&&comGift.getStatus()==1){
-            giftInfo.setPromoGiftId(giftId);
+            giftInfo.setPromoGiftId(promoGift.getGiftValue());
             giftInfo.setGiftId(comGift.getId());
             giftInfo.setGiftName(comGift.getName());
             giftInfo.setSendedQuantity(promoGift.getPromoQuantity());

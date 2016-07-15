@@ -13,17 +13,21 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/prize.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/prize.css">
 </head>
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="${path}/showPromotion/getAllPromoDetail.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>奖品详情</p>            
         </header>
         <banner>
             <img src="${promotionGiftInfo.giftImageUrl}" alt="">
-            <h1>${promotionGiftInfo.giftName}<button onclick="skipPromotionGorderPage()">点击领取</button></h1>
+            <h1>${promotionGiftInfo.giftName}
+                <c:if test="${isMayReceive==1}">
+                    <button onclick="skipPromotionGorderPage(${promoId},${promoRuleId})">点击领取</button>
+                </c:if>
+            </h1>
         </banner>
         <main>
             <h1>
@@ -36,8 +40,8 @@
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
-        function skipPromotionGorderPage(){
-            window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId=${promoId}&promoRuleId=${promoRuleId}";
+        function skipPromotionGorderPage(promoId,promoRuleId){
+            window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
         }
     </script>
 </body>

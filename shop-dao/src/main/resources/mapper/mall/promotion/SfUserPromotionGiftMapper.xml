@@ -23,7 +23,7 @@
         where promo_rule_id = #{ruleId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionGift"  useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_promotion_gift (id, promo_id, promo_rule_id, 
             type, gift_value, quantity, 
             promo_quantity, upper_quantity, remark

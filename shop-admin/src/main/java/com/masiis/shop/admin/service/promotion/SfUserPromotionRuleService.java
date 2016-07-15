@@ -20,7 +20,6 @@ public class SfUserPromotionRuleService {
 
     public SfUserPromotionRule insertOrUpdate(SfUserPromotionRule rule) {
         if(rule.getId() == null) {
-            init4insert(rule);
             sfUserPromotionRuleMapper.insert(rule);
         } else {
             sfUserPromotionRuleMapper.updateByPrimaryKey(rule);
@@ -76,13 +75,5 @@ public class SfUserPromotionRuleService {
         return ruleList;
     }
 
-    public SfUserPromotionRule init4insert(SfUserPromotionRule rule) {
-        Integer maxId = sfUserPromotionRuleMapper.maxId();
-        if(maxId == null) {
-            maxId = 0;
-        }
-        rule.setId(maxId+1);
-        return rule;
-    }
 
 }

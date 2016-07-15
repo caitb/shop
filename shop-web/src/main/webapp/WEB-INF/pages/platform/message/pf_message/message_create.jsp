@@ -82,7 +82,7 @@
             var num = +$(this).children("span").first().html();
             if(num <= 0){
                 $(this).removeClass("on");
-                alert("请不要选择没人的部分");
+                alert("暂无发送对象");
             }
         });
 

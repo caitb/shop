@@ -58,7 +58,7 @@
                 <%--<p>类    型：<span><c:if test="${orderMallDetail.sfOrder.orderType==0}">合伙人订单</c:if><c:if test="${orderMallDetail.sfOrder.orderType==1}">补货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1 && orderMallDetail.sfOrder.orderType==2}">申请拿货</c:if></span></p>--%>
                 ${stringBuffer}
             </div>
-           <div class="shop">
+           <div class="shop" onclick="javascript:window.location.replace('<%=basePath%>${orderMallDetail.sfOrder.shopId}/${userPid}/shop.shtml');">
                <h1>购买店铺：</h1>
                <p>${orderMallDetail.buyerShopName}</p>
            </div>

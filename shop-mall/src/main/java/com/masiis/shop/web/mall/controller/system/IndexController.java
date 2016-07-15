@@ -68,8 +68,11 @@ public class IndexController extends BaseController {
             req.getSession().removeAttribute("shopId");
             req.getSession().setAttribute("shopId", shopId);
         }
+        ComUser pUser =null;
+        if(userPid!=null){
+            pUser = userService.getUserById(userPid);
+        }
 
-        ComUser pUser = userService.getUserById(userPid);
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
         Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
@@ -78,6 +81,9 @@ public class IndexController extends BaseController {
             sfShop = sfShopService.getSfShopById(shopId);
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
+            }else{
+                String productImgValue = PropertiesUtils.getStringValue("shopman_wx_qrcode_url");
+                sfShop.setWxQrCode(productImgValue+sfShop.getWxQrCode());
             }
         } else {
             throw new BusinessException("shopId不能为空");
@@ -150,7 +156,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         shopId =336L;
-        userPid = 541L;
+        userPid = 540L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -165,7 +171,7 @@ public class IndexController extends BaseController {
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
+                String productImgValue = PropertiesUtils.getStringValue("shopman_wx_qrcode_url");
                 sfShop.setWxQrCode(productImgValue+sfShop.getWxQrCode());
             }
         }

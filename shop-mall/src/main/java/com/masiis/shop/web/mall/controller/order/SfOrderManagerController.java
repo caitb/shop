@@ -121,9 +121,16 @@ public class SfOrderManagerController extends BaseController {
         orderMallDetail.setSfOrderItems(sfOrderItems);
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
+
+        Object userPid = request.getSession().getAttribute("userPid");
+        if(userPid==null || userPid==""){
+            userPid=0L;
+        }
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("orderMallDetail", orderMallDetail);
+        modelAndView.addObject("userPid", userPid);
         modelAndView.setViewName("mall/order/dingdanxiangqing");
         return modelAndView;
     }

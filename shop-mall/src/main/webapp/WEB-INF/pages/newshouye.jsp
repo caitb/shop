@@ -102,7 +102,7 @@
         <p>
             如有问题，请加我为好友！。
         </p>
-        <b class="off" onclick="clickHide()">×</b>
+        <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
 <%--<div class="black nobady">--%>

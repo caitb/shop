@@ -173,7 +173,7 @@ public class SfShopManageController extends BaseController {
             log.error("设置店铺失败![sfShop="+sfShop+"]");
         }
 
-        return "redirect:/shop/manage/index";
+        return "redirect:"+request.getParameter("Referer");
     }
 
     /**

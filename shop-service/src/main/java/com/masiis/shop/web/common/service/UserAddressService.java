@@ -175,8 +175,10 @@ public class UserAddressService {
                 break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER://小铺确认订单界面
                 getMallConfrimOrderPageAddress(sb, shopId, selectedAddressId);
+                break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_RECEIVE_REWARD://活动领取奖励界面
                 getReceiveRewardPageAddress(sb,promoId,promoRuleId ,selectedAddressId);
+                break;
             default:
                 break;
         }

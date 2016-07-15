@@ -534,16 +534,21 @@ footer .sec3 p a {
     margin-top:10px;
 }
 .off{
-    display: block;
     position: absolute;
     right:10px;
     top:10px;
     width: 30px;
     height: 30px;
     border-radius:50px;
-    font-size:30px;
     text-align: center;
-    line-height:26px;
     background:#C7A467;
+    display:-webkit-box;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+}
+.off i{
+    display:block;
+    font-size:30px;
     color: #666666;
+    line-height: 2px;
 }

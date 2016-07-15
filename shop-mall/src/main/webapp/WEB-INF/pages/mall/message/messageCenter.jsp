@@ -24,7 +24,7 @@
         });
 
         function shopMsgList(){
-            $("#shopList").empty();
+            //$("#shopList").empty();
             $.ajax({
                 type: 'get',
                 url: path + '/mallmessage/shopMsgList.shtml?cur=' + cur++,

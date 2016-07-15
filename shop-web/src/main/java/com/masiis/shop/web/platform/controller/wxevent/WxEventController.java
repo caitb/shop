@@ -116,7 +116,7 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=OJ5vepCRU8RwU22hVCGd1bh5H8yzbwzWKQg9lM8TA2qLlWC4D8Y8vrHgD3_wJP5ywK1pINR27RLZRxWEAF1O9SpApIQ7jJV5FxyXZOiBvJXLo4jCG4fSvCoEzXB-2maBEEQiAFALLX";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=Ph1wa9BlE5Ggmeavi_eHfZvnvF08OPQtkudEOqFvK3k_Kv69MvdEd3l2E_Jgs9zY_W2O6OC6EuFUUrZY-S5z-Ep-E3ZUz-7E3iO4VnMeraZXFPUH4SFxPtOXl9a8fnUeRZAaAAALTU";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
@@ -132,6 +132,7 @@ public class WxEventController extends BaseController {
 
         sub_button2.add(new Button("店铺推广", "view", PropertiesUtils.getStringValue("web.domain.name.address") + "/menu/pmnshop"));
         sub_button2.add(new Button("发展合伙人", "view", PropertiesUtils.getStringValue("web.domain.name.address") + "/menu/pmnpartner"));
+        sub_button2.add(new Button("素材库", "view", PropertiesUtils.getStringValue("web.domain.name.address") + "/materielList/infoB"));
 
         buttons.add(new Button("关于麦链", sub_button1));
         buttons.add(new Button("推广", sub_button2));

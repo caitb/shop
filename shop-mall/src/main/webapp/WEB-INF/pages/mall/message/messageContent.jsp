@@ -19,7 +19,7 @@
             listMessage();
         });
         function listMessage(){
-            $("#msgList").empty();
+            //$("#msgList").empty();
             $.ajax({
                 type: 'get',
                 url: path + '/mallmessage/contentList.shtml?userId=' + ${userId} + "&cur=" + cur++,
@@ -67,7 +67,7 @@
         <p id="nameP"></p>
     </header>
     <main id="msgList">
-        <div class="sec1">
+        <%--<div class="sec1">
             <div class="s_b">
                 <div class="b_b">
                     <img src="${path}/static/images/massage_r1_c1.png" alt="">
@@ -78,7 +78,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div>--%>
     </main>
     <div id="more" class="downloading" onclick="listMessage();"><img src="${path}/static/images/downloading.png" alt=""></div>
 </div>

@@ -161,7 +161,8 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity(),isOwnShip);
             }
-
+            //更新sfuserRelation中isBuy字段
+            updateRelationIsBuy(order.getUserId(),order.getShopId());
             //统计更新信息
             updateStatistics(order,orderItems);
             //更新小铺用户结算中信息
@@ -622,7 +623,7 @@ public class SfOrderPayService {
     }
 
     /**
-     * 获得购买人的分销关系并更新是否在小铺中购买isbuy字段
+     * 获得购买人的分销关系
      *
      * @author hanzengzhi
      * @date 2016/4/14 16:29
@@ -632,17 +633,29 @@ public class SfOrderPayService {
         if (userRelation == null) {
             throw new BusinessException("支付成功后获得分销关系为null");
         } else {
-            userRelation.setIsBuy(1);
-            int i = sfUserRelationService.updateUserRelation(userRelation);
-            if (i==1){
-                log.info("更新是否在小铺中购买过成功");
-            }else{
-                log.info("更新是否在小铺中购买过失败");
-                throw new BusinessException("更新是否在小铺中购买过失败");
-            }
             return userRelation.getUserPid();
         }
     }
+
+    /**
+     * 更新是否在小铺中购买过字段 isBuy
+     * @param userId
+     * @param shopId
+     */
+    private void updateRelationIsBuy(Long userId,Long shopId){
+        log.info("更新是否在小铺中购买过字段 isBuy----start");
+        SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
+        userRelation.setIsBuy(1);
+        int i = sfUserRelationService.updateUserRelation(userRelation);
+        if (i==1){
+            log.info("更新是否在小铺中购买过成功");
+        }else{
+            log.info("更新是否在小铺中购买过失败");
+            throw new BusinessException("更新是否在小铺中购买过失败");
+        }
+        log.info("更新是否在小铺中购买过字段 isBuy----end");
+    }
+
 
     /**
      * 发送微信和短信提醒

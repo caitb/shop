@@ -49,12 +49,11 @@ public class PromotionDetailShowService {
         log.info("获取活动数据----start");
         Map<String,Object> map = new HashMap<>();
         //获取用户粉丝数
-        SfShop sfShop = sfShopService.getSfShopByUserId(comUser.getId());
-        if (sfShop!=null){
-            log.info("用户id------"+comUser.getId()+"----对应的小铺id-----"+sfShop.getId());
-            fansQuantity = userRelationService.getFansNumByUserId(comUser.getId(),sfShop.getId());
+        Map<String, Integer> _map = userRelationService.getFansNumByUserId(comUser.getId());
+        if (map!=null){
+            fansQuantity = (Integer) map.get("maxNum");
         }else{
-            log.info("获得小铺信息为null---comUser的id-----"+comUser.getId());
+            log.info("根据用户获取小铺代言的小铺map为null-----用户id----"+comUser.getId());
             fansQuantity = 0;
         }
         log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
@@ -70,7 +69,7 @@ public class PromotionDetailShowService {
             for (SfUserPromotionRule rule : rules){
                 //获取此规则对应的奖品信息
                 log.info("获取此规则对应的奖品信息-----规则id-----"+rule.getId());
-                List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfoByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
+                List<PromotionGiftInfo> giftInfos = giftService.getPromoGiftInfosByPromoIdAndRuleId(userPromotion.getId(),rule.getId(),true);
                 //生成某个规则信息
                 PromotionRuleInfo ruleInfo = generatePromotionRuleInfo(comUser.getId(),userPromotion.getId(),rule,giftInfos);
                 if (ruleInfo!=null&&giftInfos!=null&&giftInfos.size()>0){

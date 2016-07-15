@@ -10,6 +10,7 @@ import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
+import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
@@ -304,6 +305,36 @@ public class DevelopingController extends BaseController {
                     drawElements.add(text3Element);
 
                     DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                }else if("qilisheng.png".equals(comSkuExtension.getPoster())){
+                    Element headImgElement = new Element(316, 248, 120, 120, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+                    Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+                    Element qrcodeImgElement = new Element(256, 778, 236, 236, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                    String desc1 = "我是"+comSku.getName()+"的"+comAgentLevel.getName();
+                    //String desc2 = comAgentLevel.getName();
+                    String desc3 = "我在麦链实现了创业梦想!";
+
+                    font1.deriveFont(Font.PLAIN, 36);
+                    font2.deriveFont(Font.PLAIN, 22);
+                    Element text1Element = new Element((750-new DrawPicUtil().getStringPointSize(desc1, font1))/2, 520, font1, new Color(255,255,255), desc1);
+                    //Element text2Element = new Element((750-new DrawPicUtil().getStringPointSize(desc2, font1))/2, 530, font1, new Color(255,255,255), desc2);
+                    Element text3Element = new Element((750-new DrawPicUtil().getStringPointSize(desc3, font1))/2, 522, font1, new Color(255,255,255), desc3);
+                    Element text4Element = new Element(540, 1226, font2, new Color(121, 28, 30), "该二维码有效期:");
+                    Element text5Element = new Element(425, 1280, font2, new Color(121, 28, 30), startTime+"-"+endDate);
+                    text1Element.setLineCount(20);
+                    text1Element.setLineStyle(0);
+                    text5Element.setLineStyle(0);
+                    List<Element> drawElements = new ArrayList<>();
+                    drawElements.add(headImgElement);
+                    drawElements.add(bgPosterImgElement);
+                    drawElements.add(qrcodeImgElement);
+                    drawElements.add(text1Element);
+                    //drawElements.add(text2Element);
+                    drawElements.add(text3Element);
+                    drawElements.add(text4Element);
+                    drawElements.add(text5Element);
+
+                    DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
                 }
 
 

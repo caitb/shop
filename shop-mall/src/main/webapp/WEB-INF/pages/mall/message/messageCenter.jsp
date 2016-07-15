@@ -19,7 +19,7 @@
         $(function(){
             shopMsgList();
 
-            $(document).on("click", "#shopList .sec1", viewDetail);
+            //$(document).on("click", "#shopList .sec1", viewDetail);
 
         });
 
@@ -48,6 +48,9 @@
                                         '</div>';
                             }
                             $("#shopList").append(tempHtml);
+                            $("#shopList .sec1").click(function(){
+                                window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
+                            });
                         }
                         if(data.isLast == true){
                             $("#more").hide();
@@ -64,9 +67,9 @@
             });
         }
 
-        function viewDetail(){
+        /*function viewDetail(){
             window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
-        }
+        }*/
 
         </script>
                     </head>

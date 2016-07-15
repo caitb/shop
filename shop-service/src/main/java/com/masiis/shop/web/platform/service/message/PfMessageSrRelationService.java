@@ -103,4 +103,15 @@ public class PfMessageSrRelationService {
     public void insert(PfMessageSrRelation srRelation) {
         srRelationMapper.insert(srRelation);
     }
+
+    /**
+     * 根据接收消息人id和消息类型查询未读消息数量
+     *
+     * @param toUserId
+     * @param mType
+     * @return
+     */
+    public Integer queryNoSeeNumsByToUserAndType(Long toUserId, Integer mType){
+        return srRelationMapper.queryNoSeeNumsByToUserAndType(toUserId, mType);
+    }
 }

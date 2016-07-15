@@ -200,19 +200,20 @@
             type: 'post',
             data: {shopSkuId: shopSkuId},
             dataType: 'json',
+            async:false,
             beforeSend:function(){
                 fullShow();
             },
             success: function (data) {
                 if (data.isError == false) {
                     alert("恭喜您，您可以自己发货了！");
-                    window.location.reload(true);
                 }
             },
             complete:function(){
                 fullHide();
             }
         });
+        window.location.reload(true);
         $(".floor").eq(index).find(".myself").remove();
         $(".generate").hide();
     })

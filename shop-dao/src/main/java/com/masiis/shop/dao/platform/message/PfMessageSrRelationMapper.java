@@ -85,4 +85,14 @@ public interface PfMessageSrRelationMapper {
      */
     Integer updateRelationIsSeeByFromUserAndToUser(@Param("fUserId") Long fUserId,
                                                    @Param("tUserId") Long tUserId);
+
+    /**
+     * 根据接收消息人id和消息类型查询未读消息数量
+     *
+     * @param toUserId
+     * @param mType
+     * @return
+     */
+    Integer queryNoSeeNumsByToUserAndType(@Param("toUserId") Long toUserId,
+                                          @Param("mType") Integer mType);
 }

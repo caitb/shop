@@ -73,4 +73,15 @@ public class PfMessageContentService {
                                                                         Integer start, Integer pageSize) {
         return contentMapper.queryByUserIdAndTypeWithPaging(fUserId, type, start, pageSize);
     }
+
+    /**
+     * 根据消息发送者和消息类型查询消息总数
+     *
+     * @param fUserId
+     * @param mType
+     * @return
+     */
+    public Integer queryNumsByUserIdAndType(Long fUserId, int mType) {
+        return contentMapper.queryNumsByUserIdAndType(fUserId, mType);
+    }
 }

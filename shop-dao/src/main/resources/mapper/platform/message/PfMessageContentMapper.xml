@@ -104,4 +104,14 @@
         LIMIT #{pageSize,jdbcType=INTEGER}
     </select>
 
+    <select id="queryNumsByUserIdAndType" resultType="java.lang.Integer">
+        SELECT
+            COUNT(0)
+        FROM
+            pf_message_content c1
+        WHERE
+            c1.user_id = #{fUserId,jdbcType=BIGINT}
+        AND c1.type = #{type,jdbcType=INTEGER};
+    </select>
+
 </mapper>

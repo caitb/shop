@@ -14,7 +14,7 @@ html header {
   display: -webkit-box;
   position: relative;
   margin-bottom: 5px;
-  box-shadow: 1px 1px 1px #999;
+  box-shadow: 0px 0px 6px -1px rgba(0,0,0,0.4);
 }
 body header a:first-child,
 html header a:first-child {

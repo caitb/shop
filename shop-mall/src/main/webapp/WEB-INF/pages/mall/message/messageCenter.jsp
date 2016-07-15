@@ -32,25 +32,32 @@
                 success: function(data) {
                     if(data.resCode == "success"){
                         var messageList = data.messageList;
-                        var tempHtml = '';
-                        for (var i = 0; i < messageList.length; i++) {
-                            tempHtml += '<div class="sec1" id="' + messageList[i].id + '">' +
-                                    '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt="">';
-                            if(messageList[i].notSeeNum > 0){
-                                tempHtml += '<span>' + messageList[i].notSeeNum + '</span>';
+                        if(messageList != undefined){
+                            var tempHtml = '';
+                            for (var i = 0; i < messageList.length; i++) {
+                                tempHtml += '<div class="sec1" id="' + messageList[i].id + '">' +
+                                        '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt="">';
+                                if(messageList[i].notSeeNum > 0){
+                                    tempHtml += '<span>' + messageList[i].notSeeNum + '</span>';
+                                }
+                                tempHtml += '</h1>' +
+                                        '<div>' +
+                                        '<h2>' + messageList[i].name + '</h2>' +
+                                        '<p>' + messageList[i].content + '</p>' +
+                                        '</div>' +
+                                        '</div>';
                             }
-                            tempHtml += '</h1>' +
-                                    '<div>' +
-                                    '<h2>' + messageList[i].name + '</h2>' +
-                                    '<p>' + messageList[i].content + '</p>' +
-                                    '</div>' +
-                                    '</div>';
+                            $("#shopList").append(tempHtml);
                         }
-                        $("#shopList").append(tempHtml);
                         if(data.isLast == true){
                             $("#more").hide();
                         } else {
                             $("#more").show();
+                        }
+                        if(data.hasData == false){
+                            $("#shopList").hide();
+                            $("#nomore").show();
+                            $("#more").hide();
                         }
                     }
                 }
@@ -88,6 +95,10 @@
                 <p>暂无消息</p>
             </div>
         </c:if>
+        <div id="nomore" style="display: none">
+            <br/>
+            <h3 align="center">暂无更多数据</h3>
+        </div>
     <!--        点击加载-->
     <%--<c:if test="${isLast}">--%>
         <div id="more" class="downloading" onclick="shopMsgList();"><img src="${path}/static/images/downloading.png" alt=""></div>

@@ -55,12 +55,12 @@
   position: absolute;
   top: -8px;
   right: 4px;
-  height: 20px;
-  width: 20px;
+  height: 17px;
+  width: 17px;
   color: #fff;
   text-align: center;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 17px;
 }
 .wrap main .sec1:nth-child(2) {
   margin-top: 10px;

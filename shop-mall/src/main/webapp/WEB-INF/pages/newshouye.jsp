@@ -102,7 +102,7 @@
         <p>
             如有问题，请加我为好友！。
         </p>
-        <b class="off" onclick="clickHide()">×</b>
+        <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
 <%--<div class="black nobady">--%>
@@ -171,21 +171,23 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
-    <%--var wxCode= ${sfShop.wxQrCode}--%>
+    var array = "${sfShop.wxQrCode}".split("/");
+    var nums = [ ];
+    for (var i=array.length-1 ; i< array.length ; i++)
+    {
+        nums.push(array[i]);
+    }
     $(".tallme").on("click",function(){
-//        if(wxCode==null || wxCode==""){
-//            alert("店主还没有上传二维码");
-//        }else{
+        if(nums==null || nums==""){
+            alert("店主还没有上传二维码");
+        }else{
             $(".black").show();
             $(".b_t").show();
             $(".back_b").show();
-//        }
+        }
 
     })
-//    function clickShow(){
-//        $(".black").show();
-//        $(".b_t").show();
-//    }
+
 </script>
 </body>
 </html>

@@ -110,6 +110,7 @@ public class ProductController {
                       @RequestParam(value = "totalPrices")String[] totalPrices,
                       @RequestParam("quantitys")Integer[] quantitys,
                       @RequestParam("bails")String[] bails,
+                      @RequestParam("rewardUnitPrices")String[] rewardUnitPrices,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       String proIconUrl,
                       String proIconName,
@@ -137,6 +138,7 @@ public class ProductController {
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
                 comSku.setIcon(proIconName);
+                comSku.setRewardUnitPrice(new BigDecimal(0));
                 log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
 
                 //代理分润
@@ -152,6 +154,7 @@ public class ProductController {
                     pfSkuAgent.setIsShow(1);
                     pfSkuAgent.setIcon(iconImgNames[i]);
                     pfSkuAgent.setIsUpgrade(1);
+                    pfSkuAgent.setRewardUnitPrice(new BigDecimal(rewardUnitPrices[i]));
 
                     pfSkuAgents.add(pfSkuAgent);
                 }
@@ -218,6 +221,7 @@ public class ProductController {
                          @RequestParam("totalPrices")String[]  totalPrices,
                          @RequestParam("quantitys")  Integer[] quantitys,
                          @RequestParam("bails")      String[]  bails,
+                         @RequestParam("rewardUnitPrices")String[] rewardUnitPrices,
                          @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                          @RequestParam(value = "proIconUrl", required = false)String proIconUrl,
                          @RequestParam(value = "proIconName", required = false)String proIconName,
@@ -260,6 +264,7 @@ public class ProductController {
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setRewardUnitPrice(new BigDecimal(rewardUnitPrices[i]));
                     pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setBackImg((i+1)+".png");
 

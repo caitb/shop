@@ -235,20 +235,20 @@ public class BOrderPayService {
             shopStatistics.setRemark("");
             shopStatisticsService.insert(shopStatistics);
         }
-        log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = new SfUserRelation();
-        sfUserRelation.setCreateTime(new Date());
-        sfUserRelation.setUserPid(0l);
-        sfUserRelation.setUserId(comUser.getId());
-        sfUserRelation.setShopId(sfShop.getId());
-        sfUserRelation.setIsBuy(0);
-        sfUserRelation.setTreeLevel(1);
-        sfUserRelation.setRemark("代理人初始分销关系");
-        sfUserRelationMapper.insert(sfUserRelation);
-        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
-        if (sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode) != 1) {
-            throw new BusinessException("treeCode修改失败");
-        }
+//        log.info("<6>初始化分销关系");//自己暂时不能成为自己店铺的粉丝
+//        SfUserRelation sfUserRelation = new SfUserRelation();
+//        sfUserRelation.setCreateTime(new Date());
+//        sfUserRelation.setUserPid(0l);
+//        sfUserRelation.setUserId(comUser.getId());
+//        sfUserRelation.setShopId(sfShop.getId());
+//        sfUserRelation.setIsBuy(0);
+//        sfUserRelation.setTreeLevel(1);
+//        sfUserRelation.setRemark("代理人初始分销关系");
+//        sfUserRelationMapper.insert(sfUserRelation);
+//        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
+//        if (sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode) != 1) {
+//            throw new BusinessException("treeCode修改失败");
+//        }
 //                    sfUserRelation.setUserPid(0l);
 //                    sfUserRelation.setRemark("代理人解除分销关系");
 //                    int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);

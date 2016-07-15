@@ -11,7 +11,7 @@ body{
 }
 .wrap main {
     margin-top: 10px;
-    -webkit-box-flex: 1;
+
 }
 .wrap main .floor {
     background: #fff;

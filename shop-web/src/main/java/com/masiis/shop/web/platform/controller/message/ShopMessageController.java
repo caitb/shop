@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.message;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.message.SfMessageContentService;
@@ -103,6 +104,7 @@ public class ShopMessageController extends BaseController {
             res.put("totalPage",pageNums);
             res.put("head_url", user.getWxHeadImg());
             res.put("shop_name", shop.getName());
+            res.put("path", PropertiesUtils.getStringValue("mall.domain.name.address"));
             int start = cur * pageSize;
             // 查询要展现的消息数据
             resData = contentService.queryContentFromUser(user, start, pageSize);

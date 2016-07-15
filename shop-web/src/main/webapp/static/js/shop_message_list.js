@@ -41,7 +41,7 @@ function listMessage(){
                                             + "<h1>" + data.data[i].content + "</h1>"
                                             + "<p>";
                                         if(data.data[i].contentUrl != "" && data.data[i].contentUrl != null && data.data[i].contentUrl != undefined){
-                                            ele += "<a href=\"" + path + "/" + data.data[i].contentUrl + "\">点击查看</a>";
+                                            ele += "<a href=\"" + data.path + "/" + data.data[i].contentUrl + "\">点击查看</a>";
                                         }
                                             ele  += "<a class='f_right'>" + data.data[i].createTime + "</a>"
                                             + "</p>"
@@ -58,14 +58,16 @@ function listMessage(){
                         $("#nomore").show();
                     }
                 }
-                if(data.isLast == true){
-                    // 去掉加载更多
-                    $("#more").hide();
-                    $("#nomore").show();
-                } else {
-                    // 显示加载更多
-                    $("#more").show();
-                    $("#nomore").hide();
+                if(data.isLast != undefined) {
+                    if (data.isLast == true) {
+                        // 去掉加载更多
+                        $("#more").hide();
+                        $("#nomore").show();
+                    } else {
+                        // 显示加载更多
+                        $("#more").show();
+                        $("#nomore").hide();
+                    }
                 }
             } else {
                 // 网络错误,显示重新加载

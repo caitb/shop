@@ -107,6 +107,22 @@ public class PromotionContorller  extends BaseController {
         return dataMap;
     }
 
+    @RequestMapping("/changeStatus.do")
+    @ResponseBody
+    public String changeStatus(@RequestParam Integer id, @RequestParam Integer status) {
+        SfUserPromotion promotion = new SfUserPromotion();
+        promotion.setId(id);
+        promotion.setStatus(status);
+        sfUserPromotionService.updatePromotionStatus(id, status);
+        return "success";
+    }
+
+    @RequestMapping("/hasGifts.do")
+    @ResponseBody
+    public boolean hasGifts(@RequestParam Integer promotionId) {
+        return sfUserPromotionService.hasGifts(promotionId);
+    }
+
     /**
      * 领取奖品发货
      * @param request

@@ -167,9 +167,13 @@
              alert("运费不能为空");
              return false;
          }
-         var patrn =/^[+-]?\d+(\.\d+)?$/;
+         var patrn =/^[0-9].*$/;
          if (!patrn.exec(shipAmount)) {
              alert("运费格式不正确");
+             return false;
+         }
+         if(shipAmount>10000){
+             alert("运费金额不能超过10000");
              return false;
          }
          $.ajax({

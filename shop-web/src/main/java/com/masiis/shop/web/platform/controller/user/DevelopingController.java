@@ -14,6 +14,8 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
+import com.masiis.shop.web.platform.service.user.ComPosterService;
+import com.masiis.shop.web.platform.service.user.PfUserShareParamService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
@@ -72,6 +74,10 @@ public class DevelopingController extends BaseController {
     private JSSDKPFService jssdkService;
     @Resource
     private WeiXinPFQRCodeService weiXinPFQRCodeService;
+    @Resource
+    private PfUserShareParamService pfUserShareParamService;
+    @Resource
+    private ComPosterService comPosterService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -205,7 +211,10 @@ public class DevelopingController extends BaseController {
                 shareLink = curUrl + "&fromUserId="+comUser.getId();
             }
 
-            /** 拼接等级ID  **/
+            /**
+             * 获取海报
+             */
+            /* 拼接等级ID  */
             StringBuilder sLevelIds = new StringBuilder();
             if(levelIds != null && levelIds.length > 0){
                 for(String levelId : levelIds){
@@ -213,8 +222,30 @@ public class DevelopingController extends BaseController {
                     sLevelIds.append(",");
                 }
             }
+            //获取海报1:如果海报已存在并且未过期,直接返回
+            PfUserShareParam userShareParam = new PfUserShareParam();
+            userShareParam.setfUserId(comUser.getId());
+            userShareParam.setSkuId(skuId);
+            userShareParam.setAgentLevelIds(sLevelIds.toString());
 
+            List<PfUserShareParam> pfUserShareParams = pfUserShareParamService.findByCondition(userShareParam);
+            Long shareParamId = (pfUserShareParams != null && pfUserShareParams.size() > 0) ? pfUserShareParams.get(0).getId() : -1L;
 
+            ComPoster comPosterParam = new ComPoster();
+            comPosterParam.setType(0);
+            comPosterParam.setUserId(comUser.getId());
+            comPosterParam.setShareParamId(shareParamId);
+
+            ComPoster comPoster = comPosterService.findByCondition(comPosterParam);
+            Long curTime = System.currentTimeMillis();
+            Long monthTime = 1000L * 60 * 60 * 24 * 28;//28天
+            if(comPoster != null && (curTime-comPoster.getCreateTime().getTime()) < monthTime) {
+                resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
+                mav.addObject("shareMap", resultMap);
+
+                return mav;
+            }
+            //获取海报2:如果海报不存在或已经过期,重新创建海报
             log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);
@@ -239,19 +270,18 @@ public class DevelopingController extends BaseController {
                     posterDir.mkdirs();
                 }
                 //先删除旧的图片,再下载新的图片
-//                new File(posterDirPath+"/"+headImg).delete();
-//                new File(posterDirPath+"/"+bgPoster).delete();
-//                new File(posterDirPath+"/"+qrcodeName).delete();
-//                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-//                DownloadImage.download(weiXinQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
-//                OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
+                new File(posterDirPath+"/"+headImg).delete();
+                new File(posterDirPath+"/"+bgPoster).delete();
+                new File(posterDirPath+"/"+qrcodeName).delete();
+
                 File headImgFile   = new File(posterDirPath+"/"+headImg);
                 File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
                 //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
                 if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
                 if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
                 if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/"+comSkuExtension.getPoster(), posterDirPath+"/"+bgPoster);
-                DownloadImage.download(weiXinPFQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString()), qrcodeName, posterDirPath);
+                String[] qrcodeResult = weiXinPFQRCodeService.createAgentQRCode(comUser.getId(),skuId, sLevelIds.toString());
+                DownloadImage.download(qrcodeResult[1], qrcodeName, posterDirPath);
 
 
                 //画图
@@ -308,9 +338,15 @@ public class DevelopingController extends BaseController {
 
 
                 //保存二维码海报图片地址
-                pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+"develop-"+comUser.getId()+"-"+comSku.getId()+".png");
-                pfUserCertificateMapper.updateById(pfUserCertificate);
-                resultMap.put("poster", pfUserCertificate.getPoster());
+                comPoster = new ComPoster();
+                comPoster.setCreateTime(new Date());
+                comPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+                comPoster.setType(0);
+                comPoster.setUserId(comUser.getId());
+                comPoster.setPosterName("develop-"+new SimpleDateFormat("yyyyMMddHHiiSS").format(comPoster.getCreateTime())+"-"+comUser.getId()+"-"+comSku.getId()+".png");
+                comPosterService.add(comPoster);
+
+                resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
             }
 
 

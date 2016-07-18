@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComPosterMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComPoster" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="share_param_id" property="shareParamId" jdbcType="BIGINT" />
+        <result column="poster_name" property="posterName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_poster
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="po.ComPoster" >
+        insert into com_poster (id, create_time, type, 
+            user_id, share_param_id, poster_name
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, 
+            #{userId,jdbcType=BIGINT}, #{shareParamId,jdbcType=BIGINT}, #{posterName,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="po.ComPoster" >
+        update com_poster
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            type = #{type,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            share_param_id = #{shareParamId,jdbcType=BIGINT},
+            poster_name = #{posterName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, type, user_id, share_param_id, poster_name
+        from com_poster
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, type, user_id, share_param_id, poster_name
+        from com_poster
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComPoster" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               type,
+               user_id,
+               share_param_id,
+               poster_name
+        from
+               com_poster
+        <where>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="shareParamId != null">
+                AND share_param_id = #{shareParamId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

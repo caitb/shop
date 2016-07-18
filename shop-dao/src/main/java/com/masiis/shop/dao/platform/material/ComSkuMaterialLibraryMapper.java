@@ -22,4 +22,6 @@ public interface ComSkuMaterialLibraryMapper {
     List<ComSkuMaterialLibrary> selectAll();
 
     int updateByPrimaryKey(ComSkuMaterialLibrary record);
+
+    int countLibrary();
 }

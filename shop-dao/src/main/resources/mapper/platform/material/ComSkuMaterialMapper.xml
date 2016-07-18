@@ -157,4 +157,10 @@
         where mi.material_id = #{materialId,jdbcType=INTEGER}
         ORDER BY mi.sort ASC
     </select>
+
+    <select id="countSkuMaterial" resultType="int" parameterType="java.lang.Integer" >
+        select COUNT(1)
+        from com_sku_material
+        where material_group_id = #{materialGroupId,jdbcType=INTEGER}
+    </select>
 </mapper>

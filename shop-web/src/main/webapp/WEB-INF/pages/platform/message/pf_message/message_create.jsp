@@ -172,6 +172,7 @@
             alert("您未输入消息内容");
             return;
         }
+        $("#submit").unbind("click");
         var options = {
             url:"${path}/message/newmessage.do",
             type:"post",
@@ -200,7 +201,6 @@
             }
         };
 
-        $("#submit").unbind("click");
         $.ajax(options);
     }
 </script>

@@ -355,7 +355,7 @@ public class DevelopingController extends BaseController {
                     comPosterService.update(newComPoster);
                 }
 
-                resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
+                resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
             }
 
 

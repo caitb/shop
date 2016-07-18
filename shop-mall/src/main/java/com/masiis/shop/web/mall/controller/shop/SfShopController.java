@@ -8,20 +8,14 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.product.SkuImageService;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
-import com.masiis.shop.web.mall.service.qrcode.WeiXinSFQRCodeService;
-import com.masiis.shop.web.mall.service.shop.JSSDKSFService;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
-import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
-import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.qrcode.WeiXinSFQRCodeService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.utils.image.DrawImageUtil;
 import com.masiis.shop.web.mall.utils.image.Element;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
@@ -61,14 +55,16 @@ public class SfShopController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SkuService skuService;
+//    @Resource
+//    private SkuImageService skuImageService;
+//    @Resource
+//    private UserService userService;
+//    @Resource
+//    private SfUserShopViewService sfUserShopViewService;
+//    @Resource
+//    private JSSDKSFService jssdkService;
     @Resource
-    private SkuImageService skuImageService;
-    @Resource
-    private UserService userService;
-    @Resource
-    private SfUserShopViewService sfUserShopViewService;
-    @Resource
-    private JSSDKSFService jssdkService;
+    private SfUserRelationService sfUserRelationService;
     @Resource
     private WeiXinSFQRCodeService weiXinSFQRCodeService;
 
@@ -199,9 +195,14 @@ public class SfShopController extends BaseController {
 
             DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
-            //二维码获取成功,更新com_user成为代言人
-            comUser.setIsSpokesman(1);
-            comUserMapper.updateByPrimaryKey(comUser);
+            //二维码获取成功,更新sfUserRelation成为代言人
+            SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), shopId);
+            if (sfUserRelation != null){
+                sfUserRelation.setIsSpokesman(1);
+                sfUserRelationService.updateUserRelation(sfUserRelation);
+            }else {
+                log.info("SfUserRelation为空");
+            }
 
 //            resultMap.put("appId", WxConsPF.APPID);
 //            resultMap.put("shareTitle", "我是"+comUser.getWxNkName()+",我为朋友代言!");

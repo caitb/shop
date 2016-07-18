@@ -61,8 +61,8 @@ public class SfOrderPurchaseService {
     private BigDecimal skuTotalPrice = null;
     private Integer totalQuantity = null;
 
-    private Boolean isExistPlatformSendGoods = false;
-    private Boolean isExistShopUserSendGoods = false;
+    private Boolean isExistPlatformSendGoods = null;
+    private Boolean isExistShopUserSendGoods = null;
 
     /**
      * 获得确认订单界面，地址信息和商品信息
@@ -100,6 +100,8 @@ public class SfOrderPurchaseService {
             map.put("skuTotalPrice", skuTotalPrice);
             map.put("totalQuantity", totalQuantity);
             //获得运费
+            isExistPlatformSendGoods = false;
+            isExistShopUserSendGoods = false;
             BigDecimal shipAmount = getShopShipAmount(sfShopId);
             if (shipAmount.compareTo(new BigDecimal(0))==0){
                 map.put("isFreeShipAmount","true");

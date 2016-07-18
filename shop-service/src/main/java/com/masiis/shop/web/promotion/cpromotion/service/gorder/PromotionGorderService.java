@@ -13,6 +13,7 @@ import com.masiis.shop.dao.po.SfUserPromotionRecord;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRecordService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRuleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,8 @@ public class PromotionGorderService {
     private SfGorderOperationLogService gorderOperationLogService;
     @Resource
     private SfUserPromotionRecordService recordService;
+    @Resource
+    private SfUserPromotionRuleService userPromotionRuleService;
 
 
 
@@ -67,7 +70,6 @@ public class PromotionGorderService {
         map.put("gifts",promotionGiftInfos);
         return map;
     }
-
     /**
      * 领取奖励
      * @param comUser
@@ -83,6 +85,11 @@ public class PromotionGorderService {
         if (record!=null){
             //活动已领取
             return 2;
+        }
+        Boolean bl = userPromotionRuleService.isMayReceiveReward(comUser,promoRuleId);
+        if (!bl){
+            //粉丝数量未达到不能领取
+            return 0;
         }
         //添加订单
         log.info("添加订单-------------start");

@@ -116,11 +116,13 @@ public class SfUserRelationService {
         Map<String, Integer> map = new HashMap<>();
         for (SfUserRelation relation : sfUserRelations){
             num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+            logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
             if (maxNum < num){
                 maxNum = num;
             }
             map.put(String.valueOf(relation.getShopId()), num);
         }
+        logger.info("maxNum------"+maxNum);
         map.put("maxNum",maxNum);
         return map;
     }
@@ -387,8 +389,12 @@ public class SfUserRelationService {
      * @param ID        代言人ID
      * @return
      */
-    public Integer getSpokesManNumByID(Long shopId, String ID){
-        return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID);
+    public Integer getSpokesManNumByID(Long shopId, String ID, boolean spokesMan){
+        if (spokesMan){
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, 1);
+        }else {
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, null);
+        }
     }
 
     /**

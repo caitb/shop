@@ -36,9 +36,13 @@
                                                     '<div class="b_b">' +
                                                         '<img src="${path}/static/images/massage_r1_c1.png" alt="">' +
                                                         '<h1>' + messageList[i].content + '</h1>' +
-                                                        '<p>' +
-                                                            '<a href="' + path + "/" + messageList[i].contentUrl + '">点击查看</a>' +
-                                                            '<a>' + messageList[i].createTime + '</a>' +
+                                                        '<p>';
+                                if(messageList[i].contentUrl != undefined) {
+                                    tempHtml += '<a href="' + path + "/" + messageList[i].contentUrl + '">点击查看</a>';
+                                }else{
+                                    tempHtml += '<a href="javascript:void(0)"></a>';
+                                }
+                                tempHtml += '<a>' + messageList[i].createTime + '</a>' +
                                                         '</p>' +
                                                     '</div>' +
                                                 '</div>' +

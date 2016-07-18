@@ -111,7 +111,7 @@ public class SMSConstants {
 	/**
 	 * 试用发货提醒
 	 */
-	public static final String TRIAL_SHIPMENTS_REMIND = "86552";
+	public static final String TRIAL_SHIPMENTS_REMIND = "101987";
 	/**
 	 * 下级补货提醒（普通—补货）
 	 */

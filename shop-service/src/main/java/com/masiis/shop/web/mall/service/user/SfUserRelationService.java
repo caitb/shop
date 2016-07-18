@@ -84,7 +84,7 @@ public class SfUserRelationService {
             Integer fansNum = 0;
             if (shopId == null){
                 for (SfUserRelation relation : sfUserRelations){
-                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
                     if (fansNum > 0){
                         logger.info("粉丝数量：" + num);
                         num += fansNum;
@@ -93,7 +93,7 @@ public class SfUserRelationService {
             }else {
                 for (SfUserRelation relation : sfUserRelations){
                     if (shopId.longValue() == relation.getShopId().longValue()){
-                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
                         if (fansNum > 0){
                             num += fansNum;
                         }
@@ -161,10 +161,10 @@ public class SfUserRelationService {
      */
     public Integer getFansNumByUserIdAndShopId(Long userId, Long shopId){
         SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() < 0){
+        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1 < 0){
             return 0;
         }else {
-            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue();
+            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1;
         }
     }
 

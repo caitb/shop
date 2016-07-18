@@ -61,7 +61,7 @@
         <nav>
             <p><span>
                 <c:if test="${shopView == null}">0</c:if>
-                <c:if test="${shopView != null}">${shopView}</c:if><b>位</b></span><span>代言人</span>
+                <c:if test="${shopView != null}">${shopView}</c:if><b>位</b></span><span>粉丝</span>
             </p>
             <p>
                 <span>${saleAmount}</span><span>店铺总销售额</span>

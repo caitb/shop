@@ -1,10 +1,10 @@
 package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
-import com.masiis.shop.common.enums.platform.BOrderStatus;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * MobileMessageUtil
@@ -23,6 +23,8 @@ public class MobileMessageUtil {
     private static String fromIdentify = "";
 
     private String[] content;
+
+    private static final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
 
     /**
      * 判断是B端还是C端 短信
@@ -111,10 +113,11 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean verifiedSubmitRemind(String phone, String days){
-        content = new String[2];
-        content[0] = days;
-        content[1] = EVENING_MESSAGE;
-        return sendMethod(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
+//        content = new String[2];
+//        content[0] = days;
+//        content[1] = EVENING_MESSAGE;
+//        return sendMethod(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
+        return true;
     }
 
     /**
@@ -160,14 +163,15 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean haveNewLowerOrder(String phone, Integer status){
-        content = new String[2];
-        if (status == BOrderStatus.MPS.getCode()){
-            content[0] = "目前您的库存不足，请及时补货。";
-        }else {
-            content[0] = "";
-        }
-        content[1] = EVENING_MESSAGE;
-        return sendMethod(phone, SMSConstants.NEW_LOWER_ORDER, content);
+//        content = new String[2];
+//        if (status == BOrderStatus.MPS.getCode()){
+//            content[0] = "目前您的库存不足，请及时补货。";
+//        }else {
+//            content[0] = "";
+//        }
+//        content[1] = EVENING_MESSAGE;
+//        return sendMethod(phone, SMSConstants.NEW_LOWER_ORDER, content);
+        return true;
     }
 
     /**
@@ -219,17 +223,18 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean addStockSuccess(String phone, Integer sendType, String quantity){
-        content = new String[3];
-        if (1 == sendType){
-            content[0] = "平台代发";
-            content[1] = "在线库存已更新";
-        }
-        if (2 == sendType){
-            content[0] = "自己发货";
-            content[1] = "我们将尽快发货";
-        }
-        content[2] = EVENING_MESSAGE;
-        return sendMethod(phone, SMSConstants.ADD_STOCK_SUCCESS, content);
+//        content = new String[3];
+//        if (1 == sendType){
+//            content[0] = "平台代发";
+//            content[1] = "在线库存已更新";
+//        }
+//        if (2 == sendType){
+//            content[0] = "自己发货";
+//            content[1] = "我们将尽快发货";
+//        }
+//        content[2] = EVENING_MESSAGE;
+//        return sendMethod(phone, SMSConstants.ADD_STOCK_SUCCESS, content);
+        return true;
     }
 
     /**
@@ -239,10 +244,11 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean joinQueueOrder(String phone, String orderCode){
-        content = new String[2];
-        content[0] = orderCode;
-        content[1] = EVENING_MESSAGE;
-        return sendMethod(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
+//        content = new String[2];
+//        content[0] = orderCode;
+//        content[1] = EVENING_MESSAGE;
+//        return sendMethod(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
+        return true;
     }
 
     /**
@@ -378,9 +384,8 @@ public class MobileMessageUtil {
     public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
         content = new String[5];
         content[0] = orderCode;
-        DecimalFormat format = new DecimalFormat("0.00");
-        String a = format.format(new BigDecimal(amount));
-        content[1] = "￥" + a;
+        String a = numberFormat.format(amount);
+        content[1] = a;
         content[2] = date;
         content[3] = mes;
         content[4] = SMSConstants.consumerHotline;
@@ -404,6 +409,225 @@ public class MobileMessageUtil {
         return sendMethod(phone, SMSConstants.TRIAL_SHIPMENTS_REMIND, content);
     }
 
+    /**
+     * 下级补货提醒（普通—补货）
+     * @param phone     手机号码
+     * @param skuName   商品名称
+     * @param levelName 等级名称
+     * @param nickName  用户昵称
+     * @param count     数量
+     * @param income    收入
+     * @param haveStock 库存是否充足  true：充足，false：不足
+     * @return
+     */
+    public boolean lowerReplenishmentRemind(String phone, String skuName, String levelName, String nickName, Integer count, BigDecimal income, boolean haveStock){
+        content = new String[5];
+        content[0] = skuName;
+        content[1] = levelName;
+        content[2] = nickName;
+        content[3] = String.valueOf(count);
+        content[4] = numberFormat.format(income);
+        if (!haveStock){
+            content[5] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.LOWER_PEPLENISHMENT_REMIND, content);
+    }
+
+    /**
+     * 下级升级提醒（普通—升级）
+     * @param phone         手机号码
+     * @param skuName       商品名称
+     * @param orginalLevel  原等级
+     * @param nickName      昵称
+     * @param upGradeLevel  升级后等级
+     * @param income        收入
+     * @param haveStock     库存是否充足  true：充足，false：不足
+     * @return
+     */
+    public boolean lowerGroupUpRemind(String phone, String skuName, String orginalLevel, String nickName, String upGradeLevel, BigDecimal income, boolean haveStock){
+        content = new String[6];
+        content[0] = skuName;
+        content[1] = orginalLevel;
+        content[2] = nickName;
+        content[3] = upGradeLevel;
+        content[4] = numberFormat.format(income);
+        if (!haveStock){
+            content[5] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.LOWER_UPGROUP_REMIND, content);
+    }
+
+    /**
+     * 被推荐人升级，上级提醒（推荐关系—升级）
+     * @param phone         手机号码
+     * @param skuName       商品名称
+     * @param orginalLevel  原等级
+     * @param nickName      昵称
+     * @param upGradeLevel  升级后等级
+     * @param income        收入
+     * @param haveStock     库存是否充足  true：充足，false：不足
+     * @return
+     */
+    public boolean refereeUpgradeUpRemind(String phone, String skuName, String orginalLevel, String nickName, String upGradeLevel, BigDecimal income, boolean haveStock){
+        content = new String[6];
+        content[0] = skuName;
+        content[1] = orginalLevel;
+        content[2] = nickName;
+        content[3] = upGradeLevel;
+        content[4] = numberFormat.format(income);
+        if (!haveStock){
+            content[5] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.REFEREE_UPGRADE_UP_REMIND, content);
+    }
+
+    /**
+     * 被推荐人升级，推荐人佣金提醒（推荐关系—升级）
+     * @param phone         手机号码
+     * @param skuName       商品名称
+     * @param orginalLevel  原等级
+     * @param nickName      用户昵称
+     * @param upGradeLevel  升级后等级
+     * @param reward        奖励
+     * @return
+     */
+    public boolean refereeUpgradeRecommendRemind(String phone, String skuName, String orginalLevel, String nickName, String upGradeLevel, String reward){
+        content = new String[5];
+        content[0] = skuName;
+        content[1] = orginalLevel;
+        content[2] = nickName;
+        content[3] = upGradeLevel;
+        content[4] = reward;
+        return sendMethod(phone, SMSConstants.REFEREE_UPGRADE_RECOMMEND_COMMISSION_REMIND, content);
+    }
+
+    /**
+     * 被推荐人补货，上级提醒（推荐关系—补货）
+     * @param phone     手机号码
+     * @param skuName   商品名称
+     * @param levelName 等级名称
+     * @param nickName  用户昵称
+     * @param count     数量
+     * @param income    收入
+     * @param haveStock 库存是否充足  true：充足，false：不足
+     * @return
+     */
+    public boolean refereeAddstockUpRemind(String phone, String skuName, String levelName, String nickName, Integer count, BigDecimal income, boolean haveStock){
+        content = new String[6];
+        content[0] = skuName;
+        content[1] = levelName;
+        content[2] = nickName;
+        content[3] = String.valueOf(count);
+        content[4] = numberFormat.format(income);
+        if (!haveStock){
+            content[5] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.REFEREE_ADDSTOCK_UP_REMIND, content);
+    }
+
+    /**
+     * 被推荐人补货，推荐人佣金提醒（推荐关系—补货）
+     * @param phone     手机号
+     * @param skuName   商品名称
+     * @param levelName 等级名称
+     * @param nickName  用户昵称
+     * @param income    收入
+     * @param reward    奖励
+     * @return
+     */
+    public boolean refereeAddstockRecomendRemind(String phone, String skuName, String levelName, String nickName, BigDecimal income, String reward){
+        content = new String[5];
+        content[0] = skuName;
+        content[1] = levelName;
+        content[2] = nickName;
+        content[3] = numberFormat.format(income);
+        content[4] = reward;
+        return sendMethod(phone, SMSConstants.REFEREE_ADDSTOCK_RECOMEND_COMMISSION_REMIND, content);
+    }
+
+    /**
+     * 上级收到被推荐人的下级加入通知（推荐关系-合伙订单）
+     * @param phone             手机号码
+     * @param skuName           商品名称
+     * @param levelName         等级名称
+     * @param income            收入
+     * @param recommenNickName  推荐人昵称
+     * @param haveStock         库存是否充足  true：充足，false：不足
+     * @return
+     */
+    public boolean refereeLowerJoinUpNotice(String phone, String skuName, String levelName, BigDecimal income, String recommenNickName, boolean haveStock){
+        content = new String[5];
+        content[0] = skuName;
+        content[1] = levelName;
+        content[2] = numberFormat.format(income);
+        content[3] = recommenNickName;
+        if (!haveStock){
+            content[4] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.REFEREE_LOWER_JOIN_UP_NOTICE, content);
+    }
+
+    /**
+     * 推荐佣金提醒（推荐关系-合伙订单）
+     * @param phone     手机号码
+     * @param nickName  用户昵称
+     * @param skuName   商品名称
+     * @param levelName 等级名称
+     * @param reward    奖励
+     * @return
+     */
+    public boolean recommendCommissionRemind(String phone, String nickName, String skuName, String levelName, String reward){
+        content = new String[4];
+        content[0] = nickName;
+        content[1] = skuName;
+        content[2] = levelName;
+        content[3] = reward;
+        return sendMethod(phone, SMSConstants.RECOMMEND_COMMISSION_REMIND, content);
+    }
+
+    /**
+     * 下单后店主提醒（新增）
+     * @param phone     手机号
+     * @param skuName   商品名称
+     * @param count     数量
+     * @param income    收入
+     * @return
+     */
+    public boolean orderShopRemind(String phone, String skuName, Integer count, BigDecimal income){
+        content = new String[3];
+        content[0] = skuName;
+        content[1] = String.valueOf(count);
+        content[2] = numberFormat.format(income);
+        return sendMethod(phone, SMSConstants.ORDER_SHOP_REMIND, content);
+    }
+
+    /**
+     * 下级合伙人加入提醒（普通-合伙）
+     * @param phone     手机号码
+     * @param skuName   商品名称
+     * @param levelName 等级名称
+     * @param income    收入
+     * @param hasStock  库存是否充足 true：充足， false：不足
+     * @return
+     */
+    public boolean lowerJoinRemind(String phone, String skuName, String levelName, BigDecimal income, boolean hasStock){
+        content = new String[4];
+        content[0] = skuName;
+        content[1] = levelName;
+        content[2] = numberFormat.format(income);
+        if (!hasStock){
+            content[3] = "您的库存不足，请及时补货";
+        }
+        return sendMethod(phone, SMSConstants.LOWER_JOIN_REMIND, content);
+    }
+
+    /**
+     * 发送短息方法
+     * @param phone     手机号码
+     * @param code      模板ID
+     * @param content   内容
+     * @return
+     */
     public boolean sendMethod(String phone, String code, String[] content){
         try{
             String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, code, content);

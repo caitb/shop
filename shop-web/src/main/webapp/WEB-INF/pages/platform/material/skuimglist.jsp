@@ -11,7 +11,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:history.go(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:" onclick="self.location=document.referrer;"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>素材图片</p>
     </header>
     <main id="divall">

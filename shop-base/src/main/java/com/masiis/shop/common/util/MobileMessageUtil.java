@@ -396,6 +396,7 @@ public class MobileMessageUtil {
         content = new String[5];
         content[0] = orderCode;
         String a = numberFormat.format(amount);
+        log.info("a-------------"+a);
         content[1] = a;
         content[2] = date;
         content[3] = mes;

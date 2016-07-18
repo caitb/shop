@@ -456,13 +456,10 @@ public class SfOrderPurchaseService {
         sfOrder.setProductAmount(skuTotalPrice);//商品总费用
         sfOrder.setShipAmount(skuTotalShipAmount);
         SfShop sfShop = sfShopService.getSfShopById(sfOrder.getShopId());
-        if (sfShop!=null){
-            if (sfShop.getShipType().equals(1)){
-                //平台代发
-                sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
-            }else{
-                sfOrder.setAgentShipAmount(new BigDecimal(0));
-            }
+        if (sfOrder.getSendType()==1){
+            sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
+        }else{
+            sfOrder.setAgentShipAmount(new BigDecimal(0));
         }
         sfOrder.setShipType(0);
         sfOrder.setShipStatus(0);

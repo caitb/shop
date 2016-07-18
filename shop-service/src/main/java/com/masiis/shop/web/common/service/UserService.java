@@ -247,6 +247,7 @@ public class UserService {
             sfNewUserRelation.setUserId(userId);
             sfNewUserRelation.setShopId(shopId);
             sfNewUserRelation.setIsBuy(0);
+            sfNewUserRelation.setIsSpokesman(0);
             if (sfUserPRelation == null) {
                 sfNewUserRelation.setTreeLevel(1);
                 sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0

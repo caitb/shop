@@ -103,4 +103,12 @@ public class SfUserRelation {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    public Integer getIsSpokesman() {
+        return isSpokesman;
+    }
+
+    public void setIsSpokesman(Integer isSpokesman) {
+        this.isSpokesman = isSpokesman;
+    }
 }

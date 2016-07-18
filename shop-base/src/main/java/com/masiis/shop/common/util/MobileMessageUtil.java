@@ -1,6 +1,7 @@
 package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -13,6 +14,9 @@ import java.util.Locale;
  * @date 2016/3/9
  */
 public class MobileMessageUtil {
+
+    private Logger log = Logger.getLogger(this.getClass());
+
     /**
      * 短信結束語
      */
@@ -382,6 +386,13 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
+
+        log.info("phone-----"+phone);
+        log.info("orderCode-----"+orderCode);
+        log.info("amount-----"+amount);
+        log.info("date-----"+date);
+        log.info("mes-----"+mes);
+
         content = new String[5];
         content[0] = orderCode;
         String a = numberFormat.format(amount);

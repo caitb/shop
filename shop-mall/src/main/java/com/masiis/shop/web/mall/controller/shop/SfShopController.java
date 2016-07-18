@@ -363,6 +363,7 @@ public class SfShopController extends BaseController {
         mav.addObject("loginUser", user);
         mav.addObject("sfShop", sfShop);
         mav.addObject("isOwnShip", isOwnShip);
+        mav.addObject("userPid", request.getSession().getAttribute("userPid")==null?0:request.getSession().getAttribute("userPid"));
         return mav;
     }
 

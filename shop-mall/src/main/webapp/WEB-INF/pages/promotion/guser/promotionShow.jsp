@@ -56,16 +56,16 @@
                                     <p>(已领取<b>${giftInfo.sendedQuantity}</b>件，限购<b>${giftInfo.maxQuantity}</b>份)</p>
                                     <h2>${giftInfo.giftQuantity}份</h2>
                                     <c:if test="${promotionRule.status==0}">
-                                        <button class="on" disabled>还差${promotionRule.needFansQuantity}人</button>
+                                        <button  disabled>还差${promotionRule.needFansQuantity}人</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==1}">
-                                        <button onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
+                                        <button class="on" onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==2}">
-                                        <button class="on" >已领取</button>
+                                        <button disabled>已领取</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==3}">
-                                        <button class="on" >奖品已被领取完</button>
+                                        <button disabled>奖品已被领取完</button>
                                     </c:if>
                                 </div>
                             </div>

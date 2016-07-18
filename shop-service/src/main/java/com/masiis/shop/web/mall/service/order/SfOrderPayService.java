@@ -583,7 +583,7 @@ public class SfOrderPayService {
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems", orderItems);
-            //获得购买人的分销关系并更新是否在小铺中购买isbuy字段
+            //获得购买人的分销关系
             Long userPid = getUserPid(order.getUserId(),order.getShopId());
             map.put("userPid", userPid);
         } catch (Exception e) {
@@ -629,6 +629,7 @@ public class SfOrderPayService {
      * @date 2016/4/14 16:29
      */
     private Long getUserPid(Long userId,Long shopId) {
+        log.info("获得购买人的分销关系------userId-----"+userId+"-----shopId-----"+shopId);
         SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
         if (userRelation == null) {
             throw new BusinessException("支付成功后获得分销关系为null");

@@ -341,12 +341,22 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var operate = '';
-                            if(row.status == 0 ) {
+                            if(row.status == 0 ) { // 进行中状态
                                 operate = '<a href="javascript:void(0);" class="operate" status="2">结束</a>';
-                            } else if(row.status == 2) {
-                                var now = <%=new Date().getTime()%>;
+                            } else if(row.status ==1 || row.status ==2) { // 暂停 或 结束 状态
+                                var now = getServerTime();
                                 if(row.beginTime<now && now < row.endTime && hasGifts(row.id)) {
                                     operate = '<a href="javascript:void(0);" class="operate" status="0">重启</a>';
+                                } else if(now < row.beginTime && hasGifts(row.id)) {
+                                    operate = '<a href="javascript:void(0);" class="operate" status="0" index="'+index+'" style="display: none;">重启</a>';
+                                    setTimeout(function() {
+                                        var now = getServerTime();
+                                        if(row.beginTime<now && now < row.endTime) {
+                                            $('a.operate[status=0][index='+index+']').show();
+                                        } else {
+                                            setTimeout(arguments.callee, 5000);
+                                        }
+                                    }, 5000);
                                 }
                             }
 

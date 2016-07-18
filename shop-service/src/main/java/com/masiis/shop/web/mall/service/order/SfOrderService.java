@@ -9,6 +9,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,18 +45,18 @@ public class SfOrderService {
     @Resource
     private ComUserMapper comUserMapper;
 
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public int insert(SfOrder sfOrder){
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public int insert(SfOrder sfOrder) {
         return sfOrderMapper.insert(sfOrder);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public SfOrder getOrderById(Long ordId){
-       return sfOrderMapper.selectByPrimaryKey(ordId);
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public SfOrder getOrderById(Long ordId) {
+        return sfOrderMapper.selectByPrimaryKey(ordId);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public int update(SfOrder sfOrder){
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public int update(SfOrder sfOrder) {
         return sfOrderMapper.updateByPrimaryKey(sfOrder);
     }
 
@@ -69,34 +70,36 @@ public class SfOrderService {
         return sfOrderMapper.selectByOrderCode(orderCode);
     }
 
-    public List<SfOrder> findByShopUserIds(List<Long> userIds){
+    public List<SfOrder> findByShopUserIds(List<Long> userIds) {
         return sfOrderMapper.selectByShopUserIds(userIds);
     }
 
-    public List<SfOrder> findByUserIds(Long userId,List<Long> userIds){
-        return sfOrderMapper.selectByUserIds(userId,userIds);
+    public List<SfOrder> findByUserIds(Long userId, List<Long> userIds) {
+        return sfOrderMapper.selectByUserIds(userId, userIds);
     }
 
-    public List<SfOrder> findByUserId(Long userId){
+    public List<SfOrder> findByUserId(Long userId) {
         return sfOrderMapper.selectByUserId(userId);
     }
 
     /**
      * 通过订单Id获取订单
+     *
      * @author muchaofeng
      * @date 2016/4/13 19:59
      */
-    public SfOrder findSforderByorderId(Long id){
+    public SfOrder findSforderByorderId(Long id) {
         return sfOrderMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 小铺订单
+     *
      * @author muchaofeng
      * @date 2016/4/13 10:40
      */
-    public List<SfOrder> findOrdersByShopUserId(Long shopUserId,Integer orderStatus, Long shopId,Integer sendType){
-        List<SfOrder> sfOrders = sfOrderManageMapper.selectByShopUserId(shopUserId, orderStatus, shopId,sendType);
+    public List<SfOrder> findOrdersByShopUserId(Long shopUserId, Integer orderStatus, Long shopId, Integer sendType) {
+        List<SfOrder> sfOrders = sfOrderManageMapper.selectByShopUserId(shopUserId, orderStatus, shopId, sendType);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (SfOrder sfOrder : sfOrders) {
             SfOrderConsignee orderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
@@ -112,8 +115,10 @@ public class SfOrderService {
         }
         return sfOrders;
     }
+
     /**
      * 发货
+     *
      * @author muchaofeng
      * @date 2016/4/13 18:19
      */
@@ -121,7 +126,7 @@ public class SfOrderService {
     public void deliver(String shipManName, Long orderId, String freight, String shipManId, ComUser user) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
-        if(sfOrder.getSendType() == 0){
+        if (sfOrder.getSendType() == 0) {
             throw new BusinessException("请选择发货方式");
         }
         if (freight == null || freight == "") {
@@ -149,18 +154,15 @@ public class SfOrderService {
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-            String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
-            String[] params=new String[5];
-            params[0]="";
-            params[1]="";
-            params[2]=sfOrder.getOrderCode();
-            params[3]=shipManName;
-            params[4]=freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
-            if(aBoolean==false){
-                throw new Exception("消费者订单发货微信提示失败");
-            }
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode(),shipManName,freight);
+            String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
+            String[] params = new String[5];
+            params[0] = "";
+            params[1] = "";
+            params[2] = sfOrder.getOrderCode();
+            params[3] = shipManName;
+            params[4] = freight;
+            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
+            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);
@@ -182,18 +184,15 @@ public class SfOrderService {
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-            String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
-            String[] params=new String[5];
-            params[0]="";
-            params[1]="";
-            params[2]=sfOrder.getOrderCode();
-            params[3]=shipManName;
-            params[4]=freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
-            if(aBoolean==false){
-                throw new Exception("消费者订单发货微信提示失败");
-            }
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode(),shipManName,freight);
+            String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
+            String[] params = new String[5];
+            params[0] = "";
+            params[1] = "";
+            params[2] = sfOrder.getOrderCode();
+            params[3] = shipManName;
+            params[4] = freight;
+            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
+            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
         }
     }
 }

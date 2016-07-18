@@ -112,5 +112,44 @@ public class SMSConstants {
 	 * 试用发货提醒
 	 */
 	public static final String TRIAL_SHIPMENTS_REMIND = "86552";
-
+	/**
+	 * 下级补货提醒（普通—补货）
+	 */
+	public static final String LOWER_PEPLENISHMENT_REMIND = "101810";
+	/**
+	 * 下级升级提醒（普通—升级）
+	 */
+	public static final String LOWER_UPGROUP_REMIND = "101811";
+	/**
+	 * 被推荐人升级，上级提醒（推荐关系—升级）
+	 */
+	public static final String REFEREE_UPGRADE_UP_REMIND = "101812";
+	/**
+	 * 被推荐人升级，推荐人佣金提醒（推荐关系—升级）
+	 */
+	public static final String REFEREE_UPGRADE_RECOMMEND_COMMISSION_REMIND = "101814";
+	/**
+	 * 被推荐人补货，上级提醒（推荐关系—补货）
+	 */
+	public static final String REFEREE_ADDSTOCK_UP_REMIND = "101815";
+	/**
+	 * 被推荐人补货，推荐人佣金提醒（推荐关系—补货）
+	 */
+	public static final String REFEREE_ADDSTOCK_RECOMEND_COMMISSION_REMIND = "101817";
+	/**
+	 * 上级收到被推荐人的下级加入通知（推荐关系-合伙订单）
+	 */
+	public static final String REFEREE_LOWER_JOIN_UP_NOTICE = "101820";
+	/**
+	 * 推荐佣金提醒（推荐关系-合伙订单）
+	 */
+	public static final String RECOMMEND_COMMISSION_REMIND = "101822";
+	/**
+	 * 下单后店主提醒（新增）
+	 */
+	public static final String ORDER_SHOP_REMIND = "101823";
+	/**
+	 * 下级合伙人加入提醒（普通-合伙）
+	 */
+	public static final String LOWER_JOIN_REMIND = "101809";
 }

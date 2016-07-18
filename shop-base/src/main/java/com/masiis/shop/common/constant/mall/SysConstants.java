@@ -42,7 +42,7 @@ public class SysConstants {
     public static final String SESSION_MALL_CONFIRM_ORDER_SHOP_ID = "mallConfirmOrderShopId";//小铺确认订单界面的小铺id
 
     public static final String SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID = "promoId";//活动领取奖励的活动id
-    public static final String SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID = "promoId";//活动规则id
+    public static final String SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID = "promoRuleId";//活动规则id
     /**
      * 商品最小图片
      */

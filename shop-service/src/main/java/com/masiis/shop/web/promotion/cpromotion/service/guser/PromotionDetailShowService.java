@@ -50,7 +50,7 @@ public class PromotionDetailShowService {
         Map<String,Object> map = new HashMap<>();
         //获取用户粉丝数
         Map<String, Integer> _map = userRelationService.getFansNumByUserId(comUser.getId());
-        if (map!=null){
+        if (_map!=null){
             fansQuantity = (Integer) _map.get("maxNum");
             log.info("获取代言人代言的小铺的最大粉丝数-------"+fansQuantity);
         }else{

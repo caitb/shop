@@ -137,4 +137,8 @@ public class WxConsSF {
      * 提现结果通知
      */
     public static final String WX_SF_TM_ID_EXTRACT_RESULT = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_EXTRACT_RESULT");
+    /**
+     * 中奖结果通知
+     */
+    public static final String WX_SF_TM_ID_PRIZE_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_PRIZE_RESULT_NOTICE");
 }

@@ -32,7 +32,9 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countLibrary>4}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
     <div class="backb"></div>
@@ -99,7 +101,7 @@
 
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;

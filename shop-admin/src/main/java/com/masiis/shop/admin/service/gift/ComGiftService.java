@@ -20,6 +20,11 @@ public class ComGiftService {
     @Resource
     private ComGiftMapper comGiftMapper;
 
+
+    public ComGift getComGiftById(Integer id){
+        return comGiftMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 保存或更新　ComGift
      */

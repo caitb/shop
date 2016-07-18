@@ -37,9 +37,10 @@ public class WxSFNoticeUtils {
      * @return
      */
     private Boolean wxNotice(String accessToken, WxNoticeReq noPay) {
+        String result = "";
         try {
             String url = WxConsSF.URL_WX_NOTICE + "?access_token=" + accessToken;
-            String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
+            result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
             WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
             if ("0".equals(res.getErrcode())) {
                 return true;
@@ -48,6 +49,7 @@ public class WxSFNoticeUtils {
             log.error(e.getMessage(), e);
         }
         log.error("发送模板消息失败");
+        log.error("错误消息:\n" + result);
         return false;
     }
 
@@ -94,6 +96,34 @@ public class WxSFNoticeUtils {
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(orderUrl);
+        req.setTemplate_id(WxConsSF.WX_SF_TM_ID_ORDER_SHIP);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
+    }
+
+    /**
+     * 小铺活动订单发货提醒
+     *
+     * @param user  通知的用户
+     * @param params    (第一个,订单号(ordercode); 第二个,快递公司; 第三个,快递单号; 第四个,奖品名称; 第五个,奖品数量)
+     * @param orderUrl  详情url
+     * @return
+     */
+    public Boolean activityOrderShipNotice(ComUser user, String[] params, String orderUrl){
+        WxSFOrderShipNotice orderSHip = new WxSFOrderShipNotice();
+        WxNoticeReq<WxSFOrderShipNotice> req = new WxNoticeReq<>(orderSHip);
+
+        orderSHip.setFirst(new WxNoticeDataItem("您好，您的订单已发货", null));
+        orderSHip.setKeyword1(new WxNoticeDataItem(params[0], null));
+        orderSHip.setKeyword2(new WxNoticeDataItem(params[1], null));
+        orderSHip.setKeyword3(new WxNoticeDataItem(params[2], null));
+        orderSHip.setRemark(new WxNoticeDataItem("您的奖品" + params[3] + " X "
+                + params[4] + "已发出，请注意查收，感谢您的参与。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        if(StringUtils.isNotBlank(orderUrl)) {
+            req.setUrl(orderUrl);
+        }
         req.setTemplate_id(WxConsSF.WX_SF_TM_ID_ORDER_SHIP);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
@@ -211,6 +241,32 @@ public class WxSFNoticeUtils {
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsSF.WX_SF_TM_ID_EXTRACT_RESULT);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
+    }
+
+    /**
+     * 中奖结果通知
+     *
+     * @param user  被通知的用户对象
+     * @param params    (第一个,活动名称; 第二个,奖励商品名称; 第三个,奖励商品数量)
+     * @param url   活动页面url
+     * @return
+     */
+    public Boolean prizeResultNotice(ComUser user, String[] params, String url){
+        WxSFPrizeResult prize = new WxSFPrizeResult();
+        WxNoticeReq<WxSFPrizeResult> req = new WxNoticeReq<>(prize);
+
+        prize.setFirst(new WxNoticeDataItem("恭喜您参与的活动中奖了！", null));
+        prize.setKeyword1(new WxNoticeDataItem(params[0], null));
+        prize.setKeyword2(new WxNoticeDataItem(params[1] + " X " + params[2], null));
+        prize.setRemark(new WxNoticeDataItem("感谢您的参与，点击领取。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsSF.WX_SF_TM_ID_PRIZE_NOTICE);
+        if(StringUtils.isNotBlank(url)){
+            req.setUrl(url);
+        }
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
     }

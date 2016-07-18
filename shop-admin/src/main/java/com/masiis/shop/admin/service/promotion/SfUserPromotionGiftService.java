@@ -18,6 +18,12 @@ public class SfUserPromotionGiftService {
     @Resource
     private SfUserPromotionGiftMapper sfUserPromotionGiftMapper;
 
+
+    public List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(Integer promoId,Integer promoRuleId){
+        return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
+    }
+
+
     public void insertOrUpdate(SfUserPromotionGift promotionGift) {
         if(promotionGift.getId() == null) {
             promotionGift.setPromoQuantity(0);

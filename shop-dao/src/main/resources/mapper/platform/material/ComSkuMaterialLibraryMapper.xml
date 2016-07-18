@@ -76,4 +76,8 @@
         ORDER BY sort ASC
     </select>
 
+    <select id="countLibrary" resultType="int" >
+        select COUNT(1)
+        from com_sku_material_library
+    </select>
 </mapper>

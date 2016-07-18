@@ -32,7 +32,9 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countSkuMaterial>3}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
     <div class="backb"></div>

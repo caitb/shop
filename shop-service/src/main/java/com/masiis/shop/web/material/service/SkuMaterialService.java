@@ -59,4 +59,8 @@ public class SkuMaterialService {
         }
         return materialList;
     }
+
+    public int countSkuMaterial(Integer mgId){
+      return comSkuMaterialMapper.countSkuMaterial(mgId);
+    }
 }

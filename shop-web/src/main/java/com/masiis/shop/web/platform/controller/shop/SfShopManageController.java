@@ -208,6 +208,26 @@ public class SfShopManageController extends BaseController {
     }
 
     /**
+     * 自己发货运费显示
+     * @param request
+     * @return
+     */
+    @RequestMapping("/showFreight")
+    @ResponseBody
+    public String showFreight(HttpServletRequest request){
+        JSONObject object = new JSONObject();
+        try {
+            ComUser comUser = getComUser(request);
+            SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
+            object.put("ownShipAmount",sfShop.getOwnShipAmount());
+            object.put("isError",false);
+        } catch (Exception e) {
+            object.put("isError",true);
+            log.info(e.getMessage());
+        }
+        return object.toJSONString();
+    }
+    /**
      * 获取店铺海报
      * @param request
      * @param response

@@ -99,7 +99,7 @@
 
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;

@@ -122,9 +122,31 @@
         location.href='<%=path%>/account/home';
     })
     function clickShow(){
-        $("#shipAmount").val("");
         $(".black").show();
+        //ajax 显示设置运费
+        var showFreight;
+        $.ajax({
+            url: '<%=basePath%>shop/manage/showFreight',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            async:false,
+            success: function (data) {
+                if (data.isError == false) {
+                    showFreight = data.ownShipAmount;
+                }
+            }
+        });
+      if(showFreight==null || showFreight===""){
+          $("#shipAmount").val("");
+      } else if (showFreight == 0) {
+          $("#1").addClass("on").siblings().removeClass("on");
+      } else {
+          $("#2").addClass("on").siblings().removeClass("on");
+          $("#shipAmount").val(showFreight);
+      }
     }
+
     function clicHide(){
         $(".black").hide();
     }

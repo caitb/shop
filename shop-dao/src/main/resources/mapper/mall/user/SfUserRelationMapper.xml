@@ -105,7 +105,8 @@
     </update>
 
     <select id="selectFansNum" resultType="java.util.HashMap">
-        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
+        where
         tree_code like CONCAT(#{treeCode},'%')
         <if test="shopId != null">
             and r.shop_id = #{shopId}

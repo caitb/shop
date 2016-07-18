@@ -105,6 +105,10 @@ public class SfSpokesAndFansInfo {
                 setSopkenManView("已代言");
                 break;
             }
+            case 0 : {
+                setSopkenManView("未代言");
+                break;
+            }
         }
     }
 

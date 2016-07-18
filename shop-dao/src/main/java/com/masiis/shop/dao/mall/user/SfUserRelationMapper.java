@@ -143,7 +143,8 @@ public interface SfUserRelationMapper {
      * @return
      */
     Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
-                                   @Param("ID") String ID);
+                                   @Param("ID") String ID,
+                                   @Param("spokesMan") Integer spokesMan);
 
     SfSpokesAndFansInfo selectSfSpokesAndFansInfo(@Param("shopId") Long shopId,
                                                   @Param("userId") Long userId);

@@ -387,8 +387,12 @@ public class SfUserRelationService {
      * @param ID        代言人ID
      * @return
      */
-    public Integer getSpokesManNumByID(Long shopId, String ID){
-        return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID);
+    public Integer getSpokesManNumByID(Long shopId, String ID, boolean spokesMan){
+        if (spokesMan){
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, 1);
+        }else {
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, null);
+        }
     }
 
     /**

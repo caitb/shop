@@ -65,18 +65,22 @@ public class SfUserRelationController extends BaseController{
             Long shopId = sfShop.getId();
             logger.info("shopId = " + shopId);
 //            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getAllSfSpokesManInfos(true, 1, pageSize, shopId);
-            Integer totalCount = sfUserRelationService.getAllSfSpokesManNum(shopId);
-            if (totalCount == 0 /*|| infos == null || infos.size() == 0*/){
+//            Integer totalCount = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
+            //获取代言人数量
+            Integer spokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, true);
+            //获取粉丝数量
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
+            if (fansNum == 0 /*|| infos == null || infos.size() == 0*/){
                 logger.info("没有对应的代言人数据");
                 mv.addObject("totalPage", 0);
                 mv.addObject("currentPage", 0);
                 mv.addObject("totalCount", 0);
             }else {
-                Integer pageNums = totalCount%pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
+                Integer pageNums = fansNum%pageSize == 0 ? fansNum/pageSize : fansNum/pageSize + 1;
 //                mv.addObject("infos",infos);
                 mv.addObject("totalPage", pageNums);
                 mv.addObject("currentPage", 1);
-                mv.addObject("totalCount", totalCount);
+                mv.addObject("totalCount", fansNum);
             }
         }
         mv.setViewName("platform/user/spokesManList");
@@ -129,7 +133,7 @@ public class SfUserRelationController extends BaseController{
             case 0 : {
                 logger.info("查询第一页信息");
                 logger.info("ID = " + ID);
-                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID);
+                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID, false);
                 logger.info("totalCount = " + totalCount);
                 if (totalCount == 0){
                     logger.info("没有对应的代言人信息");
@@ -177,8 +181,8 @@ public class SfUserRelationController extends BaseController{
         SfSpokesAndFansInfo info;
         for (int i = 0; i < infos.size(); i++){
             info = infos.get(i);
-            info.setFansNum(sfUserRelationService.getFansNumByUserId(info.getUserId(), null));
-            info.setSpokesManNum(sfUserRelationService.getSpokesManNumByUserId(info.getUserId(), null));
+            info.setFansNum(sfUserRelationService.getFansNumByUserId(info.getUserId(), shopId));
+            info.setSpokesManNum(sfUserRelationService.getSpokesManNumByUserId(info.getUserId(), shopId));
             infos.set(i,info);
         }
         jsonObject.put("infos",infos);

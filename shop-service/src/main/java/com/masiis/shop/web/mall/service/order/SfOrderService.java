@@ -9,6 +9,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -160,7 +161,7 @@ public class SfOrderService {
             params[2] = sfOrder.getOrderCode();
             params[3] = shipManName;
             params[4] = freight;
-            WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
+            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
             MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
@@ -190,7 +191,7 @@ public class SfOrderService {
             params[2] = sfOrder.getOrderCode();
             params[3] = shipManName;
             params[4] = freight;
-            WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
+            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
             MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
         }
     }

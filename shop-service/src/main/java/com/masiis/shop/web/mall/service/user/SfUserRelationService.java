@@ -115,7 +115,10 @@ public class SfUserRelationService {
         Integer maxNum = 0;
         Map<String, Integer> map = new HashMap<>();
         for (SfUserRelation relation : sfUserRelations){
-            num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+            num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
+            if (num < 0){
+                num = 0;
+            }
             logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
             if (maxNum < num){
                 maxNum = num;

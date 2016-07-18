@@ -76,6 +76,7 @@ public interface SfUserRelationMapper {
 
     /**
      * 通过treecode获取粉丝数量
+     * 该方法查询的是所有的粉丝包括自己
      * @param treeCode treeCode
      * @return Integer
      */

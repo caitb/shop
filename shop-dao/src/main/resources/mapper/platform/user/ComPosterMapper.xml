@@ -15,7 +15,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="po.ComPoster" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComPoster" >
         insert into com_poster (id, create_time, type, 
             user_id, share_param_id, poster_name
             )
@@ -24,7 +24,7 @@
             )
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="po.ComPoster" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComPoster" >
         update com_poster
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             type = #{type,jdbcType=INTEGER},

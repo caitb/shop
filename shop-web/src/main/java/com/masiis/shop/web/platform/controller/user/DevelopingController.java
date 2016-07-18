@@ -296,6 +296,10 @@ public class DevelopingController extends BaseController {
                 curDate.setDate(curDate.getDate()+30);
                 String endDate = sdf.format(curDate);
 
+                int              random           = (int)((Math.random()*9+1)*100000);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                Date createTime                   = new Date();
+                String posterName                 = simpleDateFormat.format(createTime)+random+".png";
                 if("kangyinli.png".equals(comSkuExtension.getPoster())){
                     Element headImgElement = new Element(88, 619, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
                     Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
@@ -314,7 +318,7 @@ public class DevelopingController extends BaseController {
                     drawElements.add(text2Element);
                     drawElements.add(text3Element);
 
-                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
                 }else if("mss.png".equals(comSkuExtension.getPoster())){
                     Element headImgElement = new Element(36, 878, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
                     Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
@@ -333,18 +337,23 @@ public class DevelopingController extends BaseController {
                     drawElements.add(text2Element);
                     drawElements.add(text3Element);
 
-                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/develop-"+comUser.getId()+"-"+comSku.getId()+".png");
+                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
                 }
 
 
                 //保存二维码海报图片地址
-                comPoster = new ComPoster();
-                comPoster.setCreateTime(new Date());
-                comPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
-                comPoster.setType(0);
-                comPoster.setUserId(comUser.getId());
-                comPoster.setPosterName("develop-"+new SimpleDateFormat("yyyyMMddHHiiSS").format(comPoster.getCreateTime())+"-"+comUser.getId()+"-"+comSku.getId()+".png");
-                comPosterService.add(comPoster);
+                ComPoster newComPoster = new ComPoster();
+                newComPoster.setCreateTime(createTime);
+                newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+                newComPoster.setType(0);
+                newComPoster.setUserId(comUser.getId());
+                newComPoster.setPosterName(posterName);
+                if(comPoster == null){
+                    comPosterService.add(newComPoster);
+                }else{
+                    newComPoster.setId(comPoster.getId());
+                    comPosterService.update(newComPoster);
+                }
 
                 resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
             }
@@ -368,8 +377,16 @@ public class DevelopingController extends BaseController {
         return mav;
     }
 
-    public static void main(String[] args){
-        System.out.println(10%10);
+    public static void main(String[] args) {
+        // 创建日期对象
+        Date d = new Date();
+        // 给定模式
+        int random = (int)((Math.random()*9+1)*100000);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        // public final String format(Date date)
+        String s = sdf.format(d);
+        System.out.println(s);
+
     }
 
     /**

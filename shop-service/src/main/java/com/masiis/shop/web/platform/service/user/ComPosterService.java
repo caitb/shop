@@ -31,4 +31,12 @@ public class ComPosterService {
     public void add(ComPoster comPoster){
         comPosterMapper.insert(comPoster);
     }
+
+    /**
+     * 更新海报
+     * @param comPoster
+     */
+    public void update(ComPoster comPoster){
+        comPosterMapper.updateByPrimaryKey(comPoster);
+    }
 }

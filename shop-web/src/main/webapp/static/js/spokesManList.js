@@ -71,7 +71,7 @@ function createHtml(json){
         html += "<div class=\"sec1\" onclick=\"toDetail("+json[i].userId+")\"><div class=\"s_t\">";
         html += "<p style=\"background:url('"+json[i].headImg+"');background-size:100% 100%;\"></p>";
         html += "<div>";
-        html += "<p><span>"+json[i].wxName+"</span><span>"+json[i].isBuyView+"</span></p>"
+        html += "<p><span>"+json[i].wxName+"</span><span>"+json[i].sopkenManView+"</span><span>"+json[i].isBuyView+"</span></p>"
         html += "<p><span>ID："+json[i].ID+"</span><span>"+json[i].createTimeView+"</span></p>"
         html += "</div></div>";
         html += "<p class=\"s_b\">";

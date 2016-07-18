@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -86,6 +86,19 @@
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
+                                                <label for="orderCode">购买人</label>
+                                                <input type="text" class="form-control" id="realName" name="realName" placeholder="购买人">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderCode">订单类型</label>
+                                                <select class="form-control" id="orderType" name="orderType">
+                                                    <option value="">所有</option>
+                                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                                        <option value="${orderType.code}">${orderType.desc}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="orderCode">订单日期：</label>
                                             </div>
                                             <div class="form-group">
@@ -93,24 +106,6 @@
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态：</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态：</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -270,15 +265,8 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#shipStatus').val()){
-                    params.shipStatus = $('#shipStatus').val();
-                }
-                if($('#payStatus').val()){
-                    params.payStatus = $('#payStatus').val();
-                }
-                if($('#orderStatus').val()){
-                    params.orderStatus = $('#orderStatus').val();
-                }
+                if($('#realName').val()) params.realName = $('#realName').val();
+                if($('#orderType').val()) params.orderType = $('#orderType').val();
                 if($('#beginTime').val()){
                     params.beginTime = $('#beginTime').val();
                 }
@@ -314,82 +302,130 @@
                     },
                     {
                         title: 'ID',
-                        field: 'id',
+                        field: 'pb.id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.id){
-                                return row.pfBorder.id;
+                            if(row && row.id){
+                                return row.id;
                             }
                         }
                     },
                     {
-                        field: 'order_code',
+                        field: 'pb.order_code',
                         title: '订单号',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderCode){
-                                return row.pfBorder.orderCode;
+                            if(row && row.orderCode){
+                                return row.orderCode;
                             }
                         }
                     },
                     {
-                        field: 'create_time',
-                        title: '订单日期',
+                        field: 'pb.create_time',
+                        title: '下单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return new Date(row.pfBorder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                         }
                     },
                     {
-                        field: 'user_pid',
+                        field: 'cu.real_name',
+                        title: '下单人',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.realName){
+                                return row.realName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pbi.sku_name',
+                        title: '合伙产品',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.skuName){
+                                return row.skuName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'cal.name',
+                        title: '合伙等级',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.levelName){
+                                return row.levelName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pcu.real_name',
                         title: '上级合伙人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pUser && row.pUser.realName){
-                                return row.pUser.realName;
+                            if(row && row.pRealName){
+                                return row.pRealName;
                             }
                         }
                     },
                     {
-                        field: 'recommenUser',
+                        field: 'pcal.name',
+                        title: '上级合伙等级',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.pLevelName){
+                                return row.pLevelName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'tcu.real_name',
                         title: '推荐人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.recommenUser && row.recommenUser.realName){
-                                return row.recommenUser.realName;
+                            if(row && row.recommendRealName){
+                                return row.recommendRealName;
                             }
                         }
                     },
                     {
-                        field: 'user_id',
-                        title: '购买人',
+                        field: 'pb.recommen_amount',
+                        title: '推荐奖励金额',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row && row.recommenAmount){
+                                return row.recommenAmount;
                             }
                         }
                     },
                     {
-                        field: 'product_amount',
+                        field: 'pb.order_amount',
                         title: '订单金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.productAmount;
+                            if(row && row.orderAmount){
+                                return row.orderAmount;
                             }
                         }
                     },
@@ -400,124 +436,20 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.receivableAmount;
+                            if(row && row.receivableAmount){
+                                return row.receivableAmount;
                             }
                         }
                     },
                     {
-                        field: 'pay_amount',
-                        title: '实付金额',
+                        field: 'cd.value',
+                        title: '订单类型',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.payAmount;
-                            }
-                        }
-                    },
-                    {
-                        field: 'agent_product',
-                        title: '代理产品',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorderItems){
-                                console.log('row: '+index);
-                                var skuNames = '';
-                                for(var i in row.pfBorderItems){
-                                    skuNames += row.pfBorderItems[i].skuName + '&nbsp;';
-                                }
-                                return skuNames;
-                            }
-                        }
-                    },
-                    {
-                        field: 'order_status',
-                        title: '订单状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderStatus == 0){
-                                return '未处理';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 1){
-                                return '已付款';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 2){
-                                return '已取消';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
-                                return '已完成';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 4){
-                                return '退款中';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 5){
-                                return '已退款';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 6){
-                                return '排单中';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 7){
-                                return '待发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 8){
-                                return '已发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 9){
-                                return '线下支付未付款';
-                            }
-                        }
-                    },
-                    {
-                        field: 'pay_type',
-                        title: '支付方式',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorderPayments){
-                                var sHtm = '';
-                                for(var i in row.pfBorderPayments){
-                                    if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 9) sHtm += '线下支付';
-                                }
-                                return sHtm;
-                            }
-                        }
-                    },
-                    {
-                        field: 'pay_status',
-                        title: '支付状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.payStatus == 0){
-                                return '待付款';
-                            }
-                            if(row.pfBorder && row.pfBorder.payStatus == 1){
-                                return '已付款';
-                            }
-                        }
-                    },
-                    {
-                        field: 'ship_status',
-                        title: '物流状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.shipStatus == 0){
-                                return '未发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 5){
-                                return '已发货';
-                            }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 9){
-                                return '已收货';
+                            if(row && row.orderType){
+                                return row.orderType;
                             }
                         }
                     },
@@ -526,10 +458,10 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
+                            if(row.pfBorder && row.userPid == 0 && row.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 9){
+                            if(row && row.orderStatus == 9){
                                 arr.push('&nbsp;&nbsp;<a class="receipt" href="javascript:void(0);">确认收款</a>');
                             }
 
@@ -537,12 +469,12 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.id);
                             },
                             'click .scheduling': function(e, value, row, index){
                                 $.ajax({
                                     url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
+                                    data: {borderId: row.id, sendType: row.comUser.sendType},
                                     success: function(msg){
                                         msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
                                         $.gritter.add({
@@ -555,9 +487,9 @@
                                 })
                             },
                             'click .receipt': function(e, value, row, index){
-                                $('#orderCode2').html(row.pfBorder.orderCode);
-                                $('#receivableAmount').html(row.pfBorder.receivableAmount);
-                                $('input[name="bOrderId"]').val(row.pfBorder.id);
+                                $('#orderCode2').html(row.orderCode);
+                                $('#receivableAmount').html(row.receivableAmount);
+                                $('input[name="bOrderId"]').val(row.id);
                                 $('input[name="payAmount"]').val('');
                                 $('input[name="outOrderId"]').val('');
                                 $('#modal-receipt').modal('show');
@@ -605,6 +537,9 @@
         });
 
         $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
+        });
+        $('#orderType').change(function(){
             $table.bootstrapTable('refresh');
         });
     }

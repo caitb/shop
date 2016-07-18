@@ -140,6 +140,29 @@ public class BOrderService {
     }
 
     /**
+     * 合伙线下支付订单列表
+     * @param pageNo
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> offlineList(Integer pageNo, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
+        String sort = "pb.create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+        PageHelper.startPage(pageNo, pageSize, sort);
+        List<Map<String, Object>> bOrderMaps = pfBorderMapper.selectByOffline(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(bOrderMaps);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", bOrderMaps);
+
+        return pageMap;
+    }
+
+    /**
      * 获取订单明细
      *
      * @param id

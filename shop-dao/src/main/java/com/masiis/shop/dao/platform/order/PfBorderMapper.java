@@ -165,4 +165,11 @@ public interface PfBorderMapper {
      * @return
      */
     List<BOrder> selectByUserIdOrUserPidAndOrderStatus(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("orderStatus")Integer orderStatus);
+
+    /**
+     * 查询合伙线下支付订单
+     * @param conditionMap
+     * @return
+     */
+    List<Map<String, Object>> selectByOffline(Map<String, Object> conditionMap);
 }

@@ -6,9 +6,12 @@ import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.*;
 import com.masiis.shop.admin.service.system.DictionaryService;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -106,7 +109,8 @@ public class PfBorderController extends BaseController {
     }
 
     @RequestMapping("/offline/list.shtml")
-    public String offlineList() {
+    public String offlineList(Model model) {
+        model.addAttribute("bOrderTypes", BOrderType.values());
         return "order/border/offlinePayList";
     }
 
@@ -118,7 +122,6 @@ public class PfBorderController extends BaseController {
      * @param pageNumber
      * @param pageSize
      * @param sortOrder
-     * @param pfBorder
      * @return
      */
     @RequestMapping("/offline/list.do")
@@ -128,23 +131,30 @@ public class PfBorderController extends BaseController {
                               Integer pageSize,
                               String sortName,
                               String sortOrder,
-                              Integer orderStatus,
-                              PfBorder pfBorder) {
+                              Integer orderStatus) {
 
+        Map<String, Object> conditionMap = new HashMap<>();
         try {
-            pfBorder.setOrderStatus(9);
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, null);
-            if (pfBorder.getShipStatus() == null) {
-                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
-                pageMap.put("wuliuList", wuliuList);
+            if(StringUtils.isNotBlank(request.getParameter("orderCode"))){
+                conditionMap.put("orderCode", request.getParameter("orderCode"));
             }
-            if (orderStatus == null) {
-                List<ComDictionary> comDictionaryList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
-                pageMap.put("orderStatusList", comDictionaryList);
+            if(StringUtils.isNotBlank(request.getParameter("realName"))){
+                conditionMap.put("realName", "%"+new String(request.getParameter("realName").getBytes("ISO-8859-1"), "UTF-8")+"%");
             }
+            if(StringUtils.isNotBlank(request.getParameter("orderType"))){
+                conditionMap.put("orderType", request.getParameter("orderType"));
+            }
+            if(StringUtils.isNotBlank(request.getParameter("startTime"))){
+                conditionMap.put("startTime", request.getParameter("startTime"));
+            }
+            if(StringUtils.isNotBlank(request.getParameter("endTime"))){
+                conditionMap.put("endTime", request.getParameter("endTime"));
+            }
+
+            Map<String, Object> pageMap = bOrderService.offlineList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
-            log.error("查询合伙人线下支付订单列表失败![pfBorder=" + pfBorder + "]");
+            log.error("查询合伙人线下支付订单列表失败![conditionMap=" + conditionMap + "]");
             e.printStackTrace();
         }
 

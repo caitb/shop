@@ -603,6 +603,53 @@
         </where>
         ORDER BY bo.create_time DESC, skui.img_url DESC
     </select>
+
+    <!-- 查询合伙线下支付订单[订单号,下单日期,下单人,合伙产品,合伙等级,上级合伙人,上级合伙人等级,推荐人,订单总金额,推荐奖励金额,应付金额,订单类型] -->
+    <select id="selectByOffline" parameterType="Map" resultType="java.util.HashMap">
+        SELECT
+         pb.id                 id
+        ,pb.order_code         orderCode
+        ,pb.create_time        createTime
+        ,pb.user_pid           userPid
+        ,pb.order_status       orderStatus
+        ,cu.real_name          realName
+        ,pbi.sku_name          skuName
+        ,cal.name              levelName
+        ,pcu.real_name         pRealName
+        ,pcal.name             pLevelName
+        ,tcu.real_name         recommendRealName
+        ,pb.order_amount       orderAmount
+        ,pb.recommen_amount    recommenAmount
+        ,pb.receivable_amount  receivableAmount
+        ,cd.value              orderType
+        FROM pf_border pb
+        LEFT JOIN pf_border_item pbi ON pb.id=pbi.pf_border_id
+        LEFT JOIN pf_border_recommen_reward pbrr ON pbi.id=pbrr.pf_border_item_id
+        LEFT JOIN com_agent_level cal ON pbi.agent_level_id=cal.id
+        LEFT JOIN com_user cu ON pb.user_id=cu.id
+        LEFT JOIN com_user pcu ON pb.user_pid=pcu.id
+        LEFT JOIN com_user tcu ON pbrr.recommen_user_id=tcu.id
+        LEFT JOIN pf_user_sku pus ON pb.user_pid=pus.user_id AND pbi.sku_id=pus.sku_id
+        LEFT JOIN com_agent_level pcal ON pus.agent_level_id=pcal.id
+        LEFT JOIN com_dictionary cd ON cd.code='pf_border_type' AND cd.key=pb.order_type
+        WHERE
+              order_status=9
+              <if test="orderCode != null">
+                  AND pb.order_code = #{orderCode}
+              </if>
+              <if test="startTime != null">
+                  AND pb.create_time >= #{startTime}
+              </if>
+              <if test="endTime != null">
+                  AND pb.create_time >= #{endTime}
+              </if>
+              <if test="realName != null">
+                  AND cu.real_name LIKE #{realName}
+              </if>
+              <if test="orderType != null">
+                  AND pb.order_type = #{orderType}
+              </if>
+    </select>
     
     <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">
         <result property="id" column="id" />

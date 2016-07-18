@@ -295,7 +295,9 @@
         <if test="ID != null">
             AND T.ID like CONCAT('%',#{ID},'%')
         </if>
-        AND T.sopkenMan = 1
+        <if test="spokesMan">
+            AND T.sopkenMan = 1
+        </if>
     </select>
 
     <select id="selectFansNumsByShopId" resultType="java.lang.Integer">

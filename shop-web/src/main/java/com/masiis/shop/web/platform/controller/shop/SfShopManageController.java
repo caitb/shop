@@ -6,7 +6,6 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserShopViewMapper;
@@ -15,6 +14,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopStatistics;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -82,6 +82,8 @@ public class SfShopManageController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SfShopManQrCodeService sfShopManQrCodeService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
     /**
      * 店铺管理首页
@@ -106,7 +108,9 @@ public class SfShopManageController extends BaseController {
 
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 
-            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
+//            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
+            //获取店铺粉丝
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false);
 
             String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
 
@@ -114,7 +118,7 @@ public class SfShopManageController extends BaseController {
             mav.addObject("sfShop", sfShop);
             mav.addObject("saleAmount", NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShopStatistics.getIncomeFee()));
             mav.addObject("orderCount", sfShopStatistics.getOrderCount());
-            mav.addObject("shopView", shopView);
+            mav.addObject("shopView", fansNum);
             mav.addObject("shopUrl", shopUrl);
 
             return mav;

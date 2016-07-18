@@ -63,25 +63,25 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
     </select>
 
     <select id="getSfUserRelationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <select id="selectSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId}
         and shop_id = #{shopId}
     </select>
 
     <select id="getSfUserRelationByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
@@ -125,7 +125,7 @@
     </select>
 
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId} and shop_id = #{shopId}
     </select>
@@ -330,7 +330,7 @@
     </select>
 
     <select id="selectAllFansRelationByShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where
           shop_id = #{shopId}
@@ -340,7 +340,7 @@
 
     <select id="selectAllSpokeManRelationByShopId" resultMap="BaseResultMap">
         select
-          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark
+          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark,r.is_spokesman
         from
           sf_user_relation r,com_user u
         WHERE

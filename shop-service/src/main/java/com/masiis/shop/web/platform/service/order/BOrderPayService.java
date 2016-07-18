@@ -829,7 +829,12 @@ public class BOrderPayService {
         }
         log.info("银行卡信息-------" + sb2.toString());
         //最迟日期
-        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
+        Boolean bl = MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
+        if (bl){
+            log.info("发送短信成功");
+        }else{
+            log.info("发送短信失败");
+        }
     }
 
     /**

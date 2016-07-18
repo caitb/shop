@@ -93,6 +93,8 @@ public class SfOrderPurchaseService {
 
             }
             //获得商品的详情信息
+            isExistPlatformSendGoods = false;
+            isExistShopUserSendGoods = false;
             List<SfShopCartSkuDetail> shopCartSkuDetails = getShopCartSkuBySkuId(shopCarts);
             map.put("shopCartSkuDetails", shopCartSkuDetails);
             //获得购物车中商品的总价格和数量
@@ -100,8 +102,6 @@ public class SfOrderPurchaseService {
             map.put("skuTotalPrice", skuTotalPrice);
             map.put("totalQuantity", totalQuantity);
             //获得运费
-            isExistPlatformSendGoods = false;
-            isExistShopUserSendGoods = false;
             BigDecimal shipAmount = getShopShipAmount(sfShopId);
             if (shipAmount.compareTo(new BigDecimal(0))==0){
                 map.put("isFreeShipAmount","true");

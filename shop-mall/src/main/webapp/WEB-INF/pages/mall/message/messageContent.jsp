@@ -37,7 +37,7 @@
                                                         '<img src="${path}/static/images/massage_r1_c1.png" alt="">' +
                                                         '<h1>' + messageList[i].content + '</h1>' +
                                                         '<p>' +
-                                                            '<a href="' + messageList[i].contentUrl + '">点击查看</a>' +
+                                                            '<a href="' + path + "/" + messageList[i].contentUrl + '">点击查看</a>' +
                                                             '<a>' + messageList[i].createTime + '</a>' +
                                                         '</p>' +
                                                     '</div>' +

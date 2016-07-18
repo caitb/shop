@@ -79,7 +79,7 @@ public class IndexController extends BaseController {
 
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
-        Integer allSfSpokesManNum = sfUserRelationService.getAllSfSpokesManNum(shopId);
+        Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
         SfShop sfShop = null;
         if (shopId != null) {
             sfShop = sfShopService.getSfShopById(shopId);
@@ -168,7 +168,7 @@ public class IndexController extends BaseController {
         ComUser pUser = userService.getUserById(userPid);
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
-        Integer allSfSpokesManNum = sfUserRelationService.getAllSfSpokesManNum(shopId);
+        Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
         SfShop sfShop = null;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");

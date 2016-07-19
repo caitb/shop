@@ -33,9 +33,9 @@
             <h1>
                 <span></span>
                 <b>奖品描述</b>
-                <span>${promotionGiftInfo.content}</span>
+                <span></span>
             </h1>
-            <p></p>
+            <p>${promotionGiftInfo.content}</p>
        </main>
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>

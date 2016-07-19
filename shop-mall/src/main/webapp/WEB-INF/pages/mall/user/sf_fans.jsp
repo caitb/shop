@@ -69,7 +69,7 @@
         <%--<button >查询</button>--%>
     </div>
     <div class="floor2">
-        <h1>所属店铺：<a id="shop">全部</a></h1>
+        <%--<h1>所属店铺：<a id="shop">全部</a></h1>--%>
         <nav>
             <p>
                 <span id="total">${pageViewPo.totalCount}</span>

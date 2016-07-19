@@ -141,6 +141,7 @@
           $("#shipAmount").val("");
       } else if (showFreight == 0) {
           $("#1").addClass("on").siblings().removeClass("on");
+          $("#shipAmount").val("");
       } else {
           $("#2").addClass("on").siblings().removeClass("on");
           $("#shipAmount").val(showFreight);
@@ -153,6 +154,9 @@
     $(".money h2").on("click", function () {
         $(this).addClass("on").siblings().removeClass("on");
         index=$(this).index();
+        if(index==0){
+            $(".money h2 input").val("");
+        }
     })
 </script>
 <script>

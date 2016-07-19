@@ -116,6 +116,7 @@
 <%--</div>--%>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <script>
@@ -173,14 +174,15 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
-    var array = "${sfShop.wxQrCode}".split("/");
-    var nums = [ ];
-    for (var i=array.length-1 ; i< array.length ; i++)
-    {
-        nums.push(array[i]);
-    }
+
     $(".tallme").on("click",function(){
-        if(nums==null || nums==""){
+        var array = "${sfShop.wxQrCode}".split("/");
+        var nums = [ ];
+        for (var i=array.length-1 ; i< array.length ; i++)
+        {
+            nums.push(array[i]);
+        }
+        if(nums=="null"){
             alert("店主还没有上传二维码");
         }else{
             $(".black").show();

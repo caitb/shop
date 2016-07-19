@@ -10,6 +10,7 @@ import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,13 +98,14 @@ public class SfOrderPayController extends BaseController {
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
         Map<String,Object> map = orderPayService.getOrderDetail(orderId);
-        model.addAttribute("orderConsignee",map.get("orderConsignee"));
+        model.addAttribute("orderConsignee", map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("isFreeShipAmount",map.get("isFreeShipAmount"));
         model.addAttribute("skuTotalShipAmount",map.get("skuTotalShipAmount"));
         model.addAttribute("orderItems",map.get("orderItems"));
         model.addAttribute("userPid",map.get("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
+        model.addAttribute("wxQrCode",map.get("wxQrCode"));
         return "mall/order/orderDetail";
     }
 

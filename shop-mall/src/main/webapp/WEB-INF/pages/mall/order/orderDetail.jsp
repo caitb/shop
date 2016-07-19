@@ -64,7 +64,12 @@
     </section>
     <div class="back"></div>
     <div class="sec6">
-        <p><a onclick="contactSeller()">联系卖家</a></p>
+        <c:if test="${order.sendMan==0}">
+            <p><a onclick="contactSeller()">联系卖家</a></p>
+        </c:if>
+        <c:if test="${order.sendMan!=0}">
+            <p><a onclick="contactSelfWxCode()">联系卖家</a></p>
+        </c:if>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
 </div>
@@ -72,6 +77,16 @@
     <h1>联系卖家</h1>
     <p>请联系:<a href="tel:400-961-961">400-961-9616</a></p>
     <button  onclick="closeContactSeller()">知道了</button>
+</div>
+<div class="black">
+    <div class="back_b"></div>
+    <div class="b_t">
+        <img src="${wxQrCode}" alt="">
+        <p>
+            如有问题，请加我为好友！。
+        </p>
+        <b class="off" onclick="clickHide()"><i>×</i></b>
+    </div>
 </div>
 <div id="askForInvoiceDivId" class="back_l back_s">
     <h1>索要发票</h1>
@@ -84,6 +99,10 @@
 <script>
     function contactSeller(){
         $("#contactSellerDivId").show();
+        $(".back").show();
+    }
+    function contactSelfWxCode(){
+        $(".black").show();
         $(".back").show();
     }
     function closeContactSeller(){
@@ -101,6 +120,9 @@
     function closeShare(){
         $("#shareDivId").hide();
         $(".back").hide();
+    }
+    function clickHide(){
+        $(".black").hide();
     }
 </script>
 </body>

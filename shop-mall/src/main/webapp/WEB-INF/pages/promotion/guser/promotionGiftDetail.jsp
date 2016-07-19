@@ -35,11 +35,15 @@
                 <b>奖品描述</b>
                 <span></span>
             </h1>
-            <p>${promotionGiftInfo.content}</p>
+            ${promotionGiftInfo.content}
        </main>
     </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
+        $(function () {
+            $("em").attr("style","");
+            $("span").attr("style","");
+        })
         function skipPromotionGorderPage(promoId,promoRuleId){
             window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
         }

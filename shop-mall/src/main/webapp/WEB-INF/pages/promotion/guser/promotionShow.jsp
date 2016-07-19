@@ -24,12 +24,12 @@
         <banner>
             <img src="<%=path%>/static/images/receive.jpg" alt="">
             <p>
-                达到指定粉丝数量即可获得奖品！
+                达到指定${promotionInfo.presonTypeName}数量即可获得奖品！
             </p>
         </banner>
         <nav>
             <p>${fansQuantity}</p>
-            <h1>当前粉丝数</h1>
+            <h1>当前${promotionInfo.presonTypeName}数</h1>
             <img src="<%=path%>/static/images/ad.png" alt="">
         </nav>
         <main>
@@ -44,7 +44,7 @@
                     <c:forEach items="${promotionRule.giftInfos}" var="giftInfo">
                         <div class="floor">
                             <h1><b>${status.index+1}</b></h1>
-                            <p>粉丝数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}</p>
+                            <p>${promotionInfo.presonTypeName}数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}</p>
                             <div class="f_box">
                                 <div class="f_l">
                                     <img src="${giftInfo.giftImageUrl}"
@@ -75,7 +75,7 @@
             </c:forEach>
         </main>
         <p>
-            注：以单个店铺的粉丝数量为计算方法
+            注：以单个店铺的${promotionInfo.presonTypeName}数量为计算方法
         </p>
     </div>
 </div>

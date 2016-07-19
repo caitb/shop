@@ -86,6 +86,11 @@ public class PromotionDetailShowService {
             promotionInfo.setPromoId(userPromotion.getId());
             promotionInfo.setRuleInfos(ruleInfos);
             promotionInfo.setPresonType(userPromotion.getPersonType());
+            if (userPromotion.getPersonType()==0){
+                promotionInfo.setPresonTypeName("粉丝");
+            }else if (userPromotion.getPersonType()==1){
+                promotionInfo.setPresonTypeName("代言人");
+            }
             promotionInfo.setMeetPromoRequire(isMeetPromoRequire);
             promotionInfo.setBeginTime(DateUtil.Date2String(userPromotion.getBeginTime(),DateUtil.SQL_TIME_FMT));
             promotionInfo.setEndTime(DateUtil.Date2String(userPromotion.getEndTime(),DateUtil.SQL_TIME_FMT));

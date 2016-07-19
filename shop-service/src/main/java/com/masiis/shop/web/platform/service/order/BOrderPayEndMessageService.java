@@ -9,6 +9,7 @@ import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
@@ -48,6 +49,8 @@ public class BOrderPayEndMessageService {
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource
     private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private UpgradeMobileMessageService upgradeSuccssSendMoblieMessage;
 
     /**
      * 支付完成推送消息
@@ -104,11 +107,14 @@ public class BOrderPayEndMessageService {
                         logger.info("升级支付完发送消息失败");
                         throw new Exception("升级支付完发送消息失败");
                     }
+                    //发送短信
+                    upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail);
                 } catch (Exception ex) {
                     logger.info("升级支付完发送消息失败");
                 }
             }
         }
+
         PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         if (pfBorderRecommenReward != null) {
             ComUser recommenUser = comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());

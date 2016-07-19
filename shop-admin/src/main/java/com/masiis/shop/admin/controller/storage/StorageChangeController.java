@@ -28,4 +28,9 @@ public class StorageChangeController {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
         return "storage/list";
     }
+
+    @RequestMapping("/create.shtml")
+    public String toCreateStorageChangeBill(){
+        return "storage/storagechange_create";
+    }
 }

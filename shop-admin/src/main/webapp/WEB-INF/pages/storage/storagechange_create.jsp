@@ -99,6 +99,10 @@
                                 <div class="col-sm-3">
                                     <input type="text" class="form-control" id="name" name="promotionName" placeholder="">
                                 </div>
+                                <label for="name" class="col-sm-2 control-label">活动名称</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="name" name="promotionName" placeholder="">
+                                </div>
                             </div>
 
                             <div class="form-group">

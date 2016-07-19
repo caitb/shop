@@ -44,25 +44,25 @@
     <%--</div>--%>
     <div class="floor">
         <div>
-            <span>商品：</span>
+            <span>所属店铺：</span>
             <label for="goods" class="goods">
                 <b></b>
-                <select id="goods" class="myValue">
-                    <option value="">全部</option>
-                    <c:forEach items="${skuList}" var="skuList">
-                        <option value="${skuList.id}">${skuList.name}</option>
+                <select id="goods">
+                    <option value="0">全部</option>
+                    <c:forEach items="${shops}" var="shop">
+                    <option value="${shop.id}">${shop.name}</option>
                     </c:forEach>
-                </select>
+                    </select>
             </label>
 
             <span>等级：</span>
             <label for="level" class="level">
                 <b></b>
                 <select id="level" class="myValue">
-                    <option value="">全部</option>
-                    <c:forEach items="${agentLevels}" var="agent">
-                        <option value="${agent.id}">${agent.name}</option>
-                    </c:forEach>
+                    <option value="0">全部</option>
+                    <option value="1">一级粉丝</option>
+                    <option value="2">二级粉丝</option>
+                    <option value="3">三级粉丝</option>
                 </select>
             </label>
         </div>

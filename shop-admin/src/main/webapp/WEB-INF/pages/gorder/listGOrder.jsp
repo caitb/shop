@@ -257,7 +257,7 @@
     });
 
     $('select[name=shipManId]').change(function(){
-        var shipManName = $(this).text().trim();
+        var shipManName = $(this).find('option:selected').text().trim();
         $('input[name=shipManName]').val(shipManName);
     });
 

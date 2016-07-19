@@ -385,7 +385,7 @@ public class MobileMessageUtil {
      * @param mes        收款信息
      * @return
      */
-    public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
+    public boolean offlinePaymentsRemind(String phone, String orderCode, BigDecimal amount, String date, String mes){
 
         log.info("phone-----"+phone);
         log.info("orderCode-----"+orderCode);
@@ -396,7 +396,6 @@ public class MobileMessageUtil {
         content = new String[5];
         content[0] = orderCode;
         String a = numberFormat.format(amount);
-        log.info("a-------------"+a);
         content[1] = a;
         content[2] = date;
         content[3] = mes;

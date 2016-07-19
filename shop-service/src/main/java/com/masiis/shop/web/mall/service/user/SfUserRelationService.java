@@ -52,10 +52,6 @@ public class SfUserRelationService {
         return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
     }
 
-    public List<SfUserRelation> threeDistributionList(Long userPid){
-        return sfUserRelationMapper.getThreeDistributionList(userPid);
-    }
-
     /**
      * 根据shopId查询代言人活粉丝数量
      * @param shopId        小铺id

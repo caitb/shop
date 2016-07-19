@@ -129,7 +129,7 @@
     $("#goods").on("change",function(){
         var tabVal = $("#goods option:selected").text();
         $(".goods b").html(tabVal);
-        $("#shop").html(tabVal);
+//        $("#shop").html(tabVal);
         queryFans(1);
     })
     $("#level").on("change",function(){

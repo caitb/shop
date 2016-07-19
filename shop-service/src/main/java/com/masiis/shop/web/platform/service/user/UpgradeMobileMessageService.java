@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -59,12 +60,14 @@ public class UpgradeMobileMessageService {
             log.info("是否还有库存------"+isStock);
             log.info("收入-------"+newPfSkuAgent.getTotalPrice());
             log.info("库存是否足够-------"+isStock);
+            BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+            log.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
             Boolean bl = MobileMessageUtil.getInitialization("B").lowerGroupUpRemind(newPComUser.getMobile(),
                     upgradeDetail.getSkuName(),
                     upgradeDetail.getCurrentAgentLevelName(),
                     comUser.getRealName(),
                     upgradeDetail.getApplyAgentLevelName(),
-                    newPfSkuAgent.getTotalPrice(),
+                    incomeAmout,
                     isStock);
             if (bl){
                 log.info("升级给上级发送短信成功");

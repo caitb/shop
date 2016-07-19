@@ -344,7 +344,6 @@ public class UserService {
         user.setSendType(1);
         user.setRegisterSource(0);
         user.setIsBuy(0);
-        user.setIsSpokesman(0);
 
         return user;
     }

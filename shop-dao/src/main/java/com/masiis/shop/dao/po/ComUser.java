@@ -104,7 +104,6 @@ public class ComUser implements Serializable {
      */
     private Date appTokenExpire;
     private Integer isBuy;
-    private Integer isSpokesman;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -302,14 +301,6 @@ public class ComUser implements Serializable {
         this.isBuy = isBuy;
     }
 
-    public Integer getIsSpokesman() {
-        return isSpokesman;
-    }
-
-    public void setIsSpokesman(Integer isSpokesman) {
-        this.isSpokesman = isSpokesman;
-    }
-
     @Override
     public String toString() {
         return "ComUser{" +
@@ -337,7 +328,6 @@ public class ComUser implements Serializable {
                 ", appToken='" + appToken + '\'' +
                 ", appTokenExpire=" + appTokenExpire +
                 ", isBuy=" + isBuy +
-                ", isSpokesman=" + isSpokesman +
                 '}';
     }
 }

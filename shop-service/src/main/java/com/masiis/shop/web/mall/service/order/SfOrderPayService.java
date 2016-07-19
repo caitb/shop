@@ -5,11 +5,13 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.mall.SysConstants;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
@@ -78,6 +80,11 @@ public class SfOrderPayService {
     private SfUserAccountService sfUserAccountService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SfShopMapper sfShopMapper;
+    @Resource
+    private SfShopService sfShopService;
+
 
     /**
      * 获得需要支付的订单的信息
@@ -569,7 +576,9 @@ public class SfOrderPayService {
             map.put("orderConsignee", ordCon);
             //订单信息
             SfOrder order = getOrderById(orderId);
+            SfShop sfShop = sfShopMapper.selectByPrimaryKey(order.getShopId());
             map.put("order", order);
+            map.put("wxQrCode", sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
             //运费
             if(order!=null){
                 BigDecimal shipAmount = order.getShipAmount();

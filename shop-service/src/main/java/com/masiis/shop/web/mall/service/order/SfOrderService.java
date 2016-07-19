@@ -153,7 +153,7 @@ public class SfOrderService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-        String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
+        String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html";
         String[] params = new String[5];
         params[0] = "";
         params[1] = "";

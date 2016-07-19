@@ -21,11 +21,12 @@
     <main>
         <div class="top">
             <div>
-                <h1>您的店铺共有</h1>
-                <p>
-                       <span id="totalCount">${totalCount}</span>
-                </p>
-                <h2>位代言人及粉丝</h2>
+                <h1>${totalCount}</h1>
+                <h2>粉丝数</h2>
+            </div>
+            <div>
+                <h1>${totalCount}</h1>
+                <h2>代言人数</h2>
             </div>
         </div>
         <div class="t_b">

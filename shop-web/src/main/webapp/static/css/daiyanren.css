@@ -3,24 +3,34 @@
   position: relative;
 }
 .wrap .top {
-  background: url("../images/spokesMan/daiyan1.png");
-  padding: 14px 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-  background-size: 100% 100%;
+    display: -webkit-box;
+    padding: 20px 0;
+    background: #fff;
+    margin-bottom: 10px;
 }
 .wrap .top div {
-  width: 43%;
+  -webkit-box-flex:1;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+    position: relative;
+}
+.wrap .top div:last-child:before{
+    position: absolute;
+    content: "";
+    border-left: 1px solid #ddd;
+    height: 60px;
+    left: 0;
+    top: -5px;
 }
 .wrap .top div h1 {
-  color: #fff;
+  color: #333;
+    font-size: 20px;
+    font-weight: 600;
 }
 .wrap .top div h2 {
-  color: #fff;
-  float: right;
-  margin-top: -5px;
+  color: #666;
 }
 .wrap .top div p {
   padding: 8px 0;

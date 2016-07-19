@@ -120,13 +120,13 @@
           count(*) as num
         FROM sf_user_relation a
         INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+        <if test="spokesMan != null">
+            AND r.is_spokesman = #{spokesMan}
+        </if>
         INNER JOIN com_user u ON r.user_id = u.id
         WHERE a.user_id=#{userId}
         <if test="shopId != null">
             AND a.shop_id=#{shopId}
-        </if>
-        <if test="spokesMan != null">
-            AND a.is_spokesman = #{spokesMan}
         </if>
     </select>
 
@@ -243,11 +243,13 @@
             <if test="shopId != null">
                 and a.shop_id = #{shopId}
             </if>
-            AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+            <if test="sopkenMan != null">
+                and r.is_spokesman = #{sopkenMan} AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+2
+            </if>
+            <if test="sopkenMan == null">
+                AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+            </if>
         ) t where 1 = 1
-        <if test="sopkenMan != null">
-            and t.sopkenMan = #{sopkenMan}
-        </if>
         <if test="userLevel != null">
             and t.userLevel = #{userLevel}
         </if>

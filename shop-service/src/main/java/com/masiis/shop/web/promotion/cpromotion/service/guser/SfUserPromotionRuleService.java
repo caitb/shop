@@ -24,8 +24,8 @@ public class SfUserPromotionRuleService {
     @Resource
     private SfUserRelationService userRelationService;
 
-    public Boolean isMayReceiveReward(ComUser comUser,Integer promoRuleId){
-        Map<String, Integer> _map = userRelationService.getFansOrSpokesManNumByUserId(comUser.getId(), 1);
+    public Boolean isMayReceiveReward(ComUser comUser,Integer promoRuleId,Integer presonType){
+        Map<String, Integer> _map = userRelationService.getFansOrSpokesManNumByUserId(comUser.getId(), presonType);
         if (_map!=null){
             Integer fansQuantity = (Integer) _map.get("maxNum");
             SfUserPromotionRule rule = sfUserPromotionRuleMapper.selectByPrimaryKey(promoRuleId);

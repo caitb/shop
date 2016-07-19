@@ -6,14 +6,12 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.dao.po.SfGorder;
-import com.masiis.shop.dao.po.SfUserPromotionRecord;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRecordService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRuleService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +46,8 @@ public class PromotionGorderService {
     private SfUserPromotionRecordService recordService;
     @Resource
     private SfUserPromotionRuleService userPromotionRuleService;
+    @Resource
+    private SfUserPromotionService userPromotionService;
 
 
 
@@ -86,7 +86,11 @@ public class PromotionGorderService {
             //活动已领取
             return 2;
         }
-        Boolean bl = userPromotionRuleService.isMayReceiveReward(comUser,promoRuleId);
+        SfUserPromotion sfUserPromotion = userPromotionService.selectByPrimaryKey(promoId);
+        if (sfUserPromotion==null){
+            throw new BusinessException("promoId参数不合法,查询活动");
+        }
+        Boolean bl = userPromotionRuleService.isMayReceiveReward(comUser,promoRuleId,sfUserPromotion.getPersonType());
         if (!bl){
             //粉丝数量未达到不能领取
             return 0;

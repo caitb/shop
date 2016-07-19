@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -10,7 +10,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>Tables - Ace Admin</title>
+    <title>Tables - Masiis</title>
 
     <meta name="description" content="Static &amp; Dynamic Tables" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/tab.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
 
     <!-- page specific plugin styles -->
 
@@ -33,6 +34,7 @@
     <![endif]-->
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
@@ -59,527 +61,9 @@
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
 
-    <!-- #section:basics/sidebar -->
-    <div id="sidebar" class="sidebar responsive" hidden>
-        <script type="text/javascript">
-            try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
-        </script>
-
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="display: none;">
-            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                <button class="btn btn-success">
-                    <i class="ace-icon fa fa-signal"></i>
-                </button>
-
-                <button class="btn btn-info">
-                    <i class="ace-icon fa fa-pencil"></i>
-                </button>
-
-                <!-- #section:basics/sidebar.layout.shortcuts -->
-                <button class="btn btn-warning">
-                    <i class="ace-icon fa fa-users"></i>
-                </button>
-
-                <button class="btn btn-danger">
-                    <i class="ace-icon fa fa-cogs"></i>
-                </button>
-
-                <!-- /section:basics/sidebar.layout.shortcuts -->
-            </div>
-
-            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                <span class="btn btn-success"></span>
-
-                <span class="btn btn-info"></span>
-
-                <span class="btn btn-warning"></span>
-
-                <span class="btn btn-danger"></span>
-            </div>
-        </div><!-- /.sidebar-shortcuts -->
-
-        <ul class="nav nav-list">
-            <li class="">
-                <a href="index.html">
-                    <i class="menu-icon fa fa-tachometer"></i>
-                    <span class="menu-text"> Dashboard </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-desktop"></i>
-                    <span class="menu-text"> UI &amp; Elements </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-caret-right"></i>
-
-                            Layouts
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li class="">
-                                <a href="top-menu.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Top Menu
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-1.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Default Mobile Menu
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-2.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Mobile Menu 2
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-3.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Mobile Menu 3
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="">
-                        <a href="typography.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Typography
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="elements.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Elements
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="buttons.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Buttons &amp; Icons
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="treeview.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Treeview
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="jquery-ui.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            jQuery UI
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="nestable-list.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Nestable Lists
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-caret-right"></i>
-
-                            Three Level Menu
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li class="">
-                                <a href="#">
-                                    <i class="menu-icon fa fa-leaf green"></i>
-                                    Item #1
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="#" class="dropdown-toggle">
-                                    <i class="menu-icon fa fa-pencil orange"></i>
-
-                                    4th level
-                                    <b class="arrow fa fa-angle-down"></b>
-                                </a>
-
-                                <b class="arrow"></b>
-
-                                <ul class="submenu">
-                                    <li class="">
-                                        <a href="#">
-                                            <i class="menu-icon fa fa-plus purple"></i>
-                                            Add Product
-                                        </a>
-
-                                        <b class="arrow"></b>
-                                    </li>
-
-                                    <li class="">
-                                        <a href="#">
-                                            <i class="menu-icon fa fa-eye pink"></i>
-                                            View Products
-                                        </a>
-
-                                        <b class="arrow"></b>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="active open">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-list"></i>
-                    <span class="menu-text"> Tables </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="active">
-                        <a href="tables.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Simple &amp; Dynamic
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            jqGrid plugin
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-pencil-square-o"></i>
-                    <span class="menu-text"> Forms </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="form-elements.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Form Elements
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="form-wizard.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Wizard &amp; Validation
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="wysiwyg.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Wysiwyg &amp; Markdown
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="dropzone.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Dropzone File Upload
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="widgets.html">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> Widgets </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="calendar.html">
-                    <i class="menu-icon fa fa-calendar"></i>
-
-							<span class="menu-text">
-								Calendar
-
-                                <!-- #section:basics/sidebar.layout.badge -->
-								<span class="badge badge-transparent tooltip-error" title="2 Important Events">
-									<i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
-								</span>
-
-                                <!-- /section:basics/sidebar.layout.badge -->
-							</span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="gallery.html">
-                    <i class="menu-icon fa fa-picture-o"></i>
-                    <span class="menu-text"> Gallery </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-tag"></i>
-                    <span class="menu-text"> More Pages </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="profile.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            User Profile
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="inbox.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Inbox
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="pricing.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Pricing Tables
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="invoice.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Invoice
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="timeline.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Timeline
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="email.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Email Templates
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="login.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Login &amp; Register
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-file-o"></i>
-
-							<span class="menu-text">
-								Other Pages
-
-                                <!-- #section:basics/sidebar.layout.badge -->
-								<span class="badge badge-primary">5</span>
-
-                                <!-- /section:basics/sidebar.layout.badge -->
-							</span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="faq.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            FAQ
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="error-404.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Error 404
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="error-500.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Error 500
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="grid.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Grid
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="blank.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Blank Page
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-        </ul><!-- /.nav-list -->
-
-        <!-- #section:basics/sidebar.layout.minimize -->
-        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-            <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-        </div>
-
-        <!-- /section:basics/sidebar.layout.minimize -->
-        <script type="text/javascript">
-            try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
-        </script>
-    </div>
 
     <!-- /section:basics/sidebar -->
     <div class="main-content" style="margin: 0;">
-        <!-- #section:basics/content.breadcrumbs -->
-        <div class="breadcrumbs" id="breadcrumbs" style="display: none;">
-            <script type="text/javascript">
-                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-            </script>
-
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="#">Home</a>
-                </li>
-
-                <li>
-                    <a href="#">Tables</a>
-                </li>
-                <li class="active">Simple &amp; Dynamic</li>
-            </ul><!-- /.breadcrumb -->
-
-            <!-- #section:basics/content.searchbox -->
-            <div class="nav-search" id="nav-search">
-                <form class="form-search">
-							<span class="input-icon">
-								<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-								<i class="ace-icon fa fa-search nav-search-icon"></i>
-							</span>
-                </form>
-            </div><!-- /.nav-search -->
-
-            <!-- /section:basics/content.searchbox -->
-        </div>
 
         <!-- /section:basics/content.breadcrumbs -->
         <div class="page-content">
@@ -595,42 +79,34 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar" style="display: none;">
-                                        <form class="form-inline">
-                                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
-                                            <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
-                                            <%--</button>--%>
-                                            <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
-                                            <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
-                                            <%--</a>--%>
+                                    <div id="toolbar">
+                                        <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="skuName">商品名称</label>
-                                                <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">
+                                                <label for="orderCode">订单号</label>
+                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="categoryName">商品分类</label>
-                                                <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
+                                                <label for="orderCode">订单日期：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
-                                        </form>
+                                        </div>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
-                                           data-show-refresh="true"
-                                           data-show-toggle="true"
-                                    <%--data-show-columns="true"--%>
-                                    <%--data-show-export="true"--%>
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
-                                    <%--data-show-pagination-switch="true"--%>
                                            data-pagination="true"
                                            data-id-field="id"
                                            data-page-list="[10, 25, 50, 100, ALL]"
                                            data-show-footer="false"
                                            data-side-pagination="server"
-                                           data-url="/product/list.do"
                                            data-response-handler="responseHandler">
                                     </table>
 
@@ -638,117 +114,6 @@
                             </div>
                         </div>
 
-                        <div id="modal-table" class="modal fade" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header no-padding">
-                                        <div class="table-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                                <span class="white">&times;</span>
-                                            </button>
-                                            Results for "Latest Registered Domains
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-body no-padding">
-                                        <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-                                            <thead>
-                                            <tr>
-                                                <th>Domain</th>
-                                                <th>Price</th>
-                                                <th>Clicks</th>
-
-                                                <th>
-                                                    <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                    Update
-                                                </th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="#">ace.com</a>
-                                                </td>
-                                                <td>$45</td>
-                                                <td>3,330</td>
-                                                <td>Feb 12</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <a href="#">base.com</a>
-                                                </td>
-                                                <td>$35</td>
-                                                <td>2,595</td>
-                                                <td>Feb 18</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <a href="#">max.com</a>
-                                                </td>
-                                                <td>$60</td>
-                                                <td>4,400</td>
-                                                <td>Mar 11</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <a href="#">best.com</a>
-                                                </td>
-                                                <td>$75</td>
-                                                <td>6,500</td>
-                                                <td>Apr 03</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <a href="#">pro.com</a>
-                                                </td>
-                                                <td>$55</td>
-                                                <td>4,250</td>
-                                                <td>Jan 21</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div class="modal-footer no-margin-top">
-                                        <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
-                                            <i class="ace-icon fa fa-times"></i>
-                                            Close
-                                        </button>
-
-                                        <ul class="pagination pull-right no-margin">
-                                            <li class="prev disabled">
-                                                <a href="#">
-                                                    <i class="ace-icon fa fa-angle-double-left"></i>
-                                                </a>
-                                            </li>
-
-                                            <li class="active">
-                                                <a href="#">1</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">2</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">3</a>
-                                            </li>
-
-                                            <li class="next">
-                                                <a href="#">
-                                                    <i class="ace-icon fa fa-angle-double-right"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content-area -->
@@ -782,8 +147,19 @@
 <!-- page specific plugin scripts -->
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
 
 <script src="<%=basePath%>static/js/date-util.js"></script>
+<script src="<%=basePath%>static/js/laydate.js"></script>
+<script>
+    laydate({
+        elem: '#beginTime'
+    });
+    laydate({
+        elem: '#endTime'
+    });
+</script>
 
 <script>
     var $table = $('#table'),
@@ -792,11 +168,21 @@
 
     function initTable() {
         $table.bootstrapTable({
+            url: '<%=basePath%>storagechange/list.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
-            //multipleSearch: true,
             queryParamsType: 'pageNo',
+            queryParams: function(params){
+                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                if($('#beginTime').val()){
+                    params.beginTime = $('#beginTime').val();
+                }
+                if($('#endTime').val()){
+                    params.endTime = $('#endTime').val();
+                }
+                return params;
+            },
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -821,118 +207,200 @@
                         checkbox: true,
                         align: 'center',
                         valign: 'middle'
-                    }, {
-                    title: 'ID',
-                    field: 'id',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    footerFormatter: totalTextFormatter,
-                    formatter: function(value, row, index){
-                        return row.comSku.id;
-                    }
-                },
+                    },
                     {
-                        field: 'skuName',
-                        title: '商品名称',
+                        title: 'ID',
+                        field: 'pb.id',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        footerFormatter: totalTextFormatter,
+                        formatter: function(value, row, index){
+                            if(row && row.id){
+                                return row.id;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pb.order_code',
+                        title: '订单号',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return row.comSku.name;
-                        }
-                    },
-                    {
-                        field: 'categoryName',
-                        title: '商品分类',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.categoryName){
-                                return row.comSpu.categoryName;
+                            if(row && row.orderCode){
+                                return row.orderCode;
                             }
                         }
                     },
                     {
-                        field: 'priceRetail',
-                        title: '零售价',
-                        footerFormatter: totalNameFormatter,
-                        formatter: function (value, row, index) {
-                            return row.comSku.priceRetail;
-                        },
-                        align: 'center'
-                    },
-                    {
-                        field: 'store',
-                        title: '库存',
+                        field: 'pb.create_time',
+                        title: '下单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfSkuStock){
-                                return row.pfSkuStock.stock;
+                            return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                        }
+                    },
+                    {
+                        field: 'cu.real_name',
+                        title: '下单人',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.realName){
+                                return row.realName;
                             }
                         }
                     },
                     {
-                        field: 'pv',
-                        title: '浏览量',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center'
-                    },
-                    {
-                        field: 'age',
-                        title: '销售量',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center'
-                    },
-                    {
-                        field: 'upTime',
-                        title: '上架时间',
+                        field: 'pbi.sku_name',
+                        title: '合伙产品',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.upTime){
-                                return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.skuName){
+                                return row.skuName;
                             }
                         }
                     },
                     {
-                        field: 'status',
-                        title: '状态',
+                        field: 'cal.name',
+                        title: '合伙等级',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comSpu && row.comSpu.status == 0){
-                                return '<span class="label label-sm label-warning">未审核</span>';
+                            if(row && row.levelName){
+                                return row.levelName;
                             }
-                            if(row.comSpu && row.comSpu.status == 1){
-                                return '<span class="label label-sm label-success">已审核</span>';
+                        }
+                    },
+                    {
+                        field: 'pcu.real_name',
+                        title: '上级合伙人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.pRealName){
+                                return row.pRealName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pcal.name',
+                        title: '上级合伙等级',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.pLevelName){
+                                return row.pLevelName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'tcu.real_name',
+                        title: '推荐人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.recommendRealName){
+                                return row.recommendRealName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pb.recommen_amount',
+                        title: '推荐奖励金额',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.recommenAmount){
+                                return row.recommenAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pb.order_amount',
+                        title: '订单金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.orderAmount){
+                                return row.orderAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'receivable_amount',
+                        title: '应付金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.receivableAmount){
+                                return row.receivableAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'cd.value',
+                        title: '订单类型',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.orderType){
+                                return row.orderType;
                             }
                         }
                     },
                     {
                         title: '操作项',
                         align: 'center',
-                        formatter: operateFormatter,
+                        formatter: function(value, row, index){
+                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            if(row.pfBorder && row.userPid == 0 && row.orderStatus == 6){
+                                arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
+                            }
+                            if(row && row.orderStatus == 9){
+                                arr.push('&nbsp;&nbsp;<a class="receipt" href="javascript:void(0);">确认收款</a>');
+                            }
+
+                            return arr.join('');
+                        },
                         events: {
-                            'click .putaway': function (e, value, row, index) {
-                                $.ajax({
-                                    url: '<%=basePath%>product/putaway.do',
-                                    data: {id: row.comSpu.id, isSale: row.comSpu.isSale==0?1:0},
-                                    success: function (data) {
-                                        $table.bootstrapTable('refresh');
-                                    }
-                                });
+                            'click .detail': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.id);
                             },
-                            'click .edit': function(e, value, row, index) {
-                                parent.window.$('#myTabbable').add('product-edit-'+row.comSku.id, '修改商品', '<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id);
+                            'click .scheduling': function(e, value, row, index){
+                                $.ajax({
+                                    url: '<%=basePath%>order/border/scheduling.do',
+                                    data: {borderId: row.id, sendType: row.comUser.sendType},
+                                    success: function(msg){
+                                        msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
+                                        $.gritter.add({
+                                            title: '消息',
+                                            text: msg,
+                                            class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                        });
+                                        $('#table').bootstrapTable('refresh');
+                                    }
+                                })
+                            },
+                            'click .receipt': function(e, value, row, index){
+                                $('#orderCode2').html(row.orderCode);
+                                $('#receivableAmount').html(row.receivableAmount);
+                                $('input[name="bOrderId"]').val(row.id);
+                                $('input[name="payAmount"]').val('');
+                                $('input[name="outOrderId"]').val('');
+                                $('#modal-receipt').modal('show');
                             }
                         }
                     }
@@ -975,6 +443,13 @@
                 height: getHeight()
             });
         });
+
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
+        });
+        $('#orderType').change(function(){
+            $table.bootstrapTable('refresh');
+        });
     }
 
     function getIdSelections() {
@@ -987,6 +462,23 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
+        //物流状态
+        if(res.wuliuList !=null){
+            var $select = $('#shipStatus');
+            $select.empty();
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
+            for(var i=0, len = res.wuliuList.length;i<len;i++){
+                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            }
+        }
+        //订单状态
+        if(res.orderStatusList !=null){
+            var $select = $('#orderStatus');
+            $select.empty();
+            for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            }
+        }
         return res;
     }
 
@@ -1000,7 +492,7 @@
 
     function operateFormatter(value, row, index) {
         var arr = [];
-        arr.push('&nbsp;<a class="edit" href="javascript:void(0);" title="Edit">编辑</a>');
+        arr.push('&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑</a>');
         if(row.comSpu && row.comSpu.isSale == 0){
             arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">上架</a>');
         }else if(row.comSpu && row.comSpu.isSale == 1){
@@ -1097,6 +589,68 @@
     $('#searchBtn').on('click', function(){
 
     });
+
+    $('.ok').on('click', function(){
+        var outOrderId = $('input[name="outOrderId"]').val();
+        var payAmount = $('input[name="payAmount"]').val();
+        var reg = new RegExp("^[0-9]*$");
+
+        if(!payAmount){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '请输入实付金额!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        if(!reg.test(Math.floor(payAmount*10000))){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '实付金额格式不对!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        if(!outOrderId && payAmount > 0){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '请填写银行流水号!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        submitForm();
+
+        function submitForm(){
+            $('.ok').attr('disabled', 'disabled');
+            $.ajax({
+                url: '<%=basePath%>order/border/offline/Receipt.do',
+                type: 'POST',
+                data: $('#auditForm').serialize(),
+                success: function(result){
+                    result = window.eval('('+result+')');
+                    if(result.result_code == 0){
+                        $('#table').bootstrapTable('refresh');
+                        $('#modal-receipt').modal('hide');
+                    }
+                    $('.ok').removeAttr('disabled');
+                    $.gritter.add({
+                        title: '消息',
+                        text: result.result_msg,
+                        class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                    });
+                }
+            });
+        }
+
+    });
+
 
 </script>
 </body>

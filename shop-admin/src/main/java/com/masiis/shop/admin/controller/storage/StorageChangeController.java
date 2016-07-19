@@ -1,13 +1,20 @@
 package com.masiis.shop.admin.controller.storage;
 
+import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.storage.PbStorageBillItemService;
 import com.masiis.shop.admin.service.storage.PbStorageBillService;
 import com.masiis.shop.dao.po.PbStorageBill;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Date 2016/7/19
@@ -22,11 +29,40 @@ public class StorageChangeController {
     private PbStorageBillService billService;
     @Resource
     private PbStorageBillItemService itemService;
+    //--------------------------
+    @Resource
+    private BOrderService bOrderService;
+    //--------------------------
 
     @RequestMapping("/list.shtml")
-    public String list(){
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+    public String toList(){
         return "storage/list";
+    }
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public Object list(HttpServletRequest request, HttpServletResponse response,
+                       Integer pageNumber, Integer pageSize, String sortName,
+                       String sortOrder, Integer orderStatus){
+        Map<String, Object> conditionMap = new HashMap<>();
+        try {
+            if(StringUtils.isNotBlank(request.getParameter("orderCode"))){
+                conditionMap.put("orderCode", request.getParameter("orderCode"));
+            }
+            if(StringUtils.isNotBlank(request.getParameter("startTime"))){
+                conditionMap.put("startTime", request.getParameter("startTime"));
+            }
+            if(StringUtils.isNotBlank(request.getParameter("endTime"))){
+                conditionMap.put("endTime", request.getParameter("endTime"));
+            }
+            Map<String, Object> pageMap = bOrderService.offlineList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            //pageMap = billService.storagechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            return pageMap;
+        } catch (Exception e) {
+            log.error("查询合伙人线下支付订单列表失败![conditionMap=" + conditionMap + "]");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping("/create.shtml")

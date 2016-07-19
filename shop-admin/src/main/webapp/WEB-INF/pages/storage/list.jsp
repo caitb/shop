@@ -786,7 +786,7 @@
 <script src="<%=basePath%>static/js/date-util.js"></script>
 
 <script>
-    /*var $table = $('#table'),
+    var $table = $('#table'),
             $remove = $('#remove'),
             selections = [];
 
@@ -1096,7 +1096,7 @@
 
     $('#searchBtn').on('click', function(){
 
-    });*/
+    });
 
 </script>
 </body>

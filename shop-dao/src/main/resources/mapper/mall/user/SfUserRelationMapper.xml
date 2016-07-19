@@ -119,7 +119,7 @@
         SELECT
           count(*) as num
         FROM sf_user_relation a
-        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
         <if test="spokesMan != null">
             AND r.is_spokesman = #{spokesMan}
         </if>
@@ -167,7 +167,7 @@
             r.shop_id AS shopId,
             r.is_buy AS isBuy
             FROM sf_user_relation a
-            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
             INNER JOIN com_user u ON r.user_id = u.id
             WHERE a.user_id=#{userId,jdbcType=BIGINT}
             <if test="shopId != null">
@@ -237,7 +237,7 @@
             r.shop_id AS shopId,
             r.is_buy AS isBuy
             FROM sf_user_relation a
-            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
             INNER JOIN com_user u ON r.user_id = u.id
             WHERE a.user_id= #{userId,jdbcType=BIGINT}
             <if test="shopId != null">

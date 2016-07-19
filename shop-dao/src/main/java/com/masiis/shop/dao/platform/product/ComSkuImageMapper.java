@@ -26,4 +26,11 @@ public interface ComSkuImageMapper {
     ComSkuImage selectDefaultImgBySkuId(Integer skuId);
 
     List<ComSkuImage> selectBySkuId(Integer skuId);
+
+    /**
+     * 删除指定商品图片
+     * @param skuId
+     * @return
+     */
+    int deleteBySkuId(Integer skuId);
 }

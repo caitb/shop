@@ -62,7 +62,7 @@
         </span></p>
         <p><b>共付：</b><span>￥${order.orderAmount}</span></p>
     </section>
-    <div class="back"></div>
+    <%--<div class="back"></div>--%>
     <div class="sec6">
         <c:if test="${order.sendMan==0}">
             <p><a onclick="contactSeller()">联系卖家</a></p>
@@ -70,7 +70,7 @@
         <c:if test="${order.sendMan!=0}">
             <p><a onclick="contactSelfWxCode()">联系卖家</a></p>
         </c:if>
-        <p><a onclick="askForInvoice()">索要发票</a></p>
+        <%--<p><a onclick="askForInvoice()">索要发票</a></p>--%>
     </div>
 </div>
 <div id="contactSellerDivId" class="back_l">
@@ -88,11 +88,11 @@
         <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
-<div id="askForInvoiceDivId" class="back_l back_s">
-    <h1>索要发票</h1>
-    <p>请联系:<a href="tel:400-961-961">400-961-9616</a></p>
-    <button  onclick="closeAskForInvoice()">知道了</button>
-</div>
+<%--<div id="askForInvoiceDivId" class="back_l back_s">--%>
+    <%--<h1>索要发票</h1>--%>
+    <%--<p>请联系:<a href="tel:400-961-961">400-961-9616</a></p>--%>
+    <%--<button  onclick="closeAskForInvoice()">知道了</button>--%>
+<%--</div>--%>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>

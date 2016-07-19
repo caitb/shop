@@ -353,6 +353,9 @@ public class DevelopingController extends BaseController {
                 }else{
                     newComPoster.setId(comPoster.getId());
                     comPosterService.update(newComPoster);
+
+                    //删除旧海报
+                    OSSObjectUtils.deleteBucketFile("static/user/poster/"+comPoster.getPosterName());
                 }
 
                 resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());

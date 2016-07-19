@@ -14,11 +14,14 @@ import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.qrcode.WeiXinSFQRCodeService;
+import com.masiis.shop.web.mall.service.shop.JSSDKSFService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.utils.image.DrawImageUtil;
 import com.masiis.shop.web.mall.utils.image.Element;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
+import com.masiis.shop.web.platform.service.user.ComPosterService;
+import com.masiis.shop.web.platform.service.user.SfUserShareParamService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,12 +64,16 @@ public class SfShopController extends BaseController {
 //    private UserService userService;
 //    @Resource
 //    private SfUserShopViewService sfUserShopViewService;
-//    @Resource
-//    private JSSDKSFService jssdkService;
+    @Resource
+    private JSSDKSFService jssdkService;
     @Resource
     private SfUserRelationService sfUserRelationService;
     @Resource
     private WeiXinSFQRCodeService weiXinSFQRCodeService;
+    @Resource
+    private SfUserShareParamService sfUserShareParamService;
+    @Resource
+    private ComPosterService comPosterService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
@@ -129,14 +136,41 @@ public class SfShopController extends BaseController {
             }
 
             /** 获取调用JSSDK所需要的数据 **/
-            //Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
+            Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
             if(fromUserId != null){
                 shareLink = curUrl;
             }else{
                 shareLink = curUrl + "&fromUserId="+comUser.getId();
             }
 
+            /**
+             * 获取海报
+             */
+            //获取海报1: 海报已存在,直接返回
+            SfUserShareParam condition = new SfUserShareParam();
+            condition.setfUserId(comUser.getId());
+            condition.setShopId(shopId);
+            SfUserShareParam sfUserShareParam = sfUserShareParamService.loadByCondition(condition);
 
+            Long shareParamId = (sfUserShareParam != null) ? sfUserShareParam.getId() : -1L;
+
+            ComPoster comPosterParam = new ComPoster();
+            comPosterParam.setType(2);
+            comPosterParam.setUserId(comUser.getId());
+            comPosterParam.setShareParamId(shareParamId);
+
+            ComPoster comPoster = comPosterService.findByCondition(comPosterParam);
+            Long curTime = System.currentTimeMillis();
+            Long monthTime = 1000L * 60 * 60 * 24 * 28;//28天
+            if(comPoster != null && (curTime-comPoster.getCreateTime().getTime()) < monthTime) {
+                mav.addObject("shopPoster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
+                mav.addObject("shareMap", resultMap);
+
+                return mav;
+            }
+
+
+            //获取海报2:如果海报不存在或已经过期,重新创建海报
             String headImg = "h-"+comUser.getId()+".png";
             String qrcodeName = "qrcode-shop-"+comUser.getId()+"-"+shopId+".png";
             String bgPoster = "shop-"+shopId+".png";
@@ -147,19 +181,18 @@ public class SfShopController extends BaseController {
             }
 
             //先删除旧的图片,再下载新的图片
-//            new File(posterDirPath+"/"+headImg).delete();
-//            new File(posterDirPath+"/"+bgPoster).delete();
-//            new File(posterDirPath+"/"+qrcodeName).delete();
-//            DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-//            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
-//            OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
+            new File(posterDirPath+"/"+headImg).delete();
+            new File(posterDirPath+"/"+bgPoster).delete();
+            new File(posterDirPath+"/"+qrcodeName).delete();
+
             File headImgFile   = new File(posterDirPath+"/"+headImg);
             File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
             //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
             if(!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))   DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             if(!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))      OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
             if(!bgImgFile.exists())     OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
-            DownloadImage.download(weiXinSFQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
+            String[] qrcodeResult = weiXinSFQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null);
+            DownloadImage.download(qrcodeResult[1], qrcodeName, posterDirPath);
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
@@ -193,7 +226,29 @@ public class SfShopController extends BaseController {
             drawElements.add(text2Element);
             drawElements.add(text3Element);
 
-            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
+
+            int              random           = (int)((Math.random()*9+1)*100000);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date             createTime       = new Date();
+            String           posterName       = simpleDateFormat.format(createTime)+random+".png";
+            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/"+posterName);
+
+            //保存二维码海报图片地址
+            ComPoster newComPoster = new ComPoster();
+            newComPoster.setCreateTime(createTime);
+            newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+            newComPoster.setType(2);
+            newComPoster.setUserId(comUser.getId());
+            newComPoster.setPosterName(posterName);
+            if(comPoster == null){
+                comPosterService.add(newComPoster);
+            }else{
+                newComPoster.setId(comPoster.getId());
+                comPosterService.update(newComPoster);
+
+                //删除旧海报
+                OSSObjectUtils.deleteBucketFile("static/user/poster/"+comPoster.getPosterName());
+            }
 
             //二维码获取成功,更新sfUserRelation成为代言人
             SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), shopId);
@@ -210,8 +265,8 @@ public class SfShopController extends BaseController {
 //            resultMap.put("shareLink", shareLink);
 //            resultMap.put("shareImg", comUser.getWxHeadImg());
 //
-//            mav.addObject("shareMap", resultMap);
-            mav.addObject("shopPoster", PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
+            mav.addObject("shareMap", resultMap);
+            mav.addObject("shopPoster", PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
 
             return mav;
         } catch (Exception e) {

@@ -116,4 +116,9 @@
                sku_id = #{skuId,jdbcType=INTEGER}
     </select>
 
+    <!-- 删除指定商品图片 -->
+    <delete id="deleteBySkuId" parameterType="Integer">
+        DELETE FROM com_sku_image WHERE sku_id = #{skuId}
+    </delete>
+
 </mapper>

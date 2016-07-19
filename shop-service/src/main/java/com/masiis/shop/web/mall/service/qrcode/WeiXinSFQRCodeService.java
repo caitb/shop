@@ -56,7 +56,7 @@ public class WeiXinSFQRCodeService {
      * @param skuId
      * @return
      */
-    public String createShopOrSkuQRCode(Long comUserId, Long shopId, Integer skuId){
+    public String[] createShopOrSkuQRCode(Long comUserId, Long shopId, Integer skuId){
         Long scene_id = null;
 
         SfUserShareParam condition = new SfUserShareParam();
@@ -83,9 +83,9 @@ public class WeiXinSFQRCodeService {
         Map<String, Object> resultMap = new JSONParser(result).parseMap();
         if(resultMap.get("expire_seconds") != null){
             String ticket = (String)resultMap.get("ticket");
-            return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
+            return new String[]{scene_id+"", WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket};
         }
 
-        return result;
+        return null;
     }
 }

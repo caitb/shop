@@ -1,7 +1,9 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,25 @@ import java.util.List;
 @Transactional
 public class PfBorderRecommenRewardService {
 
+    private Logger log = Logger.getLogger(PfBorderRecommenRewardService.class);
+
+    @Resource
+    private ComUserMapper comUserMapper;
+
     @Resource
     private PfBorderRecommenRewardMapper pfBorderRecommenRewardMapper;
+
+    /**
+     * 获取推荐人
+     * @param pfBorderItemId
+     * @return
+     */
+    public ComUser getRecommenRewardUser(Long pfBorderItemId){
+        PfBorderRecommenReward pfBorderRecommenReward = getByPfBorderItemId(pfBorderItemId);
+        log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+        ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+        return recommenRewardUser;
+    }
 
     public PfBorderRecommenReward getByPfBorderItemId(Long pfBorderItemId) {
         return pfBorderRecommenRewardMapper.selectByBorderItemId(pfBorderItemId);

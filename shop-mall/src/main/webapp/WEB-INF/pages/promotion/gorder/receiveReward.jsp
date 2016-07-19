@@ -13,7 +13,7 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reward.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/receiveReward.css">
 </head>
 <body>
    <div class="wrap">
@@ -92,6 +92,9 @@
                 }else if(result==2){
                     //已领取
                     alert("您已领取不能再重复领取");
+                }else if (result==0){
+                    //粉丝数量不够不能领取
+                    alert("粉丝数量未达到要求不能领取");
                 }
             }
         })

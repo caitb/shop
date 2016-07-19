@@ -9,22 +9,72 @@
     <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/message.css">
+    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js" ></script>
+    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js" ></script>
     <script type="application/javascript">
         var path = "${path}";
+        var cur = 0;
+
+        $(function(){
+            listMessage();
+        });
+        function listMessage(){
+            //$("#msgList").empty();
+            $.ajax({
+                type: 'get',
+                url: path + '/mallmessage/contentList.shtml?userId=' + ${userId} + "&cur=" + cur++,
+                dataType: "json",
+                success: function(data) {
+                    if(data.resCode == "success"){
+                        if(data.hasData == true){
+                            $("#nameP").html(data.fromUserName);
+                            var tempHtml = '';
+                            var messageList = data.messageList;
+                            for(var i = 0; i < messageList.length; i++){
+                                tempHtml += '<div class="sec1">' +
+                                                '<div class="s_b">' +
+                                                    '<div class="b_b">' +
+                                                        '<img src="${path}/static/images/massage_r1_c1.png" alt="">' +
+                                                        '<h1>' + messageList[i].content + '</h1>' +
+                                                        '<p>';
+                                if(messageList[i].contentUrl != undefined) {
+                                    tempHtml += '<a href="' + path + "/" + messageList[i].contentUrl + '">点击查看</a>';
+                                }else{
+                                    tempHtml += '<a href="javascript:void(0)"></a>';
+                                }
+                                tempHtml += '<a>' + messageList[i].createTime + '</a>' +
+                                                        '</p>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>';
+                            }
+                            $("#msgList").append(tempHtml);
+                        }else{
+                            $("#more").hide();
+                        }
+                        if(data.isLast == true){
+                            $("#more").hide();
+                        } else {
+                            $("#more").show();
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="../images/xq_rt.png" alt=""></a>
-        <p>消息内容</p>
+        <a href="javascript:void(0)" onclick="javascript:window.location.replace('/mallmessage/toMessageCenter.shtml?cur=0');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p id="nameP"></p>
     </header>
-    <main>
-        <div class="sec1">
+    <main id="msgList">
+        <%--<div class="sec1">
             <div class="s_b">
                 <div class="b_b">
-                    <img src="../img/massage_r1_c1.png" alt="">
+                    <img src="${path}/static/images/massage_r1_c1.png" alt="">
                     <h1>阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的阿斯达斯大苏打打扫打扫打扫的</h1>
                     <p>
                         <a href="">点击查看</a>
@@ -32,11 +82,9 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div>--%>
     </main>
-    <div class="downloading"><img src="../img/downloading.png" alt=""></div>
+    <div id="more" class="downloading" onclick="listMessage();"><img src="${path}/static/images/downloading.png" alt=""></div>
 </div>
-<script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js" ></script>
-<script type="application/javascript" src="${path}/static/js/common/commonAjax.js" ></script>
 </body>
 </html>

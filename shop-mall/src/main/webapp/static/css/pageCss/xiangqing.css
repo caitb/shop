@@ -210,7 +210,7 @@ footer .sec3 p {
     -webkit-box-flex: 1;
     border:1px solid  #C7A467;
     color: #C7A467;
-    margin:5px 10px 5px 0;
+    margin:5px 10px;
     line-height:32px;
     text-align: center;
 }
@@ -522,7 +522,7 @@ footer .sec3 p a {
     -webkit-box-align:center;
     -webkit-box-pack:center;
     z-index:12;
- }
+}
 .b_t img{
     width:80%;
     display: block;
@@ -546,4 +546,10 @@ footer .sec3 p a {
     line-height:26px;
     background:#C7A467;
     color: #666666;
+}
+.off i{
+    display: block;
+    font-size: 30px;
+    color: #666666;
+    line-height: 28px;
 }

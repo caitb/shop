@@ -33,6 +33,9 @@
         <task:scheduled ref="sfOrderTask" method="unPaySfOrderCancelJob" cron="0 0/10 * * * ?" />
         <task:scheduled ref="sfOrderTask" method="orderReceivedConfirmJob" cron="0 0/10 * * * ?" />
 
+        <!-- 活动、促销相关job -->
+        <task:scheduled ref="sfPromotionTask" method="prizeResultWxNoticeJob" cron="0 0/10 * * * ?" />
+
         <!-- 每日统计下级代理数量 -->
         <!--<task:scheduled ref="pfAgentTask" method="agentStatisticsJob" cron="0 40 0 * * ?"/>-->
         <task:scheduled ref="sfUserTask" method="userIsBuyJob" cron="0 50 0 * * ?"/>

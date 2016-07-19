@@ -7,6 +7,7 @@
     <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
+    <link rel="stylesheet" href="${path}/static/css/common/alert.css">
 </head>
 <body>
 
@@ -17,7 +18,7 @@
     <main id="divall">
         <c:forEach var="Library" items="${LibraryList}">
             <p>
-                <span  onclick="javascript:window.location.replace('${basePath}materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
+                <span  onclick="javascript:window.location.replace('${path}/materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
                 <c:if test="${Library.isSubscript==0}">
                     <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
                 </c:if>
@@ -32,10 +33,12 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countLibrary>4}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -47,8 +50,8 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;
@@ -57,10 +60,11 @@
         if ($("#"+index).hasClass("on") != true) {
             //添加订阅
             $.ajax({
-                url: '${basePath}subscribeB/do',
+                url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 1, materialId: id},
                 dataType: 'json',
+                async:false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
@@ -73,13 +77,14 @@
         } else if ($("#"+index).hasClass("on") == true) {
             //取消订阅
             $.ajax({
-                url: '${basePath}subscribeB/do',
+                url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 0, materialId: id},
                 dataType: 'json',
                 success: function (data) {
                     if (data.isError == false) {
                         alert("取消成功！");
+                        window.location.reload(true);
                     }
                 }
             });
@@ -97,7 +102,7 @@
 
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;
@@ -107,7 +112,7 @@
             return false;
         }
         $.ajax({
-            url: '${basePath}materielApply/addEmail.do',
+            url: '${path}/materielApply/addEmail.do',
             type: 'post',
             data: {email: email},
             dataType: 'json',

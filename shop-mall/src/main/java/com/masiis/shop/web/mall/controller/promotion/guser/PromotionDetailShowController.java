@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.controller.promotion.guser;
 
+import com.masiis.shop.dao.beans.promotion.PromotionInfo;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.PromotionDetailShowService;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +31,11 @@ public class PromotionDetailShowController extends BaseController{
     @RequestMapping("/getAllPromoDetail.html")
     public String getAllPromoDetail(HttpServletRequest request, Model model) {
         Map<String,Object> map = promotionDetailShowService.getAllPromoDetail(getComUser(request));
-        model.addAttribute("promotionInfos",map.get("promotionInfos"));
+        List<PromotionInfo> promotionInfos = (List<PromotionInfo>) map.get("promotionInfos");
+        if (promotionInfos!=null&&promotionInfos.size()!=0){
+            model.addAttribute("promotionInfo",promotionInfos.get(0));
+        }
+        model.addAttribute("promotionInfos",promotionInfos);
         model.addAttribute("fansQuantity",map.get("fansQuantity"));
         return "promotion/guser/promotionShow";
     }

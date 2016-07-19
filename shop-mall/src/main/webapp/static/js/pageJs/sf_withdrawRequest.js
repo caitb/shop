@@ -8,12 +8,12 @@ function withdraw(userId){
     }
     var extractableFee = parseFloat($("#extractableFee").val());
     var inputAccount = parseFloat($("#inputAccount").val());
-    if (extractableFee == 0){
-        alert("暂无可提现金额");
-        return;
-    }
     if (inputAccount == ""){
         alert("请输入提现金额");
+        return;
+    }
+    if (extractableFee == 0){
+        alert("暂无可提现金额");
         return;
     }
     //if (inputAccount > extractableFee){

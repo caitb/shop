@@ -18,11 +18,14 @@ public class SfUserPromotionGiftService {
     @Resource
     private SfUserPromotionGiftMapper sfUserPromotionGiftMapper;
 
+
+    public List<SfUserPromotionGift> getPromoGiftByPromoIdAndRuleId(Integer promoId,Integer promoRuleId){
+        return sfUserPromotionGiftMapper.getPromoGiftByPromoIdAndRuleId(promoId,promoRuleId);
+    }
+
+
     public void insertOrUpdate(SfUserPromotionGift promotionGift) {
         if(promotionGift.getId() == null) {
-            Integer tempId = sfUserPromotionGiftMapper.maxId();
-            Integer id = tempId+1;
-            promotionGift.setId(id);
             promotionGift.setPromoQuantity(0);
             sfUserPromotionGiftMapper.insert(promotionGift);
         } else {

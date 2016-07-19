@@ -6,24 +6,23 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
-import com.masiis.shop.dao.mall.user.SfUserShopViewMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.dao.po.SfShopStatistics;
-import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
-import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
-import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.utils.DownloadImage;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
+import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
+import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
+import com.masiis.shop.web.platform.service.user.ComPosterService;
+import com.masiis.shop.web.platform.service.user.SfUserShareParamService;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -73,8 +72,6 @@ public class SfShopManageController extends BaseController {
     @Resource
     private JSSDKPFService jssdkService;
     @Resource
-    private SfUserShopViewMapper sfUserShopViewMapper;
-    @Resource
     private WeiXinPFQRCodeService weiXinPFQRCodeService;
     @Resource
     private SfShopStatisticsService sfShopStatisticsService;
@@ -82,6 +79,12 @@ public class SfShopManageController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SfShopManQrCodeService sfShopManQrCodeService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
+    @Resource
+    private SfUserShareParamService sfUserShareParamService;
+    @Resource
+    private ComPosterService comPosterService;
 
     /**
      * 店铺管理首页
@@ -106,7 +109,9 @@ public class SfShopManageController extends BaseController {
 
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 
-            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
+//            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
+            //获取店铺粉丝
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false);
 
             String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
 
@@ -114,7 +119,7 @@ public class SfShopManageController extends BaseController {
             mav.addObject("sfShop", sfShop);
             mav.addObject("saleAmount", NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShopStatistics.getIncomeFee()));
             mav.addObject("orderCount", sfShopStatistics.getOrderCount());
-            mav.addObject("shopView", shopView);
+            mav.addObject("shopView", fansNum);
             mav.addObject("shopUrl", shopUrl);
 
             return mav;
@@ -173,7 +178,7 @@ public class SfShopManageController extends BaseController {
             log.error("设置店铺失败![sfShop="+sfShop+"]");
         }
 
-        return "redirect:/shop/manage/index";
+        return "redirect:"+request.getParameter("Referer");
     }
 
     /**
@@ -203,6 +208,26 @@ public class SfShopManageController extends BaseController {
         return object.toJSONString();
     }
 
+    /**
+     * 自己发货运费显示
+     * @param request
+     * @return
+     */
+    @RequestMapping("/showFreight")
+    @ResponseBody
+    public String showFreight(HttpServletRequest request){
+        JSONObject object = new JSONObject();
+        try {
+            ComUser comUser = getComUser(request);
+            SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
+            object.put("ownShipAmount",sfShop.getOwnShipAmount());
+            object.put("isError",false);
+        } catch (Exception e) {
+            object.put("isError",true);
+            log.info(e.getMessage());
+        }
+        return object.toJSONString();
+    }
     /**
      * 获取店铺海报
      * @param request
@@ -245,6 +270,32 @@ public class SfShopManageController extends BaseController {
             }
 
 
+            /**
+             * 获取海报
+             */
+            //获取海报1: 海报已存在,直接返回
+            SfUserShareParam condition = new SfUserShareParam();
+            condition.setfUserId(0L);//合伙人获取店铺二维码userId固定值为0
+            condition.setShopId(shopId);
+            SfUserShareParam sfUserShareParam = sfUserShareParamService.loadByCondition(condition);
+
+            Long shareParamId = (sfUserShareParam != null) ? sfUserShareParam.getId() : -1L;
+
+            ComPoster comPosterParam = new ComPoster();
+            comPosterParam.setType(1);
+            comPosterParam.setUserId(comUser.getId());
+            comPosterParam.setShareParamId(shareParamId);
+
+            ComPoster comPoster = comPosterService.findByCondition(comPosterParam);
+            if(comPoster != null) {
+                mav.addObject("shopPoster", PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName());
+                mav.addObject("shareMap", resultMap);
+
+                return mav;
+            }
+
+
+            //获取海报2:如果海报不存在或已经过期,重新创建海报
             String headImg = "h-"+comUser.getId()+".png";
             String qrcodeName = "qrcode-shop-"+comUser.getId()+"-"+shopId+".png";
             String bgPoster = "shop-"+shopId+".png";
@@ -254,12 +305,10 @@ public class SfShopManageController extends BaseController {
                 posterDir.mkdirs();
             }
             //先删除旧的图片,再下载新的图片
-//            new File(posterDirPath+"/"+headImg).delete();
-//            new File(posterDirPath+"/"+bgPoster).delete();
-//            new File(posterDirPath+"/"+qrcodeName).delete();
-//            DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-//            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
-//            OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
+            new File(posterDirPath+"/"+headImg).delete();
+            new File(posterDirPath+"/"+bgPoster).delete();
+            new File(posterDirPath+"/"+qrcodeName).delete();
+
             File headImgFile   = new File(posterDirPath+"/"+headImg);
             File bgImgFile     = new File(posterDirPath+"/"+bgPoster);
             File qrcodeFile    = new File(posterDirPath+"/"+qrcodeName);
@@ -272,10 +321,11 @@ public class SfShopManageController extends BaseController {
             if(sfShop == null){
                 throw new BusinessException("店铺不存在[comUser="+comUser+"][shopId="+shopId+"]");
             }
+            String[] qrcodeResult = null;
             if(StringUtils.isBlank(sfShop.getQrCode())){
-                String qr_code_url = weiXinPFQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
-                if(qr_code_url == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
-                DownloadImage.download(qr_code_url, qrcodeName, posterDirPath);
+                qrcodeResult = weiXinPFQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
+                if(qrcodeResult[1] == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
+                DownloadImage.download(qrcodeResult[1], qrcodeName, posterDirPath);
                 OSSObjectUtils.uploadFile(qrcodeFile, "static/shop/shop_qrcode/");
                 sfShop.setQrCode(qrcodeFile.getName());
                 sfShopService.updateById(sfShop);
@@ -322,11 +372,34 @@ public class SfShopManageController extends BaseController {
             drawElements.add(text3Element);
             drawElements.add(text4Element);
 
-            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            int              random           = (int)((Math.random()*9+1)*100000);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date             createTime       = new Date();
+            String           posterName       = simpleDateFormat.format(createTime)+random+".png";
+            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/"+posterName);
+
+            //保存二维码海报图片地址
+            ComPoster newComPoster = new ComPoster();
+            newComPoster.setCreateTime(createTime);
+            newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+            newComPoster.setType(1);
+            newComPoster.setUserId(comUser.getId());
+            newComPoster.setPosterName(posterName);
+            if(comPoster == null){
+                comPosterService.add(newComPoster);
+            }else{
+                newComPoster.setId(comPoster.getId());
+                comPosterService.update(newComPoster);
+            }
 
             //二维码获取成功,更新com_user成为代言人
-            comUser.setIsSpokesman(1);
-            comUserMapper.updateByPrimaryKey(comUser);
+            SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), shopId);
+            if (sfUserRelation != null){
+                sfUserRelation.setIsSpokesman(1);
+                sfUserRelationService.updateUserRelation(sfUserRelation);
+            }else {
+                log.info("sfUserRelation为null");
+            }
 
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "我在麦链商城的小店");
@@ -335,7 +408,7 @@ public class SfShopManageController extends BaseController {
             resultMap.put("shareImg", comUser.getWxHeadImg());
 
             mav.addObject("shareMap", resultMap);
-            mav.addObject("shopPoster", PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            mav.addObject("shopPoster", PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
 
             return mav;
         } catch (Exception e) {

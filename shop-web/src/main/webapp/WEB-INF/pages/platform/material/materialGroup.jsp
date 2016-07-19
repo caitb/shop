@@ -7,6 +7,7 @@
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
+    <link rel="stylesheet" href="${path}/static/css/alert.css">
 </head>
 <body>
 
@@ -32,7 +33,9 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countLibrary>4}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
     <div class="backb"></div>
@@ -61,10 +64,11 @@
                 type: 'post',
                 data: {status: 1, materialId: id},
                 dataType: 'json',
+                async:false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
-                        window.location.reload()
+                        window.location.reload(true);
                     }
                 }
             });
@@ -77,9 +81,11 @@
                 type: 'post',
                 data: {status: 0, materialId: id},
                 dataType: 'json',
+                async:false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("取消成功！");
+                        window.location.reload(true);
                     }
                 }
             });
@@ -97,7 +103,7 @@
 
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;

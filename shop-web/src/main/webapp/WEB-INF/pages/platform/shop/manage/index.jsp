@@ -61,7 +61,7 @@
         <nav>
             <p><span>
                 <c:if test="${shopView == null}">0</c:if>
-                <c:if test="${shopView != null}">${shopView}</c:if><b>位</b></span><span>代言人</span>
+                <c:if test="${shopView != null}">${shopView}</c:if><b>位</b></span><span>粉丝</span>
             </p>
             <p>
                 <span>${saleAmount}</span><span>店铺总销售额</span>
@@ -79,10 +79,10 @@
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/lookshop.png" alt="" style="margin-bottom: 5px"></span><span>预览商店</span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/feel.png" alt="" style="margin-bottom: 5px"></span><span>分享店铺</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
-            <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人粉丝 </span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>distribution/spokesManHome.shtml');"><span><img src="<%=basePath%>static/images/fans.png" alt="" style="margin-bottom: 5px"></span><span>代言人粉丝 </span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
         </nav>
         <nav style="margin: 0;">
-            <p onclick="javascript:window.location.replace('${shopUrl}');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>shopmessage/mycluster.shtml');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
             <p onclick="clickShow()"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>运费设置</span></p>
             <p style="background: #EEEEEE;border: none;"></p>
         </nav>
@@ -122,15 +122,41 @@
         location.href='<%=path%>/account/home';
     })
     function clickShow(){
-        $("#shipAmount").val("");
         $(".black").show();
+        //ajax 显示设置运费
+        var showFreight;
+        $.ajax({
+            url: '<%=basePath%>shop/manage/showFreight',
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            async:false,
+            success: function (data) {
+                if (data.isError == false) {
+                    showFreight = data.ownShipAmount;
+                }
+            }
+        });
+      if(showFreight==null || showFreight===""){
+          $("#shipAmount").val("");
+      } else if (showFreight == 0) {
+          $("#1").addClass("on").siblings().removeClass("on");
+          $("#shipAmount").val("");
+      } else {
+          $("#2").addClass("on").siblings().removeClass("on");
+          $("#shipAmount").val(showFreight);
+      }
     }
+
     function clicHide(){
         $(".black").hide();
     }
     $(".money h2").on("click", function () {
         $(this).addClass("on").siblings().removeClass("on");
         index=$(this).index();
+        if(index==0){
+            $(".money h2 input").val("");
+        }
     })
 </script>
 <script>
@@ -167,9 +193,13 @@
              alert("运费不能为空");
              return false;
          }
-         var patrn =/^[+-]?\d+(\.\d+)?$/;
+         var patrn =/^[0-9].*$/;
          if (!patrn.exec(shipAmount)) {
              alert("运费格式不正确");
+             return false;
+         }
+         if(shipAmount>10000){
+             alert("运费金额不能超过10000");
              return false;
          }
          $.ajax({

@@ -165,7 +165,7 @@ public class SfUserRelationController extends BaseController {
             logger.info("shopId = " + shopId);
             logger.info("fansLevel = " + fansLevel);
             logger.info("currentPage = " + currentPage);
-            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfFansInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel == 0?null:fansLevel, shopId == 0?null:shopId);
+            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfFansInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel == 0?null:fansLevel, shopId == 0?null:shopId, null);
             JSONObject jsonObject = new JSONObject();
             if (infos == null || infos.size() == 0){
                 jsonObject.put("currentPage", currentPage);
@@ -247,7 +247,8 @@ public class SfUserRelationController extends BaseController {
             //用户分页使用，两级代言人总数量
             Integer threeSum = 0;
             if (spokeLevel == null){
-                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+//                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+                threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
             }else {
                 switch (spokeLevel.intValue()){
                     case 1 : {
@@ -314,7 +315,7 @@ public class SfUserRelationController extends BaseController {
             fansLevel = null;
         }
         try {
-            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfSpokesManInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel, shopId, 1);
+            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getSfFansInfos(true, currentPage.intValue() + 1, pageSize, comUser.getId(), fansLevel, shopId, 1);
             JSONObject jsonObject = new JSONObject();
             if (infos == null || infos.size() == 0){
                 jsonObject.put("currentPage", currentPage);

@@ -36,4 +36,6 @@ public interface ComSkuMaterialMapper {
     List<ComSkuMaterial> selectByMglId(Integer materialGroupId);
 
     List<ComSkuMaterialItem> selectMaterialItemByMtId(Integer materialId);
+
+    int countSkuMaterial(Integer materialGroupId);
 }

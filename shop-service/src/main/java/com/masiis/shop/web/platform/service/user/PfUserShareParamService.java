@@ -4,8 +4,10 @@ import com.masiis.shop.dao.platform.user.PfUserShareParamMapper;
 import com.masiis.shop.dao.po.PfUserShareParam;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 合伙人推广分享表service
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
  * @Author lzh
  */
 @Service
+@Transactional
 public class PfUserShareParamService {
     private Logger log = Logger.getLogger(this.getClass());
 
@@ -22,5 +25,18 @@ public class PfUserShareParamService {
 
     public PfUserShareParam findById(Long id){
         return pfUserShareParamMapper.selectByPrimaryKey(id);
+    }
+
+    public List<PfUserShareParam> findByCondition(PfUserShareParam pfUserShareParam){
+        return pfUserShareParamMapper.selectByCondition(pfUserShareParam);
+    }
+
+    /**
+     * 添加海报二维码参数
+     * @param pfUserShareParam
+     * @param type
+     */
+    public void add(PfUserShareParam pfUserShareParam, Integer type){
+        pfUserShareParamMapper.insert(pfUserShareParam);
     }
 }

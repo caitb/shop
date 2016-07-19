@@ -97,16 +97,148 @@
         limit #{params.size,jdbcType=INTEGER}
     </select>
 
-    <select id="selectUnreadNumsAndFromByUser" resultType="java.util.HashMap" parameterType="java.lang.Long" >
-        select sf_message_content_id as contentId, from_user as fromUser
-        from sf_message_sr_relation
-        where to_user = #{userId,jdbcType=BIGINT} AND is_see = 0 order by sf_message_content_id desc
+    <select id="queryShopNums" resultType="java.lang.Integer" >
+      select count(*) from (select distinct(from_user) from sf_message_sr_relation where to_user = #{userId,jdbcType=BIGINT}) sf
     </select>
 
-    <select id="selectShopInfoAndFirMsgByMsgId" resultType="java.util.HashMap" parameterType="java.lang.Long" >
-        select shop.id shopId, shop.name shopName, shop.logo shopLogo, msg.content msgContent
-        from sf_shop shop, sf_message_content msg
-        where msg.id = #{msgId,jdbcType=BIGINT} AND shop.id = msg.shop_id
+
+    <select id="selectShopInfoAndFirstMsg" resultType="java.util.HashMap">
+        SELECT
+        r2.notSeeNum,
+        s.user_id id, s.name, s.logo, (
+        SELECT
+        content
+        FROM
+        sf_message_content
+        WHERE
+        id = r2.sf_message_content_id
+        ) content
+        FROM
+        (
+        SELECT
+        r1.sf_message_content_id,
+        r1.from_user,
+        (
+        SELECT
+        IFNULL(count(e1.id),0)
+        FROM
+        sf_message_sr_relation e1
+        WHERE
+        e1.from_user = r1.from_user
+        AND e1.to_user = #{userId}
+        AND e1.is_see = 0
+        ) AS notSeeNum
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        sf_message_sr_relation e
+        WHERE
+        e.id IN (
+        SELECT
+        MAX(f.id) AS rid
+        FROM
+        sf_message_sr_relation f
+        WHERE
+        f.to_user = #{userId}
+        GROUP BY
+        f.from_user
+        ORDER BY
+        f.is_see DESC
+        )
+        ) r1
+        WHERE
+        r1.to_user = #{userId}
+        AND r1.id <![CDATA[ <= ]]> (
+        SELECT
+        o.rid
+        FROM
+        (
+        SELECT
+        MAX(r.id) AS rid
+        FROM
+        sf_message_sr_relation r
+        WHERE
+        r.to_user = #{userId}
+        GROUP BY
+        r.from_user
+        ORDER BY
+        r.is_see DESC
+        ) o
+        ORDER BY
+        o.rid DESC
+        LIMIT #{start},
+        1
+        )
+        GROUP BY
+        r1.from_user
+        ORDER BY
+        r1.create_time DESC,
+        r1.id DESC
+        LIMIT #{size}
+        ) r2
+        INNER JOIN sf_shop s ON s.user_id = r2.from_user;
     </select>
+
+    <select id="queryNumsFromUserAndToUser" resultType="java.lang.Integer">
+      SELECT
+            count(c.id)
+        FROM
+            sf_message_sr_relation r
+        LEFT JOIN
+            sf_message_content c
+        ON
+            c.id=r.sf_message_content_id
+        WHERE
+            r.from_user = #{fromUser,jdbcType=BIGINT}
+        AND r.to_user = #{toUser,jdbcType=BIGINT};
+    </select>
+
+    <select id="queryDetailByFromUserAndToUserWithPaging" resultMap="BaseResultMap">
+      SELECT
+          c.*
+        FROM
+        (
+        SELECT
+          *
+        FROM
+          sf_message_sr_relation r1
+        WHERE
+          r1.id <![CDATA[ <= ]]> (
+            SELECT
+              r.id
+            FROM
+              sf_message_sr_relation r
+            WHERE
+              r.to_user = #{userId,jdbcType=BIGINT}
+            AND r.from_user = #{fUserId,jdbcType=BIGINT}
+            ORDER BY
+              r.id DESC
+            LIMIT #{start,jdbcType=INTEGER}, 1
+            )
+        AND r1.to_user = #{userId,jdbcType=BIGINT}
+        AND r1.from_user = #{fUserId,jdbcType=BIGINT}
+        ORDER BY
+          r1.id DESC
+        LIMIT #{pageSize,jdbcType=INTEGER}
+        ) r2
+        LEFT JOIN sf_message_content c ON c.id = r2.sf_message_content_id
+        ORDER BY
+          c.id DESC
+    </select>
+
+    <update id="updateRelationIsSeeByFromUserAndToUser">
+        update
+          sf_message_sr_relation
+        SET
+          is_see = 1
+        WHERE
+          from_user = #{fromUser,jdbcType=BIGINT}
+        AND
+          to_user = #{toUser,jdbcType=BIGINT}
+        AND
+          is_see = 0
+    </update>
 
 </mapper>

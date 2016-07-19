@@ -10,6 +10,7 @@
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
         <result column="is_buy" property="isBuy" jdbcType="INTEGER" />
+        <result column="is_spokesman" property="isSpokesman" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="DistributionResultMap" type="com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo">
@@ -29,15 +30,15 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_relation (id, create_time, shop_id, 
             user_id, user_pid, tree_code, 
-            tree_level, is_buy, remark
-            )
+            tree_level, is_buy, is_spokesman, 
+            remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
             #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{treeCode,jdbcType=VARCHAR}, 
-            #{treeLevel,jdbcType=INTEGER}, #{isBuy,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
-            )
+            #{treeLevel,jdbcType=INTEGER}, #{isBuy,jdbcType=INTEGER}, #{isSpokesman,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserRelation">
@@ -49,47 +50,40 @@
             tree_code = #{treeCode,jdbcType=VARCHAR},
             tree_level = #{treeLevel,jdbcType=INTEGER},
             is_buy = #{isBuy,jdbcType=INTEGER},
+            is_spokesman = #{isSpokesman,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, 
-        remark
+        is_spokesman, remark
         from sf_user_relation
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
     </select>
 
     <select id="getSfUserRelationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <select id="selectSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId}
         and shop_id = #{shopId}
     </select>
 
     <select id="getSfUserRelationByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_pid = #{userPid,jdbcType=BIGINT}
-    </select>
-
-    <select id="getThreeDistributionList" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select * from (
-          select * from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}
-          union all select * from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-	      union all select * from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
-        )t
     </select>
 
     <update id="updateTreeCodeById">
@@ -103,15 +97,41 @@
     </update>
 
     <select id="selectFansNum" resultType="java.util.HashMap">
-        select count(*)-1 as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%')
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
+        where
+        tree_code like CONCAT(#{treeCode},'%')
+        <if test="shopId != null">
+            and r.shop_id = #{shopId}
+        </if>
     </select>
 
     <select id="selectSpokesManNum" resultType="java.util.HashMap">
-        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id where tree_code like CONCAT(#{treeCode},'%') and u.is_spokesman = 1 and u.id <![CDATA[<>]]> #{userId}
+        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
+        where
+        r.is_spokesman = 1
+        <if test="shopId != null">
+            and r.shop_id = #{shopId}
+        </if>
+        and tree_code like CONCAT(#{treeCode},'%')
+    </select>
+
+    <select id="selectFansOrSpokesManNum" resultType="java.util.HashMap">
+        SELECT
+          count(*) as num
+        FROM sf_user_relation a
+        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+        INNER JOIN com_user u ON r.user_id = u.id
+        WHERE a.user_id=#{userId}
+        <if test="shopId != null">
+            AND a.shop_id=#{shopId}
+        </if>
+        <if test="spokesMan != null">
+            AND a.is_spokesman = #{spokesMan}
+        </if>
     </select>
 
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where user_id = #{userId} and shop_id = #{shopId}
     </select>
@@ -121,7 +141,7 @@
 			u.wx_nk_name AS wxName,
 			u.wx_head_img AS headImg,
 			LPAD(u.id, 10, 0) AS ID,
-			u.is_spokesman AS sopkenMan,
+			r.is_spokesman AS sopkenMan,
 			r.create_time AS createTime,
 			u.id AS userId,
 			1 AS userLevel,
@@ -135,38 +155,36 @@
     </select>
 
     <select id="selectFansPageView" resultMap="DistributionResultMap">
-        select * from (
-        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all
-        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all
-        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 3 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
-        )t where 1=1
+        SELECT * FROM (
+            SELECT
+            u.wx_nk_name AS wxName,
+            u.wx_head_img AS headImg,
+            LPAD(u.id,10,0) AS ID,
+            r.is_spokesman AS sopkenMan,
+            r.create_time AS createTime,
+            u.id AS userId,
+            r.tree_level - a.tree_level AS userLevel,
+            r.shop_id AS shopId,
+            r.is_buy AS isBuy
+            FROM sf_user_relation a
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+            INNER JOIN com_user u ON r.user_id = u.id
+            WHERE a.user_id=#{userId,jdbcType=BIGINT}
+            <if test="shopId != null">
+                and a.shop_id = #{shopId}
+            </if>
+            <if test="sopkenMan != null">
+                AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+2
+            </if>
+            <if test="sopkenMan == null">
+                AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+            </if>
+        ) t where 1 = 1
+        <if test="sopkenMan != null">
+            and t.sopkenMan = #{sopkenMan}
+        </if>
         <if test="userLevel != null">
             and t.userLevel = #{userLevel}
-        </if>
-        <if test="shopId != null">
-            and t.shopId = #{shopId}
-        </if>
-        order by t.createTime desc
-    </select>
-
-    <select id="selectSpokesManPageView" resultMap="DistributionResultMap">
-        select * from (
-        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId,1 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all
-        select u.wx_nk_name as wxName,u.wx_head_img as headImg,LPAD(u.id,10,0) as ID,u.is_spokesman as sopkenMan,r.create_time as createTime,u.id as userId, 2 as userLevel,r.shop_id as shopId,r.is_buy as isBuy
-        from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        )t where t.sopkenMan = #{spokenMan}
-        <if test="userLevel != null">
-            and t.userLevel = #{userLevel}
-        </if>
-        <if test="shopId != null">
-            and t.shopId = #{shopId}
         </if>
         order by t.createTime desc
     </select>
@@ -180,7 +198,7 @@
         WHERE
 	        r.shop_id = #{shopId}
         <if test="spokesMan != null">
-            AND u.is_spokesman = #{spokesMan}
+            AND r.is_spokesman = #{spokesMan}
         </if>
     </select>
     <select id="selectAllSpokesManByShopId" resultMap="DistributionResultMap">
@@ -188,7 +206,7 @@
             u.wx_nk_name AS wxName,
             u.wx_head_img AS headImg,
             LPAD(u.id, 10, 0) AS ID,
-            u.is_spokesman AS sopkenMan,
+            r.is_spokesman AS sopkenMan,
             r.create_time AS createTime,
             u.id AS userId,
             1 AS userLevel,
@@ -200,19 +218,35 @@
         WHERE
 	        r.shop_id = #{shopId}
         <if test="spokesMan != null">
-            AND u.is_spokesman = #{spokesMan}
+            AND r.is_spokesman = #{spokesMan}
         </if>
         ORDER BY r.create_time desc
     </select>
 
     <select id="selectFansNumGroupByLevel" resultType="java.util.HashMap">
-        select count(*) as num,userLevel from (
-        select 1 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all select 2 as userLevel,r.shop_id as shopId from sf_selectSpokesManNumGroupByLeveluser_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all select 3 as userLevel,r.shop_id as shopId from sf_user_relation r where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
-        )t where 1=1
-        <if test="shopId != null">
-            and t.shopId = #{shopId}
+        SELECT count(*) as num,userLevel from
+        (
+            SELECT
+            u.wx_nk_name AS wxName,
+            u.wx_head_img AS headImg,
+            LPAD(u.id,10,0) AS ID,
+            r.is_spokesman AS sopkenMan,
+            r.create_time AS createTime,
+            u.id AS userId,
+            r.tree_level - a.tree_level AS userLevel,
+            r.shop_id AS shopId,
+            r.is_buy AS isBuy
+            FROM sf_user_relation a
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+            INNER JOIN com_user u ON r.user_id = u.id
+            WHERE a.user_id= #{userId,jdbcType=BIGINT}
+            <if test="shopId != null">
+                and a.shop_id = #{shopId}
+            </if>
+            AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+        ) t where 1 = 1
+        <if test="sopkenMan != null">
+            and t.sopkenMan = #{sopkenMan}
         </if>
         <if test="userLevel != null">
             and t.userLevel = #{userLevel}
@@ -220,21 +254,6 @@
         group by t.userLevel
     </select>
     
-    <select id="selectSpokesManNumGroupByLevel" resultType="java.util.HashMap">
-        select count(*) as num,userLevel from (
-        select 1 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid = #{userPid,jdbcType=BIGINT}
-        union all select 2 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
-        union all select 3 as userLevel,u.is_spokesman,r.shop_id as shopId from sf_user_relation r inner join com_user u on r.user_id = u.id where r.user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
-        )t where t.is_spokesman = 1
-        <if test="shopId != null">
-            and t.shopId = #{shopId}
-        </if>
-        <if test="userLevel != null">
-            and t.userLevel = #{userLevel}
-        </if>
-        group by t.userLevel
-    </select>
-
     <select id="selectSpokesManByID" resultMap="DistributionResultMap">
         SELECT * FROM
 	    (
@@ -242,7 +261,7 @@
                 u.wx_nk_name AS wxName,
                 u.wx_head_img AS headImg,
                 LPAD(u.id, 10, 0) AS ID,
-                u.is_spokesman AS sopkenMan,
+                r.is_spokesman AS sopkenMan,
                 r.create_time AS createTime,
                 u.id AS userId,
                 1 AS userLevel,
@@ -257,32 +276,36 @@
 	    <if test="ID != null">
             AND T.ID like CONCAT('%',#{ID},'%')
         </if>
-        AND T.sopkenMan = 1
+        <if test="sopkenMan != null">
+            AND T.sopkenMan = #{sopkenMan}
+        </if>
         ORDER BY T.createTime DESC
     </select>
     <select id="selectSpokesManNumByID" resultType="java.lang.Integer">
         SELECT count(*) FROM
         (
-        SELECT
-        u.wx_nk_name AS wxName,
-        u.wx_head_img AS headImg,
-        LPAD(u.id, 10, 0) AS ID,
-        u.is_spokesman AS sopkenMan,
-        r.create_time AS createTime,
-        u.id AS userId,
-        1 AS userLevel,
-        r.shop_id AS shopId,
-        r.is_buy AS isBuy
-        FROM
-        sf_user_relation r
-        INNER JOIN com_user u ON r.user_id = u.id
-        WHERE
-        r.shop_id = #{shopId}
+            SELECT
+            u.wx_nk_name AS wxName,
+            u.wx_head_img AS headImg,
+            LPAD(u.id, 10, 0) AS ID,
+            r.is_spokesman AS sopkenMan,
+            r.create_time AS createTime,
+            u.id AS userId,
+            1 AS userLevel,
+            r.shop_id AS shopId,
+            r.is_buy AS isBuy
+            FROM
+            sf_user_relation r
+            INNER JOIN com_user u ON r.user_id = u.id
+            WHERE
+            r.shop_id = #{shopId}
         ) T WHERE 1=1
         <if test="ID != null">
             AND T.ID like CONCAT('%',#{ID},'%')
         </if>
-        AND T.sopkenMan = 1
+        <if test="spokesMan">
+            AND T.sopkenMan = 1
+        </if>
     </select>
 
     <select id="selectFansNumsByShopId" resultType="java.lang.Integer">
@@ -304,7 +327,7 @@
         WHERE
           r.user_id = u.id
         AND
-          u.is_spokesman = 1
+          r.is_spokesman = 1
         AND
           shop_id = #{shopId,jdbcType=BIGINT}
         AND
@@ -312,7 +335,7 @@
     </select>
 
     <select id="selectAllFansRelationByShopId" resultMap="BaseResultMap">
-        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark
+        select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
         where
           shop_id = #{shopId}
@@ -322,13 +345,13 @@
 
     <select id="selectAllSpokeManRelationByShopId" resultMap="BaseResultMap">
         select
-          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark
+          r.id, r.create_time, r.shop_id, r.user_id, r.user_pid, r.tree_code, r.tree_level, r.is_buy, r.remark,r.is_spokesman
         from
           sf_user_relation r,com_user u
         WHERE
           r.user_id = u.id
         AND
-          u.is_spokesman = 1
+          r.is_spokesman = 1
         AND
           shop_id = #{shopId,jdbcType=BIGINT}
         AND

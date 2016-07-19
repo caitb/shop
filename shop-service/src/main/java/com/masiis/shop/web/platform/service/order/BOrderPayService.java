@@ -216,6 +216,7 @@ public class BOrderPayService {
             sfShop.setShoutNum(0l);
             sfShop.setVersion(0l);
             sfShop.setRemark("");
+            sfShop.setOwnShipAmount(BigDecimal.ZERO);
             sfShopMapper.insert(sfShop);
         }
         SfShopStatistics shopStatistics = shopStatisticsService.selectByShopUserId(comUser.getId());
@@ -235,18 +236,20 @@ public class BOrderPayService {
             shopStatistics.setRemark("");
             shopStatisticsService.insert(shopStatistics);
         }
-        log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = new SfUserRelation();
-        sfUserRelation.setCreateTime(new Date());
-        sfUserRelation.setUserPid(0l);
-        sfUserRelation.setUserId(comUser.getId());
-        sfUserRelation.setShopId(sfShop.getId());
-        sfUserRelation.setIsBuy(0);
-        sfUserRelation.setTreeLevel(1);
-        sfUserRelation.setRemark("代理人初始分销关系");
-        sfUserRelationMapper.insert(sfUserRelation);
-        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
-        sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode);
+//        log.info("<6>初始化分销关系");//自己暂时不能成为自己店铺的粉丝
+//        SfUserRelation sfUserRelation = new SfUserRelation();
+//        sfUserRelation.setCreateTime(new Date());
+//        sfUserRelation.setUserPid(0l);
+//        sfUserRelation.setUserId(comUser.getId());
+//        sfUserRelation.setShopId(sfShop.getId());
+//        sfUserRelation.setIsBuy(0);
+//        sfUserRelation.setTreeLevel(1);
+//        sfUserRelation.setRemark("代理人初始分销关系");
+//        sfUserRelationMapper.insert(sfUserRelation);
+//        String sfUserRelation_treeCode = sfUserRelation.getId() + ",";
+//        if (sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), sfUserRelation_treeCode) != 1) {
+//            throw new BusinessException("treeCode修改失败");
+//        }
 //                    sfUserRelation.setUserPid(0l);
 //                    sfUserRelation.setRemark("代理人解除分销关系");
 //                    int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
@@ -280,7 +283,9 @@ public class BOrderPayService {
                     pfUserRecommenRelation.setRemark("绑定合伙人推荐关系");
                     pfUserRecommendRelationService.insert(pfUserRecommenRelation);
                     String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
-                    pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
+                    if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+                        throw new BusinessException("treeCode修改失败");
+                    }
                 } else {
                     pfUserRecommenRelation = new PfUserRecommenRelation();
                     pfUserRecommenRelation.setCreateTime(new Date());
@@ -294,13 +299,15 @@ public class BOrderPayService {
                     pfUserRecommenRelation.setRemark("初始化合伙人推荐关系");
                     pfUserRecommendRelationService.insert(pfUserRecommenRelation);
                     String treeCode = pfUserRecommenRelation.getId() + ",";
-                    pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode);
+                    if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+                        throw new BusinessException("treeCode修改失败");
+                    }
                 }
             }
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {
                 log.info("<8>为小铺生成商品");
-                SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(sfShop.getId(), pfBorderItem.getSkuId(),0);
+                SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(sfShop.getId(), pfBorderItem.getSkuId(), 0);
                 if (sfShopSku == null) {
                     sfShopSku = new SfShopSku();
                     sfShopSku.setCreateTime(new Date());
@@ -316,6 +323,7 @@ public class BOrderPayService {
                     sfShopSku.setShareNum(0l);
                     sfShopSku.setQrCode("");
                     sfShopSku.setRemark("");
+                    sfShop.setOwnShipAmount(BigDecimal.ZERO);
                     sfShopSkuMapper.insert(sfShopSku);
                 }
                 log.info("<9>修改用户sku代理关系数据");
@@ -368,7 +376,9 @@ public class BOrderPayService {
                 } else {
                     treeCode = parentUS.getTreeCode() + thisUS.getId() + ",";
                 }
-                pfUserSkuMapper.updateTreeCodeById(thisUS.getId(), treeCode);
+                if (pfUserSkuMapper.updateTreeCodeById(thisUS.getId(), treeCode) != 1) {
+                    throw new BusinessException("treeCode修改失败");
+                }
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
@@ -822,7 +832,12 @@ public class BOrderPayService {
         }
         log.info("银行卡信息-------" + sb2.toString());
         //最迟日期
-        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
+        Boolean bl = MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
+        if (bl) {
+            log.info("发送短信成功");
+        } else {
+            log.info("发送短信失败");
+        }
     }
 
     /**

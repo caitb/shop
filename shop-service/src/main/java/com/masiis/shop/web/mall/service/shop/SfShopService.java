@@ -143,7 +143,7 @@ public class SfShopService {
         String WXQRImg = null;
         String baseValue = PropertiesUtils.getStringValue("oss.BASE_URL");
         String shopValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
-        WXQRImg = baseValue + shopValue + code;
+        WXQRImg = baseValue +"/"+shopValue + code;
         return WXQRImg;
     }
 

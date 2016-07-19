@@ -36,15 +36,16 @@ public interface SfMessageContentMapper {
 
     List<SfMessageContent> selectByFromUserAndType(@Param("params")Map<String, Object> params);
 
-    /**
-     * 查询店铺id和对应的未读消息数量
-     * @param userId
-     */
-    List<Map<String, Long>> selectUnreadNumsAndFromByUser(Long userId);
 
-    /**
-     * 查询店铺信息和最新的未读消息
-     * @param msgId
-     */
-    Map<String, String> selectShopInfoAndFirMsgByMsgId(Long msgId);
+
+    Integer queryShopNums(Long userId);
+
+
+    List<Map<String, String>> selectShopInfoAndFirstMsg(@Param("userId") Long userId, @Param("start") Integer start, @Param("size") Integer size);
+
+    void updateRelationIsSeeByFromUserAndToUser(@Param("fromUser")Long fromUser, @Param("toUser")Long toUser);
+
+    Integer queryNumsFromUserAndToUser(@Param("fromUser") Long fromUser, @Param("toUser") Long toUser);
+
+    List<SfMessageContent> queryDetailByFromUserAndToUserWithPaging(@Param("userId")Long userId, @Param("fUserId")Long fUserId, @Param("start")Integer start, @Param("pageSize")Integer pageSize);
 }

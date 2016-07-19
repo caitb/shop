@@ -15,17 +15,18 @@
 <input type="hidden" id="hiddenID" name="hiddenID" value="">
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>代言人</p>
+        <a href="javascript:window.location.href='${basePath}shop/manage/index'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p>代言人粉丝</p>
     </header>
     <main>
         <div class="top">
             <div>
-                <h1>您的店铺共有</h1>
-                <p>
-                       <span id="totalCount">${totalCount}</span>
-                </p>
-                <h2>位代言人</h2>
+                <h1>${fansNum}</h1>
+                <h2>粉丝数</h2>
+            </div>
+            <div>
+                <h1>${spokesManNum}</h1>
+                <h2>代言人数</h2>
             </div>
         </div>
         <div class="t_b">
@@ -33,8 +34,8 @@
             <input type="tel" id="ID">
             <b onclick="checkInfo()">查找</b>
         </div>
-        <div class="main">
-            <div class="sec1" id="disSpokesMan">
+        <div class="main" id="disSpokesMan">
+
             <%--<c:forEach items="${infos}" var="info">
                 <div class="s_t">
                     <p onclick="toDetail(${info.userId})" style="background:url('${info.headImg}');background-size:100% 100%;"></p>

@@ -99,6 +99,24 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="Map">
+        select id, create_time, create_man, promo_id, promo_rule_id, user_id, gorder_code,
+        gorder_type, gorder_status, gorder_amount, product_amount, ship_amount, receivable_amount,
+        pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time, ship_status,
+        pay_status, is_ship, is_receipt, receipt_time, modify_time, modify_man, remark
+        from sf_gorder
+        where 1=1
+        <if test="beginTime != null">
+            AND create_time &gt;=#{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time &lt;=#{endTime}
+        </if>
+        <if test="isShip != null">
+            AND is_ship = #{isShip}
+        </if>
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, promo_id, promo_rule_id, user_id, gorder_code, 
         gorder_type, gorder_status, gorder_amount, product_amount, ship_amount, receivable_amount, 

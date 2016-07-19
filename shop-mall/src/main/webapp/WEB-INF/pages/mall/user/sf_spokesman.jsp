@@ -15,35 +15,60 @@
 <input type="hidden" id="totalCount" name="totalCount" value="${twoSum}"/>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>代言人</p>
     </header>
+    <%--<div class="floor">--%>
+        <%--<div>--%>
+            <%--<span>筛选条件：</span>--%>
+            <%--<div>--%>
+                <%--<label class="goods">--%>
+                    <%--<b></b>--%>
+                    <%--<select id="goods">--%>
+                        <%--<option value="0">全部</option>--%>
+                        <%--<c:forEach items="${shops}" var="shop">--%>
+                            <%--<option value="${shop.id}">${shop.name}</option>--%>
+                        <%--</c:forEach>--%>
+                    <%--</select>--%>
+                <%--</label>--%>
+                <%--<label class="level">--%>
+                    <%--<b></b>--%>
+                    <%--<select id="level">--%>
+                        <%--<option value="0">全部</option>--%>
+                        <%--<option value="1">一级代言人</option>--%>
+                        <%--<option value="2">二级代言人</option>--%>
+                    <%--</select>--%>
+                <%--</label>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <div class="floor">
         <div>
-            <span>筛选条件：</span>
-            <div>
-                <label class="goods">
-                    <b></b>
-                    <select id="goods">
-                        <option value="0">全部</option>
-                        <c:forEach items="${shops}" var="shop">
-                            <option value="${shop.id}">${shop.name}</option>
-                        </c:forEach>
+            <span>所属店铺：</span>
+            <label for="goods" class="goods">
+                <b></b>
+                <select id="goods">
+                <option value="0">全部</option>
+                <c:forEach items="${shops}" var="shop">
+                <option value="${shop.id}">${shop.name}</option>
+                </c:forEach>
+                </select>
+            </label>
+
+            <span>等级：</span>
+            <label for="level" class="level">
+                <b></b>
+                <select id="level">
+                    <option value="0">全部</option>
+                    <option value="1">一级代言人</option>
+                    <option value="2">二级代言人</option>
                     </select>
-                </label>
-                <label class="level">
-                    <b></b>
-                    <select id="level">
-                        <option value="0">全部</option>
-                        <option value="1">一级代言人</option>
-                        <option value="2">二级代言人</option>
-                    </select>
-                </label>
-            </div>
+            </label>
         </div>
+        <%--<button >查询</button>--%>
     </div>
     <div class="floor2">
-        <h1>所属店铺：<a id="shop">全部</a></h1>
+        <%--<h1>所属店铺：<a id="shop">全部</a></h1>--%>
         <nav>
             <p>
                 <span id="total">${pageViewPo.totalCount}</span>
@@ -64,7 +89,7 @@
             <div class="sec1">
                 <h1 style="background:url('${info.headImg}');background-size:100% 100%;"></h1>
                 <div class="fans">
-                    <h2>${info.wxName}<span>${info.userLevelView}</span> <b>${info.isBuyView}</b></h2>
+                    <h2>${info.wxName}<span>${info.userLevelView}代言人</span> <b>${info.isBuyView}</b></h2>
                     <p>
                         <span>ID:${info.ID}</span>
                         <span>${info.createTimeView}</span>
@@ -89,13 +114,17 @@
     var path = "${path}";
     var basepath = "${basePath}";
     $(document).ready(function(){
+        var goodsWidth=$(".goods").width();
+        var levelWidth=$(".level").width();
         $(".goods b").html($("#goods option:selected").text());
         $(".level b").html($("#level option:selected").text());
+        $("#goods").width(goodsWidth);
+        $("#level").width(levelWidth);
     })
     $("#goods").on("change",function(){
         var tabVal=$("#goods option:selected").text();
         $(".goods b").html(tabVal);
-        $("#shop").html(tabVal);
+//        $("#shop").html(tabVal);
         querySpokesMan(1);
     })
     $("#level").on("change",function(){

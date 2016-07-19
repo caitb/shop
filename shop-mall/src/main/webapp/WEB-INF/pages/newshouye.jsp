@@ -53,7 +53,7 @@
                 </p>
             </div>
             <div class="br_2">
-                <h1><b>已有</b><img src="<%=path%>/static/images/zuo.png" alt=""><span>${countByShopId}</span><img src="<%=path%>/static/images/you.png" alt=""><b>人</b></h1>
+                <h1><b>已有</b><img src="<%=path%>/static/images/zuo.png" alt=""><span>${allSfSpokesManNum}</span><img src="<%=path%>/static/images/you.png" alt=""><b>人</b></h1>
                 <p>成为TA店铺粉丝</p>
             </div>
             <div class="br_3">
@@ -102,7 +102,7 @@
         <p>
             如有问题，请加我为好友！。
         </p>
-        <b class="off" onclick="clickHide()">×</b>
+        <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
 <%--<div class="black nobady">--%>
@@ -116,8 +116,29 @@
 <%--</div>--%>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+<script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <script>
     $(function () {
+
+        $.ajax({
+            type:"POST",
+            url : "<%=path%>/findSfSkuLevelImage.do",
+            dataType:"Json",
+            success:function(data){
+                var trHtml1 = "";
+                trHtml1+="<p id=\"icon\">";
+                trHtml1+="<img src=\"<%=path%>/static/images/1.png\" alt=\"\">";
+                trHtml1+="<img src=\"<%=path%>/static/images/3.png\" alt=\"\">";
+                $.each(data, function(i, String) {
+                    trHtml1+="<img src=\""+String+"\" alt=\"\">";
+                })
+                trHtml1+="</p>";
+                $("#icon").html(trHtml1);
+            }
+        })
+
         $.ajax({
             type:"POST",
             url : "<%=path%>/product.do",
@@ -128,15 +149,7 @@
                     trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
                 })
                 $(".swiper-wrapper").html(trHtml);
-                var trHtml1 = "";
-                trHtml1+="<p id=\"icon\">";
-                trHtml1+="<img src=\"<%=path%>/static/images/1.png\" alt=\"\">";
-                trHtml1+="<img src=\"<%=path%>/static/images/3.png\" alt=\"\">";
-                $.each(data, function(i, SfShopDetails) {
-                    trHtml1+="<img src=\""+SfShopDetails.icon+"\" alt=\"\">";
-                })
-                trHtml1+="</p>";
-                $("#icon").html(trHtml1);
+
                 var trHtml2 = "";
                 var shipName="";
                 var shopId= ${sfShop.id};
@@ -171,15 +184,24 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
+
     $(".tallme").on("click",function(){
-        $(".black").show();
-        $(".b_t").show();
-        $(".back_b").show();
+        var array = "${sfShop.wxQrCode}".split("/");
+        var nums = [ ];
+        for (var i=array.length-1 ; i< array.length ; i++)
+        {
+            nums.push(array[i]);
+        }
+        if(nums=="null"){
+            alert("店主还没有上传二维码");
+        }else{
+            $(".black").show();
+            $(".b_t").show();
+            $(".back_b").show();
+        }
+
     })
-//    function clickShow(){
-//        $(".black").show();
-//        $(".b_t").show();
-//    }
+
 </script>
 </body>
 </html>

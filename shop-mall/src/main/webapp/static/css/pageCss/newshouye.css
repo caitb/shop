@@ -78,7 +78,8 @@
   color:#fff;
   border-radius:5px;
   border:1px solid #fff;
-  padding:2px 15px;
+  padding:3px 15px 2px 15px;
+    line-height: 20px;
 }
 .wrap .banner .banner_1 .br_1 {
   display: -webkit-box;
@@ -260,18 +261,23 @@
   margin-top:10px;
 }
 .off{
-  display: block;
   position: absolute;
   right:10px;
   top:10px;
   width: 30px;
   height: 30px;
   border-radius:50px;
-  font-size:30px;
   text-align: center;
-  line-height:26px;
   background:#C7A467;
+  display:-webkit-box;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+}
+.off i{
+  display:block;
+  font-size:30px;
   color: #666666;
+  line-height: 2px;
 }
 .b_n{
   position: absolute;

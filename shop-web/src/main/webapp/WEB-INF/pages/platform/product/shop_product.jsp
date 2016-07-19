@@ -200,19 +200,20 @@
             type: 'post',
             data: {shopSkuId: shopSkuId},
             dataType: 'json',
+            async:false,
             beforeSend:function(){
                 fullShow();
             },
             success: function (data) {
                 if (data.isError == false) {
                     alert("恭喜您，您可以自己发货了！");
-                    window.location.reload(true);
                 }
             },
             complete:function(){
                 fullHide();
             }
         });
+        window.location.reload(true);
         $(".floor").eq(index).find(".myself").remove();
         $(".generate").hide();
     })
@@ -225,6 +226,7 @@
             type: 'post',
             data: {shopSkuId: shopSkuId, isSale: 0},
             dataType: 'json',
+            async:false,
             beforeSend: function () {
                 fullShow();
             },
@@ -248,6 +250,7 @@
             type: 'post',
             data: {shopSkuId: a,isSale:1},
             dataType: 'json',
+            async:false,
             success: function (data) {
                 if (data.isError == false) {
                     alert("上架成功！");
@@ -279,14 +282,14 @@
             type: 'post',
             data: {stock: selfStock, skuId: uskId},
             dataType: 'json',
-            asyn: true,
+            async:false,
             success: function (data) {
                 if (data.isError == false) {
                     alert("库存更新成功！");
-                    window.location.reload(true);
                 }
             }
         });
+        window.location.reload(true);
     }
 </script>
 <script>

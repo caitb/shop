@@ -41,6 +41,10 @@ public class SfUserRelation {
      */
     private Integer isBuy;
     /**
+     * 是否代言人(0否1是)
+     */
+    private Integer isSpokesman;
+    /**
      * 备注
      */
     private String remark;
@@ -98,5 +102,13 @@ public class SfUserRelation {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getIsSpokesman() {
+        return isSpokesman;
+    }
+
+    public void setIsSpokesman(Integer isSpokesman) {
+        this.isSpokesman = isSpokesman;
     }
 }

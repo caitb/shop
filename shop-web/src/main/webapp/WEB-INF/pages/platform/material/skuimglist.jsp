@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
 </head>
 <body>
-
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:" onclick="self.location=document.referrer;"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>素材图片</p>
     </header>
     <main id="divall">
@@ -33,7 +32,9 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countSkuMaterial>3}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
     <div class="backb"></div>
@@ -56,6 +57,7 @@
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
     function clickShow(){
         $(".black").show();
@@ -153,7 +155,7 @@
     })
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;

@@ -9,6 +9,8 @@ import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
@@ -48,6 +50,12 @@ public class BOrderPayEndMessageService {
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource
     private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private UpgradeMobileMessageService upgradeSuccssSendMoblieMessage;
+    @Resource
+    private PfUserSkuStockService userSkuStockService;
+    @Resource
+    private PfBorderRecommenRewardService recommenRewardService;
 
     /**
      * 支付完成推送消息
@@ -92,6 +100,8 @@ public class BOrderPayEndMessageService {
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
+                //补货发送短信
+                pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
             } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
@@ -104,11 +114,14 @@ public class BOrderPayEndMessageService {
                         logger.info("升级支付完发送消息失败");
                         throw new Exception("升级支付完发送消息失败");
                     }
+                    //发送短信
+                    upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail);
                 } catch (Exception ex) {
                     logger.info("升级支付完发送消息失败");
                 }
             }
         }
+
         PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         if (pfBorderRecommenReward != null) {
             ComUser recommenUser = comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
@@ -196,9 +209,73 @@ public class BOrderPayEndMessageService {
             } else {
                 WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
             }
-            MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+           // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            //发送短信
+            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
         }
     }
+
+    /**
+     * 合伙人订单发送短信
+     * @param comUser
+     * @param pComUser
+     * @param pfBorder
+     * @param pfBorderItems
+     * @param comAgentLevel
+     */
+    private void pushMobileMessageAgent(ComUser comUser,
+                                        ComUser pComUser,
+                                        PfBorder pfBorder,
+                                        List<PfBorderItem> pfBorderItems,
+                                        ComAgentLevel comAgentLevel){
+        PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+        logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
+        if (pfBorderRecommenReward!=null){
+            logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+            String recommenRewardName = "";
+            if (recommenRewardUser!=null) {
+                //有推荐人的情况
+                recommenRewardName = recommenRewardUser.getRealName();
+                //给合伙人发
+                Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        incomeAmout,
+                        recommenRewardName,
+                        userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId()));
+                if (bl) {
+                    logger.info("合伙人订单有推荐人给合伙人发送短信成功");
+                }
+                //给推荐人发
+                Boolean _bl = MobileMessageUtil.getInitialization("B").recommendCommissionRemind(
+                        recommenRewardUser.getMobile(),
+                        comUser.getRealName(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        pfBorderRecommenReward.getRewardTotalPrice().toString()
+                        );
+                if (_bl){
+                    logger.info("合伙人订单有推荐人发送佣金成功");
+                }
+            }else{
+                logger.info("合伙人查询是否有推荐人获得comUser为null");
+            }
+        } else{
+            //没有推荐人的情况
+            Boolean bl = MobileMessageUtil.getInitialization("B").lowerJoinRemind(pComUser.getMobile(),
+                    pfBorderItems.get(0).getSkuName(),
+                    comAgentLevel.getName(),
+                    incomeAmout,
+                    userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+            );
+            if (bl){
+                logger.info("合伙人订单没有推荐人发送短信成功");
+            }
+        }
+    }
+
 
     /**
      * 补货平台代发发送消息
@@ -232,6 +309,60 @@ public class BOrderPayEndMessageService {
             WxPFNoticeUtils.getInstance().supplementSuccessToUp(pComUser, paramI, url);
         }
     }
+
+    /**
+     * 补货发送短信
+     * @param comUser
+     * @param pComUser
+     * @param pfBorderItems
+     * @param comAgentLevel
+     *
+     * 合伙人收入 = 订单金额  - 保证金 -  推荐奖 - 运费
+     */
+    private void pushMoblieMessageSupplement(ComUser comUser,
+                                             ComUser pComUser,
+                                             PfBorder pfBorder,
+                                             List<PfBorderItem> pfBorderItems,
+                                             ComAgentLevel comAgentLevel){
+        //给合伙人发送短信
+        BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+        logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
+       Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
+                pfBorderItems.get(0).getSkuName(),
+                comAgentLevel.getName(),
+                comUser.getRealName(),
+                pfBorderItems.get(0).getQuantity(),
+                incomeAmout,
+                userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+                );
+        if (bl){
+            logger.info("补货给合伙人发送短信成功");
+        }
+        //给推荐人发短信
+        logger.info("补货给推荐人发送短信-----pfborderItem的id-----"+pfBorderItems.get(0).getId());
+        PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        if (pfBorderRecommenReward!=null){
+            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+            logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            if (recommenRewardUser!=null){
+                Boolean _bl = MobileMessageUtil.getInitialization("B").refereeAddstockRecomendRemind(recommenRewardUser.getMobile(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        comUser.getRealName(),
+                        pfBorderItems.get(0).getQuantity(),
+                        pfBorderRecommenReward.getRewardTotalPrice().toString()
+                );
+                if (_bl){
+                    logger.info("补货给推荐人发送短信成功");
+                }
+            }else{
+                logger.info("补货发送短信没有推荐人不发送短信");
+            }
+        }else{
+            logger.info("补货发送短信没有推荐人不发送短信");
+        }
+    }
+
 
     /**
      * 补货自己发货发送消息

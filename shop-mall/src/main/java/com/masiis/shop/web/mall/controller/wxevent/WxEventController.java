@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2016/5/6
@@ -102,8 +103,11 @@ public class WxEventController extends BaseController {
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
+        String result1 = HttpClientUtils.httpGet(urlEn);
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=GDEeLsyVgBxKtIhozCHFkVrp_iC6BecT4rd3A_buBGpB99sKWNfRClyzcL0XqNTCM7QkcuBbZst24C9T-7zcizN24tRWZl0cTCSCDPW5lDevjx2NmzgM7qRlmMuaStMzNIAbAHAFAS";
+        String token = (String) JSONObject.parseObject(result1, Map.class).get("access_token");
+
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + token;
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
@@ -112,6 +116,7 @@ public class WxEventController extends BaseController {
         Button b1 = new Button("联系我们", "click", null);
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
+        sub_button1.add(new Button("素材库", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/materielList/infoC"));
 
         buttons.add(new Button("关于麦链", sub_button1));
         buttons.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));

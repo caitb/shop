@@ -5,11 +5,13 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.mall.SysConstants;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
@@ -78,6 +80,11 @@ public class SfOrderPayService {
     private SfUserAccountService sfUserAccountService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SfShopMapper sfShopMapper;
+    @Resource
+    private SfShopService sfShopService;
+
 
     /**
      * 获得需要支付的订单的信息
@@ -161,7 +168,8 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems) {
                 updateShopSku(order.getShopId(), orderItem.getSkuId(), orderItem.getQuantity(),isOwnShip);
             }
-
+            //更新sfuserRelation中isBuy字段
+            updateRelationIsBuy(order.getUserId(),order.getShopId());
             //统计更新信息
             updateStatistics(order,orderItems);
             //更新小铺用户结算中信息
@@ -568,7 +576,9 @@ public class SfOrderPayService {
             map.put("orderConsignee", ordCon);
             //订单信息
             SfOrder order = getOrderById(orderId);
+            SfShop sfShop = sfShopMapper.selectByPrimaryKey(order.getShopId());
             map.put("order", order);
+            map.put("wxQrCode", sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
             //运费
             if(order!=null){
                 BigDecimal shipAmount = order.getShipAmount();
@@ -582,7 +592,7 @@ public class SfOrderPayService {
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems", orderItems);
-            //获得购买人的分销关系并更新是否在小铺中购买isbuy字段
+            //获得购买人的分销关系
             Long userPid = getUserPid(order.getUserId(),order.getShopId());
             map.put("userPid", userPid);
         } catch (Exception e) {
@@ -622,27 +632,40 @@ public class SfOrderPayService {
     }
 
     /**
-     * 获得购买人的分销关系并更新是否在小铺中购买isbuy字段
+     * 获得购买人的分销关系
      *
      * @author hanzengzhi
      * @date 2016/4/14 16:29
      */
     private Long getUserPid(Long userId,Long shopId) {
+        log.info("获得购买人的分销关系------userId-----"+userId+"-----shopId-----"+shopId);
         SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
         if (userRelation == null) {
             throw new BusinessException("支付成功后获得分销关系为null");
         } else {
-            userRelation.setIsBuy(1);
-            int i = sfUserRelationService.updateUserRelation(userRelation);
-            if (i==1){
-                log.info("更新是否在小铺中购买过成功");
-            }else{
-                log.info("更新是否在小铺中购买过失败");
-                throw new BusinessException("更新是否在小铺中购买过失败");
-            }
             return userRelation.getUserPid();
         }
     }
+
+    /**
+     * 更新是否在小铺中购买过字段 isBuy
+     * @param userId
+     * @param shopId
+     */
+    private void updateRelationIsBuy(Long userId,Long shopId){
+        log.info("更新是否在小铺中购买过字段 isBuy----start");
+        SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
+        userRelation.setIsBuy(1);
+        int i = sfUserRelationService.updateUserRelation(userRelation);
+        if (i==1){
+            log.info("更新是否在小铺中购买过成功");
+        }else{
+            log.info("更新是否在小铺中购买过失败");
+            throw new BusinessException("更新是否在小铺中购买过失败");
+        }
+        log.info("更新是否在小铺中购买过字段 isBuy----end");
+    }
+
 
     /**
      * 发送微信和短信提醒
@@ -716,7 +739,18 @@ public class SfOrderPayService {
         /*小铺归属人提醒*/
         if (shopUser != null) {
             log.info("小铺归属人短信提醒------小铺人的电话-----"+shopUser.getMobile());
-            MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
+            //MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
+            BigDecimal payAmount = order.getPayAmount();
+            BigDecimal disAmount = order.getDistributionAmount();
+            BigDecimal agentShipAmount = order.getAgentShipAmount();
+            BigDecimal billAmount = payAmount.subtract(disAmount).subtract(agentShipAmount);
+            log.info("小铺店主获得收入-------"+billAmount.toString());
+            MobileMessageUtil.getInitialization("C").orderShopRemind(
+                    shopUser.getMobile(),
+                    skuNames.toString(),
+                    orderItems.get(0).getQuantity(),
+                    billAmount
+            );
         }
         log.info("短信提醒-------------------------------end");
     }

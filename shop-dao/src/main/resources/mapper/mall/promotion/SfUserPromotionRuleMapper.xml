@@ -14,7 +14,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionRule" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserPromotionRule"  useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_promotion_rule (id, promo_id, type, 
             rule_value, remark)
         values (#{id,jdbcType=INTEGER}, #{promoId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 

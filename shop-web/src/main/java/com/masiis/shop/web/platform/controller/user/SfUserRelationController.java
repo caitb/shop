@@ -55,7 +55,7 @@ public class SfUserRelationController extends BaseController{
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
         ModelAndView mv = new ModelAndView();
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         if (sfShop == null){
             logger.info("该用户："+userId+"，没有对应的小铺信息");
             mv.addObject("totalPage", 0);
@@ -65,18 +65,23 @@ public class SfUserRelationController extends BaseController{
             Long shopId = sfShop.getId();
             logger.info("shopId = " + shopId);
 //            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getAllSfSpokesManInfos(true, 1, pageSize, shopId);
-            Integer totalCount = sfUserRelationService.getAllSfSpokesManNum(shopId);
-            if (totalCount == 0 /*|| infos == null || infos.size() == 0*/){
+//            Integer totalCount = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
+            //获取代言人数量
+            Integer spokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, true);
+            //获取粉丝数量
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
+            if (fansNum == 0 /*|| infos == null || infos.size() == 0*/){
                 logger.info("没有对应的代言人数据");
                 mv.addObject("totalPage", 0);
                 mv.addObject("currentPage", 0);
                 mv.addObject("totalCount", 0);
             }else {
-                Integer pageNums = totalCount%pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
+                Integer pageNums = fansNum%pageSize == 0 ? fansNum/pageSize : fansNum/pageSize + 1;
 //                mv.addObject("infos",infos);
                 mv.addObject("totalPage", pageNums);
                 mv.addObject("currentPage", 1);
-                mv.addObject("totalCount", totalCount);
+                mv.addObject("fansNum", fansNum);
+                mv.addObject("spokesManNum", spokesManNum);
             }
         }
         mv.setViewName("platform/user/spokesManList");
@@ -110,7 +115,7 @@ public class SfUserRelationController extends BaseController{
         }
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
         List<SfSpokesAndFansInfo> infos = null;
         if (sfShop == null){
             jsonObject.put("isTrue",false);
@@ -129,7 +134,7 @@ public class SfUserRelationController extends BaseController{
             case 0 : {
                 logger.info("查询第一页信息");
                 logger.info("ID = " + ID);
-                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID);
+                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID, false);
                 logger.info("totalCount = " + totalCount);
                 if (totalCount == 0){
                     logger.info("没有对应的代言人信息");
@@ -143,7 +148,6 @@ public class SfUserRelationController extends BaseController{
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", 1);
                 jsonObject.put("totalCount", totalCount);
-                jsonObject.put("infos",infos);
                 break;
             }
             //查询下一页
@@ -158,7 +162,6 @@ public class SfUserRelationController extends BaseController{
                 infos = sfUserRelationService.getShopSpokesManByID(true, currentPage + 1, pageSize, shopId, ID);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage + 1);
-                jsonObject.put("infos",infos);
                 break;
             }
             //查询上一页
@@ -173,10 +176,17 @@ public class SfUserRelationController extends BaseController{
                 infos = sfUserRelationService.getShopSpokesManByID(true, currentPage - 1, pageSize, shopId, ID);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage - 1);
-                jsonObject.put("infos",infos);
                 break;
             }
         }
+        SfSpokesAndFansInfo info;
+        for (int i = 0; i < infos.size(); i++){
+            info = infos.get(i);
+            info.setFansNum(sfUserRelationService.getFansNumByUserId(info.getUserId(), shopId));
+            info.setSpokesManNum(sfUserRelationService.getSpokesManNumByUserId(info.getUserId(), shopId));
+            infos.set(i,info);
+        }
+        jsonObject.put("infos",infos);
         jsonObject.put("isTrue",true);
         logger.info("result:"+jsonObject.toString());
         return jsonObject.toString();
@@ -200,7 +210,8 @@ public class SfUserRelationController extends BaseController{
         Long userId = comUser.getId();
         logger.info("userId = " + userId);
         ModelAndView mv = new ModelAndView();
-        SfShop sfShop = sfShopService.getSfShopById(userId);
+        SfShop sfShop = sfShopService.getSfShopByUserId(userId);
+        logger.info("shopId = " + sfShop.getId());
         if (sfShop == null){
             throw new BusinessException("不存在小铺信息");
         }

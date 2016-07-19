@@ -32,7 +32,7 @@ public class SfGorderItemService {
     private SfUserPromotionGiftService promotionGiftService;
 
     public List<PromotionGiftInfo> addGorDerItem(Long gorderId,Integer gorderType,Integer promoId,Integer promoRuleId){
-        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,false);
+        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfosByPromoIdAndRuleId(promoId,promoRuleId,false);
         for (PromotionGiftInfo giftInfo:promotionGiftInfos){
             SfGorderItem sfGorderItem = new SfGorderItem();
             sfGorderItem.setCreateTime(new Date());

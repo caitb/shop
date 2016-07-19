@@ -61,8 +61,8 @@ public class SfOrderPurchaseService {
     private BigDecimal skuTotalPrice = null;
     private Integer totalQuantity = null;
 
-    private Boolean isExistPlatformSendGoods = false;
-    private Boolean isExistShopUserSendGoods = false;
+    private Boolean isExistPlatformSendGoods = null;
+    private Boolean isExistShopUserSendGoods = null;
 
     /**
      * 获得确认订单界面，地址信息和商品信息
@@ -82,7 +82,19 @@ public class SfOrderPurchaseService {
             //获得购物车中的商品信息
             List<SfShopCart> shopCarts = getShopCartInfoByUserIdAndShopId(userId, sfShopId, 1);
             map.put("shopCarts", shopCarts);
+            //商品发货类型
+            if (shopCarts!=null&&shopCarts.size()>0){
+                SfShopCart shopCart = shopCarts.get(0);
+                if (shopCart.getSendMan()==0){
+                    map.put("isOwnShip",0);
+                }else{
+                    map.put("isOwnShip",1);
+                }
+
+            }
             //获得商品的详情信息
+            isExistPlatformSendGoods = false;
+            isExistShopUserSendGoods = false;
             List<SfShopCartSkuDetail> shopCartSkuDetails = getShopCartSkuBySkuId(shopCarts);
             map.put("shopCartSkuDetails", shopCartSkuDetails);
             //获得购物车中商品的总价格和数量
@@ -372,6 +384,7 @@ public class SfOrderPurchaseService {
         List<SfSkuDistribution> sfSkuDistribution = sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         /* 获得当前用户的分销关系 */
         /* 获得当前用户的分销关系规则：父级在list第一位，父父级级在第二位 以此类推(这种排序和skuDis相对应起来) */
+        log.info("获得分销关系------shopId-----"+shopId+"-----购买人id-----"+purchaseUserId);
         List<SfUserRelation> sfUserRelations = getSfUserRelation(shopId,purchaseUserId, null, null);
         if (sfUserRelations != null && sfUserRelations.size() != 0 && sfSkuDistribution != null && sfSkuDistribution.size() != 0) {
             log.info("获得购买人--id为" + purchaseUserId + "---的上级关系共有---" + sfUserRelations.size());
@@ -445,13 +458,10 @@ public class SfOrderPurchaseService {
         sfOrder.setProductAmount(skuTotalPrice);//商品总费用
         sfOrder.setShipAmount(skuTotalShipAmount);
         SfShop sfShop = sfShopService.getSfShopById(sfOrder.getShopId());
-        if (sfShop!=null){
-            if (sfShop.getShipType().equals(1)){
-                //平台代发
-                sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
-            }else{
-                sfOrder.setAgentShipAmount(new BigDecimal(0));
-            }
+        if (sfOrder.getSendType()==1){
+            sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
+        }else{
+            sfOrder.setAgentShipAmount(new BigDecimal(0));
         }
         sfOrder.setShipType(0);
         sfOrder.setShipStatus(0);
@@ -623,10 +633,10 @@ public class SfOrderPurchaseService {
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
         if (userPid == null) {
-            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userId);
+            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userId,shopId);
             userPid = _userRelation.getUserPid();
         }
-        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(shopId,userPid);
+        SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(userPid,shopId);
         if (sfUserRelation != null) {
             sfUserRelationList.add(sfUserRelation);
         }

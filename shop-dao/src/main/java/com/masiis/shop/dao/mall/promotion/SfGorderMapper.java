@@ -9,6 +9,7 @@ package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfGorder;
 import java.util.List;
+import java.util.Map;
 
 public interface SfGorderMapper {
     int deleteByPrimaryKey(Long id);
@@ -16,6 +17,8 @@ public interface SfGorderMapper {
     int insert(SfGorder record);
 
     SfGorder selectByPrimaryKey(Long id);
+
+    List<SfGorder> selectByCondition(Map<String,Object> condition);
 
     List<SfGorder> selectAll();
 

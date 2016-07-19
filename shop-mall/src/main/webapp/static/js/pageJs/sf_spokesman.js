@@ -72,7 +72,7 @@ function createHtml(infos){
         html += "<div class=\"sec1\">";
         html += "<h1 style=\"background:url('"+ infos[i].headImg +"');background-size:100% 100%;\"></h1>";
         html += "<div>";
-        html += "<h2>" + infos[i].wxName + "<span>" + infos[i].userLevelView + "</span> <b>" + infos[i].isBuyView + "</b></h2>";
+        html += "<h2>" + infos[i].wxName + "<span>" + infos[i].userLevelView + "代言人</span> <b>" + infos[i].isBuyView + "</b></h2>";
         html += "<p>";
         html += "<span>ID:" + infos[i].ID + "</span>";
         html += "<span>" + infos[i].createTimeView + "</span>";

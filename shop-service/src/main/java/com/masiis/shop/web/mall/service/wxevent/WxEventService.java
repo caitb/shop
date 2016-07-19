@@ -68,9 +68,9 @@ public class WxEventService {
         WxBaseMessage res = null;
         switch (body.getEvent()){
             case "subscribe":
-                handleQRScanEvent(body);
-            case "SCAN":
                 res = handleDefaultEventReturn(body);
+            case "SCAN":
+                handleQRScanEvent(body);
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);

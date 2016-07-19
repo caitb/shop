@@ -31,21 +31,21 @@ public class AgentQRCodeController extends BaseController {
         return "platform/qrcode";
     }
 
-    @RequestMapping("/agent/create")
-    @ResponseBody
-    public String createQRCode(HttpServletRequest request, HttpServletResponse response){
-        ComUser comUser = null;
-        try {
-            comUser = getComUser(request);
-
-            String qrcodeUrl = weiXinPFQRCodeService.createAgentQRCode(null, null, null);
-
-            return qrcodeUrl;
-        } catch (Exception e) {
-            log.error("获取代理商二维码失败!");
-            e.printStackTrace();
-        }
-
-        return "";
-    }
+//    @RequestMapping("/agent/create")
+//    @ResponseBody
+//    public String createQRCode(HttpServletRequest request, HttpServletResponse response){
+//        ComUser comUser = null;
+//        try {
+//            comUser = getComUser(request);
+//
+//            String qrcodeUrl = weiXinPFQRCodeService.createAgentQRCode(null, null, null);
+//
+//            return qrcodeUrl;
+//        } catch (Exception e) {
+//            log.error("获取代理商二维码失败!");
+//            e.printStackTrace();
+//        }
+//
+//        return "";
+//    }
 }

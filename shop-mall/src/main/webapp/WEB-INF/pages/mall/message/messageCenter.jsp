@@ -13,35 +13,100 @@
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js" ></script>
     <script type="application/javascript">
         var path = "${path}";
-    </script>
-</head>
-<body>
-<div class="wrap">
-    <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>消息中心</p>
-    </header>
-    <!--      消息list-->
-    <main>
-        <c:forEach items="${messageList}" var="info">
-            <div class="sec1">
-                <%--<h1 id="imagelist"><img src="${path}/static/images/admin.png" alt=""><span>22</span></h1>--%>
-                <h1 id="imagelist"><img src="${info.shopLogo}" alt=""><span>${info.num}</span></h1>
-                <div>
-                    <h2>${info.shopName}</h2>
-                    <p>${info.msgContent}</p>
-                </div>
-            </div>
-        </c:forEach>
-    </main>
-    <!--
+
+        var cur = 0;
+
+        $(function(){
+            shopMsgList();
+
+            //$("#shopList").on("click", ".sec1", viewDetail);
+
+        });
+
+        function shopMsgList(){
+            //$("#shopList").empty();
+            $.ajax({
+                type: 'get',
+                url: path + '/mallmessage/shopMsgList.shtml?cur=' + cur++,
+                dataType: "json",
+                success: function(data) {
+                    if(data.resCode == "success"){
+                        var messageList = data.messageList;
+                        if(messageList != undefined){
+                            var tempHtml = '';
+                            for (var i = 0; i < messageList.length; i++) {
+                                tempHtml += '<div class="sec1" id="' + messageList[i].id + '">' +
+                                        '<h1 id="imagelist"><img src="' + messageList[i].logo + '" alt="">';
+                                if(messageList[i].notSeeNum > 0){
+                                    tempHtml += '<span>' + messageList[i].notSeeNum + '</span>';
+                                }
+                                tempHtml += '</h1>' +
+                                        '<div>' +
+                                        '<h2>' + messageList[i].name + '</h2>' +
+                                        '<p>' + messageList[i].content + '</p>' +
+                                        '</div>' +
+                                        '</div>';
+                            }
+                            $("#shopList").append(tempHtml);
+                            $("#shopList .sec1").unbind("click");
+                            $("#shopList .sec1").click(function(){
+                                window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
+                            });
+                        }
+                        if(data.isLast == true){
+                            $("#more").hide();
+                        } else {
+                            $("#more").show();
+                        }
+                        if(data.hasData == false){
+                            $("#shopList").hide();
+                            $("#nomore").show();
+                            $("#more").hide();
+                        }
+                    }
+                }
+            });
+        }
+
+        /*function viewDetail(){
+            window.location.href = path + "/mallmessage/toDetail.shtml?userId=" + $(this).attr("id");
+        }*/
+
+        </script>
+                    </head>
+                    <body>
+                    <div class="wrap">
+                        <header class="xq_header">
+                            <a href="javascript:void(0)" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                            <p>消息中心</p>
+                        </header>
+                        <!--      消息list-->
+                        <main id="shopList">
+                            <%--<c:forEach items="${messageList}" var="info">
+                                <div class="sec1">--%>
+                                    <%--<h1 id="imagelist"><img src="${path}/static/images/admin.png" alt=""><span>22</span></h1>--%>
+                                    <%--<h1 id="imagelist"><img src="${info.logo}" alt=""><span>${info.notSeeNum}</span></h1>
+                                    <div>
+                                        <h2>${info.name}</h2>
+                                        <p>${info.content}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>--%>
+                        </main>
+        <c:if test="${hasData}">
            <div class="nobady">
-                <img src="../img/nodady.png" alt="">
+                <img src="${path}/static/images/material/nodady.png" alt="">
                 <p>暂无消息</p>
             </div>
-    -->
+        </c:if>
+        <div id="nomore" style="display: none">
+            <br/>
+            <h3 align="center">暂无更多数据</h3>
+        </div>
     <!--        点击加载-->
-    <div class="downloading"><img src="${path}/static/images/downloading.png" alt=""></div>
+    <%--<c:if test="${isLast}">--%>
+        <div id="more" class="downloading" onclick="shopMsgList();"><img src="${path}/static/images/downloading.png" alt=""></div>
+    <%--<</c:if>--%>
 </div>
 <script>
     /*var Browser=new Object();

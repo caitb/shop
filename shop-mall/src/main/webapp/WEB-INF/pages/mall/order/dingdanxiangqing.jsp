@@ -58,7 +58,7 @@
                 <%--<p>类    型：<span><c:if test="${orderMallDetail.sfOrder.orderType==0}">合伙人订单</c:if><c:if test="${orderMallDetail.sfOrder.orderType==1}">补货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1 && orderMallDetail.sfOrder.orderType==2}">申请拿货</c:if></span></p>--%>
                 ${stringBuffer}
             </div>
-           <div class="shop">
+           <div class="shop" onclick="javascript:window.location.replace('<%=basePath%>${orderMallDetail.sfOrder.shopId}/${userPid}/shop.shtml');">
                <h1>购买店铺：</h1>
                <p>${orderMallDetail.buyerShopName}</p>
            </div>
@@ -70,7 +70,7 @@
                 </div>
             </section>
            <c:forEach items="${orderMallDetail.sfOrderItems}" var="bdpi">
-            <section class="sec2" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${bdpi.skuId}&shopId=${orderMallDetail.sfOrder.shopId}')" >
+            <section class="sec2" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${bdpi.skuId}&shopId=${orderMallDetail.sfOrder.shopId}&isOwnShip=<c:if test="${orderMallDetail.sfOrder.sendMan==0}">0</c:if><c:if test="${orderMallDetail.sfOrder.sendMan!=0}">1</c:if>')" >
                 <p class="photo">
                    <a href="javascript:;">
                         <img src="${bdpi.skuUrl}" alt="">
@@ -88,7 +88,7 @@
             </section>
             <section class="sec4">
                 <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
-                <p>运费：<span><c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：￥${shipAmount}</c:if></span></p>
+                <p>运费：<span>${orderMallDetail.sfOrder.shipMoney}</span></p>
                 <h1>共<b>${orderMallDetail.sfOrder.totalQuantity}</b>件商品　<b style="color:#333333">合计：</b><span>￥${orderMallDetail.sfOrder.orderAmount}</span></h1>
             </section>
             <div class="sec5">

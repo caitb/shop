@@ -38,13 +38,18 @@
             <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
         </div>
         <div class="dlpople">
-
-            <p>运费：
-                <c:if test="${sfShop.shipType==1}">
+            <p>运费:
+                <c:if test="${isOwnShip==0 && sfShop.shipType==1}">
                 <span>包邮</span></p>
             </c:if>
-            <c:if test="${sfShop.shipType==0}">
+            <c:if test="${isOwnShip==1 && skuInfo.ownShipAmount eq '0.00'}">
+                <span>包邮</span></p>
+            </c:if>
+            <c:if test="${isOwnShip==0 && sfShop.shipType==0}">
                 <span>${skuInfo.shipAmount}</span></p>
+            </c:if>
+            <c:if test="${isOwnShip==1  && skuInfo.ownShipAmount ne '0.00'}">
+                <span>${skuInfo.ownShipAmount}</span></p>
             </c:if>
             <p>总销量：<b>${skuInfo.saleNum}</b></p>
             <%--<p>分享量：<b>${skuInfo.shareNum}</b></p>--%>
@@ -126,6 +131,7 @@
         </c:if>
         <c:if test="${isOwnShip==1}">
             <span id="isOwnShip">店主发货</span>
+            <span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>
         </c:if>
     </h1>
     <h1>
@@ -151,7 +157,7 @@
         <p>
             如有问题，请加我为好友！。
         </p>
-        <b class="off" onclick="clickHide()">×</b>
+        <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
 <footer>
@@ -227,8 +233,8 @@
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
+        cartData.isOwnShip = "${isOwnShip}";
         var isOwnShip = "${isOwnShip}";
-
         var customerStock = "${skuInfo.stock}";
         if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
             alert("当前商品为店主发货，可用库存不足！");
@@ -252,7 +258,7 @@
                     window.location.href = "<%=basePath%>orderPurchase/getShopCartInfo.html?shopId="+cartData.shopId;
                 }
                 else {
-                    alert(data.message);
+                    alert("购买失败，请联系麦链相关客服");
                     window.location.reload(true);
                     return;
                 }

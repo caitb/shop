@@ -6,6 +6,7 @@ import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.base.BaseService;
 import com.masiis.shop.common.enums.platform.OperationType;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
@@ -148,6 +149,19 @@ public class COrderService extends BaseService {
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建试用发货失败!");
         }
+        //发送短信
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfCorder.getUserId());
+        ComSku comSku = comSkuMapper.findBySkuId(pfCorder.getSkuId());
+        String skuName = "";
+        if (comSku!=null){
+            skuName = comSku.getName();
+        }
+        MobileMessageUtil.getInitialization("B").trialShipmentsRemind(
+                comUser.getMobile(),
+                skuName,
+                pfCorderFreight.getShipManName(),
+                pfCorderFreight.getFreight()
+        );
     }
 
 }

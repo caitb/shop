@@ -17,6 +17,8 @@ public interface SfGorderConsigneeMapper {
 
     SfGorderConsignee selectByPrimaryKey(Long id);
 
+    SfGorderConsignee selectByGorderId(Long gorderId);
+
     List<SfGorderConsignee> selectAll();
 
     int updateByPrimaryKey(SfGorderConsignee record);

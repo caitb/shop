@@ -6,13 +6,12 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.dao.po.SfGorder;
-import com.masiis.shop.dao.po.SfUserPromotionRecord;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRecordService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionRuleService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +44,10 @@ public class PromotionGorderService {
     private SfGorderOperationLogService gorderOperationLogService;
     @Resource
     private SfUserPromotionRecordService recordService;
+    @Resource
+    private SfUserPromotionRuleService userPromotionRuleService;
+    @Resource
+    private SfUserPromotionService userPromotionService;
 
 
 
@@ -62,12 +65,11 @@ public class PromotionGorderService {
         Map<String,Object> map = new HashMap<String,Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress( selectedAddressId, userId);
         log.info("获取奖品信息-----活动id----"+promoId+"-----规则id-----"+promoRuleId);
-        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfoByPromoIdAndRuleId(promoId,promoRuleId,true);
+        List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfosByPromoIdAndRuleId(promoId,promoRuleId,true);
         map.put("address",comUserAddress);
         map.put("gifts",promotionGiftInfos);
         return map;
     }
-
     /**
      * 领取奖励
      * @param comUser
@@ -83,6 +85,15 @@ public class PromotionGorderService {
         if (record!=null){
             //活动已领取
             return 2;
+        }
+        SfUserPromotion sfUserPromotion = userPromotionService.selectByPrimaryKey(promoId);
+        if (sfUserPromotion==null){
+            throw new BusinessException("promoId参数不合法,查询活动");
+        }
+        Boolean bl = userPromotionRuleService.isMayReceiveReward(comUser,promoRuleId,sfUserPromotion.getPersonType());
+        if (!bl){
+            //粉丝数量未达到不能领取
+            return 0;
         }
         //添加订单
         log.info("添加订单-------------start");

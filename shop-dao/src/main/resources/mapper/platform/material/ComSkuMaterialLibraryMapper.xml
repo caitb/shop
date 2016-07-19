@@ -18,7 +18,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialLibrary" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialLibrary" useGeneratedKeys="true" keyProperty="id">
         insert into com_sku_material_library (id, create_time, create_man, 
             spu_id, sku_id, name, 
             subscription_num, sort, remark
@@ -76,4 +76,8 @@
         ORDER BY sort ASC
     </select>
 
+    <select id="countLibrary" resultType="int" >
+        select COUNT(1)
+        from com_sku_material_library
+    </select>
 </mapper>

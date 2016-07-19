@@ -39,6 +39,13 @@ public class SfUserPromotionService {
         updateRules(ruleList, promotionGiftList);
     }
 
+    public void updatePromotionStatus(Integer promotionId, Integer status) {
+        SfUserPromotion promotion = new SfUserPromotion();
+        promotion.setId(promotionId);
+        promotion.setStatus(status);
+        sfUserPromotionMapper.updateByPrimaryKey(promotion);
+    }
+
     public SfUserPromotion insertOrUpdate(SfUserPromotion promotion, HttpServletRequest request) {
         if(promotion.getId() == null) {
             init4insert(promotion, request);
@@ -54,13 +61,6 @@ public class SfUserPromotionService {
         if(promotion.getId() != null) {
             return;
         }
-
-        // 设置 id
-        Integer maxId = sfUserPromotionMapper.maxId();
-        if(maxId == null) {
-            maxId = 0;
-        }
-        promotion.setId(maxId+1);
 
         promotion.setCreateTime(new Date()); // 创建时间
 
@@ -132,6 +132,18 @@ public class SfUserPromotionService {
                 promotionGift.setPromoId(promotionId);
             }
         }
+    }
+
+    public boolean hasGifts(Integer promotionId) {
+        List<SfUserPromotionGift> promotionGifts = sfUserPromotionGiftMapper.getPromoGiftByPromoId(promotionId);
+
+        for(SfUserPromotionGift promotionGift : promotionGifts) {
+            if(promotionGift.getPromoQuantity() < promotionGift.getUpperQuantity()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

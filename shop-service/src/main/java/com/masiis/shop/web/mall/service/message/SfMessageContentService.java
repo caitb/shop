@@ -66,32 +66,46 @@ public class SfMessageContentService {
     }
 
     /**
+     * 查询mall粉丝收到消息的店铺个数
+     * @param userId
+     * @return
+     */
+    public Integer queryShopNums(Long userId){
+        return sfMessageContentMapper.queryShopNums(userId);
+    }
+
+    /**
      * 查询关注的店铺未读消息数量和最新未读消息内容
      * @param userId
      */
-    public List<Map<String, String>> queryUnreadShopInfosByUser(Long userId){
-        List<Map<String, String>> returnList = new ArrayList<>();
-        List<Map<String, Long>> temp = sfMessageContentMapper.selectUnreadNumsAndFromByUser(userId);
-        Set<Long> difUserSet = new HashSet<>();
-        Map<Long, Map<String, Long>> difMap = new LinkedHashMap<>();
-        for(int i = 0; i < temp.size(); i++){
-            Long fromUser = temp.get(i).get("fromUser");
-            if(!difUserSet.contains(fromUser)){
-                difUserSet.add(fromUser);
-                Map<String, Long> tempMap = new LinkedHashMap<>();
-                tempMap.put("contentId", temp.get(i).get("contentId"));
-                tempMap.put("num", 1L);
-                difMap.put(fromUser, tempMap);
-            }else{
-                Map<String, Long> tempMap = difMap.get(fromUser);
-                tempMap.put("num", tempMap.get("num")+1);
-            }
-        }
-        for(Map<String, Long> valueMap : difMap.values()){
-            Map<String, String> infoMap = sfMessageContentMapper.selectShopInfoAndFirMsgByMsgId(valueMap.get("contentId"));
-            infoMap.put("num", valueMap.get("num").toString());
-            returnList.add(infoMap);
-        }
-        return returnList;
+    public List<Map<String, String>> queryUnreadShopInfosByUser(Long userId, Integer start, Integer size){
+        return sfMessageContentMapper.selectShopInfoAndFirstMsg(userId, start, size);
+    }
+
+    public void updateRelationIsSeeByFromUserAndToUser(Long fromUser, Long toUser){
+        sfMessageContentMapper.updateRelationIsSeeByFromUserAndToUser(fromUser, toUser);
+    }
+
+    /**
+     * 根据消息来源用户和当前用户查询消息总条数
+     * @param fromUser
+     * @param toUser
+     * @return
+     */
+    public Integer queryNumsFromUserAndToUser(Long fromUser, Long toUser){
+        return sfMessageContentMapper.queryNumsFromUserAndToUser(fromUser, toUser);
+    }
+
+    /**
+     * 根据消息来源和当前用户查询消息详情（带分页）
+     *
+     * @param userId
+     * @param fUserId
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    public List<SfMessageContent> queryDetailByFromUserAndToUserWithPaging(Long userId, Long fUserId, Integer start, Integer pageSize){
+        return sfMessageContentMapper.queryDetailByFromUserAndToUserWithPaging(userId, fUserId, start, pageSize);
     }
 }

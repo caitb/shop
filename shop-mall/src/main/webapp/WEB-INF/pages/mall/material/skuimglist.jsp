@@ -12,7 +12,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/groupInfoB"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:" onclick="self.location=document.referrer;"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>素材图片</p>
     </header>
     <main id="divall">
@@ -33,10 +33,12 @@
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    <c:if test="${countSkuMaterial>3}">
+        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
+    </c:if>
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -49,13 +51,14 @@
     </div>
 </div>
 <div class="bigphp">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
     function clickShow(){
         $(".black").show();
@@ -107,7 +110,7 @@
         $(".sec1 img").each(function(i,n){
             $(".floor").find("img").eq(i).attr("id","img0"+i);
             $(".floor").find("img").eq(i).attr("src","${path}/static/images/material/imgloading.gif");
-            Imagess($(".floor").find("img").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
+            Imagess($(".floor").find("img ").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
         })
     }
     var pagelimit = 2;
@@ -153,7 +156,7 @@
     })
     function saveEmail() {
         var email = $("#email").val();
-        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        var reg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/;
         if (email == null || email == "") {
             alert("邮箱不能为空");
             return false;

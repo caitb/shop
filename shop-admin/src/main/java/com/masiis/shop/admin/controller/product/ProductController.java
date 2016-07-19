@@ -290,14 +290,17 @@ public class ProductController {
                 if(mainImgUrls != null){//更新了图片
                     comSkuImages = new ArrayList<>();
                     int[] imgPxs = {220, 308, 800};
-                    for(int i=0; i<skuImageIds.length; i++){
+
+                    for(int i=0; i<mainImgUrls.length; i++){
                         ComSkuImage comSkuImage = new ComSkuImage();
-                        comSkuImage.setId(skuImageIds[i]);
-                        comSkuImage.setModifyTime(new Date());
-                        comSkuImage.setModifyMan(pbUser.getId());
+                        comSkuImage.setSpuId(spuId);
+                        comSkuImage.setSkuId(skuId);
+                        comSkuImage.setCreateTime(new Date());
+                        comSkuImage.setCreateMan(pbUser.getId());
                         comSkuImage.setImgUrl(mainImgNames[i]);
                         comSkuImage.setImgName(mainImgOriginalNames[i]);
                         comSkuImage.setIsDefault(i==0?1:0);
+                        comSkuImage.setSort(i);
 
                         for(int px=0; px<imgPxs.length; px++){
                             comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);

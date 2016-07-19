@@ -132,67 +132,35 @@ public class SfOrderService {
         if (freight == null || freight == "") {
             throw new BusinessException("请重新输入快递单号");
         }
-        if (sfOrder.getSendType() == 1) {//平台代发
-            sfOrder.setShipStatus(5);
-            sfOrder.setShipTime(new Date());
-            sfOrder.setOrderStatus(8);
-            SfOrderFreight sforderFreight = new SfOrderFreight();
-            sforderFreight.setCreateTime(new Date());
-            sforderFreight.setShipManId(Integer.parseInt(shipManId));
-            sforderFreight.setSfOrderId(orderId);
-            sforderFreight.setFreight(freight);
-            sforderFreight.setShipManName(shipManName);
-            borderSkuStockService.updateOrderStock(sfOrder, user);
-            sfOrderMapper.updateByPrimaryKey(sfOrder);
-            sfOrderFreightMapper.insert(sforderFreight);
-            //添加订单日志
-            SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
-            sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
-            sfOrderOperationLog.setCreateTime(new Date());
-            sfOrderOperationLog.setSfOrderStatus(8);
-            sfOrderOperationLog.setSfOrderId(sfOrder.getId());
-            sfOrderOperationLog.setRemark("订单完成");
-            sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+        sfOrder.setShipStatus(5);
+        sfOrder.setShipTime(new Date());
+        sfOrder.setOrderStatus(8);
+        SfOrderFreight sforderFreight = new SfOrderFreight();
+        sforderFreight.setCreateTime(new Date());
+        sforderFreight.setShipManId(Integer.parseInt(shipManId));
+        sforderFreight.setSfOrderId(orderId);
+        sforderFreight.setFreight(freight);
+        sforderFreight.setShipManName(shipManName);
+        borderSkuStockService.updateOrderStock(sfOrder, user);
+        sfOrderMapper.updateByPrimaryKey(sfOrder);
+        sfOrderFreightMapper.insert(sforderFreight);
+        //添加订单日志
+        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+        sfOrderOperationLog.setCreateTime(new Date());
+        sfOrderOperationLog.setSfOrderStatus(8);
+        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+        sfOrderOperationLog.setRemark("订单完成");
+        sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-            String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
-            String[] params = new String[5];
-            params[0] = "";
-            params[1] = "";
-            params[2] = sfOrder.getOrderCode();
-            params[3] = shipManName;
-            params[4] = freight;
-            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
-        } else if (sfOrder.getSendType() == 2) {//自己发货
-            sfOrder.setShipStatus(5);
-            sfOrder.setOrderStatus(8);
-            SfOrderFreight sforderFreight = new SfOrderFreight();
-            sforderFreight.setCreateTime(new Date());
-            sforderFreight.setShipManId(Integer.parseInt(shipManId));
-            sforderFreight.setSfOrderId(orderId);
-            sforderFreight.setFreight(freight);
-            sforderFreight.setShipManName(shipManName);
-            borderSkuStockService.updateOrderStock(sfOrder, user);
-            sfOrderMapper.updateByPrimaryKey(sfOrder);
-            sfOrderFreightMapper.insert(sforderFreight);
-            //添加订单日志
-            SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
-            sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
-            sfOrderOperationLog.setCreateTime(new Date());
-            sfOrderOperationLog.setSfOrderStatus(8);
-            sfOrderOperationLog.setSfOrderId(sfOrder.getId());
-            sfOrderOperationLog.setRemark("订单完成");
-            sfOrderOperationLogMapper.insert(sfOrderOperationLog);
-
-            String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
-            String[] params = new String[5];
-            params[0] = "";
-            params[1] = "";
-            params[2] = sfOrder.getOrderCode();
-            params[3] = shipManName;
-            params[4] = freight;
-            WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
-        }
+        String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html?id=" + sfOrder.getId().toString();
+        String[] params = new String[5];
+        params[0] = "";
+        params[1] = "";
+        params[2] = sfOrder.getOrderCode();
+        params[3] = shipManName;
+        params[4] = freight;
+        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
+        MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
     }
 }

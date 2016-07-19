@@ -32,6 +32,10 @@ public class PbStorageBill {
      */
     private Long userId;
     /**
+     * 单据创建原因
+     */
+    private String billReason;
+    /**
      * 商品总数量
      */
     private Integer productQuantity;
@@ -86,6 +90,15 @@ public class PbStorageBill {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public String getBillReason() {
+        return billReason;
+    }
+
+    public void setBillReason(String billReason) {
+        this.billReason = billReason;
+    }
+
     public Integer getProductQuantity() {
         return productQuantity;
     }

@@ -64,9 +64,20 @@
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .list-group-item:hover{
+            background: #ccc;
+        }
+        .list-group-item:active{
+            background:#428bca;
+        }
+        .li_selected{
+            background:#428bca;
+        }
+    </style>
 </head>
 
-<body class="no-skin">
+<body class="no-skin" style="overflow-x: hidden;overflow-y: auto">
 
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -81,116 +92,169 @@
     <div class="main-content">
 
         <!-- /section:basics/content.breadcrumbs -->
-        <div class="page-content">
+        <div class="page-content" >
 
             <!-- /section:settings.box -->
             <div class="page-content-area">
 
                 <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
+                    <div class="col-xs-10 col-xs-offset-0">
                         <!-- PAGE CONTENT BEGINS -->
                         <form class="form-horizontal" role="form" id="promotionForm">
                             <!-- #section:elements.form -->
 
-                            <input type="hidden" name="promotionId" />
-
                             <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">活动名称</label>
-                                <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="name" name="promotionName" placeholder="">
+                                <label for="userName" class="control-label col-sm-2">变更人</label>
+                                <div class="col-sm-2">
+                                    <label id="userName" class="col-sm-2 form-control" ></label>
+                                    <input type="hidden" id="userId"/>
                                 </div>
-                                <label for="name" class="col-sm-2 control-label">活动名称</label>
-                                <div class="col-sm-3">
-                                    <input type="text" class="form-control" id="name" name="promotionName" placeholder="">
+                                <div class="col-sm-1">
+                                    <button type="button" id="useSelect" class="btn btn-success">选择</button>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="remark" class="control-label col-sm-2">活动备注</label>
+                                <label for="billType" class="col-sm-3 control-label">单据类型</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="remark" name="promotionRemark" class="form-control">
+                                    <input type="text" readonly="readonly" class="form-control" id="billType" name="billType" placeholder="入库">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="personType" class="col-sm-2 control-label">活动对象</label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="personType" name="promotionPersonType">
-                                        <option value="0">粉丝</option>
-                                        <option value="1">代言人</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-2"></label>
+                                <label class="control-label col-sm-2">添加商品</label>
                                 <div class="col-sm-10" style="background-color: gainsboro">
                                     <div class="row">
-                                        <label class="control-label col-sm-3" style="text-align: center;">达到数量</label>
-                                        <label class="control-label col-sm-3" style="text-align: center;">奖品</label>
-                                        <label class="control-label col-sm-3" style="text-align: center;">奖励数量</label>
-                                        <label class="control-label col-sm-2" style="text-align: center;">总数量</label>
+                                        <label class="control-label col-sm-3" style="text-align: center;">商品名称</label>
+                                        <label class="control-label col-sm-2" style="text-align: center;">上级合伙人</label>
+                                        <label class="control-label col-sm-2" style="text-align: center;">数量</label>
+                                        <label class="control-label col-sm-4" style="text-align: center;">备注</label>
                                         <label class="control-label col-sm-1" style="text-align: center;">操作</label>
                                     </div>
                                 </div>
                             </div>
 
                             <div id="promotion-rule-template" class="form-group promotion-rule" style="display: none;">
-                                <label class="control-label col-sm-2 rule-name">一阶规则</label>
+                                <label class="control-label col-sm-2 rule-name"></label>
                                 <div class="col-sm-10">
                                     <div class="row">
                                         <input type="hidden" attr="ruleId" />
                                         <div class="col-sm-3"><input type="text"class="form-control" attr="ruleValue"> </div>
                                         <input type="hidden" attr="promotionGiftId" />
-                                        <div class="col-sm-3">
-                                            <select class="form-control" attr="giftValue">
-                                                <option></option>
-                                            </select>
+                                        <div class="col-sm-2">
+                                            <input type="text"class="form-control" />
                                         </div>
-                                        <div class="col-sm-3"><input type="text"class="form-control" attr="quantity"> </div>
-                                        <div class="col-sm-2"><input type="text"class="form-control" attr="upperQuantity"> </div>
+                                        <div class="col-sm-2"><input type="numbers"class="form-control" attr="quantity"> </div>
+                                        <div class="col-sm-4"><input type="text"class="form-control" attr="upperQuantity"> </div>
                                         <div class="col-sm-1"><button type="button" class="btn btn-warning removeRule">删除</button></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="addPromotionRule" class="control-label col-sm-2"></label>
+                                <label for="addPro" class="control-label col-sm-2"></label>
                                 <div class="col-sm-9">
-                                    <button type="button" id="addPromotionRule" class="btn btn-success">添加</button>
-                                </div>
-                            </div>
-
-                            <div class="form-group" style="margin-top:40px;">
-                                <label id="timeLabel" class="control-label col-sm-2">有效时间</label>
-                                <div class="col-sm-10 row" style="padding-left: 22px;">
-                                    <div class="form-group col-sm-3">
-                                        <input type="text" class="form-control" id="beginTime" name="promotionBeginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                    </div>
-
-                                    <div class="form-group col-sm-3" style="margin-left:20px;;">
-                                        <input type="text" class="form-control" id="endTime" name="promotionEndTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                    </div>
+                                    <button type="button" id="addPro" class="btn btn-success">添加</button>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="introduction" class="control-label col-sm-2">活动介绍</label>
-                                <div class="col-sm-5">
-                                    <textarea name="promotionIntroduction" id="introduction" cols="50" rows="5" class="form-control"></textarea>
-                                    <input type="hidden" name="user.name" value="luoyong" />
+                                <label for="reason" class="control-label col-sm-2">单据说明</label>
+                                <div class="col-sm-10">
+                                    <textarea style="max-width: 100%" name="reason" id="reason" cols="50" rows="5" class="form-control"></textarea>
                                 </div>
                             </div>
-
                         </form>
 
                         <row>
-                            <label class="col-sm-5"></label>
-                            <div class="col-sm-6">
+                            <label class="col-sm-6"></label>
+                            <div class="col-sm-5">
                                 <button type="submit" class="btn btn-lg btn-info" id="promotionSave">保存</button>
                             </div>
                         </row>
-                        <!-- PAGE CONTENT ENDS -->
+
+                        <div id="modal-library" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">×</span>
+                                            </button>
+                                            选择变更人
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <form class="form-horizontal" role="form" id="library">
+
+                                            <%--<div class="form-group">
+                                                <div class="col-xs-offset-1 col-sm-5">
+                                                    <input id="useId" class="form-control" type="text" placeholder="请输入用户ID"/>
+                                                </div>
+                                                <label class="col-sm-0"></label>
+                                                <div class="col-sm-5">
+                                                    <input id="useName" class="form-control" type="text" placeholder="请输入用户姓名"/>
+                                                </div>
+                                            </div>--%>
+
+                                            <div class="form-group">
+                                                <div class="col-xs-offset-1 col-sm-5">
+                                                    <input id="userPhone" type="text" class="form-control" name="userPhone" placeholder="请输入用户手机号">
+                                                </div>
+                                                <label class="col-sm-0"></label>
+                                                <div class="col-sm-5">
+                                                    <input id="useWx" class="form-control" type="text" placeholder="请输入用户微信号"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-1"></label>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-success">查询</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" style="height: 170px;">
+                                                <label class="control-label col-sm-1"></label>
+                                                <div class="col-sm-10" style="height: 150px;height: 163px;overflow: auto;">
+                                                    <%--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">--%>
+                                                        <%--Action <span class="caret"></span>--%>
+                                                    <%--</button>--%>
+                                                    <%--<ul class="dropdown-menu" role="menu" style="height:155px;
+                                                     overflow: auto; overflow-y: scroll;">
+                                                        <li><a href="#">Action</a></li>
+                                                        <li><a href="#">Another action</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                        <li><a href="#">Something else here</a></li>
+                                                    </ul>--%>
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item">揭开CSS3的面纱</li>
+                                                            <li class="list-group-item">CSS3选择器</li>
+                                                            <li class="list-group-item">CSS3边框</li>
+                                                            <li class="list-group-item">CSS3背景</li>
+                                                            <li class="list-group-item">CSS3文本</li>
+                                                        </ul>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-5">
+                                            <button class="btn btn-sm btn-danger pull-left" id="cancelSave" type="button" data-dismiss="modal">
+                                                取消
+                                            </button>
+                                            <button class="btn btn-sm btn-info pull-left" id="saveLibrary" type="button">
+                                                保存
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content-area -->
@@ -222,172 +286,40 @@
 <script src="<%=basePath%>static/ace2/js/dropzone.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
 
-<link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
-<script src="<%=basePath%>static/js/laydate.js"></script>
-<script src="<%=basePath%>static/js/date-util.js"></script>
-<script>
-    laydate({
-        elem: '#beginTime'
-    });
-    laydate({
-        elem: '#endTime'
-    });
-</script>
-
 <script>
 
     $(document).ready(function() {
-
-        /*// 加载奖品
-        (function() {
-            $.ajax({
-                url : "<%=basePath%>gift/list.do?pageSize=1000&pageNumber=0",
-                dataType : 'json',
-                async : false,
-                success : function(result) {
-                    for(var giftIndex in result.rows) {
-                        var gift = result.rows[giftIndex];
-                        var $option = $('<option value='+gift.id+'>'+gift.name+'</option>');
-                        $('select[attr=giftValue]').append($option);
-                    }
-                }
-            })
-        })();*/
-
-        var promotionId = '${param.promotionId}';
-        if(promotionId) {
-            loadPromotion(promotionId);
-        }
-
-        // 刷新规则名
-        function reflushRuleNames() {
-            var ruleNames = ['一', '二', '三', '四','五', '六', '七', '八', '九', '十'];
-            var ruleNameIndex = 0;
-            $('.rule-name:visible').each(function() {
-                $(this).html(ruleNames[ruleNameIndex]+"阶规则");
-                ruleNameIndex++;
-            });
-        }
-
-        function reflushRuleNameAttrs() {
-            var ruleIndex = 0;
-            $('.promotion-rule:visible').each(function() {
-                var $rule = $(this);
-                $rule.find('[attr]').each(function() {
-                    var $field = $(this);
-                    var attrName = $field.attr('attr');
-                    $field.attr('name', attrName);
-                });
-
-                ruleIndex++;
-            });
-        }
-
+        $(".list-group .list-group-item").on("click", function(){
+            $(this).addClass("li_selected").siblings().removeClass("li_selected");
+        });
         // 添加规则
         function addPromotionRule() {
             var $template = $('#promotion-rule-template');
             var newRule = $template.clone(true).removeAttr("id").show();
             $template.before(newRule);
-            reflushRuleNames();
-            reflushRuleNameAttrs();
         }
 
         addPromotionRule();
 
-        $('button#addPromotionRule').click(addPromotionRule);
+        $('button#addPro').click(addPromotionRule);
 
         // 删除规则
         $('button.removeRule').click(function() {
             var $rule = $(this).parents('.promotion-rule');
 
             if($('.promotion-rule').length < 3) {
-                alert("最少要有一个规则 !");
+                alert("最少要有一件商品 !");
                 return;
             }
 
             bootbox.confirm("确定删除？",function(result) {
                 if(result) {
                     $rule.remove();
-                    reflushRuleNames();
-                    reflushRuleNameAttrs();
                 }
+                return true;
             });
 
         });
-
-        // 检查规则
-        function checkRule() {
-            var valid = true;
-            $('.promotion-rule').each(function () {
-                var $rule = $(this);
-                $rule.find('.rule-name').css('color', '');
-                $rule.find("[name]:visible").each(function () {
-                    var isNumber = /^\d*$/.test($(this).val());
-                    if (!$(this).val() || !isNumber) {
-                        $(this).css("border-color", "#a94442");
-                        $rule.find('.rule-name').css('color', '#a94442');
-                        valid = false;
-                    } else {
-                        $(this).css("border-color", "");
-                    }
-                })
-            });
-            return valid;
-        }
-
-        var isTimeValid = true;
-
-        function checkTimeValue() {
-
-            var isValid = true;
-
-            var beginTimeStr = $('#beginTime').val();
-            var endTimeStr = $('#endTime').val();
-
-            var beginTime = new Date(beginTimeStr);
-            var endTime   = new Date(endTimeStr);
-
-            if(beginTime.getTime() >= endTime.getTime()) {
-                alert("开始时间　不能大于　结束时间 ！");
-                isValid = false;
-            }
-
-            $.ajax({
-                url : "<%=basePath%>common/now",
-                async : false,
-                dataType : 'json',
-                success : function(data) {
-                    console.log(data);
-                    console.log(endTime.getTime());
-                    console.log(data.time);
-
-                    if(endTime.getTime() < data.time) {
-                        isValid = false;
-                        alert("结束时间　不能小于　现在时间　！");
-                    }
-                }
-            });
-
-            var regex = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
-            if(!regex.test(beginTimeStr) || !regex.test(endTimeStr)) {
-                isValid = false;
-                alert("时间格式错误！");
-            }
-
-            return isValid;
-
-        }
-
-        $('.promotion-rule [name]').on('keyup change',checkRule);
-
-        $('#beginTime,#endTime').on('keyup change',checkTime);
-
-        $('body').click(function() {
-            if(!isTimeValid) {
-                checkTime();
-            }
-        });
-
 
         // 保存表单
         $('#promotionSave').click(function() {
@@ -428,20 +360,6 @@
                     // Prevent form submission
                     e.preventDefault();
 
-                    if(!checkRule()) {
-                        alert('请填写完整 !');
-                        return;
-                    }
-
-                    if(!checkTime()) {
-                        alert('请填写开始，结束时间 ！');
-                        return;
-                    }
-
-                    if(!checkTimeValue()) {
-                        return;
-                    }
-
                     // Get the form instance
                     var $form = $(e.target);
 
@@ -462,6 +380,12 @@
                         }
                     });
                 });
+
+        $("#useSelect").on("click", function(){
+            $("#modal-library").modal("show");
+        });
+
+        $("#modal-library").modal("show");
     });
 </script>
 </body>

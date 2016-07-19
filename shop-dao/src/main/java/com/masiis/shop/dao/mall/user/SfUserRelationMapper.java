@@ -39,24 +39,14 @@ public interface SfUserRelationMapper {
      * @param userPid   用户id
      * @param userLevel 粉丝级别
      * @param shopId    小铺id
+     * @param sopkenMan 代言人
      * @return
      */
-    List<SfSpokesAndFansInfo> selectFansPageView(@Param("userPid") Long userPid,
+    List<SfSpokesAndFansInfo> selectFansPageView(@Param("userId") Long userPid,
                                                  @Param("userLevel") Integer userLevel,
-                                                 @Param("shopId") Long shopId);
+                                                 @Param("shopId") Long shopId,
+                                                 @Param("sopkenMan") Integer sopkenMan);
 
-    /**
-     * 查询代言人信息
-     * @param userPid   用户id
-     * @param userLevel 粉丝级别
-     * @param shopId    小铺id
-     * @param spokenMan 是否为代言人 1为代言人
-     * @return
-     */
-    List<SfSpokesAndFansInfo> selectSpokesManPageView(@Param("userPid") Long userPid,
-                                                      @Param("userLevel") Integer userLevel,
-                                                      @Param("shopId") Long shopId,
-                                                      @Param("spokenMan") Integer spokenMan);
 
     /**
      * 通过shopId查询所有代言人
@@ -86,11 +76,9 @@ public interface SfUserRelationMapper {
     /**
      * 查询代言人数量
      * @param treeCode  treeCode
-     * @param userId    用户id
      * @return  map
      */
     Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
-                                           @Param("userId") Long userId,
                                            @Param("shopId") Long shopId);
 
     /**
@@ -119,13 +107,11 @@ public interface SfUserRelationMapper {
      */
     SfUserRelation getSfUserRelationByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
-    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userPid") Long userPid,
+    List<Map<String, Number>> selectFansNumGroupByLevel(@Param("userId") Long userPid,
                                                         @Param("userLevel") Integer userLevel,
-                                                        @Param("shopId") Long shopId);
+                                                        @Param("shopId") Long shopId,
+                                                        @Param("sopkenMan") Integer sopkenMan);
 
-    List<Map<String, Number>> selectSpokesManNumGroupByLevel(@Param("userPid") Long userPid,
-                                                             @Param("userLevel") Integer userLevel,
-                                                             @Param("shopId") Long shopId);
 
     /**
      * 通过ID查询小铺中的代言人信息

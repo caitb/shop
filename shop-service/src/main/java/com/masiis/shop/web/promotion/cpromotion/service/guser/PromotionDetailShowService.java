@@ -49,7 +49,7 @@ public class PromotionDetailShowService {
         log.info("获取活动数据----start");
         Map<String,Object> map = new HashMap<>();
         //获取用户粉丝数
-        Map<String, Integer> _map = userRelationService.getFansNumByUserId(comUser.getId());
+        Map<String, Integer> _map = userRelationService.getFansOrSpokesManNumByUserId(comUser.getId(), 1);
         if (_map!=null){
             fansQuantity = (Integer) _map.get("maxNum");
             log.info("获取代言人代言的小铺的最大粉丝数-------"+fansQuantity);

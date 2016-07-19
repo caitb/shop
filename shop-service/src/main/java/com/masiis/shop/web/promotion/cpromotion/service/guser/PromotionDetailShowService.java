@@ -38,9 +38,6 @@ public class PromotionDetailShowService {
     private SfUserPromotionRecordService recordService;
     @Resource
     private SfUserRelationService userRelationService;
-    @Resource
-    private SfShopService sfShopService;
-
 
     private static Integer fansQuantity;
     private static Boolean isMeetPromoRequire = false;
@@ -48,21 +45,22 @@ public class PromotionDetailShowService {
     public Map<String,Object> getAllPromoDetail(ComUser comUser){
         log.info("获取活动数据----start");
         Map<String,Object> map = new HashMap<>();
-        //获取用户粉丝数
-        Map<String, Integer> _map = userRelationService.getFansOrSpokesManNumByUserId(comUser.getId(), 1);
-        if (_map!=null){
-            fansQuantity = (Integer) _map.get("maxNum");
-            log.info("获取代言人代言的小铺的最大粉丝数-------"+fansQuantity);
-        }else{
-            log.info("根据用户获取小铺代言的小铺map为null-----用户id----"+comUser.getId());
-            fansQuantity = 0;
-        }
-        log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         //获取所有进行中的活动
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
+
+        log.info("用户id-----"+comUser.getId()+"----粉丝数-----"+fansQuantity);
         List<PromotionInfo> promotionInfos = new ArrayList<>();
         log.info("获取所有的活动-----start");
         for(SfUserPromotion userPromotion:userPromotions){
+            //获取用户粉丝数或代言数
+            Map<String, Integer> _map = userRelationService.getFansOrSpokesManNumByUserId(comUser.getId(), userPromotion.getPersonType());
+            if (_map!=null){
+                fansQuantity = (Integer) _map.get("maxNum");
+                log.info("获取代言人代言的小铺的最大粉丝数-------"+fansQuantity);
+            }else{
+                log.info("根据用户获取小铺代言的小铺map为null-----用户id----"+comUser.getId());
+                fansQuantity = 0;
+            }
             //获取此活动对应的规则
             log.info("获取此活动对应的规则-----活动id-----"+userPromotion.getId());
             List<SfUserPromotionRule> rules = ruleService.getPromoRuleByPromoId(userPromotion.getId());

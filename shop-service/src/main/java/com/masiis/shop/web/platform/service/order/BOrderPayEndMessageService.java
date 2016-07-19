@@ -211,25 +211,69 @@ public class BOrderPayEndMessageService {
             }
            // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             //发送短信
-            //获得推荐人
-            ComUser recommenRewardUser = recommenRewardService.getRecommenRewardUser(pfBorderItems.get(0).getId());
+            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
+        }
+    }
+
+    /**
+     * 合伙人订单发送短信
+     * @param comUser
+     * @param pComUser
+     * @param pfBorder
+     * @param pfBorderItems
+     * @param comAgentLevel
+     */
+    private void pushMobileMessageAgent(ComUser comUser,
+                                        ComUser pComUser,
+                                        PfBorder pfBorder,
+                                        List<PfBorderItem> pfBorderItems,
+                                        ComAgentLevel comAgentLevel){
+        PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        if (pfBorderRecommenReward!=null){
+            logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
             String recommenRewardName = "";
-            if (recommenRewardUser!=null){
+            if (recommenRewardUser!=null) {
+                //有推荐人的情况
                 recommenRewardName = recommenRewardUser.getRealName();
+                //给合伙人发
+                Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        pfBorder.getPayAmount(),
+                        recommenRewardName,
+                        userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId()));
+                if (bl) {
+                    logger.info("合伙人订单有推荐人给合伙人发送短信成功");
+                }
+                //给推荐人发
+                Boolean _bl = MobileMessageUtil.getInitialization("B").recommendCommissionRemind(
+                        recommenRewardUser.getMobile(),
+                        comUser.getRealName(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        pfBorderRecommenReward.getRewardTotalPrice().toString()
+                        );
+                if (_bl){
+                    logger.info("合伙人订单有推荐人发送佣金成功");
+                }
             }else{
-                logger.info("合伙人订单---推荐人不存在-----");
+                logger.info("合伙人查询是否有推荐人获得comUser为null");
             }
-            Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
+        } else{
+            //没有推荐人的情况
+            Boolean bl = MobileMessageUtil.getInitialization("B").lowerJoinRemind(pComUser.getMobile(),
                     pfBorderItems.get(0).getSkuName(),
                     comAgentLevel.getName(),
                     pfBorder.getPayAmount(),
-                    recommenRewardName,
-                    userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()));
+                    userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+            );
             if (bl){
-                logger.info("合伙人订单发送短信成功");
+                logger.info("合伙人订单没有推荐人发送短信成功");
             }
         }
     }
+
 
     /**
      * 补货平台代发发送消息

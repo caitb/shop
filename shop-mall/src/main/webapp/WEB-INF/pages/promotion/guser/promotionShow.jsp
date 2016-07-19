@@ -83,6 +83,7 @@
     <script>
         var imgSize=$(".f_l").width()
         $(".f_l img").width(imgSize).height(imgSize)
+        $(".f_box").height(imgSize);
         function skipPromotionGorderPage(promoId,promoRuleId){
             window.location.href="<%=path%>/promotionGorder/getPromotionGorderPageInfo.html?promoId="+promoId+"&promoRuleId="+promoRuleId;
         }

@@ -29,10 +29,6 @@ public class StorageChangeController {
     private PbStorageBillService billService;
     @Resource
     private PbStorageBillItemService itemService;
-    //--------------------------
-    @Resource
-    private BOrderService bOrderService;
-    //--------------------------
 
     @RequestMapping("/list.shtml")
     public String toList(){
@@ -55,11 +51,10 @@ public class StorageChangeController {
             if(StringUtils.isNotBlank(request.getParameter("endTime"))){
                 conditionMap.put("endTime", request.getParameter("endTime"));
             }
-            Map<String, Object> pageMap = bOrderService.offlineList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
-            //pageMap = billService.storagechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            Map<String, Object> pageMap = billService.storagechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
-            log.error("查询合伙人线下支付订单列表失败![conditionMap=" + conditionMap + "]");
+            log.error("查询库存变更单列表失败![conditionMap=" + conditionMap + "]");
             e.printStackTrace();
         }
         return null;

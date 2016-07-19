@@ -61,4 +61,10 @@
         from pb_storage_bill
     </select>
 
+    <select id="storagechangeList" parameterType="Map" resultType="java.util.HashMap">
+        select id, create_time, create_man, code, user_id, bill_reason, product_quantity, status, type,
+        audit_man, audit_time, remark
+        from pb_storage_bill
+    </select>
+
 </mapper>

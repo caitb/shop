@@ -11,6 +11,8 @@ import com.masiis.shop.dao.po.PbStorageBill;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface PbStorageBillMapper {
     int deleteByPrimaryKey(Integer id);
@@ -22,4 +24,6 @@ public interface PbStorageBillMapper {
     List<PbStorageBill> selectAll();
 
     int updateByPrimaryKey(PbStorageBill record);
+
+    List<Map<String, Object>> storagechangeList(Map<String, Object> conditionMap);
 }

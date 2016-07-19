@@ -210,7 +210,7 @@
                     },
                     {
                         title: 'ID',
-                        field: 'pb.id',
+                        field: 'id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
@@ -222,142 +222,132 @@
                         }
                     },
                     {
-                        field: 'pb.order_code',
-                        title: '订单号',
+                        field: 'create_time',
+                        title: '创建时间',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.orderCode){
-                                return row.orderCode;
+                            if(row && row.createTime){
+                                return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
-                        field: 'pb.create_time',
-                        title: '下单日期',
+                        field: 'create_man',
+                        title: '创建人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.createMan){
+                                return row.createMan;
+                            }
                         }
                     },
                     {
-                        field: 'cu.real_name',
-                        title: '下单人',
+                        field: 'code',
+                        title: '变更单编码',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.realName){
-                                return row.realName;
+                            if(row && row.code){
+                                return row.code;
                             }
                         }
                     },
                     {
-                        field: 'pbi.sku_name',
-                        title: '合伙产品',
+                        field: 'user_id',
+                        title: '库存变更人用户id',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.skuName){
-                                return row.skuName;
+                            if(row && row.userId){
+                                return row.userId;
                             }
                         }
                     },
                     {
-                        field: 'cal.name',
-                        title: '合伙等级',
+                        field: 'bill_reason',
+                        title: '单据创建原因',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.levelName){
-                                return row.levelName;
+                            if(row && row.billReason){
+                                return row.billReason;
                             }
                         }
                     },
                     {
-                        field: 'pcu.real_name',
-                        title: '上级合伙人',
+                        field: 'product_quantity',
+                        title: '商品总数量',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pRealName){
-                                return row.pRealName;
+                            if(row && row.productQuantity){
+                                return row.productQuantity;
                             }
                         }
                     },
                     {
-                        field: 'pcal.name',
-                        title: '上级合伙等级',
+                        field: 'status',
+                        title: '状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pLevelName){
-                                return row.pLevelName;
+                            if(row && row.status){
+                                return row.status;
                             }
                         }
                     },
                     {
-                        field: 'tcu.real_name',
-                        title: '推荐人',
+                        field: 'type',
+                        title: '类型',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.recommendRealName){
-                                return row.recommendRealName;
+                            if(row && row.type){
+                                return row.type;
                             }
                         }
                     },
                     {
-                        field: 'pb.recommen_amount',
-                        title: '推荐奖励金额',
+                        field: 'audit_man',
+                        title: '审核人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.recommenAmount){
-                                return row.recommenAmount;
+                            if(row && row.auditMan){
+                                return row.auditMan;
                             }
                         }
                     },
                     {
-                        field: 'pb.order_amount',
-                        title: '订单金额',
+                        field: 'audit_time',
+                        title: '审核时间',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.orderAmount){
-                                return row.orderAmount;
+                            if(row && row.auditTime){
+                                return new Date(row.auditTime).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
-                        field: 'receivable_amount',
-                        title: '应付金额',
+                        field: 'remark',
+                        title: '备注',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.receivableAmount){
-                                return row.receivableAmount;
-                            }
-                        }
-                    },
-                    {
-                        field: 'cd.value',
-                        title: '订单类型',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.orderType){
-                                return row.orderType;
+                            if(row && row.remark){
+                                return row.remark;
                             }
                         }
                     },
@@ -365,7 +355,7 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            var arr = ['<a class="detail" href="javascript:void(0);">审核</a>'];
                             if(row.pfBorder && row.userPid == 0 && row.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }

@@ -7,6 +7,7 @@
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
+    <link rel="stylesheet" href="${path}/static/css/alert.css">
 </head>
 <body>
 

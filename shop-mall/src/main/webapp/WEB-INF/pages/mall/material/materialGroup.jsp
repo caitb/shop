@@ -7,6 +7,7 @@
     <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/Library.css">
+    <link rel="stylesheet" href="${path}/static/css/common/alert.css">
 </head>
 <body>
 

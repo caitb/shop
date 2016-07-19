@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.storage.PbStorageBillMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbStorageBill" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="product_quantity" property="productQuantity" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="audit_man" property="auditMan" jdbcType="BIGINT" />
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pb_storage_bill
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PbStorageBill" useGeneratedKeys="true" keyProperty="id">
+        insert into pb_storage_bill (id, create_time, create_man, 
+            code, user_id, product_quantity, 
+            status, type, audit_man, 
+            audit_time, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{code,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{productQuantity,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{auditMan,jdbcType=BIGINT}, 
+            #{auditTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PbStorageBill" >
+        update pb_storage_bill
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            code = #{code,jdbcType=VARCHAR},
+            user_id = #{userId,jdbcType=BIGINT},
+            product_quantity = #{productQuantity,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            type = #{type,jdbcType=INTEGER},
+            audit_man = #{auditMan,jdbcType=BIGINT},
+            audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, code, user_id, product_quantity, status, type, 
+        audit_man, audit_time, remark
+        from pb_storage_bill
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, code, user_id, product_quantity, status, type, 
+        audit_man, audit_time, remark
+        from pb_storage_bill
+    </select>
+
+</mapper>

@@ -7,6 +7,7 @@
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="bill_reason" property="billReason" jdbcType="VARCHAR" />
         <result column="product_quantity" property="productQuantity" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
@@ -22,11 +23,11 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PbStorageBill" useGeneratedKeys="true" keyProperty="id">
         insert into pb_storage_bill (id, create_time, create_man, 
-            code, user_id, product_quantity, 
+            code, user_id, bill_reason, product_quantity,
             status, type, audit_man, 
             audit_time, remark)
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
-            #{code,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{productQuantity,jdbcType=INTEGER}, 
+            #{code,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{billReason,jdbcType=VARCHAR}, #{productQuantity,jdbcType=INTEGER},
             #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{auditMan,jdbcType=BIGINT}, 
             #{auditTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -37,6 +38,7 @@
             create_man = #{createMan,jdbcType=BIGINT},
             code = #{code,jdbcType=VARCHAR},
             user_id = #{userId,jdbcType=BIGINT},
+            bill_reason = #{billReason,jdbcType=VARCHAR},
             product_quantity = #{productQuantity,jdbcType=INTEGER},
             status = #{status,jdbcType=INTEGER},
             type = #{type,jdbcType=INTEGER},
@@ -47,14 +49,14 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, create_time, create_man, code, user_id, product_quantity, status, type, 
+        select id, create_time, create_man, code, user_id, bill_reason, product_quantity, status, type,
         audit_man, audit_time, remark
         from pb_storage_bill
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, code, user_id, product_quantity, status, type, 
+        select id, create_time, create_man, code, user_id, bill_reason, product_quantity, status, type,
         audit_man, audit_time, remark
         from pb_storage_bill
     </select>

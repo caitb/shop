@@ -5,7 +5,7 @@ import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.OrderItemService;
 import com.masiis.shop.admin.service.order.OrderService;
-import com.masiis.shop.admin.service.order.UserSkuStockService;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
@@ -40,7 +40,7 @@ public class SfOrderController extends BaseController {
     @Resource
     private OrderItemService orderItemService;
     @Resource
-    private UserSkuStockService userSkuStockService;
+    private PfUserSkuStockService userSkuStockService;
     @Resource
     private DictionaryService dictionaryService;
 

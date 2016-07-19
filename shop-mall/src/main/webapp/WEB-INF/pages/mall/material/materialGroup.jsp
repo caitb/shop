@@ -81,6 +81,7 @@
                 type: 'post',
                 data: {status: 0, materialId: id},
                 dataType: 'json',
+                async:false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("取消成功！");

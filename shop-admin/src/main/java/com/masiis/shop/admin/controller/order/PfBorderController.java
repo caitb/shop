@@ -5,6 +5,7 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.*;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
@@ -46,7 +47,7 @@ public class PfBorderController extends BaseController {
     @Resource
     private BorderItemService borderItemService;
     @Resource
-    private UserSkuStockService userSkuStockService;
+    private PfUserSkuStockService userSkuStockService;
 
     @RequestMapping("/list.shtml")
     public String list() {

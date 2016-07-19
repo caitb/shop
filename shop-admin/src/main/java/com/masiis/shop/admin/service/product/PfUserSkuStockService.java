@@ -172,4 +172,14 @@ public class PfUserSkuStockService {
     public List<Map<String, Object>> selectReplenishStock() {
         return pfUserSkuStockMapper.selectReplenishStock();
     }
+
+    /**
+     * 查找商品库存
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public PfUserSkuStock findByUserIdAndSkuId(Long userId, Integer skuId){
+        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
+    }
 }

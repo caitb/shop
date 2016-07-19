@@ -245,6 +245,9 @@ public class SfShopController extends BaseController {
             }else{
                 newComPoster.setId(comPoster.getId());
                 comPosterService.update(newComPoster);
+
+                //删除旧海报
+                OSSObjectUtils.deleteBucketFile("static/user/poster/"+comPoster.getPosterName());
             }
 
             //二维码获取成功,更新sfUserRelation成为代言人

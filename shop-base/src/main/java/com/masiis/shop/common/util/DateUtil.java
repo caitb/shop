@@ -1006,7 +1006,7 @@ public class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(days);
 //		int day = calendar.get(Calendar.DATE);
-        calendar.set(Calendar.DATE, 7);
+        calendar.add(Calendar.DATE, 7);
         return Date2String(calendar.getTime(), DEFAULT_DATE_FMT_2);
     }
 

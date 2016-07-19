@@ -173,14 +173,15 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
-    var array = "${sfShop.wxQrCode}".split("/");
-    var nums = [ ];
-    for (var i=array.length-1 ; i< array.length ; i++)
-    {
-        nums.push(array[i]);
-    }
+
     $(".tallme").on("click",function(){
-        if(nums==null || nums==""){
+        var array = "${sfShop.wxQrCode}".split("/");
+        var nums = [ ];
+        for (var i=array.length-1 ; i< array.length ; i++)
+        {
+            nums.push(array[i]);
+        }
+        if(nums=="null"){
             alert("店主还没有上传二维码");
         }else{
             $(".black").show();

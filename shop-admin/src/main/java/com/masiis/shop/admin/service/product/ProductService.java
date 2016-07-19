@@ -115,10 +115,12 @@ public class ProductService {
                 comSkuExtensionMapper.updateById(comSkuExtension);
             }
 
+            //删除原有的sku图片
+            comSkuImageMapper.deleteBySkuId(comSku.getId());
             //保存sku图片
             if (comSkuImages != null) {
                 for (ComSkuImage comSkuImage : comSkuImages) {
-                    comSkuImageMapper.updateByPrimaryKey(comSkuImage);
+                    comSkuImageMapper.insert(comSkuImage);
                 }
             }
 

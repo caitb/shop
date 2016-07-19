@@ -27,6 +27,27 @@ public class PfUserSkuStockService {
     private PfUserSkuStockLogMapper userSkuStockLogMapper;
 
     /**
+     * 判断用户是否有足够的库存
+     * @param userId   用户id
+     * @param skuId    商品id
+     * @return
+     */
+    public Boolean isEnoughStock(Long userId,Integer skuId){
+        log.info("判断用户是否有足够的库存-----userId----"+userId+"-----skuId----"+skuId);
+        PfUserSkuStock pfUserSkuStock = selectByUserIdAndSkuId(userId, skuId);
+        Boolean isStock = true;
+        if (pfUserSkuStock == null) {
+            isStock = false;
+        }
+        if (pfUserSkuStock.getCustomStock() <= 0) {
+            isStock = false;
+        }
+        log.info("判断用户是否有足够的库存----------"+isStock);
+        return isStock;
+    }
+
+
+    /**
      * 更新代理平台库存
      *
      * @param change     变化值 例如 1，2，3 无负数，根据业务减库存

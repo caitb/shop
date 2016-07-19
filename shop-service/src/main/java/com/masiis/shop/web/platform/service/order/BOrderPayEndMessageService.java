@@ -9,6 +9,7 @@ import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
@@ -51,6 +52,10 @@ public class BOrderPayEndMessageService {
     private UpgradeWechatNewsService upgradeWechatNewsService;
     @Resource
     private UpgradeMobileMessageService upgradeSuccssSendMoblieMessage;
+    @Resource
+    private PfUserSkuStockService userSkuStockService;
+    @Resource
+    private PfBorderRecommenRewardService recommenRewardService;
 
     /**
      * 支付完成推送消息
@@ -202,7 +207,25 @@ public class BOrderPayEndMessageService {
             } else {
                 WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
             }
-            MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+           // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            //发送短信
+            //获得推荐人
+            ComUser recommenRewardUser = recommenRewardService.getRecommenRewardUser(pfBorderItems.get(0).getId());
+            String recommenRewardName = "";
+            if (recommenRewardUser!=null){
+                recommenRewardName = recommenRewardUser.getRealName();
+            }else{
+                logger.info("合伙人订单---推荐人不存在-----");
+            }
+            Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
+                    pfBorderItems.get(0).getSkuName(),
+                    comAgentLevel.getName(),
+                    pfBorder.getPayAmount(),
+                    recommenRewardName,
+                    userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()));
+            if (bl){
+                logger.info("合伙人订单发送短信成功");
+            }
         }
     }
 

@@ -35,58 +35,59 @@ public class UpgradeMobileMessageService {
      * 升级发送短信
      * @param comUser
      * @param pfBorder
-     * @param pfBorderPayment
      * @param upgradeDetail
      * @return
      */
     public Boolean upgradeSuccssSendMoblieMessage(ComUser comUser, PfBorder pfBorder, List<PfBorderItem> pfBorderItems,BOrderUpgradeDetail upgradeDetail){
         //给上级发短信
-        ComUser newPComUser =  comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        log.info("上级电话号码-------"+newPComUser.getMobile());
-        log.info("商品名称-------"+upgradeDetail.getSkuName());
-        log.info("当前等级名-------"+upgradeDetail.getCurrentAgentLevelName());
-        log.info("昵称-------"+comUser.getRealName());
-        log.info("升级后的等级名-------"+upgradeDetail.getApplyAgentLevelName());
-        PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
-        PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(newPComUser.getId(), upgradeDetail.getSkuId());
-        Boolean isStock = true;
-        if (pfUserSkuStock == null) {
-            isStock = false;
+        ComUser newPComUser =  comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+        if (newPComUser!=null){
+            log.info("上级电话号码-------"+newPComUser.getMobile());
+            log.info("商品名称-------"+upgradeDetail.getSkuName());
+            log.info("当前等级名-------"+upgradeDetail.getCurrentAgentLevelName());
+            log.info("昵称-------"+comUser.getRealName());
+            log.info("升级后的等级名-------"+upgradeDetail.getApplyAgentLevelName());
+            PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(newPComUser.getId(), upgradeDetail.getSkuId());
+            Boolean isStock = true;
+            if (pfUserSkuStock == null) {
+                isStock = false;
+            }
+            if (pfUserSkuStock.getCustomStock() <= 0) {
+                isStock = false;
+            }
+            log.info("是否还有库存------"+isStock);
+            log.info("收入-------"+newPfSkuAgent.getTotalPrice());
+            log.info("库存是否足够-------"+isStock);
+            Boolean bl = MobileMessageUtil.getInitialization("B").lowerGroupUpRemind(newPComUser.getMobile(),
+                    upgradeDetail.getSkuName(),
+                    upgradeDetail.getCurrentAgentLevelName(),
+                    comUser.getRealName(),
+                    upgradeDetail.getApplyAgentLevelName(),
+                    newPfSkuAgent.getTotalPrice(),
+                    isStock);
+            if (bl){
+                log.info("升级给上级发送短信成功");
+            }
+            //给推荐人发短信(获得佣金)
+            log.info("pfborderItem的id-------------------"+pfBorderItems.get(0).getId());
+            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+            log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+            log.info("推荐人电话------"+recommenRewardUser.getMobile());
+            log.info("被推荐人姓名------"+comUser.getRealName());
+            log.info("升级后的奖励------"+pfBorderRecommenReward.getRewardTotalPrice().toString());
+            Boolean _bl = MobileMessageUtil.getInitialization("B").refereeUpgradeRecommendRemind(recommenRewardUser.getMobile(),
+                    upgradeDetail.getSkuName(),
+                    upgradeDetail.getCurrentAgentLevelName(),
+                    comUser.getRealName(),
+                    upgradeDetail.getApplyAgentLevelName(),
+                    pfBorderRecommenReward.getRewardTotalPrice().toString()
+            );
+            if (_bl){
+                log.info("给推荐人发短信(获得佣金)-----成功");
+            }
         }
-        if (pfUserSkuStock.getCustomStock() <= 0) {
-            isStock = false;
-        }
-        log.info("是否还有库存------"+isStock);
-        log.info("收入-------"+newPfSkuAgent.getTotalPrice());
-        log.info("库存是否足够-------"+isStock);
-        Boolean bl = MobileMessageUtil.getInitialization("B").lowerGroupUpRemind(newPComUser.getMobile(),
-                upgradeDetail.getSkuName(),
-                upgradeDetail.getCurrentAgentLevelName(),
-                comUser.getRealName(),
-                upgradeDetail.getApplyAgentLevelName(),
-                newPfSkuAgent.getTotalPrice(),
-                isStock);
-        if (bl){
-            log.info("升级给上级发送短信成功");
-        }
-        //给推荐人发短信(获得佣金)
-        log.info("pfborderItem的id-------------------"+pfBorderItems.get(0).getId());
-        PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
-        log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
-        ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
-        log.info("推荐人电话------"+recommenRewardUser.getMobile());
-        log.info("被推荐人姓名------"+comUser.getRealName());
-        log.info("升级后的奖励------"+pfBorderRecommenReward.getRewardTotalPrice().toString());
-        Boolean _bl = MobileMessageUtil.getInitialization("B").refereeUpgradeRecommendRemind(recommenRewardUser.getMobile(),
-                upgradeDetail.getSkuName(),
-                upgradeDetail.getCurrentAgentLevelName(),
-                comUser.getRealName(),
-                upgradeDetail.getApplyAgentLevelName(),
-                pfBorderRecommenReward.getRewardTotalPrice().toString()
-                );
-       if (_bl){
-           log.info("给推荐人发短信(获得佣金)-----成功");
-       }
         return true;
     }
 }

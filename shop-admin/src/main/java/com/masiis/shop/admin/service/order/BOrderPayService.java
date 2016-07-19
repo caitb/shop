@@ -288,6 +288,7 @@ public class BOrderPayService {
             sfShop.setShipType(1);//运费类型0：消费者出运费1：代理商出运费
             sfShop.setShipAmount(BigDecimal.ZERO);
             sfShop.setAgentShipAmount(new BigDecimal(8));
+            sfShop.setOwnShipAmount(BigDecimal.ZERO);
             sfShop.setShoutNum(0l);
             sfShop.setVersion(0l);
             sfShop.setRemark("");

@@ -213,6 +213,7 @@ public class BOrderPayService {
             sfShop.setShipType(1);//运费类型0：消费者出运费1：代理商出运费
             sfShop.setShipAmount(BigDecimal.ZERO);
             sfShop.setAgentShipAmount(new BigDecimal(8));
+            sfShop.setOwnShipAmount(BigDecimal.ZERO);
             sfShop.setShoutNum(0l);
             sfShop.setVersion(0l);
             sfShop.setRemark("");
@@ -830,9 +831,9 @@ public class BOrderPayService {
         log.info("银行卡信息-------" + sb2.toString());
         //最迟日期
         Boolean bl = MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
-        if (bl){
+        if (bl) {
             log.info("发送短信成功");
-        }else{
+        } else {
             log.info("发送短信失败");
         }
     }

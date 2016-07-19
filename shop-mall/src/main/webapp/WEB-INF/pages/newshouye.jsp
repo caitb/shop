@@ -121,6 +121,24 @@
 <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <script>
     $(function () {
+
+        $.ajax({
+            type:"POST",
+            url : "<%=path%>/findSfSkuLevelImage.do",
+            dataType:"Json",
+            success:function(data){
+                var trHtml1 = "";
+                trHtml1+="<p id=\"icon\">";
+                trHtml1+="<img src=\"<%=path%>/static/images/1.png\" alt=\"\">";
+                trHtml1+="<img src=\"<%=path%>/static/images/3.png\" alt=\"\">";
+                $.each(data, function(i, String) {
+                    trHtml1+="<img src=\""+String+"\" alt=\"\">";
+                })
+                trHtml1+="</p>";
+                $("#icon").html(trHtml1);
+            }
+        })
+
         $.ajax({
             type:"POST",
             url : "<%=path%>/product.do",
@@ -131,15 +149,7 @@
                     trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
                 })
                 $(".swiper-wrapper").html(trHtml);
-                var trHtml1 = "";
-                trHtml1+="<p id=\"icon\">";
-                trHtml1+="<img src=\"<%=path%>/static/images/1.png\" alt=\"\">";
-                trHtml1+="<img src=\"<%=path%>/static/images/3.png\" alt=\"\">";
-                $.each(data, function(i, SfShopDetails) {
-                    trHtml1+="<img src=\""+SfShopDetails.icon+"\" alt=\"\">";
-                })
-                trHtml1+="</p>";
-                $("#icon").html(trHtml1);
+
                 var trHtml2 = "";
                 var shipName="";
                 var shopId= ${sfShop.id};

@@ -286,6 +286,7 @@
             data : $sendForm.serialize(),
             success : function(data) {
                 if(data == 'success') {
+                    bootbox.alert("发货成功");
                     $sendDialog.modal('hide');
                     $table.bootstrapTable('refresh');
                 }

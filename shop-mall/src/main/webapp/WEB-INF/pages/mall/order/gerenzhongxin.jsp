@@ -81,9 +81,7 @@
             <li style="background:#f3f4f5;border: none;"></li>
         </ul>
     </nav>
-    <div class="banner">
-        <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
-    </div>
+    <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
 </div><c:if test="${fm!=0}">
     <footer>
         <div>

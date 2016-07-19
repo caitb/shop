@@ -178,9 +178,9 @@
   font-size: 20px;
   font-weight: 600;
 }
-.banner{
-  margin-top: 10px;
-}
-.banner img{
-  width:100%;
+.wrap > img{
+  position: fixed;
+  right:10px;
+  bottom:68px;
+  width:74px;
 }

@@ -545,16 +545,16 @@ public class MobileMessageUtil {
      * @param skuName   商品名称
      * @param levelName 等级名称
      * @param nickName  用户昵称
-     * @param income    收入
+     * @param count    数量
      * @param reward    奖励
      * @return
      */
-    public boolean refereeAddstockRecomendRemind(String phone, String skuName, String levelName, String nickName, BigDecimal income, String reward){
+    public boolean refereeAddstockRecomendRemind(String phone, String skuName, String levelName, String nickName,Integer count, String reward){
         content = new String[5];
         content[0] = skuName;
         content[1] = levelName;
         content[2] = nickName;
-        content[3] = numberFormat.format(income);
+        content[3] = String.valueOf(count);
         content[4] = reward;
         return sendMethod(phone, SMSConstants.REFEREE_ADDSTOCK_RECOMEND_COMMISSION_REMIND, content);
     }

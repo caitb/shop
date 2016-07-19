@@ -100,6 +100,8 @@ public class BOrderPayEndMessageService {
                 } else if (pfBorder.getSendType().intValue() == 2) {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
+                //补货发送短信
+                pushMoblieMessageSupplement(comUser,pComUser,pfBorderItems,comAgentLevel);
             } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
@@ -249,6 +251,55 @@ public class BOrderPayEndMessageService {
         WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
         MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
     }
+
+    /**
+     * 补货发送短信
+     * @param comUser
+     * @param pComUser
+     * @param pfBorderItems
+     * @param comAgentLevel
+     */
+    private void pushMoblieMessageSupplement(ComUser comUser,
+                                             ComUser pComUser,
+                                             List<PfBorderItem> pfBorderItems,
+                                             ComAgentLevel comAgentLevel){
+        //给合伙人发送短信
+       Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
+                pfBorderItems.get(0).getSkuName(),
+                comAgentLevel.getName(),
+                comUser.getRealName(),
+                pfBorderItems.get(0).getQuantity(),
+                pfBorderItems.get(0).getTotalPrice(),
+                userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+                );
+        if (bl){
+            logger.info("补货给合伙人发送短信成功");
+        }
+        //给推荐人发短信
+        logger.info("补货给推荐人发送短信-----pfborderItem的id-----"+pfBorderItems.get(0).getId());
+        PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        if (pfBorderRecommenReward!=null){
+            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+            logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            if (recommenRewardUser!=null){
+                Boolean _bl = MobileMessageUtil.getInitialization("B").refereeAddstockRecomendRemind(recommenRewardUser.getMobile(),
+                        pfBorderItems.get(0).getSkuName(),
+                        comAgentLevel.getName(),
+                        comUser.getRealName(),
+                        pfBorderItems.get(0).getQuantity(),
+                        pfBorderRecommenReward.getRewardTotalPrice().toString()
+                );
+                if (_bl){
+                    logger.info("补货给推荐人发送短信成功");
+                }
+            }else{
+                logger.info("补货发送短信没有推荐人不发送短信");
+            }
+        }else{
+            logger.info("补货发送短信没有推荐人不发送短信");
+        }
+    }
+
 
     /**
      * 补货自己发货发送消息

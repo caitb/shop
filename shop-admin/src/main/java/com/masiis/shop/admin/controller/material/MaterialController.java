@@ -155,8 +155,9 @@ public class MaterialController extends BaseController {
             comSkuMaterialLibrary.setCreateMan(pbUser.getId());
             comSkuMaterialLibrary.setSubscriptionNum(0);
             comSkuMaterialLibrary.setSort(0);
-            materialService.saveMaterialLibrary(comSkuMaterialLibrary);
+            Integer libraryId = materialService.saveMaterialLibrary(comSkuMaterialLibrary);
 
+            resultMap.put("libraryId", comSkuMaterialLibrary.getId());
             resultMap.put("code", "success");
             resultMap.put("msg", "保存成功!");
         } catch (Exception e) {

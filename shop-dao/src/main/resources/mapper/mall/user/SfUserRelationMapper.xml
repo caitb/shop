@@ -121,7 +121,6 @@
             and r.shop_id = #{shopId}
         </if>
         and tree_code like CONCAT(#{treeCode},'%')
-        /*and u.id <![CDATA[<>]]> #{userId}*/
     </select>
 
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">

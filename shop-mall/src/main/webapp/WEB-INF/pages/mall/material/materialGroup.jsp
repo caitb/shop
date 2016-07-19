@@ -67,10 +67,10 @@
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
+                        window.location.reload(true);
                     }
                 }
             });
-            window.location.reload(true);
             $("#"+index).addClass("on");
             $("#"+index).find("b").html("取消订阅");
         } else if ($("#"+index).hasClass("on") == true) {
@@ -83,6 +83,7 @@
                 success: function (data) {
                     if (data.isError == false) {
                         alert("取消成功！");
+                        window.location.reload(true);
                     }
                 }
             });

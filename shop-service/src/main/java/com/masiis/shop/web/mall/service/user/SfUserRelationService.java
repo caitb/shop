@@ -6,7 +6,6 @@ import com.masiis.shop.dao.beans.user.BfSpokesManDetailPo;
 import com.masiis.shop.dao.beans.user.SfSpokenAndFansPageViewPo;
 import com.masiis.shop.dao.beans.user.SfSpokesAndFansInfo;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
-import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfUserRelation;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import org.apache.log4j.Logger;
@@ -51,10 +50,6 @@ public class SfUserRelationService {
      */
     public SfUserRelation getSfUserRelationByUserIdAndShopId(Long userId, Long shopId){
         return sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-    }
-
-    public List<SfUserRelation> threeDistributionList(Long userPid){
-        return sfUserRelationMapper.getThreeDistributionList(userPid);
     }
 
     /**
@@ -439,11 +434,6 @@ public class SfUserRelationService {
         BfSpokesManDetailPo detailPo = new BfSpokesManDetailPo();
         logger.info("查询店铺三级粉丝");
         logger.info("shopId = " + shopId);
-        SfShop sfShop = sfShopService.getSfShopByUserId(showUserId);
-        Long ownerShopId = 0l;
-        if (sfShop != null){
-            ownerShopId = sfShop.getId();
-        }
         List<Map<String, Number>> fans = this.getFansNumGroupByLevel(showUserId, null, shopId, null);
         for (Map<String, Number> map : fans) {
             switch (map.get("userLevel").intValue()) {

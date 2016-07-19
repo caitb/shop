@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 首页controller
@@ -130,13 +132,45 @@ public class IndexController extends BaseController {
                 sfShopDetail.setSkuName(comSku.getName());
                 sfShopDetail.setSkuAssia(comSku.getAlias());
                 sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
-                SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
-                sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
+//                SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
+//                sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
                 sfShopDetail.setSkuId(comSku.getId());
                 sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
 
                 SfShopDetails.add(sfShopDetail);
             }
+        }catch (Exception ex){
+        if (StringUtils.isNotBlank(ex.getMessage())) {
+            throw new BusinessException(ex.getMessage(), ex);
+        } else {
+            throw new BusinessException("网络错误", ex);
+        }
+    }
+    return SfShopDetails;
+    }
+
+
+    /**
+     * 获取代理等级
+     *
+     * @author muchaofeng
+     * @date 2016/4/12 17:05
+     */
+    @RequestMapping("/findSfSkuLevelImage.do")
+    @ResponseBody
+    public  List<String> findSfSkuLevelImage(HttpServletRequest req){
+        List<String> list = new ArrayList<>();
+        Set set = new HashSet();
+        List<String> newList = new ArrayList<>();
+        Long shopId = (Long) req.getSession().getAttribute("shopId");
+        try {
+            List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+            for (SfShopSku sfShopSku : sfShopSkus) {
+                SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
+                list.add(sfSkuLevelImage.getIcon());
+            }
+            set.addAll(list);
+            newList.addAll(set);
         }catch (Exception ex){
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -144,7 +178,7 @@ public class IndexController extends BaseController {
                 throw new BusinessException("网络错误", ex);
             }
         }
-        return SfShopDetails;
+        return newList;
     }
 
 
@@ -160,8 +194,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =336L;
-        userPid = 540L;
+        shopId =160L;
+        userPid = 1644L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

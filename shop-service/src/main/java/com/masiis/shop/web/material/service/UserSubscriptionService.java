@@ -38,6 +38,7 @@ public class UserSubscriptionService {
      */
     public void  updateSubscriptionStatus(Integer status, Integer materialId, Long userId) throws Exception {
         ComUserSubscription comUserSubscription = comUserSubscriptionMapper.selectByUserIdAndMaterialId(userId, materialId);
+        ComSkuMaterialLibrary comSkuMaterialLibrary = comSkuMaterialLibraryMapper.selectByPrimaryKey(materialId);
         if(comUserSubscription==null){//第一次订阅
             ComUserSubscription record = new ComUserSubscription();
             record.setCreateTime(new Date());
@@ -47,10 +48,15 @@ public class UserSubscriptionService {
             record.setComSkuMaterialLibrary(materialId);
             record.setModifyTime(new Date());
             comUserSubscriptionMapper.insert(record);
-            ComSkuMaterialLibrary comSkuMaterialLibrary = comSkuMaterialLibraryMapper.selectByPrimaryKey(materialId);
             comSkuMaterialLibrary.setSubscriptionNum(comSkuMaterialLibrary.getSubscriptionNum()+1);
             comSkuMaterialLibraryMapper.updateByPrimaryKey(comSkuMaterialLibrary);
         }else{
+            if(status==1){ //重新添加订阅
+                comSkuMaterialLibrary.setSubscriptionNum(comSkuMaterialLibrary.getSubscriptionNum()+1);
+            }else {
+                comSkuMaterialLibrary.setSubscriptionNum(comSkuMaterialLibrary.getSubscriptionNum()-1);
+            }
+            comSkuMaterialLibraryMapper.updateByPrimaryKey(comSkuMaterialLibrary);
             comUserSubscription.setStatus(status);
             comUserSubscription.setModifyTime(new Date());
             comUserSubscriptionMapper.updateByPrimaryKey(comUserSubscription);

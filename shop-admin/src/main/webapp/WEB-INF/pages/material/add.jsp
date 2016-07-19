@@ -417,7 +417,7 @@
         });
     }
 
-    function loadGroup(lSelector, gSelector, libraryId) {
+    function loadGroup(lSelector, gSelector, libraryId, groupId) {
         $.ajax({
             url: '<%=basePath%>material/loadGroup.do',
             success: function(data) {
@@ -435,7 +435,11 @@
                     }
                 }
                 for(var i in data[selectedIndex].materialGroups){
-                    groupHtml += '<option value="'+data[0].materialGroups[i].id+'">'+data[0].materialGroups[i].name+'</option>';
+                    if(data[selectedIndex].materialGroups[i].id == groupId){
+                        groupHtml += '<option value="'+data[selectedIndex].materialGroups[i].id+'" selected>'+data[selectedIndex].materialGroups[i].name+'</option>';
+                    }else{
+                        groupHtml += '<option value="'+data[selectedIndex].materialGroups[i].id+'">'+data[selectedIndex].materialGroups[i].name+'</option>';
+                    }
                 }
 
                 $(lSelector).html(libraryHtml);
@@ -488,7 +492,7 @@
             success: function(result) {
                 result = window.eval('('+result+')');
                 if(result.code == 'success'){
-                    loadGroup('#lId', '#gId');
+                    loadGroup('#lId', '#gId', result.libraryId, result.groupId);
                     $('#modal-group').modal('hide');
                 }
 

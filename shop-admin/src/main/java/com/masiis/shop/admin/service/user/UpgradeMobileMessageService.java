@@ -1,13 +1,12 @@
-package com.masiis.shop.web.platform.service.user;
+package com.masiis.shop.admin.service.user;
 
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.admin.service.order.PfBorderRecommenRewardService;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.product.SkuAgentService;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
-import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

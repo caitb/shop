@@ -101,7 +101,7 @@ public class BOrderPayEndMessageService {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
                 //补货发送短信
-                pushMoblieMessageSupplement(comUser,pComUser,pfBorderItems,comAgentLevel);
+                pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
             } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
@@ -229,6 +229,8 @@ public class BOrderPayEndMessageService {
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel){
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+        logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
         if (pfBorderRecommenReward!=null){
             logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
             ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
@@ -240,7 +242,7 @@ public class BOrderPayEndMessageService {
                 Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
                         pfBorderItems.get(0).getSkuName(),
                         comAgentLevel.getName(),
-                        pfBorder.getPayAmount(),
+                        incomeAmout,
                         recommenRewardName,
                         userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId()));
                 if (bl) {
@@ -265,7 +267,7 @@ public class BOrderPayEndMessageService {
             Boolean bl = MobileMessageUtil.getInitialization("B").lowerJoinRemind(pComUser.getMobile(),
                     pfBorderItems.get(0).getSkuName(),
                     comAgentLevel.getName(),
-                    pfBorder.getPayAmount(),
+                    incomeAmout,
                     userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
             );
             if (bl){
@@ -302,18 +304,23 @@ public class BOrderPayEndMessageService {
      * @param pComUser
      * @param pfBorderItems
      * @param comAgentLevel
+     *
+     * 合伙人收入 = 订单金额  - 保证金 -  推荐奖 - 运费
      */
     private void pushMoblieMessageSupplement(ComUser comUser,
                                              ComUser pComUser,
+                                             PfBorder pfBorder,
                                              List<PfBorderItem> pfBorderItems,
                                              ComAgentLevel comAgentLevel){
         //给合伙人发送短信
+        BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+        logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
        Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
                 pfBorderItems.get(0).getSkuName(),
                 comAgentLevel.getName(),
                 comUser.getRealName(),
                 pfBorderItems.get(0).getQuantity(),
-                pfBorderItems.get(0).getTotalPrice(),
+                incomeAmout,
                 userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
                 );
         if (bl){

@@ -270,7 +270,7 @@ public class SfShopController extends BaseController {
 
             return mav;
         } catch (Exception e) {
-            log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
+            log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]"+e);
             e.printStackTrace();
         }
 

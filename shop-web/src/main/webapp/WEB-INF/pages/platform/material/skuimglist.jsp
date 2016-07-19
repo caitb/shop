@@ -131,7 +131,7 @@
                     $.each(data.materials, function (i, mat) {
                         var imgHtml ="";
                         $.each(mat.comSkuMaterialItems, function (i, img){
-                            imgHtml += "<a href=\"#\"><img data=\""+img.fileUrl+"\" /></a>";
+                            imgHtml += "<a href=\"#\"><img src=\""+img.fileUrl+"\" /></a>";
                         });
                         _contain.append("<div class=\"floor\">" +
                         "<h1>"+mat.title+"</h1>" +
@@ -140,6 +140,19 @@
                         "</div>");
                     });
                     pagelimit++;
+                    $(function(){
+                        var bWidth=$(".sec1").width()/3-5;
+                        $(".sec1 a").css({
+                            "display":"inline-block",
+                            "width":bWidth+'px',
+                            "height":bWidth+'px'
+                        })
+                    })
+                    $(".sec1 img").on("click",function(){
+                        var imgSrc=$(this).attr("src");
+                        $(".bigphp").show();
+                        $(".bigphp img").attr("src",imgSrc);
+                    })
                 }
             }
         });

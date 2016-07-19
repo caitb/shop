@@ -84,7 +84,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="submitSend">发货</button>
             </div>
         </div><!-- /.modal-content -->
@@ -286,6 +286,7 @@
             data : $sendForm.serialize(),
             success : function(data) {
                 if(data == 'success') {
+                    bootbox.alert("发货成功");
                     $sendDialog.modal('hide');
                     $table.bootstrapTable('refresh');
                 }

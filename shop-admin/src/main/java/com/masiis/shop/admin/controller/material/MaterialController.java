@@ -157,6 +157,7 @@ public class MaterialController extends BaseController {
             comSkuMaterialLibrary.setSort(0);
             materialService.saveMaterialLibrary(comSkuMaterialLibrary);
 
+            resultMap.put("libraryId", comSkuMaterialLibrary.getId());
             resultMap.put("code", "success");
             resultMap.put("msg", "保存成功!");
         } catch (Exception e) {
@@ -236,6 +237,8 @@ public class MaterialController extends BaseController {
 
             materialService.saveMaterialGroup(comSkuMaterialGroup);
 
+            resultMap.put("libraryId", comSkuMaterialGroup.getMaterialLibraryId());
+            resultMap.put("groupId", comSkuMaterialGroup.getId());
             resultMap.put("code", "success");
             resultMap.put("msg", "保存成功!");
         } catch (Exception e) {

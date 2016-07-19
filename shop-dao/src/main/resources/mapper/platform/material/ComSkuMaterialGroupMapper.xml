@@ -66,7 +66,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuMaterialGroup" useGeneratedKeys="true" keyProperty="id" >
         insert into com_sku_material_group (id, create_time, create_man, 
             material_library_id, name, is_b_show, 
             is_c_show, sort, remark, icon

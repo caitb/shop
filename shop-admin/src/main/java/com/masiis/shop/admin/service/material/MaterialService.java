@@ -60,8 +60,8 @@ public class MaterialService {
      * 保存素材库
      * @param comSkuMaterialLibrary
      */
-    public void saveMaterialLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
-        comSkuMaterialLibraryMapper.insert(comSkuMaterialLibrary);
+    public Integer saveMaterialLibrary(ComSkuMaterialLibrary comSkuMaterialLibrary) {
+        return comSkuMaterialLibraryMapper.insert(comSkuMaterialLibrary);
     }
 
     /**

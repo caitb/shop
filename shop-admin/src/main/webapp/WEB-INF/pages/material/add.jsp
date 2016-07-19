@@ -503,6 +503,7 @@
                 groupHtml += '<option value="'+librarys[l].materialGroups[g].id+'">'+librarys[l].materialGroups[g].name+'</option>';
             }
         }
+        $('#gId').html('<option></option>');
         $('#gId').html(groupHtml);
     });
 

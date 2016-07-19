@@ -80,7 +80,8 @@ public class SfUserRelationController extends BaseController{
 //                mv.addObject("infos",infos);
                 mv.addObject("totalPage", pageNums);
                 mv.addObject("currentPage", 1);
-                mv.addObject("totalCount", fansNum);
+                mv.addObject("fansNum", fansNum);
+                mv.addObject("spokesManNum", spokesManNum);
             }
         }
         mv.setViewName("platform/user/spokesManList");

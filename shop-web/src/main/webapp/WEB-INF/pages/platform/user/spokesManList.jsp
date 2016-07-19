@@ -21,11 +21,11 @@
     <main>
         <div class="top">
             <div>
-                <h1>${totalCount}</h1>
+                <h1>${fansNum}</h1>
                 <h2>粉丝数</h2>
             </div>
             <div>
-                <h1>${totalCount}</h1>
+                <h1>${spokesManNum}</h1>
                 <h2>代言人数</h2>
             </div>
         </div>

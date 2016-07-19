@@ -79,6 +79,10 @@ public interface SfUserRelationMapper {
     Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
                                            @Param("shopId") Long shopId);
 
+    Map<String, Number> selectFansOrSpokesManNum(@Param("userId") Long userId,
+                                                 @Param("shopId") Long shopId,
+                                                 @Param("spokesMan") Integer spokesMan);
+
     /**
      * 修改树形编码
      *

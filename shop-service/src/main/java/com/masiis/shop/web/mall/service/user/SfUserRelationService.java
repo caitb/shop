@@ -26,8 +26,6 @@ public class SfUserRelationService {
     private static final Logger logger = Logger.getLogger(SfUserRelationService.class);
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
-    @Resource
-    private SfShopService sfShopService;
 
     public int updateUserRelation(SfUserRelation userRelation){
         return sfUserRelationMapper.updateByPrimaryKey(userRelation);
@@ -75,31 +73,37 @@ public class SfUserRelationService {
      * @return          Integer
      */
     public Integer getFansNumByUserId(Long userId, Long shopId){
-        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        Map<String, Number> map = sfUserRelationMapper.selectFansOrSpokesManNum(userId, shopId, null);
         Integer num = 0;
-        if (sfUserRelations == null || sfUserRelations.size() == 0){
-            return num;
-        }else {
-            Integer fansNum = 0;
-            if (shopId == null){
-                for (SfUserRelation relation : sfUserRelations){
-                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
-                    if (fansNum > 0){
-                        logger.info("粉丝数量：" + num);
-                        num += fansNum;
-                    }
-                }
-            }else {
-                for (SfUserRelation relation : sfUserRelations){
-                    if (shopId.longValue() == relation.getShopId().longValue()){
-                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
-                        if (fansNum > 0){
-                            num += fansNum;
-                        }
-                    }
-                }
-            }
+        if (map != null){
+            num = map.get("num").intValue();
         }
+
+//        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+//        Integer num = 0;
+//        if (sfUserRelations == null || sfUserRelations.size() == 0){
+//            return num;
+//        }else {
+//            Integer fansNum = 0;
+//            if (shopId == null){
+//                for (SfUserRelation relation : sfUserRelations){
+//                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
+//                    if (fansNum > 0){
+//                        logger.info("粉丝数量：" + num);
+//                        num += fansNum;
+//                    }
+//                }
+//            }else {
+//                for (SfUserRelation relation : sfUserRelations){
+//                    if (shopId.longValue() == relation.getShopId().longValue()){
+//                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
+//                        if (fansNum > 0){
+//                            num += fansNum;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return num;
     }
 
@@ -110,6 +114,7 @@ public class SfUserRelationService {
      * @return  map
      */
     public Map<String, Integer> getFansOrSpokesManNumByUserId(Long userId, Integer spokesMan){
+
         List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
         Integer num;
         Integer maxNum = 0;
@@ -128,6 +133,7 @@ public class SfUserRelationService {
                     }
                     map.put(String.valueOf(relation.getShopId()), num);
                 }
+                break;
             }
             case 1 : {
                 logger.info("查询代言人数量");
@@ -142,6 +148,7 @@ public class SfUserRelationService {
                     }
                     map.put(String.valueOf(relation.getShopId()), num);
                 }
+                break;
             }
         }
 
@@ -156,23 +163,28 @@ public class SfUserRelationService {
      * @return      Integer
      */
     public Integer getSpokesManNumByUserId(Long userId, Long shopId){
-        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        Map<String, Number> map = sfUserRelationMapper.selectFansOrSpokesManNum(userId, shopId, 1);
         Integer num = 0;
-        if (sfUserRelations == null || sfUserRelations.size() == 0){
-            return num;
-        }else {
-            if (shopId == null){
-                for (SfUserRelation relation : sfUserRelations){
-                    num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
-                }
-            }else {
-                for (SfUserRelation relation : sfUserRelations){
-                    if (shopId.longValue() == relation.getShopId().longValue()){
-                        num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
-                    }
-                }
-            }
+        if (map != null){
+            num = map.get("num").intValue();
         }
+//        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+//        Integer num = 0;
+//        if (sfUserRelations == null || sfUserRelations.size() == 0){
+//            return num;
+//        }else {
+//            if (shopId == null){
+//                for (SfUserRelation relation : sfUserRelations){
+//                    num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+//                }
+//            }else {
+//                for (SfUserRelation relation : sfUserRelations){
+//                    if (shopId.longValue() == relation.getShopId().longValue()){
+//                        num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+//                    }
+//                }
+//            }
+//        }
         return num;
     }
 
@@ -183,12 +195,18 @@ public class SfUserRelationService {
      * @return  Integer
      */
     public Integer getFansNumByUserIdAndShopId(Long userId, Long shopId){
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1 < 0){
-            return 0;
-        }else {
-            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1;
+        Map<String, Number> map = sfUserRelationMapper.selectFansOrSpokesManNum(userId, shopId, null);
+        Integer num = 0;
+        if (map != null){
+            num = map.get("num").intValue();
         }
+//        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
+//        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1 < 0){
+//            return 0;
+//        }else {
+//            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1;
+//        }
+        return num;
     }
 
     /**
@@ -198,15 +216,21 @@ public class SfUserRelationService {
      * @return
      */
     public Integer getSpokesManNumByUserIdAndShopId(Long userId, Long shopId){
-        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue();
+        Map<String, Number> map = sfUserRelationMapper.selectFansOrSpokesManNum(userId, shopId, 1);
+        Integer num = 0;
+        if (map != null){
+            num = map.get("num").intValue();
+        }
+//        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
+//        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue();
+        return num;
     }
 
     /**
      * 查询用户下 一级、二级、三级粉丝数量
      * @param userId    用户id
      * @param shopId    归宿小铺id(根据业务shopId可以null)
-     * @param sopkenMan 是否为代言人 0：为代言  1：已代言  null:查询所有
+     * @param sopkenMan 是否为代言人 0：未代言  1：已代言  null:查询所有
      * @return  List map
      */
     public List<Map<String, Number>> getFansNumGroupByLevel(Long userId, Integer userLevel, Long shopId, Integer sopkenMan){
@@ -279,24 +303,6 @@ public class SfUserRelationService {
         }
         return sfUserRelationMapper.selectFansPageView(userId, fansLevel, shopId, sopkenMan);
     }
-
-//    /**
-//     * 查询获取代言人列表展示信息  (只查询两级代言人)
-//     * @param isPaging      是否分页标识   true 分页，false 不分页
-//     * @param currentPage   查询当前页
-//     * @param pageSize      每页展示条数
-//     * @param userId        用户ID
-//     * @param fansLevel     粉丝级别    可以为null
-//     * @param shopId        小铺id    可以为null
-//     * @param isSpokesMan   是否为代言人（当为1时查询的是代言人）
-//     * @return
-//     */
-//    public List<SfSpokesAndFansInfo> getSfSpokesManInfos(boolean isPaging, Integer currentPage, Integer pageSize, Long userId, Integer fansLevel, Long shopId, Integer isSpokesMan){
-//        if (isPaging){
-//            PageHelper.startPage(currentPage,pageSize); //分页插件
-//        }
-//        return sfUserRelationMapper.selectSpokesManPageView(userId, fansLevel, shopId, isSpokesMan);
-//    }
 
     /**
      * 查询店铺所有代言人信息

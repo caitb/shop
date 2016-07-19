@@ -115,6 +115,21 @@
         and tree_code like CONCAT(#{treeCode},'%')
     </select>
 
+    <select id="selectFansOrSpokesManNum" resultType="java.util.HashMap">
+        SELECT
+          count(*) as num
+        FROM sf_user_relation a
+        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
+        INNER JOIN com_user u ON r.user_id = u.id
+        WHERE a.user_id=#{userId}
+        <if test="shopId != null">
+            AND a.shop_id=#{shopId}
+        </if>
+        <if test="spokesMan != null">
+            AND a.is_spokesman = #{spokesMan}
+        </if>
+    </select>
+
     <select id="getSfUserRelationByUserIdAndShopId" resultMap="BaseResultMap">
         select id, create_time, shop_id, user_id, user_pid, tree_code, tree_level, is_buy, remark,is_spokesman
         from sf_user_relation
@@ -158,7 +173,12 @@
             <if test="shopId != null">
                 and a.shop_id = #{shopId}
             </if>
-            AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+            <if test="sopkenMan != null">
+                AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+2
+            </if>
+            <if test="sopkenMan == null">
+                AND r.tree_level BETWEEN a.tree_level+1 AND a.tree_level+3
+            </if>
         ) t where 1 = 1
         <if test="sopkenMan != null">
             and t.sopkenMan = #{sopkenMan}
@@ -178,7 +198,7 @@
         WHERE
 	        r.shop_id = #{shopId}
         <if test="spokesMan != null">
-            AND u.is_spokesman = #{spokesMan}
+            AND r.is_spokesman = #{spokesMan}
         </if>
     </select>
     <select id="selectAllSpokesManByShopId" resultMap="DistributionResultMap">

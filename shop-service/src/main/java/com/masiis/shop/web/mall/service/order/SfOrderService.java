@@ -153,13 +153,12 @@ public class SfOrderService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-        String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderController/sfOrderDetal.html";
-        String[] params = new String[5];
-        params[0] = "";
-        params[1] = "";
-        params[2] = sfOrder.getOrderCode();
-        params[3] = shipManName;
-        params[4] = freight;
+
+        String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/borderDetils.html?id=" + sfOrder.getId();
+        String[] params = new String[3];
+        params[0] = sfOrder.getOrderCode();
+        params[1] = shipManName;
+        params[2] = freight;
         WxSFNoticeUtils.getInstance().orderShipNotice(comUser, params, url);
         MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(), sfOrder.getOrderCode(), shipManName, freight);
     }

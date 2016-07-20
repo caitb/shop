@@ -11,7 +11,7 @@
 <body>
 <input type="hidden" id="pageNums" name="pageNums" value="${totalPage}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
-<input type="hidden" id="totalNum" name="totalNum" value="${totalCount}">
+<input type="hidden" id="totalNum" name="totalNum" value="${fansNum}">
 <input type="hidden" id="hiddenID" name="hiddenID" value="">
 <div class="wrap">
     <header class="xq_header">

@@ -51,7 +51,7 @@ public class SfShopSkuService {
         shopSkuMapper.insert(sfShopSku);
     }
 
-    public SfShopSku getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
+    public List<SfShopSku> getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
         return shopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
     }
 

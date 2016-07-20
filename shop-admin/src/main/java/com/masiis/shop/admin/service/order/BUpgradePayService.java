@@ -512,18 +512,20 @@ public class BUpgradePayService {
     private void updateSfShopSku(Long shopUserId, List<PfBorderItem> orderItems) {
         for (PfBorderItem orderItem : orderItems) {
             log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + orderItem.getSkuId());
-            SfShopSku sfShopSku = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
-            if (sfShopSku != null) {
-                log.info("修改前的小铺商品的代理等级---之前--" + orderItem.getAgentLevelId());
-                sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
-                log.info("修改前的小铺商品的代理等级---之后--" + orderItem.getAgentLevelId());
-                log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
-                sfShopSku.setBail(orderItem.getBailAmount());
-                log.info("修改后的小铺保证金-----" + orderItem.getBailAmount());
-                int i = sfShopSkuService.update(sfShopSku);
-                if (i != 1) {
-                    log.info("修改小铺商品的sku等级和保证金失败");
-                    throw new BusinessException("修改小铺商品的sku等级和保证金失败");
+            List<SfShopSku> sfShopSkus = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
+            for (SfShopSku sfShopSku:sfShopSkus){
+                if (sfShopSku != null) {
+                    log.info("修改前的小铺商品的代理等级---之前--" + orderItem.getAgentLevelId());
+                    sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
+                    log.info("修改前的小铺商品的代理等级---之后--" + orderItem.getAgentLevelId());
+                    log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
+                    sfShopSku.setBail(orderItem.getBailAmount());
+                    log.info("修改后的小铺保证金-----" + orderItem.getBailAmount());
+                    int i = sfShopSkuService.update(sfShopSku);
+                    if (i != 1) {
+                        log.info("修改小铺商品的sku等级和保证金失败");
+                        throw new BusinessException("修改小铺商品的sku等级和保证金失败");
+                    }
                 }
             }
         }

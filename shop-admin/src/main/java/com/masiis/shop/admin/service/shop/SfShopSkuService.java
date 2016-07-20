@@ -41,7 +41,7 @@ public class SfShopSkuService {
     public int update(SfShopSku shopSku){
         return shopSkuMapper.updateByPrimaryKey(shopSku);
     }
-    public SfShopSku getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
+    public List<SfShopSku> getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
         return shopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
     }
 }

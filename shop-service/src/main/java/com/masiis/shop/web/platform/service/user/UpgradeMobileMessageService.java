@@ -60,7 +60,7 @@ public class UpgradeMobileMessageService {
             log.info("是否还有库存------"+isStock);
             log.info("收入-------"+newPfSkuAgent.getTotalPrice());
             log.info("库存是否足够-------"+isStock);
-            BigDecimal incomeAmout = pfBorder.getOrderAmount().subtract(pfBorder.getBailAmount()).subtract(pfBorder.getRecommenAmount().subtract(pfBorder.getShipAmount()));
+            BigDecimal incomeAmout = pfBorder.getOrderAmount();
             log.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
             Boolean bl = MobileMessageUtil.getInitialization("B").lowerGroupUpRemind(newPComUser.getMobile(),
                     upgradeDetail.getSkuName(),

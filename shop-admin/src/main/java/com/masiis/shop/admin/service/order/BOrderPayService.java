@@ -201,13 +201,6 @@ public class BOrderPayService {
         } else {
             throw new BusinessException("订单类型有误");
         }
-
-        //支付完成推送消息(发送失败不回滚事务)
-        try {
-            bOrderPayEndMessageService.payEndPushMessage(pfBorderPayment);
-        } catch (Exception ex) {
-            throw new Exception(ex.getMessage());
-        }
         PbOperationLog pbOperationLog = new PbOperationLog();
         pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
         pbOperationLog.setCreateTime(new Date());
@@ -219,6 +212,12 @@ public class BOrderPayService {
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if (updateByPrimaryKey == 0) {
             throw new Exception("日志新建订单支付回调失败!");
+        }
+        //支付完成推送消息(发送失败不回滚事务)
+        try {
+            bOrderPayEndMessageService.payEndPushMessage(pfBorderPayment);
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
         }
     }
 

@@ -23,5 +23,7 @@ public interface ComSkuMaterialLibraryMapper {
 
     int updateByPrimaryKey(ComSkuMaterialLibrary record);
 
-    int countLibrary();
+    int countLibrary(Long userId);
+
+    List<ComSkuMaterialLibrary> selectAllByPfUserSkuAgent(Long userId);
 }

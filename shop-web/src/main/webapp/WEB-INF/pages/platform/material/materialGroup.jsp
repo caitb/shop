@@ -147,8 +147,8 @@
                         if(Library.isSubscript==1){
                             imgHtml += "<span class=\"add on\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>取消订阅</b> | "+Library.subscriptionNum+"</span>";
                         }
-                        _contain.append("<p onclick=\"javascript:window.location.replace('"+basePath+"materielList/groupInfoB/?mlId="+Library.id+"');\">" +
-                        "<span><img src=\""+Library.remark+"\" alt=\"\"></span>"+imgHtml+"</p>");
+                        _contain.append("<p>" +
+                        "<span  onclick=\"javascript:window.location.replace('"+basePath+"materielList/groupInfoB/?mlId="+Library.id+"');\"><img src=\""+Library.remark+"\" alt=\"\"></span>"+imgHtml+"</p>");
                     });
                     pagelimit++;
                 }

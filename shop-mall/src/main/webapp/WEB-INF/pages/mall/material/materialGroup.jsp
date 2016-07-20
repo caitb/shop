@@ -69,7 +69,7 @@
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
-                        window.location.reload(true);
+                        setTimeout("window.location.reload(true)",1000)
                     }
                 }
             });
@@ -126,7 +126,7 @@
             }
         });
     }
-// 分页查询
+    // 分页查询
     var pagelimit = 2;
     $(".downloading").on("click", function () {
         var _contain = $("#divall");
@@ -149,8 +149,8 @@
                         if(Library.isSubscript==1){
                             imgHtml += "<span class=\"add on\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>取消订阅</b> | "+Library.subscriptionNum+"</span>";
                         }
-                        _contain.append("<p onclick=\"javascript:window.location.replace('"+basePath+"materielList/groupInfoB/?mlId="+Library.id+"');\">" +
-                        "<span><img src=\""+Library.remark+"\" alt=\"\"></span>"+imgHtml+"</p>");
+                        _contain.append("<p>" +
+                        "<span  onclick=\"javascript:window.location.replace('"+basePath+"materielList/groupInfoB/?mlId="+Library.id+"');\"><img src=\""+Library.remark+"\" alt=\"\"></span>"+imgHtml+"</p>");
                     });
                     pagelimit++;
                 }

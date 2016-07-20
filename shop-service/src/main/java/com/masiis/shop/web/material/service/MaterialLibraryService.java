@@ -12,6 +12,7 @@ import com.masiis.shop.dao.platform.material.ComUserSubscriptionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,8 @@ public class MaterialLibraryService {
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
     private ComUserSubscriptionMapper comUserSubscriptionMapper;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
     /**
      * 获取商品素材库
      * jjh
@@ -48,8 +51,16 @@ public class MaterialLibraryService {
      */
     public List<MaterialLibrary> SkuMaterialLibraryList(int currentPage,int pageSize,Long UserId) throws Exception{
         List<MaterialLibrary> materialLibraryList = new ArrayList<>();
-        PageHelper.startPage(currentPage, pageSize,false);
-        List<ComSkuMaterialLibrary> comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAll();
+        //check 是否代理
+        List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(UserId);
+        List<ComSkuMaterialLibrary> comSkuMaterialLibraryList = null;
+        if(pfUserSkuList==null || pfUserSkuList.size()<=0){ //未代理用户
+             PageHelper.startPage(currentPage, pageSize,false);
+             comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAll();
+        }else {
+             PageHelper.startPage(currentPage, pageSize,false);
+             comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAllByPfUserSkuAgent(UserId);
+        }
         String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (ComSkuMaterialLibrary comSkuMaterialLibrary :comSkuMaterialLibraryList){
             MaterialLibrary materialLibrary = new MaterialLibrary();
@@ -86,7 +97,7 @@ public class MaterialLibraryService {
         return comSkuMaterialLibraryMapper.selectByPrimaryKey(mlId);
     }
 
-    public int CountSkuMaterialLibrary(){
-       return comSkuMaterialLibraryMapper.countLibrary();
+    public int CountSkuMaterialLibrary(Long userId){
+       return comSkuMaterialLibraryMapper.countLibrary(userId);
     }
 }

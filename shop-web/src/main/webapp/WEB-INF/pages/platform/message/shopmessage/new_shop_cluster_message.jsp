@@ -191,6 +191,7 @@
             alert("您未输入消息内容");
             return;
         }
+        $("#submit").unbind("click");
         var options = {
             url:"${path}/shopmessage/newmessage.do",
             type:"post",
@@ -209,13 +210,16 @@
                     // 请求错误
                     alert(data.resMsg);
                 }
+                $("#submit").unbind("click").on("click", message_submit);
+            },
+            error:function(){
+                $("#submit").unbind("click").on("click", message_submit);
             },
             complete:function(){
                 $("#submit").unbind("click").on("click", message_submit);
             }
         };
 
-        $("#submit").unbind("click");
         $.ajax(options);
     }
 </script>

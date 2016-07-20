@@ -143,15 +143,22 @@
                                 <label class="control-label col-sm-2 rule-name"></label>
                                 <div class="col-sm-10">
                                     <div class="row">
-                                        <input type="hidden" attr="ruleId" />
-                                        <div class="col-sm-3"><input type="text"class="form-control" attr="ruleValue"> </div>
-                                        <input type="hidden" attr="promotionGiftId" />
+                                        <div class="col-sm-3">
+                                            <select id="skusId" class="form-control">
+                                            </select>
+                                        </div>
                                         <div class="col-sm-2">
                                             <input type="text"class="form-control" />
                                         </div>
-                                        <div class="col-sm-2"><input type="numbers"class="form-control" attr="quantity"> </div>
-                                        <div class="col-sm-4"><input type="text"class="form-control" attr="upperQuantity"> </div>
-                                        <div class="col-sm-1"><button type="button" class="btn btn-warning removeRule">删除</button></div>
+                                        <div class="col-sm-2">
+                                            <input type="numbers"class="form-control" attr="quantity">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text"class="form-control" attr="upperQuantity">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="button" class="btn btn-warning removeRule">删除</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -381,7 +388,8 @@
         $("#quserid").on("click", queryUser);
 
         $("#saveLibrary").unbind("click").on("click", function(){
-            var userId = $("#nameList .form-group .list-group-item .li_selected").attr("id");
+            var select_li = $("#nameList .li_selected");
+            var userId = select_li.attr("id");
             if(userId == undefined || userId == null || userId == ""){
                 alert("您没有选中任何人");
                 return;
@@ -394,12 +402,27 @@
                     userId:userId
                 },
                 success:function(data){
+                    if(data.resCode == "success"){
+                        $("#skusId").empty();
+                        $("#modal-library").modal("hide");
+                        clearPromotionRule();
+                        $("#promotionForm .promotion-rule").each(function () {
+                            var _select = $(this).find(".row").children("div").first().children("select");
+                            _select.empty();
 
+                        });
+                    } else {
+                        alert(data.resMsg);
+                    }
                 }
             }
+
+            $.ajax(options);
         });
 
     });
+
+    var skulist = new Array();
 
     function queryUser(){
         $("#quserid").unbind("click");
@@ -453,6 +476,15 @@
         };
 
         $.ajax(options);
+    }
+
+    function clearPromotionRule(){
+        $("#promotionForm .promotion-rule").each(function(){
+            if($(this).attr("id") == "promotion-rule-template"){
+                return;
+            }
+            $(this).remove();
+        });
     }
 
     // 添加规则

@@ -240,6 +240,7 @@ public class BOrderPayEndMessageService {
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel,
                                         Boolean isWaitngOrder){
+        logger.info("合伙人订单发送短信-----start");
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
@@ -250,8 +251,14 @@ public class BOrderPayEndMessageService {
             String recommenRewardName = "";
             if (recommenRewardUser!=null) {
                 //有推荐人的情况
-                recommenRewardName = recommenRewardUser.getRealName();
+                logger.info("-----------有推荐人的情况-----------");
                 //给合伙人发
+                logger.info("有推荐人情况下给合伙人发短信----start");
+                recommenRewardName = recommenRewardUser.getRealName();
+                logger.info("商品名称-------"+ pfBorderItems.get(0).getSkuName());
+                logger.info("等级名称-------"+ comAgentLevel.getName());
+                logger.info("收入-------"+ incomeAmout.toString());
+                logger.info("推荐人昵称-------"+ recommenRewardName);
                 Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
                         pfBorderItems.get(0).getSkuName(),
                         comAgentLevel.getName(),
@@ -261,8 +268,17 @@ public class BOrderPayEndMessageService {
                         !isWaitngOrder);
                 if (bl) {
                     logger.info("合伙人订单有推荐人给合伙人发送短信成功");
+                }else{
+                    logger.info("合伙人订单有推荐人给合伙人发送短信失败");
                 }
+                logger.info("有推荐人情况下给合伙人发短信----end");
                 //给推荐人发
+                logger.info("给推荐人发短信------start");
+                logger.info("推荐人电话号码-------"+ recommenRewardUser.getMobile());
+                logger.info("用户昵称-------"+ comUser.getRealName());
+                logger.info("商品名称-------"+ pfBorderItems.get(0).getSkuName());
+                logger.info("等级名称-------"+ comAgentLevel.getName());
+                logger.info("奖励-------"+ pfBorderRecommenReward.getRewardTotalPrice().toString());
                 Boolean _bl = MobileMessageUtil.getInitialization("B").recommendCommissionRemind(
                         recommenRewardUser.getMobile(),
                         comUser.getRealName(),
@@ -272,12 +288,20 @@ public class BOrderPayEndMessageService {
                 );
                 if (_bl){
                     logger.info("合伙人订单有推荐人发送佣金成功");
+                }else{
+                    logger.info("合伙人订单有推荐人发送佣金失败");
                 }
+                logger.info("给推荐人发短信------end");
             }else{
                 logger.info("合伙人查询是否有推荐人获得comUser为null");
             }
         } else{
             //没有推荐人的情况
+            logger.info("--------------没有推荐人的情况------------");
+            logger.info("上级号码---------"+pComUser.getMobile());
+            logger.info("商品名称---------"+pfBorderItems.get(0).getSkuName());
+            logger.info("等级名称---------"+comAgentLevel.getName());
+            logger.info("收入---------"+incomeAmout);
             Boolean bl = MobileMessageUtil.getInitialization("B").lowerJoinRemind(pComUser.getMobile(),
                     pfBorderItems.get(0).getSkuName(),
                     comAgentLevel.getName(),
@@ -287,8 +311,11 @@ public class BOrderPayEndMessageService {
             );
             if (bl){
                 logger.info("合伙人订单没有推荐人发送短信成功");
+            }else{
+                logger.info("合伙人订单没有推荐人发送短信失败");
             }
         }
+        logger.info("合伙人订单发送短信-----end");
     }
     /**
      * 补货发送短信
@@ -305,10 +332,18 @@ public class BOrderPayEndMessageService {
                                              List<PfBorderItem> pfBorderItems,
                                              ComAgentLevel comAgentLevel,
                                              Boolean isWaitingOrder){
+        logger.info("补货发送短信-------start");
         //给合伙人发送短信
+        logger.info("给合伙人发送短信-----start");
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
         logger.info("是否处于排单-------"+isWaitingOrder);
+        logger.info("上级号码--------"+pComUser.getMobile());
+        logger.info("商品名称--------"+pfBorderItems.get(0).getSkuName());
+        logger.info("等级名称--------"+comAgentLevel.getName());
+        logger.info("用户昵称--------"+comUser.getRealName());
+        logger.info("数量--------"+pfBorderItems.get(0).getQuantity());
+        logger.info("收入--------"+incomeAmout);
         Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
                 pfBorderItems.get(0).getSkuName(),
                 comAgentLevel.getName(),
@@ -320,13 +355,22 @@ public class BOrderPayEndMessageService {
         );
         if (bl){
             logger.info("补货给合伙人发送短信成功");
+        }else{
+            logger.info("补货给合伙人发送短信失败");
         }
+        logger.info("给合伙人发送短信-----end");
         //给推荐人发短信
+        logger.info("给推荐人发短信-----start");
         logger.info("补货给推荐人发送短信-----pfborderItem的id-----"+pfBorderItems.get(0).getId());
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         if (pfBorderRecommenReward!=null){
             ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
             logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+            logger.info("推荐人的电话-------"+recommenRewardUser.getMobile());
+            logger.info("商品名称-------"+pfBorderItems.get(0).getSkuName());
+            logger.info("等级名称-------"+comAgentLevel.getName());
+            logger.info("数量-------"+comUser.getRealName());
+            logger.info("推荐人的奖励-------"+pfBorderRecommenReward.getRewardTotalPrice().toString());
             if (recommenRewardUser!=null){
                 Boolean _bl = MobileMessageUtil.getInitialization("B").refereeAddstockRecomendRemind(recommenRewardUser.getMobile(),
                         pfBorderItems.get(0).getSkuName(),
@@ -337,6 +381,8 @@ public class BOrderPayEndMessageService {
                 );
                 if (_bl){
                     logger.info("补货给推荐人发送短信成功");
+                }else{
+                    logger.info("补货给推荐人发送短信失败");
                 }
             }else{
                 logger.info("补货发送短信没有推荐人不发送短信");
@@ -344,6 +390,8 @@ public class BOrderPayEndMessageService {
         }else{
             logger.info("补货发送短信没有推荐人不发送短信");
         }
+        logger.info("给推荐人发短信-----end");
+        logger.info("补货发送短信-------end");
     }
 
 

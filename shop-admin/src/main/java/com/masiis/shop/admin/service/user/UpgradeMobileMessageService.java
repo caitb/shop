@@ -40,6 +40,7 @@ public class UpgradeMobileMessageService {
      */
     public Boolean upgradeSuccssSendMoblieMessage(ComUser comUser, PfBorder pfBorder, List<PfBorderItem> pfBorderItems,BOrderUpgradeDetail upgradeDetail,Boolean isWaitingOrder){
         //给上级发短信
+        log.info("给上级发送短信-----start");
         ComUser newPComUser =  comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
         log.info("是否处于排单-------"+isWaitingOrder);
         if (newPComUser!=null){
@@ -69,6 +70,8 @@ public class UpgradeMobileMessageService {
                     !isWaitingOrder);
             if (bl){
                 log.info("升级给上级发送短信成功");
+            }else{
+                log.info("升级给上级发送短信失败");
             }
             //给推荐人发短信(获得佣金)
             log.info("pfborderItem的id-------------------"+pfBorderItems.get(0).getId());
@@ -87,8 +90,11 @@ public class UpgradeMobileMessageService {
             );
             if (_bl){
                 log.info("给推荐人发短信(获得佣金)-----成功");
+            }else{
+                log.info("给推荐人发短信(获得佣金)-----失败");
             }
         }
+        log.info("给上级发送短信-----end");
         return true;
     }
 }

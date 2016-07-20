@@ -67,9 +67,9 @@ public class SfUserRelationController extends BaseController{
 //            List<SfSpokesAndFansInfo> infos = sfUserRelationService.getAllSfSpokesManInfos(true, 1, pageSize, shopId);
 //            Integer totalCount = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
             //获取代言人数量
-            Integer spokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, true);
+            Integer spokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, true, userId);
             //获取粉丝数量
-            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false);
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, userId);
             if (fansNum == 0 /*|| infos == null || infos.size() == 0*/){
                 logger.info("没有对应的代言人数据");
                 mv.addObject("totalPage", 0);
@@ -134,7 +134,7 @@ public class SfUserRelationController extends BaseController{
             case 0 : {
                 logger.info("查询第一页信息");
                 logger.info("ID = " + ID);
-                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID, false);
+                Integer totalCount = sfUserRelationService.getSpokesManNumByID(shopId, ID, false, userId);
                 logger.info("totalCount = " + totalCount);
                 if (totalCount == 0){
                     logger.info("没有对应的代言人信息");
@@ -144,7 +144,7 @@ public class SfUserRelationController extends BaseController{
                     return jsonObject.toString();
                 }
                 pageNums = totalCount%pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
-                infos = sfUserRelationService.getShopSpokesManByID(true, 1, pageSize, shopId, ID);
+                infos = sfUserRelationService.getShopSpokesManByID(true, 1, pageSize, shopId, ID, userId);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", 1);
                 jsonObject.put("totalCount", totalCount);
@@ -159,7 +159,7 @@ public class SfUserRelationController extends BaseController{
                     logger.info("result:"+jsonObject.toString());
                     return jsonObject.toString();
                 }
-                infos = sfUserRelationService.getShopSpokesManByID(true, currentPage + 1, pageSize, shopId, ID);
+                infos = sfUserRelationService.getShopSpokesManByID(true, currentPage + 1, pageSize, shopId, ID, userId);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage + 1);
                 break;
@@ -173,7 +173,7 @@ public class SfUserRelationController extends BaseController{
                     logger.info("result:"+jsonObject.toString());
                     return jsonObject.toString();
                 }
-                infos = sfUserRelationService.getShopSpokesManByID(true, currentPage - 1, pageSize, shopId, ID);
+                infos = sfUserRelationService.getShopSpokesManByID(true, currentPage - 1, pageSize, shopId, ID, userId);
                 jsonObject.put("totalPage", pageNums);
                 jsonObject.put("currentPage", currentPage - 1);
                 break;

@@ -56,12 +56,12 @@ public class SfUserRelationService {
      * @param isSpoken      是否为代言人  true：代言人  false：粉丝
      * @return
      */
-    public Integer getFansOrSpokesMansNum(Long shopId, boolean isSpoken){
+    public Integer getFansOrSpokesMansNum(Long shopId, boolean isSpoken, Long userId){
         Integer num = 0;
         if (isSpoken){
-            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, 1);
+            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, 1, userId);
         }else {
-            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, null);
+            num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, null, userId);
         }
         return num;
     }
@@ -325,15 +325,6 @@ public class SfUserRelationService {
     }
 
     /**
-     * 根据shopid查询代言人数量
-     * @param shopId    小铺id
-     * @return
-     */
-    public Integer getAllSfSpokesManNum(Long shopId){
-        return sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId,null);
-    }
-
-    /**
      * 查询代言人列表展示页面信息
      * @param userId        用户id
      * @param userLevel     粉丝级别 可以为null
@@ -390,27 +381,29 @@ public class SfUserRelationService {
      * @param ID        代言人ID
      * @return
      */
-    public List<SfSpokesAndFansInfo> getShopSpokesManByID(boolean isPaging, Integer currentPage, Integer pageSize, Long shopId, String ID){
+    public List<SfSpokesAndFansInfo> getShopSpokesManByID(boolean isPaging, Integer currentPage, Integer pageSize, Long shopId, String ID, Long userId){
         logger.info("通过ID查询小铺中的代言人信息");
         logger.info("shopId = " + shopId);
         logger.info("ID = " + ID);
         if (isPaging){
             PageHelper.startPage(currentPage,pageSize); //分页插件
         }
-        return sfUserRelationMapper.selectSpokesManByID(shopId, ID, null);
+        return sfUserRelationMapper.selectSpokesManByID(shopId, ID, null, userId);
     }
 
     /**
      * 通过ID查询小铺中的代言人数量
      * @param shopId    小铺id
      * @param ID        代言人ID
+     * @param spokesMan 是否为代言人
+     * @param userId    用户id
      * @return
      */
-    public Integer getSpokesManNumByID(Long shopId, String ID, boolean spokesMan){
+    public Integer getSpokesManNumByID(Long shopId, String ID, boolean spokesMan, Long userId){
         if (spokesMan){
-            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, 1);
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, 1, userId);
         }else {
-            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, null);
+            return sfUserRelationMapper.selectSpokesManNumByID(shopId, ID, null, userId);
         }
     }
 

@@ -60,7 +60,9 @@ public interface SfUserRelationMapper {
      * @param spokesMan 是否已代言可以为null
      * @return
      */
-    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId, @Param("spokesMan") Integer spokesMan);
+    Integer selectAllSopkesManCountByShopId(@Param("shopId") Long shopId,
+                                            @Param("spokesMan") Integer spokesMan,
+                                            @Param("userId") Long userId);
 
     /**
      * 通过treecode获取粉丝数量
@@ -123,7 +125,8 @@ public interface SfUserRelationMapper {
      */
     List<SfSpokesAndFansInfo> selectSpokesManByID(@Param("shopId") Long shopId,
                                                   @Param("ID") String ID,
-                                                  @Param("sopkenMan") Integer sopkenMan);
+                                                  @Param("sopkenMan") Integer sopkenMan,
+                                                  @Param("userId") Long userId);
 
     /**
      * 通过ID查询小铺中的代言人数量
@@ -133,7 +136,8 @@ public interface SfUserRelationMapper {
      */
     Integer selectSpokesManNumByID(@Param("shopId") Long shopId,
                                    @Param("ID") String ID,
-                                   @Param("spokesMan") Integer spokesMan);
+                                   @Param("spokesMan") Integer spokesMan,
+                                   @Param("userId") Long userId);
 
     SfSpokesAndFansInfo selectSfSpokesAndFansInfo(@Param("shopId") Long shopId,
                                                   @Param("userId") Long userId);

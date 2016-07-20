@@ -66,10 +66,14 @@
   border-radius: 2px;
 }
 .wrap .t_b b {
-  display: block;
-  text-align: center;
-  width: 50px;
-  color: #F84910;
+    display: block;
+    text-align: center;
+    width: 45px;
+    background: #f74a11 url("/static/images/searcnicon.png") no-repeat center;
+    background-size: 20px;
+    margin: 0 10px;
+    padding: 14px 0;
+    border-radius: 4px;
 }
 .wrap .main .sec1 {
   background: #fff;

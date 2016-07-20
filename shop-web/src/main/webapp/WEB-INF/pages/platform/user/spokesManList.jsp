@@ -32,7 +32,7 @@
         <div class="t_b">
             <p>代言人ID：</p>
             <input type="tel" id="ID">
-            <b onclick="checkInfo()">查找</b>
+            <b onclick="checkInfo()"></b>
         </div>
         <div class="main" id="disSpokesMan">
 

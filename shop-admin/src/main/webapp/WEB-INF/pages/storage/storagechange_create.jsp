@@ -144,17 +144,17 @@
                                 <div class="col-sm-10">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <select id="skusId" class="form-control">
+                                            <select class="form-control">
                                             </select>
                                         </div>
                                         <div class="col-sm-2">
-                                            <input type="text"class="form-control" />
+                                            <label type="text"class="form-control"></label>
                                         </div>
                                         <div class="col-sm-2">
-                                            <input type="numbers"class="form-control" attr="quantity">
+                                            <input type="numbers"class="form-control">
                                         </div>
                                         <div class="col-sm-4">
-                                            <input type="text"class="form-control" attr="upperQuantity">
+                                            <input type="text"class="form-control">
                                         </div>
                                         <div class="col-sm-1">
                                             <button type="button" class="btn btn-warning removeRule">删除</button>
@@ -298,6 +298,14 @@
                 return;
             }
 
+            var $select = $rule.find(".row").children("div").first().children("select");
+            var so = $select.find("option:selected");
+            skulist[skulist.length] = {
+                id:so.val(),
+                name:so.text(),
+                pName:$rule.find(".row").children("div").first().next().children("label").text()
+            };
+
             bootbox.confirm("确定删除？",function(result) {
                 if(result) {
                     $rule.remove();
@@ -403,13 +411,32 @@
                 },
                 success:function(data){
                     if(data.resCode == "success"){
-                        $("#skusId").empty();
-                        $("#modal-library").modal("hide");
-                        clearPromotionRule();
-                        $("#promotionForm .promotion-rule").each(function () {
-                            var _select = $(this).find(".row").children("div").first().children("select");
-                            _select.empty();
+                        skulist = new Array();
+                        skulistPro = new Array();
+                        for(var i = 0; i < data.skus.length; i++){
+                            skulist[i] = {
+                                id:data.skus[i].id,
+                                name:data.skus[i].name,
+                                pName:data.skus[i].pName
+                            };
+                            skulistPro[i] = {
+                                id:data.skus[i].id,
+                                name:data.skus[i].name,
+                                pName:data.skus[i].pName
+                            }
+                        }
 
+                        var userId = $("#nameList .li_selected").attr("id");
+                        var userName = $("#nameList .li_selected").find("b").first().html();
+                        $("#userId").val(userId);
+                        $("#userName").html(userName);
+
+                        $("#modal-library").modal("hide");
+                        // 清除旧的的商品项
+                        clearPromotionRule();
+                        // 给商品项模板赋值新的商品下拉选项
+                        $("#promotionForm .promotion-rule").each(function () {
+                            addPromotionRule();
                         });
                     } else {
                         alert(data.resMsg);
@@ -420,9 +447,56 @@
             $.ajax(options);
         });
 
+        $(".promotion-rule .row select").on("change", function(){
+            var sku = findInPro($(this).attr("attr"));
+            var $select = $(this);
+            var so = $select.find("option:selected");
+
+            if(!isInSkulistById(so.val())){
+                $select.children("option").each(function(){
+                    $(this).attr("selected", false);
+                    if(sku.id == $(this).val()){
+                        $(this).attr("selected", true);
+                    }
+                });
+                alert("该商品已选择");
+                return;
+            }
+
+            skulist[skulist.length] = sku;
+            $select.attr("attr", so.val());
+            for(var i=0; i < skulist.length; i++){
+                if(so.val() == skulist[i].id){
+                    skulist.splice(i, 1);
+                    continue;
+                }
+            }
+            $(this).parent().next().children("label").text(so.attr("attr"));
+        });
+
     });
 
-    var skulist = new Array();
+    var skulist = new Array({id:-1,name:"",pName:""});
+    var skulistPro = new Array({id:-1,name:"",pName:""});
+
+
+    function  isInSkulistById(id){
+        for(var i=0; i < skulist.length; i++){
+            if(id == skulist[i].id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function findInPro(id){
+        for(var i=0; i < skulistPro.length; i++){
+            if(id == skulistPro[i].id){
+                return skulistPro[i];
+            }
+        }
+        return undefined;
+    }
 
     function queryUser(){
         $("#quserid").unbind("click");
@@ -491,6 +565,26 @@
     function addPromotionRule() {
         var $template = $('#promotion-rule-template');
         var newRule = $template.clone(true).removeAttr("id").show();
+        if(skulist.length <= 0){
+            alert("商品已添加完");
+            return;
+        }
+        var sku = skulist[0];
+        var _select = newRule.find(".row").children("div").first().children("select");
+        _select.empty();
+        for(var i=0; i < skulistPro.length; i++){
+            var op = "<option value='" + skulistPro[i].id + "' attr='" + skulistPro[i].pName + "'";
+                if(skulistPro[i].id == sku.id){
+                    op += " selected"
+                }
+                    op += ">"
+                        + skulistPro[i].name
+                    + "</option>";
+            _select.append($(op));
+        }
+        _select.attr("attr", sku.id);
+        newRule.find(".row").children("div").first().next().children("label").text(sku.pName);
+        skulist.splice(0, 1);
         $template.before(newRule);
     }
 </script>

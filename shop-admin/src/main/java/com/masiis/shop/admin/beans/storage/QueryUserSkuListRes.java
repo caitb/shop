@@ -1,7 +1,7 @@
 package com.masiis.shop.admin.beans.storage;
 
 import com.masiis.shop.admin.beans.base.BaseRes;
-import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.beans.user.UserSkuInfo;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import java.util.List;
  * @Author lzh
  */
 public class QueryUserSkuListRes extends BaseRes {
-    private List<ComSku> skus;
+    private List<UserSkuInfo> skus;
 
-    public List<ComSku> getSkus() {
+    public List<UserSkuInfo> getSkus() {
         return skus;
     }
 
-    public void setSkus(List<ComSku> skus) {
+    public void setSkus(List<UserSkuInfo> skus) {
         this.skus = skus;
     }
 }

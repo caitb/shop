@@ -1,10 +1,10 @@
 package com.masiis.shop.admin.service.user;
 
+import com.masiis.shop.dao.beans.user.UserSkuInfo;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
@@ -108,7 +108,7 @@ public class PfUserSkuService {
      * @param userId
      * @return
      */
-    public List<ComSku> findSkusByUserId(Long userId) {
+    public List<UserSkuInfo> findSkusByUserId(Long userId) {
         return pfUserSkuMapper.selectSkusByUserId(userId);
     }
 }

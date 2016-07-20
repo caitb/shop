@@ -2,16 +2,13 @@ package com.masiis.shop.admin.controller.storage;
 
 import com.masiis.shop.admin.beans.storage.QueryUserByConditionRes;
 import com.masiis.shop.admin.beans.storage.QueryUserSkuListRes;
-import com.masiis.shop.admin.service.order.BOrderService;
+import com.masiis.shop.dao.beans.user.UserSkuInfo;
 import com.masiis.shop.admin.service.storage.PbStorageBillItemService;
 import com.masiis.shop.admin.service.storage.PbStorageBillService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.PhoneNumUtils;
-import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PbStorageBill;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -118,7 +115,7 @@ public class StorageChangeController {
     @ResponseBody
     public QueryUserSkuListRes queryUserSkuList(@RequestParam(required = true) Long userId){
         QueryUserSkuListRes res = new QueryUserSkuListRes();
-        List<ComSku> skus = null;
+        List<UserSkuInfo> skus = null;
         try{
             if(userId == null || userId.intValue() <= 0){
                 res.setResCode("fail");

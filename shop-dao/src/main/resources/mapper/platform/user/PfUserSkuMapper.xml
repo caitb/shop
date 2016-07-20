@@ -66,7 +66,7 @@
         <id column="agentName" property="agentName" jdbcType="VARCHAR"/>
     </resultMap>
     
-    <resultMap id="UserSkusResultMap" type="com.masiis.shop.dao.po.ComSku">
+    <resultMap id="UserSkusResultMap" type="com.masiis.shop.dao.beans.user.UserSkuInfo">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
@@ -92,6 +92,7 @@
         <result column="app_token_expire" property="appTokenExpire" jdbcType="TIMESTAMP"/>
         <result column="is_buy" property="isBuy" jdbcType="INTEGER"/>
         <result column="is_spokesman" property="isSpokesman" jdbcType="INTEGER"/>
+        <result column="pName" property="pName" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -480,12 +481,18 @@
 
     <select id="selectSkusByUserId" resultMap="UserSkusResultMap">
         SELECT
+            CASE
+                s.user_pid
+            WHEN 0 THEN "平台"
+            ELSE u.real_name
+            END as pName,
             c.*
         FROM
             pf_user_sku s
         LEFT JOIN com_sku c ON c.id = s.sku_id
+        LEFT JOIN com_user u ON s.user_pid=u.id
         WHERE
-            s.user_id = 539;
+            s.user_id = #{userId,jdbcType=BIGINT}
     </select>
 </mapper>
 

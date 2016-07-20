@@ -111,7 +111,7 @@ public class SfShopManageController extends BaseController {
 
 //            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
             //获取店铺粉丝
-            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false);
+            Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false, comUser.getId());
 
             String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
 

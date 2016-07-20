@@ -16,32 +16,30 @@
         <p>素材库</p>
     </header>
     <main id="divall">
-        <c:forEach var="Library" items="${LibraryList}">
-            <p>
-                <span  onclick="javascript:window.location.replace('${path}/materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
-                <c:if test="${Library.isSubscript==0}">
-                    <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
-                </c:if>
-                <c:if test="${Library.isSubscript==1}">
-                    <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | ${Library.subscriptionNum}</span>
-                </c:if>
-            </p>
-        </c:forEach>
+        <div>
+            <c:forEach var="Library" items="${LibraryList}">
+                <p>
+                    <span  onclick="javascript:window.location.replace('${path}/materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
+                    <c:if test="${Library.isSubscript==0}">
+                        <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
+                    </c:if>
+                    <c:if test="${Library.isSubscript==1}">
+                        <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | ${Library.subscriptionNum}</span>
+                    </c:if>
+                </p>
+            </c:forEach>
+        </div>
     </main>
     <div class="nobady" style="display: none">
         <img src="${path}/static/images/material/nodady.png" alt="">
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <c:if test="${countLibrary>4}">
-        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
-    </c:if>
 </div>
 <div class="black">
     <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
-
         <p>
             线下素材的图片像素比较大，请您留下您的邮箱地址，系统稍后会将线下素材的下载链接发到您的邮箱，请注意查收！
         </p>
@@ -50,6 +48,9 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
+<c:if test="${countLibrary>4}">
+    <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
+</c:if>
 <script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>
@@ -153,6 +154,7 @@
                     });
                     pagelimit++;
                 }
+                $("main p").width(loginWidtn);
             }
         });
     })

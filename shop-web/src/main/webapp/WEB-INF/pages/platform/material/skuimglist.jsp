@@ -4,11 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/material/productimage.css">
 </head>
 <body>
+
 <div class="wrap">
     <header class="xq_header">
         <a href="javascript:" onclick="self.location=document.referrer;"><img src="${path}/static/images/xq_rt.png" alt=""></a>
@@ -26,18 +27,17 @@
                 <p>${mat.content}</p>
             </div>
         </c:forEach>
+
     </main>
     <div class="nobady" style="display: none">
         <img src="${path}/static/images/material/nodady.png" alt="">
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <c:if test="${countSkuMaterial>3}">
-        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
-    </c:if>
+
 </div>
 <div class="black">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -50,12 +50,15 @@
     </div>
 </div>
 <div class="bigphp">
-    <div class="backb"></div>
+    <div class="back_b"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
+<c:if test="${countSkuMaterial>3}">
+    <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
+</c:if>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
@@ -109,7 +112,7 @@
         $(".sec1 img").each(function(i,n){
             $(".floor").find("img").eq(i).attr("id","img0"+i);
             $(".floor").find("img").eq(i).attr("src","${path}/static/images/material/imgloading.gif");
-            Imagess($(".floor").find("img").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
+            Imagess($(".floor").find("img ").eq(i).attr("data"),$(".floor").find("img").eq(i).attr("id"),checkimg);
         })
     }
     var pagelimit = 2;
@@ -140,6 +143,11 @@
                         "</div>");
                     });
                     pagelimit++;
+                    $(".sec1 img").on("click",function(){
+                        var imgSrc=$(this).attr("src");
+                        $(".bigphp").show();
+                        $(".bigphp img").attr("src",imgSrc);
+                    })
                     $(function(){
                         var bWidth=$(".sec1").width()/3-5;
                         $(".sec1 a").css({
@@ -147,11 +155,6 @@
                             "width":bWidth+'px',
                             "height":bWidth+'px'
                         })
-                    })
-                    $(".sec1 img").on("click",function(){
-                        var imgSrc=$(this).attr("src");
-                        $(".bigphp").show();
-                        $(".bigphp img").attr("src",imgSrc);
                     })
                 }
             }

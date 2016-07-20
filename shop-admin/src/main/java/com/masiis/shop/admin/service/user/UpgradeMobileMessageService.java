@@ -38,7 +38,7 @@ public class UpgradeMobileMessageService {
      * @param upgradeDetail
      * @return
      */
-    public Boolean upgradeSuccssSendMoblieMessage(ComUser comUser, PfBorder pfBorder, List<PfBorderItem> pfBorderItems,BOrderUpgradeDetail upgradeDetail){
+    public Boolean upgradeSuccssSendMoblieMessage(ComUser comUser, PfBorder pfBorder, List<PfBorderItem> pfBorderItems,BOrderUpgradeDetail upgradeDetail,Boolean isWaitingOrder){
         //给上级发短信
         ComUser newPComUser =  comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
         if (newPComUser!=null){
@@ -48,17 +48,15 @@ public class UpgradeMobileMessageService {
             log.info("昵称-------"+comUser.getRealName());
             log.info("升级后的等级名-------"+upgradeDetail.getApplyAgentLevelName());
             PfSkuAgent newPfSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(newPComUser.getId(), upgradeDetail.getSkuId());
+/*            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(newPComUser.getId(), upgradeDetail.getSkuId());
             Boolean isStock = true;
             if (pfUserSkuStock == null) {
                 isStock = false;
             }
             if (pfUserSkuStock.getCustomStock() <= 0) {
                 isStock = false;
-            }
-            log.info("是否还有库存------"+isStock);
+            }*/
             log.info("收入-------"+newPfSkuAgent.getTotalPrice());
-            log.info("库存是否足够-------"+isStock);
             BigDecimal incomeAmout = pfBorder.getOrderAmount();
             log.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
             Boolean bl = MobileMessageUtil.getInitialization("B").lowerGroupUpRemind(newPComUser.getMobile(),
@@ -67,7 +65,7 @@ public class UpgradeMobileMessageService {
                     comUser.getRealName(),
                     upgradeDetail.getApplyAgentLevelName(),
                     incomeAmout,
-                    isStock);
+                    !isWaitingOrder);
             if (bl){
                 log.info("升级给上级发送短信成功");
             }

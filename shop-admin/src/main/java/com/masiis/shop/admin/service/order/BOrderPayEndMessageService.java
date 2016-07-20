@@ -78,16 +78,16 @@ public class BOrderPayEndMessageService {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         //代理等级数据
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
+        PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
         logger.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
             if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 logger.info("------升级订单进入排单发送微信------");
                 //发送微信通知
-                PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
-                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                 Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccssEntryWaiting(pfBorder, pfBorderPayment, upgradeDetail);
             } else {
-                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
+                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat,comAgentLevel,upgradeDetail);
             }
         } else if (pfBorder.getPayStatus().intValue() == 1) {
             //订单类型(0代理1补货2拿货)
@@ -101,21 +101,19 @@ public class BOrderPayEndMessageService {
                     pushMessageSupplementAndSendTypeII(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat);
                 }
                 //补货发送短信
-                pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
+                pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,false);
             } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
                 try {
                     //发送微信通知
-                    PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
-                    BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                     Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccessSendWXNotice(pfBorder, pfBorderPayment, upgradeDetail);
                     if (!bl) {
                         logger.info("升级支付完发送消息失败");
                         throw new Exception("升级支付完发送消息失败");
                     }
                     //发送短信
-                    upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail);
+                    upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail,false);
                 } catch (Exception ex) {
                     logger.info("升级支付完发送消息失败");
                 }
@@ -148,7 +146,9 @@ public class BOrderPayEndMessageService {
                                 PfBorder pfBorder,
                                 List<PfBorderItem> pfBorderItems,
                                 SimpleDateFormat simpleDateFormat,
-                                NumberFormat numberFormat) {
+                                NumberFormat numberFormat,
+                                ComAgentLevel comAgentLevel,
+                                BOrderUpgradeDetail upgradeDetail) {
         String[] param = new String[5];
         param[0] = pfBorderItems.get(0).getSkuName();
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
@@ -168,6 +168,18 @@ public class BOrderPayEndMessageService {
             } else {
                 WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             }
+            if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
+                //发送短信
+                pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
+            }else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
+                //补货发送短信
+                pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
+            }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
+                //发送短信
+                upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail,true);
+            }
+
+
         }
     }
 
@@ -211,7 +223,7 @@ public class BOrderPayEndMessageService {
             }
             // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             //发送短信
-            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel);
+            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,false);
         }
     }
     /**
@@ -226,7 +238,8 @@ public class BOrderPayEndMessageService {
                                         ComUser pComUser,
                                         PfBorder pfBorder,
                                         List<PfBorderItem> pfBorderItems,
-                                        ComAgentLevel comAgentLevel){
+                                        ComAgentLevel comAgentLevel,
+                                        Boolean isWatingOrder){
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
@@ -243,7 +256,8 @@ public class BOrderPayEndMessageService {
                         comAgentLevel.getName(),
                         incomeAmout,
                         recommenRewardName,
-                        userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId()));
+                        //userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId())
+                        !isWatingOrder);
                 if (bl) {
                     logger.info("合伙人订单有推荐人给合伙人发送短信成功");
                 }
@@ -267,7 +281,8 @@ public class BOrderPayEndMessageService {
                     pfBorderItems.get(0).getSkuName(),
                     comAgentLevel.getName(),
                     incomeAmout,
-                    userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+                    //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
+                    !isWatingOrder
             );
             if (bl){
                 logger.info("合伙人订单没有推荐人发送短信成功");
@@ -287,7 +302,8 @@ public class BOrderPayEndMessageService {
                                              ComUser pComUser,
                                              PfBorder pfBorder,
                                              List<PfBorderItem> pfBorderItems,
-                                             ComAgentLevel comAgentLevel){
+                                             ComAgentLevel comAgentLevel,
+                                             Boolean isWatingOrder){
         //给合伙人发送短信
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
@@ -297,7 +313,8 @@ public class BOrderPayEndMessageService {
                 comUser.getRealName(),
                 pfBorderItems.get(0).getQuantity(),
                 incomeAmout,
-                userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId())
+                //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
+                !isWatingOrder
         );
         if (bl){
             logger.info("补货给合伙人发送短信成功");

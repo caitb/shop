@@ -417,7 +417,7 @@ public class MobileMessageUtil {
     public boolean trialShipmentsRemind(String phone, String skuName, String shipName, String shipCode){
         content = new String[5];
         content[0] = skuName;
-        content[1] = shipName;
+        content[1] = shipName + "：";
         content[2] = shipCode;
         content[3] = EVENING_MESSAGE;
         return sendMethod(phone, SMSConstants.TRIAL_SHIPMENTS_REMIND, content);

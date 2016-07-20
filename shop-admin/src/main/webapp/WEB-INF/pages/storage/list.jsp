@@ -213,7 +213,7 @@
                         field: 'id',
                         align: 'center',
                         valign: 'middle',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
                             if(row && row.id){
@@ -224,32 +224,32 @@
                     {
                         field: 'create_time',
                         title: '创建时间',
-                        sortable: true,
+                        //sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.createTime){
-                                return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.create_time){
+                                return new Date(row.create_time).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
                         field: 'create_man',
                         title: '创建人',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.createMan){
-                                return row.createMan;
+                            if(row && row.create_man_name){
+                                return row.create_man_name;
                             }
                         }
                     },
                     {
                         field: 'code',
                         title: '变更单编码',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -260,25 +260,25 @@
                     },
                     {
                         field: 'user_id',
-                        title: '库存变更人用户id',
-                        sortable: true,
+                        title: '库存变更人',
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.userId){
-                                return row.userId;
+                            if(row && row.user_id_name){
+                                return row.user_id_name;
                             }
                         }
                     },
                     {
                         field: 'bill_reason',
                         title: '单据创建原因',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.billReason){
-                                return row.billReason;
+                            if(row && row.bill_reason){
+                                return row.bill_reason;
                             }
                         }
                     },
@@ -288,15 +288,15 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.productQuantity){
-                                return row.productQuantity;
+                            if(row && row.product_quantity){
+                                return row.product_quantity;
                             }
                         }
                     },
                     {
                         field: 'status',
                         title: '状态',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -322,27 +322,27 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.auditMan){
-                                return row.auditMan;
+                            if(row && row.audit_man_name){
+                                return row.audit_man_name;
                             }
                         }
                     },
                     {
                         field: 'audit_time',
                         title: '审核时间',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.auditTime){
-                                return new Date(row.auditTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.audit_time){
+                                return new Date(row.audit_time).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
                         field: 'remark',
                         title: '备注',
-                        sortable: true,
+                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -356,41 +356,17 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">审核</a>'];
-                            if(row.pfBorder && row.userPid == 0 && row.orderStatus == 6){
-                                arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
-                            }
-                            if(row && row.orderStatus == 9){
-                                arr.push('&nbsp;&nbsp;<a class="receipt" href="javascript:void(0);">确认收款</a>');
-                            }
-
                             return arr.join('');
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.id);
-                            },
-                            'click .scheduling': function(e, value, row, index){
-                                $.ajax({
-                                    url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.id, sendType: row.comUser.sendType},
-                                    success: function(msg){
-                                        msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
-                                        $.gritter.add({
-                                            title: '消息',
-                                            text: msg,
-                                            class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                        });
-                                        $('#table').bootstrapTable('refresh');
-                                    }
-                                })
-                            },
-                            'click .receipt': function(e, value, row, index){
-                                $('#orderCode2').html(row.orderCode);
+                                alert(1);
+                                /*$('#orderCode2').html(row.orderCode);
                                 $('#receivableAmount').html(row.receivableAmount);
                                 $('input[name="bOrderId"]').val(row.id);
                                 $('input[name="payAmount"]').val('');
                                 $('input[name="outOrderId"]').val('');
-                                $('#modal-receipt').modal('show');
+                                $('#modal-receipt').modal('show');*/
                             }
                         }
                     }

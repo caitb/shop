@@ -78,16 +78,19 @@ public class BOrderPayEndMessageService {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         //代理等级数据
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
-        PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
-        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
+
         logger.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
             if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 logger.info("------升级订单进入排单发送微信------");
+                PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                 //发送微信通知
                 Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccssEntryWaiting(pfBorder, pfBorderPayment, upgradeDetail);
+                //发送短信
+                upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail,true);
             } else {
-                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat,comAgentLevel,upgradeDetail);
+                pushMessageMPS(comUser, pComUser, pfBorder, pfBorderItems, simpleDateFormat, numberFormat,comAgentLevel);
             }
         } else if (pfBorder.getPayStatus().intValue() == 1) {
             //订单类型(0代理1补货2拿货)
@@ -105,6 +108,8 @@ public class BOrderPayEndMessageService {
             } else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
                 //支付完成推送消息(发送失败不回滚事务)
                 logger.info("未进入排单----升级订单发送短信-------");
+                PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+                BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(pfUserUpgradeNotice.getId());
                 try {
                     //发送微信通知
                     Boolean bl = upgradeWechatNewsService.upgradeOrderPaySuccessSendWXNotice(pfBorder, pfBorderPayment, upgradeDetail);
@@ -147,8 +152,7 @@ public class BOrderPayEndMessageService {
                                 List<PfBorderItem> pfBorderItems,
                                 SimpleDateFormat simpleDateFormat,
                                 NumberFormat numberFormat,
-                                ComAgentLevel comAgentLevel,
-                                BOrderUpgradeDetail upgradeDetail) {
+                                ComAgentLevel comAgentLevel) {
         String[] param = new String[5];
         param[0] = pfBorderItems.get(0).getSkuName();
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
@@ -175,12 +179,7 @@ public class BOrderPayEndMessageService {
             }else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //补货发送短信
                 pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
-            }else if (pfBorder.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
-                //发送短信
-                upgradeSuccssSendMoblieMessage.upgradeSuccssSendMoblieMessage(comUser,pfBorder,pfBorderItems,upgradeDetail,true);
             }
-
-
         }
     }
 

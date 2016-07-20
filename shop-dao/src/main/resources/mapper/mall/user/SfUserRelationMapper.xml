@@ -303,7 +303,7 @@
             INNER JOIN com_user u ON r.user_id = u.id and u.id <![CDATA[ <> ]]> #{userId}
             WHERE
             r.shop_id = #{shopId}
-        ) T WHERE 1=1selectSpokesManByID
+        ) T WHERE 1=1
         <if test="ID != null">
             AND T.ID like CONCAT('%',#{ID},'%')
         </if>

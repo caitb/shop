@@ -52,7 +52,7 @@ public class MaterialLibraryController extends BaseController {
             ComUser comUser = getComUser(request);
             int pageSize = 4; //ajax请求时默认每页显示条数为4条
             List<MaterialLibrary> materialLibraryList =  materialLibraryService.SkuMaterialLibraryList(1,pageSize,comUser.getId());
-            int countLibrary = materialLibraryService.CountSkuMaterialLibrary();
+            int countLibrary = materialLibraryService.CountSkuMaterialLibrary(comUser.getId());
             mv.addObject("countLibrary",countLibrary);
             mv.addObject("LibraryList",materialLibraryList);
         }catch (Exception e){

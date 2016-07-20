@@ -76,8 +76,29 @@
         ORDER BY sort ASC
     </select>
 
-    <select id="countLibrary" resultType="int" >
+    <select id="countLibrary" resultType="int" parameterType="java.lang.Long" >
         select COUNT(1)
-        from com_sku_material_library
+        from com_sku_material_library library
+            LEFT JOIN com_sku sku ON library.sku_id = sku.id
+            LEFT JOIN com_spu spu on spu.id = sku.spu_id
+            WHERE spu.brand_id in (
+            SELECT spu.brand_id from pf_user_sku pfsku
+            LEFT JOIN com_sku sku on sku.id = pfsku.sku_id AND pfsku.user_id = #{userId,jdbcType=BIGINT}
+            LEFT JOIN com_spu spu on spu.id = sku.spu_id
+        )
+    </select>
+
+    <select id="selectAllByPfUserSkuAgent" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT library.id, library.create_time, library.create_man, library.spu_id, library.sku_id, library.name, library.subscription_num, library.sort,
+        library.remark
+         from com_sku_material_library library
+            LEFT JOIN com_sku sku ON library.sku_id = sku.id
+            LEFT JOIN com_spu spu on spu.id = sku.spu_id
+            WHERE spu.brand_id in (
+            SELECT spu.brand_id from pf_user_sku pfsku
+            LEFT JOIN com_sku sku on sku.id = pfsku.sku_id AND pfsku.user_id = #{userId,jdbcType=BIGINT}
+            LEFT JOIN com_spu spu on spu.id = sku.spu_id
+        )
+        ORDER BY library.sort ASC
     </select>
 </mapper>

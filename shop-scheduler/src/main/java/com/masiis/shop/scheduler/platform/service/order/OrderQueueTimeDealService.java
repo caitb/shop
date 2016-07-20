@@ -101,6 +101,7 @@ public class OrderQueueTimeDealService {
             }
         }
         if (dealOrder){
+            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
             this.sendMessage(pfBorder,orderItems);
         }

@@ -77,20 +77,22 @@ public class IndexController extends BaseController {
         if(userPid!=null){
             pUser = userService.getUserById(userPid);
         }
-
-
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, user.getId());
         SfShop sfShop = null;
+        boolean isUpload = true; //没上传
         if (shopId != null) {
             sfShop = sfShopService.getSfShopById(shopId);
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
-                String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
-                sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
+                if(sfShop.getWxQrCode()!=null){
+                    String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
+                    String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+                    sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
+                    isUpload = false;
+                }
             }
         } else {
             throw new BusinessException("shopId不能为空");
@@ -102,6 +104,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("allSfSpokesManNum", allSfSpokesManNum);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("isUpload", isUpload);
         modelAndView.setViewName("newshouye");
         return modelAndView;
     }
@@ -194,7 +197,7 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =160L;
+        shopId =174L;
         userPid = 1644L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
@@ -204,6 +207,7 @@ public class IndexController extends BaseController {
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, userPid);
         SfShop sfShop = null;
+        boolean isUpload = true; //没上传
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
         } else {
@@ -211,17 +215,21 @@ public class IndexController extends BaseController {
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                String productImgValue = PropertiesUtils.getStringValue("shopman_wx_qrcode_url");
-                sfShop.setWxQrCode(productImgValue+sfShop.getWxQrCode());
+                if(sfShop.getWxQrCode()!=null){
+                    String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
+                    String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
+                    sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
+                    isUpload = false;
+                }
             }
         }
-
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("allSfSpokesManNum", allSfSpokesManNum);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("isUpload", isUpload);
         modelAndView.setViewName("newshouye");
         return modelAndView;
     }

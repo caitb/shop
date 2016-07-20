@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.platform.user.ComPosterMapper;
 import com.masiis.shop.dao.po.ComPoster;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,16 @@ public class ComPosterService {
      * 保存海报
      */
     public void add(ComPoster comPoster){
-        comPosterMapper.insert(comPoster);
+        ComPoster oldComPoster = comPosterMapper.selectByCondition(comPoster);
+        if(oldComPoster == null){
+            comPosterMapper.insert(comPoster);
+        }else{
+            comPoster.setId(oldComPoster.getId());
+            comPosterMapper.updateByPrimaryKey(comPoster);
+
+            //删除旧海报
+            OSSObjectUtils.deleteBucketFile("static/user/poster/"+oldComPoster.getPosterName());
+        }
     }
 
     /**

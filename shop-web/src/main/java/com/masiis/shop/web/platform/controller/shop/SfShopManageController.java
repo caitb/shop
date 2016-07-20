@@ -385,12 +385,8 @@ public class SfShopManageController extends BaseController {
             newComPoster.setType(1);
             newComPoster.setUserId(comUser.getId());
             newComPoster.setPosterName(posterName);
-            if(comPoster == null){
-                comPosterService.add(newComPoster);
-            }else{
-                newComPoster.setId(comPoster.getId());
-                comPosterService.update(newComPoster);
-            }
+
+            comPosterService.add(newComPoster);
 
             //二维码获取成功,更新com_user成为代言人
             SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), shopId);

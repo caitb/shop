@@ -240,7 +240,7 @@ public class BOrderPayEndMessageService {
                                         PfBorder pfBorder,
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel,
-                                        Boolean isWatingOrder){
+                                        Boolean isWaitngOrder){
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
@@ -258,7 +258,7 @@ public class BOrderPayEndMessageService {
                         incomeAmout,
                         recommenRewardName,
                         //userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId())
-                        !isWatingOrder);
+                        !isWaitngOrder);
                 if (bl) {
                     logger.info("合伙人订单有推荐人给合伙人发送短信成功");
                 }
@@ -283,7 +283,7 @@ public class BOrderPayEndMessageService {
                     comAgentLevel.getName(),
                     incomeAmout,
                     //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
-                    !isWatingOrder
+                    !isWaitngOrder
             );
             if (bl){
                 logger.info("合伙人订单没有推荐人发送短信成功");
@@ -339,7 +339,7 @@ public class BOrderPayEndMessageService {
                                              PfBorder pfBorder,
                                              List<PfBorderItem> pfBorderItems,
                                              ComAgentLevel comAgentLevel,
-                                             Boolean isWatingOrder){
+                                             Boolean isWaitngOrder){
         //给合伙人发送短信
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
@@ -350,7 +350,7 @@ public class BOrderPayEndMessageService {
                 pfBorderItems.get(0).getQuantity(),
                 incomeAmout,
                 //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
-                !isWatingOrder
+                !isWaitngOrder
         );
         if (bl){
             logger.info("补货给合伙人发送短信成功");

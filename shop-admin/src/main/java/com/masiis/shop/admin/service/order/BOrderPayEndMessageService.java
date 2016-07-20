@@ -168,8 +168,9 @@ public class BOrderPayEndMessageService {
             } else {
                 WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             }
+            //发送短信
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
-                //发送短信
+                //代理发送短信
                 pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
             }else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //补货发送短信
@@ -239,10 +240,11 @@ public class BOrderPayEndMessageService {
                                         PfBorder pfBorder,
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel,
-                                        Boolean isWatingOrder){
+                                        Boolean isWaitngOrder){
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
+        logger.info("是否处于排单-------"+isWaitngOrder);
         if (pfBorderRecommenReward!=null){
             logger.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
             ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
@@ -257,7 +259,7 @@ public class BOrderPayEndMessageService {
                         incomeAmout,
                         recommenRewardName,
                         //userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId())
-                        !isWatingOrder);
+                        !isWaitngOrder);
                 if (bl) {
                     logger.info("合伙人订单有推荐人给合伙人发送短信成功");
                 }
@@ -282,7 +284,7 @@ public class BOrderPayEndMessageService {
                     comAgentLevel.getName(),
                     incomeAmout,
                     //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
-                    !isWatingOrder
+                    !isWaitngOrder
             );
             if (bl){
                 logger.info("合伙人订单没有推荐人发送短信成功");
@@ -303,10 +305,11 @@ public class BOrderPayEndMessageService {
                                              PfBorder pfBorder,
                                              List<PfBorderItem> pfBorderItems,
                                              ComAgentLevel comAgentLevel,
-                                             Boolean isWatingOrder){
+                                             Boolean isWaitingOrder){
         //给合伙人发送短信
         BigDecimal incomeAmout = pfBorder.getOrderAmount();
         logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
+        logger.info("是否处于排单-------"+isWaitingOrder);
         Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
                 pfBorderItems.get(0).getSkuName(),
                 comAgentLevel.getName(),
@@ -314,7 +317,7 @@ public class BOrderPayEndMessageService {
                 pfBorderItems.get(0).getQuantity(),
                 incomeAmout,
                 //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
-                !isWatingOrder
+                !isWaitingOrder
         );
         if (bl){
             logger.info("补货给合伙人发送短信成功");

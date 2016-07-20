@@ -41,6 +41,7 @@ public class UpgradeMobileMessageService {
     public Boolean upgradeSuccssSendMoblieMessage(ComUser comUser, PfBorder pfBorder, List<PfBorderItem> pfBorderItems,BOrderUpgradeDetail upgradeDetail,Boolean isWaitingOrder){
         //给上级发短信
         ComUser newPComUser =  comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+        log.info("是否处于排单-------"+isWaitingOrder);
         if (newPComUser!=null){
             log.info("上级电话号码-------"+newPComUser.getMobile());
             log.info("商品名称-------"+upgradeDetail.getSkuName());

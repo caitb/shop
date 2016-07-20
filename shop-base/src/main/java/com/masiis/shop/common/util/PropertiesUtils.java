@@ -28,7 +28,7 @@ public class PropertiesUtils {
 
     static {
         try {
-            entry = loadProperties("config.properties", "oss_config.properties");
+            entry = loadProperties("config.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }

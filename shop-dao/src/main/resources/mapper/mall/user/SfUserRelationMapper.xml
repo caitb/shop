@@ -100,6 +100,7 @@
         select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
         where
         tree_code like CONCAT(#{treeCode},'%')
+        and tree_code <![CDATA[ <> ]]> #{treeCode}
         <if test="shopId != null">
             and r.shop_id = #{shopId}
         </if>
@@ -113,6 +114,7 @@
             and r.shop_id = #{shopId}
         </if>
         and tree_code like CONCAT(#{treeCode},'%')
+        and tree_code <![CDATA[ <> ]]> #{treeCode}
     </select>
 
     <select id="selectFansOrSpokesManNum" resultType="java.util.HashMap">

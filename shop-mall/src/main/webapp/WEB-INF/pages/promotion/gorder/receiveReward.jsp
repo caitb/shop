@@ -59,6 +59,7 @@
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 </body>
 <script>
+    var promise =  $.Deferred().promise();
     $(document).ready(function () {
         var addressId = $("#addressId").val();
         if (addressId == "") {
@@ -79,25 +80,28 @@
             alert("请先选择收货地址");
             return;
         }
-        $.ajax({
-            type: "POST",
-            url: "/promotionGorder/receiveReward.do",
-            async:false,
-            data: {selectedAddressId: addressId, promoId: ${promoId},promoRuleId: ${promoRuleId}},
-            dataType: "Json",
-            success: function (result) {
-                if (result==1){
-                    //领取成功
-                    window.location.href="<%=path%>/promotionGorder/skipReceiveRewardSuccessPage.html";
-                }else if(result==2){
-                    //已领取
-                    alert("您已领取不能再重复领取");
-                }else if (result==0){
-                    //粉丝数量不够不能领取
-                    alert("粉丝数量未达到要求不能领取");
+        if(promise.state()=="pending"){
+            promise = $.ajax({
+                type: "POST",
+                url: "/promotionGorder/receiveReward.do",
+                async:false,
+                data: {selectedAddressId: addressId, promoId: ${promoId},promoRuleId: ${promoRuleId}},
+                dataType: "Json",
+                success: function (result) {
+                    if (result==1){
+                        //领取成功
+                        window.location.href="<%=path%>/promotionGorder/skipReceiveRewardSuccessPage.html";
+                    }else if(result==2){
+                        //已领取
+                        alert("您已领取不能再重复领取");
+                    }else if (result==0){
+                        //粉丝数量不够不能领取
+                        alert("粉丝数量未达到要求不能领取");
+                    }
                 }
-            }
-        })
+            })
+        }
+        promise.then();
     }
 </script>
 </html>

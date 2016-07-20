@@ -16,26 +16,25 @@
         <p>素材图片</p>
     </header>
     <main id="divall">
-        <c:forEach var="mat" items="${materials}">
-            <div class="floor">
-                <h1>${mat.title}</h1>
-                <div class="sec1" id="imagelist">
-                    <c:forEach items="${mat.comSkuMaterialItems}" var="img">
-                        <a href="#"><img data="${img.fileUrl}" /></a>
-                    </c:forEach>
+            <c:forEach var="mat" items="${materials}">
+                <div class="floor">
+                    <h1>${mat.title}</h1>
+                    <div class="sec1" id="imagelist">
+                        <c:forEach items="${mat.comSkuMaterialItems}" var="img">
+                            <a href="#"><img data="${img.fileUrl}" /></a>
+                        </c:forEach>
+                    </div>
+                    <p>${mat.content}</p>
                 </div>
-                <p>${mat.content}</p>
-            </div>
-        </c:forEach>
+            </c:forEach>
+
     </main>
     <div class="nobady" style="display: none">
         <img src="${path}/static/images/material/nodady.png" alt="">
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
-    <c:if test="${countSkuMaterial>3}">
-        <div class="downloading"><img src="${path}/static/images/material/downloading.png" alt=""></div>
-    </c:if>
+
 </div>
 <div class="black">
     <div class="back_b"></div>
@@ -57,6 +56,9 @@
     </div>
     <b class="off" onclick="bigphpHide()">×</b>
 </div>
+<c:if test="${countSkuMaterial>3}">
+    <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
+</c:if>
 <script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/common/definedAlertWindow.js"></script>
 <script>

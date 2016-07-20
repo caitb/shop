@@ -749,7 +749,7 @@ public class SfOrderPayService {
                     shopUser.getMobile(),
                     skuNames.toString(),
                     orderItems.get(0).getQuantity(),
-                    order.getPayAmount()
+                    order.getOrderAmount()
             );
         }
         log.info("短信提醒-------------------------------end");

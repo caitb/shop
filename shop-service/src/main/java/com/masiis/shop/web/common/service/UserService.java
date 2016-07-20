@@ -324,10 +324,17 @@ public class UserService {
             log.info("更新comWxUser");
             // 有openid,更新这个openid数据
             updateWxUserByActkn(res, userRes, wxUser);
+            updateComUserByActkn(userRes, user);
+            comUserMapper.updateByPrimaryKey(user);
             wxUserMapper.updateByPrimaryKey(wxUser);
         }
 
         return user;
+    }
+
+    private void updateComUserByActkn(WxUserInfo userRes, ComUser user) {
+        user.setWxNkName(userRes.getNickname());
+        user.setWxHeadImg(userRes.getHeadimgurl());
     }
 
     private ComUser createComUser(WxUserInfo userRes) {

@@ -441,6 +441,7 @@ public class MobileMessageUtil {
         content[2] = nickName;
         content[3] = String.valueOf(count);
         content[4] = numberFormat.format(income);
+        content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货";
         }
@@ -465,6 +466,7 @@ public class MobileMessageUtil {
         content[2] = nickName;
         content[3] = upGradeLevel;
         content[4] = numberFormat.format(income);
+        content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货";
         }
@@ -489,6 +491,7 @@ public class MobileMessageUtil {
         content[2] = nickName;
         content[3] = upGradeLevel;
         content[4] = numberFormat.format(income);
+        content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货";
         }
@@ -533,6 +536,7 @@ public class MobileMessageUtil {
         content[2] = nickName;
         content[3] = String.valueOf(count);
         content[4] = numberFormat.format(income);
+        content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货";
         }
@@ -575,6 +579,7 @@ public class MobileMessageUtil {
         content[1] = levelName;
         content[2] = numberFormat.format(income);
         content[3] = recommenNickName;
+        content[4] = "";
         if (!haveStock){
             content[4] = "您的库存不足，请及时补货";
         }
@@ -629,6 +634,7 @@ public class MobileMessageUtil {
         content[0] = skuName;
         content[1] = levelName;
         content[2] = numberFormat.format(income);
+        content[3] = "";
         if (!hasStock){
             content[3] = "您的库存不足，请及时补货";
         }

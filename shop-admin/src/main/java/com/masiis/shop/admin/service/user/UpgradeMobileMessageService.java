@@ -76,22 +76,30 @@ public class UpgradeMobileMessageService {
             //给推荐人发短信(获得佣金)
             log.info("pfborderItem的id-------------------"+pfBorderItems.get(0).getId());
             PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
-            log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
-            ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
-            log.info("推荐人电话------"+recommenRewardUser.getMobile());
-            log.info("被推荐人姓名------"+comUser.getRealName());
-            log.info("升级后的奖励------"+pfBorderRecommenReward.getRewardTotalPrice().toString());
-            Boolean _bl = MobileMessageUtil.getInitialization("B").refereeUpgradeRecommendRemind(recommenRewardUser.getMobile(),
-                    upgradeDetail.getSkuName(),
-                    upgradeDetail.getCurrentAgentLevelName(),
-                    comUser.getRealName(),
-                    upgradeDetail.getApplyAgentLevelName(),
-                    pfBorderRecommenReward.getRewardTotalPrice().toString()
-            );
-            if (_bl){
-                log.info("给推荐人发短信(获得佣金)-----成功");
+            if (pfBorderRecommenReward!=null){
+                log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+                ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+                if (recommenRewardUser!=null){
+                    log.info("推荐人电话------"+recommenRewardUser.getMobile());
+                    log.info("被推荐人姓名------"+comUser.getRealName());
+                    log.info("升级后的奖励------"+pfBorderRecommenReward.getRewardTotalPrice().toString());
+                    Boolean _bl = MobileMessageUtil.getInitialization("B").refereeUpgradeRecommendRemind(recommenRewardUser.getMobile(),
+                            upgradeDetail.getSkuName(),
+                            upgradeDetail.getCurrentAgentLevelName(),
+                            comUser.getRealName(),
+                            upgradeDetail.getApplyAgentLevelName(),
+                            pfBorderRecommenReward.getRewardTotalPrice().toString()
+                    );
+                    if (_bl){
+                        log.info("给推荐人发短信(获得佣金)-----成功");
+                    }else{
+                        log.info("给推荐人发短信(获得佣金)-----失败");
+                    }
+                }else{
+                    log.info("-----------有推荐人但是查询不到不发送短信--------------");
+                }
             }else{
-                log.info("给推荐人发短信(获得佣金)-----失败");
+                log.info("-----------没有推荐不发送短信-----------");
             }
         }
         log.info("给上级发送短信-----end");

@@ -1,6 +1,8 @@
 package com.masiis.shop.admin.beans.storage;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.masiis.shop.admin.beans.base.BaseRes;
+import com.masiis.shop.dao.po.ComUser;
 
 import java.util.List;
 
@@ -9,32 +11,14 @@ import java.util.List;
  * @Author lzh
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class QueryUserByConditionRes {
-    private String resCode;
-    private String resMsg;
-    private List<StorageUserInfo> users;
+public class QueryUserByConditionRes extends BaseRes{
+    private List<ComUser> users;
 
-    public List<StorageUserInfo> getUsers() {
+    public List<ComUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<StorageUserInfo> users) {
+    public void setUsers(List<ComUser> users) {
         this.users = users;
-    }
-
-    public String getResCode() {
-        return resCode;
-    }
-
-    public void setResCode(String resCode) {
-        this.resCode = resCode;
-    }
-
-    public String getResMsg() {
-        return resMsg;
-    }
-
-    public void setResMsg(String resMsg) {
-        this.resMsg = resMsg;
     }
 }

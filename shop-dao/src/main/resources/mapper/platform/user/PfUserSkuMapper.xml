@@ -65,6 +65,10 @@
         <id column="agentLevelId" property="agentLevelId" jdbcType="INTEGER"/>
         <id column="agentName" property="agentName" jdbcType="VARCHAR"/>
     </resultMap>
+    
+    <resultMap id="UserSkusResultMap" type="com.masiis.shop.dao.po.ComSku">
+
+    </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from pf_user_sku
@@ -448,6 +452,10 @@
         pf_user_sku
         where
         user_id = #{userId,jdbcType=BIGINT} AND user_pid =0
+    </select>
+
+    <select id="selectSkusByUserId" resultMap="UserSkusResultMap">
+
     </select>
 </mapper>
 

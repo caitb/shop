@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
@@ -136,4 +137,12 @@ public interface PfUserSkuMapper {
     List<Map<String, Object>> selectAgentSku(Long userId);
 
     List<PfUserSku> selectByUserIdNotPid(@Param("userId") Long userId);
+
+    /**
+     * 根据用户id查询该用户代理的商品
+     *
+     * @param userId
+     * @return
+     */
+    List<ComSku> selectSkusByUserId(@Param("userId") Long userId);
 }

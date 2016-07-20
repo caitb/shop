@@ -74,6 +74,14 @@
         .li_selected{
             background:#428bca;
         }
+        #nameList b{
+            margin-right: 10px;
+            text-indent: 1.2em;
+            text-align: inherit;
+        }
+        #nameList li{
+            height:40px;
+        }
     </style>
 </head>
 
@@ -184,57 +192,38 @@
 
                                     <div class="modal-body no-padding">
                                         <form class="form-horizontal" role="form" id="library">
-
-                                            <%--<div class="form-group">
-                                                <div class="col-xs-offset-1 col-sm-5">
-                                                    <input id="useId" class="form-control" type="text" placeholder="请输入用户ID"/>
-                                                </div>
-                                                <label class="col-sm-0"></label>
-                                                <div class="col-sm-5">
-                                                    <input id="useName" class="form-control" type="text" placeholder="请输入用户姓名"/>
-                                                </div>
-                                            </div>--%>
-
                                             <div class="form-group">
                                                 <div class="col-xs-offset-1 col-sm-5">
-                                                    <input id="userPhone" type="text" class="form-control" name="userPhone" placeholder="请输入用户手机号">
+                                                    <input id="uName" type="text" class="form-control" name="uName" placeholder="请输入用户姓名">
                                                 </div>
                                                 <label class="col-sm-0"></label>
                                                 <div class="col-sm-5">
-                                                    <input id="useWx" class="form-control" type="text" placeholder="请输入用户微信号"/>
+                                                    <input id="uPhone" class="form-control" type="text" placeholder="请输入用户手机号"/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-1"></label>
                                                 <div class="col-sm-3">
-                                                    <button type="button" class="btn btn-success">查询</button>
+                                                    <button id="quserid" type="button" class="btn btn-success">查询</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-3" style="text-align: center;">姓名</label>
+                                                        <label class="control-label col-sm-4" style="text-align: center;">手机号</label>
+                                                        <label class="control-label col-sm-3" style="text-align: center;">微信昵称</label>
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="form-group" style="height: 170px;">
                                                 <label class="control-label col-sm-1"></label>
-                                                <div class="col-sm-10" style="height: 150px;height: 163px;overflow: auto;">
-                                                    <%--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">--%>
-                                                        <%--Action <span class="caret"></span>--%>
-                                                    <%--</button>--%>
-                                                    <%--<ul class="dropdown-menu" role="menu" style="height:155px;
-                                                     overflow: auto; overflow-y: scroll;">
-                                                        <li><a href="#">Action</a></li>
-                                                        <li><a href="#">Another action</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                        <li><a href="#">Something else here</a></li>
-                                                    </ul>--%>
-                                                        <ul class="list-group">
-                                                            <li class="list-group-item">揭开CSS3的面纱</li>
-                                                            <li class="list-group-item">CSS3选择器</li>
-                                                            <li class="list-group-item">CSS3边框</li>
-                                                            <li class="list-group-item">CSS3背景</li>
-                                                            <li class="list-group-item">CSS3文本</li>
-                                                        </ul>
+                                                <div class="col-sm-10" style="height: 188px;overflow: auto;">
+                                                    <ul class="list-group" id="nameList">
+                                                    </ul>
                                                 </div>
                                             </div>
 
@@ -289,16 +278,6 @@
 <script>
 
     $(document).ready(function() {
-        $(".list-group .list-group-item").on("click", function(){
-            $(this).addClass("li_selected").siblings().removeClass("li_selected");
-        });
-        // 添加规则
-        function addPromotionRule() {
-            var $template = $('#promotion-rule-template');
-            var newRule = $template.clone(true).removeAttr("id").show();
-            $template.before(newRule);
-        }
-
         addPromotionRule();
 
         $('button#addPro').click(addPromotionRule);
@@ -324,8 +303,14 @@
         // 保存表单
         $('#promotionSave').click(function() {
             $('#promotionForm').submit();
-        })
+        });
 
+        $(".list-group").on("click", ".list-group-item", function(){
+            if($(this).attr("id") == "list_0"){
+                return;
+            }
+            $(this).addClass("li_selected").siblings().removeClass("li_selected");
+        });
 
         $('#promotionForm').bootstrapValidator({
                     message: '必须填写',
@@ -382,11 +367,100 @@
                 });
 
         $("#useSelect").on("click", function(){
+            $("#uName").val(null);
+            $("#uPhone").val(null);
+            $("#nameList").empty();
+            $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                    + "<div class=\"form-group\" >"
+                    + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
+                    + "</div>"
+                    + "</li>"));
             $("#modal-library").modal("show");
         });
 
-        $("#modal-library").modal("show");
+        $("#quserid").on("click", queryUser);
+
+        $("#saveLibrary").unbind("click").on("click", function(){
+            var userId = $("#nameList .form-group .list-group-item .li_selected").attr("id");
+            if(userId == undefined || userId == null || userId == ""){
+                alert("您没有选中任何人");
+                return;
+            }
+            var options = {
+                url:"${path}/storagechange/skulist.do",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userId:userId
+                },
+                success:function(data){
+
+                }
+            }
+        });
+
     });
+
+    function queryUser(){
+        $("#quserid").unbind("click");
+        var options = {
+            url:"${path}/storagechange/quser.do",
+            type:"post",
+            dataType:"json",
+            data:{
+                userName:$("#uName").val().toLocaleString(),
+                userPhone:$("#uPhone").val().toLocaleString()
+            },
+            success:function(data){
+                $("#nameList").empty();
+                if(data.resCode == "success"){
+                    if(data.users != undefined && data.users.length > 0){
+                        for(var i=0; i < data.users.length; i++){
+                            var ele = "<li class=\"list-group-item\" id='" + data.users[i].id + "'>"
+                                        + "<div class=\"form-group\">"
+                                            + "<b class=\"col-sm-3\">" + data.users[i].realName + "</b>"
+                                            + "<b class=\"col-sm-4\">" + data.users[i].mobile + "</b>"
+                                            + "<b class=\"col-sm-3\" style=\"text-indent: 0.5em;\">" + data.users[i].wxNkName + "</b>"
+                                        + "</div>"
+                                      "</li>";
+                            $("#nameList").append($(ele));
+                        }
+                    } else {
+                        $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                                                    + "<div class=\"form-group\">"
+                                                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">暂无结果</label>"
+                                                    + "</div>"
+                                                + "</li>"));
+                    }
+                } else {
+                    $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                            + "<div class=\"form-group\">"
+                            + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">" + data.resMsg + "</label>"
+                            + "</div>"
+                            + "</li>"));
+                }
+                $("#quserid").on("click", queryUser);
+            },
+            error:function(){
+                $("#nameList").empty();
+                $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                        + "<div class=\"form-group\">"
+                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">网络错误，请重试</label>"
+                        + "</div>"
+                        + "</li>"));
+                $("#quserid").on("click", queryUser);
+            }
+        };
+
+        $.ajax(options);
+    }
+
+    // 添加规则
+    function addPromotionRule() {
+        var $template = $('#promotion-rule-template');
+        var newRule = $template.clone(true).removeAttr("id").show();
+        $template.before(newRule);
+    }
 </script>
 </body>
 </html>

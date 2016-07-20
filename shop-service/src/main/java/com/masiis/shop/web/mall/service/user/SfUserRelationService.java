@@ -123,10 +123,7 @@ public class SfUserRelationService {
             case 0 : {
                 for (SfUserRelation relation : sfUserRelations){
                     logger.info("查询粉丝数量");
-                    num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
-                    if (num < 0){
-                        num = 0;
-                    }
+                    num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
                     logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
                     if (maxNum < num){
                         maxNum = num;
@@ -139,9 +136,6 @@ public class SfUserRelationService {
                 logger.info("查询代言人数量");
                 for (SfUserRelation relation : sfUserRelations){
                     num = sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
-                    if (num < 0){
-                        num = 0;
-                    }
                     logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
                     if (maxNum < num){
                         maxNum = num;

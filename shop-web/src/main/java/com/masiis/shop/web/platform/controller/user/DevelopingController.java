@@ -348,15 +348,8 @@ public class DevelopingController extends BaseController {
                 newComPoster.setType(0);
                 newComPoster.setUserId(comUser.getId());
                 newComPoster.setPosterName(posterName);
-                if(comPoster == null){
-                    comPosterService.add(newComPoster);
-                }else{
-                    newComPoster.setId(comPoster.getId());
-                    comPosterService.update(newComPoster);
 
-                    //删除旧海报
-                    OSSObjectUtils.deleteBucketFile("static/user/poster/"+comPoster.getPosterName());
-                }
+                comPosterService.add(newComPoster);
 
                 resultMap.put("poster", PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
             }

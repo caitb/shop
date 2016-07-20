@@ -240,15 +240,8 @@ public class SfShopController extends BaseController {
             newComPoster.setType(2);
             newComPoster.setUserId(comUser.getId());
             newComPoster.setPosterName(posterName);
-            if(comPoster == null){
-                comPosterService.add(newComPoster);
-            }else{
-                newComPoster.setId(comPoster.getId());
-                comPosterService.update(newComPoster);
 
-                //删除旧海报
-                OSSObjectUtils.deleteBucketFile("static/user/poster/"+comPoster.getPosterName());
-            }
+            comPosterService.add(newComPoster);
 
             //二维码获取成功,更新sfUserRelation成为代言人
             SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), shopId);

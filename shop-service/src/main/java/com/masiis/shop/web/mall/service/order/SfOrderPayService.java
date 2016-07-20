@@ -740,16 +740,16 @@ public class SfOrderPayService {
         if (shopUser != null) {
             log.info("小铺归属人短信提醒------小铺人的电话-----"+shopUser.getMobile());
             //MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
-            BigDecimal payAmount = order.getPayAmount();
+/*            BigDecimal payAmount = order.getPayAmount();
             BigDecimal disAmount = order.getDistributionAmount();
             BigDecimal agentShipAmount = order.getAgentShipAmount();
             BigDecimal billAmount = payAmount.subtract(disAmount).subtract(agentShipAmount);
-            log.info("小铺店主获得收入-------"+billAmount.toString());
+            log.info("小铺店主获得收入-------"+billAmount.toString());*/
             MobileMessageUtil.getInitialization("C").orderShopRemind(
                     shopUser.getMobile(),
                     skuNames.toString(),
                     orderItems.get(0).getQuantity(),
-                    billAmount
+                    order.getPayAmount()
             );
         }
         log.info("短信提醒-------------------------------end");

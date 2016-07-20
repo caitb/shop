@@ -114,6 +114,74 @@
                             </div>
                         </div>
 
+
+                        <div id="modal-library" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">×</span>
+                                            </button>
+                                            选择变更人
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <form class="form-horizontal" role="form" id="library">
+                                            <div class="form-group">
+                                                <div class="col-xs-offset-1 col-sm-5">
+                                                    <input id="uName" type="text" class="form-control" name="uName" placeholder="请输入用户姓名">
+                                                </div>
+                                                <label class="col-sm-0"></label>
+                                                <div class="col-sm-5">
+                                                    <input id="uPhone" class="form-control" type="text" placeholder="请输入用户手机号"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-1"></label>
+                                                <div class="col-sm-3">
+                                                    <button id="quserid" type="button" class="btn btn-success">查询</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-3" style="text-align: center;">姓名</label>
+                                                        <label class="control-label col-sm-4" style="text-align: center;">手机号</label>
+                                                        <label class="control-label col-sm-3" style="text-align: center;">微信昵称</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" style="height: 170px;">
+                                                <label class="control-label col-sm-1"></label>
+                                                <div class="col-sm-10" style="height: 188px;overflow: auto;">
+                                                    <ul class="list-group" id="nameList">
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-5">
+                                            <button class="btn btn-sm btn-danger pull-left" id="cancelSave" type="button" data-dismiss="modal">
+                                                取消
+                                            </button>
+                                            <button class="btn btn-sm btn-info pull-left" id="saveLibrary" type="button">
+                                                保存
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+
+
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content-area -->
@@ -258,7 +326,7 @@
                             }
                         }
                     },
-                    {
+                    /*{
                         field: 'user_id',
                         title: '库存变更人',
                         //sortable: true,
@@ -267,6 +335,30 @@
                         formatter: function(value, row, index){
                             if(row && row.user_id_name){
                                 return row.user_id_name;
+                            }
+                        }
+                    },*/
+                    {
+                        field: 'user_id',
+                        title: '库存变更人',
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.user_id_name){
+                                return '<a class="detailUser" href="javascript:void(0);" userid="'+row.user_id+'">'+row.user_id_name+'</a>';
+                            }
+                        },
+                        events: {
+                            'click .detailUser': function(e, value, row, index){
+                                alert($(this).attr("userid"));
+                                $("#uName").val(null);
+                                $("#uPhone").val(null);
+                                $("#nameList").empty();
+                                $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                                        + "<div class=\"form-group\" >"
+                                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
+                                        + "</div>"
+                                        + "</li>"));
+                                $("#modal-library").modal("show");
                             }
                         }
                     },
@@ -300,9 +392,9 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.status){
+                            //if(row && row.status){
                                 return row.status;
-                            }
+                            //}
                         }
                     },
                     {
@@ -311,12 +403,12 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.type){
+                            //if(row && row.type){
                                 return row.type;
-                            }
+                            //}
                         }
                     },
-                    {
+                    /*{
                         field: 'audit_man',
                         title: '审核人',
                         footerFormatter: totalNameFormatter,
@@ -326,8 +418,8 @@
                                 return row.audit_man_name;
                             }
                         }
-                    },
-                    {
+                    },*/
+                    /*{
                         field: 'audit_time',
                         title: '审核时间',
                         //sortable: true,
@@ -338,7 +430,7 @@
                                 return new Date(row.audit_time).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
-                    },
+                    },*/
                     {
                         field: 'remark',
                         title: '备注',
@@ -355,18 +447,25 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var arr = ['<a class="detail" href="javascript:void(0);">审核</a>'];
+                            if(row && row.status==0){
+                                var arr = ['<a class="detail" href="javascript:void(0);">审核</a>'];
+                            }else{
+                                var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            }
+
                             return arr.join('');
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                alert(1);
-                                /*$('#orderCode2').html(row.orderCode);
-                                $('#receivableAmount').html(row.receivableAmount);
-                                $('input[name="bOrderId"]').val(row.id);
-                                $('input[name="payAmount"]').val('');
-                                $('input[name="outOrderId"]').val('');
-                                $('#modal-receipt').modal('show');*/
+                                $("#uName").val(null);
+                                $("#uPhone").val(null);
+                                $("#nameList").empty();
+                                $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                                        + "<div class=\"form-group\" >"
+                                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
+                                        + "</div>"
+                                        + "</li>"));
+                                $("#modal-library").modal("show");
                             }
                         }
                     }
@@ -525,6 +624,18 @@
                 };
 
         eachSeries(scripts, getScript, initTable);
+
+        /*$("#table").on("click", function(){
+            $("#uName").val(null);
+            $("#uPhone").val(null);
+            $("#nameList").empty();
+            $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
+                    + "<div class=\"form-group\" >"
+                    + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
+                    + "</div>"
+                    + "</li>"));
+            $("#modal-library").modal("show");
+        });*/
     });
 
     function getScript(url, callback) {

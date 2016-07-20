@@ -98,6 +98,7 @@
                             }
                         });
             }
+            promise.then();
         }
     }
 </script>

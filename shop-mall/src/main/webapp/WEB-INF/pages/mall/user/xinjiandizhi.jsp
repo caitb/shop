@@ -41,7 +41,7 @@
                 });
             }
         }
-        promise.then()
+        promise.then();
     }
 
 

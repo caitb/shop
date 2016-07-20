@@ -154,6 +154,7 @@
                     });
                     pagelimit++;
                 }
+                $("main p").width(loginWidtn);
             }
         });
     })

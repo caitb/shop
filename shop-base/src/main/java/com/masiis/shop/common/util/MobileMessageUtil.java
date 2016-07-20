@@ -443,7 +443,7 @@ public class MobileMessageUtil {
         content[4] = numberFormat.format(income);
         content[5] = "";
         if (!haveStock){
-            content[5] = "您的库存不足，请及时补货";
+            content[5] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.LOWER_PEPLENISHMENT_REMIND, content);
     }
@@ -468,7 +468,7 @@ public class MobileMessageUtil {
         content[4] = numberFormat.format(income);
         content[5] = "";
         if (!haveStock){
-            content[5] = "您的库存不足，请及时补货";
+            content[5] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.LOWER_UPGROUP_REMIND, content);
     }
@@ -493,7 +493,7 @@ public class MobileMessageUtil {
         content[4] = numberFormat.format(income);
         content[5] = "";
         if (!haveStock){
-            content[5] = "您的库存不足，请及时补货";
+            content[5] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.REFEREE_UPGRADE_UP_REMIND, content);
     }
@@ -538,7 +538,7 @@ public class MobileMessageUtil {
         content[4] = numberFormat.format(income);
         content[5] = "";
         if (!haveStock){
-            content[5] = "您的库存不足，请及时补货";
+            content[5] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.REFEREE_ADDSTOCK_UP_REMIND, content);
     }
@@ -581,7 +581,7 @@ public class MobileMessageUtil {
         content[3] = recommenNickName;
         content[4] = "";
         if (!haveStock){
-            content[4] = "您的库存不足，请及时补货";
+            content[4] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.REFEREE_LOWER_JOIN_UP_NOTICE, content);
     }
@@ -636,7 +636,7 @@ public class MobileMessageUtil {
         content[2] = numberFormat.format(income);
         content[3] = "";
         if (!hasStock){
-            content[3] = "您的库存不足，请及时补货";
+            content[3] = "您的库存不足，请及时补货。";
         }
         return sendMethod(phone, SMSConstants.LOWER_JOIN_REMIND, content);
     }

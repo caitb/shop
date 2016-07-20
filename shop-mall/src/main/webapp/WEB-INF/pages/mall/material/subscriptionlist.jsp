@@ -12,7 +12,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/materielList/infoC"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a onclick="javascript:window.location.replace('${path}/materielList/infoC');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>${skuName}</p>
     </header>
     <main>

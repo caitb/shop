@@ -60,7 +60,7 @@
                 <div onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');"><img src="<%=path%>/static/images/woyao.png" alt=""></div>
                 <p>&nbsp;&nbsp;</p>
                 <div onclick="javascript:window.location.replace('http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333&scene=0#wechat_redirect');"><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
-                <div class="tallme">联系我</div>
+                    <div class="tallme" onclick="showNowxcode(${isUpload})">联系我</div>
             </div>
         </div>
 
@@ -185,23 +185,31 @@
         $(".back_b").hide();
     }
 
-    $(".tallme").on("click",function(){
-        var array = "${sfShop.wxQrCode}".split("/");
-        var nums = [ ];
-        for (var i=array.length-1 ; i< array.length ; i++)
-        {
-            nums.push(array[i]);
-        }
-        if(nums=="null"){
-            alert("店主还没有上传二维码");
-        }else{
-            $(".black").show();
-            $(".b_t").show();
-            $(".back_b").show();
-        }
+    <%--$(".tallme").on("click",function(){--%>
+        <%--var array = "${sfShop.wxQrCode}".split("/");--%>
+        <%--var nums = [ ];--%>
+        <%--for (var i=array.length-1 ; i< array.length ; i++)--%>
+        <%--{--%>
+            <%--nums.push(array[i]);--%>
+        <%--}--%>
+        <%--if(nums=="null"){--%>
+            <%--alert("店主还没有上传二维码");--%>
+        <%--}else{--%>
+            <%--$(".black").show();--%>
+            <%--$(".b_t").show();--%>
+            <%--$(".back_b").show();--%>
+        <%--}--%>
 
-    })
-
+    <%--})--%>
+    function showNowxcode(value){
+       if(value){
+           alert("店主还没有上传二维码");
+       }else{
+           $(".black").show();
+           $(".b_t").show();
+           $(".back_b").show();
+       }
+    }
 </script>
 </body>
 </html>

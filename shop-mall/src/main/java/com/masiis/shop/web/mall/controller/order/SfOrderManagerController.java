@@ -7,6 +7,7 @@ import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.message.SfMessageSrRelationService;
 import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
@@ -48,6 +49,8 @@ public class SfOrderManagerController extends BaseController {
     private SfOrderItemDistributionService sfOrderItemDistributionService;
     @Resource
     private SfUserPromotionService promoService;
+    @Resource
+    private SfMessageSrRelationService sfMessageSrRelationService;
 
     /**
      * 确认收货
@@ -233,22 +236,25 @@ public class SfOrderManagerController extends BaseController {
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();
         for (SfOrder sfOrder : sfOrders) {
-            if(sfOrder.getOrderStatus() == 0) {
+            if (sfOrder.getOrderStatus() == 0) {
                 sfOrders0.add(sfOrder);//待付款
-            }else if (sfOrder.getOrderStatus() == 7 ) {
+            } else if (sfOrder.getOrderStatus() == 7) {
                 sfOrders7.add(sfOrder);//代发货
-            }else if (sfOrder.getOrderStatus() == 8 ) {
+            } else if (sfOrder.getOrderStatus() == 8) {
                 sfOrders8.add(sfOrder);//待收货
             }
         }
         Map<String, BigDecimal> stringBigDecimalMap = sfOrderItemDistributionService.selectUserAmounts(user.getId());
         //获取所有进行中的活动
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
+        //获取消息数量
+        Integer countMsg = sfMessageSrRelationService.queryUnseeMessageNumsByToUser(user.getId());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("sfOrders0", sfOrders0.size()+sfOrders8.size());
+        modelAndView.addObject("sfOrders0", sfOrders0.size() + sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPromotions", userPromotions);
+        modelAndView.addObject("countMsg", countMsg);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

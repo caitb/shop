@@ -14,6 +14,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="javascript:window.history.go(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+
         <p>${skuName}</p>
     </header>
     <main>
@@ -30,6 +31,7 @@
     <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
+
         <p>
             线下素材的图片像素比较大，请您留下您的邮箱地址，系统稍后会将线下素材的下载链接发到您的邮箱，请注意查收！
         </p>
@@ -41,15 +43,15 @@
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
-  $(function () {
-      var pWidth=$(".wrap").width()/3-1;
-      $("main p").width(pWidth)
-      $("header a").attr("href","${basePath}materielList/infoB");
-  })
-    function clickShow(){
+    $(function () {
+        var pWidth = $(".wrap").width() / 3 - 1;
+        $("main p").width(pWidth)
+        $("header a").attr("href", "${basePath}materielList/infoB");
+    })
+    function clickShow() {
         $(".black").show();
     }
-    function clickHide(){
+    function clickHide() {
         $(".black").hide();
     }
     function saveEmail() {

@@ -16,20 +16,24 @@
         <p>素材库</p>
     </header>
     <main id="divall">
-            <c:forEach var="Library" items="${LibraryList}">
-                <p>
-                    <span  onclick="javascript:window.location.href = '${path}/materielList/groupInfoB/?mlId=${Library.id}&random='+Math.random();"><img src="${Library.remark}" alt=""></span>
-                    <c:if test="${Library.isSubscript==0}">
-                        <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
-                    </c:if>
-                    <c:if test="${Library.isSubscript==1}">
-                        <span class="add on" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | ${Library.subscriptionNum}</span>
-                    </c:if>
-                </p>
-            </c:forEach>
+        <c:forEach var="Library" items="${LibraryList}">
+            <p>
+                <span onclick="javascript:window.location.href = '${path}/materielList/groupInfoB/?mlId=${Library.id}&random='+Math.random();"><img
+                        src="${Library.remark}" alt=""></span>
+                <c:if test="${Library.isSubscript==0}">
+                    <span class="add" id="${Library.id}"
+                          onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
+                </c:if>
+                <c:if test="${Library.isSubscript==1}">
+                    <span class="add on" id="${Library.id}"
+                          onclick="subAdd('${Library.id}',this.id)"><b>取消订阅</b> | ${Library.subscriptionNum}</span>
+                </c:if>
+            </p>
+        </c:forEach>
     </main>
     <div class="nobady" style="display: none">
         <img src="${path}/static/images/material/nodady.png" alt="">
+
         <p>暂无上传素材</p>
     </div>
     <img src="${path}/static/images/material/FAB.png" alt="" onclick="clickShow()">
@@ -38,6 +42,7 @@
     <div class="back_b"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
+
         <p>
             线下素材的图片像素比较大，请您留下您的邮箱地址，系统稍后会将线下素材的下载链接发到您的邮箱，请注意查收！
         </p>
@@ -47,7 +52,7 @@
     </div>
 </div>
 <c:if test="${countLibrary>4}">
-    <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
+    <img src="${path}/static/images/material/downloading.png" alt="" class="downloading">
 </c:if>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
@@ -55,15 +60,15 @@
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;
     $("main p").width(loginWidtn);
-    function subAdd(id,index) {
-        if ($("#"+index).hasClass("on") != true) {
+    function subAdd(id, index) {
+        if ($("#" + index).hasClass("on") != true) {
             //添加订阅
             $.ajax({
                 url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 1, materialId: id},
                 dataType: 'json',
-                async:false,
+                async: false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("订阅成功！");
@@ -71,16 +76,16 @@
                     }
                 }
             });
-            $("#"+index).addClass("on");
-            $("#"+index).find("b").html("取消订阅");
-        } else if ($("#"+index).hasClass("on") == true) {
+            $("#" + index).addClass("on");
+            $("#" + index).find("b").html("取消订阅");
+        } else if ($("#" + index).hasClass("on") == true) {
             //取消订阅
             $.ajax({
                 url: '${path}/subscribeB/do',
                 type: 'post',
                 data: {status: 0, materialId: id},
                 dataType: 'json',
-                async:false,
+                async: false,
                 success: function (data) {
                     if (data.isError == false) {
                         alert("取消成功！");
@@ -88,8 +93,8 @@
                     }
                 }
             });
-            $("#"+index).removeClass("on");
-            $("#"+index).find("b").html("+添加订阅");
+            $("#" + index).removeClass("on");
+            $("#" + index).find("b").html("+添加订阅");
         }
     }
     function clickShow() {
@@ -132,24 +137,24 @@
         $.ajax({
             type: 'post',
             url: '${path}/materielList/infoBPagenation',
-            data: {currentPage:pagelimit},
+            data: {currentPage: pagelimit},
             dataType: 'json',
-            success: function(data){
-                if(data.LibraryList==null || data.LibraryList.length <=0){
+            success: function (data) {
+                if (data.LibraryList == null || data.LibraryList.length <= 0) {
                     alert("没有更多了");
                 }
-                if(data.isError==false && data.LibraryList.length>0){
+                if (data.isError == false && data.LibraryList.length > 0) {
                     $.each(data.LibraryList, function (i, Library) {
-                        var imgHtml ="";
-                        if(Library.isSubscript==0){
-                            imgHtml += "<span class=\"add\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>+添加订阅</b> | "+Library.subscriptionNum+"</span>";
+                        var imgHtml = "";
+                        if (Library.isSubscript == 0) {
+                            imgHtml += "<span class=\"add\" id=" + Library.id + " onclick=\"subAdd(" + Library.id + ",this.id)\"><b>+添加订阅</b> | " + Library.subscriptionNum + "</span>";
                         }
-                        if(Library.isSubscript==1){
-                            imgHtml += "<span class=\"add on\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>取消订阅</b> | "+Library.subscriptionNum+"</span>";
+                        if (Library.isSubscript == 1) {
+                            imgHtml += "<span class=\"add on\" id=" + Library.id + " onclick=\"subAdd(" + Library.id + ",this.id)\"><b>取消订阅</b> | " + Library.subscriptionNum + "</span>";
                         }
                         _contain.append("<p>" +
-                        "<span onclick=\"javascript:window.location.replace('"+Path+"/materielList/groupInfoB/?mlId="+Library.id+"&random="+Math.random()+"');\"><img src=\""+Library.remark+"\" alt=\"\">" +
-                        "</span>"+imgHtml+"</p>");
+                        "<span onclick=\"javascript:window.location.replace('" + Path + "/materielList/groupInfoB/?mlId=" + Library.id + "&random=" + Math.random() + "');\"><img src=\"" + Library.remark + "\" alt=\"\">" +
+                        "</span>" + imgHtml + "</p>");
                     });
                     pagelimit++;
                 }

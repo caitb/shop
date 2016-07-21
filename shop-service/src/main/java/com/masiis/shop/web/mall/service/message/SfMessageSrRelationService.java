@@ -26,4 +26,14 @@ public class SfMessageSrRelationService {
     public void insert(SfMessageSrRelation sr) {
         srRelationMapper.insert(sr);
     }
+
+    /**
+     * 查询未读消息数量
+     *
+     * @param toUserId
+     * @return
+     */
+    public Integer queryUnseeMessageNumsByToUser(Long toUserId){
+        return srRelationMapper.queryUnseeMessageNumsByToUser(toUserId, 1);
+    }
 }

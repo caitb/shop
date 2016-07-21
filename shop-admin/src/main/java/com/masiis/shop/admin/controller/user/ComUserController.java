@@ -141,7 +141,7 @@ public class ComUserController extends BaseController{
     @ResponseBody
     public Object detail(Long id){
         if (id == null) {
-            throw new BusinessException(id + ":用户不能为空");
+            throw new BusinessException("用户id不能为空");
         }
         JSONObject json = new JSONObject();
         try {

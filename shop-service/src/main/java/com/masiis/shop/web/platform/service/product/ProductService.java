@@ -8,6 +8,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,9 @@ import java.util.Map;
 @Service
 @Transactional
 public class ProductService {
+
+
+    private final static Logger log = Logger.getLogger(ProductService.class);
 
     @Resource
     private ProductMapper productMapper;
@@ -92,19 +96,26 @@ public class ProductService {
         Product product = new Product();
         product.setId(skuId);
         try {
+            log.info("获取商品信息------------"+skuId);
             ComSku comSku = comSkuMapper.selectById(skuId);
             if (comSku != null) {
                 product.setName(comSku.getName());
                 //获取运费
                 ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
                 if (comSpu != null) {
+                    log.info("------获取图片------");
                     //获取默认图片
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
                     List<ComSkuImage> comSkuImages = new ArrayList<ComSkuImage>();
                     comSkuImages.add(comSkuImage);
+                    log.info("运费--------------"+comSpu.getShipAmount().toString());
                     product.setShipAmount(comSpu.getShipAmount());
                     product.setComSkuImages(comSkuImages);
+                }else{
+                    log.info("---------不能获取图片----------");
                 }
+            }else{
+                log.info("获取商品信息为null");
             }
         } catch (Exception e) {
             e.printStackTrace();

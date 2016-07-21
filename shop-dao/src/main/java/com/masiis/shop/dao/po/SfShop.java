@@ -216,4 +216,29 @@ public class SfShop {
     public void setOwnShipAmount(BigDecimal ownShipAmount) {
         this.ownShipAmount = ownShipAmount;
     }
+
+    @Override
+    public String toString() {
+        return "SfShop{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", name='" + name + '\'' +
+                ", userId=" + userId +
+                ", status=" + status +
+                ", logo='" + logo + '\'' +
+                ", explanation='" + explanation + '\'' +
+                ", shoutNum=" + shoutNum +
+                ", pageviews=" + pageviews +
+                ", saleAmount=" + saleAmount +
+                ", shipType=" + shipType +
+                ", agentShipAmount=" + agentShipAmount +
+                ", ownShipAmount=" + ownShipAmount +
+                ", shipAmount=" + shipAmount +
+                ", qrCode='" + qrCode + '\'' +
+                ", remark='" + remark + '\'' +
+                ", version=" + version +
+                ", wxQrCode='" + wxQrCode + '\'' +
+                ", wxQrCodeDescription='" + wxQrCodeDescription + '\'' +
+                '}';
+    }
 }

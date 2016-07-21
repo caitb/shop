@@ -1,8 +1,10 @@
 package com.masiis.shop.admin.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.user.User;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.user.ComUserService;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,6 +135,28 @@ public class ComUserController extends BaseController{
         }
 
         return "error";
+    }
+
+    @RequestMapping("/detail.do")
+    @ResponseBody
+    public Object detail(Long id){
+        if (id == null) {
+            throw new BusinessException(id + ":用户不能为空");
+        }
+        JSONObject json = new JSONObject();
+        try {
+            ComUser user = comUserService.getUserById(id);
+            if (user == null) {
+                throw new BusinessException(id + ":没有该用户");
+            }
+            json.put("state", "success");
+            json.put("user", user);
+        } catch (Exception e) {
+            log.error("获取会员信息详情失败![id="+id+"]");
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
+        }
+        return json.toString();
     }
 
 }

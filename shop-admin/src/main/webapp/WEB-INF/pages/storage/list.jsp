@@ -116,6 +116,7 @@
 
 
                         <div id="modal-library" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -123,57 +124,73 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">×</span>
                                             </button>
-                                            选择变更人
+                                            变更人详细信息
                                         </div>
                                     </div>
 
-                                    <div class="modal-body no-padding">
-                                        <form class="form-horizontal" role="form" id="library">
-                                            <div class="form-group">
-                                                <div class="col-xs-offset-1 col-sm-5">
-                                                    <input id="uName" type="text" class="form-control" name="uName" placeholder="请输入用户姓名">
-                                                </div>
-                                                <label class="col-sm-0"></label>
-                                                <div class="col-sm-5">
-                                                    <input id="uPhone" class="form-control" type="text" placeholder="请输入用户手机号"/>
-                                                </div>
-                                            </div>
+                                    <%-----------------------------------------%>
+                                    <!-- /section:basics/sidebar -->
+                                    <div class="main-content">
 
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-1"></label>
-                                                <div class="col-sm-3">
-                                                    <button id="quserid" type="button" class="btn btn-success">查询</button>
-                                                </div>
-                                            </div>
+                                        <!-- /section:basics/content.breadcrumbs -->
+                                        <div class="page-content">
 
-                                            <div class="form-group">
-                                                <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-sm-3" style="text-align: center;">姓名</label>
-                                                        <label class="control-label col-sm-4" style="text-align: center;">手机号</label>
-                                                        <label class="control-label col-sm-3" style="text-align: center;">微信昵称</label>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- /section:settings.box -->
+                                            <div class="page-content-area">
 
-                                            <div class="form-group" style="height: 170px;">
-                                                <label class="control-label col-sm-1"></label>
-                                                <div class="col-sm-10" style="height: 188px;overflow: auto;">
-                                                    <ul class="list-group" id="nameList">
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12">
 
-                                        </form>
-                                    </div>
+                                                        <div>
+                                                            <div id="user-profile-1" class="user-profile row">
+                                                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+
+                                                                    <!-- #section:pages/profile.info -->
+                                                                    <div class="profile-user-info profile-user-info-striped">
+
+                                                                        <div class="profile-info-row">
+                                                                            <div class="profile-info-name"> 手机号码 </div>
+
+                                                                            <div class="profile-info-value">
+                                                                                <span class="" id="mobile"></span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="profile-info-row">
+                                                                            <div class="profile-info-name"> 真实姓名 </div>
+
+                                                                            <div class="profile-info-value">
+                                                                                    <span class="" id="realName"></span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="profile-info-row">
+                                                                            <div class="profile-info-name"> 平台昵称 </div>
+
+                                                                            <div class="profile-info-value">
+                                                                                <span class="editable editable-click" id="wxNkName"></span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div><!-- /.col -->
+
+                                                </div><!-- /.row -->
+
+                                            </div><!-- /.page-content-area -->
+                                        </div><!-- /.page-content -->
+                                    </div><!-- /.main-content -->
+                                    <%---------------------------------------------------------%>
 
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-5">
                                             <button class="btn btn-sm btn-danger pull-left" id="cancelSave" type="button" data-dismiss="modal">
-                                                取消
-                                            </button>
-                                            <button class="btn btn-sm btn-info pull-left" id="saveLibrary" type="button">
-                                                保存
+                                                关闭
                                             </button>
                                         </div>
                                     </div>
@@ -315,6 +332,18 @@
                         }
                     },
                     {
+                        field: 'bill_reason',
+                        title: '单据创建原因',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.bill_reason){
+                                return row.bill_reason;
+                            }
+                        }
+                    },
+                    {
                         field: 'code',
                         title: '变更单编码',
                         //sortable: true,
@@ -340,7 +369,7 @@
                     },*/
                     {
                         field: 'user_id',
-                        title: '库存变更人',
+                        title: '变更人',
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.user_id_name){
@@ -349,28 +378,21 @@
                         },
                         events: {
                             'click .detailUser': function(e, value, row, index){
-                                alert($(this).attr("userid"));
-                                $("#uName").val(null);
-                                $("#uPhone").val(null);
-                                $("#nameList").empty();
-                                $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
-                                        + "<div class=\"form-group\" >"
-                                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
-                                        + "</div>"
-                                        + "</li>"));
-                                $("#modal-library").modal("show");
-                            }
-                        }
-                    },
-                    {
-                        field: 'bill_reason',
-                        title: '单据创建原因',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.bill_reason){
-                                return row.bill_reason;
+                                //alert($(this).attr("userid"));
+                                $.ajax({
+                                    url: '<%=basePath%>comuser/detail.do?id=' + $(this).attr("userid"),
+                                    type: 'get',
+                                    dataType:'json',
+                                    success: function(data){
+                                        if(data.state == "success"){
+                                            var user = data.user;
+                                            $("#mobile").html(user.mobile);
+                                            $("#realName").html(user.realName);
+                                            $("#wxNkName").html(user.wxNkName);
+                                            $("#modal-library").modal("show");
+                                        }
+                                    }
+                                });
                             }
                         }
                     },
@@ -386,9 +408,15 @@
                         }
                     },
                     {
+                        title: '商品详情',
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            return '<a class="detail" href="javascript:void(0);">查看</a>'
+                        }
+                    },
+                    {
                         field: 'status',
                         title: '状态',
-                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -434,7 +462,6 @@
                     {
                         field: 'remark',
                         title: '备注',
-                        //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -448,23 +475,14 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.status==0){
-                                var arr = ['<a class="detail" href="javascript:void(0);">审核</a>'];
-                            }else{
-                                var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                                return '<a class="detail" href="javascript:void(0);">审核</a>';
+                            }else if(row && row.status==1){
+                                return '<a class="detail" href="javascript:void(0);">处理</a>';
                             }
-
-                            return arr.join('');
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                $("#uName").val(null);
-                                $("#uPhone").val(null);
-                                $("#nameList").empty();
-                                $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
-                                        + "<div class=\"form-group\" >"
-                                        + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
-                                        + "</div>"
-                                        + "</li>"));
+
                                 $("#modal-library").modal("show");
                             }
                         }
@@ -527,23 +545,6 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
-        //物流状态
-        if(res.wuliuList !=null){
-            var $select = $('#shipStatus');
-            $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
-            for(var i=0, len = res.wuliuList.length;i<len;i++){
-                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
-            }
-        }
-        //订单状态
-        if(res.orderStatusList !=null){
-            var $select = $('#orderStatus');
-            $select.empty();
-            for(var i=0, len = res.orderStatusList.length;i<len;i++){
-                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
-            }
-        }
         return res;
     }
 
@@ -555,17 +556,6 @@
         return html.join('');
     }
 
-    function operateFormatter(value, row, index) {
-        var arr = [];
-        arr.push('&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑</a>');
-        if(row.comSpu && row.comSpu.isSale == 0){
-            arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">上架</a>');
-        }else if(row.comSpu && row.comSpu.isSale == 1){
-            arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">下架</a>');
-        }
-
-        return arr.join(' ');
-    }
 
     function totalTextFormatter(data) {
         return 'Total';
@@ -625,17 +615,6 @@
 
         eachSeries(scripts, getScript, initTable);
 
-        /*$("#table").on("click", function(){
-            $("#uName").val(null);
-            $("#uPhone").val(null);
-            $("#nameList").empty();
-            $("#nameList").append($("<li class=\"list-group-item\" id='list_0'>"
-                    + "<div class=\"form-group\" >"
-                    + "<label class=\"col-sm-10\" style=\"padding-left: 40%;\">请点击查询按钮</label>"
-                    + "</div>"
-                    + "</li>"));
-            $("#modal-library").modal("show");
-        });*/
     });
 
     function getScript(url, callback) {
@@ -662,71 +641,6 @@
         // We handle everything using the script element injection
         return undefined;
     }
-
-    $('#searchBtn').on('click', function(){
-
-    });
-
-    $('.ok').on('click', function(){
-        var outOrderId = $('input[name="outOrderId"]').val();
-        var payAmount = $('input[name="payAmount"]').val();
-        var reg = new RegExp("^[0-9]*$");
-
-        if(!payAmount){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '请输入实付金额!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        if(!reg.test(Math.floor(payAmount*10000))){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '实付金额格式不对!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        if(!outOrderId && payAmount > 0){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '请填写银行流水号!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
-        submitForm();
-
-        function submitForm(){
-            $('.ok').attr('disabled', 'disabled');
-            $.ajax({
-                url: '<%=basePath%>order/border/offline/Receipt.do',
-                type: 'POST',
-                data: $('#auditForm').serialize(),
-                success: function(result){
-                    result = window.eval('('+result+')');
-                    if(result.result_code == 0){
-                        $('#table').bootstrapTable('refresh');
-                        $('#modal-receipt').modal('hide');
-                    }
-                    $('.ok').removeAttr('disabled');
-                    $.gritter.add({
-                        title: '消息',
-                        text: result.result_msg,
-                        class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                    });
-                }
-            });
-        }
-
-    });
 
 
 </script>

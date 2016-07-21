@@ -78,7 +78,9 @@
         <%--</div>--%>
         <%--</c:forEach>--%>
     </main>
-    <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
+    <c:if test="${not empty userPromotions}">
+        <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
+    </c:if>
 </div>
 <footer>
     <div>

@@ -114,7 +114,7 @@
                 <li class="market"><a class="herf" href="<%=basePath%>message/center.shtml">
                     <h1><img src="<%=path%>/static/images/s4.png" alt="">
                         <c:if test="${countMsg>0}">
-                            <span></span>
+                            <span style="right:28%"></span>
                         </c:if>
                     </h1>
                     <span>消息中心</span></a>

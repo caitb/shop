@@ -323,12 +323,14 @@ public class SfShopManageController extends BaseController {
             }
             String[] qrcodeResult = null;
             if(StringUtils.isBlank(sfShop.getQrCode())){
+                log.info("到微信端获取店铺永久二维码.........![sfShop="+sfShop+"]");
                 qrcodeResult = weiXinPFQRCodeService.createShopOrSkuQRCode(0L, shopId, null);
                 if(qrcodeResult[1] == null) throw new BusinessException("合伙人获取店铺二维码失败![comUser="+comUser+"][shopId="+shopId+"]");
                 DownloadImage.download(qrcodeResult[1], qrcodeName, posterDirPath);
                 OSSObjectUtils.uploadFile(qrcodeFile, "static/shop/shop_qrcode/");
                 sfShop.setQrCode(qrcodeFile.getName());
                 sfShopService.updateById(sfShop);
+                log.info("成功获取并保存店铺永久二维码........[sfShop="+sfShop+"]");
             }
             if(!qrcodeFile.exists()) OSSObjectUtils.downloadFile("static/shop/shop_qrcode/"+sfShop.getQrCode(), qrcodeFile.getAbsolutePath());
 
@@ -381,7 +383,12 @@ public class SfShopManageController extends BaseController {
             //保存二维码海报图片地址
             ComPoster newComPoster = new ComPoster();
             newComPoster.setCreateTime(createTime);
-            newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+            if(qrcodeResult != null){
+                newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+            }else{
+                newComPoster.setShareParamId(shareParamId);
+            }
+            log.info("二维码参数ID[qrcodeResult="+qrcodeResult+"][shareParamId="+shareParamId+"]");
             newComPoster.setType(1);
             newComPoster.setUserId(comUser.getId());
             newComPoster.setPosterName(posterName);

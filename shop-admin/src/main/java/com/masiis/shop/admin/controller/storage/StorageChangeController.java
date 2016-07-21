@@ -2,6 +2,7 @@ package com.masiis.shop.admin.controller.storage;
 
 import com.masiis.shop.admin.beans.storage.QueryUserByConditionRes;
 import com.masiis.shop.admin.beans.storage.QueryUserSkuListRes;
+import com.masiis.shop.admin.beans.storage.StorageBillCreateRes;
 import com.masiis.shop.dao.beans.user.UserSkuInfo;
 import com.masiis.shop.admin.service.storage.PbStorageBillItemService;
 import com.masiis.shop.admin.service.storage.PbStorageBillService;
@@ -138,6 +139,24 @@ public class StorageChangeController {
 
             res.setResCode("success");
             res.setSkus(skus);
+        } catch (Exception e) {
+            res.setResCode("fail");
+            if(StringUtils.isBlank(res.getResMsg())){
+                res.setResMsg("网络错误");
+            }
+        }
+
+        return res;
+    }
+
+    @RequestMapping("/create.do")
+    @ResponseBody
+    public StorageBillCreateRes createBill(){
+        StorageBillCreateRes res = new StorageBillCreateRes();
+        try{
+
+
+            res.setResCode("success");
         } catch (Exception e) {
             res.setResCode("fail");
             if(StringUtils.isBlank(res.getResMsg())){

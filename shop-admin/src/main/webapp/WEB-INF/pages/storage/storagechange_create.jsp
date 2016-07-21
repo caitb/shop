@@ -122,7 +122,8 @@
                                 </div>
                                 <label for="billType" class="col-sm-3 control-label">单据类型</label>
                                 <div class="col-sm-3">
-                                    <input type="text" readonly="readonly" class="form-control" id="billType" name="billType" placeholder="入库">
+                                    <input type="text" readonly="readonly" class="form-control" placeholder="入库">
+                                    <input type="hidden" id="billType" name="billType" value="1"/>
                                 </div>
                             </div>
 

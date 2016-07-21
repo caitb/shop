@@ -70,7 +70,7 @@
                 </li>
                 <li>
                     <a href="<%=path%>/borderManage/borderManagement.html">
-                        <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
+                        <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><c:if test="${borderNum!=0}"><span></span></c:if></h1>
                         <span>订单管理</span></a>
                 </li>
                 <li class="market">
@@ -110,7 +110,7 @@
                     <span>我的推荐</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>message/center.shtml">
-                    <h1><img src="<%=path%>/static/images/s4.png" alt=""></h1>
+                    <h1><img src="<%=path%>/static/images/s4.png" alt=""><span></span></h1>
                     <span>消息中心</span></a>
                 </li>
             </ul>

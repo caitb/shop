@@ -18,7 +18,7 @@
     <main id="divall">
             <c:forEach var="Library" items="${LibraryList}">
                 <p>
-                    <span  onclick="javascript:window.location.replace('${path}/materielList/groupInfoB/?mlId=${Library.id}');"><img src="${Library.remark}" alt=""></span>
+                    <span  onclick="javascript:window.location.href = '${path}/materielList/groupInfoB/?mlId=${Library.id}&random='+Math.random();"><img src="${Library.remark}" alt=""></span>
                     <c:if test="${Library.isSubscript==0}">
                         <span class="add" id="${Library.id}" onclick="subAdd('${Library.id}',this.id)"><b>+添加订阅</b> | ${Library.subscriptionNum}</span>
                     </c:if>
@@ -148,7 +148,7 @@
                             imgHtml += "<span class=\"add on\" id="+Library.id+" onclick=\"subAdd("+Library.id+",this.id)\"><b>取消订阅</b> | "+Library.subscriptionNum+"</span>";
                         }
                         _contain.append("<p>" +
-                        "<span onclick=\"javascript:window.location.replace('"+Path+"/materielList/groupInfoB/?mlId="+Library.id+"');\"><img src=\""+Library.remark+"\" alt=\"\">" +
+                        "<span onclick=\"javascript:window.location.replace('"+Path+"/materielList/groupInfoB/?mlId="+Library.id+"&random="+Math.random()+"');\"><img src=\""+Library.remark+"\" alt=\"\">" +
                         "</span>"+imgHtml+"</p>");
                     });
                     pagelimit++;

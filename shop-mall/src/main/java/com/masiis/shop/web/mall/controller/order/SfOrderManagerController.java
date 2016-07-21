@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,8 @@ public class SfOrderManagerController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SfOrderItemDistributionService sfOrderItemDistributionService;
-
+    @Resource
+    private SfUserPromotionService promoService;
 
     /**
      * 确认收货
@@ -240,10 +242,13 @@ public class SfOrderManagerController extends BaseController {
             }
         }
         Map<String, BigDecimal> stringBigDecimalMap = sfOrderItemDistributionService.selectUserAmounts(user.getId());
+        //获取所有进行中的活动
+        List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("sfOrders0", sfOrders0.size()+sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userPromotions", userPromotions);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

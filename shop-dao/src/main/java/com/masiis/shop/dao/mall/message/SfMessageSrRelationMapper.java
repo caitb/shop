@@ -27,4 +27,7 @@ public interface SfMessageSrRelationMapper {
     int updateByPrimaryKey(SfMessageSrRelation record);
 
     Long countNumsFromUser(@Param("userId") Long userId);
+
+    Integer queryUnseeMessageNumsByToUser(@Param("toUserId") Long toUserId,
+                                          @Param("status") Integer status);
 }

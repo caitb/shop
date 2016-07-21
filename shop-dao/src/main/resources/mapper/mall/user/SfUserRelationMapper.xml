@@ -97,33 +97,41 @@
     </update>
 
     <select id="selectFansNum" resultType="java.util.HashMap">
-        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
-        where
-        tree_code like CONCAT(#{treeCode},'%')
-        and tree_code <![CDATA[ <> ]]> #{treeCode}
-        <if test="shopId != null">
-            and r.shop_id = #{shopId}
-        </if>
+        SELECT
+        count(*) as num
+        FROM
+        sf_user_relation a
+        INNER JOIN com_user u ON a.user_id = u.id
+        INNER JOIN sf_user_relation b ON b.tree_code LIKE CONCAT(a.tree_code, '%')
+        WHERE
+        a.tree_code = #{treeCode}
+        AND b.tree_level BETWEEN a.tree_level + 1 AND a.tree_level + 3
     </select>
 
     <select id="selectSpokesManNum" resultType="java.util.HashMap">
-        select count(*) as num from sf_user_relation r inner join com_user u on r.user_id = u.id
-        where
-        r.is_spokesman = 1
-        <if test="shopId != null">
-            and r.shop_id = #{shopId}
-        </if>
-        and tree_code like CONCAT(#{treeCode},'%')
-        and tree_code <![CDATA[ <> ]]> #{treeCode}
+        SELECT
+        count(*) as num
+        FROM
+        sf_user_relation a
+        INNER JOIN com_user u ON a.user_id = u.id
+        INNER JOIN sf_user_relation b ON b.tree_code LIKE CONCAT(a.tree_code, '%')
+        WHERE
+        a.tree_code = #{treeCode}
+        AND b.tree_level BETWEEN a.tree_level + 1 AND a.tree_level + 2
+        AND b.is_spokesman = 1
     </select>
 
     <select id="selectFansOrSpokesManNum" resultType="java.util.HashMap">
         SELECT
           count(*) as num
         FROM sf_user_relation a
-        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
+        INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
         <if test="spokesMan != null">
             AND r.is_spokesman = #{spokesMan}
+            AND r.tree_level BETWEEN a.tree_level + 1 AND a.tree_level + 2
+        </if>
+        <if test="spokesMan == null">
+            AND r.tree_level BETWEEN a.tree_level + 1 AND a.tree_level + 3
         </if>
         INNER JOIN com_user u ON r.user_id = u.id
         WHERE a.user_id=#{userId}
@@ -169,7 +177,7 @@
             r.shop_id AS shopId,
             r.is_buy AS isBuy
             FROM sf_user_relation a
-            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
             INNER JOIN com_user u ON r.user_id = u.id
             WHERE a.user_id=#{userId,jdbcType=BIGINT}
             <if test="shopId != null">
@@ -239,7 +247,7 @@
             r.shop_id AS shopId,
             r.is_buy AS isBuy
             FROM sf_user_relation a
-            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%') and a.user_id <![CDATA[ <> ]]> r.user_id
+            INNER JOIN sf_user_relation r ON r.tree_code LIKE CONCAT(a.tree_code,'%')
             INNER JOIN com_user u ON r.user_id = u.id
             WHERE a.user_id= #{userId,jdbcType=BIGINT}
             <if test="shopId != null">

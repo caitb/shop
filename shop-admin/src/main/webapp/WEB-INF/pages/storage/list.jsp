@@ -82,17 +82,16 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="orderCode">订单号</label>
-                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                                <label for="code">变更单编码</label>
+                                                <input type="text" class="form-control" id="code" name="code" placeholder="变更单编码">
                                             </div>
                                             <div class="form-group">
-                                                <label for="orderCode">订单日期：</label>
+                                                <label for="code">变更人姓名</label>
+                                                <input type="text" class="form-control" id="realNamelike" name="realNamelike" placeholder="变更人姓名">
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
+                                                <label for="code">变更人手机号</label>
+                                                <input type="text" class="form-control" id="mobilelike" name="mobilelike" placeholder="变更人手机号">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -259,13 +258,9 @@
             striped: true,
             queryParamsType: 'pageNo',
             queryParams: function(params){
-                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#beginTime').val()){
-                    params.beginTime = $('#beginTime').val();
-                }
-                if($('#endTime').val()){
-                    params.endTime = $('#endTime').val();
-                }
+                if($('#code').val()) params.code = $('#code').val();
+                if($('#realNamelike').val()) params.realNamelike = $('#realNamelike').val();
+                if($('#mobilelike').val()) params.mobilelike = $('#mobilelike').val();
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -355,18 +350,6 @@
                             }
                         }
                     },
-                    /*{
-                        field: 'user_id',
-                        title: '库存变更人',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.user_id_name){
-                                return row.user_id_name;
-                            }
-                        }
-                    },*/
                     {
                         field: 'user_id',
                         title: '变更人',
@@ -380,7 +363,7 @@
                             'click .detailUser': function(e, value, row, index){
                                 //alert($(this).attr("userid"));
                                 $.ajax({
-                                    url: '<%=basePath%>comuser/detail.do?id=' + $(this).attr("userid"),
+                                    url: '<%=basePath%>storagechange/detail.do?id=' + $(this).attr("userid"),
                                     type: 'get',
                                     dataType:'json',
                                     success: function(data){
@@ -436,29 +419,6 @@
                             //}
                         }
                     },
-                    /*{
-                        field: 'audit_man',
-                        title: '审核人',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.audit_man_name){
-                                return row.audit_man_name;
-                            }
-                        }
-                    },*/
-                    /*{
-                        field: 'audit_time',
-                        title: '审核时间',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.audit_time){
-                                return new Date(row.audit_time).pattern('yyyy-MM-dd HH:mm:ss');
-                            }
-                        }
-                    },*/
                     {
                         field: 'remark',
                         title: '备注',

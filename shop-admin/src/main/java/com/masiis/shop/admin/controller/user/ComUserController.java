@@ -137,26 +137,5 @@ public class ComUserController extends BaseController{
         return "error";
     }
 
-    @RequestMapping("/detail.do")
-    @ResponseBody
-    public Object detail(Long id){
-        if (id == null) {
-            throw new BusinessException("用户id不能为空");
-        }
-        JSONObject json = new JSONObject();
-        try {
-            ComUser user = comUserService.getUserById(id);
-            if (user == null) {
-                throw new BusinessException(id + ":没有该用户");
-            }
-            json.put("state", "success");
-            json.put("user", user);
-        } catch (Exception e) {
-            log.error("获取会员信息详情失败![id="+id+"]");
-            e.printStackTrace();
-            throw new BusinessException("网络错误", e);
-        }
-        return json.toString();
-    }
 
 }

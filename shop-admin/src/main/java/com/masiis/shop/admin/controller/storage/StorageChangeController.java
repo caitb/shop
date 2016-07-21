@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.controller.storage;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.storage.QueryUserByConditionRes;
 import com.masiis.shop.admin.beans.storage.QueryUserSkuListRes;
 import com.masiis.shop.admin.beans.storage.StorageBillCreateRes;
@@ -55,14 +56,14 @@ public class StorageChangeController {
                        String sortOrder, Integer orderStatus){
         Map<String, Object> conditionMap = new HashMap<>();
         try {
-            if(StringUtils.isNotBlank(request.getParameter("orderCode"))){
-                conditionMap.put("orderCode", request.getParameter("orderCode"));
+            if(StringUtils.isNotBlank(request.getParameter("code"))){
+                conditionMap.put("code", request.getParameter("code"));
             }
-            if(StringUtils.isNotBlank(request.getParameter("startTime"))){
-                conditionMap.put("startTime", request.getParameter("startTime"));
+            if(StringUtils.isNotBlank(request.getParameter("realNamelike"))){
+                conditionMap.put("realNamelike", "%" + request.getParameter("realNamelike") + "%");
             }
-            if(StringUtils.isNotBlank(request.getParameter("endTime"))){
-                conditionMap.put("endTime", request.getParameter("endTime"));
+            if(StringUtils.isNotBlank(request.getParameter("mobilelike"))){
+                conditionMap.put("mobilelike", "%" + request.getParameter("mobilelike") + "%");
             }
             Map<String, Object> pageMap = billService.storagechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
@@ -165,5 +166,27 @@ public class StorageChangeController {
         }
 
         return res;
+    }
+
+    @RequestMapping("/detail.do")
+    @ResponseBody
+    public Object detail(Long id){
+        if (id == null) {
+            throw new BusinessException("用户id不能为空");
+        }
+        JSONObject json = new JSONObject();
+        try {
+            ComUser user = comUserService.getUserById(id);
+            if (user == null) {
+                throw new BusinessException(id + ":没有该用户");
+            }
+            json.put("state", "success");
+            json.put("user", user);
+        } catch (Exception e) {
+            log.error("获取会员信息详情失败![id="+id+"]");
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
+        }
+        return json.toString();
     }
 }

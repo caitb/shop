@@ -78,6 +78,7 @@
         <%--</div>--%>
         <%--</c:forEach>--%>
     </main>
+    <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
 </div>
 <footer>
     <div>

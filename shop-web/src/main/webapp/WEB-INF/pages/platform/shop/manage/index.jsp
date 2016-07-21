@@ -113,13 +113,14 @@
 <script src="<%=basePath%>static/js/hideWXShare.js"></script>
 <script src="<%=basePath%>static/js/jquery.zclip.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="<%=basePath%>/static/js/zepto.min.js"></script>
 <script>
     var index;
-    $("body").on("swipeRight", function () {
-        location.href='<%=path%>/index';
-    })
-    $("body").on("swipeLeft", function () {
+    $(document).on("swipeLeft", function () {
         location.href='<%=path%>/account/home';
+    })
+    $(document).on("swipeRight", function () {
+        location.href='<%=path%>/index';
     })
     function clickShow(){
         $(".black").show();

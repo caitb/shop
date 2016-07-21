@@ -307,3 +307,9 @@
   color: #C7A467;
   padding:6px 14px;
 }
+.wrap > img{
+    position: fixed;
+    right:10px;
+    bottom: 55px;
+    width:74px;
+}

@@ -21,11 +21,16 @@ public class SfShopManQrCodeService {
     public String uploadWxQrCodeImg(MultipartFile qrImg) {
         try {
             String suffix = StringUtils.substringAfterLast(qrImg.getOriginalFilename(), ".");
+            if(StringUtils.isBlank(suffix)) {
+                suffix = "png";
+            }
+
             long size = qrImg.getSize();
 
             log.info("uploadWxQrCodeImg  size:"+size+", suffix="+suffix);
 
-            if(size<1 || StringUtils.isEmpty(suffix)) {
+            if(size<1) {
+                log.info("uploadWxQrCodeImg 上传的文件不存在。");
                 return null;
             }
             String fileName = "wxqrcode_"+ RandomStringUtils.random(20, true, true)+"."+suffix;

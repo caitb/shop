@@ -254,24 +254,28 @@ public class BOrderPayEndMessageService {
                 logger.info("-----------有推荐人的情况-----------");
                 //给合伙人发
                 logger.info("有推荐人情况下给合伙人发短信----start");
-                recommenRewardName = recommenRewardUser.getRealName();
-                logger.info("商品名称-------"+ pfBorderItems.get(0).getSkuName());
-                logger.info("等级名称-------"+ comAgentLevel.getName());
-                logger.info("收入-------"+ incomeAmout.toString());
-                logger.info("推荐人昵称-------"+ recommenRewardName);
-                Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
-                        pfBorderItems.get(0).getSkuName(),
-                        comAgentLevel.getName(),
-                        incomeAmout,
-                        recommenRewardName,
-                        //userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId())
-                        !isWaitngOrder);
-                if (bl) {
-                    logger.info("合伙人订单有推荐人给合伙人发送短信成功");
+                if (pComUser!=null){
+                    recommenRewardName = recommenRewardUser.getRealName();
+                    logger.info("商品名称-------"+ pfBorderItems.get(0).getSkuName());
+                    logger.info("等级名称-------"+ comAgentLevel.getName());
+                    logger.info("收入-------"+ incomeAmout.toString());
+                    logger.info("推荐人昵称-------"+ recommenRewardName);
+                    Boolean bl = MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice(pComUser.getMobile(),
+                            pfBorderItems.get(0).getSkuName(),
+                            comAgentLevel.getName(),
+                            incomeAmout,
+                            recommenRewardName,
+                            //userSkuStockService.isEnoughStock(pComUser.getId(), pfBorderItems.get(0).getSkuId())
+                            !isWaitngOrder);
+                    if (bl) {
+                        logger.info("合伙人订单有推荐人给合伙人发送短信成功");
+                    }else{
+                        logger.info("合伙人订单有推荐人给合伙人发送短信失败");
+                    }
+                    logger.info("有推荐人情况下给合伙人发短信----end");
                 }else{
-                    logger.info("合伙人订单有推荐人给合伙人发送短信失败");
+                    logger.info("有推荐人情况下给合伙人发短信-------合伙人不存在不发送短信--------------end");
                 }
-                logger.info("有推荐人情况下给合伙人发短信----end");
                 //给推荐人发
                 logger.info("给推荐人发短信------start");
                 logger.info("推荐人电话号码-------"+ recommenRewardUser.getMobile());
@@ -335,30 +339,35 @@ public class BOrderPayEndMessageService {
         logger.info("补货发送短信-------start");
         //给合伙人发送短信
         logger.info("给合伙人发送短信-----start");
-        BigDecimal incomeAmout = pfBorder.getOrderAmount();
-        logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
-        logger.info("是否处于排单-------"+isWaitingOrder);
-        logger.info("上级号码--------"+pComUser.getMobile());
-        logger.info("商品名称--------"+pfBorderItems.get(0).getSkuName());
-        logger.info("等级名称--------"+comAgentLevel.getName());
-        logger.info("用户昵称--------"+comUser.getRealName());
-        logger.info("数量--------"+pfBorderItems.get(0).getQuantity());
-        logger.info("收入--------"+incomeAmout);
-        Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
-                pfBorderItems.get(0).getSkuName(),
-                comAgentLevel.getName(),
-                comUser.getRealName(),
-                pfBorderItems.get(0).getQuantity(),
-                incomeAmout,
-                //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
-                !isWaitingOrder
-        );
-        if (bl){
-            logger.info("补货给合伙人发送短信成功");
+        if (pComUser!=null){
+            BigDecimal incomeAmout = pfBorder.getOrderAmount();
+            logger.info("合伙人上级获得收入----------"+incomeAmout.toString()+"----------订单id----------"+pfBorder.getId());
+            logger.info("是否处于排单-------"+isWaitingOrder);
+            logger.info("上级号码--------"+pComUser.getMobile());
+            logger.info("商品名称--------"+pfBorderItems.get(0).getSkuName());
+            logger.info("等级名称--------"+comAgentLevel.getName());
+            logger.info("用户昵称--------"+comUser.getRealName());
+            logger.info("数量--------"+pfBorderItems.get(0).getQuantity());
+            logger.info("收入--------"+incomeAmout);
+            Boolean bl = MobileMessageUtil.getInitialization("B").refereeAddstockUpRemind(pComUser.getMobile(),
+                    pfBorderItems.get(0).getSkuName(),
+                    comAgentLevel.getName(),
+                    comUser.getRealName(),
+                    pfBorderItems.get(0).getQuantity(),
+                    incomeAmout,
+                    //userSkuStockService.isEnoughStock(pComUser.getId(),pfBorderItems.get(0).getSkuId()
+                    !isWaitingOrder
+            );
+            if (bl){
+                logger.info("补货给合伙人发送短信成功");
+            }else{
+                logger.info("补货给合伙人发送短信失败");
+            }
+            logger.info("给合伙人发送短信-----end");
         }else{
-            logger.info("补货给合伙人发送短信失败");
+            logger.info("上级合伙人不存在不给合伙人发短信------------end");
         }
-        logger.info("给合伙人发送短信-----end");
+
         //给推荐人发短信
         logger.info("给推荐人发短信-----start");
         logger.info("补货给推荐人发送短信-----pfborderItem的id-----"+pfBorderItems.get(0).getId());

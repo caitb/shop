@@ -74,7 +74,11 @@
         </ul>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/mallmessage/toMessageCenter.shtml?cur=0');">
-                <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt=""><b></b></span>
+                <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt="">
+                    <c:if test="${countMsg>0}">
+                        <b></b>
+                    </c:if>
+                </span>
                 <span>消息中心</span>
             </li>
             <li style="background:#f3f4f5;border: none;"></li>

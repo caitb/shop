@@ -62,7 +62,7 @@
         </span></p>
         <p><b>共付：</b><span>￥${order.orderAmount}</span></p>
     </section>
-    <%--<div class="back"></div>--%>
+    <div class="back"></div>
     <div class="sec6">
         <c:if test="${order.sendMan==0}">
             <p><a onclick="contactSeller()">联系卖家</a></p>
@@ -103,7 +103,6 @@
     }
     function contactSelfWxCode(){
         $(".black").show();
-        $(".back").show();
     }
     function closeContactSeller(){
         $("#contactSellerDivId").hide();

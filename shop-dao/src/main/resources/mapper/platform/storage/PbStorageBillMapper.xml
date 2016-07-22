@@ -80,6 +80,7 @@
         <if test="state != null">
             and st.status = #{state}
         </if>
+        order by create_time desc
     </select>
 
     <select id="getStorageItemDetailList" resultType="java.util.HashMap">

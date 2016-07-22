@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ComUserMapper {
@@ -73,4 +74,6 @@ public interface ComUserMapper {
     ComUser selectByUnionid(String unionid);
 
     List<ComUser> selectAllAgentUser();
+
+    List<ComUser> selectByConditions(Map<String, Object> params);
 }

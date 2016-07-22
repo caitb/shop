@@ -65,6 +65,10 @@ public class PbStorageBillService {
         return pageMap;
     }
 
+    public List<Map<String, Object>> getStorageItemDetailList(Long storageId){
+        return pbStorageBillMapper.getStorageItemDetailList(storageId);
+    }
+
     public PbStorageBill createBillByUserAndTypeAndSkusAndReason(Long userId, Integer billType,
                                                                  Integer[] skuIds, String reason,
                                                                  Integer[] nums, String[] remarks,

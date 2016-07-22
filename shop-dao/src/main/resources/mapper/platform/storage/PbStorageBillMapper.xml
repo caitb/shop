@@ -63,9 +63,9 @@
 
     <select id="storagechangeList" parameterType="Map" resultType="java.util.HashMap">
         select st.id, st.create_time, st.create_man, st.code, st.user_id, st.bill_reason, st.product_quantity, st.status, st.type,
-        st.audit_man, st.audit_time, st.remark, u1.real_name create_man_name, u2.real_name user_id_name
+        st.audit_man, st.audit_time, st.remark, u1.true_name create_man_name, u2.real_name user_id_name
         from pb_storage_bill st
-        left join com_user u1 on st.create_man = u1.id
+        left join pb_user u1 on st.create_man = u1.id
         left join com_user u2 on st.user_id = u2.id
         where 1 = 1
         <if test="code != null">
@@ -77,6 +77,15 @@
         <if test="mobilelike != null">
             and u1.mobile like #{mobilelike}
         </if>
+    </select>
+
+    <select id="getStorageItemDetailList" resultType="java.util.HashMap">
+        select i.sku_name skuName, i.quantity, u.real_name realName, u.wx_nk_name nkName
+        from pb_storage_bill_item i
+        left join pb_storage_bill b on b.id = i.pb_storage_bill_id
+        left join pf_user_sku s on s.user_id = b.user_id and s.sku_id = i.sku_id
+        left join com_user u on u.id = s.user_pid
+        where pb_storage_bill_id = #{storageId}
     </select>
 
 </mapper>

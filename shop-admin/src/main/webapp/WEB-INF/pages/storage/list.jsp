@@ -211,42 +211,34 @@
                                         </div>
                                     </div>
 
-                                    <%-------------%>
-                                    <!-- /section:basics/sidebar -->
-                                    <div class="main-content">
+                                    <%---------------------------------------%>
+                                    <div class="form-group">
+                                        <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-3" style="text-align: center;">真实姓名</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">微信昵称</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">商品</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">数量</label>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <!-- /section:basics/content.breadcrumbs -->
-                                        <div class="page-content">
-
-                                            <!-- /section:settings.box -->
-                                            <div class="page-content-area">
-
-                                                <div class="row">
-                                                    <div class="col-xs-12 col-sm-12">
-
-                                                        <div>
-                                                            <div class="user-profile row">
-                                                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-
-                                                                    <!-- #section:pages/profile.info -->
-                                                                    <div id="itemDetail" class="profile-user-info profile-user-info-striped">
-
-
-
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div><!-- /.col -->
-
-                                                </div><!-- /.row -->
-
-                                            </div><!-- /.page-content-area -->
-                                        </div><!-- /.page-content -->
-                                    </div><!-- /.main-content -->
-                                    <%-------------%>
+                                    <div class="form-group" style="height: 170px;">
+                                        <label class="control-label col-sm-1"></label>
+                                        <div class="col-sm-10" style="height: 188px;overflow: auto;">
+                                            <ul class="list-group" id="itemDetail">
+                                                <%--<li class="list-group-item">
+                                                    <div class="form-group">
+                                                        <b class="col-sm-3">Liuxiuj</b>
+                                                        <b class="col-sm-3">Liuxiuj</b>
+                                                        <b class="col-sm-3">Liuxiuj</b>
+                                                        <b class="col-sm-3">Liuxiuj</b>
+                                                    </div>
+                                                </li>--%>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <%---------------------------------------%>
 
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-5">
@@ -471,35 +463,20 @@
                                                 var tempHtml = '';
                                                 for(var i = 0; i < rows.length; i++){
                                                     var obj = rows[i];
-                                                    tempHtml += '<div class="profile-info-row">' +
-                                                                    '<div class="profile-info-name"> 真实姓名 </div>' +
-                                                                    '<div class="profile-info-value">' +
-                                                                        '<span> ' + (obj.realName?obj.realName:"-") + ' </span>' +
+                                                    tempHtml += '<li class="list-group-item">' +
+                                                                    '<div class="form-group">' +
+                                                                        '<b class="col-sm-3"> ' + (obj.realName?obj.realName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3"> ' + (obj.nkName?obj.nkName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
                                                                     '</div>' +
-                                                                '</div>' +
-                                                                '<div class="profile-info-row">' +
-                                                                    '<div class="profile-info-name"> 微信昵称 </div>' +
-                                                                    '<div class="profile-info-value">' +
-                                                                    '<span> ' + (obj.nkName?obj.nkName:"-") + ' </span>' +
-                                                                    '</div>' +
-                                                                '</div>' +
-                                                                '<div class="profile-info-row">' +
-                                                                    '<div class="profile-info-name"> sku </div>' +
-                                                                    '<div class="profile-info-value">' +
-                                                                    '<span> ' + (obj.skuName?obj.skuName:"-") + ' </span>' +
-                                                                    '</div>' +
-                                                                '</div>' +
-                                                                '<div class="profile-info-row">' +
-                                                                    '<div class="profile-info-name"> 数量 </div>' +
-                                                                    '<div class="profile-info-value">' +
-                                                                        '<span> ' + (obj.quantity?obj.quantity:"-") + ' </span>' +
-                                                                    '</div>' +
-                                                                '</div>';
+                                                                '</li>';
                                                 }
                                                 $("#itemDetail").empty().append(tempHtml);
                                                 $("#modal-library-detail").modal("show");
                                             }else{
-                                                alert('没有查询到数据');
+                                                $("#itemDetail").empty().append('<h1>没有查询到数据</h1>');
+                                                $("#modal-library-detail").modal("show");
                                             }
                                         }
                                     }

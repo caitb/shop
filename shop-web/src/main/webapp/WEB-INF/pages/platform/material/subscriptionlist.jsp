@@ -42,6 +42,7 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/hideWXShare.js"></script>
 <script>
     $(function () {
         var pWidth = $(".wrap").width() / 3 - 1;

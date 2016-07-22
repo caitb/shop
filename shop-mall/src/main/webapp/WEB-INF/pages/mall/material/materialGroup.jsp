@@ -58,6 +58,7 @@
 </c:if>
 <script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/common/definedAlertWindow.js"></script>
+<script src="${path}/static/js/pageJs/hideWXShare.js"></script>
 <script>
     var loginWidtn = $(".wrap").width() / 2 - 1;
     var index;

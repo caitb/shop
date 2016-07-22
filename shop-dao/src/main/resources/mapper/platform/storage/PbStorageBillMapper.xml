@@ -77,6 +77,9 @@
         <if test="mobilelike != null">
             and u2.mobile like #{mobilelike}
         </if>
+        <if test="state != null">
+            and st.status = #{state}
+        </if>
     </select>
 
     <select id="getStorageItemDetailList" resultType="java.util.HashMap">

@@ -262,7 +262,6 @@ public class StorageChangeController {
         JSONObject json = new JSONObject();
         try {
             List<Map<String, Object>> rows = billService.getStorageItemDetailList(id);
-            System.out.println("-----------------------   " + rows);
             json.put("state", "success");
             json.put("rows", rows);
         } catch (Exception e) {

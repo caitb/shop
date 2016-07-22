@@ -138,7 +138,7 @@ public class SysBeanUtils {
     public static String createStorageBillCode() {
         StringBuilder res = new StringBuilder("SC");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 13; i++){
+        for(int i = 0; i < 7; i++){
             res.append(charArrs[(int)(Math.random() * charArrs.length)]);
         }
         return res.toString();

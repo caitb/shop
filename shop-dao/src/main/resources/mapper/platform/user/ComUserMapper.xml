@@ -283,7 +283,7 @@
         select
             id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
             id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-            password, pwd_salt, register_source, app_token, app_token_expire, is_buy, is_spokesman
+            password, pwd_salt, register_source, app_token, app_token_expire, is_buy
         from
             com_user
         where is_agent = 1

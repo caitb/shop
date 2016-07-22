@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.storage.PbStorageBillOperationLogMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbStorageBillOperationLog" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pb_storage_bill_id" property="pbStorageBillId" jdbcType="INTEGER" />
+        <result column="prev_status" property="prevStatus" jdbcType="INTEGER" />
+        <result column="next_status" property="nextStatus" jdbcType="INTEGER" />
+        <result column="handle_type" property="handleType" jdbcType="INTEGER" />
+        <result column="handle_man" property="handleMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pb_storage_bill_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PbStorageBillOperationLog" useGeneratedKeys="true" keyProperty="id">
+        insert into pb_storage_bill_operation_log (id, create_time, pb_storage_bill_id, 
+            prev_status, next_status, handle_type, 
+            handle_man, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{pbStorageBillId,jdbcType=BIGINT},
+            #{prevStatus,jdbcType=INTEGER}, #{nextStatus,jdbcType=INTEGER}, #{handleType,jdbcType=INTEGER}, 
+            #{handleMan,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PbStorageBillOperationLog" >
+        update pb_storage_bill_operation_log
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            pb_storage_bill_id = #{pbStorageBillId,jdbcType=BIGINT},
+            prev_status = #{prevStatus,jdbcType=INTEGER},
+            next_status = #{nextStatus,jdbcType=INTEGER},
+            handle_type = #{handleType,jdbcType=INTEGER},
+            handle_man = #{handleMan,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pb_storage_bill_id, prev_status, next_status, handle_type, 
+        handle_man, remark
+        from pb_storage_bill_operation_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pb_storage_bill_id, prev_status, next_status, handle_type, 
+        handle_man, remark
+        from pb_storage_bill_operation_log
+    </select>
+
+</mapper>

@@ -4,15 +4,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.storage.QueryUserByConditionRes;
 import com.masiis.shop.admin.beans.storage.QueryUserSkuListRes;
 import com.masiis.shop.admin.beans.storage.StorageBillCreateRes;
+import com.masiis.shop.admin.service.system.PbOperationLogService;
 import com.masiis.shop.dao.beans.user.UserSkuInfo;
 import com.masiis.shop.admin.service.storage.PbStorageBillItemService;
 import com.masiis.shop.admin.service.storage.PbStorageBillService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +47,8 @@ public class StorageChangeController {
     private ComUserService comUserService;
     @Resource
     private PfUserSkuService pfUserSkuService;
+    @Resource
+    private PbOperationLogService pbOperationLogService;
 
     @RequestMapping("/list.shtml")
     public String toList(){
@@ -152,10 +158,64 @@ public class StorageChangeController {
 
     @RequestMapping("/create.do")
     @ResponseBody
-    public StorageBillCreateRes createBill(){
+    public StorageBillCreateRes createBill(@RequestParam("userId") Long userId,
+                                           @RequestParam("billType") Integer billType,
+                                           @RequestParam("skuIds") Integer[] skuIds,
+                                           @RequestParam("skuNums") Integer[] skuNums,
+                                           @RequestParam("skuRemarks") String[] skuRemarks,
+                                           @RequestParam(name = "reason", required = false) String reason,
+                                           HttpSession session,
+                                           HttpServletRequest request){
         StorageBillCreateRes res = new StorageBillCreateRes();
         try{
+            PbUser pbUser = (PbUser) session.getAttribute("pbUser");
+            if(session.isNew() || pbUser == null){
+                res.setResCode("unsign");
+                throw new BusinessException("用户未登录");
+            }
+            if(userId == null || userId <= 0){
+                log.error("变更人选择异常");
+                res.setResMsg("变更人选择异常");
+                throw new BusinessException("变更人选择异常");
+            }
+            if(billType == null || billType <= 0){
+                log.error("单据类型异常");
+                res.setResMsg("单据类型异常");
+                throw new BusinessException("单据类型异常");
+            }
+            if(skuIds == null || skuNums == null
+                    || skuIds.length <= 0 || skuNums.length <= 0 || skuIds.length != skuNums.length){
+                log.error("商品选择异常");
+                res.setResMsg("商品选择异常");
+                throw new BusinessException("商品选择异常");
+            }
+            for(int i = 0; i < skuIds.length; i++){
+                if(skuIds[i] == null || skuIds[i] <= 0
+                        || skuNums[i] == null || skuNums[i] <= 0){
+                    log.error("商品选择异常");
+                    res.setResMsg("商品选择异常");
+                    throw new BusinessException("商品选择异常");
+                }
+            }
 
+            if(StringUtils.isBlank(reason) && reason.length() > 150){
+                log.error("单据说明不能超过150字");
+                res.setResMsg("单据说明不能超过150字");
+                throw new BusinessException("单据说明不能超过150字");
+            }
+
+            PbStorageBill bill = billService
+                    .createBillByUserAndTypeAndSkusAndReason(userId, billType, skuIds, reason, skuNums, skuRemarks, pbUser);
+            // 增加后台管理系统操作日志
+            PbOperationLog oLog = new PbOperationLog();
+            oLog.setCreateTime(new Date());
+            oLog.setOperateIp(request.getRemoteAddr());
+            oLog.setOperateType(0);
+            oLog.setPbUserId(pbUser.getId());
+            oLog.setPbUserName(pbUser.getUserName());
+            oLog.setOperateContent(bill.toString());
+            oLog.setRemark("创建库存入库变更单");
+            pbOperationLogService.add(oLog);
 
             res.setResCode("success");
         } catch (Exception e) {

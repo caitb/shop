@@ -70,9 +70,10 @@
                 data: {status: 1, materialId: id},
                 dataType: 'json',
                 async: false,
+                cache:false,
                 success: function (data) {
                     if (data.isError == false) {
-                        window.location.reload(true);
+                        window.location.href='${basePath}materielList/infoB?random='+Math.random();
                     }
                 }
             });
@@ -86,9 +87,10 @@
                 data: {status: 0, materialId: id},
                 dataType: 'json',
                 async: false,
+                cache:false,
                 success: function (data) {
                     if (data.isError == false) {
-                        window.location.reload(true);
+                        window.location.href='${basePath}/materielList/infoB?random='+Math.random();
                     }
                 }
             });

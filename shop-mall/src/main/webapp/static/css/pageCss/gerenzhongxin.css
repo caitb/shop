@@ -130,6 +130,7 @@
     -webkit-box-pack: center;
     border-right: 1px solid #f6f6f6;
     padding: 20px 0;
+    border-bottom: 1px solid #f6f6f6;
 }
 .wrap nav ul li span {
     display: block;
@@ -140,8 +141,8 @@
 .wrap nav ul li span b{
     position: absolute;
     display: block;
-    top: -6px;
-    right: -7px;
+    top: -10px;
+    right: -11px;
     background: red;
     border-radius: 10px;
     line-height: 15px;

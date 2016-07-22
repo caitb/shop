@@ -166,19 +166,28 @@ public class SfShopManageController extends BaseController {
      * @return
      */
     @RequestMapping("/updateShop")
-    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop, MultipartFile qrImg){
+    public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop _sfShop, MultipartFile qrImg) {
 
         try {
+            ComUser comUser = getComUser(request);
+            SfShop sfShop = sfShopService.getSfShopByUserId(comUser.getId());
+            sfShop.setName(_sfShop.getName());
+            sfShop.setExplanation(_sfShop.getExplanation());
+            sfShop.setWxQrCodeDescription(_sfShop.getWxQrCodeDescription());
             String fileName = sfShopManQrCodeService.uploadWxQrCodeImg(qrImg);
             if(StringUtils.isNotBlank(fileName)) {
                 sfShop.setWxQrCode(fileName);
             }
-            sfShopMapper.updateByPrimaryKey(sfShop);
+
+            log.info("修改店铺[sfShop=" + sfShop + "]");
+            if (sfShopMapper.updateByPrimaryKey(sfShop) != 1) {
+                throw new BusinessException(sfShop.toString());
+            }
         } catch (Exception e) {
-            log.error("设置店铺失败![sfShop="+sfShop+"]");
+            log.error("设置店铺失败!" + _sfShop.toString());
         }
 
-        return "redirect:"+request.getParameter("Referer");
+        return "redirect:" + request.getParameter("Referer");
     }
 
     /**

@@ -16,17 +16,17 @@
         <p>素材图片</p>
     </header>
     <main id="divall">
-            <c:forEach var="mat" items="${materials}">
-                <div class="floor">
-                    <h1>${mat.title}</h1>
-                    <div class="sec1" id="imagelist">
-                        <c:forEach items="${mat.comSkuMaterialItems}" var="img">
-                            <a href="#"><img data="${img.fileUrl}" /></a>
-                        </c:forEach>
-                    </div>
-                    <p>${mat.content}</p>
+        <c:forEach var="mat" items="${materials}">
+            <div class="floor">
+                <h1>${mat.title}</h1>
+                <div class="sec1" id="imagelist">
+                    <c:forEach items="${mat.comSkuMaterialItems}" var="img">
+                        <a href="#"><img data="${img.fileUrl}" /></a>
+                    </c:forEach>
                 </div>
-            </c:forEach>
+                <p>${mat.content}</p>
+            </div>
+        </c:forEach>
 
     </main>
     <div class="nobady" style="display: none">
@@ -49,18 +49,20 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
-<div class="bigphp">
+<div class="bigphp" onclick="bigphpHide()">
     <div class="back_b"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
-    <b class="off" onclick="bigphpHide()">×</b>
+    <%--<b class="off" onclick="bigphpHide()">×</b>--%>
 </div>
 <c:if test="${countSkuMaterial>3}">
     <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
 </c:if>
-<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-<script src="${path}/static/js/common/definedAlertWindow.js"></script>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/zepto.min.js"></script>
+<script src="${path}/static/js/pageJs/hideWXShare.js"></script>
 <script>
     function clickShow(){
         $(".black").show();
@@ -70,7 +72,7 @@
     }
     function bigphpHide(){
         $(".bigphp").hide();
-    }
+    };
     $(".sec1 img").on("click",function(){
         var imgSrc=$(this).attr("src");
         $(".bigphp").show();

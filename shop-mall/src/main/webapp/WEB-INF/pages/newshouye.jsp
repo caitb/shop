@@ -78,6 +78,9 @@
         <%--</div>--%>
         <%--</c:forEach>--%>
     </main>
+    <c:if test="${not empty userPromotions}">
+        <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
+    </c:if>
 </div>
 <footer>
     <div>
@@ -146,10 +149,11 @@
             success:function(data){
                 var trHtml = "";
                 $.each(data, function(i, SfShopDetails) {
-                    trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
+                    if(i<5){
+                        trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
+                    }
                 })
                 $(".swiper-wrapper").html(trHtml);
-
                 var trHtml2 = "";
                 var shipName="";
                 var shopId= ${sfShop.id};

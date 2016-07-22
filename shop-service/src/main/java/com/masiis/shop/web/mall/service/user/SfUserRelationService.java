@@ -78,32 +78,6 @@ public class SfUserRelationService {
         if (map != null){
             num = map.get("num").intValue();
         }
-
-//        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-//        Integer num = 0;
-//        if (sfUserRelations == null || sfUserRelations.size() == 0){
-//            return num;
-//        }else {
-//            Integer fansNum = 0;
-//            if (shopId == null){
-//                for (SfUserRelation relation : sfUserRelations){
-//                    fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
-//                    if (fansNum > 0){
-//                        logger.info("粉丝数量：" + num);
-//                        num += fansNum;
-//                    }
-//                }
-//            }else {
-//                for (SfUserRelation relation : sfUserRelations){
-//                    if (shopId.longValue() == relation.getShopId().longValue()){
-//                        fansNum = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue() - 1;
-//                        if (fansNum > 0){
-//                            num += fansNum;
-//                        }
-//                    }
-//                }
-//            }
-//        }
         return num;
     }
 
@@ -123,7 +97,7 @@ public class SfUserRelationService {
             case 0 : {
                 for (SfUserRelation relation : sfUserRelations){
                     logger.info("查询粉丝数量");
-                    num = sfUserRelationMapper.selectFansNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                    num = sfUserRelationMapper.selectFansNum(relation.getTreeCode()).get("num").intValue();
                     logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
                     if (maxNum < num){
                         maxNum = num;
@@ -135,7 +109,7 @@ public class SfUserRelationService {
             case 1 : {
                 logger.info("查询代言人数量");
                 for (SfUserRelation relation : sfUserRelations){
-                    num = sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
+                    num = sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode()).get("num").intValue();
                     logger.info("treeCode----"+relation.getTreeCode()+"-----shopId-----"+relation.getShopId()+"---num----"+num);
                     if (maxNum < num){
                         maxNum = num;
@@ -162,23 +136,6 @@ public class SfUserRelationService {
         if (map != null){
             num = map.get("num").intValue();
         }
-//        List<SfUserRelation> sfUserRelations = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-//        Integer num = 0;
-//        if (sfUserRelations == null || sfUserRelations.size() == 0){
-//            return num;
-//        }else {
-//            if (shopId == null){
-//                for (SfUserRelation relation : sfUserRelations){
-//                    num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
-//                }
-//            }else {
-//                for (SfUserRelation relation : sfUserRelations){
-//                    if (shopId.longValue() == relation.getShopId().longValue()){
-//                        num += sfUserRelationMapper.selectSpokesManNum(relation.getTreeCode(), relation.getShopId()).get("num").intValue();
-//                    }
-//                }
-//            }
-//        }
         return num;
     }
 
@@ -194,12 +151,6 @@ public class SfUserRelationService {
         if (map != null){
             num = map.get("num").intValue();
         }
-//        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-//        if (sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1 < 0){
-//            return 0;
-//        }else {
-//            return sfUserRelationMapper.selectFansNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue() - 1;
-//        }
         return num;
     }
 
@@ -215,8 +166,6 @@ public class SfUserRelationService {
         if (map != null){
             num = map.get("num").intValue();
         }
-//        SfUserRelation sfUserRelation = sfUserRelationMapper.selectSfUserRelationByUserIdAndShopId(userId, shopId);
-//        return sfUserRelationMapper.selectSpokesManNum(sfUserRelation.getTreeCode(), shopId).get("num").intValue();
         return num;
     }
 
@@ -248,10 +197,6 @@ public class SfUserRelationService {
         logger.info("粉丝级别：" + userLevel);
         logger.info("小铺id：" + shopId);
         SfSpokenAndFansPageViewPo pageViewPo = new SfSpokenAndFansPageViewPo();
-        //查询粉丝总数量
-        Integer totalCount = this.getFansNumByUserId(userId, shopId);
-        pageViewPo.setTotalCount(totalCount);
-        logger.info("粉丝总数量："+totalCount);
         //查询三级粉丝数量
         List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId, null, shopId, null);
         for (Map<String, Number> map : maps){
@@ -274,6 +219,11 @@ public class SfUserRelationService {
                 }
             }
         }
+        //查询粉丝总数量
+//        Integer totalCount = this.getFansNumByUserId(userId, shopId);
+        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        pageViewPo.setTotalCount(totalCount);
+        logger.info("粉丝总数量："+totalCount);
         //查询展示列表
         List<SfSpokesAndFansInfo> infos = this.getSfFansInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId, null);
         pageViewPo.setSfSpokesAndFansInfos(infos);
@@ -341,10 +291,6 @@ public class SfUserRelationService {
         logger.info("代言人级别：" + userLevel);
         logger.info("小铺id：" + shopId);
         SfSpokenAndFansPageViewPo pageViewPo = new SfSpokenAndFansPageViewPo();
-        //查询粉丝总数量
-        Integer totalCount = this.getSpokesManNumByUserId(userId, shopId);  //获取总的粉丝数量
-        pageViewPo.setTotalCount(totalCount);
-        logger.info("代言人总数量："+totalCount);
         //查询三级粉丝数量
         List<Map<String, Number>> maps = this.getFansNumGroupByLevel(userId, null, shopId, isSpokesMan);
         for (Map<String, Number> map : maps){
@@ -366,6 +312,11 @@ public class SfUserRelationService {
                 }
             }
         }
+        //查询粉丝总数量
+//        Integer totalCount = this.getSpokesManNumByUserId(userId, shopId);  //获取总的代言人数量
+        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+        pageViewPo.setTotalCount(totalCount);
+        logger.info("代言人总数量："+totalCount);
         //查询展示列表
         List<SfSpokesAndFansInfo> infos = this.getSfFansInfos(isPaging, currentPage, pageSize, userId, userLevel, shopId, isSpokesMan);
         pageViewPo.setSfSpokesAndFansInfos(infos);

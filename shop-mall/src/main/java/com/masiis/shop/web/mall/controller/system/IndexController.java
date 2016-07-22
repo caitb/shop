@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.service.product.SkuBackGroupImageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,8 @@ public class IndexController extends BaseController {
     private SkuBackGroupImageService skuBackGroupImageService;
     @Resource
     private SfUserRelationService sfUserRelationService;
+    @Resource
+    private SfUserPromotionService promoService;
 
     /**
      * 小铺首页
@@ -80,6 +83,8 @@ public class IndexController extends BaseController {
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, user.getId());
+        //获取所有进行中的活动
+        List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         SfShop sfShop = null;
         boolean isUpload = true; //没上传
         if (shopId != null) {
@@ -87,7 +92,7 @@ public class IndexController extends BaseController {
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                if(sfShop.getWxQrCode()!=null){
+                if(StringUtils.isNotBlank(sfShop.getWxQrCode())){
                     String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
                     String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
                     sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
@@ -105,6 +110,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
         modelAndView.addObject("isUpload", isUpload);
+        modelAndView.addObject("userPromotions", userPromotions);
         modelAndView.setViewName("newshouye");
         return modelAndView;
     }
@@ -197,8 +203,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =174L;
-        userPid = 1644L;
+        shopId =336L;
+        userPid = 337L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -206,6 +212,8 @@ public class IndexController extends BaseController {
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
         Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, userPid);
+        //获取所有进行中的活动
+        List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         SfShop sfShop = null;
         boolean isUpload = true; //没上传
         if (shopId == null) {
@@ -215,7 +223,7 @@ public class IndexController extends BaseController {
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
-                if(sfShop.getWxQrCode()!=null){
+                if(StringUtils.isNotBlank(sfShop.getWxQrCode())){
                     String productImgValue = PropertiesUtils.getStringValue("oss.BASE_URL");
                     String ImgValue = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
                     sfShop.setWxQrCode(productImgValue+"/"+ImgValue+sfShop.getWxQrCode());
@@ -230,6 +238,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
         modelAndView.addObject("isUpload", isUpload);
+        modelAndView.addObject("userPromotions", userPromotions);
         modelAndView.setViewName("newshouye");
         return modelAndView;
     }

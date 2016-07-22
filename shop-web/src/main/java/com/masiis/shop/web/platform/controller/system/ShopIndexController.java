@@ -7,6 +7,7 @@ import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 
+import com.masiis.shop.web.platform.service.message.PfMessageSrRelationService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
@@ -45,6 +46,9 @@ public class ShopIndexController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private JSSDKPFService jssdkService;
+    @Resource
+    private PfMessageSrRelationService pfMessageSrRelationService;
+
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
@@ -98,7 +102,9 @@ public class ShopIndexController extends BaseController {
         log.info("===========================B-index[curUrl=" + curUrl + "]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         modelAndView.addObject("shareMap", shareMap);
-
+        //消息UI提醒
+        Integer countMsg = pfMessageSrRelationService.queryNoSeeNumsByToUserAndType(user.getId(), 2);
+        modelAndView.addObject("countMsg", countMsg);
         return modelAndView;
     }
 }

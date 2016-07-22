@@ -94,7 +94,7 @@
     border-radius: 50px;
     font-size: 25px;
     text-align: center;
-    line-height: 24px;
+    line-height: 25px;
     background: #C7A467;
     color: #666666;
 }
@@ -121,7 +121,7 @@
 }
 .b_p img {
     display: block;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
 }
 .downloading{

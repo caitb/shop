@@ -74,14 +74,20 @@
         </ul>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/mallmessage/toMessageCenter.shtml?cur=0');">
-                <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt=""></span>
+                <span><img src="<%=path%>/static/images/xiaoxizhongxin.png" alt="">
+                    <c:if test="${countMsg>0}">
+                        <b></b>
+                    </c:if>
+                </span>
                 <span>消息中心</span>
             </li>
             <li style="background:#f3f4f5;border: none;"></li>
             <li style="background:#f3f4f5;border: none;"></li>
         </ul>
     </nav>
-    <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
+    <c:if test="${not empty userPromotions}">
+        <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
+    </c:if>
 </div><c:if test="${fm!=0}">
     <footer>
         <div>

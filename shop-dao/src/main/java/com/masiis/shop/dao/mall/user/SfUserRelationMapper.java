@@ -70,16 +70,14 @@ public interface SfUserRelationMapper {
      * @param treeCode treeCode
      * @return Integer
      */
-    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode,
-                                      @Param("shopId") Long shopId);
+    Map<String, Number> selectFansNum(@Param("treeCode") String treeCode);
 
     /**
      * 查询代言人数量
      * @param treeCode  treeCode
      * @return  map
      */
-    Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode,
-                                           @Param("shopId") Long shopId);
+    Map<String, Number> selectSpokesManNum(@Param("treeCode") String treeCode);
 
     Map<String, Number> selectFansOrSpokesManNum(@Param("userId") Long userId,
                                                  @Param("shopId") Long shopId,

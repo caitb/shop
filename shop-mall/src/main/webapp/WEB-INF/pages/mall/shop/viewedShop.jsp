@@ -28,9 +28,9 @@
                 </div>
             </c:if>
             <c:forEach var="userShopView" items="${sfUserShopViews}">
-                <section class="sec1">
+                <section class="sec1" onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">
                     <p class="photo">
-                        <img src="${path}${userShopView.logo}" alt="" onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">
+                        <img src="${path}${userShopView.logo}" alt="" >
                     </p>
                     <div class="shop">
                         <h2>${userShopView.shopName}

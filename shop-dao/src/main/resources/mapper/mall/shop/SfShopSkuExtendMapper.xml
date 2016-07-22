@@ -23,10 +23,10 @@
     </resultMap>
 
     <select id="selectShopviewByShopId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select sku.*,a.icon as icon,l.name as agentName
+        select DISTINCT(sku.sku_id) as spuId,a.icon as icon,l.name as agentName
             from sf_shop_sku sku
-            LEFT JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id AND sku.sku_id=a.sku_id
-            LEFT JOIN com_agent_level l on sku.agent_level_id = l.id
+            INNER JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id AND sku.sku_id=a.sku_id
+            INNER JOIN com_agent_level l on sku.agent_level_id = l.id
         where sku.shop_id = #{shopId,jdbcType=BIGINT}
     </select>
 

@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/header.css">
     <link rel="stylesheet" href="${path}/static/css/material/readlist.css">
 </head>
 <body>
 
 <div class="wrap">
     <header class="xq_header">
-        <a onclick="javascript:window.location.replace('${basePath}materielList/infoB');"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.history.go(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+
         <p>${skuName}</p>
     </header>
     <main>
@@ -29,6 +31,7 @@
     <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
+
         <p>
             线下素材的图片像素比较大，请您留下您的邮箱地址，系统稍后会将线下素材的下载链接发到您的邮箱，请注意查收！
         </p>
@@ -39,15 +42,17 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/hideWXShare.js"></script>
 <script>
-  $(function () {
-      var pWidth=$(".wrap").width()/3-1;
-      $("main p").width(pWidth)
-  })
-    function clickShow(){
+    $(function () {
+        var pWidth = $(".wrap").width() / 3 - 1;
+        $("main p").width(pWidth)
+        $("header a").attr("href", "${basePath}materielList/infoB");
+    })
+    function clickShow() {
         $(".black").show();
     }
-    function clickHide(){
+    function clickHide() {
         $(".black").hide();
     }
     function saveEmail() {

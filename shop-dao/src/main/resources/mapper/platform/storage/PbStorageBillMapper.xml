@@ -84,7 +84,12 @@
     </select>
 
     <select id="getStorageItemDetailList" resultType="java.util.HashMap">
-        select i.sku_name skuName, i.quantity, u.real_name realName, u.wx_nk_name nkName
+        select i.sku_name skuName, i.quantity,
+            CASE s.user_pid
+            when 0 then "平台"
+            ELSE u.real_name
+            END AS realName,
+            u.wx_nk_name nkName
         from pb_storage_bill_item i
         left join pb_storage_bill b on b.id = i.pb_storage_bill_id
         left join pf_user_sku s on s.user_id = b.user_id and s.sku_id = i.sku_id

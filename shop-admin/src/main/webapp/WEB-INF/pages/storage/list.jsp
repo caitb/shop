@@ -86,12 +86,21 @@
                                                 <input type="text" class="form-control" id="code" name="code" placeholder="变更单编码">
                                             </div>
                                             <div class="form-group">
-                                                <label for="code">变更人姓名</label>
+                                                <label for="realNamelike">变更人姓名</label>
                                                 <input type="text" class="form-control" id="realNamelike" name="realNamelike" placeholder="变更人姓名">
                                             </div>
                                             <div class="form-group">
-                                                <label for="code">变更人手机号</label>
+                                                <label for="mobilelike">变更人手机号</label>
                                                 <input type="text" class="form-control" id="mobilelike" name="mobilelike" placeholder="变更人手机号">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="state">变更单状态</label>
+                                                <select class="form-control" id="state" name="state">
+                                                    <option value="0">未处理</option>
+                                                    <option value="1">已审核</option>
+                                                    <option value="2">已处理</option>
+                                                    <option value="">所有</option>
+                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -472,6 +481,7 @@
                 if($('#code').val()) params.code = $('#code').val();
                 if($('#realNamelike').val()) params.realNamelike = $('#realNamelike').val();
                 if($('#mobilelike').val()) params.mobilelike = $('#mobilelike').val();
+                if($('#state').val()) params.state = $('#state').val();
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -669,7 +679,7 @@
                             //}
                         }
                     },*/
-                    {
+                    /*{
                         field: 'remark',
                         title: '备注',
                         footerFormatter: totalNameFormatter,
@@ -679,7 +689,7 @@
                                 return row.remark;
                             }
                         }
-                    },
+                    },*/
                     {
                         title: '操作项',
                         align: 'center',

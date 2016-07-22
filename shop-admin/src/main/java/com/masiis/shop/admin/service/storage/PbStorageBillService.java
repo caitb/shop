@@ -58,13 +58,13 @@ public class PbStorageBillService {
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> storagechangeList(Integer pageNo, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
+    public Map<String, Object> getStoragechangeList(Integer pageNo, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
         /*String sort = "pb.create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
         PageHelper.startPage(pageNo, pageSize, sort);*/
 
         PageHelper.startPage(pageNo, pageSize);
-        List<Map<String, Object>> bOrderMaps = pbStorageBillMapper.storagechangeList(conditionMap);
+        List<Map<String, Object>> bOrderMaps = pbStorageBillMapper.getStoragechangeList(conditionMap);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(bOrderMaps);
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());

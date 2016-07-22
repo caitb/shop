@@ -73,7 +73,8 @@ public class StorageChangeController {
             if(StringUtils.isNotBlank(request.getParameter("mobilelike"))){
                 conditionMap.put("mobilelike", "%" + request.getParameter("mobilelike") + "%");
             }
-            Map<String, Object> pageMap = billService.storagechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            System.out.println(request.getParameter("state"));
+            Map<String, Object> pageMap = billService.getStoragechangeList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
             log.error("查询库存变更单列表失败![conditionMap=" + conditionMap + "]");

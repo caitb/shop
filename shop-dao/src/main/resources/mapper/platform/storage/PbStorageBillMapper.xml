@@ -61,7 +61,7 @@
         from pb_storage_bill
     </select>
 
-    <select id="storagechangeList" parameterType="Map" resultType="java.util.HashMap">
+    <select id="getStoragechangeList" parameterType="Map" resultType="java.util.HashMap">
         select st.id, st.create_time, st.create_man, st.code, st.user_id, st.bill_reason, st.product_quantity, st.status, st.type,
         st.audit_man, st.audit_time, st.remark, u1.true_name create_man_name, u2.real_name user_id_name
         from pb_storage_bill st
@@ -72,10 +72,10 @@
             and st.code = #{code}
         </if>
         <if test="realNamelike != null">
-            and u1.real_name like #{realNamelike}
+            and u2.real_name like #{realNamelike}
         </if>
         <if test="mobilelike != null">
-            and u1.mobile like #{mobilelike}
+            and u2.mobile like #{mobilelike}
         </if>
     </select>
 

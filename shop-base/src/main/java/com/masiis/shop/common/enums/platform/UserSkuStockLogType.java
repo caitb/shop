@@ -39,9 +39,16 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "小铺退货";
         }
+    },STORAGECHANGE_BILL_ADD{
+        public Integer getCode() {
+            return 4;
+        }
+
+        public String getDesc() {
+            return "库存变更单增加";
+        }
     };
 
     public abstract Integer getCode();
-
     public abstract String getDesc();
 }

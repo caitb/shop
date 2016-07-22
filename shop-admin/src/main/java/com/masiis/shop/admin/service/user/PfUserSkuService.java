@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.service.user;
 
+import com.masiis.shop.dao.beans.user.UserSkuInfo;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
@@ -99,5 +100,15 @@ public class PfUserSkuService {
      */
     public int updateTreeCodes(String treeCode, String parentTreeCode, Integer idIndex, Integer treeLevelDiff) {
         return pfUserSkuMapper.updateTreeCodes(treeCode, parentTreeCode, idIndex, treeLevelDiff);
+    }
+
+    /**
+     * 根据用户id查询该用户代理的商品
+     *
+     * @param userId
+     * @return
+     */
+    public List<UserSkuInfo> findSkusByUserId(Long userId) {
+        return pfUserSkuMapper.selectSkusByUserId(userId);
     }
 }

@@ -223,4 +223,8 @@ public class ComUserService {
     public String findByPid(Integer pid) {
         return comUserMapper.findByPid(pid);
     }
+
+    public List<ComUser> queryByConditions(Map<String, Object> params) {
+        return comUserMapper.selectByConditions(params);
+    }
 }

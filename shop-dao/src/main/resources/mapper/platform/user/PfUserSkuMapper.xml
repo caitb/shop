@@ -466,6 +466,22 @@
         WHERE
           user_pid = #{userPid,jdbcType=BIGINT}
     </select>
+
+    <select id="selectSkusByUserId" resultMap="UserSkusResultMap">
+        SELECT
+            CASE
+                s.user_pid
+            WHEN 0 THEN "平台"
+            ELSE u.real_name
+            END as pName,
+            c.*
+        FROM
+            pf_user_sku s
+        LEFT JOIN com_sku c ON c.id = s.sku_id
+        LEFT JOIN com_user u ON s.user_pid=u.id
+        WHERE
+            s.user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>
 
 

@@ -44,4 +44,8 @@ public class PbStorageBillService {
         return pageMap;
     }
 
+    public List<Map<String, Object>> getStorageItemDetailList(Long storageId){
+        return pbStorageBillMapper.getStorageItemDetailList(storageId);
+    }
+
 }

@@ -183,10 +183,31 @@ public class StorageChangeController {
             json.put("state", "success");
             json.put("user", user);
         } catch (Exception e) {
-            log.error("获取会员信息详情失败![id="+id+"]");
+            log.error("获取会员信息详情失败![id= "+id+"]");
             e.printStackTrace();
             throw new BusinessException("网络错误", e);
         }
         return json.toString();
     }
+
+    @RequestMapping("/detailItem.do")
+    @ResponseBody
+    public Object detailItem(Long id){
+        if (id == null) {
+            throw new BusinessException("库存id不能为空");
+        }
+        JSONObject json = new JSONObject();
+        try {
+            List<Map<String, Object>> rows = billService.getStorageItemDetailList(id);
+            System.out.println("-----------------------   " + rows);
+            json.put("state", "success");
+            json.put("rows", rows);
+        } catch (Exception e) {
+            log.error("获取库存详情失败![id="+id+"]");
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
+        }
+        return json.toString();
+    }
+
 }

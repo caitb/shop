@@ -197,6 +197,68 @@
                             </div><!-- /.modal-dialog -->
                         </div>
 
+                        <%-------------------------------------------------------------------%>
+                        <div id="modal-library-detail" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">×</span>
+                                            </button>
+                                            商品详情
+                                        </div>
+                                    </div>
+
+                                    <%-------------%>
+                                    <!-- /section:basics/sidebar -->
+                                    <div class="main-content">
+
+                                        <!-- /section:basics/content.breadcrumbs -->
+                                        <div class="page-content">
+
+                                            <!-- /section:settings.box -->
+                                            <div class="page-content-area">
+
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12">
+
+                                                        <div>
+                                                            <div class="user-profile row">
+                                                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+
+                                                                    <!-- #section:pages/profile.info -->
+                                                                    <div id="itemDetail" class="profile-user-info profile-user-info-striped">
+
+
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div><!-- /.col -->
+
+                                                </div><!-- /.row -->
+
+                                            </div><!-- /.page-content-area -->
+                                        </div><!-- /.page-content -->
+                                    </div><!-- /.main-content -->
+                                    <%-------------%>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-5">
+                                            <button class="btn btn-sm btn-danger pull-left" id="cancelSave2" type="button" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                        <%-------------------------------------------------------------------%>
 
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -394,7 +456,55 @@
                         title: '商品详情',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="detail" href="javascript:void(0);">查看</a>'
+                            return '<a class="detailStorage" href="javascript:void(0);" billid="'+row.id+'">查看</a>'
+                        },
+                        events: {
+                            'click .detailStorage': function(e, value, row, index){
+                                $.ajax({
+                                    url: '<%=basePath%>storagechange/detailItem.do?id=' + $(this).attr("billid"),
+                                    type: 'get',
+                                    dataType:'json',
+                                    success: function(data){
+                                        if(data.state == "success"){
+                                            var rows = data.rows;
+                                            if(rows.length){
+                                                var tempHtml = '';
+                                                for(var i = 0; i < rows.length; i++){
+                                                    var obj = rows[i];
+                                                    tempHtml += '<div class="profile-info-row">' +
+                                                                    '<div class="profile-info-name"> 真实姓名 </div>' +
+                                                                    '<div class="profile-info-value">' +
+                                                                        '<span> ' + obj.realName + ' </span>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="profile-info-row">' +
+                                                                    '<div class="profile-info-name"> 微信昵称 </div>' +
+                                                                    '<div class="profile-info-value">' +
+                                                                    '<span> ' + obj.nkName + ' </span>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="profile-info-row">' +
+                                                                    '<div class="profile-info-name"> sku </div>' +
+                                                                    '<div class="profile-info-value">' +
+                                                                    '<span> ' + obj.skuName + ' </span>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="profile-info-row">' +
+                                                                    '<div class="profile-info-name"> 数量 </div>' +
+                                                                    '<div class="profile-info-value">' +
+                                                                        '<span> ' + obj.quantity + ' </span>' +
+                                                                    '</div>' +
+                                                                '</div>';
+                                                }
+                                                $("#itemDetail").empty().append(tempHtml);
+                                                $("#modal-library-detail").modal("show");
+                                            }else{
+                                                alert('没有查询到数据');
+                                            }
+                                        }
+                                    }
+                                });
+                            }
                         }
                     },
                     {

@@ -349,6 +349,18 @@
             <if test="rewardUnitPrice">
                 and reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
             </if>
+            <if test="comUsers != null">
+                AND user_id IN
+                <foreach collection="list" item="comUser" index="index" open="(" separator="," close=")">
+                    #{comUser.id}
+                </foreach>
+            </if>
+            <if test="pComUsers != null">
+                AND user_pid IN
+                <foreach collection="list" item="pComUsers" index="index" open="(" separator="," close=")">
+                    #{comUser.id}
+                </foreach>
+            </if>
         </where>
     </select>
 

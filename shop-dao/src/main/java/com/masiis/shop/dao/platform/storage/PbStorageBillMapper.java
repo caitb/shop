@@ -25,7 +25,7 @@ public interface PbStorageBillMapper {
 
     int updateByPrimaryKey(PbStorageBill record);
 
-    List<Map<String, Object>> storagechangeList(Map<String, Object> conditionMap);
+    List<Map<String, Object>> getStoragechangeList(Map<String, Object> conditionMap);
 
     List<Map<String, Object>> getStorageItemDetailList(Long storageId);
 }

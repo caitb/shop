@@ -37,7 +37,7 @@
 
 </div>
 <div class="black">
-    <div class="back_b"></div>
+    <div class="backb"></div>
     <div class="b_t">
         <h1>亲爱的代理，</h1>
 
@@ -49,18 +49,20 @@
         <b class="off" onclick="clickHide()">×</b>
     </div>
 </div>
-<div class="bigphp">
-    <div class="back_b"></div>
+<div class="bigphp" onclick="bigphpHide()">
+    <div class="backb"></div>
     <div class="b_p">
         <img src="" alt="">
     </div>
-    <b class="off" onclick="bigphpHide()">×</b>
+    <%--<b class="off" onclick="bigphpHide()">×</b>--%>
 </div>
 <c:if test="${countSkuMaterial>3}">
     <img src="${path}/static/images/material/downloading.png" alt=""  class="downloading">
 </c:if>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/zepto.min.js"></script>
+
 <script>
     function clickShow(){
         $(".black").show();
@@ -70,7 +72,7 @@
     }
     function bigphpHide(){
         $(".bigphp").hide();
-    }
+    };
     $(".sec1 img").on("click",function(){
         var imgSrc=$(this).attr("src");
         $(".bigphp").show();

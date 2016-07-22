@@ -474,25 +474,25 @@
                                                     tempHtml += '<div class="profile-info-row">' +
                                                                     '<div class="profile-info-name"> 真实姓名 </div>' +
                                                                     '<div class="profile-info-value">' +
-                                                                        '<span> ' + obj.realName + ' </span>' +
+                                                                        '<span> ' + (obj.realName?obj.realName:"-") + ' </span>' +
                                                                     '</div>' +
                                                                 '</div>' +
                                                                 '<div class="profile-info-row">' +
                                                                     '<div class="profile-info-name"> 微信昵称 </div>' +
                                                                     '<div class="profile-info-value">' +
-                                                                    '<span> ' + obj.nkName + ' </span>' +
+                                                                    '<span> ' + (obj.nkName?obj.nkName:"-") + ' </span>' +
                                                                     '</div>' +
                                                                 '</div>' +
                                                                 '<div class="profile-info-row">' +
                                                                     '<div class="profile-info-name"> sku </div>' +
                                                                     '<div class="profile-info-value">' +
-                                                                    '<span> ' + obj.skuName + ' </span>' +
+                                                                    '<span> ' + (obj.skuName?obj.skuName:"-") + ' </span>' +
                                                                     '</div>' +
                                                                 '</div>' +
                                                                 '<div class="profile-info-row">' +
                                                                     '<div class="profile-info-name"> 数量 </div>' +
                                                                     '<div class="profile-info-value">' +
-                                                                        '<span> ' + obj.quantity + ' </span>' +
+                                                                        '<span> ' + (obj.quantity?obj.quantity:"-") + ' </span>' +
                                                                     '</div>' +
                                                                 '</div>';
                                                 }

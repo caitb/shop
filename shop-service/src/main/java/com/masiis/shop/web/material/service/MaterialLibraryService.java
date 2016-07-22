@@ -61,7 +61,7 @@ public class MaterialLibraryService {
              PageHelper.startPage(currentPage, pageSize,false);
              comSkuMaterialLibraryList = comSkuMaterialLibraryMapper.selectAllByPfUserSkuAgent(UserId);
         }
-        String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        String Value = PropertiesUtils.getStringValue("index_product_prototype_url");
         for (ComSkuMaterialLibrary comSkuMaterialLibrary :comSkuMaterialLibraryList){
             MaterialLibrary materialLibrary = new MaterialLibrary();
             ComSku comSku =comSkuMapper.selectByPrimaryKey(comSkuMaterialLibrary.getSkuId());

@@ -71,7 +71,6 @@
                 async: false,
                 success: function (data) {
                     if (data.isError == false) {
-                        alert("订阅成功！");
                         window.location.reload(true);
                     }
                 }
@@ -88,7 +87,6 @@
                 async: false,
                 success: function (data) {
                     if (data.isError == false) {
-                        alert("取消成功！");
                         window.location.reload(true);
                     }
                 }

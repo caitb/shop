@@ -99,7 +99,7 @@
                                                     <option value="0">未处理</option>
                                                     <option value="1">已审核</option>
                                                     <option value="2">已处理</option>
-                                                    <option value="">所有</option>
+                                                    <option value="">全部</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>

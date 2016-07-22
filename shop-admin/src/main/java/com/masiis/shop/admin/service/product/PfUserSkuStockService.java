@@ -92,6 +92,9 @@ public class PfUserSkuStockService {
             case shopReturn:
                 afterStock += change;
                 break;
+            case STORAGECHANGE_BILL_ADD:
+                afterStock += change;
+                break;
             default:
                 throw new BusinessException();
         }

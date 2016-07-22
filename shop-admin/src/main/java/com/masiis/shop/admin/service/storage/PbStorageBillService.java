@@ -2,12 +2,15 @@ package com.masiis.shop.admin.service.storage;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.storage.PbStorageBillItemMapper;
 import com.masiis.shop.dao.platform.storage.PbStorageBillMapper;
 import com.masiis.shop.dao.platform.storage.PbStorageBillOperationLogMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
@@ -40,6 +43,10 @@ public class PbStorageBillService {
     private PbStorageBillItemMapper pbStorageBillItemMapper;
     @Resource
     private PbStorageBillOperationLogMapper billOpLogMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
+    @Resource
+    private PfUserSkuStockService pfUserSkuStockService;
 
 
     /**
@@ -163,5 +170,101 @@ public class PbStorageBillService {
         }
 
         return false;
+    }
+
+    public PbStorageBill findById(Integer billId) {
+        return pbStorageBillMapper.selectByPrimaryKey(billId);
+    }
+
+    public void auditBill(PbUser user, PbStorageBill bill, String auditRemark, String ip) {
+        try{
+            if(bill == null){
+                throw new BusinessException("单据为空");
+            }
+            if(bill.getStatus().intValue() != 0){
+                log.error("单据不是未处理状态");
+                throw new BusinessException("单据不是未处理状态");
+            }
+            Integer prevStatus = bill.getStatus();
+            bill.setAuditMan(user.getId());
+            bill.setAuditTime(new Date());
+            bill.setStatus(1);
+            Integer nextStatus = bill.getStatus();
+
+            pbStorageBillMapper.updateByPrimaryKey(bill);
+
+            // 创建系统操作日志
+            PbOperationLog oLog = new PbOperationLog();
+            oLog.setCreateTime(new Date());
+            oLog.setOperateIp(ip);
+            oLog.setOperateType(1);
+            oLog.setPbUserId(user.getId());
+            oLog.setPbUserName(user.getUserName());
+            oLog.setOperateContent(bill.toString());
+            oLog.setRemark("审核库存变更单");
+            pbOperationLogMapper.insert(oLog);
+            // 创建变更单操作日志
+            PbStorageBillOperationLog blog = new PbStorageBillOperationLog();
+            blog.setCreateTime(new Date());
+            blog.setHandleMan(user.getId());
+            blog.setHandleType(2);
+            blog.setPbStorageBillId(bill.getId());
+            blog.setPrevStatus(prevStatus);
+            blog.setNextStatus(nextStatus);
+            blog.setRemark(auditRemark);
+            billOpLogMapper.insert(blog);
+
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
+    }
+
+    public void handleSubtractBill(PbUser pbUser, PbStorageBill bill, String handleRemark, String remoteAddr) {
+        try{
+            if(bill == null){
+                throw new BusinessException("单据为空");
+            }
+            if(bill.getStatus().intValue() != 1){
+                log.error("单据不是已审核状态");
+                throw new BusinessException("单据不是已审核状态");
+            }
+            Integer prevStatus = bill.getStatus();
+            bill.setStatus(2);
+            Integer nextStatus = bill.getStatus();
+
+            pbStorageBillMapper.updateByPrimaryKey(bill);
+
+            // 修改库存
+            List<PbStorageBillItem> items = pbStorageBillItemMapper.selectByBillId(bill.getId());
+            for(PbStorageBillItem item:items) {
+                PfUserSkuStock stock = pfUserSkuStockService.selectByUserIdAndSkuId(bill.getUserId(), item.getSkuId());
+                pfUserSkuStockService.updateUserSkuStockWithLog(item.getQuantity(), stock,
+                        Long.valueOf(bill.getId()), UserSkuStockLogType.STORAGECHANGE_BILL_ADD);
+            }
+
+            // 创建系统操作日志
+            PbOperationLog oLog = new PbOperationLog();
+            oLog.setCreateTime(new Date());
+            oLog.setOperateIp(remoteAddr);
+            oLog.setOperateType(1);
+            oLog.setPbUserId(pbUser.getId());
+            oLog.setPbUserName(pbUser.getUserName());
+            oLog.setOperateContent(bill.toString());
+            oLog.setRemark("处理操作库存变更单");
+            pbOperationLogMapper.insert(oLog);
+            // 创建变更单操作日志
+            PbStorageBillOperationLog blog = new PbStorageBillOperationLog();
+            blog.setCreateTime(new Date());
+            blog.setHandleMan(pbUser.getId());
+            blog.setHandleType(3);
+            blog.setPbStorageBillId(bill.getId());
+            blog.setPrevStatus(prevStatus);
+            blog.setNextStatus(nextStatus);
+            blog.setRemark(handleRemark);
+            billOpLogMapper.insert(blog);
+
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
     }
 }

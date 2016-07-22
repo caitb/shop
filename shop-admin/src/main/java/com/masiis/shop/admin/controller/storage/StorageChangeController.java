@@ -3,6 +3,7 @@ package com.masiis.shop.admin.controller.storage;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.storage.QueryUserByConditionRes;
 import com.masiis.shop.admin.beans.storage.QueryUserSkuListRes;
+import com.masiis.shop.admin.beans.storage.StorageBillAuditRes;
 import com.masiis.shop.admin.beans.storage.StorageBillCreateRes;
 import com.masiis.shop.admin.service.system.PbOperationLogService;
 import com.masiis.shop.dao.beans.user.UserSkuInfo;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.org.mozilla.javascript.internal.EcmaError;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -171,6 +173,7 @@ public class StorageChangeController {
             PbUser pbUser = (PbUser) session.getAttribute("pbUser");
             if(session.isNew() || pbUser == null){
                 res.setResCode("unsign");
+                res.setResMsg("用户未登录");
                 throw new BusinessException("用户未登录");
             }
             if(userId == null || userId <= 0){
@@ -268,6 +271,83 @@ public class StorageChangeController {
             throw new BusinessException("网络错误", e);
         }
         return json.toString();
+    }
+
+    @RequestMapping("/audit.do")
+    @ResponseBody
+    public StorageBillAuditRes auditBill(@RequestParam("billId") Integer billId,
+                                         @RequestParam(name = "auditRemark", required = false) String auditRemark,
+                                         HttpServletRequest request,
+                                         HttpSession session){
+        StorageBillAuditRes res = new StorageBillAuditRes();
+        try{
+            PbUser pbUser = (PbUser) session.getAttribute("pbUser");
+            if(session.isNew() || pbUser == null){
+                res.setResCode("unsign");
+                res.setResMsg("用户未登录");
+                throw new BusinessException("用户未登录");
+            }
+            if(billId == null || billId <= 0){
+                res.setResMsg("单据id错误");
+                log.error("单据id错误");
+                throw new BusinessException("单据id错误");
+            }
+            PbStorageBill bill = billService.findById(billId);
+            if(bill == null){
+                res.setResMsg("该单据不存在");
+                log.error("该单据不存在");
+                throw new BusinessException("该单据不存在");
+            }
+            billService.auditBill(pbUser, bill, auditRemark, request.getRemoteAddr());
+
+        } catch (Exception e){
+            res.setResCode("fail");
+            if(StringUtils.isBlank(res.getResMsg())){
+                res.setResMsg("网络错误");
+            }
+        }
+
+        return res;
+    }
+
+    @RequestMapping("/handle.do")
+    @ResponseBody
+    public StorageBillAuditRes handleBill(@RequestParam("billId") Integer billId,
+                                         @RequestParam(name = "handleRemark", required = false) String handleRemark,
+                                         HttpServletRequest request,
+                                         HttpSession session){
+        StorageBillAuditRes res = new StorageBillAuditRes();
+        try{
+            PbUser pbUser = (PbUser) session.getAttribute("pbUser");
+            if(session.isNew() || pbUser == null){
+                res.setResCode("unsign");
+                res.setResMsg("用户未登录");
+                throw new BusinessException("用户未登录");
+            }
+            if(billId == null || billId <= 0){
+                res.setResMsg("单据id错误");
+                log.error("单据id错误");
+                throw new BusinessException("单据id错误");
+            }
+            PbStorageBill bill = billService.findById(billId);
+            if(bill == null){
+                res.setResMsg("该单据不存在");
+                log.error("该单据不存在");
+                throw new BusinessException("该单据不存在");
+            }
+
+            billService.handleSubtractBill(pbUser, bill, handleRemark, request.getRemoteAddr());
+        } catch (Exception e){
+            res.setResCode("fail");
+            if(e instanceof BusinessException){
+                res.setResMsg(e.getMessage());
+            }
+            if(StringUtils.isBlank(res.getResMsg())){
+                res.setResMsg("网络错误");
+            }
+        }
+
+        return res;
     }
 
 }

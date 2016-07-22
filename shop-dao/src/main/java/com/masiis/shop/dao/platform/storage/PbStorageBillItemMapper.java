@@ -22,4 +22,6 @@ public interface PbStorageBillItemMapper {
     List<PbStorageBillItem> selectAll();
 
     int updateByPrimaryKey(PbStorageBillItem record);
+
+    List<PbStorageBillItem> selectByBillId(Integer billId);
 }

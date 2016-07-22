@@ -47,4 +47,10 @@
         from pb_storage_bill_item
     </select>
 
+    <select id="selectByBillId" resultMap="BaseResultMap">
+        select id, create_time, pb_storage_bill_id, sku_id, sku_name, quantity, remark
+        from pb_storage_bill_item
+        where pb_storage_bill_id = #{billId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

@@ -114,6 +114,13 @@ public interface PfUserSkuMapper {
      */
     List<Long> selectAllTeamMember(String treeCode);
 
+    /**
+     * 查询这个人的boss的团队的所有成员
+     * @param treeCode
+     * @return
+     */
+    List<PfUserSku> getBossTeamInfoByTreeCode(String treeCode);
+
     List<UserSkuAgent> selectCurrentAgentLevel(@Param("userId") Long userId);
 
 

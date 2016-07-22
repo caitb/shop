@@ -81,6 +81,17 @@ public class PfUserSkuService {
     }
 
     /**
+     * 查询这个人的boss的团队的所有成员
+     * @param treeCode
+     * @return
+     */
+    public List<PfUserSku> getBossTeamInfoByTreeCode(String treeCode) {
+        return pfUserSkuMapper.getBossTeamInfoByTreeCode(treeCode);
+    }
+
+
+
+    /**
      * 批量修改团队树结构
      *
      * @param treeCode

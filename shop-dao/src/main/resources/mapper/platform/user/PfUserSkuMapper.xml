@@ -466,6 +466,16 @@
         WHERE
           user_pid = #{userPid,jdbcType=BIGINT}
     </select>
+
+    <!--查询这个人的boss的团队的所有成员-->
+    <select id="getBossTeamInfoByTreeCode" resultMap="BaseResultMap">
+        SELECT c.* FROM pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code,'%') AND b.tree_level=1
+        INNER JOIN pf_user_sku c ON c.tree_code LIKE CONCAT(b.tree_code,'%')
+        WHERE a.tree_code=#{treeCode,jdbcType=VARCHAR}
+        AND c.tree_code!=#{treeCode,jdbcType=VARCHAR}
+    </select>
+
 </mapper>
 
 

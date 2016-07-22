@@ -16,30 +16,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/tab.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/dropzone.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/my-dropzone.css"/>
-
 
     <!-- text fonts -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css"/>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css" />
 
     <!-- ace styles -->
-    <%--<link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />--%>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css" />
     <![endif]-->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css"/>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css"/>
-    <![endif]-->
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
 
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
@@ -115,7 +113,7 @@
                                 <label for="userName" class="control-label col-sm-2">变更人</label>
                                 <div class="col-sm-2">
                                     <label id="userName" class="col-sm-2 form-control" ></label>
-                                    <input type="hidden" id="userId"/>
+                                    <input type="hidden" id="userId" name="userId"/>
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" id="useSelect" class="btn btn-success">选择</button>
@@ -127,7 +125,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div id="skutitle" class="form-group">
                                 <label class="control-label col-sm-2">添加商品</label>
                                 <div class="col-sm-10" style="background-color: gainsboro">
                                     <div class="row">
@@ -136,30 +134,6 @@
                                         <label class="control-label col-sm-2" style="text-align: center;">数量</label>
                                         <label class="control-label col-sm-4" style="text-align: center;">备注</label>
                                         <label class="control-label col-sm-1" style="text-align: center;">操作</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="promotion-rule-template" class="form-group promotion-rule" style="display: none;">
-                                <label class="control-label col-sm-2 rule-name"></label>
-                                <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <label type="text"class="form-control"></label>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <input type="numbers"class="form-control">
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="text"class="form-control">
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <button type="button" class="btn btn-warning removeRule">删除</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -179,10 +153,34 @@
                             </div>
                         </form>
 
+                        <div id="promotion-rule-template" class="form-group promotion-rule" style="display: none;">
+                            <label class="control-label col-sm-2 rule-name"></label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <select name="skuIds" class="form-control">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label type="text"class="form-control"></label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="numbers" name="skuNums" class="form-control">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="skuRemarks" class="form-control">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="button" class="btn btn-warning removeRule">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <row>
                             <label class="col-sm-6"></label>
                             <div class="col-sm-5">
-                                <button type="submit" class="btn btn-lg btn-info" id="promotionSave">保存</button>
+                                <input type="button" class="btn btn-lg btn-info" id="promotionSave" value="保存"/>
                             </div>
                         </row>
 
@@ -282,7 +280,7 @@
 <!-- page specific plugin scripts -->
 <script src="<%=basePath%>static/ace2/js/dropzone.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
-
+<script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 <script>
 
     $(document).ready(function() {
@@ -295,7 +293,11 @@
             var $rule = $(this).parents('.promotion-rule');
 
             if($('.promotion-rule').length < 3) {
-                alert("最少要有一件商品 !");
+                $.gritter.add({
+                    title: '操作提示',
+                    text: "最少要有一件商品 !",
+                    class_name: 'gritter-error'
+                });
                 return;
             }
 
@@ -316,11 +318,6 @@
 
         });
 
-        // 保存表单
-        $('#promotionSave').click(function() {
-            $('#promotionForm').submit();
-        });
-
         $(".list-group").on("click", ".list-group-item", function(){
             if($(this).attr("id") == "list_0"){
                 return;
@@ -328,59 +325,7 @@
             $(this).addClass("li_selected").siblings().removeClass("li_selected");
         });
 
-        $('#promotionForm').bootstrapValidator({
-                    message: '必须填写',
-                    feedbackIcons: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        name: {
-                            message: '必须填写!',
-                            validators: {
-                                notEmpty: {}
-                            }
-                        },
-                        remark: {
-                            message: '必须填写!',
-                            validators: {
-                                notEmpty: {}
-                            }
-                        },
-                        personType: {
-                            message: '必须填写!',
-                            validators: {
-                                notEmpty: {}
-                            }
-                        }
-
-                    }
-                })
-                .on('success.form.bv', function(e) {
-                    // Prevent form submission
-                    e.preventDefault();
-
-                    // Get the form instance
-                    var $form = $(e.target);
-
-                    // Get the BootstrapValidator instance
-                    var bv = $form.data('bootstrapValidator');
-
-                    // Use Ajax to submit form data
-                    $.ajax({
-                        url: '<%=basePath%>promotion/saveOrUpdate.do',
-                        type: 'post',
-                        dataType:'json',
-                        data: $('#promotionForm').serialize(),
-                        success: function(msg){
-                            if(msg.promotionId) {
-                                loadPromotion(msg.promotionId);
-                                alert("成功！");
-                            }
-                        }
-                    });
-                });
+        $('#promotionSave').on("click", sumbit_func);
 
         $("#useSelect").on("click", function(){
             $("#uName").val(null);
@@ -400,7 +345,11 @@
             var select_li = $("#nameList .li_selected");
             var userId = select_li.attr("id");
             if(userId == undefined || userId == null || userId == ""){
-                alert("您没有选中任何人");
+                $.gritter.add({
+                    title: '操作提示',
+                    text: "您没有选中任何人",
+                    class_name: 'gritter-error'
+                });
                 return;
             }
             var options = {
@@ -436,9 +385,7 @@
                         // 清除旧的的商品项
                         clearPromotionRule();
                         // 给商品项模板赋值新的商品下拉选项
-                        $("#promotionForm .promotion-rule").each(function () {
-                            addPromotionRule();
-                        });
+                        addPromotionRule();
                     } else {
                         alert(data.resMsg);
                     }
@@ -460,7 +407,11 @@
                         $(this).attr("selected", true);
                     }
                 });
-                alert("该商品已选择");
+                $.gritter.add({
+                    title: '操作提示',
+                    text: "该商品已选择",
+                    class_name: 'gritter-error'
+                });
                 return;
             }
 
@@ -479,6 +430,76 @@
 
     var skulist = new Array({id:-1,name:"",pName:""});
     var skulistPro = new Array({id:-1,name:"",pName:""});
+
+    function sumbit_func(){
+        var userId = $("#userId").val();
+        if(userId == undefined || userId == null || userId.trim() == ""){
+            $.gritter.add({
+                title: '操作提示',
+                text: "请选择变更人",
+                class_name: 'gritter-error'
+            });
+            return;
+        }
+        var size = $(".promotion-rule").size();
+        if(size <= 1){
+            $.gritter.add({
+                title: '操作提示',
+                text: "请选择商品",
+                class_name: 'gritter-error'
+            });
+            return;
+        }
+        if(!checkSkuItemIsOk()){
+            return;
+        }
+
+
+        $('#promotionSave').unbind("click");
+        var options = {
+            url:"${path}/storagechange/create.do",
+            type:"post",
+            dataType:"json",
+            data:$("#promotionForm").serialize(),
+            success:function(data){
+                if(data.resCode == "success"){
+                    parent.window.$('#myTabbable').add("tab15-1", '库存变更列表', "${path}/storagechange/list.shtml");
+                    window.close();
+                } else if(data.resCode == "unsign"){
+                    window.top.location.href = "${path}/user/login.shtml";
+                }else {
+                    alert(data.resMsg);
+                    $('#promotionSave').on("click", sumbit_func);
+                }
+            },
+            error:function(){
+                $('#promotionSave').on("click", sumbit_func);
+            }
+        }
+        $.ajax(options);
+    }
+
+    function checkSkuItemIsOk(){
+        var flag = true;
+        $(".promotion-rule").each(function(){
+            if($(this).attr("id") == "promotion-rule-template"){
+                flag = false;
+                return false;
+            }
+            var skuName = $(this).find(".row div:eq(0)").children("select").find("option:selected").text();
+            var num = $(this).find(".row div:eq(2)").children("input").val();
+            if(num == undefined || num == null || num.trim() == ""){
+                $.gritter.add({
+                    title: '操作提示',
+                    text: skuName + " 没有填写数量",
+                    class_name: 'gritter-error'
+                });
+                flag = false;
+                return false;
+            }
+        });
+        return flag;
+    }
 
 
     function  isInSkulistById(id){
@@ -567,7 +588,11 @@
         var $template = $('#promotion-rule-template');
         var newRule = $template.clone(true).removeAttr("id").show();
         if(skulist.length <= 0){
-            alert("商品已添加完");
+            $.gritter.add({
+                title: '操作提示',
+                text: "暂无可添加商品",
+                class_name: 'gritter-error'
+            });
             return;
         }
         var sku = skulist[0];
@@ -586,7 +611,7 @@
         _select.attr("attr", sku.id);
         newRule.find(".row").children("div").first().next().children("label").text(sku.pName);
         skulist.splice(0, 1);
-        $template.before(newRule);
+        $("#skutitle").after(newRule);
     }
 </script>
 </body>

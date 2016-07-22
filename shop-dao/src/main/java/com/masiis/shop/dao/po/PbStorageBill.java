@@ -135,4 +135,22 @@ public class PbStorageBill {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "PbStorageBill{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", code='" + code + '\'' +
+                ", userId=" + userId +
+                ", billReason='" + billReason + '\'' +
+                ", productQuantity=" + productQuantity +
+                ", status=" + status +
+                ", type=" + type +
+                ", auditMan=" + auditMan +
+                ", auditTime=" + auditTime +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

@@ -513,12 +513,18 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            //if(row && row.status){
-                                return row.status;
-                            //}
+                            if(row.status == 0){
+                                return '未处理';
+                            }else if(row.status == 1){
+                                return '已审核';
+                            }else if(row.status == 2){
+                                return '已处理';
+                            }else if(row.status == 3){
+                                return '已取消';
+                            }
                         }
                     },
-                    {
+                    /*{
                         field: 'type',
                         title: '类型',
                         footerFormatter: totalNameFormatter,
@@ -528,7 +534,7 @@
                                 return row.type;
                             //}
                         }
-                    },
+                    },*/
                     {
                         field: 'remark',
                         title: '备注',

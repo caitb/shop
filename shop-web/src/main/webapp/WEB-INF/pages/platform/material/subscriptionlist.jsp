@@ -13,7 +13,7 @@
 
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basePath}materielList/infoB'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
 
         <p>${skuName}</p>
     </header>

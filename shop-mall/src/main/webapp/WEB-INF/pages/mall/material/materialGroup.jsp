@@ -72,9 +72,10 @@
                 data: {status: 1, materialId: id},
                 dataType: 'json',
                 async: false,
+                cache:false,
                 success: function (data) {
                     if (data.isError == false) {
-                        setTimeout("window.location.reload(true)", 1000)
+                        window.location.href='${basepath}materielList/infoC?random='+Math.random();
                     }
                 }
             });
@@ -88,9 +89,10 @@
                 data: {status: 0, materialId: id},
                 dataType: 'json',
                 async: false,
+                cache:false,
                 success: function (data) {
                     if (data.isError == false) {
-                        window.location.reload(true);
+                        window.location.href='${basepath}materielList/infoC?random='+Math.random();
                     }
                 }
             });

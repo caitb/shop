@@ -512,7 +512,7 @@
                             //}
                         }
                     },*/
-                    {
+                    /*{
                         field: 'remark',
                         title: '备注',
                         footerFormatter: totalNameFormatter,
@@ -522,7 +522,7 @@
                                 return row.remark;
                             }
                         }
-                    },
+                    },*/
                     {
                         title: '操作项',
                         align: 'center',

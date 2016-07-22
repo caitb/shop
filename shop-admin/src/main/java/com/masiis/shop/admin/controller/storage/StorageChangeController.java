@@ -301,9 +301,12 @@ public class StorageChangeController {
                 throw new BusinessException("该单据不存在");
             }
             billService.auditBill(pbUser, bill, auditRemark, request.getRemoteAddr());
-
+            res.setResCode("success");
         } catch (Exception e){
             res.setResCode("fail");
+            if(e instanceof BusinessException){
+                res.setResMsg(e.getMessage());
+            }
             if(StringUtils.isBlank(res.getResMsg())){
                 res.setResMsg("网络错误");
             }
@@ -339,6 +342,7 @@ public class StorageChangeController {
             }
 
             billService.handleSubtractBill(pbUser, bill, handleRemark, request.getRemoteAddr());
+            res.setResCode("success");
         } catch (Exception e){
             res.setResCode("fail");
             if(e instanceof BusinessException){

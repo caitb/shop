@@ -463,8 +463,9 @@
             data:$("#promotionForm").serialize(),
             success:function(data){
                 if(data.resCode == "success"){
+                    parent.window.$('#myTabbable').closeTab('tab15-0');
+                    parent.window.$('#myTabbable').closeTab('tab15-1');
                     parent.window.$('#myTabbable').add("tab15-1", '库存变更列表', "${path}/storagechange/list.shtml");
-                    window.close();
                 } else if(data.resCode == "unsign"){
                     window.top.location.href = "${path}/user/login.shtml";
                 }else {
@@ -483,8 +484,7 @@
         var flag = true;
         $(".promotion-rule").each(function(){
             if($(this).attr("id") == "promotion-rule-template"){
-                flag = false;
-                return false;
+                return;
             }
             var skuName = $(this).find(".row div:eq(0)").children("select").find("option:selected").text();
             var num = $(this).find(".row div:eq(2)").children("input").val();

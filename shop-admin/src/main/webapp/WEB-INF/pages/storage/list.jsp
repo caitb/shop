@@ -122,9 +122,175 @@
                             </div>
                         </div>
 
+                        <div id="modal-receipt" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">&times;</span>
+                                            </button>
+                                            库存变更单据审核
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <div>
+                                            <div id="modal-receipt-user-profile" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+                                                    <form id="auditForm" >
+                                                    <!-- #section:pages/profile.info -->
+                                                    <div class="profile-user-info profile-user-info-striped">
+                                                        <input type="hidden" id="audit_billId" name="billId" />
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name">单据号</div>
+                                                            <div class="profile-info-value" id="jjF">
+                                                                <label id="audit_code">单据号</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-user-info profile-user-info-striped">
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name">变更人</div>
+                                                            <div class="profile-info-value">
+                                                                <label id="audit_username">变更人</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-user-info profile-user-info-striped">
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name">商品总数量</div>
+
+                                                            <div class="profile-info-value">
+                                                                <label id="audit_num">商品总数量</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="profile-user-info profile-user-info-striped">
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name">单据状态</div>
+                                                            <div class="profile-info-value">
+                                                                <label id="audit_type" >单据状态</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="profile-user-info profile-user-info-striped">
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 审核备注 </div>
+                                                            <div class="profile-info-value">
+                                                                <textarea style="width: 100%" id="audit_remark" name="auditRemark" placeholder="请输入审核备注"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+                                                取消
+                                            </button>
+                                            <button id="audit_btn" class="btn btn-sm btn-info pull-left ok">
+                                                确认
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- PAGE CONTENT ENDS -->
+
+                        <div id="modal-receipt-handle" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">&times;</span>
+                                            </button>
+                                            库存变更单据处理
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <div>
+                                            <div id="modal-receipt-handle-user-profile" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+                                                    <form id="handleForm" >
+                                                        <!-- #section:pages/profile.info -->
+                                                        <div class="profile-user-info profile-user-info-striped">
+                                                            <input type="hidden" id="handle_billId" name="billId" />
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name">单据号</div>
+                                                                <div class="profile-info-value" >
+                                                                    <label id="handle_code">单据号</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-user-info profile-user-info-striped">
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name">变更人</div>
+                                                                <div class="profile-info-value">
+                                                                    <label id="handle_username">变更人</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-user-info profile-user-info-striped">
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name">商品总数量</div>
+
+                                                                <div class="profile-info-value">
+                                                                    <label id="handle_num">商品总数量</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-user-info profile-user-info-striped">
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name">单据状态</div>
+                                                                <div class="profile-info-value">
+                                                                    <label id="handle_type" >单据状态</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-user-info profile-user-info-striped">
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 审核备注 </div>
+                                                                <div class="profile-info-value">
+                                                                    <textarea style="width: 100%" id="handle_remark" name="handleRemark" placeholder="请输入审核备注"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                            <input id="handle-gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+                                                取消
+                                            </button>
+                                            <button id="handle_btn" class="btn btn-sm btn-info pull-left ok">
+                                                确认
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- PAGE CONTENT ENDS -->
 
                         <div id="modal-library" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -224,26 +390,17 @@
                                     <div class="form-group">
                                         <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" style="text-align: center;">真实姓名</label>
-                                                <label class="control-label col-sm-3" style="text-align: center;">微信昵称</label>
-                                                <label class="control-label col-sm-3" style="text-align: center;">商品</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">商品名称</label>
                                                 <label class="control-label col-sm-3" style="text-align: center;">数量</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">上级姓名</label>
+                                                <label class="control-label col-sm-3" style="text-align: center;">上级微信昵称</label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group" style="height: 170px;">
-                                        <label class="control-label col-sm-1"></label>
-                                        <div class="col-sm-10" style="height: 188px;overflow: auto;">
-                                            <ul class="list-group" id="itemDetail">
-                                                <%--<li class="list-group-item">
-                                                    <div class="form-group">
-                                                        <b class="col-sm-3">Liuxiuj</b>
-                                                        <b class="col-sm-3">Liuxiuj</b>
-                                                        <b class="col-sm-3">Liuxiuj</b>
-                                                        <b class="col-sm-3">Liuxiuj</b>
-                                                    </div>
-                                                </li>--%>
+                                        <div class="col-sm-11" style="height: 188px;overflow: auto;">
+                                            <ul class="col-xs-offset-1 list-group" id="itemDetail">
                                             </ul>
                                         </div>
                                     </div>
@@ -392,7 +549,7 @@
                     },
                     {
                         field: 'bill_reason',
-                        title: '单据创建原因',
+                        title: '单据说明',
                         //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -404,7 +561,7 @@
                     },
                     {
                         field: 'code',
-                        title: '变更单编码',
+                        title: '单据号',
                         //sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -475,10 +632,10 @@
                                                     var obj = rows[i];
                                                     tempHtml += '<li class="list-group-item">' +
                                                                     '<div class="form-group">' +
-                                                                        '<b class="col-sm-3"> ' + (obj.realName?obj.realName:"-") + ' </b>' +
-                                                                        '<b class="col-sm-3"> ' + (obj.nkName?obj.nkName:"-") + ' </b>' +
-                                                                        '<b class="col-sm-3"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
-                                                                        '<b class="col-sm-3"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.realName?obj.realName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.nkName?obj.nkName:"-") + ' </b>' +
                                                                     '</div>' +
                                                                 '</li>';
                                                 }
@@ -538,15 +695,51 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.status==0){
-                                return '<a class="detail" href="javascript:void(0);">审核</a>';
+                                return '<a class="audit" href="javascript:void(0);">审核</a>';
                             }else if(row && row.status==1){
-                                return '<a class="detail" href="javascript:void(0);">处理</a>';
+                                return '<a class="handle" href="javascript:void(0);">处理</a>';
                             }
                         },
                         events: {
-                            'click .detail': function(e, value, row, index){
+                            'click .audit': function(e, value, row, index){
+                                $("#audit_billId").val(row.id);
+                                $("#audit_code").html(row.code);
+                                $("#audit_username").html(row.user_id_name);
+                                $("#audit_num").html(row.product_quantity);
+                                var status_name = "";
 
-                                $("#modal-library").modal("show");
+                                if(row.status == 0){
+                                    status_name = "未处理";
+                                }else if(row.status == 1){
+                                    status_name = '已审核';
+                                }else if(row.status == 2){
+                                    status_name = '已处理';
+                                }else if(row.status == 3){
+                                    status_name = '已取消';
+                                }
+                                $("#audit_type").html(status_name);
+                                $("#audit_remark").val("");
+                                $("#modal-receipt").modal("show");
+                            },
+                            'click .handle': function(e, value, row, index){
+                                $("#handle_billId").val(row.id);
+                                $("#handle_code").html(row.code);
+                                $("#handle_username").html(row.user_id_name);
+                                $("#handle_num").html(row.product_quantity);
+                                var status_name = "";
+
+                                if(row.status == 0){
+                                    status_name = "未处理";
+                                }else if(row.status == 1){
+                                    status_name = '已审核';
+                                }else if(row.status == 2){
+                                    status_name = '已处理';
+                                }else if(row.status == 3){
+                                    status_name = '已取消';
+                                }
+                                $("#handle_type").html(status_name);
+                                $("#handle_remark").val("");
+                                $("#modal-receipt-handle").modal("show");
                             }
                         }
                     }
@@ -705,6 +898,77 @@
         return undefined;
     }
 
+    $(function(){
+        $("#audit_btn").on("click", auditFunc);
+
+        $("#handle_btn").on("click", handleFunc);
+    });
+
+
+
+    function auditFunc(){
+        var options = {
+            url:"${path}/storagechange/audit.do",
+            type:"post",
+            dataType:"json",
+            data:$("#auditForm").serialize(),
+            success:function(data){
+                if(data.resCode == "success"){
+                    $.gritter.add({
+                        title: '操作提示',
+                        text: "处理库存成功",
+                        class_name: 'gritter-success'
+                    });
+                    $('#table').bootstrapTable('refresh');
+                    $("#modal-receipt").modal("hide");
+                } else {
+                    $.gritter.add({
+                        title: '操作提示',
+                        text: data.resMsg,
+                        class_name: 'gritter-error'
+                    });
+                }
+                $("#audit_btn").on("click", auditFunc);
+            },
+            error:function(){
+                $("#audit_btn").on("click", auditFunc);
+            }
+        };
+        $("#audit_btn").unbind("click");
+        $.ajax(options);
+    }
+
+    function handleFunc(){
+        var options = {
+            url:"${path}/storagechange/handle.do",
+            type:"post",
+            dataType:"json",
+            data:$("#handleForm").serialize(),
+            success:function(data){
+                if(data.resCode == "success"){
+                    $.gritter.add({
+                        title: '操作提示',
+                        text: "审核成功",
+                        class_name: 'gritter-success'
+                    });
+                    $('#table').bootstrapTable('refresh');
+                    $("#modal-receipt-handle").modal("hide");
+                } else {
+                    $.gritter.add({
+                        title: '操作提示',
+                        text: data.resMsg,
+                        class_name: 'gritter-error'
+                    });
+                }
+                $("#handle_btn").on("click", auditFunc);
+            },
+            error:function(){
+                $("#handle_btn").on("click", auditFunc);
+            }
+        };
+        $("#handle_btn").unbind("click");
+        $.ajax(options);
+    }
 
 </script>
 </body>

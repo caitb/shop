@@ -152,4 +152,8 @@ public class SMSConstants {
 	 * 下级合伙人加入提醒（普通-合伙）
 	 */
 	public static final String LOWER_JOIN_REMIND = "101809";
+	/**
+	 * 新合伙人加入
+	 */
+	public static final String NEW_PARTNER_JOIN = "103279";
 }

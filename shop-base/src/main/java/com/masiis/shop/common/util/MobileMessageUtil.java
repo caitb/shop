@@ -642,6 +642,18 @@ public class MobileMessageUtil {
     }
 
     /**
+     * 新合伙人加入
+     * @param phone
+     * @param skuName   商品名称
+     * @return
+     */
+    public boolean newPartnerJoin(String phone, String skuName){
+        content = new String[1];
+        content[0] = skuName;
+        return sendMethod(phone, SMSConstants.NEW_PARTNER_JOIN, content);
+    }
+
+    /**
      * 发送短息方法
      * @param phone     手机号码
      * @param code      模板ID
@@ -661,8 +673,7 @@ public class MobileMessageUtil {
         }
     }
 
-//    public static void main(String[] args){
-//        MobileMessageUtil.getInitialization("B").trialShipmentsRemind("18911155707","康引力","3","1121212323");
-//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18911155707","B16051218360168","100","2016-05-13","可口可乐");
-//    }
+    public static void main(String[] args){
+        MobileMessageUtil.getInitialization("B").newPartnerJoin("18602496813","抗引力");
+    }
 }

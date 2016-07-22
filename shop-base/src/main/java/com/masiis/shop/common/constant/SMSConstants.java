@@ -119,7 +119,7 @@ public class SMSConstants {
 	/**
 	 * 下级升级提醒（普通—升级）
 	 */
-	public static final String LOWER_UPGROUP_REMIND = "101811";
+	public static final String LOWER_UPGROUP_REMIND = "102946";
 	/**
 	 * 被推荐人升级，上级提醒（推荐关系—升级）
 	 */
@@ -139,7 +139,7 @@ public class SMSConstants {
 	/**
 	 * 上级收到被推荐人的下级加入通知（推荐关系-合伙订单）
 	 */
-	public static final String REFEREE_LOWER_JOIN_UP_NOTICE = "101820";
+	public static final String REFEREE_LOWER_JOIN_UP_NOTICE = "102944";
 	/**
 	 * 推荐佣金提醒（推荐关系-合伙订单）
 	 */

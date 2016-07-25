@@ -334,16 +334,17 @@ public class BOrderPayEndMessageService {
                     ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
                     if (teamComUser!=null){
                         //发短信
+                        logger.info("商品名称---------"+orderItem.getSkuName()+"-----orderItem的id----"+orderItem.getId());
                         if (MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName())){
-                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------success");
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getWxNkName()+"------success");
                         }else {
-                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------fail");
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getWxNkName()+"------fail");
                         }
                         //发微信
                         String[] bossTeamParam = new String[4];
                         bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
                         bossTeamParam[1]=comAgentLevel.getName();
-                        bossTeamParam[2]=comUser.getRealName();
+                        bossTeamParam[2]=comUser.getWxNkName();
                         if (pfBorder.getPayTime()!=null){
                             bossTeamParam[3]=simpleDateFormat.format(pfBorder.getPayTime());
                         }else{

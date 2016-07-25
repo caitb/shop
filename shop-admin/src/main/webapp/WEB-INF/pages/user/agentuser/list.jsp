@@ -478,17 +478,17 @@
                         }
                     },
                     {
-                        field: 'lowerLevelCount',
+                        field: 'countLower',
                         title: '下级合伙人',
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="lower" href="javascript:void(0);">'+row.lowerLevelCount+'人</a>';
+                            return '<a class="lower" href="javascript:void(0);">'+row.countLower+'人</a>';
                         },
                         events: {
                             'click .lower': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('lower'+row.comUser.id, row.comUser.realName+'的下级合伙人', '<%=basePath%>agentUser/list.shtml?pid='+row.pfUserSku.id);
+                                parent.window.$('#myTabbable').add('lower'+row.uId, row.realName+'的下级合伙人', '<%=basePath%>agentUser/list.shtml?pid='+row.id);
                             }
                         }
                     },

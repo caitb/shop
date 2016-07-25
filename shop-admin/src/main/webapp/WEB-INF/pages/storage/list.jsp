@@ -388,7 +388,7 @@
 
                                     <%---------------------------------------%>
                                     <div class="form-group">
-                                        <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
+                                        <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro;margin-top: 10px;">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4" style="text-align: center;">商品名称</label>
                                                 <label class="control-label col-sm-2" style="text-align: center;">数量</label>
@@ -399,8 +399,8 @@
                                     </div>
 
                                     <div class="form-group" style="height: 170px;">
-                                        <div class="col-sm-11" style="height: 188px;overflow: auto;">
-                                            <ul class="col-xs-offset-1 list-group" id="itemDetail">
+                                        <div class="col-sm-11" style="height: 188px;overflow: auto;margin-left: 12px;">
+                                            <ul class="list-group" id="itemDetail">
                                             </ul>
                                         </div>
                                     </div>

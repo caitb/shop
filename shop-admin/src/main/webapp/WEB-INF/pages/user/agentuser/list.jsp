@@ -83,11 +83,15 @@
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label for="realName">姓名</label>
-                                                <input type="text" class="form-control" id="realName_" name="realName" placeholder="订单号">
+                                                <input type="text" class="form-control" id="realName_" name="realName" placeholder="">
                                             </div>
                                             <div class="form-group">
                                                 <label for="mobile">手机号</label>
-                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="购买人">
+                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pRealName">上级合伙人</label>
+                                                <input type="text" class="form-control" id="pRealName" name="pRealName" placeholder="">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -301,7 +305,8 @@
                 params.pid = ${pid};
                 </c:if>
                 if($('#realName_').val()) params.realName = $('#realName_').val();
-                if($('#mobile').val()) params.mobile = $('#mobile').val();
+                if($('#mobile').val())    params.mobile   = $('#mobile').val();
+                if($('#pRealName').val())    params.pRealName   = $('#pRealName').val();
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -326,148 +331,148 @@
                 [
                     {
                         title: '证书编号',
-                        field: 'code',
+                        field: 'us.code',
                         sortable: true,
                         align: 'center',
                         valign: 'middle',
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row && row.pfUserCertificate && row.pfUserCertificate.code){
-                                return row.pfUserCertificate.code;
+                            if(row && row.code){
+                                return row.code;
                             }
                         }
                     },
                     {
-                        field: 'user_id',
+                        field: 'u.real_name',
                         title: '姓名',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row && row.realName){
+                                return row.realName;
                             }
                             return '-';
                         }
                     },
                     {
-                        field: 'mobile',
+                        field: 'u.mobile',
                         title: '手机号',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.comUser && row.comUser.mobile){
-                                return row.comUser.mobile;
+                            if(row && row.mobile){
+                                return row.mobile;
                             }
                             return '-';
                         }
                     },
                     {
-                        field: 'sku_id',
+                        field: 'sku.name',
                         title: '合伙商品',
                         sortable: true,
                         align: 'center',
                         footerFormatter: totalNameFormatter,
                         formatter: function (value, row, index) {
-                            if(row && row.comSku && row.comSku.name){
-                                return row.comSku.name;
+                            if(row && row.skuName){
+                                return row.skuName;
                             }
                         }
                     },
                     {
-                        field: 'agent_level_id',
+                        field: 'al.name',
                         title: '合伙人级别',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.comAgentLevel && row.comAgentLevel.name){
-                                return row.comAgentLevel.name;
+                            if(row && row.levelName){
+                                return row.levelName;
                             }
                         }
                     },
                     {
-                        field: 'sendType',
+                        field: 'bo.send_type',
                         title: '拿货方式',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.comUser && row.comUser.sendType == 0){
+                            if(row && row.sendType == 0){
                                 return '未选择';
                             }
-                            if(row && row.comUser && row.comUser.sendType == 1){
+                            if(row && row.sendType == 1){
                                 return '平台代发';
                             }
-                            if(row && row.comUser && row.comUser.sendType == 2){
+                            if(row && row.sendType == 2){
                                 return '自己发货';
                             }
                         }
                     },
                     {
-                        field: 'stock',
+                        field: 'uss.stock',
                         title: '库存',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserSkuStock){
-                                return row.pfUserSkuStock.stock;
+                            if(row && row.stock){
+                                return row.stock;
                             }
+                            return 0;
                         }
                     },
                     {
-                        field: 'user_pid',
+                        field: 'pu.puRealName',
                         title: '上级合伙人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserSku.pid == 0){
-                                return '平台';
+                            if(row && row.userPid){
+                                return row.puRealName;
                             }
-                            if(row && row.parentUser && row.parentUser.realName){
-                                return row.parentUser.realName;
-                            }
+                            return '平台'
                         }
                     },
                     {
-                        field: 'bail',
+                        field: 'us.bail',
                         title: '保证金',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserSku){
-                                return row.pfUserSku.bail;
+                            if(row && row.bail){
+                                return row.bail;
                             }
+                            return 0;
                         }
                     },
                     {
-                        field: 'create_time',
+                        field: 'us.create_time',
                         title: '加入时间',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserCertificate && row.pfUserCertificate.beginTime){
-                                return new Date(row.pfUserCertificate.beginTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.createTime){
+                                return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
-                        field: 'is_pay',
+                        field: 'us.is_pay',
                         title: '是否支付',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserSku && row.pfUserSku.isPay == 0){
+                            if(row && row.isPay == 0){
                                 return '未支付';
                             }
-                            if(row && row.pfUserSku && row.pfUserSku.isPay == 1){
+                            if(row && row.isPay == 1){
                                 return '已支付';
                             }
                         }
@@ -493,13 +498,13 @@
                         formatter: function(value, row, index){
                             return [
                                     '<a class="personal-info" href="javascript:void(0);">个人信息</a>',
-                                    '&nbsp;&nbsp;<a class="update-superior" href="javascript:void(0);">更改上级</a>',
+                                    '&nbsp;&nbsp;<a class="update-superior" href="javascript:void(0);" hidden>更改上级</a>',
                                     '&nbsp;&nbsp;<a class="upgrade" href="javascript:void(0);" hidden>升级</a>'
                             ].join('');
                         },
                         events: {
                             'click .personal-info': function (e, value, row, index) {
-                                parent.window.$('#myTabbable').add('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
+                                parent.window.$('#myTabbable').add('tab-'+row.uId, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.uId);
                             },
                             'click .update-superior': function(e, value, row, index) {
 
@@ -531,6 +536,14 @@
         $table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
         });
+//        $('#realName_').change(function(){
+//            $table.bootstrapTable('refresh');
+//        });
+
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
+        });
+
         $remove.click(function () {
             var ids = getIdSelections();
             console.log('remove: ' + ids);
@@ -702,7 +715,6 @@
             }
         })
     });
-
 
 </script>
 </body>

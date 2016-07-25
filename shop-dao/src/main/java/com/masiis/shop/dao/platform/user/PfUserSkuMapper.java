@@ -68,7 +68,7 @@ public interface PfUserSkuMapper {
      */
     Map<String, String> countChild(String sPIds);
 
-    List<PfUserSku> selectByMap(Map<String, Object> conditionMap);
+    List<Map<String, Object>> selectByMap(Map<String, Object> conditionMap);
 
     /**
      * 查询倒数第二级列表

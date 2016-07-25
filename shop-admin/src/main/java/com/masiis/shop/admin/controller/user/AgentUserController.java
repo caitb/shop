@@ -60,19 +60,9 @@ public class AgentUserController {
         Map<String, Object> conMap = new HashMap<>();
         try {
             conMap.put("pid", pid);
-            if(StringUtils.isNotBlank(request.getParameter("realName")) || StringUtils.isNotBlank(request.getParameter("mobile"))){
-                Map<String, Object> cMap = new HashMap<>();
-                if(StringUtils.isNotBlank(request.getParameter("realName"))) cMap.put("realName", request.getParameter("realName"));
-                if(StringUtils.isNotBlank(request.getParameter("mobile")))   cMap.put("mobile", request.getParameter("mobile"));
-                List<ComUser> comUsers = comUserService.listByCondition(cMap);
-                conMap.put("comUsers", comUsers);
-            }
-            if(StringUtils.isNotBlank(request.getParameter("pRealName"))){
-                Map<String, Object> cMap = new HashMap<>();
-                if(StringUtils.isNotBlank(request.getParameter("pRealName"))) cMap.put("realName", request.getParameter("pRealName"));
-                List<ComUser> pComUsers = comUserService.listByCondition(cMap);
-                conMap.put("pComUsers", pComUsers);
-            }
+            if(StringUtils.isNotBlank(request.getParameter("realName")))  conMap.put("realName", "%"+new String(request.getParameter("realName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+            if(StringUtils.isNotBlank(request.getParameter("mobile")))    conMap.put("mobile", request.getParameter("mobile"));
+            if(StringUtils.isNotBlank(request.getParameter("pRealName"))) conMap.put("pRealName", "%"+new String(request.getParameter("pRealName").getBytes("ISO-8859-1"), "UTF-8")+"%");
 
             Map<String, Object> pageMap = agentUserService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conMap);
 

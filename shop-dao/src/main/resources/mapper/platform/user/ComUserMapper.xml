@@ -289,7 +289,7 @@
         com_user
         <where>
             <if test="realName != null">
-                AND real_name = #{realName}
+                AND real_name LIKE #{realName}
             </if>
             <if test="mobile != null">
                 AND mobile = #{mobile}

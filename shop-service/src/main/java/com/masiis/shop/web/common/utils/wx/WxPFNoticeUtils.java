@@ -1172,6 +1172,28 @@ public class WxPFNoticeUtils {
         return orderUnpayCancelNoitce(user, params, url, "您的线下支付订单超过7天未支付，系统已经帮您取消。");
     }
 
+    /**
+     * 新成员加入
+     *
+     * @param user  发送消息对象
+     * @param params    (第一个,合伙产品名称; 第二个合伙等级名称; 第三个,新加入合伙人姓名; 第四个,时间)
+     * @return
+     */
+    public Boolean newMemberJoinNotice(ComUser user, String[] params){
+        WxPFNewMemberJoin profit = new WxPFNewMemberJoin();
+        WxNoticeReq<WxPFNewMemberJoin> req = new WxNoticeReq<>(profit);
+
+        profit.setFirst(new WxNoticeDataItem("老大，麦链来新人啦！", null));
+        profit.setKeyword1(new WxNoticeDataItem(params[0] + params[1] + "-" + params[2], null));
+        profit.setKeyword2(new WxNoticeDataItem(params[3], null));
+        profit.setRemark(new WxNoticeDataItem("我们的团队又加入1位合伙人！恭喜恭喜！", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_MEMBER_NOTICE);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
     private String getOpenIdByComUser(ComUser user) {
         ComWxUser wxUser = null;
         try {

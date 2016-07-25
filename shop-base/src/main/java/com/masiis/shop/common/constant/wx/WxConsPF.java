@@ -194,4 +194,8 @@ public class WxConsPF {
      * 订单取消通知
      */
     public static final String WX_PF_TM_ID_ORDER_CANCEL_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_ORDER_CANCEL_NOTICE");
+    /**
+     * 新成员加入提醒
+     */
+    public static final String WX_PF_TM_ID_NEW_MEMBER_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_NEW_MEMBER_NOTICE");
 }

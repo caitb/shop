@@ -103,7 +103,7 @@
     <div class="b_t">
         <img src="${sfShop.wxQrCode}" alt="">
         <p>
-            如有问题，请加我为好友！。
+            如有问题，请加我为好友！
         </p>
         <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>

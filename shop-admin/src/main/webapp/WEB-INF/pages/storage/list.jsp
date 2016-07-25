@@ -509,7 +509,7 @@
                         align: 'center',
                         valign: 'middle'
                     },
-                    {
+                    /*{
                         title: 'ID',
                         field: 'id',
                         align: 'center',
@@ -521,7 +521,7 @@
                                 return row.id;
                             }
                         }
-                    },
+                    },*/
                     {
                         field: 'create_time',
                         title: '创建时间',
@@ -535,7 +535,7 @@
                             }
                         }
                     },
-                    {
+                    /*{
                         field: 'create_man',
                         title: '创建人',
                         //sortable: true,
@@ -546,7 +546,7 @@
                                 return row.create_man_name;
                             }
                         }
-                    },
+                    },*/
                     {
                         field: 'bill_reason',
                         title: '单据说明',
@@ -597,6 +597,18 @@
                                         }
                                     }
                                 });
+                            }
+                        }
+                    },
+                    {
+                        field: 'mobile',
+                        title: '手机号',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.mobile){
+                                return row.mobile;
                             }
                         }
                     },

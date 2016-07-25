@@ -211,7 +211,7 @@ public class ProductController {
                          Integer spuId,
                          Integer skuId,
                          Integer skuExtensionId,
-                         @RequestParam("skuImageIds")Integer[] skuImageIds,
+//                         @RequestParam("skuImageIds")Integer[] skuImageIds,
                          Integer unitId,
                          @RequestParam("skuAgentIds")Integer[] skuAgentIds,
                          @RequestParam("skuDistributionIds")Integer[] skuDistributionIds,

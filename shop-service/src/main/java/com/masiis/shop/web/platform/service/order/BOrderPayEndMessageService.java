@@ -10,6 +10,7 @@ import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
@@ -56,6 +57,8 @@ public class BOrderPayEndMessageService {
     private PfUserSkuStockService userSkuStockService;
     @Resource
     private PfBorderRecommenRewardService recommenRewardService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
 
     /**
      * 支付完成推送消息
@@ -174,8 +177,8 @@ public class BOrderPayEndMessageService {
             }
             //发送短信
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
-                //代理发送短信
-                pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
+                //代理发送短信并给这个人的团队所有成员发微信
+                pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,simpleDateFormat,true);
             }else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //补货发送短信
                 pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
@@ -222,8 +225,8 @@ public class BOrderPayEndMessageService {
                 WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
             }
             // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-            //发送短信
-            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,false);
+            //发送短信并给这个人的团队所有成员发微信
+            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,simpleDateFormat,false);
         }
     }
 
@@ -240,6 +243,7 @@ public class BOrderPayEndMessageService {
                                         PfBorder pfBorder,
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel,
+                                        SimpleDateFormat simpleDateFormat,
                                         Boolean isWaitngOrder){
         logger.info("合伙人订单发送短信-----start");
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
@@ -320,6 +324,45 @@ public class BOrderPayEndMessageService {
                 logger.info("合伙人订单没有推荐人发送短信失败");
             }
         }
+        //给这个人的团队所有成员发短信微信
+        logger.info("给这个人的团队所有成员发短信微信----start");
+        for (PfBorderItem orderItem : pfBorderItems){
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
+            if (pfUserSku!=null){
+                List<PfUserSku> userSkus = pfUserSkuService.getBossTeamInfoByTreeCode(pfUserSku.getTreeCode());
+                for (PfUserSku teamUserSku:userSkus) {
+                    ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
+                    if (teamComUser!=null){
+                        //发短信
+                        if (MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName())){
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------success");
+                        }else {
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------fail");
+                        }
+                        //发微信
+                        String[] bossTeamParam = new String[4];
+                        bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
+                        bossTeamParam[1]=comAgentLevel.getName();
+                        bossTeamParam[2]=comUser.getRealName();
+                        if (pfBorder.getPayTime()!=null){
+                            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getPayTime());
+                        }else{
+                            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getCreateTime());
+                        }
+                        if(WxPFNoticeUtils.getInstance().newMemberJoinNotice(teamComUser,bossTeamParam)){
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------success");
+                        }else{
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------fail");
+                        }
+                    }else{
+                        logger.info("查询boss团队里的这个人查询不到-----userId---"+teamUserSku.getUserId());
+                    }
+                }
+            }else{
+                logger.info("查询这个人代理的商品不存在");
+            }
+        }
+        logger.info("给这个人的团队所有成员发短信微信-------end");
         logger.info("合伙人订单发送短信-----end");
     }
 

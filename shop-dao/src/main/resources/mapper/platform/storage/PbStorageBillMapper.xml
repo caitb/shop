@@ -63,7 +63,7 @@
 
     <select id="getStoragechangeList" parameterType="Map" resultType="java.util.HashMap">
         select st.id, st.create_time, st.create_man, st.code, st.user_id, st.bill_reason, st.product_quantity, st.status, st.type,
-        st.audit_man, st.audit_time, st.remark, u1.true_name create_man_name, u2.real_name user_id_name
+        st.audit_man, st.audit_time, st.remark, u1.true_name create_man_name, u2.real_name user_id_name, u2.mobile
         from pb_storage_bill st
         left join pb_user u1 on st.create_man = u1.id
         left join com_user u2 on st.user_id = u2.id

@@ -78,6 +78,15 @@ public class PfUserSkuService {
     }
 
     /**
+     * 查询这个人的boss的团队的所有成员
+     * @param treeCode
+     * @return
+     */
+    public List<PfUserSku> getBossTeamInfoByTreeCode(String treeCode) {
+        return pfUserSkuMapper.getBossTeamInfoByTreeCode(treeCode);
+    }
+
+    /**
      * 获取可以升级的代理信息
      *
      * @param skuId

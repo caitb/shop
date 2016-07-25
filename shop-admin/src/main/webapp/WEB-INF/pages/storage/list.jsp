@@ -509,7 +509,7 @@
                         align: 'center',
                         valign: 'middle'
                     },
-                    {
+                    /*{
                         title: 'ID',
                         field: 'id',
                         align: 'center',
@@ -519,6 +519,18 @@
                         formatter: function(value, row, index){
                             if(row && row.id){
                                 return row.id;
+                            }
+                        }
+                    },*/
+                    {
+                        field: 'code',
+                        title: '单据号',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.code){
+                                return row.code;
                             }
                         }
                     },
@@ -532,42 +544,6 @@
                         formatter: function(value, row, index){
                             if(row && row.create_time){
                                 return new Date(row.create_time).pattern('yyyy-MM-dd HH:mm:ss');
-                            }
-                        }
-                    },
-                    {
-                        field: 'create_man',
-                        title: '创建人',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.create_man_name){
-                                return row.create_man_name;
-                            }
-                        }
-                    },
-                    {
-                        field: 'bill_reason',
-                        title: '单据说明',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.bill_reason){
-                                return row.bill_reason;
-                            }
-                        }
-                    },
-                    {
-                        field: 'code',
-                        title: '单据号',
-                        //sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.code){
-                                return row.code;
                             }
                         }
                     },
@@ -597,6 +573,42 @@
                                         }
                                     }
                                 });
+                            }
+                        }
+                    },
+                    {
+                        field: 'mobile',
+                        title: '手机号',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.mobile){
+                                return row.mobile;
+                            }
+                        }
+                    },
+                    /*{
+                        field: 'create_man',
+                        title: '创建人',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.create_man_name){
+                                return row.create_man_name;
+                            }
+                        }
+                    },*/
+                    {
+                        field: 'bill_reason',
+                        title: '单据说明',
+                        //sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.bill_reason){
+                                return row.bill_reason;
                             }
                         }
                     },

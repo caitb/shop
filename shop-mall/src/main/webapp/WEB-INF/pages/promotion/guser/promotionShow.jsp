@@ -40,8 +40,8 @@
                     <b>活动时间： ${promotionInfo.beginTime}—${promotionInfo.endTime}</b>
                     <span></span>
                 </p>
-               <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule" varStatus="status">
-                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo">
+               <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule">
+                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo" varStatus="status">
                         <div class="floor">
                             <h1><b>${status.index+1}</b></h1>
                             <p>${promotionInfo.presonTypeName}数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}</p>

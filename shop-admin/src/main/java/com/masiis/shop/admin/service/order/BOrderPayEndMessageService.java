@@ -177,8 +177,8 @@ public class BOrderPayEndMessageService {
             }
             //发送短信
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
-                //代理发送短信
-                pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
+                //代理发送短信并给这个人的团队所有成员发微信
+                pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,simpleDateFormat,true);
             }else if (pfBorder.getOrderType().equals(BOrderType.Supplement.getCode())) {
                 //补货发送短信
                 pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
@@ -225,8 +225,8 @@ public class BOrderPayEndMessageService {
                 WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
             }
             // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
-            //发送短信
-            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,false);
+            //发送短信并给这个人的团队所有成员发微信
+            pushMobileMessageAgent(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,simpleDateFormat,false);
         }
     }
     /**
@@ -242,6 +242,7 @@ public class BOrderPayEndMessageService {
                                         PfBorder pfBorder,
                                         List<PfBorderItem> pfBorderItems,
                                         ComAgentLevel comAgentLevel,
+                                        SimpleDateFormat simpleDateFormat,
                                         Boolean isWaitngOrder){
         logger.info("合伙人订单发送短信-----start");
         PfBorderRecommenReward pfBorderRecommenReward = recommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
@@ -341,6 +342,21 @@ public class BOrderPayEndMessageService {
             }
         }
         logger.info("给这个人的团队所有成员发短信----end");
+        //给这个人的团队所有成员发微信
+        logger.info("给这个人的团队所有成员发微信-------start");
+        String[] bossTeamParam = new String[4];
+        bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
+        bossTeamParam[1]=comAgentLevel.getName();
+        bossTeamParam[2]=comUser.getRealName();
+        if (pfBorder.getPayTime()!=null){
+            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getPayTime());
+        }else{
+            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getCreateTime());
+        }
+        if(WxPFNoticeUtils.getInstance().newMemberJoinNotice(comUser,bossTeamParam)){
+            logger.info("给这个人的团队所有成员发微信success");
+        }
+        logger.info("给这个人的团队所有成员发微信-------end");
         logger.info("合伙人订单发送短信-----end");
     }
     /**

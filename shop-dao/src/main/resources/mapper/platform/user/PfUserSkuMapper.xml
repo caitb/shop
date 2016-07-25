@@ -317,7 +317,9 @@
                 bo.send_type   sendType,
                 uss.stock      stock,
                 pu.real_name   puRealName,
-                us.bail        bail
+                us.bail        bail,
+                (SELECT COUNT(0) from pf_user_sku where pid=us.id) countLower
+
         FROM
                   pf_user_sku       us
         LEFT JOIN com_user          u   ON u.id  = us.user_id
@@ -337,7 +339,7 @@
                 AND pu.real_name LIKE #{pRealName}
             </if>
             <if test="pid != null">
-                AND us.user_pid = #{pid}
+                AND us.pid = #{pid}
             </if>
         </where>
     </select>

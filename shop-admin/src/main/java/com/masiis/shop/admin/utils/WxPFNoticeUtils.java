@@ -1183,7 +1183,7 @@ public class WxPFNoticeUtils {
         WxNoticeReq<WxPFNewMemberJoin> req = new WxNoticeReq<>(profit);
 
         profit.setFirst(new WxNoticeDataItem("老大，麦链来新人啦！", null));
-        profit.setKeyword1(new WxNoticeDataItem(params[0] + params[1] + "-" + params[2], null));
+        profit.setKeyword1(new WxNoticeDataItem(params[0] + "-" + params[1] + "-" + params[2], null));
         profit.setKeyword2(new WxNoticeDataItem(params[3], null));
         profit.setRemark(new WxNoticeDataItem("我们的团队又加入1位合伙人！恭喜恭喜！", null));
 

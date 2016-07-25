@@ -390,8 +390,8 @@
                                     <div class="form-group">
                                         <div class="col-xs-offset-1 col-sm-10" style="background-color: gainsboro">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-3" style="text-align: center;">商品名称</label>
-                                                <label class="control-label col-sm-3" style="text-align: center;">数量</label>
+                                                <label class="control-label col-sm-4" style="text-align: center;">商品名称</label>
+                                                <label class="control-label col-sm-2" style="text-align: center;">数量</label>
                                                 <label class="control-label col-sm-3" style="text-align: center;">上级姓名</label>
                                                 <label class="control-label col-sm-3" style="text-align: center;">上级微信昵称</label>
                                             </div>
@@ -644,8 +644,8 @@
                                                     var obj = rows[i];
                                                     tempHtml += '<li class="list-group-item">' +
                                                                     '<div class="form-group">' +
-                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
-                                                                        '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
+                                                                        '<b class="col-sm-4" style=\"text-align: center;\"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
+                                                                        '<b class="col-sm-2" style=\"text-align: center;\"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
                                                                         '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.realName?obj.realName:"-") + ' </b>' +
                                                                         '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.nkName?obj.nkName:"-") + ' </b>' +
                                                                     '</div>' +

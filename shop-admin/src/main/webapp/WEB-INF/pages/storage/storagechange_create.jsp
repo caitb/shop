@@ -139,7 +139,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div id="skubottom" class="form-group">
                                 <label for="addPro" class="control-label col-sm-2"></label>
                                 <div class="col-sm-9">
                                     <button type="button" id="addPro" class="btn btn-success">添加</button>
@@ -636,7 +636,7 @@
             newRule.find(".row").children("div").first().next().next().next().children("label").text("(---)");
         }
         skulist.splice(0, 1);
-        $("#skutitle").after(newRule);
+        $("#skubottom").before(newRule);
     }
 </script>
 </body>

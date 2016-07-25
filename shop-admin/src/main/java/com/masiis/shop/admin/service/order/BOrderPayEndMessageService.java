@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.user.PfUserSkuService;
 import com.masiis.shop.admin.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.admin.service.user.UpgradeNoticeService;
 import com.masiis.shop.admin.service.user.UpgradeWechatNewsService;
@@ -56,6 +57,8 @@ public class BOrderPayEndMessageService {
     private PfUserSkuStockService userSkuStockService;
     @Resource
     private PfBorderRecommenRewardService recommenRewardService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
 
     /**
      * 支付完成推送消息
@@ -319,6 +322,25 @@ public class BOrderPayEndMessageService {
                 logger.info("合伙人订单没有推荐人发送短信失败");
             }
         }
+        //给这个人的团队所有成员发短信
+        logger.info("给这个人的团队所有成员发短信----start");
+        for (PfBorderItem orderItem : pfBorderItems){
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
+            if (pfUserSku!=null){
+                List<PfUserSku> userSkus = pfUserSkuService.getBossTeamInfoByTreeCode(pfUserSku.getTreeCode());
+                for (PfUserSku teamUserSku:userSkus) {
+                    ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
+                    if (teamComUser!=null){
+                        MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName());
+                    }else{
+                        logger.info("查询boss团队里的这个人查询不到-----userId---"+teamUserSku.getUserId());
+                    }
+                }
+            }else{
+                logger.info("查询这个人代理的商品不存在");
+            }
+        }
+        logger.info("给这个人的团队所有成员发短信----end");
         logger.info("合伙人订单发送短信-----end");
     }
     /**

@@ -79,4 +79,11 @@ public interface SfOrderMapper {
                                   @Param("userIds") List<Long> userIds);
 
     List<SfOrder> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * 查询店铺代发货订单
+     * @param conditionMap
+     * @return
+     */
+    List<Map<String, Object>> selectDeliveryByCondition(Map<String, Object> conditionMap);
 }

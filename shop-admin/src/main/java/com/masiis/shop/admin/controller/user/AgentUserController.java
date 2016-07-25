@@ -1,6 +1,9 @@
 package com.masiis.shop.admin.controller.user;
 
 import com.masiis.shop.admin.service.user.AgentUserService;
+import com.masiis.shop.admin.service.user.ComUserService;
+import com.masiis.shop.dao.po.ComUser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +30,8 @@ public class AgentUserController {
 
     @Resource
     private AgentUserService agentUserService;
+    @Resource
+    private ComUserService comUserService;
 
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response, Model model, Integer pid){
@@ -54,6 +60,10 @@ public class AgentUserController {
         Map<String, Object> conMap = new HashMap<>();
         try {
             conMap.put("pid", pid);
+            if(StringUtils.isNotBlank(request.getParameter("realName")))  conMap.put("realName", "%"+new String(request.getParameter("realName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+            if(StringUtils.isNotBlank(request.getParameter("mobile")))    conMap.put("mobile", request.getParameter("mobile"));
+            if(StringUtils.isNotBlank(request.getParameter("pRealName"))) conMap.put("pRealName", "%"+new String(request.getParameter("pRealName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+
             Map<String, Object> pageMap = agentUserService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conMap);
 
             return pageMap;

@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -35,7 +34,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
-
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
     <![endif]-->
@@ -54,7 +53,6 @@
 </head>
 
 <body class="no-skin">
-
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -82,31 +80,52 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="realName">姓名</label>
-                                                <input type="text" class="form-control" id="realName_" name="realName" placeholder="">
+                                                <label for="orderCode">订单号：</label>
+                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="mobile">手机号</label>
-                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="">
+                                                <label for="orderCode">订单日期：</label>
                                             </div>
                                             <div class="form-group">
-                                                <label for="pRealName">上级合伙人</label>
-                                                <input type="text" class="form-control" id="pRealName" name="pRealName" placeholder="">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderStatus">订单状态：</label>
+                                                <select id="orderStatus" name="orderStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="payStatus">支付状态：</label>
+                                                <select id="payStatus" name="payStatus">
+                                                    <option value="">全部</option>
+                                                    <option value="0">待付款</option>
+                                                    <option value="1">已付款</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipStatus">物流状态：</label>
+                                                <select id="shipStatus" name="shipStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="isCounting">是否结算：</label>
+                                                <select id="isCounting" name="isCounting">
+                                                    <option value="">全部</option>
+                                                    <option value="0">未结算</option>
+                                                    <option value="1">已结算</option>
+                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
-                                           data-show-refresh="true"
-                                           data-show-toggle="true"
-                                    <%--data-show-columns="true"--%>
-                                    <%--data-show-export="true"--%>
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
-                                    <%--data-show-pagination-switch="true"--%>
                                            data-pagination="true"
                                            data-id-field="id"
                                            data-page-list="[10, 25, 50, 100, ALL]"
@@ -277,15 +296,20 @@
 <script src="<%=basePath%>static/ace2/js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js"></script>
-<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js"></script>
-<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js"></script>
-<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js"></script>
-<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
-
+<script src="<%=basePath%>static/js/laydate.js"></script>
 <script src="<%=basePath%>static/js/date-util.js"></script>
+<script>
+    laydate({
+        elem: '#beginTime'
+    });
+    laydate({
+        elem: '#endTime'
+    });
+</script>
 
 <script>
     var $table = $('#table'),
@@ -294,21 +318,36 @@
 
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>agentUser/list.do',
+            url: '<%=basePath%>delivery/orderList.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
             queryParams: function(params){
-                <c:if test="${pid != null}">
-                params.pid = ${pid};
-                </c:if>
-                if($('#realName_').val()) params.realName = $('#realName_').val();
-                if($('#mobile').val())    params.mobile   = $('#mobile').val();
-                if($('#pRealName').val())    params.pRealName   = $('#pRealName').val();
+                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                if($('#shipStatus').val()){
+                    params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#orderStatus').val()){
+                    params.orderStatus = $('#orderStatus').val();
+                }
+                if($('#payStatus').val()){
+                    params.payStatus = $('#payStatus').val();
+                }
+                if($('#beginTime').val()){
+                    params.beginTime = $('#beginTime').val();
+                }
+                if($('#endTime').val()){
+                    params.endTime = $('#endTime').val();
+                }
+                if($('#isCounting').val()){
+                    params.isCounting = $('#isCounting').val();
+                }
+
                 return params;
             },
+
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -330,184 +369,270 @@
             columns: [
                 [
                     {
-                        title: '证书编号',
-                        field: 'us.code',
-                        sortable: true,
+                        checkbox: true,
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: 'ID',
+                        field: 'id',
                         align: 'center',
                         valign: 'middle',
+                        sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row && row.code){
-                                return row.code;
+                            if(row.sfOrder && row.sfOrder.id){
+                                return row.sfOrder.id;
                             }
                         }
                     },
                     {
-                        field: 'u.real_name',
-                        title: '姓名',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.realName){
-                                return row.realName;
-                            }
-                            return '-';
-                        }
-                    },
-                    {
-                        field: 'u.mobile',
-                        title: '手机号',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.mobile){
-                                return row.mobile;
-                            }
-                            return '-';
-                        }
-                    },
-                    {
-                        field: 'sku.name',
-                        title: '合伙商品',
-                        sortable: true,
-                        align: 'center',
-                        footerFormatter: totalNameFormatter,
-                        formatter: function (value, row, index) {
-                            if(row && row.skuName){
-                                return row.skuName;
-                            }
-                        }
-                    },
-                    {
-                        field: 'al.name',
-                        title: '合伙人级别',
+                        field: 'order_code',
+                        title: '订单号',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.levelName){
-                                return row.levelName;
+                            if(row.sfOrder && row.sfOrder.orderCode){
+                                return row.sfOrder.orderCode;
                             }
                         }
                     },
                     {
-                        field: 'bo.send_type',
-                        title: '拿货方式',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.sendType == 0){
-                                return '未选择';
-                            }
-                            if(row && row.sendType == 1){
-                                return '平台代发';
-                            }
-                            if(row && row.sendType == 2){
-                                return '自己发货';
-                            }
-                        }
-                    },
-                    {
-                        field: 'uss.stock',
-                        title: '库存',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.stock){
-                                return row.stock;
-                            }
-                            return 0;
-                        }
-                    },
-                    {
-                        field: 'pu.puRealName',
-                        title: '上级合伙人',
+                        field: 'create_time',
+                        title: '订单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.userPid){
-                                return row.puRealName;
-                            }
-                            return '平台'
+                            return new Date(row.sfOrder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                         }
                     },
                     {
-                        field: 'us.bail',
-                        title: '保证金',
+                        field: 'consignee',
+                        title: '收货人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrderConsignee && row.sfOrderConsignee.consignee){
+                                return row.sfOrderConsignee.consignee;
+                            }
+                        }
+                    },
+                    {
+                        field: 'user_id',
+                        title: '购买人',
                         sortable: true,
-                        //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.bail){
-                                return row.bail;
+                            if(row.comUser && row.comUser.wxNkName){
+                                return row.comUser.wxNkName;
                             }
-                            return 0;
                         }
                     },
                     {
-                        field: 'us.create_time',
-                        title: '加入时间',
+                        field: 'shop_user_id',
+                        title: '店铺所属人',
                         sortable: true,
-                        //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.createTime){
-                                return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row.shopUser && row.shopUser.realName){
+                                return row.shopUser.realName;
                             }
                         }
                     },
                     {
-                        field: 'us.is_pay',
-                        title: '是否支付',
+                        field: 'product_amount',
+                        title: '订单金额',
                         sortable: true,
-                        //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.isPay == 0){
-                                return '未支付';
-                            }
-                            if(row && row.isPay == 1){
-                                return '已支付';
+                            if(row.sfOrder && row.sfOrder.productAmount){
+                                return row.sfOrder.productAmount;
                             }
                         }
                     },
                     {
-                        field: 'lowerLevelCount',
-                        title: '下级合伙人',
-                        //editable: true,
+                        field: 'receivable_amount',
+                        title: '应付金额',
+                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="lower" href="javascript:void(0);">'+row.lowerLevelCount+'人</a>';
-                        },
-                        events: {
-                            'click .lower': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('lower'+row.comUser.id, row.comUser.realName+'的下级合伙人', '<%=basePath%>agentUser/list.shtml?pid='+row.pfUserSku.id);
+                            if(row.sfOrder){
+                                return row.sfOrder.receivableAmount;
                             }
+                        }
+                    },
+                    {
+                        field: 'pay_amount',
+                        title: '实付金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder){
+                                return row.sfOrder.payAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'order_status',
+                        title: '订单状态',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrder.orderStatus == 0){
+                                return '未付款';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 1){
+                                return '已付款';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 2){
+                                return '已取消';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 3){
+                                return '已完成';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 4){
+                                return '退款中';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 5){
+                                return '已退款';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 7){
+                                return '待发货';
+                            }
+                            if(row.sfOrder && row.sfOrder.orderStatus == 8){
+                                return '已发货';
+                            }
+                        }
+                    },
+                    {
+                        field: 'pay_type_id',
+                        title: '支付方式',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrderPayments){
+                                var sHtm = '';
+                                for(var i in row.sfOrderPayments){
+                                    if(row.sfOrderPayments[i].payTypeId == 0) sHtm += '微信支付';
+                                }
+                                return sHtm;
+                            }
+                        }
+                    },
+                    {
+                        field: 'pay_status',
+                        title: '支付状态',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrder.payStatus == 0){
+                                return '待付款';
+                            }
+                            if(row.sfOrder && row.sfOrder.payStatus == 1){
+                                return '已付款';
+                            }
+                        }
+                    },
+                    {
+                        field: 'ship_status',
+                        title: '物流状态',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrder.shipStatus == 0){
+                                return '未发货';
+                            }
+                            if(row.sfOrder && row.sfOrder.shipStatus == 5){
+                                return '已发货';
+                            }
+                            if(row.sfOrder && row.sfOrder.shipStatus == 9){
+                                return '已收货';
+                            }
+                        }
+                    },
+                    {
+                        field: 'is_counting',
+                        title: '是否结算',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrder.isCounting == 0){
+                                return '未结算';
+                            }
+                            if(row.sfOrder && row.sfOrder.isCounting == 1){
+                                return '已结算';
+                            }
+
                         }
                     },
                     {
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return [
-                                    '<a class="personal-info" href="javascript:void(0);">个人信息</a>',
-                                    '&nbsp;&nbsp;<a class="update-superior" href="javascript:void(0);" hidden>更改上级</a>',
-                                    '&nbsp;&nbsp;<a class="upgrade" href="javascript:void(0);" hidden>升级</a>'
-                            ].join('');
+                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            if(row.sfOrder && row.sfOrder.orderStatus == 3 && new Date().getDate()-new Date(row.sfOrder.receiptTime).getDate()>7){
+                                arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
+                            }
+                            return arr.join('');
                         },
                         events: {
-                            'click .personal-info': function (e, value, row, index) {
-                                parent.window.$('#myTabbable').add('tab-'+row.uId, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.uId);
+                            'click .detail': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('order-detail-'+row.sfOrder.id, '店铺订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
                             },
-                            'click .update-superior': function(e, value, row, index) {
-
+                            'click .tuihuo': function(e, value, row, index){
+                                bootbox.confirm("您确定要退货吗?", function(result) {
+                                    if(result) {
+                                        // 退货
+                                        var options = {
+                                            url: '<%=basePath%>order/order/sfOrderRefund.do',
+                                            type: 'POST',
+                                            data: {orderId : row.sfOrder.id},
+                                            dataType: "json",
+                                            success: function(msg){
+                                                if(msg.resCode == "0"){
+                                                    $.gritter.add({
+                                                        title: '操作提示',
+                                                        text: "订单退货成功",
+                                                        class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                    });
+                                                    $('#table').bootstrapTable('refresh');
+                                                } else {
+                                                    var resText = "";
+                                                    if(msg.resMsg == "" || msg.resMsg == undefined){
+                                                        resText = "网络错误";
+                                                    } else {
+                                                        resText = msg.resMsg;
+                                                    }
+                                                    $.gritter.add({
+                                                        title: '操作提示',
+                                                        text: resText,
+                                                        class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                    });
+                                                }
+                                            },
+                                            error:function(){
+                                                $.gritter.add({
+                                                    title: '操作提示',
+                                                    text: "网络错误",
+                                                    class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                });
+                                            }
+                                        };
+                                        $.ajax(options);
+                                    }
+                                });
                             }
                         }
                     }
@@ -536,14 +661,6 @@
         $table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
         });
-//        $('#realName_').change(function(){
-//            $table.bootstrapTable('refresh');
-//        });
-
-        $('#searchBtn').on('click', function(){
-            $table.bootstrapTable('refresh');
-        });
-
         $remove.click(function () {
             var ids = getIdSelections();
             console.log('remove: ' + ids);
@@ -558,6 +675,10 @@
                 height: getHeight()
             });
         });
+
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
+        });
     }
 
     function getIdSelections() {
@@ -570,6 +691,24 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
+        //物流状态
+        if(res.wuliuList !=null){
+            var $select = $('#shipStatus');
+            $select.empty();
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
+            for(var i=0, len = res.wuliuList.length;i<len;i++){
+                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            }
+        }
+        //订单状态
+        if(res.orderStatusList !=null){
+            var $select = $('#orderStatus');
+            $select.empty();
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
+            for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            }
+        }
         return res;
     }
 
@@ -614,44 +753,42 @@
     }
 
     $(function () {
-        <%--var scripts = [--%>
-                    <%--location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',--%>
-                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',--%>
-                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',--%>
-                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',--%>
-                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'--%>
-                <%--],--%>
-                <%--eachSeries = function (arr, iterator, callback) {--%>
-                    <%--callback = callback || function () {--%>
-                            <%--};--%>
-                    <%--if (!arr.length) {--%>
-                        <%--return callback();--%>
-                    <%--}--%>
-                    <%--var completed = 0;--%>
-                    <%--var iterate = function () {--%>
-                        <%--iterator(arr[completed], function (err) {--%>
-                            <%--if (err) {--%>
-                                <%--callback(err);--%>
-                                <%--callback = function () {--%>
-                                <%--};--%>
-                            <%--}--%>
-                            <%--else {--%>
-                                <%--completed += 1;--%>
-                                <%--if (completed >= arr.length) {--%>
-                                    <%--callback(null);--%>
-                                <%--}--%>
-                                <%--else {--%>
-                                    <%--iterate();--%>
-                                <%--}--%>
-                            <%--}--%>
-                        <%--});--%>
-                    <%--};--%>
-                    <%--iterate();--%>
-                <%--};--%>
+        var scripts = [
+                    location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',
+                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',
+                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',
+                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',
+                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'
+                ],
+                eachSeries = function (arr, iterator, callback) {
+                    callback = callback || function () {
+                            };
+                    if (!arr.length) {
+                        return callback();
+                    }
+                    var completed = 0;
+                    var iterate = function () {
+                        iterator(arr[completed], function (err) {
+                            if (err) {
+                                callback(err);
+                                callback = function () {
+                                };
+                            }
+                            else {
+                                completed += 1;
+                                if (completed >= arr.length) {
+                                    callback(null);
+                                }
+                                else {
+                                    iterate();
+                                }
+                            }
+                        });
+                    };
+                    iterate();
+                };
 
-        <%--eachSeries(scripts, getScript, initTable);--%>
-
-        initTable();
+        eachSeries(scripts, getScript, initTable);
     });
 
     function getScript(url, callback) {
@@ -715,6 +852,7 @@
             }
         })
     });
+
 
 </script>
 </body>

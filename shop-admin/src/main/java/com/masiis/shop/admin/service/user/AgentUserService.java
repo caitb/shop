@@ -47,40 +47,40 @@ public class AgentUserService {
      * @return
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
-        String sort = "create_time desc";
+        String sort = "us.create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
 
         PageHelper.startPage(pageNumber, pageSize, sort);
-        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByMap(conditionMap);
-        PageInfo<PfUserSku> pageInfo = new PageInfo<>(pfUserSkus);
+        List<Map<String, Object>> pfUserSkus = pfUserSkuMapper.selectByMap(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(pfUserSkus);
 
-        List<AgentUser> agentUsers = new ArrayList<>();
-        for(PfUserSku userSku : pfUserSkus){
-            PfUserCertificate puc = pfUserCertificateMapper.selectByUserSkuId(userSku.getId());
-            ComUser comUser = comUserMapper.selectByPrimaryKey(puc.getUserId());
-            ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
-            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(puc.getAgentLevelId());
-
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(puc.getUserId(), puc.getSkuId());
-            ComUser parentUser = comUserMapper.selectByPrimaryKey(userSku.getUserPid());
-            Integer lowerLevelCount = pfUserSkuMapper.findLowerCount(userSku.getId());
-
-            AgentUser agentUser = new AgentUser();
-            agentUser.setComUser(comUser);
-            agentUser.setComSku(comSku);
-            agentUser.setComAgentLevel(comAgentLevel);
-            agentUser.setPfUserSku(userSku);
-            agentUser.setPfUserSkuStock(pfUserSkuStock);
-            agentUser.setPfUserCertificate(puc);
-            agentUser.setParentUser(parentUser);
-            agentUser.setLowerLevelCount(lowerLevelCount);
-
-            agentUsers.add(agentUser);
-        }
+//        List<AgentUser> agentUsers = new ArrayList<>();
+//        for(PfUserSku userSku : pfUserSkus){
+//            PfUserCertificate puc = pfUserCertificateMapper.selectByUserSkuId(userSku.getId());
+//            ComUser comUser = comUserMapper.selectByPrimaryKey(puc.getUserId());
+//            ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
+//            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(puc.getAgentLevelId());
+//
+//            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(puc.getUserId(), puc.getSkuId());
+//            ComUser parentUser = comUserMapper.selectByPrimaryKey(userSku.getUserPid());
+//            Integer lowerLevelCount = pfUserSkuMapper.findLowerCount(userSku.getId());
+//
+//            AgentUser agentUser = new AgentUser();
+//            agentUser.setComUser(comUser);
+//            agentUser.setComSku(comSku);
+//            agentUser.setComAgentLevel(comAgentLevel);
+//            agentUser.setPfUserSku(userSku);
+//            agentUser.setPfUserSkuStock(pfUserSkuStock);
+//            agentUser.setPfUserCertificate(puc);
+//            agentUser.setParentUser(parentUser);
+//            agentUser.setLowerLevelCount(lowerLevelCount);
+//
+//            agentUsers.add(agentUser);
+//        }
 
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());
-        pageMap.put("rows", agentUsers);
+        pageMap.put("rows", pfUserSkus);
 
         return pageMap;
     }

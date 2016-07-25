@@ -302,53 +302,42 @@
         </where>
     </select>
 
-    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
-        select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+    <select id="selectByMap" parameterType="Map" resultType="java.util.HashMap">
+        select
+                us.id          id,
+                us.create_time createTime,
+                us.code        code,
+                us.is_pay      isPay,
+                us.user_pid    userPid,
+                u.id           uId,
+                u.real_name    realName,
+                u.mobile       mobile,
+                sku.name       skuName,
+                al.name        levelName,
+                bo.send_type   sendType,
+                uss.stock      stock,
+                pu.real_name   puRealName,
+                us.bail        bail
         FROM
-        pf_user_sku
+                  pf_user_sku       us
+        LEFT JOIN com_user          u   ON u.id  = us.user_id
+        LEFT JOIN com_user          pu  ON pu.id = us.user_pid
+        LEFT JOIN com_sku           sku ON sku.id = us.sku_id
+        LEFT JOIN com_agent_level   al  ON al.id = us.agent_level_id
+        LEFT JOIN pf_border         bo  ON bo.id = us.pf_border_id
+        LEFT JOIN pf_user_sku_stock uss ON uss.user_id = us.user_id AND uss.sku_id = us.sku_id
         <where>
-            <if test="id != null">
-                AND id = #{id}
+            <if test="realName != null">
+                AND u.real_name LIKE #{realName}
             </if>
-            <if test="code != null">
-                AND code = #{code}
+            <if test="mobile != null">
+                AND u.mobile = #{mobile}
+            </if>
+            <if test="pRealName != null">
+                AND pu.real_name LIKE #{pRealName}
             </if>
             <if test="pid != null">
-                AND pid = #{pid}
-            </if>
-            <if test="userId != null">
-                AND user_id = #{userId}
-            </if>
-            <if test="skuId != null">
-                AND sku_id = #{skuId}
-            </if>
-            <if test="agentLevelId != null">
-                AND agent_level_id = #{agentLevelId}
-            </if>
-            <if test="isPay != null">
-                AND is_pay = #{isPay}
-            </if>
-            <if test="isCertificate != null">
-                AND is_certificate = #{isCertificate}
-            </if>
-            <if test="pfBorderId != null">
-                AND pf_border_id = #{pfBorderId}
-            </if>
-            <if test="remark != null">
-                AND remark = #{remark}
-            </if>
-            <if test="bail != null">
-                and bail = #{bail,jdbcType=DECIMAL}
-            </if>
-            <if test="agentNum != null">
-                and agent_num = #{agentNum,jdbcType=BIGINT}
-            </if>
-            <if test="userPid != null">
-                and user_pid = #{userPid,jdbcType=BIGINT}
-            </if>
-            <if test="rewardUnitPrice">
-                and reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
+                AND us.user_pid = #{pid}
             </if>
         </where>
     </select>

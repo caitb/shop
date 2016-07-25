@@ -75,5 +75,7 @@ public interface ComUserMapper {
 
     List<ComUser> selectAllAgentUser();
 
-    List<ComUser> selectByConditions(Map<String, Object> params);
+    List<ComUser> queryByCondition(Map<String, Object> conditionMap);
+
+    List<ComUser> selectByConditions(Map<String, Object> conditionMap);
 }

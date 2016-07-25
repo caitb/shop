@@ -136,6 +136,29 @@ public class OrderService {
     }
 
     /**
+     * 店铺待发货订单列表
+     *
+     * @param pageNumber
+     * @param pageSize
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listDeliveryByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "o.create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String, Object>> orderMaps = sfOrderMapper.selectDeliveryByCondition(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(orderMaps);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", orderMaps);
+
+        return pageMap;
+    }
+
+    /**
      * 获取订单明细
      *
      * @param id

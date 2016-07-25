@@ -480,8 +480,9 @@
             data:$("#promotionForm").serialize(),
             success:function(data){
                 if(data.resCode == "success"){
+                    parent.window.$('#myTabbable').closeTab('tab17-1');
+                    parent.window.$('#myTabbable').add('tab17-1', '库存变更列表', '${path}/storagechange/list.shtml');
                     parent.window.$('#myTabbable').closeTab('tab17-0');
-                    parent.window.$('#myTabbable').add("tab17-1", '库存变更列表', "${path}/storagechange/list.shtml");
                 } else if(data.resCode == "unsign"){
                     window.top.location.href = "${path}/user/login.shtml";
                 }else {

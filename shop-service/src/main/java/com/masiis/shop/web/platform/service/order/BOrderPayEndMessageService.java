@@ -334,6 +334,7 @@ public class BOrderPayEndMessageService {
                     ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
                     if (teamComUser!=null){
                         //发短信
+                        logger.info("商品名称---------"+orderItem.getSkuName()+"-----orderItem的id----"+orderItem.getId());
                         if (MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName())){
                             logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------success");
                         }else {

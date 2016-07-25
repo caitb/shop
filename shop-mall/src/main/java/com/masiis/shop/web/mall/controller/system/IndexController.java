@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.controller.system;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
+import com.masiis.shop.dao.mallBeans.SfShopInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
@@ -124,7 +125,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/product.do")
     @ResponseBody
-    public  List<SfShopDetail> findProduct(HttpServletRequest req){
+    public SfShopInfo findProduct(HttpServletRequest req){
+        SfShopInfo sfShopInfo = new SfShopInfo();
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
         Long shopId = (Long) req.getSession().getAttribute("shopId");
         try {
@@ -133,11 +135,9 @@ public class IndexController extends BaseController {
                 ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
                 ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
                 ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
-                ComSkuExtension comSkuExtension = skuBackGroupImageService.backGroupImage(sfShopSku.getSkuId());
                 SfShopDetail sfShopDetail = new SfShopDetail();
                 sfShopDetail.setIsWunShip(sfShopSku.getIsOwnShip());//自己发货
                 sfShopDetail.setSkuImageUrl(comSkuImage.getFullImgUrl());
-                sfShopDetail.setSkuUrl(comSkuExtension.getSkuBackgroundImg());
                 sfShopDetail.setSkuName(comSku.getName());
                 sfShopDetail.setSkuAssia(comSku.getAlias());
                 sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
@@ -145,9 +145,10 @@ public class IndexController extends BaseController {
 //                sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
                 sfShopDetail.setSkuId(comSku.getId());
                 sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
-
                 SfShopDetails.add(sfShopDetail);
             }
+            sfShopInfo.setSfShopDetailList(SfShopDetails);//业务数据
+            sfShopInfo.setSkuUrlList(skuBackGroupImageService.getSfShopSkuImgByShopId(shopId)); // 业务图片
         }catch (Exception ex){
         if (StringUtils.isNotBlank(ex.getMessage())) {
             throw new BusinessException(ex.getMessage(), ex);
@@ -155,7 +156,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("网络错误", ex);
         }
     }
-    return SfShopDetails;
+    return sfShopInfo;
     }
 
 

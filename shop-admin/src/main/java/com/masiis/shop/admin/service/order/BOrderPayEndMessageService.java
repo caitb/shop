@@ -323,8 +323,8 @@ public class BOrderPayEndMessageService {
                 logger.info("合伙人订单没有推荐人发送短信失败");
             }
         }
-        //给这个人的团队所有成员发短信
-        logger.info("给这个人的团队所有成员发短信----start");
+        //给这个人的团队所有成员发短信微信
+        logger.info("给这个人的团队所有成员发短信微信----start");
         for (PfBorderItem orderItem : pfBorderItems){
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
             if (pfUserSku!=null){
@@ -332,7 +332,27 @@ public class BOrderPayEndMessageService {
                 for (PfUserSku teamUserSku:userSkus) {
                     ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
                     if (teamComUser!=null){
-                        MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName());
+                        //发短信
+                        if (MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName())){
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------success");
+                        }else {
+                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getRealName()+"------fail");
+                        }
+                        //发微信
+                        String[] bossTeamParam = new String[4];
+                        bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
+                        bossTeamParam[1]=comAgentLevel.getName();
+                        bossTeamParam[2]=comUser.getRealName();
+                        if (pfBorder.getPayTime()!=null){
+                            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getPayTime());
+                        }else{
+                            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getCreateTime());
+                        }
+                        if(WxPFNoticeUtils.getInstance().newMemberJoinNotice(teamComUser,bossTeamParam)){
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------success");
+                        }else{
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------fail");
+                        }
                     }else{
                         logger.info("查询boss团队里的这个人查询不到-----userId---"+teamUserSku.getUserId());
                     }
@@ -341,22 +361,7 @@ public class BOrderPayEndMessageService {
                 logger.info("查询这个人代理的商品不存在");
             }
         }
-        logger.info("给这个人的团队所有成员发短信----end");
-        //给这个人的团队所有成员发微信
-        logger.info("给这个人的团队所有成员发微信-------start");
-        String[] bossTeamParam = new String[4];
-        bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
-        bossTeamParam[1]=comAgentLevel.getName();
-        bossTeamParam[2]=comUser.getRealName();
-        if (pfBorder.getPayTime()!=null){
-            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getPayTime());
-        }else{
-            bossTeamParam[3]=simpleDateFormat.format(pfBorder.getCreateTime());
-        }
-        if(WxPFNoticeUtils.getInstance().newMemberJoinNotice(comUser,bossTeamParam)){
-            logger.info("给这个人的团队所有成员发微信success");
-        }
-        logger.info("给这个人的团队所有成员发微信-------end");
+        logger.info("给这个人的团队所有成员发短信微信-------end");
         logger.info("合伙人订单发送短信-----end");
     }
     /**

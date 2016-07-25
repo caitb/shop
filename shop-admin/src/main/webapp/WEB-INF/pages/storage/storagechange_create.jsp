@@ -132,7 +132,8 @@
                                         <label class="control-label col-sm-3" style="text-align: center;">商品名称</label>
                                         <label class="control-label col-sm-2" style="text-align: center;">上级合伙人</label>
                                         <label class="control-label col-sm-2" style="text-align: center;">数量</label>
-                                        <label class="control-label col-sm-4" style="text-align: center;">备注</label>
+                                        <label class="control-label col-sm-1" style="text-align: center;">单位</label>
+                                        <label class="control-label col-sm-3" style="text-align: center;">备注</label>
                                         <label class="control-label col-sm-1" style="text-align: center;">操作</label>
                                     </div>
                                 </div>
@@ -167,7 +168,10 @@
                                     <div class="col-sm-2">
                                         <input type="numbers" name="skuNums" class="form-control">
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-1">
+                                        <label class="control-label">(箱)</label>
+                                    </div>
+                                    <div class="col-sm-3">
                                         <input type="text" name="skuRemarks" class="form-control">
                                     </div>
                                     <div class="col-sm-1">
@@ -341,64 +345,15 @@
 
         $("#quserid").on("click", queryUser);
 
-        $("#saveLibrary").unbind("click").on("click", function(){
-            var select_li = $("#nameList .li_selected");
-            var userId = select_li.attr("id");
-            if(userId == undefined || userId == null || userId == ""){
-                $.gritter.add({
-                    title: '操作提示',
-                    text: "您没有选中任何人",
-                    class_name: 'gritter-error'
-                });
-                return;
-            }
-            var options = {
-                url:"${path}/storagechange/skulist.do",
-                type:"post",
-                dataType:"json",
-                data:{
-                    userId:userId
-                },
-                success:function(data){
-                    if(data.resCode == "success"){
-                        skulist = new Array();
-                        skulistPro = new Array();
-                        for(var i = 0; i < data.skus.length; i++){
-                            skulist[i] = {
-                                id:data.skus[i].id,
-                                name:data.skus[i].name,
-                                pName:data.skus[i].pName
-                            };
-                            skulistPro[i] = {
-                                id:data.skus[i].id,
-                                name:data.skus[i].name,
-                                pName:data.skus[i].pName
-                            }
-                        }
+        $("#saveLibrary").unbind("click").on("click", select_user);
 
-                        var userId = $("#nameList .li_selected").attr("id");
-                        var userName = $("#nameList .li_selected").find("b").first().html();
-                        $("#userId").val(userId);
-                        $("#userName").html(userName);
-
-                        $("#modal-library").modal("hide");
-                        // 清除旧的的商品项
-                        clearPromotionRule();
-                        // 给商品项模板赋值新的商品下拉选项
-                        addPromotionRule();
-                    } else {
-                        alert(data.resMsg);
-                    }
-                }
-            }
-
-            $.ajax(options);
-        });
+        $(".list-group").on("dblclick", ".list-group-item", select_user);
 
         $(".promotion-rule .row select").on("change", function(){
             var sku = findInPro($(this).attr("attr"));
             var $select = $(this);
             var so = $select.find("option:selected");
+            var nowSku = findInPro(so.val());
 
             if(!isInSkulistById(so.val())){
                 $select.children("option").each(function(){
@@ -423,13 +378,75 @@
                     continue;
                 }
             }
-            $(this).parent().next().children("label").text(so.attr("attr"));
+            $(this).parent().next().children("label").text(nowSku.pName);
+            $(this).parent().next().next().next().children("label").text("(" + nowSku.unitName + ")");
         });
 
     });
 
-    var skulist = new Array({id:-1,name:"",pName:""});
-    var skulistPro = new Array({id:-1,name:"",pName:""});
+    var skulist = new Array({id:-1,name:"",pName:"",unitName:""});
+    var skulistPro = new Array({id:-1,name:"",pName:"",unitName:""});
+
+    function select_user(){
+        if($(this).attr("id") == "list_0"){
+            return;
+        }
+        $(this).addClass("li_selected").siblings().removeClass("li_selected");
+
+        var select_li = $("#nameList .li_selected");
+        var userId = select_li.attr("id");
+        if(userId == undefined || userId == null || userId == ""){
+            $.gritter.add({
+                title: '操作提示',
+                text: "您没有选中任何人",
+                class_name: 'gritter-error'
+            });
+            return;
+        }
+        var options = {
+            url:"${path}/storagechange/skulist.do",
+            type:"post",
+            dataType:"json",
+            data:{
+                userId:userId
+            },
+            success:function(data){
+                if(data.resCode == "success"){
+                    skulist = new Array();
+                    skulistPro = new Array();
+                    for(var i = 0; i < data.skus.length; i++){
+                        skulist[i] = {
+                            id:data.skus[i].id,
+                            name:data.skus[i].name,
+                            pName:data.skus[i].pName,
+                            unitName:data.skus[i].unitName
+                        };
+                        skulistPro[i] = {
+                            id:data.skus[i].id,
+                            name:data.skus[i].name,
+                            pName:data.skus[i].pName,
+                            unitName:data.skus[i].unitName
+                        }
+                    }
+
+                    var userId = $("#nameList .li_selected").attr("id");
+                    var userName = $("#nameList .li_selected").find("b").first().html();
+                    $("#userId").val(userId);
+                    $("#userName").html(userName);
+
+                    $("#modal-library").modal("hide");
+                    // 清除旧的的商品项
+                    clearPromotionRule();
+                    // 给商品项模板赋值新的商品下拉选项
+                    addPromotionRule();
+                } else {
+                    alert(data.resMsg);
+                }
+            }
+        }
+
+        $.ajax(options);
+    }
 
     function sumbit_func(){
         var userId = $("#userId").val();
@@ -463,14 +480,18 @@
             data:$("#promotionForm").serialize(),
             success:function(data){
                 if(data.resCode == "success"){
-                    parent.window.$('#myTabbable').closeTab('tab15-0');
-                    parent.window.$('#myTabbable').add("tab15-1", '库存变更列表', "${path}/storagechange/list.shtml");
+                    parent.window.$('#myTabbable').closeTab('tab17-0');
+                    parent.window.$('#myTabbable').add("tab17-1", '库存变更列表', "${path}/storagechange/list.shtml");
                 } else if(data.resCode == "unsign"){
                     window.top.location.href = "${path}/user/login.shtml";
                 }else {
-                    alert(data.resMsg);
-                    $('#promotionSave').on("click", sumbit_func);
+                    $.gritter.add({
+                        title: '操作提示',
+                        text: data.resMsg,
+                        class_name: 'gritter-error'
+                    });
                 }
+                $('#promotionSave').on("click", sumbit_func);
             },
             error:function(){
                 $('#promotionSave').on("click", sumbit_func);
@@ -609,6 +630,11 @@
         }
         _select.attr("attr", sku.id);
         newRule.find(".row").children("div").first().next().children("label").text(sku.pName);
+        if(sku.unitName != "" && sku.unitName != undefined && sku.unitName != null) {
+            newRule.find(".row").children("div").first().next().next().next().children("label").text("(" + sku.unitName + ")");
+        }else{
+            newRule.find(".row").children("div").first().next().next().next().children("label").text("(---)");
+        }
         skulist.splice(0, 1);
         $("#skutitle").after(newRule);
     }

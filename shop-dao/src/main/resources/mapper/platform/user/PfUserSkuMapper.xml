@@ -93,6 +93,7 @@
         <result column="is_buy" property="isBuy" jdbcType="INTEGER"/>
         <result column="is_spokesman" property="isSpokesman" jdbcType="INTEGER"/>
         <result column="pName" property="pName" jdbcType="VARCHAR" />
+        <result column="unitName" property="unitName" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -503,10 +504,13 @@
             WHEN 0 THEN "平台"
             ELSE u.real_name
             END as pName,
+            m.name unitName,
             c.*
         FROM
             pf_user_sku s
         LEFT JOIN com_sku c ON c.id = s.sku_id
+        LEFT JOIN com_spu p ON c.spu_id = p.id
+        LEFT JOIN com_unit_measure m ON p.unit = m.id
         LEFT JOIN com_user u ON s.user_pid=u.id
         WHERE
             s.user_id = #{userId,jdbcType=BIGINT}

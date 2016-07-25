@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.ComSku;
  */
 public class UserSkuInfo extends ComSku {
     private String pName;
+    private String unitName;
 
     public String getpName() {
         return pName;
@@ -15,5 +16,13 @@ public class UserSkuInfo extends ComSku {
 
     public void setpName(String pName) {
         this.pName = pName;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
     }
 }

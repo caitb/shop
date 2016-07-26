@@ -531,6 +531,9 @@ body footer .sec3 p .last_p2{
     height:100%;
     margin-right:10px;
     border:1px solid #ddd;
+    color: #666;
+    font-size: 12px;
+    padding-left: 10px;
 }
 .message h2{
     display: -webkit-box;

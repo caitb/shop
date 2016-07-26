@@ -264,7 +264,7 @@
         from pf_border
     </select>
 
-    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorder" resultMap="BaseResultMap">
+    <select id="selectByCondition" parameterType="Map" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
@@ -649,6 +649,35 @@
               <if test="orderType != null">
                   AND pb.order_type = #{orderType}
               </if>
+    </select>
+
+    <!-- 代发货订单列表 -->
+    <select id="selectDeliveryByCondition" parameterType="Map" resultType="java.util.HashMap">
+        SELECT
+                bo.id
+               ,bo.order_code
+               ,bo.create_time
+               ,bo.order_amount
+               ,bo.bail_amount
+               ,bo.receivable_amount
+               ,bo.pay_amount
+               ,bo.recommen_amount
+               ,bo.order_status
+               ,bo.order_type
+               ,bo.pay_status
+               ,bo.ship_status
+               ,bo.is_counting
+               ,pu.real_name
+               ,ru.real_name
+               ,u.real_name
+               ,bp.pay_type_id
+        FROM
+               pf_border bo
+        LEFT JOIN com_user pu ON pu.id = bo.user_pid
+        LEFT JOIN pf_border_recommen_reward brr ON brr.pf_border_id = bo.id
+        LEFT JOIN com_user ru ON ru.id = brr.recommen_user_id
+        LEFT JOIN com_user u ON u.id = bo.user_id
+        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = bo.id
     </select>
     
     <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">

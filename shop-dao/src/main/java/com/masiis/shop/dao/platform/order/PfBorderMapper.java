@@ -32,7 +32,7 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
-    List<PfBorder> selectByCondition(PfBorder pfBorder);
+    List<PfBorder> selectByCondition(Map<String, Object> conditionMap);
 
     /**
      * 获得奖励订单
@@ -172,4 +172,6 @@ public interface PfBorderMapper {
      * @return
      */
     List<Map<String, Object>> selectByOffline(Map<String, Object> conditionMap);
+
+    List<Map<String, Object>> selectDeliveryByCondition(Map<String, Object> conditionMap);
 }

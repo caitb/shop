@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -99,16 +99,27 @@
                                                 <label for="orderType">订单类型</label>
                                                 <select id="orderType" name="orderType">
                                                     <option value="" selected="selected">所有订单</option>
+                                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                                        <option value="${orderType.code}">${orderType.desc}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="payTypeId">支付方式</label>
                                                 <select id="payTypeId" name="payTypeId">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${payTypes}" var="payType">
+                                                        <option value="${payType.key}">${payType.value}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orderStatus">订单状态</label>
                                                 <select id="orderStatus" name="orderStatus">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${bOrderStatuses}" var="orderStatus">
+                                                        <option value="${orderStatus.code}">${orderStatus.desc}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -122,6 +133,10 @@
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${bOrderShipStatuses}" var="shipStatus">
+                                                        <option value="${shipStatus.code}">${shipStatus.desc}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -514,6 +529,9 @@
                             }
                             if(row.pfBorder && row.pfBorder.orderType == 2){
                                 return '拿货订单';
+                            }
+                            if(row.pfBorder && row.pfBorder.orderType == 3){
+                                return '升级订单';
                             }
                         }
                     },

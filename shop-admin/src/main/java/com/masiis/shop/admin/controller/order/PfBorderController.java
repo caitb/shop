@@ -7,6 +7,7 @@ import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.*;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.system.DictionaryService;
+import com.masiis.shop.common.enums.platform.BOrderShipStatus;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.dao.po.*;
@@ -50,7 +51,18 @@ public class PfBorderController extends BaseController {
     private PfUserSkuStockService userSkuStockService;
 
     @RequestMapping("/list.shtml")
-    public String list() {
+    public String list(Model model) {
+        try {
+            List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
+            model.addAttribute("payTypes", payTypeList);
+            model.addAttribute("bOrderTypes", BOrderType.values());
+            model.addAttribute("bOrderStatuses", BOrderStatus.values());
+            model.addAttribute("bOrderShipStatuses", BOrderShipStatus.values());
+        } catch (Exception e) {
+            log.error("获取支付方式失败!"+e);
+            e.printStackTrace();
+        }
+
         return "order/border/list";
     }
 
@@ -61,30 +73,50 @@ public class PfBorderController extends BaseController {
                        Integer pageSize,
                        String sortName,
                        String sortOrder,
-                       PfBorder pfBorder,
+                       String orderCode,
+                       String beginTime,
+                       String endTime,
+                       Integer orderType,
+                       Integer orderStatus,
+                       Integer payStatus,
+                       Integer shipStatus,
+                       Integer isCounting,
                        Integer payTypeId
     ) {
+
+        Map<String, Object> conditionMap = new HashMap<>();
         try {
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder, payTypeId);
-            if (pfBorder.getOrderType() == null) {
-                List<ComDictionary> orderTypeList = dictionaryService.pickListOfBaseData("PF_BORDER_TYPE");//订单类型
-                pageMap.put("orderTypeList", orderTypeList);
+            if(StringUtils.isNotBlank(orderCode)){
+                conditionMap.put("orderCode", orderCode);
             }
-            if (pfBorder.getShipType() == null) {
-                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
-                pageMap.put("payTypeList", payTypeList);
+            if(StringUtils.isNotBlank(beginTime)){
+                conditionMap.put("beginTime", beginTime);
             }
-            if (pfBorder.getOrderStatus() == null) {
-                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
-                pageMap.put("orderStatusList", orderStatusList);
+            if(StringUtils.isNotBlank(endTime)){
+                conditionMap.put("endTime", endTime);
             }
-            if (payTypeId == null) {
-                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
-                pageMap.put("wuliuList", wuliuList);
+            if(orderType != null){
+                conditionMap.put("orderType", orderType);
             }
+            if(orderStatus != null){
+                conditionMap.put("orderStatus", orderStatus);
+            }
+            if(payStatus != null){
+                conditionMap.put("payStatus", payStatus);
+            }
+            if(shipStatus != null){
+                conditionMap.put("shipStatus", shipStatus);
+            }
+            if(isCounting != null){
+                conditionMap.put("isCounting", isCounting);
+            }
+            if(payTypeId != null){
+                conditionMap.put("payTypeId", payTypeId);
+            }
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
-            log.error("查询合伙人列表失败![pfBorder=" + pfBorder + "]");
+            log.error("查询合伙人列表失败![conditionMap=" + conditionMap + "]");
             e.printStackTrace();
         }
 

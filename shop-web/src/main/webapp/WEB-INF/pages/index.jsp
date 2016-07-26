@@ -205,7 +205,7 @@
 </script>
 <script>
     $(function () {
-        var isAgent = '${user.isAgent==1}';
+        var isAgent = ${user.isAgent==1};
         if (isAgent) {
             $.ajax({
                 type: "POST",

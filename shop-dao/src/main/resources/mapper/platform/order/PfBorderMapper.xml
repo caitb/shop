@@ -665,6 +665,7 @@
                ,bo.recommen_amount   recommenAmount
                ,bo.order_status      orderStatus
                ,bo.order_type        orderType
+               ,bo.send_type         sendType
                ,bo.pay_status        payStatus
                ,bo.ship_status       shipStatus
                ,bo.is_counting       isCounting

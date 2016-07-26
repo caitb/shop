@@ -3,6 +3,7 @@ package com.masiis.shop.admin.controller.delivery;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.service.order.BOrderService;
+import com.masiis.shop.admin.service.order.ComShipManService;
 import com.masiis.shop.admin.service.order.OrderService;
 import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
@@ -10,6 +11,7 @@ import com.masiis.shop.common.enums.platform.BOrderShipStatus;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.dao.po.ComDictionary;
+import com.masiis.shop.dao.po.ComShipMan;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +41,8 @@ public class DeliveryController {
     private OrderService orderService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private ComShipManService comShipManService;
 
     /**
      * 店铺代发货订单页面
@@ -139,7 +143,9 @@ public class DeliveryController {
     public String bOrderList(Model model){
 
         try {
+            List<ComShipMan> comShipManList = comShipManService.listByCondition(new ComShipMan());
             List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
+            model.addAttribute("comShipManList", comShipManList);
             model.addAttribute("payTypes", payTypeList);
             model.addAttribute("bOrderTypes", BOrderType.values());
             model.addAttribute("bOrderStatuses", BOrderStatus.values());

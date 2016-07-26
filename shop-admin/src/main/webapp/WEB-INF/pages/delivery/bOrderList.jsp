@@ -168,7 +168,7 @@
                         </div>
 
 
-                        <div id="modal-receipt" class="modal fade" tabindex="-1">
+                        <div id="modal-delivery" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -176,7 +176,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            您确认收到代理商货款?
+                                            发货信息
                                         </div>
                                     </div>
 
@@ -186,20 +186,33 @@
                                                 <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
                                                     <!-- #section:pages/profile.info -->
+                                                    <form id="deliveryForm">
                                                     <div class="profile-user-info profile-user-info-striped">
 
-                                                        <div class="profile-info-row" id="auditReason">
-                                                            <div class="profile-info-name" id="jjT"> 银行流水号 </div>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 快递名称 </div>
 
-                                                            <div class="profile-info-value" id="jjF">
-                                                                <form id="auditForm">
-                                                                    <input type="hidden" name="id" id="bOrderId" value="" />
-                                                                    <input type="text" name="serialNumber" id="serialNumber" placeholder="银行流水号" />
-                                                                </form>
+                                                            <div class="profile-info-value">
+                                                                <input type="hidden" name="id" id="bOrderId" value="" />
+                                                                <input type="hidden" id="shipManName" name="shipManName" value="" />
+                                                                <select class="form-control" id="shipName" name="shipManId">
+                                                                    <c:forEach items="${comShipManList}" var="shipMan">
+                                                                        <option value="${shipMan.id}">${shipMan.name}</option>
+                                                                    </c:forEach>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 快递单号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
                                                             </div>
                                                         </div>
 
                                                     </div>
+                                                    </form>
 
                                                 </div>
                                             </div>
@@ -212,7 +225,7 @@
                                             <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
                                                 取消
                                             </button>
-                                            <button class="btn btn-sm btn-info pull-left ok">
+                                            <button class="btn btn-sm btn-info pull-left ok" id="submitDeliveryForm">
                                                 确认
                                             </button>
                                         </div>
@@ -586,35 +599,14 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
-                                arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
+                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1 && row.orderType != 1){
+                                return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
-
-                            return arr.join('');
                         },
                         events: {
-                            'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
-                            },
-                            'click .scheduling': function(e, value, row, index){
-                                $.ajax({
-                                    url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
-                                    success: function(msg){
-                                        msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
-                                        $.gritter.add({
-                                            title: '消息',
-                                            text: msg,
-                                            class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                        });
-                                        $('#table').bootstrapTable('refresh');
-                                    }
-                                })
-                            },
-                            'click .receipt': function(e, value, row, index){
-                                $('#bOrderId').val(row.pfBorder.id);
-                                $('#modal-receipt').modal('show');
+                            'click .delivery': function(e, value, row, index){
+                                $('#bOrderId').val(row.id);
+                                $('#modal-delivery').modal('show');
                             }
                         }
                     }
@@ -816,39 +808,33 @@
         return undefined;
     }
 
-    $('#').on('click', function(){
-
-    });
-
-    $('.ok').on('click', function(){
-        var serialNumber = $('input[name="serialNumber"]').val();
-
-        if(!serialNumber){
+    $('#submitDeliveryForm').on('click', function(){
+        $('#shipManName').val($('#shipName option:selected').text());
+        if(!$('#freight').val()){
             $.gritter.add({
                 title: '温馨提示',
-                text: '请填写银行流水号!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                text: '请填写运单号!',
+                class_name: 'gritter-error'
             });
-
-            return false;
+            return;
         }
 
         $.ajax({
-            url: '<%=basePath%>fundmanage/extract/audit.do',
+            url: '<%=basePath%>order/border/delivery.do',
             type: 'POST',
-            data: $('#auditForm').serialize(),
+            data: $('#submitDeliveryForm').serialize(),
             success: function(msg){
-                if('success' == msg){
-                    $('#modal-audit').modal('hide');
+                if(msg == 'success'){
+                    $('#table').bootstrapTable('refresh');
+                }else{
+                    $.gritter.add({
+                        title: '温馨提示',
+                        text: '发货出异常!',
+                        class_name: 'gritter-error'
+                    });
                 }
-                $.gritter.add({
-                    title: '消息',
-                    text: msg,
-                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                });
-                $('#table').bootstrapTable('refresh');
             }
-        })
+        });
     });
 
 

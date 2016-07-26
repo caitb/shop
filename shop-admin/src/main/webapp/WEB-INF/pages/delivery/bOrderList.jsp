@@ -823,7 +823,7 @@
         $.ajax({
             url: '<%=basePath%>order/border/delivery.do',
             type: 'POST',
-            data: $('#submitDeliveryForm').serialize(),
+            data: $('#deliveryForm').serialize(),
             success: function(msg){
                 if(msg == 'success'){
                     $('#table').bootstrapTable('refresh');

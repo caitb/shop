@@ -89,6 +89,9 @@ public class DeliveryController {
 
         Map<String, Object> conditionMap = new HashMap<>();
         try {
+            if(StringUtils.isNotBlank(orderCode)){
+                conditionMap.put("orderCode", orderCode);
+            }
             if (shipStatus!=null){
                 conditionMap.put("shipStatus",shipStatus);
             }

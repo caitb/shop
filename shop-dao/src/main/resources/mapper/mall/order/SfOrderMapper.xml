@@ -337,19 +337,20 @@
     <!-- 查询店铺代发货订单 -->
     <select id="selectDeliveryByCondition" parameterType="Map" resultType="java.util.HashMap">
         SELECT
-               o.id,
-               o.order_code,
-               bu.wx_nk_name,
-               oc.consignee,
-               su.wx_nk_name,
-               o.product_amount,
-               o.receivable_amount,
-               o.pay_amount,
-               o.order_status,
-               op.pay_type_id,
-               o.pay_status,
-               o.ship_status,
-               o.is_counting
+               o.id                id,
+               o.create_time       createTime,
+               o.order_code        orderCode,
+               bu.wx_nk_name       bWxNkName,
+               oc.consignee        consignee,
+               su.real_name        suRealName,
+               o.product_amount    productAmount,
+               o.receivable_amount receivableAmount,
+               o.pay_amount        payAmount,
+               o.order_status      orderStatus,
+               op.pay_type_id      payTypeId,
+               o.pay_status        payStatus,
+               o.ship_status       shipStatus,
+               o.is_counting       isCounting
         FROM
                   sf_order o
         LEFT JOIN com_user           bu ON bu.id          = o.user_id
@@ -364,6 +365,27 @@
                 INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND b.sku_id=c.sku_id
                 WHERE a.order_status=7 AND b.quantity <= c.stock AND o.id=a.id)
                 ]]>
+        <if test="orderCode != null">
+            AND o.order_code = #{orderCode}
+        </if>
+        <if test="beginTime != null">
+            <![CDATA[ AND o.create_time >= #{beginTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ AND o.create_time <= #{endTime} ]]>
+        </if>
+        <if test="orderStatus != null">
+           AND o.order_status = #{orderStatus}
+        </if>
+        <if test="payStatus != null">
+            AND o.pay_status = #{payStatus}
+        </if>
+        <if test="shipStatus != null">
+            AND o.ship_status = #{shipStatus}
+        </if>
+        <if test="isCounting != null">
+            AND o.is_counting = #{isCounting}
+        </if>
     </select>
 
 </mapper>

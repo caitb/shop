@@ -21,62 +21,66 @@
                   <a href="${path}/sfOrderManagerController/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>领取奖励</p>            
         </header>
-        <banner>
-            <img src="<%=path%>/static/images/receive.jpg" alt="">
-            <p>
-                达到指定${promotionInfo.presonTypeName}数量即可获得奖品！
-            </p>
-        </banner>
-        <nav>
-            <p>${fansQuantity}</p>
-            <h1>当前${promotionInfo.presonTypeName}数</h1>
-            <img src="<%=path%>/static/images/ad.png" alt="">
-        </nav>
-        <main>
-            <h1>活动详情</h1>
+       <banner>
+           <img src="<%=path%>/static/images/receive.jpg" alt="">
+       </banner>
+       <nav>
+           <img src="<%=path%>/static/images/fif.png" alt="">
+           <h1>当前${promotionInfo.presonTypeName}数</h1>
+           <p class="my_css3_class">${fansQuantity}</p>
+       </nav>
+       <div class="product">
+           <b></b>
+           <span>活动详情</span>
+           <b></b>
+       </div>
             <c:forEach items="${promotionInfos}" var="promotionInfo">
                 <p>
-                    <span></span>
-                    <b>活动时间： ${promotionInfo.beginTime}—${promotionInfo.endTime}</b>
-                    <span></span>
+                    活动时间： ${promotionInfo.beginTime}—${promotionInfo.endTime}
                 </p>
-               <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule">
-                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo" varStatus="status">
+                <main>
+               <c:forEach items="${promotionInfo.ruleInfos}" var="promotionRule" varStatus="status">
+                    <c:forEach items="${promotionRule.giftInfos}" var="giftInfo" >
                         <div class="floor">
-                            <h1><b>${status.index+1}</b></h1>
-                            <p>${promotionInfo.presonTypeName}数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}</p>
-                            <div class="f_box">
-                                <div class="f_l">
+                            <h1>${promotionInfo.presonTypeName}数达到${promotionRule.promotionFansQuantity}人送 ${giftInfo.giftName}
+                                <span>${status.index+1}</span>
+                            </h1>
+                            <div>
+                                <div>
                                     <img src="${giftInfo.giftImageUrl}"
                                          onclick="skipPromotionGiftDetailPage(${promotionInfo.promoId},${promotionRule.promoRuleId},${giftInfo.giftId},${promotionRule.status})"
-                                         />
+                                    />
                                 </div>
-                                <div class="f_r">
-                                    <h1>${giftInfo.giftName}</h1>
-                                    <p>(已领取<b>${giftInfo.sendedQuantity}</b>件，限购<b>${giftInfo.maxQuantity}</b>份)</p>
-                                    <h2>${giftInfo.giftQuantity}份</h2>
+                                <div>
+                                    <h2>${giftInfo.giftName}</h2>
+                                    <p>(已领取<b>${giftInfo.sendedQuantity}</b>份，限领取${giftInfo.maxQuantity}份)</p>
                                     <c:if test="${promotionRule.status==0}">
-                                        <button  disabled>还差${promotionRule.needFansQuantity}人</button>
+                                        <button  disabled class="nobady">还差${promotionRule.needFansQuantity}人</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==1}">
-                                        <button class="on" onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
+                                        <button  onclick="skipPromotionGorderPage(${promotionInfo.promoId},${promotionRule.promoRuleId})">点击领取</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==2}">
-                                        <button disabled>已领取</button>
+                                        <button disabled class="nobady">已领取</button>
                                     </c:if>
                                     <c:if test="${promotionRule.status==3}">
-                                        <button disabled>奖品已被领取完</button>
+                                        <button disabled class="nobady">奖品已被领取完</button>
                                     </c:if>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </c:forEach>
+                    <p>
+                        <b></b>
+                        <span></span>
+                        <b></b>
+                    </p>
+                </main>
             </c:forEach>
-        </main>
-        <p>
+        <h1>
             注：以单个店铺的${promotionInfo.presonTypeName}数量为计算方法
-        </p>
+        </h1>
     </div>
 </div>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>

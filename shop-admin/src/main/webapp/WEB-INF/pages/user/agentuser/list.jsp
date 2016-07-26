@@ -98,7 +98,7 @@
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
+                                           data-search="false"
                                            data-show-refresh="true"
                                            data-show-toggle="true"
                                     <%--data-show-columns="true"--%>

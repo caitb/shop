@@ -25,7 +25,7 @@
             <img src="${promotionGiftInfo.giftImageUrl}" alt="">
             <h1>${promotionGiftInfo.giftName}
                 <c:if test="${isMayReceive==1}">
-                    <button onclick="skipPromotionGorderPage(${promoId},${promoRuleId})">点击领取</button>
+                    <button  onclick="skipPromotionGorderPage(${promoId},${promoRuleId})">点击领取</button>
                 </c:if>
             </h1>
         </banner>

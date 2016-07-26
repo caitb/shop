@@ -278,6 +278,4 @@ public class SkuService {
         return comSkuMapper.selectAll();
     }
 
-
-
 }

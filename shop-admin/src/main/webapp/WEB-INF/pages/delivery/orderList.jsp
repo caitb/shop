@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -95,6 +96,10 @@
                                             <div class="form-group">
                                                 <label for="orderStatus">订单状态：</label>
                                                 <select id="orderStatus" name="orderStatus">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${orderStatusList}" var="os">
+                                                        <option value="${os.code}">${os.desc}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -108,6 +113,10 @@
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态：</label>
                                                 <select id="shipStatus" name="shipStatus">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${wuliuList}" var="wl">
+                                                        <option value="${wl.key}">${wl.value}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -381,8 +390,8 @@
                         sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.id){
-                                return row.sfOrder.id;
+                            if(row && row.id){
+                                return row.id;
                             }
                         }
                     },
@@ -394,8 +403,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.orderCode){
-                                return row.sfOrder.orderCode;
+                            if(row && row.orderCode){
+                                return row.orderCode;
                             }
                         }
                     },
@@ -406,7 +415,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return new Date(row.sfOrder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                         }
                     },
                     {
@@ -415,8 +424,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrderConsignee && row.sfOrderConsignee.consignee){
-                                return row.sfOrderConsignee.consignee;
+                            if(row && row.consignee){
+                                return row.consignee;
                             }
                         }
                     },
@@ -427,8 +436,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.wxNkName){
-                                return row.comUser.wxNkName;
+                            if(row && row.bWxNkName){
+                                return row.bWxNkName;
                             }
                         }
                     },
@@ -439,8 +448,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.shopUser && row.shopUser.realName){
-                                return row.shopUser.realName;
+                            if(row && row.suRealName){
+                                return row.suRealName;
                             }
                         }
                     },
@@ -451,8 +460,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.productAmount){
-                                return row.sfOrder.productAmount;
+                            if(row && row.productAmount){
+                                return row.productAmount;
                             }
                         }
                     },
@@ -463,8 +472,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder){
-                                return row.sfOrder.receivableAmount;
+                            if(row){
+                                return row.receivableAmount;
                             }
                         }
                     },
@@ -475,8 +484,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder){
-                                return row.sfOrder.payAmount;
+                            if(row){
+                                return row.payAmount;
                             }
                         }
                     },
@@ -487,28 +496,28 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.orderStatus == 0){
+                            if(row && row.orderStatus == 0){
                                 return '未付款';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 1){
+                            if(row && row.orderStatus == 1){
                                 return '已付款';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 2){
+                            if(row && row.orderStatus == 2){
                                 return '已取消';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 3){
+                            if(row && row.orderStatus == 3){
                                 return '已完成';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 4){
+                            if(row && row.orderStatus == 4){
                                 return '退款中';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 5){
+                            if(row && row.orderStatus == 5){
                                 return '已退款';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 7){
+                            if(row && row.orderStatus == 7){
                                 return '待发货';
                             }
-                            if(row.sfOrder && row.sfOrder.orderStatus == 8){
+                            if(row && row.orderStatus == 8){
                                 return '已发货';
                             }
                         }
@@ -519,12 +528,14 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrderPayments){
-                                var sHtm = '';
-                                for(var i in row.sfOrderPayments){
-                                    if(row.sfOrderPayments[i].payTypeId == 0) sHtm += '微信支付';
-                                }
-                                return sHtm;
+                            if(row.payTypeId == 0){
+                                return '微信支付';
+                            }
+                            if(row.payTypeId == 1){
+                                return '线下支付';
+                            }
+                            if(row.payTypeId == 2){
+                                return '支付宝支付'
                             }
                         }
                     },
@@ -535,10 +546,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.payStatus == 0){
+                            if(row && row.payStatus == 0){
                                 return '待付款';
                             }
-                            if(row.sfOrder && row.sfOrder.payStatus == 1){
+                            if(row && row.payStatus == 1){
                                 return '已付款';
                             }
                         }
@@ -550,13 +561,13 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.shipStatus == 0){
+                            if(row && row.shipStatus == 0){
                                 return '未发货';
                             }
-                            if(row.sfOrder && row.sfOrder.shipStatus == 5){
+                            if(row && row.shipStatus == 5){
                                 return '已发货';
                             }
-                            if(row.sfOrder && row.sfOrder.shipStatus == 9){
+                            if(row && row.shipStatus == 9){
                                 return '已收货';
                             }
                         }
@@ -568,10 +579,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.isCounting == 0){
+                            if(row && row.isCounting == 0){
                                 return '未结算';
                             }
-                            if(row.sfOrder && row.sfOrder.isCounting == 1){
+                            if(row && row.isCounting == 1){
                                 return '已结算';
                             }
 

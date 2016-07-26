@@ -103,7 +103,7 @@
     <div class="b_t">
         <img src="${sfShop.wxQrCode}" alt="">
         <p>
-            如有问题，请加我为好友！
+            ${sfShop.wxQrCodeDescription}
         </p>
         <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
@@ -148,16 +148,16 @@
             dataType:"Json",
             success:function(data){
                 var trHtml = "";
-                $.each(data, function(i, SfShopDetails) {
+                $.each(data.skuUrlList, function(i, skuimg) {
                     if(i<5){
-                        trHtml+="<div class=\"swiper-slide\"><img src=\""+SfShopDetails.skuUrl+"\" alt=\"\"></div>";
+                        trHtml+="<div class=\"swiper-slide\"><img src=\""+skuimg+"\" alt=\"\"></div>";
                     }
                 })
                 $(".swiper-wrapper").html(trHtml);
                 var trHtml2 = "";
                 var shipName="";
                 var shopId= ${sfShop.id};
-                $.each(data, function(i, SfShopDetails) {
+                $.each(data.sfShopDetailList, function(i, SfShopDetails) {
                     trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"&isOwnShip="+SfShopDetails.isWunShip+"');\">";
                     trHtml2+="<div><img src=\""+SfShopDetails.skuImageUrl+"\" alt=\"\"></div>";
                     if(SfShopDetails.isWunShip==1){

@@ -16,6 +16,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -219,6 +220,7 @@ public class PbStorageBillService {
         }
     }
 
+    @Transactional
     public void handleSubtractBill(PbUser pbUser, PbStorageBill bill, String handleRemark, String remoteAddr) {
         try{
             if(bill == null){

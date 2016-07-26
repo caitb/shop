@@ -398,8 +398,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group" style="height: 170px;">
-                                        <div class="col-sm-11" style="height: 188px;overflow: auto;margin-left: 12px;">
+                                    <div class="form-group" style="height: 229px;">
+                                        <div class="col-sm-11" style="height: 200px;overflow: auto;margin-left: 12px;">
                                             <ul class="list-group" id="itemDetail">
                                             </ul>
                                         </div>
@@ -642,8 +642,8 @@
                                                 var tempHtml = '';
                                                 for(var i = 0; i < rows.length; i++){
                                                     var obj = rows[i];
-                                                    tempHtml += '<li class="list-group-item">' +
-                                                                    '<div class="form-group">' +
+                                                    tempHtml += '<li class="list-group-item" style="height: 58px;>'
+                                                                    + '<div class="form-group">' +
                                                                         '<b class="col-sm-4" style=\"text-align: center;\"> ' + (obj.skuName?obj.skuName:"-") + ' </b>' +
                                                                         '<b class="col-sm-2" style=\"text-align: center;\"> ' + (obj.quantity?obj.quantity:"-") + ' </b>' +
                                                                         '<b class="col-sm-3" style=\"text-align: center;\"> ' + (obj.realName?obj.realName:"-") + ' </b>' +
@@ -972,10 +972,10 @@
                         class_name: 'gritter-error'
                     });
                 }
-                $("#handle_btn").on("click", auditFunc);
+                $("#handle_btn").on("click", handleFunc);
             },
             error:function(){
-                $("#handle_btn").on("click", auditFunc);
+                $("#handle_btn").on("click", handleFunc);
             }
         };
         $("#handle_btn").unbind("click");

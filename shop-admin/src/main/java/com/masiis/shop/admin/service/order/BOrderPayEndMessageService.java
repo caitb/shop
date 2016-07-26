@@ -292,7 +292,7 @@ public class BOrderPayEndMessageService {
                         comUser.getRealName(),
                         pfBorderItems.get(0).getSkuName(),
                         comAgentLevel.getName(),
-                        pfBorderRecommenReward.getRewardTotalPrice().toString()
+                        pfBorderRecommenReward.getRewardTotalPrice()
                 );
                 if (_bl){
                     logger.info("合伙人订单有推荐人发送佣金成功");

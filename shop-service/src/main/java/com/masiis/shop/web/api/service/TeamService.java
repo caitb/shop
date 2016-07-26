@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.user;
+package com.masiis.shop.web.api.service;
 
 import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.DateUtil;

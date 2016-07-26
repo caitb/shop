@@ -5,7 +5,7 @@ import com.masiis.shop.api.bean.product.ShopProRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.product.ManageShopProductService;
+import com.masiis.shop.web.platform.service.product.ManageShopProductService;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComUser;
 import org.apache.log4j.Logger;

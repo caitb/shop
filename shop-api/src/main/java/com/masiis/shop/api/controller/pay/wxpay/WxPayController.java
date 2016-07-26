@@ -3,23 +3,10 @@ package com.masiis.shop.api.controller.pay.wxpay;
 import com.masiis.shop.api.bean.pay.WxPayPrepareBOrderReq;
 import com.masiis.shop.api.bean.pay.WxPayPrepareBOrderRes;
 import com.masiis.shop.api.constants.SignValid;
-import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.pay.wxpay.WxPayService;
-import com.masiis.shop.api.service.user.WxUserService;
-import com.masiis.shop.api.utils.SysSignUtils;
-import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderReq;
-import com.masiis.shop.common.beans.wx.wxpay.UnifiedOrderRes;
-import com.masiis.shop.common.constant.wx.WxConsAPP;
-import com.masiis.shop.common.constant.wx.WxConsPF;
-import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.web.platform.service.wxpay.WxPayService;
+import com.masiis.shop.web.common.service.WxUserService;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComWxUser;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +34,7 @@ public class WxPayController extends BaseController {
     @SignValid(paramType = WxPayPrepareBOrderReq.class)
     public WxPayPrepareBOrderRes createPrepareBOrder(HttpServletRequest request,
                             WxPayPrepareBOrderReq req, ComUser user){
-        WxPayPrepareBOrderRes res = new WxPayPrepareBOrderRes();
+        /*WxPayPrepareBOrderRes res = new WxPayPrepareBOrderRes();
         String orderCode = req.getOrderCode();
         if(StringUtils.isBlank(orderCode)){
             res.setResCode(SysResCodeCons.RES_CODE_WXPAY_ORDERCODE_NULL);
@@ -57,7 +44,7 @@ public class WxPayController extends BaseController {
         // 查找对应的wxUser
         ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsAPP.APPID);
         // 创建对应预付单请求参数对象
-        UnifiedOrderReq uniOrder = wxPayService.createPrepareBOrderByOrderCode(orderCode, res, wxUser, getIpAddr(request));
+        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(orderCode, res, wxUser, getIpAddr(request));
         if(uniOrder == null || StringUtils.isBlank(res.getResCode())){
             return res;
         }
@@ -91,7 +78,7 @@ public class WxPayController extends BaseController {
             //wxPayService.createPaymentRecord(uniOrder, resObj, orderCode);
         } catch (Exception e) {
 
-        }
+        }*/
         return null;
     }
 }

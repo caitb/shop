@@ -8,7 +8,7 @@ import com.masiis.shop.api.constants.AuditStatusEnum;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.user.PersonalCenterService;
+import com.masiis.shop.web.api.service.PersonalCenterService;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;

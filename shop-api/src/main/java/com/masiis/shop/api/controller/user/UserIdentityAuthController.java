@@ -5,7 +5,7 @@ import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.user.UserIdentityAuthService;
+import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
@@ -94,7 +94,7 @@ public class UserIdentityAuthController extends BaseController {
             if (bl){
                 comUser.setRealName(identityAuthReq.getName());
                 comUser.setIdCard(identityAuthReq.getIdCard());
-                int i = userIdentityAuthService.sumbitAudit(request,comUser,identityAuthReq.getIdCardFrontName(),identityAuthReq.getIdCardBackName());
+                int i = userIdentityAuthService.sumbitAudit(request,comUser,identityAuthReq.getIdCardFrontName(),identityAuthReq.getIdCardBackName(), null);
                 if (i == 1){
                     identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
                     identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -129,7 +129,7 @@ public class UserIdentityAuthController extends BaseController {
         try {
             isUploadParam(uploadIdentityReq,comUser);
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            String fileName = userIdentityAuthService.uploadCertificateToOss(new ByteArrayInputStream(uploadIdentityReq.getBytes()),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
+            /*String fileName = userIdentityAuthService.uploadCertificateToOss(new ByteArrayInputStream(uploadIdentityReq.getBytes()),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
             if (StringUtils.isBlank(fileName)) {
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
                 uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
@@ -138,7 +138,7 @@ public class UserIdentityAuthController extends BaseController {
                 uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
                 uploadIdentityRes.setImageName(fileName);
                 uploadIdentityRes.setImagePath(savepath + fileName);
-            }
+            }*/
         } catch (Exception e) {
             uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
             uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);

@@ -8,10 +8,10 @@ import com.masiis.shop.api.bean.user.MarketProItem;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.product.ProductService;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.shop.IndexShowService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
@@ -49,7 +49,7 @@ public class MarketController extends BaseController {
     @RequestMapping("/index")
     @ResponseBody
     @SignValid(paramType = MarketIndexReq.class)
-    public MarketIndexRes toMarket(HttpServletRequest request, MarketIndexReq req, ComUser user){
+    public MarketIndexRes toMarket(HttpServletRequest request, MarketIndexReq req, ComUser user) throws Exception {
         MarketIndexRes res = new MarketIndexRes();
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
@@ -73,8 +73,8 @@ public class MarketController extends BaseController {
             //重新封装商品图片地址
             m.setImgUrl(url);
             //确定代理权限，显示优惠区间
-            m.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
-            m.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
+//            m.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
+//            m.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
             m.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
             PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
             if (pfUserSku !=null){

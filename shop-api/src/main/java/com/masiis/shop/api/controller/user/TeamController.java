@@ -5,9 +5,8 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
-import com.masiis.shop.api.service.user.ComUserAccountService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.TeamService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.api.service.TeamService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import org.springframework.stereotype.Controller;
@@ -33,8 +32,6 @@ public class TeamController {
     private TeamService teamService;
     @Resource
     private ComUserAccountService comUserAccountService;
-    @Resource
-    private ComUserService comUserService;
 
     @RequestMapping("/teamList")
     @ResponseBody

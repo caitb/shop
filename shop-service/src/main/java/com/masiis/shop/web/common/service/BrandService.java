@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.product;
+package com.masiis.shop.web.common.service;
 
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.po.ComBrand;

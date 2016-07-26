@@ -7,24 +7,26 @@ import com.masiis.shop.api.bean.user.PopularizeReq;
 import com.masiis.shop.api.bean.user.PopularizeRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
-import com.masiis.shop.api.service.product.BrandService;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.product.SpuService;
-import com.masiis.shop.api.service.qrcode.WeiXinQRCodeService;
-import com.masiis.shop.api.service.user.*;
+import com.masiis.shop.web.common.service.BrandService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.SpuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
 import com.masiis.shop.api.utils.image.DownloadImage;
 import com.masiis.shop.api.utils.image.DrawImageUtil;
 import com.masiis.shop.api.utils.image.Element;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.user.AgentLevelService;
+import com.masiis.shop.web.platform.service.user.CertificateService;
+import com.masiis.shop.web.platform.service.user.SkuExtensionService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -59,12 +61,9 @@ public class DevelopController {
     @Resource
     private CertificateService certificateService;
     @Resource
-    private WeiXinQRCodeService weiXinQRCodeService;
+    private WeiXinPFQRCodeService weiXinPFQRCodeService;
     @Resource
     private SkuExtensionService skuExtensionService;
-
-    @Resource
-    private ComUserService comUserService;
 
     @RequestMapping("/listAgentSku")
     @ResponseBody
@@ -73,7 +72,7 @@ public class DevelopController {
         AgentSkuRes agentSkuRes = new AgentSkuRes();
 
         try {
-            List<PfUserSku> userSkus = userSkuService.listByUserId(comUser.getId());
+           /* List<PfUserSku> userSkus = userSkuService.listByUserId(comUser.getId());
 
             for(PfUserSku userSku : userSkus){
                 ComSku comSku = skuService.getSkuById(userSku.getSkuId());
@@ -92,7 +91,7 @@ public class DevelopController {
                 agentSku.setDevelop(comAgentLevel.getId().intValue()==skuAgents.size() ? false:true);
 
                 agentSkuRes.getAgentSkus().add(agentSku);
-            }
+            }*/
 
         } catch (Exception e) {
             log.error("获取用户代理产品失败![bbs="+bbq+"][comUser="+comUser+"]");
@@ -129,7 +128,7 @@ public class DevelopController {
                 posterDir.mkdirs();
             }
             DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-            DownloadImage.download(weiXinQRCodeService.createAgentQRCode(userSku.getSkuId()), qrcodeName, posterDirPath);
+            DownloadImage.download(weiXinPFQRCodeService.createAgentQRCode(comUser.getId(), userSku.getSkuId(), "")[1], qrcodeName, posterDirPath);
             OSSObjectUtils.downloadFile("static/user/background_poster/"+skuExtension.getPoster(), posterDirPath+"/"+bgPoster);
 
             //画图

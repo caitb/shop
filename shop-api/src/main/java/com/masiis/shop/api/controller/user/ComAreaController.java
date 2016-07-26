@@ -8,7 +8,7 @@ import com.masiis.shop.api.bean.user.ComUserAddressReq;
 import com.masiis.shop.api.bean.user.Province;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
-import com.masiis.shop.api.service.user.ComAreaService;
+import com.masiis.shop.web.common.service.ComAreaService;
 import com.masiis.shop.dao.po.ComArea;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,9 +94,9 @@ public class ComAreaController {
     @ResponseBody
     @SignValid(paramType = ComAreaReq.class)
     public ComAreaRes generateComAreaJson(HttpServletRequest request,ComAreaReq comAreaReq){
-        List<Province> allComAreas = comAreaService.generateComAreaJson();
+        /*List<Province> allComAreas = comAreaService.generateComAreaJson();
         String json = JSONObject.toJSONString(allComAreas);
-        System.out.println(json);
+        System.out.println(json);*/
         return null;
     }
 }

@@ -5,14 +5,14 @@ import com.masiis.shop.api.bean.order.BAgentOrderAddRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderAddService;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.PfUserRelationService;
-import com.masiis.shop.api.service.user.UserAddressService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.order.BOrderAddService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.common.service.UserAddressService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
@@ -42,7 +42,7 @@ public class AgentBOrderController extends BaseController {
     @Resource
     private SkuService skuService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
     @Resource
     private BOrderService bOrderService;
     @Resource

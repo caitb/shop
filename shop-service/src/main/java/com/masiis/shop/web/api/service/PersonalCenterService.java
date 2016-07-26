@@ -1,10 +1,11 @@
-package com.masiis.shop.api.service.user;
+package com.masiis.shop.web.api.service;
 
-import com.masiis.shop.api.constants.SysConstants;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
+import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.ComUserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

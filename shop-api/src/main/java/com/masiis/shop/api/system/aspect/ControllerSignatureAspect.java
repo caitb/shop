@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
-import com.masiis.shop.api.service.user.ComUserKeyboxService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.utils.ApplicationContextUtil;
+import com.masiis.shop.web.api.service.ComUserKeyboxService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.api.utils.ReflectUtils;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -19,7 +18,6 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,13 +25,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * 校验签名,校验token,绑定参数的aop
@@ -48,7 +44,7 @@ public class ControllerSignatureAspect implements Ordered {
     private final String DATA_NAME = "data";
 
     @Resource
-    private ComUserService userService;
+    private UserService userService;
     @Resource
     private ComUserKeyboxService keyboxService;
 

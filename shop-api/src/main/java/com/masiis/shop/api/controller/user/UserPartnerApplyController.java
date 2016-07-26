@@ -5,12 +5,12 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.PfUserRelationService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
@@ -48,12 +48,12 @@ public class UserPartnerApplyController extends BaseController {
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
 
     @RequestMapping("/canagent")
     @ResponseBody
     @SignValid(paramType = PartnerPreApplyReq.class)
-    public canApplyRes isAgent(HttpServletRequest request, canApplyReq req, ComUser user) {
+    public canApplyRes isAgent(HttpServletRequest request, canApplyReq req, ComUser user) throws Exception {
         Integer skuId = req.getSkuId();
         canApplyRes res = new canApplyRes();
         if (skuId == null) {
@@ -93,7 +93,7 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/toapply")
     @ResponseBody
     @SignValid(paramType = PartnerPreApplyReq.class)
-    public PartnerPreApplyRes toApply(HttpServletRequest request, PartnerPreApplyReq req, ComUser user) {
+    public PartnerPreApplyRes toApply(HttpServletRequest request, PartnerPreApplyReq req, ComUser user) throws Exception {
         PartnerPreApplyRes res = new PartnerPreApplyRes();
         Integer skuId = req.getSkuId();
         if (skuId == null) {
@@ -139,7 +139,7 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/register")
     @ResponseBody
     @SignValid(paramType = PartnerApplyRegisterReq.class)
-    public PartnerApplyRegisterRes partnerApplyRegister(HttpServletRequest request, PartnerApplyRegisterReq req, ComUser user) {
+    public PartnerApplyRegisterRes partnerApplyRegister(HttpServletRequest request, PartnerApplyRegisterReq req, ComUser user) throws Exception {
         PartnerApplyRegisterRes res = new PartnerApplyRegisterRes();
         Integer skuId = req.getSkuId();
         if (skuId == null || skuId < 0) {
@@ -228,7 +228,7 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/boconfirm")
     @ResponseBody
     @SignValid(paramType = ConfirmBOrderReq.class)
-    public ConfirmBOrderRes confirmBorder(HttpServletRequest request, ConfirmBOrderReq req, ComUser user){
+    public ConfirmBOrderRes confirmBorder(HttpServletRequest request, ConfirmBOrderReq req, ComUser user) throws Exception {
         ConfirmBOrderRes res = new ConfirmBOrderRes();
         Integer agentLevelId = req.getAgentLevelId();
         Integer sendType = user.getSendType();
@@ -317,7 +317,7 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/agentbind")
     @ResponseBody
     @SignValid(paramType = AgentBindReq.class)
-    public AgentBindRes agentBind(HttpServletRequest request, AgentBindReq req, ComUser user){
+    public AgentBindRes agentBind(HttpServletRequest request, AgentBindReq req, ComUser user) throws Exception {
         AgentBindRes res = new AgentBindRes();
         Integer skuId = req.getSkuId();
         String phoneNum = req.getPhoneNum();

@@ -6,7 +6,7 @@ import com.masiis.shop.api.bean.system.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.user.ComUserService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.api.utils.SpringRedisUtil;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.api.utils.TokenUtils;
@@ -42,7 +42,7 @@ public class LoginController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private ComUserService userService;
+    private UserService userService;
 
     @RequestMapping("/loginByWx")
     @ResponseBody
@@ -70,15 +70,15 @@ public class LoginController extends BaseController {
             }
 
             // 微信登录
-            ComUser user = userService.signWithCreateUserByWX(req);
+            /*ComUser user = userService.signWithCreateUserByWX(req);
             ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
             if(keybox == null){
                 keybox = userService.createKeyboxByUser(user);
-            }
+            }*/
             // 创建token
             String token = TokenUtils.generateToken();
             // 创建userKey
-            String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
+            /*String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
             keybox.setAppToken(token);
             keybox.setComUserId(user.getId());
             keybox.setUserKey(userKey);
@@ -87,15 +87,15 @@ public class LoginController extends BaseController {
                 userService.insertKeybox(keybox);
             } else {
                 userService.updateKeybox(keybox);
-            }
+            }*/
 
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             res.setToken(token);
-            res.setUserKey(userKey);
+            //res.setUserKey(userKey);
             res.setExpire(30);
             res.setExpireUnit("天");
-            res.setIsBind(user.getIsBinding());
+            //res.setIsBind(user.getIsBinding());
             res.setSign(SysSignUtils.toSignString(res, null));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -165,7 +165,7 @@ public class LoginController extends BaseController {
             // 生成token
             String token = TokenUtils.generateToken();
             // 保存token
-            ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
+            /*ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
             if(keybox == null){
                 keybox = userService.createKeyboxByUser(user);
             }
@@ -179,7 +179,7 @@ public class LoginController extends BaseController {
                 userService.insertKeybox(keybox);
             } else {
                 userService.updateKeybox(keybox);
-            }
+            }*/
             // 返回数据
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

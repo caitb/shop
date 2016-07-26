@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.PfCorder;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 49134 on 2016/3/3.
@@ -38,5 +39,12 @@ public interface PfCorderMapper {
      * @date 2016/3/21 16:01
      */
     List<PfCorder> queryTrialNoPayOrder(PfCorder pfCorder);
+
+    /**
+     * 待发货试用订单列表
+     * @param conditionMap
+     * @return
+     */
+    List<Map<String, Object>> selectDeliveryByCondition(Map<String, Object> conditionMap);
 
 }

@@ -406,4 +406,64 @@
         AND order_status = 0
     </select>
 
+    <select id="selectDeliveryByCondition" parameterType="Map" resultType="java.util.HashMap">
+        SELECT
+         co.id                id
+        ,co.order_code        orderCode
+        ,co.create_time       createTime
+        ,co.order_amount      orderAmount
+        ,co.product_amount    productAmount
+        ,co.bail_amount       bailAmount
+        ,co.receivable_amount receivableAmount
+        ,co.pay_amount        payAmount
+        ,co.recommen_amount   recommenAmount
+        ,co.order_status      orderStatus
+        ,co.order_type        orderType
+        ,co.send_type         sendType
+        ,co.pay_status        payStatus
+        ,co.ship_status       shipStatus
+        ,pu.real_name         puRealName
+        ,u.real_name          uRealName
+        ,bp.pay_type_id       payTypeId
+        FROM
+        pf_corder co
+        LEFT JOIN com_user pu ON pu.id = co.user_pid
+        LEFT JOIN com_user u ON u.id = co.user_id
+        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = co.id AND bp.is_enabled = 1
+        WHERE
+        co.order_status = 7
+        <![CDATA[
+                AND EXISTS(SELECT 0 FROM pf_corder a
+                INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND a.sku_id=c.sku_id
+                WHERE a.order_status=7 AND 1 <= c.stock AND co.id=a.id)
+                ]]>
+        <if test="orderCode != null">
+            AND co.order_code = #{orderCode}
+        </if>
+        <if test="beginTime != null">
+            <![CDATA[ AND co.create_time >= #{beginTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ AND co.create_time <= #{endTime} ]]>
+        </if>
+        <if test="orderType != null">
+            AND co.order_type = #{orderType}
+        </if>
+        <if test="orderStatus != null">
+            AND co.order_status = #{orderStatus}
+        </if>
+        <if test="payStatus != null">
+            AND co.pay_status = #{payStatus}
+        </if>
+        <if test="shipStatus != null">
+            AND co.ship_status = #{shipStatus}
+        </if>
+        <if test="isCounting != null">
+            AND co.is_counting = #{isCounting}
+        </if>
+        <if test="payTypeId != null">
+            AND bp.pay_type_id = #{payTypeId}
+        </if>
+    </select>
+
 </mapper>

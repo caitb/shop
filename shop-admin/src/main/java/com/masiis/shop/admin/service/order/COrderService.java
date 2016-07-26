@@ -164,4 +164,27 @@ public class COrderService extends BaseService {
         );
     }
 
+    /**
+     * 待发货试用订单列表
+     *
+     * @param pageNumber
+     * @param pageSize
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listDeliveryByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "bo.create_time desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String, Object>> orderMaps = pfCorderMapper.selectDeliveryByCondition(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(orderMaps);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", orderMaps);
+
+        return pageMap;
+    }
+
 }

@@ -648,9 +648,10 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean newPartnerJoin(String phone, String skuName){
-        content = new String[1];
-        content[0] = skuName;
-        return sendMethod(phone, SMSConstants.NEW_PARTNER_JOIN, content);
+//        content = new String[1];
+//        content[0] = skuName;
+//        return sendMethod(phone, SMSConstants.NEW_PARTNER_JOIN, content);
+        return true;
     }
 
     /**

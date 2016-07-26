@@ -323,8 +323,8 @@ public class BOrderPayEndMessageService {
                 logger.info("合伙人订单没有推荐人发送短信失败");
             }
         }
-        //给这个人的团队所有成员发短信微信
-        logger.info("给这个人的团队所有成员发短信微信----start");
+        //给这个人的团队所有成员发微信
+        logger.info("给这个人的团队所有成员发微信----start");
         for (PfBorderItem orderItem : pfBorderItems){
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
             if (pfUserSku!=null){
@@ -332,13 +332,6 @@ public class BOrderPayEndMessageService {
                 for (PfUserSku teamUserSku:userSkus) {
                     ComUser teamComUser = comUserMapper.selectByPrimaryKey(teamUserSku.getUserId());
                     if (teamComUser!=null){
-                        //发短信
-                        logger.info("商品名称---------"+orderItem.getSkuName()+"-----orderItem的id----"+orderItem.getId());
-                        if (MobileMessageUtil.getInitialization("B").newPartnerJoin(teamComUser.getMobile(),orderItem.getSkuName())){
-                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getWxNkName()+"------success");
-                        }else {
-                            logger.info("新合伙人加入----发短信通知----"+teamComUser.getWxNkName()+"------fail");
-                        }
                         //发微信
                         String[] bossTeamParam = new String[4];
                         bossTeamParam[0]=pfBorderItems.get(0).getSkuName();
@@ -362,8 +355,8 @@ public class BOrderPayEndMessageService {
                 logger.info("查询这个人代理的商品不存在");
             }
         }
-        logger.info("给这个人的团队所有成员发短信微信-------end");
-        logger.info("合伙人订单发送短信-----end");
+        logger.info("给这个人的团队所有成员微信-------end");
+        logger.info("合伙人订单发送短信微信-----end");
     }
     /**
      * 补货发送短信

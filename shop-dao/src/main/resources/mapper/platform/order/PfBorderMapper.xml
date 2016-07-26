@@ -654,30 +654,67 @@
     <!-- 代发货订单列表 -->
     <select id="selectDeliveryByCondition" parameterType="Map" resultType="java.util.HashMap">
         SELECT
-                bo.id
-               ,bo.order_code
-               ,bo.create_time
-               ,bo.order_amount
-               ,bo.bail_amount
-               ,bo.receivable_amount
-               ,bo.pay_amount
-               ,bo.recommen_amount
-               ,bo.order_status
-               ,bo.order_type
-               ,bo.pay_status
-               ,bo.ship_status
-               ,bo.is_counting
-               ,pu.real_name
-               ,ru.real_name
-               ,u.real_name
-               ,bp.pay_type_id
+                bo.id                id
+               ,bo.order_code        orderCode
+               ,bo.create_time       createTime
+               ,bo.order_amount      orderAmount
+               ,bo.product_amount    productAmount
+               ,bo.bail_amount       bailAmount
+               ,bo.receivable_amount receivableAmount
+               ,bo.pay_amount        payAmount
+               ,bo.recommen_amount   recommenAmount
+               ,bo.order_status      orderStatus
+               ,bo.order_type        orderType
+               ,bo.send_type         sendType
+               ,bo.pay_status        payStatus
+               ,bo.ship_status       shipStatus
+               ,bo.is_counting       isCounting
+               ,pu.real_name         puRealName
+               ,ru.real_name         ruRealName
+               ,u.real_name          uRealName
+               ,bp.pay_type_id       payTypeId
         FROM
                pf_border bo
         LEFT JOIN com_user pu ON pu.id = bo.user_pid
         LEFT JOIN pf_border_recommen_reward brr ON brr.pf_border_id = bo.id
         LEFT JOIN com_user ru ON ru.id = brr.recommen_user_id
         LEFT JOIN com_user u ON u.id = bo.user_id
-        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = bo.id
+        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = bo.id AND bp.is_enabled = 1
+        WHERE
+              bo.order_status = 7
+        <![CDATA[
+                AND EXISTS(SELECT 0 FROM pf_border a
+                INNER JOIN pf_border_item b ON a.id=b.pf_border_id
+                INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND b.sku_id=c.sku_id
+                WHERE a.order_status=7 AND b.quantity <= c.stock AND bo.id=a.id)
+                ]]>
+        <if test="orderCode != null">
+            AND bo.order_code = #{orderCode}
+        </if>
+        <if test="beginTime != null">
+            <![CDATA[ AND bo.create_time >= #{beginTime} ]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ AND bo.create_time <= #{endTime} ]]>
+        </if>
+        <if test="orderType != null">
+            AND bo.order_type = #{orderType}
+        </if>
+        <if test="orderStatus != null">
+            AND bo.order_status = #{orderStatus}
+        </if>
+        <if test="payStatus != null">
+            AND bo.pay_status = #{payStatus}
+        </if>
+        <if test="shipStatus != null">
+            AND bo.ship_status = #{shipStatus}
+        </if>
+        <if test="isCounting != null">
+            AND bo.is_counting = #{isCounting}
+        </if>
+        <if test="payTypeId != null">
+            AND bp.pay_type_id = #{payTypeId}
+        </if>
     </select>
     
     <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">

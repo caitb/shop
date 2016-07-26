@@ -78,7 +78,7 @@
                     <%--<h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorderps8 !=0}"><span></span></c:if></h1>--%>
                     <%--<h1>下级待收货</h1></a>--%>
                 <%--</li>--%>
-                <li><a href="<%=path%>/borderManage/deliveryDouckBorder">
+                <li style="padding: 28px 0;"><a href="<%=path%>/borderManage/deliveryDouckBorder">
                     <h1>查看全部》</h1></a>
                 </li>
                 <li style="background:#f6f6f6"></li>

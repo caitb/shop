@@ -6,11 +6,10 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.shop.IndexShowService;
-import com.masiis.shop.api.service.user.ComUserAccountService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.system.IndexShowService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -39,8 +38,6 @@ public class IndexController extends BaseController {
     private IndexShowService indexShowService;
     @Resource
     private ComUserAccountService comUserAccountService;
-    @Resource
-    private ComUserService userService;
     @Resource
     private UserSkuService userSkuService;
     @Resource

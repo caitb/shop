@@ -5,7 +5,7 @@ import com.masiis.shop.api.bean.user.ComUserAddressRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.user.UserAddressService;
+import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import org.springframework.stereotype.Controller;

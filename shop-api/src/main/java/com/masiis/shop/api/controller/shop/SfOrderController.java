@@ -6,11 +6,11 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.shop.SfOrderService;
-import com.masiis.shop.api.service.shop.SfOrderShopService;
-import com.masiis.shop.api.service.system.ComDictionaryService;
-import com.masiis.shop.api.service.user.ComShipManService;
-import com.masiis.shop.api.service.user.ComUserService;
+import com.masiis.shop.web.mall.service.order.SfOrderService;
+import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.order.ComShipManService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
@@ -48,7 +48,7 @@ public class SfOrderController extends BaseController {
     @Resource
     private ComDictionaryService comDictionaryService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
     @Resource
     private ComShipManService comShipManService;
 

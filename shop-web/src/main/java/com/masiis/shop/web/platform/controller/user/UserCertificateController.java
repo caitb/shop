@@ -217,7 +217,7 @@ public class UserCertificateController extends BaseController {
      */
     @RequestMapping(value = "/userList/{userId}")
     public ModelAndView userCertificate(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable("userId") Integer userId) throws Exception {
+                                        @PathVariable("userId") Long userId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/certificateList");
         List<CertificateInfo> pfUserCertificates = userCertificateService.CertificateByUser(userId);
         mav.addObject("pfUserCertificates", pfUserCertificates);

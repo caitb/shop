@@ -5,13 +5,13 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.order.PfSupplierBankService;
-import com.masiis.shop.api.service.product.PfUserSkuStockService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.system.ComDictionaryService;
-import com.masiis.shop.api.service.user.ComShipManService;
-import com.masiis.shop.api.service.user.ComUserService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.order.PfSupplierBankService;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.order.ComShipManService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
@@ -45,7 +45,7 @@ public class BOrderManagementController extends BaseController {
     @Resource
     private ComShipManService comShipManService;
     @Resource
-    private ComUserService comUserService;
+    private UserService userService;
     @Resource
     private ComDictionaryService comDictionaryService;
     @Resource
@@ -508,7 +508,7 @@ public class BOrderManagementController extends BaseController {
         try{
             String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             PfBorder pfBorder = bOrderService.getPfBorderById(id);
-            ComUser user = comUserService.getUserById(pfBorder.getUserId());
+            ComUser user = userService.getUserById(pfBorder.getUserId());
             List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
             for (PfBorderItem pfBorderItem : pfBorderItems) {
                 ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());

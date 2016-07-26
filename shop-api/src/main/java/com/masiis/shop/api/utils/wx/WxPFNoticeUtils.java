@@ -1,8 +1,8 @@
 package com.masiis.shop.api.utils.wx;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.service.user.WxUserService;
-import com.masiis.shop.api.utils.ApplicationContextUtil;
+import com.masiis.shop.web.common.service.WxUserService;
+import com.masiis.shop.web.common.utils.ApplicationContextUtil;
 import com.masiis.shop.common.beans.wx.notice.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;

@@ -5,10 +5,10 @@ import com.masiis.shop.api.bean.user.UserCertificateRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.UserCertificateService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.po.ComSku;
@@ -41,7 +41,7 @@ public class UserCertificateController extends BaseController {
     @Resource
     private UserSkuService userSkuService;
     @Resource
-    private ComUserService comUserService;
+    private UserService userService;
 
 
 
@@ -107,7 +107,7 @@ public class UserCertificateController extends BaseController {
         UserCertificateRes userCertificateRes = new UserCertificateRes();
         try {
             PfUserSku pfUserSku = userSkuService.getUserSkuById(req.getId().intValue());
-            ComUser userInfo = comUserService.getUserById(pfUserSku.getUserId());
+            ComUser userInfo = userService.getUserById(pfUserSku.getUserId());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String sDate = sdf.format(userInfo.getCreateTime());
             ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());

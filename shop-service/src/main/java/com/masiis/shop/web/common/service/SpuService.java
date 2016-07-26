@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.product;
+package com.masiis.shop.web.common.service;
 
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.po.ComSpu;

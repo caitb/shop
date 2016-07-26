@@ -8,12 +8,12 @@ import com.masiis.shop.api.bean.user.MarketProItem;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.order.BOrderService;
-import com.masiis.shop.api.service.product.ProductService;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.shop.IndexShowService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.system.IndexShowService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.system.IndexComSku;
@@ -54,7 +54,7 @@ public class ProductController extends BaseController {
     @RequestMapping("/alist")
     @ResponseBody
     @SignValid(paramType = ProAllListReq.class)
-    public ProAllListRes toAllPros(HttpServletRequest request, ProAllListReq req, ComUser user){
+    public ProAllListRes toAllPros(HttpServletRequest request, ProAllListReq req, ComUser user) throws Exception {
         ProAllListRes res = new ProAllListRes();
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
@@ -78,8 +78,8 @@ public class ProductController extends BaseController {
             //重新封装商品图片地址
             m.setImgUrl(url);
             //确定代理权限，显示优惠区间
-            m.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
-            m.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
+//            m.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
+//            m.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
             m.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
             PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
             if (pfUserSku !=null){
@@ -157,8 +157,8 @@ public class ProductController extends BaseController {
     public ModelAndView getProHtml(HttpServletRequest request, ProDetailReq req){
         ModelAndView mav = new ModelAndView("product/product");
         try {
-            Product product = productService.getSkuHtml(req.getSkuId());
-            mav.addObject("productDetails", product);
+//            Product product = productService.getSkuHtml(req.getSkuId());
+//            mav.addObject("productDetails", product);
         } catch (Exception e){
             mav.addObject("message", e.getMessage());
         }

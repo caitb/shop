@@ -8,10 +8,10 @@ import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.api.service.product.SkuAgentService;
-import com.masiis.shop.api.service.product.SkuService;
-import com.masiis.shop.api.service.user.ComUserService;
-import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.api.utils.SpringRedisUtil;
 import com.masiis.shop.api.utils.ValidCodeUtils;
 import com.masiis.shop.common.constant.SMSConstants;
@@ -47,14 +47,14 @@ public class PhoneController extends BaseController {
     @Resource
     private UserSkuService userSkuService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
     @Resource
     private SkuAgentService skuAgentService;
 
     @RequestMapping("/parentcheck")
     @ResponseBody
     @SignValid(paramType = CheckPUserPhoneReq.class)
-    public CheckPUserPhoneRes checkPPhone(HttpServletRequest request, CheckPUserPhoneReq req, ComUser user){
+    public CheckPUserPhoneRes checkPPhone(HttpServletRequest request, CheckPUserPhoneReq req, ComUser user) throws Exception {
         CheckPUserPhoneRes res = new CheckPUserPhoneRes();
         Integer skuId = req.getSkuId();
         String phoneNum = req.getPhoneNum();

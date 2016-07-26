@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.user;
+package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.PfUserCertificate;

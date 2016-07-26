@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.user;
+package com.masiis.shop.web.api.service;
 
 import com.masiis.shop.dao.platform.user.ComUserKeyboxMapper;
 import com.masiis.shop.dao.po.ComUserKeybox;

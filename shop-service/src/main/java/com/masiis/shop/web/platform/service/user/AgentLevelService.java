@@ -1,4 +1,4 @@
-package com.masiis.shop.api.service.user;
+package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;

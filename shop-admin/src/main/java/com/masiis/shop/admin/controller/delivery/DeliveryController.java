@@ -2,9 +2,13 @@ package com.masiis.shop.admin.controller.delivery;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.order.OrderService;
 import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
+import com.masiis.shop.common.enums.platform.BOrderShipStatus;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.dao.po.ComDictionary;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,8 @@ public class DeliveryController {
     private DictionaryService dictionaryService;
     @Resource
     private OrderService orderService;
+    @Resource
+    private BOrderService bOrderService;
 
     /**
      * 店铺代发货订单页面
@@ -113,6 +119,102 @@ public class DeliveryController {
             conditionMap.put("orderCode", orderCode);
 
             Map<String, Object> pageMap = orderService.listDeliveryByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+
+            return pageMap;
+        } catch (Exception e) {
+            log.error("获取店铺订单列表失败![conditionMap="+conditionMap+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
+
+    /**
+     * 合伙订单发货页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("/bOrderList.shtml")
+    public String bOrderList(Model model){
+
+        try {
+            List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
+            model.addAttribute("payTypes", payTypeList);
+            model.addAttribute("bOrderTypes", BOrderType.values());
+            model.addAttribute("bOrderStatuses", BOrderStatus.values());
+            model.addAttribute("bOrderShipStatuses", BOrderShipStatus.values());
+        } catch (Exception e) {
+            log.error("获取支付方式失败!"+e);
+            e.printStackTrace();
+        }
+
+        return "delivery/bOrderList";
+    }
+
+    /**
+     * 合伙订单列表
+     * @param request
+     * @param response
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param beginTime
+     * @param endTime
+     * @param sortOrder
+     * @param orderCode
+     * @param orderStatus
+     * @param payStatus
+     * @param shipStatus
+     * @param isCounting
+     * @return
+     */
+    @RequestMapping("/bOrderList.do")
+    @ResponseBody
+    public Object bOrderList(HttpServletRequest request, HttpServletResponse response,
+                            Integer pageNumber,
+                            Integer pageSize,
+                            String sortName,
+                            String sortOrder,
+                            String beginTime,
+                            String endTime,
+                            String orderCode,
+                            Integer orderType,
+                            Integer orderStatus,
+                            Integer payStatus,
+                            Integer  shipStatus,
+                            Integer isCounting
+    ){
+
+        Map<String, Object> conditionMap = new HashMap<>();
+        try {
+            if(StringUtils.isNotBlank(orderCode)){
+                conditionMap.put("orderCode", orderCode);
+            }
+            if(orderType != null){
+                conditionMap.put("orderType", orderType);
+            }
+            if (shipStatus!=null){
+                conditionMap.put("shipStatus",shipStatus);
+            }
+            if (orderStatus!=null){
+                conditionMap.put("orderStatus",orderStatus);
+            }
+            if (payStatus!=null){
+                conditionMap.put("payStatus",payStatus);
+            }
+            if (!StringUtils.isEmpty(beginTime)){
+                conditionMap.put("beginTime",beginTime);
+            }
+            if (!StringUtils.isEmpty(endTime)){
+                conditionMap.put("endTime",endTime);
+            }
+            if (isCounting!=null){
+                conditionMap.put("isCounting",isCounting);
+            }
+            conditionMap.put("orderCode", orderCode);
+
+            Map<String, Object> pageMap = bOrderService.listDeliveryByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
 
             return pageMap;
         } catch (Exception e) {

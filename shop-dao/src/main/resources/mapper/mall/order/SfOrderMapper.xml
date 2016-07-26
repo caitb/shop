@@ -363,7 +363,7 @@
                 AND NOT EXISTS(SELECT 0 FROM sf_order a
                 INNER JOIN sf_order_item b ON a.id=b.sf_order_id
                 INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND b.sku_id=c.sku_id
-                WHERE a.order_status=7 AND b.quantity <= c.stock AND o.id=a.id)
+                WHERE a.order_status=7 AND b.quantity > c.stock AND o.id=a.id)
                 ]]>
         <if test="orderCode != null">
             AND o.order_code = #{orderCode}

@@ -62,20 +62,153 @@
                 </c:if>
 
                 <h2>选择合伙人套餐：</h2>
+                <%--<div class="dengji">--%>
+                    <%--<c:forEach items="${agentSkuViews}" var="view">--%>
+                        <%--<c:if test="${view.agent.agentLevelId >= pUserLevelId--%>
+                        <%--&& view.isShow==1--%>
+                        <%--&& (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">--%>
+                            <%--<p levelId="${view.agent.agentLevelId}"--%>
+                               <%--agentFee="${view.agentFee}"--%>
+                               <%--agentBailFee="${view.agent.bail}">--%>
+                                <%--<span>${view.agentFee}元套餐</span>--%>
+                                <%--<span>保证金：${view.agent.bail}元</span>--%>
+                                <%--<span>包含商品：${view.agent.quantity}件</span>--%>
+                            <%--</p>--%>
+                        <%--</c:if>--%>
+                    <%--</c:forEach>--%>
+                <%--</div>--%>
                 <div class="dengji">
-                    <c:forEach items="${agentSkuViews}" var="view">
-                        <c:if test="${view.agent.agentLevelId >= pUserLevelId
-                        && view.isShow==1
-                        && (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">
-                            <p levelId="${view.agent.agentLevelId}"
-                               agentFee="${view.agentFee}"
-                               agentBailFee="${view.agent.bail}">
-                                <span>${view.agentFee}元套餐</span>
-                                <span>保证金：${view.agent.bail}元</span>
-                                <span>包含商品：${view.agent.quantity}件</span>
-                            </p>
-                        </c:if>
-                    </c:forEach>
+                    <div class="floor">
+                        <h1>100万套餐</h1>
+                        <p>
+                            <span>等级：</span>
+                            <span>boss</span>
+                        </p>
+                        <p>
+                            <span>单价：</span>
+                            <span>123</span>
+                        </p>
+                        <p>
+                            <span>数量：</span>
+                            <span>123444</span>
+                        </p>
+                        <p>
+                            <span>总价：</span>
+                            <span>1000000</span>
+                        </p>
+                        <p>
+                            <span>保证金：</span>
+                            <span>0</span>
+                        </p>
+                        <h2>
+
+                        </h2>
+                    </div>
+
+                    <div class="floor">
+                        <h1>100万套餐</h1>
+                        <p>
+                            <span>等级：</span>
+                            <span>boss</span>
+                        </p>
+                        <p>
+                            <span>单价：</span>
+                            <span>123</span>
+                        </p>
+                        <p>
+                            <span>数量：</span>
+                            <span>123444</span>
+                        </p>
+                        <p>
+                            <span>总价：</span>
+                            <span>1000000</span>
+                        </p>
+                        <p>
+                            <span>保证金：</span>
+                            <span>0</span>
+                        </p>
+                        <h2>
+
+                        </h2>
+                    </div>
+                    <div class="floor">
+                        <h1>100万套餐</h1>
+                        <p>
+                            <span>等级：</span>
+                            <span>boss</span>
+                        </p>
+                        <p>
+                            <span>单价：</span>
+                            <span>123</span>
+                        </p>
+                        <p>
+                            <span>数量：</span>
+                            <span>123444</span>
+                        </p>
+                        <p>
+                            <span>总价：</span>
+                            <span>1000000</span>
+                        </p>
+                        <p>
+                            <span>保证金：</span>
+                            <span>0</span>
+                        </p>
+                        <h2>
+
+                        </h2>
+                    </div>
+                    <div class="floor">
+                        <h1>100万套餐</h1>
+                        <p>
+                            <span>等级：</span>
+                            <span>boss</span>
+                        </p>
+                        <p>
+                            <span>单价：</span>
+                            <span>123</span>
+                        </p>
+                        <p>
+                            <span>数量：</span>
+                            <span>123444</span>
+                        </p>
+                        <p>
+                            <span>总价：</span>
+                            <span>1000000</span>
+                        </p>
+                        <p>
+                            <span>保证金：</span>
+                            <span>0</span>
+                        </p>
+                        <h2>
+
+                        </h2>
+                    </div>
+                    <div class="floor">
+                        <h1>100万套餐</h1>
+                        <p>
+                            <span>等级：</span>
+                            <span>boss</span>
+                        </p>
+                        <p>
+                            <span>单价：</span>
+                            <span>123</span>
+                        </p>
+                        <p>
+                            <span>数量：</span>
+                            <span>123444</span>
+                        </p>
+                        <p>
+                            <span>总价：</span>
+                            <span>1000000</span>
+                        </p>
+                        <p>
+                            <span>保证金：</span>
+                            <span>0</span>
+                        </p>
+                        <h2>
+
+                        </h2>
+                    </div>
                 </div>
             </section>
             <section class="sec3">

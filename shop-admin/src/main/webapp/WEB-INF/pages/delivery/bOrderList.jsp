@@ -606,6 +606,7 @@
                         events: {
                             'click .delivery': function(e, value, row, index){
                                 $('#bOrderId').val(row.id);
+                                $('#freight').val('');
                                 $('#modal-delivery').modal('show');
                             }
                         }

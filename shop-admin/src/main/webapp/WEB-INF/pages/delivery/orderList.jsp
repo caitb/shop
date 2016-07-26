@@ -148,7 +148,7 @@
                         </div>
 
 
-                        <div id="modal-audit" class="modal fade" tabindex="-1">
+                        <div id="modal-delivery" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -156,7 +156,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            提现申请审核
+                                            发货信息
                                         </div>
                                     </div>
 
@@ -166,93 +166,33 @@
                                                 <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
                                                     <!-- #section:pages/profile.info -->
-                                                    <div class="profile-user-info profile-user-info-striped">
+                                                    <form id="deliveryForm">
+                                                        <div class="profile-user-info profile-user-info-striped">
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请时间 </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 快递名称 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="applyTime"> </span>
+                                                                <div class="profile-info-value">
+                                                                    <input type="hidden" name="id" id="bOrderId" value="" />
+                                                                    <input type="hidden" id="shipManName" name="shipManName" value="" />
+                                                                    <select class="form-control" id="shipName" name="shipManId">
+                                                                        <c:forEach items="${comShipManList}" var="shipMan">
+                                                                            <option value="${shipMan.id}">${shipMan.name}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请人 </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 快递单号 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <span class="editable editable-click" id="realName"> </span>
+                                                                <div class="profile-info-value">
+                                                                    <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
+                                                                </div>
                                                             </div>
+
                                                         </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请金额 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractFee"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 账户余额 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractableFee"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 提现方式 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractWay"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 银行卡号 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="bankCard"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 银行名称 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="bankName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 开户行名称 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="depositBankName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 持卡人姓名 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="cardOwnerName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row" id="auditReason">
-                                                            <div class="profile-info-name" id="jjT"> 审核记录 </div>
-
-                                                            <div class="profile-info-value" id="jjF">
-                                                                <form id="auditForm">
-                                                                    <input type="hidden" name="id" id="applyId" value="" />
-                                                                    <input type="hidden" name="auditType" id="auditType" value="2" />
-                                                                    <textarea name="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
+                                                    </form>
 
                                                 </div>
                                             </div>
@@ -262,11 +202,11 @@
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-4">
                                             <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="1">
-                                                拒绝
+                                            <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+                                                取消
                                             </button>
-                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
-                                                通过
+                                            <button class="btn btn-sm btn-info pull-left ok" id="submitDeliveryForm">
+                                                确认
                                             </button>
                                         </div>
                                     </div>
@@ -592,58 +532,15 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.sfOrder && row.sfOrder.orderStatus == 3 && new Date().getDate()-new Date(row.sfOrder.receiptTime).getDate()>7){
-                                arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
+                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1){
+                                return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
-                            return arr.join('');
                         },
                         events: {
-                            'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('order-detail-'+row.sfOrder.id, '店铺订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
-                            },
-                            'click .tuihuo': function(e, value, row, index){
-                                bootbox.confirm("您确定要退货吗?", function(result) {
-                                    if(result) {
-                                        // 退货
-                                        var options = {
-                                            url: '<%=basePath%>order/order/sfOrderRefund.do',
-                                            type: 'POST',
-                                            data: {orderId : row.sfOrder.id},
-                                            dataType: "json",
-                                            success: function(msg){
-                                                if(msg.resCode == "0"){
-                                                    $.gritter.add({
-                                                        title: '操作提示',
-                                                        text: "订单退货成功",
-                                                        class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                                    });
-                                                    $('#table').bootstrapTable('refresh');
-                                                } else {
-                                                    var resText = "";
-                                                    if(msg.resMsg == "" || msg.resMsg == undefined){
-                                                        resText = "网络错误";
-                                                    } else {
-                                                        resText = msg.resMsg;
-                                                    }
-                                                    $.gritter.add({
-                                                        title: '操作提示',
-                                                        text: resText,
-                                                        class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                                    });
-                                                }
-                                            },
-                                            error:function(){
-                                                $.gritter.add({
-                                                    title: '操作提示',
-                                                    text: "网络错误",
-                                                    class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                                });
-                                            }
-                                        };
-                                        $.ajax(options);
-                                    }
-                                });
+                            'click .delivery': function(e, value, row, index){
+                                $('#bOrderId').val(row.id);
+                                $('#freight').val('');
+                                $('#modal-delivery').modal('show');
                             }
                         }
                     }
@@ -827,41 +724,33 @@
         return undefined;
     }
 
-    $('#searchBtn').on('click', function(){
-
-    });
-
-    $('.audit').on('click', function(){
-        var auditType = $(this).attr('audit-status');
-        var auditCause = $('textarea[name="auditCause"]').val();
-
-        $('#auditType').val(auditType);
-        if(!auditCause){
+    $('#submitDeliveryForm').on('click', function(){
+        $('#shipManName').val($('#shipName option:selected').text());
+        if(!$('#freight').val()){
             $.gritter.add({
                 title: '温馨提示',
-                text: '请填写审核记录!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                text: '请填写运单号!',
+                class_name: 'gritter-error'
             });
-
-            return false;
+            return;
         }
 
         $.ajax({
-            url: '<%=basePath%>fundmanage/extract/audit.do',
+            url: '<%=basePath%>order/order/delivery.do',
             type: 'POST',
-            data: $('#auditForm').serialize(),
+            data: $('#submitDeliveryForm').serialize(),
             success: function(msg){
-                if('success' == msg){
-                    $('#modal-audit').modal('hide');
+                if(msg == 'success'){
+                    $('#table').bootstrapTable('refresh');
+                }else{
+                    $.gritter.add({
+                        title: '温馨提示',
+                        text: '发货出异常!',
+                        class_name: 'gritter-error'
+                    });
                 }
-                $.gritter.add({
-                    title: '消息',
-                    text: msg,
-                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                });
-                $('#table').bootstrapTable('refresh');
             }
-        })
+        });
     });
 
 

@@ -89,7 +89,7 @@ public class UpgradeMobileMessageService {
                             upgradeDetail.getCurrentAgentLevelName(),
                             comUser.getRealName(),
                             upgradeDetail.getApplyAgentLevelName(),
-                            pfBorderRecommenReward.getRewardTotalPrice().toString()
+                            pfBorderRecommenReward.getRewardTotalPrice()
                     );
                     if (_bl){
                         log.info("给推荐人发短信(获得佣金)-----成功");

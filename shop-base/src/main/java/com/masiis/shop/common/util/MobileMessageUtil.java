@@ -465,7 +465,10 @@ public class MobileMessageUtil {
         content[1] = orginalLevel;
         content[2] = nickName;
         content[3] = upGradeLevel;
-        content[4] = numberFormat.format(income);
+        content[4] = "";
+        if (income.compareTo(new BigDecimal(0)) > 0){
+            content[4] = "您的收入为" + numberFormat.format(income) + "，";
+        }
         content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货。";
@@ -490,7 +493,10 @@ public class MobileMessageUtil {
         content[1] = orginalLevel;
         content[2] = nickName;
         content[3] = upGradeLevel;
-        content[4] = numberFormat.format(income);
+        content[4] = "";
+        if (income.compareTo(new BigDecimal(0)) > 0){
+            content[4] = "您的收入为" + numberFormat.format(income) + "，";
+        }
         content[5] = "";
         if (!haveStock){
             content[5] = "您的库存不足，请及时补货。";
@@ -508,13 +514,16 @@ public class MobileMessageUtil {
      * @param reward        奖励
      * @return
      */
-    public boolean refereeUpgradeRecommendRemind(String phone, String skuName, String orginalLevel, String nickName, String upGradeLevel, String reward){
+    public boolean refereeUpgradeRecommendRemind(String phone, String skuName, String orginalLevel, String nickName, String upGradeLevel, BigDecimal reward){
         content = new String[5];
         content[0] = skuName;
         content[1] = orginalLevel;
         content[2] = nickName;
         content[3] = upGradeLevel;
-        content[4] = reward;
+        content[4] = "";
+        if (reward.compareTo(new BigDecimal(0)) > 0){
+            content[4] = "您的收入为" + numberFormat.format(reward) + "，";
+        }
         return sendMethod(phone, SMSConstants.REFEREE_UPGRADE_RECOMMEND_COMMISSION_REMIND, content);
     }
 
@@ -577,7 +586,10 @@ public class MobileMessageUtil {
         content = new String[5];
         content[0] = skuName;
         content[1] = levelName;
-        content[2] = numberFormat.format(income);
+        content[2] = "";
+        if (income.compareTo(new BigDecimal(0)) > 0){
+            content[2] = "您的收入为" + numberFormat.format(income) + "，";
+        }
         content[3] = recommenNickName;
         content[4] = "";
         if (!haveStock){
@@ -595,12 +607,15 @@ public class MobileMessageUtil {
      * @param reward    奖励
      * @return
      */
-    public boolean recommendCommissionRemind(String phone, String nickName, String skuName, String levelName, String reward){
+    public boolean recommendCommissionRemind(String phone, String nickName, String skuName, String levelName, BigDecimal reward){
         content = new String[4];
         content[0] = nickName;
         content[1] = skuName;
         content[2] = levelName;
-        content[3] = reward;
+        content[3] = "";
+        if (reward.compareTo(new BigDecimal(0)) > 0){
+            content[3] = "您的收入为" + numberFormat.format(reward) + "，";
+        }
         return sendMethod(phone, SMSConstants.RECOMMEND_COMMISSION_REMIND, content);
     }
 
@@ -633,7 +648,10 @@ public class MobileMessageUtil {
         content = new String[4];
         content[0] = skuName;
         content[1] = levelName;
-        content[2] = numberFormat.format(income);
+        content[2] = "";
+        if (income.compareTo(new BigDecimal(0)) > 0){
+            content[2] = "您的收入为" + numberFormat.format(income) + "，";
+        }
         content[3] = "";
         if (!hasStock){
             content[3] = "您的库存不足，请及时补货。";
@@ -648,9 +666,10 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean newPartnerJoin(String phone, String skuName){
-        content = new String[1];
-        content[0] = skuName;
-        return sendMethod(phone, SMSConstants.NEW_PARTNER_JOIN, content);
+//        content = new String[1];
+//        content[0] = skuName;
+//        return sendMethod(phone, SMSConstants.NEW_PARTNER_JOIN, content);
+        return true;
     }
 
     /**
@@ -673,7 +692,12 @@ public class MobileMessageUtil {
         }
     }
 
-    public static void main(String[] args){
-        MobileMessageUtil.getInitialization("B").newPartnerJoin("18602496813","抗引力");
+    public static void main(String[] args) {
+//        MobileMessageUtil.getInitialization("B").lowerGroupUpRemind("18611333153", "抗引力", "一级代理", "MrWang", "二级代理", new BigDecimal(0), false);
+//        MobileMessageUtil.getInitialization("B").refereeUpgradeUpRemind("18611333153", "抗引力", "一级代理", "MrWang", "二级代理", new BigDecimal(0), false);
+//        MobileMessageUtil.getInitialization("B").refereeUpgradeRecommendRemind("18611333153", "抗引力", "一级代理", "MrWang", "二级代理", new BigDecimal(0));
+//        MobileMessageUtil.getInitialization("B").refereeLowerJoinUpNotice("18611333153", "抗引力", "一级代理", new BigDecimal(0), "MrWang", false);
+//        MobileMessageUtil.getInitialization("B").recommendCommissionRemind("18611333153", "MrWang", "抗引力", "一级代理", new BigDecimal(0));
+//        MobileMessageUtil.getInitialization("B").lowerJoinRemind("18611333153", "抗引力", "一级代理", new BigDecimal(0), false);
     }
 }

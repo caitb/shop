@@ -119,15 +119,15 @@ public class SMSConstants {
 	/**
 	 * 下级升级提醒（普通—升级）
 	 */
-	public static final String LOWER_UPGROUP_REMIND = "102946";
+	public static final String LOWER_UPGROUP_REMIND = "104182";
 	/**
 	 * 被推荐人升级，上级提醒（推荐关系—升级）
 	 */
-	public static final String REFEREE_UPGRADE_UP_REMIND = "101812";
+	public static final String REFEREE_UPGRADE_UP_REMIND = "104180";
 	/**
 	 * 被推荐人升级，推荐人佣金提醒（推荐关系—升级）
 	 */
-	public static final String REFEREE_UPGRADE_RECOMMEND_COMMISSION_REMIND = "101814";
+	public static final String REFEREE_UPGRADE_RECOMMEND_COMMISSION_REMIND = "104178";
 	/**
 	 * 被推荐人补货，上级提醒（推荐关系—补货）
 	 */
@@ -139,11 +139,11 @@ public class SMSConstants {
 	/**
 	 * 上级收到被推荐人的下级加入通知（推荐关系-合伙订单）
 	 */
-	public static final String REFEREE_LOWER_JOIN_UP_NOTICE = "102944";
+	public static final String REFEREE_LOWER_JOIN_UP_NOTICE = "104176";
 	/**
 	 * 推荐佣金提醒（推荐关系-合伙订单）
 	 */
-	public static final String RECOMMEND_COMMISSION_REMIND = "101822";
+	public static final String RECOMMEND_COMMISSION_REMIND = "104174";
 	/**
 	 * 下单后店主提醒（新增）
 	 */
@@ -151,7 +151,7 @@ public class SMSConstants {
 	/**
 	 * 下级合伙人加入提醒（普通-合伙）
 	 */
-	public static final String LOWER_JOIN_REMIND = "101809";
+	public static final String LOWER_JOIN_REMIND = "104185";
 	/**
 	 * 新合伙人加入
 	 */

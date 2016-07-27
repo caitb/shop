@@ -1,6 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -27,7 +26,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css" />
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
+    <link rel="stylesheet" href="<%=basePath%>/static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css" />
@@ -81,7 +80,7 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="orderCode">订单号：</label>
+                                                <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
@@ -93,12 +92,33 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
+                                            <%--<div class="form-group">--%>
+                                                <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
+                                            <%--</div>--%>
                                             <div class="form-group">
-                                                <label for="orderStatus">订单状态：</label>
+                                                <label for="orderType">订单类型</label>
+                                                <select id="orderType" name="orderType">
+                                                    <option value="" selected="selected">所有订单</option>
+                                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                                        <option value="${orderType.code}">${orderType.desc}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="payTypeId">支付方式</label>
+                                                <select id="payTypeId" name="payTypeId">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${payTypes}" var="payType">
+                                                        <option value="${payType.key}">${payType.value}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderStatus">订单状态</label>
                                                 <select id="orderStatus" name="orderStatus">
                                                     <option value="">全部</option>
-                                                    <c:forEach items="${orderStatusList}" var="os">
-                                                        <option value="${os.code}">${os.desc}</option>
+                                                    <c:forEach items="${bOrderStatuses}" var="orderStatus">
+                                                        <option value="${orderStatus.code}">${orderStatus.desc}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -111,11 +131,11 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="shipStatus">物流状态：</label>
+                                                <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
                                                     <option value="">全部</option>
-                                                    <c:forEach items="${wuliuList}" var="wl">
-                                                        <option value="${wl.key}">${wl.value}</option>
+                                                    <c:forEach items="${bOrderShipStatuses}" var="shipStatus">
+                                                        <option value="${shipStatus.code}">${shipStatus.desc}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -167,31 +187,31 @@
 
                                                     <!-- #section:pages/profile.info -->
                                                     <form id="deliveryForm">
-                                                        <div class="profile-user-info profile-user-info-striped">
+                                                    <div class="profile-user-info profile-user-info-striped">
 
-                                                            <div class="profile-info-row">
-                                                                <div class="profile-info-name"> 快递名称 </div>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 快递名称 </div>
 
-                                                                <div class="profile-info-value">
-                                                                    <input type="hidden" name="id" id="bOrderId" value="" />
-                                                                    <input type="hidden" id="shipManName" name="shipManName" value="" />
-                                                                    <select class="form-control" id="shipName" name="shipManId">
-                                                                        <c:forEach items="${comShipManList}" var="shipMan">
-                                                                            <option value="${shipMan.id}">${shipMan.name}</option>
-                                                                        </c:forEach>
-                                                                    </select>
-                                                                </div>
+                                                            <div class="profile-info-value">
+                                                                <input type="hidden" name="id" id="bOrderId" value="" />
+                                                                <input type="hidden" id="shipManName" name="shipManName" value="" />
+                                                                <select class="form-control" id="shipName" name="shipManId">
+                                                                    <c:forEach items="${comShipManList}" var="shipMan">
+                                                                        <option value="${shipMan.id}">${shipMan.name}</option>
+                                                                    </c:forEach>
+                                                                </select>
                                                             </div>
-
-                                                            <div class="profile-info-row">
-                                                                <div class="profile-info-name"> 快递单号 </div>
-
-                                                                <div class="profile-info-value">
-                                                                    <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
-                                                                </div>
-                                                            </div>
-
                                                         </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 快递单号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                     </form>
 
                                                 </div>
@@ -259,15 +279,13 @@
         elem: '#endTime'
     });
 </script>
-
 <script>
     var $table = $('#table'),
             $remove = $('#remove'),
             selections = [];
-
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>delivery/orderList.do',
+            url: '<%=basePath%>delivery/bOrderList.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
@@ -275,14 +293,20 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#shipStatus').val()){
-                    params.shipStatus = $('#shipStatus').val();
+                if($('#orderType').val()){
+                    params.orderType = $('#orderType').val();
                 }
                 if($('#orderStatus').val()){
                     params.orderStatus = $('#orderStatus').val();
                 }
                 if($('#payStatus').val()){
                     params.payStatus = $('#payStatus').val();
+                }
+                if($('#shipStatus').val()){
+                    params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#payTypeId').val()){
+                    params.payTypeId = $('#payTypeId').val();
                 }
                 if($('#beginTime').val()){
                     params.beginTime = $('#beginTime').val();
@@ -293,10 +317,8 @@
                 if($('#isCounting').val()){
                     params.isCounting = $('#isCounting').val();
                 }
-
                 return params;
             },
-
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -324,7 +346,7 @@
                     },
                     {
                         title: 'ID',
-                        field: 'id',
+                        field: 'bo.id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
@@ -336,7 +358,7 @@
                         }
                     },
                     {
-                        field: 'order_code',
+                        field: 'bo.order_code',
                         title: '订单号',
                         sortable: true,
                         //editable: true,
@@ -349,7 +371,7 @@
                         }
                     },
                     {
-                        field: 'create_time',
+                        field: 'bo.create_time',
                         title: '订单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -359,13 +381,24 @@
                         }
                     },
                     {
-                        field: 'consignee',
-                        title: '收货人',
+                        field: 'bo.user_pid',
+                        title: '上级合伙人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.consignee){
-                                return row.consignee;
+                            if(row && row.puRealName){
+                                return row.puRealName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'recommenUser',
+                        title: '推荐人',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.ruRealName){
+                                return row.ruRealName;
                             }
                         }
                     },
@@ -376,20 +409,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.bWxNkName){
-                                return row.bWxNkName;
-                            }
-                        }
-                    },
-                    {
-                        field: 'shop_user_id',
-                        title: '店铺所属人',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.suRealName){
-                                return row.suRealName;
+                            if(row && row.uRealName){
+                                return row.uRealName;
                             }
                         }
                     },
@@ -400,8 +421,20 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.productAmount){
+                            if(row){
                                 return row.productAmount;
+                            }
+                        }
+                    },
+                    {
+                        field: 'bail_amount',
+                        title: '保证金',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row){
+                                return row.bailAmount;
                             }
                         }
                     },
@@ -430,6 +463,19 @@
                         }
                     },
                     {
+                        field: 'recommen_amount',
+                        title: '推荐奖励金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.recommenAmount){
+                                return row.recommenAmount;
+                            }
+                            return "0.00";
+                        }
+                    },
+                    {
                         field: 'order_status',
                         title: '订单状态',
                         sortable: true,
@@ -437,7 +483,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.orderStatus == 0){
-                                return '未付款';
+                                return '未处理';
                             }
                             if(row && row.orderStatus == 1){
                                 return '已付款';
@@ -454,6 +500,9 @@
                             if(row && row.orderStatus == 5){
                                 return '已退款';
                             }
+                            if(row && row.orderStatus == 6){
+                                return '排单中';
+                            }
                             if(row && row.orderStatus == 7){
                                 return '待发货';
                             }
@@ -468,14 +517,31 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payTypeId == 0){
-                                return '微信支付';
+                            if(row){
+                                if(row.payTypeId == 0) return '微信支付';
+                                if(row.payTypeId == 1) return '线下支付';
+                                if(row.payTypeId == 2) return '支付宝支付';
                             }
-                            if(row.payTypeId == 1){
-                                return '线下支付';
+                        }
+                    },
+                    {
+                        field: 'order_type',
+                        title: '订单类型',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.orderType == 0){
+                                return '合伙人订单';
                             }
-                            if(row.payTypeId == 2){
-                                return '支付宝支付'
+                            if(row && row.orderType == 1){
+                                return '补货订单';
+                            }
+                            if(row && row.orderType == 2){
+                                return '拿货订单';
+                            }
+                            if(row && row.orderType == 3){
+                                return '升级订单';
                             }
                         }
                     },
@@ -510,6 +576,7 @@
                             if(row && row.shipStatus == 9){
                                 return '已收货';
                             }
+
                         }
                     },
                     {
@@ -532,7 +599,7 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1){
+                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1 && row.orderType != 1){
                                 return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
                         },
@@ -599,24 +666,42 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
-        //物流状态
-        if(res.wuliuList !=null){
-            var $select = $('#shipStatus');
-            $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
-            for(var i=0, len = res.wuliuList.length;i<len;i++){
-                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            //订单类型
+            if( res.orderTypeList !=null){
+                var $select = $('#orderType');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
+                for(var i=0, len = res.orderTypeList.length;i<len;i++)  {
+                    $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
+                }
             }
-        }
-        //订单状态
-        if(res.orderStatusList !=null){
-            var $select = $('#orderStatus');
-            $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
-            for(var i=0, len = res.orderStatusList.length;i<len;i++){
-                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            //支付方式
+            if(res.payTypeList !=null){
+                var $select = $('#payTypeId');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
+                for(var i=0, len = res.payTypeList.length;i<len;i++){
+                    $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
+                }
             }
-        }
+            //订单状态
+            if( res.orderStatusList !=null){
+                var $select = $('#orderStatus');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
+                for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                    $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+                }
+            }
+            //物流状态
+            if( res.wuliuList !=null){
+                var $select = $('#shipStatus');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
+                for(var i=0, len = res.wuliuList.length;i<len;i++){
+                    $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+                }
+            }
         return res;
     }
 
@@ -736,7 +821,7 @@
         }
 
         $.ajax({
-            url: '<%=basePath%>order/order/delivery.do',
+            url: '<%=basePath%>order/border/delivery.do',
             type: 'POST',
             data: $('#deliveryForm').serialize(),
             success: function(msg){

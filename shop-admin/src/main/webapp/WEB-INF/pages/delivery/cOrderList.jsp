@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -36,6 +35,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
     <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
+
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
     <![endif]-->
@@ -54,6 +54,7 @@
 </head>
 
 <body class="no-skin">
+
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -81,7 +82,7 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="orderCode">订单号：</label>
+                                                <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
@@ -93,12 +94,33 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
+                                            <%--<div class="form-group">--%>
+                                            <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
+                                            <%--</div>--%>
                                             <div class="form-group">
-                                                <label for="orderStatus">订单状态：</label>
+                                                <label for="orderType">订单类型</label>
+                                                <select id="orderType" name="orderType">
+                                                    <option value="" selected="selected">所有订单</option>
+                                                    <c:forEach items="${bOrderTypes}" var="orderType">
+                                                        <option value="${orderType.code}">${orderType.desc}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="payTypeId">支付方式</label>
+                                                <select id="payTypeId" name="payTypeId">
+                                                    <option value="">全部</option>
+                                                    <c:forEach items="${payTypes}" var="payType">
+                                                        <option value="${payType.key}">${payType.value}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderStatus">订单状态</label>
                                                 <select id="orderStatus" name="orderStatus">
                                                     <option value="">全部</option>
-                                                    <c:forEach items="${orderStatusList}" var="os">
-                                                        <option value="${os.code}">${os.desc}</option>
+                                                    <c:forEach items="${bOrderStatuses}" var="orderStatus">
+                                                        <option value="${orderStatus.code}">${orderStatus.desc}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -111,20 +133,12 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="shipStatus">物流状态：</label>
+                                                <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
                                                     <option value="">全部</option>
-                                                    <c:forEach items="${wuliuList}" var="wl">
-                                                        <option value="${wl.key}">${wl.value}</option>
+                                                    <c:forEach items="${bOrderShipStatuses}" var="shipStatus">
+                                                        <option value="${shipStatus.code}">${shipStatus.desc}</option>
                                                     </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isCounting">是否结算：</label>
-                                                <select id="isCounting" name="isCounting">
-                                                    <option value="">全部</option>
-                                                    <option value="0">未结算</option>
-                                                    <option value="1">已结算</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -249,6 +263,7 @@
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
+
 <script src="<%=basePath%>static/js/laydate.js"></script>
 <script src="<%=basePath%>static/js/date-util.js"></script>
 <script>
@@ -259,7 +274,6 @@
         elem: '#endTime'
     });
 </script>
-
 <script>
     var $table = $('#table'),
             $remove = $('#remove'),
@@ -267,7 +281,7 @@
 
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>delivery/orderList.do',
+            url: '<%=basePath%>delivery/cOrderList.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
@@ -275,8 +289,8 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
-                if($('#shipStatus').val()){
-                    params.shipStatus = $('#shipStatus').val();
+                if($('#orderType').val()){
+                    params.orderType = $('#orderType').val();
                 }
                 if($('#orderStatus').val()){
                     params.orderStatus = $('#orderStatus').val();
@@ -284,19 +298,20 @@
                 if($('#payStatus').val()){
                     params.payStatus = $('#payStatus').val();
                 }
+                if($('#shipStatus').val()){
+                    params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#payTypeId').val()){
+                    params.payTypeId = $('#payTypeId').val();
+                }
                 if($('#beginTime').val()){
                     params.beginTime = $('#beginTime').val();
                 }
                 if($('#endTime').val()){
                     params.endTime = $('#endTime').val();
                 }
-                if($('#isCounting').val()){
-                    params.isCounting = $('#isCounting').val();
-                }
-
                 return params;
             },
-
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -370,26 +385,13 @@
                         }
                     },
                     {
-                        field: 'user_id',
+                        field: 'real_name',
                         title: '购买人',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.bWxNkName){
-                                return row.bWxNkName;
-                            }
-                        }
-                    },
-                    {
-                        field: 'shop_user_id',
-                        title: '店铺所属人',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.suRealName){
-                                return row.suRealName;
+                            if(row && row.uRealName){
+                                return row.uRealName;
                             }
                         }
                     },
@@ -400,7 +402,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.productAmount){
+                            if(row){
                                 return row.productAmount;
                             }
                         }
@@ -437,7 +439,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.orderStatus == 0){
-                                return '未付款';
+                                return '未处理';
                             }
                             if(row && row.orderStatus == 1){
                                 return '已付款';
@@ -463,20 +465,12 @@
                         }
                     },
                     {
-                        field: 'pay_type_id',
+                        field: 'pay_type',
                         title: '支付方式',
+                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payTypeId == 0){
-                                return '微信支付';
-                            }
-                            if(row.payTypeId == 1){
-                                return '线下支付';
-                            }
-                            if(row.payTypeId == 2){
-                                return '支付宝支付'
-                            }
                         }
                     },
                     {
@@ -513,26 +507,10 @@
                         }
                     },
                     {
-                        field: 'is_counting',
-                        title: '是否结算',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.isCounting == 0){
-                                return '未结算';
-                            }
-                            if(row && row.isCounting == 1){
-                                return '已结算';
-                            }
-
-                        }
-                    },
-                    {
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1){
+                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1 && row.orderType != 1){
                                 return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
                         },
@@ -736,7 +714,7 @@
         }
 
         $.ajax({
-            url: '<%=basePath%>order/order/delivery.do',
+            url: '<%=basePath%>order/corder/delivery.do',
             type: 'POST',
             data: $('#deliveryForm').serialize(),
             success: function(msg){

@@ -78,137 +78,37 @@
                     <%--</c:forEach>--%>
                 <%--</div>--%>
                 <div class="dengji">
-                    <div class="floor">
-                        <h1>100万套餐</h1>
-                        <p>
-                            <span>等级：</span>
-                            <span>boss</span>
-                        </p>
-                        <p>
-                            <span>单价：</span>
-                            <span>123</span>
-                        </p>
-                        <p>
-                            <span>数量：</span>
-                            <span>123444</span>
-                        </p>
-                        <p>
-                            <span>总价：</span>
-                            <span>1000000</span>
-                        </p>
-                        <p>
-                            <span>保证金：</span>
-                            <span>0</span>
-                        </p>
-                        <h2>
-
-                        </h2>
-                    </div>
-
-                    <div class="floor">
-                        <h1>100万套餐</h1>
-                        <p>
-                            <span>等级：</span>
-                            <span>boss</span>
-                        </p>
-                        <p>
-                            <span>单价：</span>
-                            <span>123</span>
-                        </p>
-                        <p>
-                            <span>数量：</span>
-                            <span>123444</span>
-                        </p>
-                        <p>
-                            <span>总价：</span>
-                            <span>1000000</span>
-                        </p>
-                        <p>
-                            <span>保证金：</span>
-                            <span>0</span>
-                        </p>
-                        <h2>
-
-                        </h2>
-                    </div>
-                    <div class="floor">
-                        <h1>100万套餐</h1>
-                        <p>
-                            <span>等级：</span>
-                            <span>boss</span>
-                        </p>
-                        <p>
-                            <span>单价：</span>
-                            <span>123</span>
-                        </p>
-                        <p>
-                            <span>数量：</span>
-                            <span>123444</span>
-                        </p>
-                        <p>
-                            <span>总价：</span>
-                            <span>1000000</span>
-                        </p>
-                        <p>
-                            <span>保证金：</span>
-                            <span>0</span>
-                        </p>
-                        <h2>
-
-                        </h2>
-                    </div>
-                    <div class="floor">
-                        <h1>100万套餐</h1>
-                        <p>
-                            <span>等级：</span>
-                            <span>boss</span>
-                        </p>
-                        <p>
-                            <span>单价：</span>
-                            <span>123</span>
-                        </p>
-                        <p>
-                            <span>数量：</span>
-                            <span>123444</span>
-                        </p>
-                        <p>
-                            <span>总价：</span>
-                            <span>1000000</span>
-                        </p>
-                        <p>
-                            <span>保证金：</span>
-                            <span>0</span>
-                        </p>
-                        <h2>
-
-                        </h2>
-                    </div>
-                    <div class="floor">
-                        <h1>100万套餐</h1>
-                        <p>
-                            <span>等级：</span>
-                            <span>boss</span>
-                        </p>
-                        <p>
-                            <span>单价：</span>
-                            <span>123</span>
-                        </p>
-                        <p>
-                            <span>数量：</span>
-                            <span>123444</span>
-                        </p>
-                        <p>
-                            <span>总价：</span>
-                            <span>1000000</span>
-                        </p>
-                        <p>
-                            <span>保证金：</span>
-                            <span>0</span>
-                        </p>
-                        <h2>
-
-                        </h2>
-                    </div>
+                    <c:forEach items="${agentSkuViews}" var="view">
+                    <c:if test="${view.agent.agentLevelId >= pUserLevelId
+                    && view.isShow==1
+                    && (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">
+                            <div class="floor">
+                                <h1>${view.agentFee}元套餐</h1>
+                                <p>
+                                    <span>等级：</span>
+                                    <span>boss</span>
+                                </p>
+                                <p>
+                                    <span>单价：</span>
+                                    <span>123</span>
+                                </p>
+                                <p>
+                                    <span>数量：</span>
+                                    <span>${view.agent.quantity}</span>
+                                </p>
+                                <%--<p>--%>
+                                    <%--<span>总价：</span>--%>
+                                    <%--<span>${view.agentFee}</span>--%>
+                                <%--</p>--%>
+                                <p>
+                                    <span>保证金：</span>
+                                    <span>${view.agent.bail}</span>
+                                </p>
+                                <h2>
+                                </h2>
+                            </div>
+                            </c:if>
+                            </c:forEach>
                 </div>
             </section>
             <section class="sec3">

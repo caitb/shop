@@ -19,6 +19,7 @@ import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,7 +65,8 @@ public class BorderManageController extends BaseController {
     private PfBorderConsigneeService pfBorderConsigneeService;
     @Resource
     private BOrderShipService bOrderShipService;
-
+    @Resource
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     /**
      * 确认收货
      *
@@ -590,12 +592,17 @@ public class BorderManageController extends BaseController {
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
         //支付方式
         List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(id);
+        //推荐人信息
+        ComUser rewordUser = pfBorderRecommenRewardService.getRecommenRewardUser(id);
         borderDetail.setBuyerName(Buser.getWxNkName());
         borderDetail.setPfBorderPayments(pfBorderPayments);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
+        if(rewordUser!=null){
+            borderDetail.setRewordUser(rewordUser.getRealName());
+        }
         ModelAndView modelAndView = new ModelAndView();
         List<ComShipMan> comShipMans = comShipManService.list();
         modelAndView.addObject("comShipMans", comShipMans);

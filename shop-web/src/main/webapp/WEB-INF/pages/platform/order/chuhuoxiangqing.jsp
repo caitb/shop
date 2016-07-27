@@ -100,53 +100,37 @@
                     </c:if>
                 </c:forEach>
             </div>
-            <%--<div class="sec3"><c:if test="${borderDetail.pfBorderConsignee!=null}">--%>
-                <%--<section class="dizhi">--%>
-                    <%--<img src="<%=path%>/static/images/zhifu_ad.png" alt="">--%>
-                    <%--<div>--%>
-                        <%--<a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b>--%>
-                            <%--<span>${borderDetail.pfBorderConsignee.mobile}</span></h2>--%>
-                        <%--</a>--%>
-                        <%--<a href="#"><p>收货地址：--%>
-                            <%--<span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span></p>--%>
-                        <%--</a>--%>
-                    <%--</div>--%>
-                <%--</section></c:if>--%>
-                <%--<p>购物人：<span>${borderDetail.buyerName}</span></p>--%>
-                <%--<p>备注：<span>${borderDetail.pfBorder.userMessage}</span></p>--%>
-            <%--</div>--%>
-            <section class="dizhi">
-                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-                <div>
-                    <a href="#"><h2>收货人：<b>阿斯达岁的</b> <span>啊是打算打算打算</span></h2></a>
-                    <a href="#"><p>收货地址： <span>阿斯大苏打速度大大缩短阿大使挨打</span></p></a>
-                </div>
-            </section>
+            <c:if test="${borderDetail.pfBorderConsignee!=null}">
+                <section class="dizhi">
+                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                    <div>
+                        <a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b> <span>${borderDetail.pfBorderConsignee.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址： <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span></p></a>
+                    </div>
+                </section>
+            </c:if>
             <div class="floor">
                 <h1>购买人： ${borderDetail.buyerName}</h1>
+                <c:forEach items="${borderDetail.pfBorderItems}" var="bdpd">
                 <div>
-                    <img src="${path}/static/images/admin.png" alt=""/>
+                    <img src="${bdpd.skuUrl}" alt=""/>
                     <div>
-                        <h2>阿萨德撒打算的</h2>
-                        <h3>阿萨德等待</h3>
+                        <h2>${bdpd.skuName}</h2>
+                        <h3>规格：默认</h3>
                         <p>
                             零售价：
-                            <span>￥123${bdpd.unitPrice}</span>
-                            <b>× 123${bdpd.quantity}</b>
+                            <span>￥${bdpd.unitPrice}</span>
+                            <b>× ${bdpd.quantity}</b>
                         </p>
                     </div>
                 </div>
+                </c:forEach>
                 <h4>
-                    <span>备注信息：</span>
-                    <input type="text" disabled/>
+                    <span>备注：</span>
+                    <span>${borderDetail.pfBorder.userMessage}</span>
                 </h4>
             </div>
             <div class="sec4">
-                <c:forEach items="${borderDetail.pfBorderItems}" var="bdpd">
-                    <%--<p><span>订单商品：</span><span>${bdpd.skuName}</span></p>--%>
-                    <%--<p><span>购买数量：</span><span>${bdpd.quantity}瓶</span></p>--%>
-                    <%--<p><span>商品单价：</span><span>${bdpd.unitPrice}</span></p>--%>
-                </c:forEach>
                     <p><span>运费：</span> <span>${borderDetail.pfBorder.shipAmount}</span></p>
                     <p><span>商品合计：</span> <span>${borderDetail.pfBorder.productAmount}</span></p>
                     <p><span>实付金额：</span> <span style="color: #f74a11">${borderDetail.pfBorder.payAmount}</span></p>
@@ -157,26 +141,15 @@
                         <%--</c:forEach>--%>
                     <%--</p>--%>
             </div>
-            <div class="sec3">
-                <h1>推荐信息</h1>
-                <p><span>推荐奖励：</span> <span>  阿斯达岁的</span></p>
-                <p><span>推荐人：</span> <span>阿斯达岁的</span></p>
-            </div>
+            <c:if test="${ not empty borderDetail.rewordUser}">
+                <div class="sec3">
+                    <h1>推荐信息</h1>
+                    <p><span>推荐奖励：</span> <span>${borderDetail.pfBorder.recommenAmount}</span></p>
+                    <p><span>推荐人：</span> <span>${borderDetail.rewordUser}</span></p>
+                </div>
+            </c:if>
         </div>
     </main>
-    <%--<div class="back_que">--%>
-        <%--<p>确认发货?</p>--%>
-        <%--<h4>快递公司:<select id="select">--%>
-            <%--<c:forEach items="${comShipMans}" var="comShipMans">--%>
-                <%--<option value="${comShipMans.id}">${comShipMans.name}</option>--%>
-            <%--</c:forEach>--%>
-        <%--</select></h4>--%>
-        <%--<h4>快递单号:<input type="text" id="input"/></h4>--%>
-        <%--<h3 id="faHuo">发货</h3>--%>
-    <%--</div>--%>
-    <%--<div class="back">--%>
-
-    <%--</div>--%>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
@@ -185,14 +158,6 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
-    //        var myScroll = new IScroll("main",{
-    //                 preventDefault: false
-    //            })
-    $(".fah").on("click", function () {
-        $(".back").show();
-        $(".back_que").css("display", "-webkit-box");
-    })
-
     $("#faHuo").on("click", function () {
         $(".back_que").hide();
         $(".back").hide();

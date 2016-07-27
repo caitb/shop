@@ -35,8 +35,11 @@ public class PfBorderRecommenRewardService {
      */
     public ComUser getRecommenRewardUser(Long pfBorderItemId){
         PfBorderRecommenReward pfBorderRecommenReward = getByPfBorderItemId(pfBorderItemId);
-        log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
-        ComUser recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+        ComUser recommenRewardUser =null;
+        if(pfBorderRecommenReward!=null){
+            log.info("推荐人id-----------------"+pfBorderRecommenReward.getRecommenUserId());
+             recommenRewardUser =  comUserMapper.selectByPrimaryKey(pfBorderRecommenReward.getRecommenUserId());
+        }
         return recommenRewardUser;
     }
 

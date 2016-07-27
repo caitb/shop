@@ -134,7 +134,7 @@ public class ExtractApplyService {
         ComUserExtractwayInfo comUserExtractwayInfo = comUserExtractwayInfoMapper.selectByPrimaryKey(comUserExtractApply.getExtractwayInfoId());
         if(auditType == 1){
             MobileMessageUtil.getInitialization("B").withdrawVerifyRefuseAgent(comUser.getMobile(), auditCause);
-            WxPFNoticeUtils.getInstance().pfExtractApply(comUser, new String[]{"￥"+comUserExtractApply.getExtractFee().toString(), new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date()), "审核拒绝", comUserExtractApply.getAuditCause()}, false);
+            WxPFNoticeUtils.getInstance().pfExtractApply(comUser, new String[]{"￥"+comUserExtractApply.getExtractFee().toString(), new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date()), "审核拒绝", comUserExtractApply.getAuditCause()}, false);
         }
         if(auditType == 2){
             MobileMessageUtil.getInitialization("B").withdrawVerifyApproveAgent(comUser.getMobile(), "1", 3);
@@ -143,7 +143,7 @@ public class ExtractApplyService {
                             comUser.getWxNkName(),
                             "￥"+comUserExtractApply.getExtractFee().toString(),
                             comUserExtractwayInfo.getBankName()+":"+comUserExtractwayInfo.getBankCard(),
-                            new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date())
+                            new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date())
                     }
             );
         }

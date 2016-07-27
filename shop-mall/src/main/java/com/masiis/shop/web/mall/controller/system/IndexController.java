@@ -141,6 +141,7 @@ public class IndexController extends BaseController {
                 sfShopDetail.setSkuName(comSku.getName());
                 sfShopDetail.setSkuAssia(comSku.getAlias());
                 sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
+                sfShopDetail.setPriceMarket(comSku.getPriceMarket());
 //                SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
 //                sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
                 sfShopDetail.setSkuId(comSku.getId());
@@ -204,7 +205,7 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =336L;
+        shopId =210L;
         userPid = 337L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);

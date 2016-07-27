@@ -15,6 +15,7 @@ public class SfShopDetail {
     private String skuImageUrl;//商品首页地址
     private String skuUrl;//商品图片地址
     private BigDecimal priceRetail;//销售价
+    private BigDecimal priceMarket;//市场价
     private String slogan;
     private Integer isWunShip;
     /**
@@ -125,5 +126,13 @@ public class SfShopDetail {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public BigDecimal getPriceMarket() {
+        return priceMarket;
+    }
+
+    public void setPriceMarket(BigDecimal priceMarket) {
+        this.priceMarket = priceMarket;
     }
 }

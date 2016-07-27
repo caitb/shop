@@ -31,7 +31,7 @@ $(function () {
                 return false;
             }
             var para = {};
-            var checkLevel = $("p.active");
+            var checkLevel = $("div.active");
             if (checkLevel != null) {
                 para.agentLevel = checkLevel.attr("levelId");
             }

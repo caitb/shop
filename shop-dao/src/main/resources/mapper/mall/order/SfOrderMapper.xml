@@ -346,7 +346,7 @@
                o.product_amount    productAmount,
                o.receivable_amount receivableAmount,
                o.pay_amount        payAmount,
-               o.order_type        sendType,
+               o.send_type        sendType,
                o.order_status      orderStatus,
                op.pay_type_id      payTypeId,
                o.pay_status        payStatus,

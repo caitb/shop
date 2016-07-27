@@ -31,7 +31,7 @@ $(function () {
                 return false;
             }
             var para = {};
-            var checkLevel = $("p.active");
+            var checkLevel = $("div.active");
             if (checkLevel != null) {
                 para.agentLevel = checkLevel.attr("levelId");
             }
@@ -75,7 +75,7 @@ $(function () {
         if (!weixinCheckFun($("#weixin"))) {
             return;
         }
-        if ($("p.active").length == 0) {
+        if ($("div.active").length == 0) {
             alert("请选择合伙人套餐");
             return;
         }
@@ -91,9 +91,9 @@ $(function () {
         // 获取微信号
         $("#q_weixinId").html($("#weixin").val());
         // 获取合伙人套餐
-        $("#q_levelName").html($("p.active").attr("agentFee") + "元套餐");
+        $("#q_levelName").html($("div.active").attr("agentFee") + "元套餐");
         // 获取所缴纳货款
-        $("#q_amount").html("￥" + $("p.active").attr("agentFee"));
+        $("#q_amount").html("￥" + $("div.active").attr("agentFee"));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");
@@ -121,13 +121,13 @@ $(function () {
                     if (sendType == 0) {
                         var paraData = "?";
                         paraData += "skuId=" + skuId;
-                        paraData += "&agentLevelId=" + $("p.active").attr("levelId");
+                        paraData += "&agentLevelId=" + $("div.active").attr("levelId");
                         paraData += "&weiXinId=" + $("#q_weixinId").html();
                         window.location.href = path + "border/setUserSendType.shtml" + paraData;
                     } else {
                         var paraData = "?";
                         paraData += "skuId=" + skuId;
-                        paraData += "&agentLevelId=" + $("p.active").attr("levelId");
+                        paraData += "&agentLevelId=" + $("div.active").attr("levelId");
                         paraData += "&weiXinId=" + $("#q_weixinId").html();
                         paraData += "&sendType=" + sendType;
                         paraData += "&previousPageType=0";

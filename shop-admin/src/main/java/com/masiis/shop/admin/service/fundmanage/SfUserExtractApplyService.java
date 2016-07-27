@@ -113,7 +113,7 @@ public class SfUserExtractApplyService {
     public void sendWxNotice(Long id) {
         SfUserExtractApply apply = sfUserExtractApplyMapper.selectByPrimaryKey(id);
         ComUser user = comUserMapper.selectByPrimaryKey(apply.getComUserId());
-        String[] params = new String[4];
+        String[] params = new String[5];
 
         params[0] = user.getRealName();
         params[1] = apply.getExtractFee().toString();
@@ -123,6 +123,13 @@ public class SfUserExtractApplyService {
         }else if(apply.getExtractWay().intValue() == 3){
             String cardNum = apply.getBankCard();
             params[2] = apply.getBankName() + ":" + cardNum.substring(0, 3) + " **** **** " + cardNum.substring(cardNum.length() - 4);
+        }
+
+        Integer auditType = apply.getAuditType();
+        if(auditType == 1) {
+            params[4] = "您好，您的提现申请没有通过";
+        } else if(auditType == 2) {
+            params[4] = "您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收";
         }
 
         WxSFNoticeUtils.getInstance().extractResultNotice(user, params);

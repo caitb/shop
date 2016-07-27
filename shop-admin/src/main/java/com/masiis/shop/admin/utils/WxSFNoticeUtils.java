@@ -237,7 +237,7 @@ public class WxSFNoticeUtils {
         result.setKeyword2(new WxNoticeDataItem(params[1], null));
         result.setKeyword3(new WxNoticeDataItem(params[2], null));
         result.setKeyword4(new WxNoticeDataItem(params[3], null));
-        result.setRemark(new WxNoticeDataItem("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收", null));
+        result.setRemark(new WxNoticeDataItem(params[4], null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsSF.WX_SF_TM_ID_EXTRACT_RESULT);

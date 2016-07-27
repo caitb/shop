@@ -48,6 +48,7 @@
 }
 .wrap .box main .all .sec1 {
     background: white;
+    margin-top: 10px;
 }
 .wrap .box main .all .sec1 > p {
     width: 100%;
@@ -68,20 +69,21 @@
     color: #666;
 }
 .wrap .box main .all .sec1 > h2 {
-    text-indent: 10px;
     font-size: 12px;
-    line-height: 30px;
+    padding:8px 10px;
     border-bottom: 1px solid #E8E8E8;
 }
 .wrap .box main .all .sec1 > h2 span {
     color: #4E4E4E;
     font-size: 12px;
+    background:url("/static/images/nn.png") no-repeat;
+    background-size:20px;
+    padding-left:28px;
 }
 .wrap .box main .all .sec1 > h2 b {
     float: right;
-    margin-right: 10px;
     color: #F7523C;
-    line-height: 30px;
+    font-size: 13px;
 }
 .wrap .box main .all .sec1 .shangpin {
     width: 100%;
@@ -114,28 +116,11 @@
 .wrap .box main .all .sec1 .shangpin div h2 {
     color: #333333;
     font-size: 14px;
-    height: 15px;
-    margin-bottom: 28px;
+    margin-bottom: 12px;
 }
-.wrap .box main .all .sec1 .shangpin div h2 b {
-    font-size: 12px;
-    float: right;
-    margin-right: 10px;
-    color: #999;
-}
-.wrap .box main .all .sec1 .shangpin div h3 {
-    height: 15px;
-    font-size: 12px;
-    color: #999999;
-}
-.wrap .box main .all .sec1 .shangpin div h3 span {
-    font-size: 12px;
-}
-.wrap .box main .all .sec1 .shangpin div h3 b {
-    font-size: 12px;
-    float: right;
-    color: #999999;
-    margin-right: 10px;
+.wrap .box main .all .sec1 .shangpin div h2 span {
+    display:block;
+    font-size:12px;
 }
 .wrap .box main .all .sec1 .shangpin div .defult {
     padding-bottom: 5px;
@@ -143,7 +128,7 @@
 }
 .wrap .box main .all .sec1 .shangpin div .defult b {
     font-size: 12px;
-    color: #666;
+    color: #333333;
     float: right;
 }
 .wrap .box main .all .sec1 .shangpin div .defult b em {
@@ -177,11 +162,13 @@
 .wrap .box main .all .sec1 .ding p {
     text-indent: 10px;
     font-size: 12px;
-    background: url("/static/images/icon_26.png") no-repeat 10px;
     background-size: 12px;
-    padding-left: 15px;
     line-height: 30px;
     margin-right: 10px;
+    color:#999;
+}
+.wrap .box main .all .sec1 .ding p span{
+    font-size:12px;
 }
 .wrap .box main .all .sec1 .ding p a{
     color: #333;

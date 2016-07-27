@@ -36,9 +36,10 @@
                 <main>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                           <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                           <%--<p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>--%>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
+                                <%--订单号：<span>${pb.orderCode}</span>--%>
+                                <span>王平的小店</span>
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}">待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
@@ -59,13 +60,12 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                    <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                    <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                 <p>
                                     <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>

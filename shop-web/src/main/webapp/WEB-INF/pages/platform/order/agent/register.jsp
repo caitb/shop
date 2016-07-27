@@ -63,43 +63,46 @@
 
                 <h2>选择合伙人套餐：</h2>
                 <%--<div class="dengji">--%>
-                    <%--<c:forEach items="${agentSkuViews}" var="view">--%>
-                        <%--<c:if test="${view.agent.agentLevelId >= pUserLevelId--%>
-                        <%--&& view.isShow==1--%>
-                        <%--&& (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">--%>
-                            <%--<p levelId="${view.agent.agentLevelId}"--%>
-                               <%--agentFee="${view.agentFee}"--%>
-                               <%--agentBailFee="${view.agent.bail}">--%>
-                                <%--<span>${view.agentFee}元套餐</span>--%>
-                                <%--<span>保证金：${view.agent.bail}元</span>--%>
-                                <%--<span>包含商品：${view.agent.quantity}件</span>--%>
-                            <%--</p>--%>
-                        <%--</c:if>--%>
-                    <%--</c:forEach>--%>
+                <%--<c:forEach items="${agentSkuViews}" var="view">--%>
+                <%--<c:if test="${view.agent.agentLevelId >= pUserLevelId--%>
+                <%--&& view.isShow==1--%>
+                <%--&& (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">--%>
+                <%--<p levelId="${view.agent.agentLevelId}"--%>
+                <%--agentFee="${view.agentFee}"--%>
+                <%--agentBailFee="${view.agent.bail}">--%>
+                <%--<span>${view.agentFee}元套餐</span>--%>
+                <%--<span>保证金：${view.agent.bail}元</span>--%>
+                <%--<span>包含商品：${view.agent.quantity}件</span>--%>
+                <%--</p>--%>
+                <%--</c:if>--%>
+                <%--</c:forEach>--%>
                 <%--</div>--%>
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
-                    <c:if test="${view.agent.agentLevelId >= pUserLevelId
+                        <c:if test="${view.agent.agentLevelId >= pUserLevelId
                     && view.isShow==1
                     && (agentLevelIds.equals('') || fn:contains(agentLevelIds, view.agent.agentLevelId.toString().concat(',')))}">
-                            <div class="floor">
+                            <div class="floor"
+                                 levelId="${view.agent.agentLevelId}"
+                                 agentFee="${view.agentFee}"
+                                 agentBailFee="${view.agent.bail}">
                                 <h1>${view.agentFee}元套餐</h1>
                                 <p>
                                     <span>等级：</span>
-                                    <span>boss</span>
+                                    <span>${view.level.name}</span>
                                 </p>
                                 <p>
                                     <span>单价：</span>
-                                    <span>123</span>
+                                    <span>${view.agent.unitPrice}</span>
                                 </p>
                                 <p>
                                     <span>数量：</span>
                                     <span>${view.agent.quantity}</span>
                                 </p>
-                                <%--<p>--%>
+                                    <%--<p>--%>
                                     <%--<span>总价：</span>--%>
                                     <%--<span>${view.agentFee}</span>--%>
-                                <%--</p>--%>
+                                    <%--</p>--%>
                                 <p>
                                     <span>保证金：</span>
                                     <span>${view.agent.bail}</span>
@@ -107,8 +110,8 @@
                                 <h2>
                                 </h2>
                             </div>
-                            </c:if>
-                            </c:forEach>
+                        </c:if>
+                    </c:forEach>
                 </div>
             </section>
             <section class="sec3">

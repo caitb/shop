@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.mall.service.user;
+package com.masiis.shop.web.mall.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -10,7 +10,7 @@ import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
 import com.masiis.shop.dao.mall.user.SfUserBillMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.scheduler.utils.wx.WxSFNoticeUtils;
+import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;

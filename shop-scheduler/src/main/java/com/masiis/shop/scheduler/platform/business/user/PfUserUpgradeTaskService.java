@@ -5,7 +5,7 @@ import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfUserUpgradeNotice;
-import com.masiis.shop.scheduler.platform.service.user.PfUserUpgradeNoticeService;
+import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

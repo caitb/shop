@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.platform.service.order;
+package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
@@ -6,10 +6,10 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.scheduler.platform.service.product.PfSkuStockService;
-import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.scheduler.platform.service.user.ComUserService;
-import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.platform.service.product.PfSkuStockService;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class OrderQueueTimeDealService {
     @Autowired
     private PfUserSkuStockService pfUserSkuStockService;
     @Autowired
-    private ComUserService comUserService;
+    private UserService userService;
     @Autowired
     private BOrderShipService bOrderShipService;
 
@@ -190,7 +190,7 @@ public class OrderQueueTimeDealService {
      */
     private void sendMessage(PfBorder pfBorder,List<PfBorderItem> pfBorderItems){
 
-        ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
+        ComUser comUser = userService.getUserById(pfBorder.getUserId());
         try{
             //平台代发货
             if (pfBorder.getSendType().equals(1)){

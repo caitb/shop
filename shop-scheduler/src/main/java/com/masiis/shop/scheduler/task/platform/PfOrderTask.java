@@ -1,11 +1,9 @@
 package com.masiis.shop.scheduler.task.platform;
 
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.scheduler.platform.business.order.PfBOrderTaskService;
 import com.masiis.shop.scheduler.platform.business.order.PfUserBillTaskService;
-import com.masiis.shop.scheduler.platform.service.order.OrderQueueTimeDealService;
+import com.masiis.shop.web.platform.service.order.OrderQueueTimeDealService;
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.platform.service.order;
+package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.platform.BOrderShipStatus;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
@@ -10,9 +10,10 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.scheduler.platform.service.user.ComUserAccountService;
-import com.masiis.shop.scheduler.platform.service.user.PfUserUpgradeNoticeService;
-import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
+import com.masiis.shop.web.platform.service.order.BOrderOperationLogService;
+import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

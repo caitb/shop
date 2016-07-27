@@ -1,7 +1,7 @@
 package com.masiis.shop.scheduler.task.mall;
 
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.scheduler.mall.service.user.SfUserIsBuyService;
+import com.masiis.shop.web.mall.service.user.SfUserIsBuyService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.springframework.context.ApplicationContext" %>
-<%@ page import="com.masiis.shop.scheduler.utils.ApplicationContextUtil" %>
+<%@ page import="com.masiis.shop.web.common.utils.ApplicationContextUtil" %>
 <%@ page import="com.masiis.shop.scheduler.task.platform.PfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfShopTask" %>

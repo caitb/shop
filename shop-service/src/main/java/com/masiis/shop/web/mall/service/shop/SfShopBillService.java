@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.mall.service.shop;
+package com.masiis.shop.web.mall.service.shop;
 
 import com.masiis.shop.common.enums.platform.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;

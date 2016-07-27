@@ -9,11 +9,17 @@ package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrder;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface SfOrderManageMapper {
-    List<SfOrder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId);
+    List<SfOrder> selectByUserId(@Param("userId") Long userId,
+                                 @Param("orderStatus") Integer orderStatus,
+                                 @Param("shopId") Long shopId);
 
-    List<SfOrder> selectByShopUserId(@Param("shopUserId") Long shopUserId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId,@Param("sendType") Integer sendType);
+    List<SfOrder> selectByShopUserId(@Param("shopUserId") Long shopUserId,
+                                     @Param("orderStatus") Integer orderStatus,
+                                     @Param("shopId") Long shopId,
+                                     @Param("sendType") Integer sendType);
 }

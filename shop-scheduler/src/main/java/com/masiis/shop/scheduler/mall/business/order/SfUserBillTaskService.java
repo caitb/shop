@@ -6,11 +6,10 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.scheduler.mall.service.order.SfOrderService;
-import com.masiis.shop.scheduler.mall.service.shop.SfShopBillService;
-import com.masiis.shop.scheduler.mall.service.user.SfUserBillService;
-import com.masiis.shop.scheduler.platform.service.user.ComUserService;
-import com.masiis.shop.scheduler.utils.wx.WxSFNoticeUtils;
+import com.masiis.shop.web.mall.service.order.SfOrderService;
+import com.masiis.shop.web.mall.service.shop.SfShopBillService;
+import com.masiis.shop.web.mall.service.user.SfUserBillService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class SfUserBillTaskService {
     @Resource
     private SfShopBillService shopBillService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
     @Resource
     private SfShopMapper sfShopMapper;
 

@@ -4,10 +4,8 @@ import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
-import com.masiis.shop.scheduler.platform.service.user.PfUserBillItemService;
-import com.masiis.shop.scheduler.platform.service.user.PfUserBillService;
-import com.masiis.shop.scheduler.platform.service.user.ComUserService;
+import com.masiis.shop.web.platform.service.user.PfUserBillService;
+import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,7 @@ public class PfUserBillTaskService {
     @Resource
     private PfUserBillService billService;
     @Resource
-    private ComUserService userService;
+    private UserService userService;
 
     /**
      * 创建每日结算账单

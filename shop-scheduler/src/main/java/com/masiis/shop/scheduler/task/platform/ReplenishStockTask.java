@@ -1,7 +1,7 @@
 package com.masiis.shop.scheduler.task.platform;
 
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.scheduler.platform.service.stock.ReplenishStockService;
+import com.masiis.shop.web.platform.service.product.ReplenishStockService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

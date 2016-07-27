@@ -6,7 +6,7 @@ import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.SfOrder;
-import com.masiis.shop.scheduler.mall.service.order.SfOrderService;
+import com.masiis.shop.web.mall.service.order.SfOrderService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

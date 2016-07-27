@@ -5,8 +5,8 @@ import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.scheduler.platform.service.order.BOrderShipService;
-import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
+import com.masiis.shop.web.platform.service.order.BOrderShipService;
+import com.masiis.shop.web.platform.service.order.PfBorderService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

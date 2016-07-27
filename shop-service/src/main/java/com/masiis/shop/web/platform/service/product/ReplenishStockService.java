@@ -1,12 +1,10 @@
-package com.masiis.shop.scheduler.platform.service.stock;
+package com.masiis.shop.web.platform.service.product;
 
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.scheduler.platform.service.user.ComUserService;
-import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ public class ReplenishStockService {
     @Autowired
     private PfUserSkuStockService pfUserSkuStockService;
     @Autowired
-    private ComUserService comUserService;
+    private UserService userService;
 
     /**
      * 代理商库存不足短信提醒
@@ -57,7 +55,7 @@ public class ReplenishStockService {
                 params[0] = skuId;
                 params[1] = skuName;
                 params[2] = String.valueOf(stock);
-                ComUser comUser = comUserService.getUserById(userId);
+                ComUser comUser = userService.getUserById(userId);
                 WxPFNoticeUtils.getInstance().inventoryShortageNotice(comUser,params,url);
             }
         }

@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.mall.service.user;
+package com.masiis.shop.web.mall.service.user;
 
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;

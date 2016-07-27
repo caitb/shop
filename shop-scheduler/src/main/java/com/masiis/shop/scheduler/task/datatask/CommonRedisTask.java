@@ -2,7 +2,7 @@ package com.masiis.shop.scheduler.task.datatask;
 
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.constant.wx.WxConsSF;
-import com.masiis.shop.scheduler.utils.wx.WxCredentialUtils;
+import com.masiis.shop.web.common.utils.wx.WxCredentialUtils;
 import org.springframework.stereotype.Component;
 
 /**

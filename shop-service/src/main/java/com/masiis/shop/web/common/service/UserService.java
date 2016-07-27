@@ -433,4 +433,12 @@ public class UserService {
         }
         return user;
     }
+
+    public List<ComUser> findAllAgentUser() {
+        return comUserMapper.selectAllAgentUser();
+    }
+
+    public List<ComUser> findAll() {
+        return comUserMapper.selectAll();
+    }
 }

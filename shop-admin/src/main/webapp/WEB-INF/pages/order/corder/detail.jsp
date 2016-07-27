@@ -156,7 +156,7 @@
                                             <div class="profile-info-value">
                                                 <c:if test="${order.pfCorder.payStatus == 1 && order.pfCorder.shipStatus == 0}">
                                                     <span>未发货</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <%--<span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">发货</span>--%>
+                                                    <span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">发货</span>
                                                     <button type="button" class="btn btn-info" id="fahuo-" data-toggle="collapse" style="display: none;">
                                                         发货
                                                     </button>

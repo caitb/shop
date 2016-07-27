@@ -37,7 +37,7 @@
 .wrap main #box .sec2 {
   width: 100%;
   background: white;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 .wrap main #box .sec2 p {
   margin: 0 10px;
@@ -46,14 +46,15 @@
 .wrap main #box .sec2 p span:nth-child(1) {
   display: inline-block;
   margin: 0;
-  font-weight: 600;
+    color: #000;
 }
 .wrap main #box .sec2 p span {
   margin-right: 10px;
+    font-size: 12px;
 }
 .wrap main #box .sec2 p a {
   display: inline-block;
-  padding: 0px 30px;
+  padding: 0 30px;
   background: #0FC420;
   border-radius: 5px;
   margin-left: 20px;
@@ -62,59 +63,23 @@
 .wrap main #box .sec3 {
   background: white;
   margin-top: 10px;
-  padding: 10px 0;
+  padding: 5px 0;
 }
-.wrap main #box .sec3 .dizhi {
-  width: 100%;
-  height: 55px;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: justify;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: justify;
-}
-.wrap main #box .sec3 .dizhi img {
-  display: inline-block;
-  width: 15px;
-  height: 20px;
-  margin-left: 10px;
-}
-.wrap main #box .sec3 .dizhi div {
-  display: -webkit-box;
-  -webkit-box-pack: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-flex: 1;
-  margin-left: 13px;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
-}
-.wrap main #box .sec3 .dizhi div h2 span {
-  margin-left: 40px;
-}
-.wrap main #box .sec3 .dizhi div p {
-  width: 100%;
-  overflow: hidden;
-}
-.wrap main #box .sec3 .dizhi div p span {
-  font-size: 12px;
+.sec3 h1{
+    padding: 3px 10px 8px 10px;
+    border-bottom: 1px solid #F6F6F6;
 }
 .wrap main #box .sec3 > p {
   margin: 0 10px;
-  text-indent: 28px;
-  background: url("../images/icon_41.png") no-repeat 0px;
   background-size: 15px;
   line-height: 25px;
 }
-.wrap main #box .sec3 p:nth-child(3) {
-  background: url("../images/icon_42.png") no-repeat 0px;
-  background-size: 15px;
+.wrap main #box .sec3 > p  span{
+    font-size: 12px;
 }
 .wrap main #box .sec4 {
   width: 100%;
   background: white;
-  margin-top: 10px;
   padding: 10px 0;
 }
 .wrap main #box .sec4 p {
@@ -122,11 +87,76 @@
   line-height: 20px;
   color: #333333;
 }
-.wrap main #box .sec4 p span:nth-child(1) {
+.wrap main #box .sec4 p span{
   display: inline-block;
-  width: 80px;
-  font-size: 13px;
+  width: 60px;
+  font-size: 12px;
   color: #333333;
+}
+.floor{
+    background: #fff;
+    margin-top: 10px;
+}
+.floor h1{
+    padding: 8px 10px;
+    border-bottom: 1px solid #F6F6F6;
+    background: url("/static/images/peoples.png") no-repeat 10px;
+    background-size: 16px;
+    padding-left: 35px;
+    font-size: 12px;
+}
+.floor > div{
+    display: -webkit-box;
+    padding:8px 10px;
+}
+.floor > div img{
+    width: 70px;
+    height:70px;
+    border: 1px solid #ddd;
+}
+.floor > div div{
+    -webkit-box-flex:1;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-pack:center;
+    margin-left: 10px;
+}
+.floor > div div h2,.floor > div div h3,.floor > div div p{
+    font-size: 12px;
+}
+.floor > div div h3{
+    margin: 5px 0;
+    color: #999;
+}
+.floor > div div p span{
+    font-size: 12px;
+    color: #f74a11;
+}
+.floor > div div p b{
+    float: right;
+    color: #999;
+    font-size: 12px;
+}
+.floor h4{
+    display: -webkit-box;
+    height: 38px;
+    padding: 0 10px;
+    border-bottom: 1px solid #F6F6F6;
+}
+.floor h4 span{
+    display: block;
+    font-size: 12px;
+    line-height: 38px;
+}
+.floor h4 input{
+    line-height: 38px;
+    -webkit-box-flex:1;
+    display: block;
+    border: none;
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+    background: #fff;
 }
 .wrap .back {
   width: 100%;
@@ -147,7 +177,6 @@
   z-index: 10;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  z-index: 10;
   display: none;
 }
 .wrap .back_que p {
@@ -187,7 +216,55 @@
   margin: 20px 32%;
   background: #0FC420;
   color: white;
-  padding: 2px 0px;
+  padding: 2px 0;
   text-align: center;
   border-radius: 5px;
+}
+.wrap main .dizhi {
+    width: 100%;
+    height: 55px;
+    background: white;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: justify;
+    margin-top:10px;
+}
+.wrap main .dizhi img {
+    display: inline-block;
+    width: 15px;
+    height: 20px;
+    margin-left: 10px;
+}
+.wrap main .dizhi div {
+    width: 88%;
+    margin-left: 12px;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-orient: vertical;
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-orient: vertical;
+}
+.wrap main .dizhi div h2,.wrap main .dizhi div h2 b{
+    font-size: 12px;
+}
+.wrap main .dizhi div h2 span {margin-left: 15px;    font-size: 12px;}
+.wrap main .dizhi div p {
+    width: 88%;
+    position: relative;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    font-size: 12px;
+}
+.wrap main .dizhi div p span {
+    font-size: 12px;
+}
+.wrap main .dizhi div p img {
+    position: absolute;
+    right: 10px;
+    top: -5px;
+    display: block;
+    width: 10px;
+    height: 15px;
 }

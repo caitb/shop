@@ -62,22 +62,24 @@
             </div>
             <div class="sec2">
                 <p><span>订单编号：</span><span>${borderDetail.pfBorder.orderCode}</span></p>
+                <p><span>下单日期：</span><span>
+                    <fmt:formatDate value="${borderDetail.pfBorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+            </div>
+            <div class="sec3">
                 <p>
                     <span>订单状态：</span>
                     <c:forEach items="${bOrderStatuses}" var="os">
                         <c:if test="${os.code == borderDetail.pfBorder.orderStatus}"><span>${os.desc}</span></c:if>
                     </c:forEach>
                 </p>
-                <p><span>下单日期：</span><span>
-                    <fmt:formatDate value="${borderDetail.pfBorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付日期：</span><span>
                     <fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><c:forEach items="${borderDetail.pfBorderPayments}" var="pp"> <span>${pp.payTypeName}</span></c:forEach></p>
-                <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台发货</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></p>
-                <p><span>类    型：</span>
-                            <c:forEach items="${bOrderTypes}" var="orderType">
-                                <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>
-                            </c:forEach>
+                <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}"> <span>未选择</span></c:if><c:if test="${borderDetail.pfBorder.sendType==1}"> <span>平台发货</span></c:if><c:if test="${borderDetail.pfBorder.sendType==2}"><span>自己发货</span></c:if></p>
+                <p><span>类　　型：</span>
+                    <c:forEach items="${bOrderTypes}" var="orderType">
+                        <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>
+                    </c:forEach>
                 </p>
                 <p><span>物流状态：</span>
                     <c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}">
@@ -89,45 +91,76 @@
                     <c:if test="${borderDetail.pfBorder.orderStatus==7}">
                         <span>未发货</span><a class="fah">发货</a>
                     </c:if></p>
-                <p><span>配送方式：</span><span>物流配送</span></p>
+                <p> <span>配送方式：</span> <span>物流配送</span></p>
                 <p><span>发货时间：</span><span>
                     <fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <c:forEach items="${borderDetail.pfBorderFreights}" var="bpf">
                     <c:if test="${not empty bpf.freight}">
-                <p><span>发货单号：</span><span>${bpf.freight}</span></p>
+                        <p><span>发货单号：</span><span>${bpf.freight}</span></p>
                     </c:if>
                 </c:forEach>
             </div>
-            <div class="sec3"><c:if test="${borderDetail.pfBorderConsignee!=null}">
-                <section class="dizhi">
-                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+            <%--<div class="sec3"><c:if test="${borderDetail.pfBorderConsignee!=null}">--%>
+                <%--<section class="dizhi">--%>
+                    <%--<img src="<%=path%>/static/images/zhifu_ad.png" alt="">--%>
+                    <%--<div>--%>
+                        <%--<a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b>--%>
+                            <%--<span>${borderDetail.pfBorderConsignee.mobile}</span></h2>--%>
+                        <%--</a>--%>
+                        <%--<a href="#"><p>收货地址：--%>
+                            <%--<span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span></p>--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                <%--</section></c:if>--%>
+                <%--<p>购物人：<span>${borderDetail.buyerName}</span></p>--%>
+                <%--<p>备注：<span>${borderDetail.pfBorder.userMessage}</span></p>--%>
+            <%--</div>--%>
+            <section class="dizhi">
+                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                <div>
+                    <a href="#"><h2>收货人：<b>阿斯达岁的</b> <span>啊是打算打算打算</span></h2></a>
+                    <a href="#"><p>收货地址： <span>阿斯大苏打速度大大缩短阿大使挨打</span></p></a>
+                </div>
+            </section>
+            <div class="floor">
+                <h1>购买人： ${borderDetail.buyerName}</h1>
+                <div>
+                    <img src="${path}/static/images/admin.png" alt=""/>
                     <div>
-                        <a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b>
-                            <span>${borderDetail.pfBorderConsignee.mobile}</span></h2>
-                        </a>
-                        <a href="#"><p>收货地址：
-                            <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span></p>
-                        </a>
+                        <h2>阿萨德撒打算的</h2>
+                        <h3>阿萨德等待</h3>
+                        <p>
+                            零售价：
+                            <span>￥123${bdpd.unitPrice}</span>
+                            <b>× 123${bdpd.quantity}</b>
+                        </p>
                     </div>
-                </section></c:if>
-                <p>购物人：<span>${borderDetail.buyerName}</span></p>
-                <p>备注：<span>${borderDetail.pfBorder.userMessage}</span></p>
+                </div>
+                <h4>
+                    <span>备注信息：</span>
+                    <input type="text" disabled/>
+                </h4>
             </div>
             <div class="sec4">
                 <c:forEach items="${borderDetail.pfBorderItems}" var="bdpd">
-                    <p><span>订单商品：</span><span>${bdpd.skuName}</span></p>
-                    <p><span>购买数量：</span><span>${bdpd.quantity}瓶</span></p>
-                    <p><span>商品单价：</span><span>${bdpd.unitPrice}</span></p>
+                    <%--<p><span>订单商品：</span><span>${bdpd.skuName}</span></p>--%>
+                    <%--<p><span>购买数量：</span><span>${bdpd.quantity}瓶</span></p>--%>
+                    <%--<p><span>商品单价：</span><span>${bdpd.unitPrice}</span></p>--%>
                 </c:forEach>
-                    <p><span>运费：</span><span>${borderDetail.pfBorder.shipAmount}</span></p>
-                    <p><span>商品总金额：</span><span>${borderDetail.pfBorder.productAmount}</span></p>
-                    <p><span>实付金额：</span><span>${borderDetail.pfBorder.payAmount}</span></p>
-                    <p>
-                        <span>订单状态：</span>
-                        <c:forEach items="${bOrderStatuses}" var="os">
-                            <c:if test="${os.code == borderDetail.pfBorder.orderStatus}">${os.desc}</c:if>
-                        </c:forEach>
-                    </p>
+                    <p><span>运费：</span> <span>${borderDetail.pfBorder.shipAmount}</span></p>
+                    <p><span>商品合计：</span> <span>${borderDetail.pfBorder.productAmount}</span></p>
+                    <p><span>实付金额：</span> <span style="color: #f74a11">${borderDetail.pfBorder.payAmount}</span></p>
+                    <%--<p>--%>
+                        <%--<span>订单状态：</span>--%>
+                        <%--<c:forEach items="${bOrderStatuses}" var="os">--%>
+                            <%--<c:if test="${os.code == borderDetail.pfBorder.orderStatus}">${os.desc}</c:if>--%>
+                        <%--</c:forEach>--%>
+                    <%--</p>--%>
+            </div>
+            <div class="sec3">
+                <h1>推荐信息</h1>
+                <p><span>推荐奖励：</span> <span>  阿斯达岁的</span></p>
+                <p><span>推荐人：</span> <span>阿斯达岁的</span></p>
             </div>
         </div>
     </main>

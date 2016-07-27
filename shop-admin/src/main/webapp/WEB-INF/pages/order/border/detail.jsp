@@ -799,7 +799,7 @@
                                 $('#shiSta').html('已发货');
                                 window.location.reload();
                             }else{
-                                alert('发货失败了!');
+                                alert('发货失败 : '+msg);
                             }
                         }
                     });

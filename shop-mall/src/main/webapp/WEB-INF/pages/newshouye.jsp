@@ -136,7 +136,7 @@
                         shipName="平台发货";
                         tubiaoHtml ="<div><h2><img src='${path}/static/images/ping.png' alt=''>";
                     }
-                    trHtml2+=tubiaoHtml+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h3><b>￥</b>"+SfShopDetails.priceRetail+"<span>"+SfShopDetails.priceMarket+"<img src='${path}/static/images/xie.png'/></span></h3>";
+                    trHtml2+=tubiaoHtml+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h3><b>￥</b>"+SfShopDetails.priceRetail+"<span>￥"+SfShopDetails.priceMarket+"<img src='${path}/static/images/xie.png'/></span></h3>";
                     trHtml2+="</div> </div>";
                 })
                 $("#main").html(trHtml2);

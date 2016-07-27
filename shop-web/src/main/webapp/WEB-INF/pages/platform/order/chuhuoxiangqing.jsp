@@ -87,7 +87,8 @@
                         <span>已发货</span>
                     </c:if>
                     <c:if test="${borderDetail.pfBorder.orderStatus==7}">
-                        <span>未发货</span><a class="fah">发货</a>
+                        <span>未发货</span>
+                        <%--<a class="fah">发货</a>--%>
                     </c:if></p>
                 <p><span>配送方式：</span><span>物流配送</span></p>
                 <p><span>发货时间：</span><span>
@@ -152,9 +153,6 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
-    //        var myScroll = new IScroll("main",{
-    //                 preventDefault: false
-    //            })
     $(".fah").on("click", function () {
         $(".back").show();
         $(".back_que").css("display", "-webkit-box");

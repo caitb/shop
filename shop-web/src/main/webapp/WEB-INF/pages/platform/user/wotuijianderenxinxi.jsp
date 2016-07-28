@@ -23,6 +23,20 @@
                   <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>我推荐的人信息</p>            
         </header>
+       <nav>
+           <p>
+               <span>123</span>
+               <span>进货次数</span>
+           </p>
+           <p>
+               <span>31</span>
+               <span>进货总额</span>
+           </p>
+           <p>
+               <span>111</span>
+               <span>ta的推荐团队</span>
+           </p>
+       </nav>
         <main>
              <div class="sec1">
                    <div>

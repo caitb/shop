@@ -46,8 +46,8 @@
                     <div class="sec1" onclick="javascript:window.location.href = '${basePath}myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}';">
                         <img src="${sumByUser.wxHeadImg}" alt="">
                         <div>
-                            <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
-                            <p>${sumByUser.skuName}</p>
+                            <p><span>${sumByUser.name} <b>(${sumByUser.agentName})</b></span><span>ta的团队：80人</span></p>
+                            <h1><span>${sumByUser.skuName}</span><span>他的销售额：123人</span></h1>
                         </div>
                     </div>
                 </c:forEach>

@@ -42,9 +42,9 @@
             <div class="all">
                 <c:forEach items="${sfOrders}" var="pb">
                     <section class="sec1">
-                        <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                        <%--<p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>--%>
                         <h2>
-                            订单号：<span>${pb.orderCode}</span>
+                            订单号：<span>${pb.orderCode}(平台代发)</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}">待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"><b class="fahuo_${pb.id}">待发货</b></c:if>
                             <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
@@ -52,27 +52,29 @@
                             <c:if test="${pb.orderStatus ==2}"><b class="fahuo_${pb.id}">已取消</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                            <a href="<%=path%>/sfOrderController/sfOrderDetal.html?id=${pb.id}">
                             <div class="shangpin">
-                                <p class="photo">
-                                    <a href="javascript:void(0);">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>
+                                        ${pbi.skuName}(￥${pbi.unitPrice})
+                                            <span style="display: block;color:#666666">x${pbi.quantity}</span>
+                                    </h2>
+                                    <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
                                 </div>
-                            </div> </c:forEach>
-                        <p class="money">合计：<span>￥${pb.orderAmount}</span><span>发货方：<b>
-                            <c:if test="${pb.sendType==1}">平台发货</c:if>
-                            <c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>
-                            <c:if test="${pb.sendType==2}">自己发货</c:if></b></span></p>
+                            </div>
+                                </a></c:forEach>
+                        <%--<p class="money">合计：<span>￥${pb.orderAmount}</span><span>发货方：<b>--%>
+                            <%--<c:if test="${pb.sendType==1}">平台发货</c:if>--%>
+                            <%--<c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>--%>
+                            <%--<c:if test="${pb.sendType==2}">自己发货</c:if></b></span></p>--%>
                         <div class="ding">
-                            <p><a href="<%=path%>/sfOrderController/sfOrderDetal.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.sendType==1 || pb.sendType==2}">
-                            <p class="sh" onclick="shouhuorenxinxi('${pb.sfOrderConsignee.consignee}','${pb.sfOrderConsignee.provinceName} ${pb.sfOrderConsignee.cityName} ${pb.sfOrderConsignee.regionName} ${pb.sfOrderConsignee.address}','${pb.sfOrderConsignee.mobile}','${pb.sfOrderConsignee.zip}')">收货人信息</p></c:if>
-                            <c:if test="${pb.orderStatus ==7 && pb.sendType==2}">
+                            <%--<p><a href="<%=path%>/sfOrderController/sfOrderDetal.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.sendType==1 || pb.sendType==2}">--%>
+                            <%--<p class="sh" onclick="shouhuorenxinxi('${pb.sfOrderConsignee.consignee}','${pb.sfOrderConsignee.provinceName} ${pb.sfOrderConsignee.cityName} ${pb.sfOrderConsignee.regionName} ${pb.sfOrderConsignee.address}','${pb.sfOrderConsignee.mobile}','${pb.sfOrderConsignee.zip}')">收货人信息</p></c:if>--%>
+                            <p>时间：<fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></p>
+                                <p>购买人：</p>
+                            <%--<c:if test="${pb.orderStatus ==7 && pb.sendType==2}">--%>
                                 <button class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</button>
-                            </c:if>
+                            <%--</c:if>--%>
                         </div>
                     </section></c:forEach>
             </div>
@@ -264,26 +266,65 @@
         </main>
     </div>
 </div>
-<div class="back_que" style="display: none">
-    <p>确认减库存?</p>
-    <h4>快递公司:<select id="select">
-        <c:forEach items="${comShipMans}" var="comShipMans">
-            <option value="${comShipMans.id}">${comShipMans.name}</option>
-        </c:forEach>
-    </select></h4>
-    <h4>快递单号:<input type="text" id="input"/></h4>
-    <h3 id="faHuo">发货</h3>
-</div>
-<div class="shouhuo" style="display: none">
-    <p>收货人信息</p>
-    <h4><span>姓　名:</span><span id="1"></span></h4>
-    <h4><span>地　址:</span><span id="2">阿斯科利的将阿</span></h4>
-    <h4><span>手机号:</span><span id="3"></span></h4>
-    <h4><span>邮　编:</span><span id="4"></span></h4>
-    <h3 class="close">关闭</h3>
-</div>
-<div class="back" style="display: none">
+<%--<div class="back_que" style="display: none">--%>
+    <%--<p>确认减库存?</p>--%>
+    <%--<h4>快递公司:<select id="select">--%>
+        <%--<c:forEach items="${comShipMans}" var="comShipMans">--%>
+            <%--<option value="${comShipMans.id}">${comShipMans.name}</option>--%>
+        <%--</c:forEach>--%>
+    <%--</select></h4>--%>
+    <%--<h4>快递单号:<input type="text" id="input"/></h4>--%>
+    <%--<h3 id="faHuo">发货</h3>--%>
+<%--</div>--%>
+<%--<div class="shouhuo" style="display: none">--%>
+    <%--<p>收货人信息</p>--%>
+    <%--<h4><span>姓　名:</span><span id="1"></span></h4>--%>
+    <%--<h4><span>地　址:</span><span id="2">阿斯科利的将阿</span></h4>--%>
+    <%--<h4><span>手机号:</span><span id="3"></span></h4>--%>
+    <%--<h4><span>邮　编:</span><span id="4"></span></h4>--%>
+    <%--<h3 class="close">关闭</h3>--%>
+<%--</div>--%>
+<%--<div class="back" style="display: none">--%>
 
+<%--</div>--%>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_que">
+        <div class="backt">
+            <h1>发货信息</h1>
+            <p><span>快递公司：</span><label for=""><b></b><select class="se">
+                <option value="">快递</option></select></label></p>
+            <p><span>快递单号：</span><input type="text"/></p>
+            <button>发货</button>
+        </div>
+        <div class="backd">
+            <p>
+                <span>收货人：</span>
+                <span>阿萨德</span>
+            </p>
+
+            <p>
+                <span>收货地址：</span>
+                <span style="width: 100px;">阿萨德啊是打算打算打算大时代</span>
+            </p>
+            <p>
+                <span>联系电话：</span>
+                <span>13121527850</span>
+            </p>
+            <p>
+                <span>邮编：</span>
+                <span>100000</span>
+            </p>
+            <p>
+                <span>购买人：</span>
+                <span>李佳霖</span>
+            </p>
+            <p>
+                <span>留言：</span>
+                <span>马骝的发货！！</span>
+            </p>
+        </div>
+    </div>
 </div>
 <script src="<%=path%>/static/shop/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/shop/js/commonAjax.js"></script>
@@ -299,10 +340,10 @@
         $("li").eq(index).children("a").addClass("on");
         $(".all").eq(index).show().siblings().hide();
         $(".tapfix").hide();
+        $(".se").width($(".backt p label").width());
+        $(".se").height($(".backt p label").height());
     });
     function shouhuorenxinxi(a,b,c,d){
-        $(".back").css("display","-webkit-box");
-        $(".shouhuo").css("display","-webkit-box");
         $("#1").html(a);
         $("#2").html(b);
         $("#3").html(c);
@@ -405,11 +446,9 @@
     }
 
     function fahuo(id){
-        $(".back").css("display","-webkit-box");
-        $(".back_que").css("display","-webkit-box");
+        $(".back_que").show();
         $("#faHuo").on("click",function(){
             $(".back_que").hide();
-            $(".back").hide();
             var shipManId = $("#select option:selected").val();
             var shipManName = $("#select option:selected").text();
             var freight = $("#input").val();
@@ -431,10 +470,6 @@
     //                $(".back").css("display","-webkit-box");
     //                $(".shouhuo").css("display","-webkit-box");
     //            })
-    $(".close").on("click",function(){
-        $(".shouhuo").hide();
-        $(".back").hide();
-    })
 </script>
 </body>
 </html>

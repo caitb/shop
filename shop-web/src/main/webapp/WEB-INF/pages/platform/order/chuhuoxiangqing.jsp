@@ -133,7 +133,7 @@
             <div class="sec4">
                     <p><span>运费：</span> <span>${borderDetail.pfBorder.shipAmount}</span></p>
                     <p><span>商品合计：</span> <span>${borderDetail.pfBorder.productAmount}</span></p>
-                    <p><span>实付金额：</span> <span style="color: #f74a11">${borderDetail.pfBorder.payAmount}</span></p>
+                    <p><span>实付金额：</span> <span style="color: #f74a11">${borderDetail.pfBorder.payAmount}</span>(含保证金：￥${borderDetail.pfBorder.bailAmount})</p>
                     <%--<p>--%>
                         <%--<span>订单状态：</span>--%>
                         <%--<c:forEach items="${bOrderStatuses}" var="os">--%>

@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
 import com.masiis.shop.dao.mallBeans.OrderMallDetail;
+import com.masiis.shop.dao.mallBeans.SfUserBillItemInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.mall.service.user.SfUserBillService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.ComShipManService;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +52,8 @@ public class SfOrderController extends BaseController {
     private UserService userService;
     @Resource
     private ComShipManService comShipManService;
-
+    @Resource
+    private SfUserBillItemMapper sfUserBillItemMapper;
 
     @RequestMapping("/deliverOrder.do")
     @ResponseBody
@@ -115,12 +120,24 @@ public class SfOrderController extends BaseController {
         List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(id);
         //收货人
         SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
+        // 分销记录信息
+        List<SfUserBillItemInfo> sfUserBillItemInfoList = new ArrayList<>();
+        List<SfUserBillItem> sfUserBillItems = sfUserBillItemMapper.selectBySourceId(id);
+        if (sfUserBillItems!=null){
+            for (SfUserBillItem sfUserBillItem :sfUserBillItems){
+                SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
+                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getId()).getRealName());
+                sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
+                sfUserBillItemInfoList.add(sfUserBillItemInfo);
+            }
+        }
         orderMallDetail.setBuyerName(Buser.getWxNkName());
         orderMallDetail.setSfOrder(order);
         orderMallDetail.setSfOrderPayments(sfOrderPayments);
         orderMallDetail.setSfOrderItems(sfOrderItems);
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
+        orderMallDetail.setSfUserBillItemInfo(sfUserBillItemInfoList);
         ModelAndView modelAndView = new ModelAndView();
         List<ComShipMan> comShipMans = comShipManService.list();
         modelAndView.addObject("comShipMans", comShipMans);

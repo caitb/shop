@@ -51,7 +51,7 @@
                                         </div>
                                     </div></c:forEach>
                                 <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" />
-                                    <span class="jixu">购买人：王平</span>
+                                    <span class="jixu">购买人：${pb.userName.realName}</span>
                                 </p>
                             </section>
                         </c:forEach>
@@ -71,7 +71,7 @@
                                             </div>
                                         </div></c:forEach>
                                     <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" />
-                                        <span class="jixu">购买人：王平</span>
+                                        <span class="jixu">购买人：${pb.userName.realName}</span>
                                     </p>
                                 </section>
                             </c:forEach>
@@ -91,7 +91,7 @@
                                         </div>
                                     </div></c:forEach>
                                 <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" />
-                                    <span class="jixu">购买人：王平</span>
+                                    <span class="jixu">购买人：${pb.userName.realName}</span>
                                 </p>
                             </section>
                         </c:forEach>
@@ -111,7 +111,7 @@
                                         </div>
                                     </div></c:forEach>
                                 <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" />
-                                    <span class="jixu">购买人：王平</span>
+                                    <span class="jixu">购买人：${pb.userName.realName}</span>
                                 </p>
                             </section>
                         </c:forEach>
@@ -134,7 +134,7 @@
                                     </div>
                                 </c:forEach>
                                 <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" />
-                                    <span class="jixu">购买人：王平</span>
+                                    <span class="jixu">购买人：${pb.userName.realName}</span>
                                 </p>
                             </section>
                         </c:forEach>
@@ -185,7 +185,7 @@
                                        trHtml+="</div></div>";
                                    });
                                    trHtml+="<p>时间："+ordertime;
-                                   trHtml+="<span class=\"jixu\">购买人：王平</span>";
+                                   trHtml+="<span class=\"jixu\">购买人："+pfBorder.userName.realName+"</span>";
                                    trHtml+="</p>";
                                    trHtml+="</section>";
                                });

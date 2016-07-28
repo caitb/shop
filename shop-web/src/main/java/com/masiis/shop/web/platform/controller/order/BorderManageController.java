@@ -201,6 +201,7 @@ public class BorderManageController extends BaseController {
                 for (PfBorder pfBorder :pfBorderlist){
                     pfBorder.setOrderStatusDes(coverCodePfBorderStatus(pfBorder.getOrderStatus()));//订单状态
                     pfBorder.setOrderTypeDes(coverCodePfBorderType(pfBorder.getOrderType()));//订单类型
+                    pfBorder.setUserName(userService.getUserById(pfBorder.getUserId()));
                 }
             }
         } catch (Exception ex) {
@@ -484,6 +485,7 @@ public class BorderManageController extends BaseController {
                 PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
                 pfBorder.setOrderStatusDes(coverCodePfBorderStatus(pfBorder.getOrderStatus()));//订单状态
                 pfBorder.setOrderTypeDes(coverCodePfBorderType(pfBorder.getOrderType()));//订单类型
+                pfBorder.setUserName(userService.getUserById(pfBorder.getUserId()));
                 for (PfBorderItem pfBorderItem : pfBorderItems) {
                     pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量

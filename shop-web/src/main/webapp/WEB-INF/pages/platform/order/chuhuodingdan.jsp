@@ -41,7 +41,7 @@
                             <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
                                 <h2>
                                     订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
-                                        <b>${pb.orderStatusDes}</b >
+                                        <b>${pb.orderStatusDes}</b>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">

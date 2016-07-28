@@ -100,7 +100,7 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/clickType.do")
     @ResponseBody
     public List<PfBorder> clickType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
-        List<PfBorder> pfBorder = null;
+        List<PfBorder> pfBorderlist = null;
         try {
             ComUser user = getComUser(request);
             if (user == null) {
@@ -110,26 +110,25 @@ public class BorderManageController extends BaseController {
                 PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
                 request.getSession().setAttribute("defaultBank", defaultBank);
             }
-
             if (index == 0) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), null, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), null, null);
             } else if (index == 1) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 0, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 0, null);
                 List<PfBorder> pfBorder1 = bOrderService.findPfBorder(user.getId(), 9, null);
                 for (PfBorder pfBorder11 : pfBorder1) {
-                    pfBorder.add(pfBorder11);
+                    pfBorderlist.add(pfBorder11);
                 }
             } else if (index == 2) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 7, null);
             } else if (index == 6) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 2, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 2, null);
             } else if (index == 3) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 8, null);
             } else if (index == 4) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 3, null);
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 3, null);
             } else if (index == 5) {
-                pfBorder = bOrderService.findPfBorder(user.getId(), 6, null);
-                Iterator<PfBorder> chk_itw = pfBorder.iterator();
+                pfBorderlist = bOrderService.findPfBorder(user.getId(), 6, null);
+                Iterator<PfBorder> chk_itw = pfBorderlist.iterator();
                 while (chk_itw.hasNext()) {
                     PfBorder pfBorders = chk_itw.next();
                     if (pfBorders.getSendType() == 2 && pfBorders.getOrderStatus() == 6) {//排单订单
@@ -137,11 +136,12 @@ public class BorderManageController extends BaseController {
                     }
                 }
             }
-//            for (PfBorder pfBorders : pfBorder) {
-//                pfBorders.setPidUserName("平台");
-//                String insertDay = DateUtil.insertDay(pfBorders.getCreateTime());
-//                pfBorders.setPayTimes(insertDay);
-//            }
+            if(pfBorderlist!=null){
+                for (PfBorder pfBorder :pfBorderlist){
+                    pfBorder.setOrderStatusDes(coverCodePfBorderStatus(pfBorder.getOrderStatus()));//订单状态
+                    pfBorder.setOrderTypeDes(coverCodePfBorderType(pfBorder.getOrderType()));//订单类型
+                }
+            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -149,7 +149,7 @@ public class BorderManageController extends BaseController {
                 throw new BusinessException("网络错误", ex);
             }
         }
-        return pfBorder;
+        return pfBorderlist;
     }
 
     /**
@@ -301,7 +301,6 @@ public class BorderManageController extends BaseController {
         modelAndView.addObject("pfBorderps3", pfBorderp3.size());
         modelAndView.addObject("pfBorderps6", pfBorderp6.size());
         modelAndView.addObject("pfBorderps0", pfBorderp0.size());
-//        modelAndView.addObject("pfBorderps8", pfBorderp8.size());
         modelAndView.setViewName("platform/order/dingdanguanli");
         return modelAndView;
     }
@@ -420,6 +419,8 @@ public class BorderManageController extends BaseController {
         if (pfBorders != null && pfBorders.size() != 0) {
             for (PfBorder pfBorder : pfBorders) {
                 List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                pfBorder.setOrderStatusDes(coverCodePfBorderStatus(pfBorder.getOrderStatus()));//订单状态
+                pfBorder.setOrderTypeDes(coverCodePfBorderType(pfBorder.getOrderType()));//订单类型
                 for (PfBorderItem pfBorderItem : pfBorderItems) {
                     pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
@@ -434,8 +435,6 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index", index);
         modelAndView.addObject("pfBorders", pfBorders);
-        modelAndView.addObject("orderStatuses", BOrderStatus.values());
-        modelAndView.addObject("bOrderTypes", BOrderType.values());
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;
     }
@@ -534,7 +533,6 @@ public class BorderManageController extends BaseController {
             if (pfUserSkuStock != null) {
                 stockNum = stockNum + pfUserSkuStock.getStock();
             } else {
-//                pfUserSkuStock.setStock(0);
                 stockNum = stockNum + 0;
             }
         }

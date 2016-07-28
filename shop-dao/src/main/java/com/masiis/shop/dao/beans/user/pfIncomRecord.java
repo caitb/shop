@@ -1,8 +1,10 @@
 package com.masiis.shop.dao.beans.user;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * B端收入记录PO
@@ -50,6 +52,10 @@ public class PfIncomRecord {
      */
     private BigDecimal inCome;
     /**
+     * 收入显示
+     */
+    private String inComView;
+    /**
      * 生成时间
      */
     private Date createTime;
@@ -61,6 +67,8 @@ public class PfIncomRecord {
     private static final SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy/MM/dd");
 
     private static final SimpleDateFormat sdfMin = new SimpleDateFormat("HH:mm:ss");
+
+    private static final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
 
     public Long getOrderId() {
         return orderId;
@@ -140,6 +148,15 @@ public class PfIncomRecord {
 
     public void setInCome(BigDecimal inCome) {
         this.inCome = inCome;
+        setInComView(numberFormat.format(inCome));
+    }
+
+    public String getInComView() {
+        return inComView;
+    }
+
+    public void setInComView(String inComView) {
+        this.inComView = inComView;
     }
 
     public Date getCreateTime() {

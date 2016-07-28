@@ -372,6 +372,7 @@ public class BorderManageController extends BaseController {
      * 分段查询进货订单
      *
      * @author muchaofeng
+     * overWrite By jjh
      * @date 2016/4/6 14:11
      */
     @RequestMapping("/stockDouckBorder")
@@ -423,12 +424,6 @@ public class BorderManageController extends BaseController {
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                 }
                 pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
-//                if(pfBorder.getUserPid()==0){
-//                    pfBorder.setPidUserName("平台");
-//                }else{
-//                    ComUser user = userService.getUserById(pfBorder.getUserPid());
-//                    pfBorder.setPidUserName(user.getRealName());
-//                }
                 pfBorder.setPidUserName("平台");
                 pfBorder.setPfBorderItems(pfBorderItems);
                 String insertDay = DateUtil.insertDay(pfBorder.getCreateTime());

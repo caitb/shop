@@ -173,11 +173,11 @@
                                $.each(data, function(i, pfBorder) {
                                    var ordertime = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
                                    trHtml+="<section class=\"sec1\" onclick=\"javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"');\">";
-                                   trHtml+="<h2>订单号: <span>"+pfBorder.orderCode +"("+pfBorder.orderTypeDes+")";
+                                   trHtml+="<h2>订单号: <span>"+pfBorder.orderCode +"("+pfBorder.orderTypeDes+")</span>";
                                    trHtml+="<b>"+pfBorder.orderStatusDes+"</b>";
-                                   trHtml+="</span>";
+                                   trHtml+="</h2>";
                                    $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
-                                       trHtml+="<div class=\"shangpin\">";
+                                       trHtml+="<div class=\"shangpin\"><div>";
                                        trHtml+="<h2><span>"+pfBorderItem.skuName+"("+"￥"+pfBorderItem.unitPrice+")</span>";
                                        trHtml+="<span>x"+pfBorderItem.quantity+"</span>";
                                        trHtml+="<h3><b>合计：￥"+pfBorder.orderAmount+"</b></h3>";

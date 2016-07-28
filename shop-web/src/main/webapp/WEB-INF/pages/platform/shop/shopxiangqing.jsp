@@ -123,12 +123,6 @@
                 <p><span>运费：</span> <span>${orderMallDetail.sfOrder.shipAmount}</span></p>
                 <p><span>商品合计：</span> <span>${orderMallDetail.sfOrder.productAmount}</span></p>
                 <p><span>实付金额：</span> <span style="color: #f74a11">${orderMallDetail.sfOrder.payAmount}</span> <span>(含保证金：￥${orderMallDetail.sfOrder.shipAmount})</span></p>
-                <%--<p>--%>
-                <%--<span>订单状态：</span>--%>
-                <%--<c:forEach items="${bOrderStatuses}" var="os">--%>
-                <%--<c:if test="${os.code == borderDetail.pfBorder.orderStatus}">${os.desc}</c:if>--%>
-                <%--</c:forEach>--%>
-                <%--</p>--%>
             </div>
             <c:if test="${(orderMallDetail.sfUserBillItemInfo)!=null && fn:length(orderMallDetail.sfUserBillItemInfo)>0 }">
                 <div class="sec3 sec5">

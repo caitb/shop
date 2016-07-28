@@ -157,6 +157,12 @@ public class SfOrder extends BaseOrder {
      */
     private Long sendMan;
 
+    private String orderStatusDes;//店铺订单状态描述
+
+    private String sendTypeDes;//发货类型描述
+
+    private String createUserName;//购买人
+
     public Long getId() {
         return id;
     }
@@ -376,5 +382,29 @@ public class SfOrder extends BaseOrder {
 
     public void setSendMan(Long sendMan) {
         this.sendMan = sendMan;
+    }
+
+    public String getOrderStatusDes() {
+        return orderStatusDes;
+    }
+
+    public void setOrderStatusDes(String orderStatusDes) {
+        this.orderStatusDes = orderStatusDes;
+    }
+
+    public String getSendTypeDes() {
+        return sendTypeDes;
+    }
+
+    public void setSendTypeDes(String sendTypeDes) {
+        this.sendTypeDes = sendTypeDes;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 }

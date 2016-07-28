@@ -103,24 +103,21 @@ public class ShopIndexController extends BaseController {
             List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
             if (agentNum != null) {
                 for (PfUserSku pfUserSku : agentNum) {
-                    CountGroup countGroup = countGroupService.countGroupInfo(user.getId(), pfUserSku.getTreeCode());
-                    CountGroup countGroup1 = countGroupService.infoOrderNum(user.getId(), pfUserSku.getTreeCode());
+                    CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
                     numb += countGroup.getCount() - 1;
                     countNum = countGroup.getGroupMoney().add(countNum);
-                    orderNum += countGroup1.getOrderNum();
+                    orderNum += countGroup.getOrderNum();
                 }
             }
-            CountGroup countGroup = new CountGroup();
-            countGroup.setCount(numb);
             NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-            countGroup.setGroupSum(rmbFormat.format(countNum));
-            countGroup.setOrderNum(orderNum);
-            object.put("countGroup", countGroup);
+            object.put("count", numb);
+            object.put("groupSum", rmbFormat.format(countNum));
+            object.put("orderNum", orderNum);
             object.put("isError",false);
         }catch (Exception e){
             object.put("isError",true);
             log.info(e.getMessage());
         }
-      return object.toJSONString();
+        return object.toJSONString();
     }
 }

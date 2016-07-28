@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.beans.user;
 
+import com.masiis.shop.common.enums.platform.BOrderType;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,10 @@ public class PfIncomRecord {
      * 订单类型
      */
     private Integer orderType;
+    /**
+     * 订单类型页面展示
+     */
+    private String orderTypeView;
     /**
      * 用户id
      */
@@ -92,6 +98,15 @@ public class PfIncomRecord {
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
+        setOrderTypeView(BOrderType.getByCode(orderType).getDesc());
+    }
+
+    public String getOrderTypeView() {
+        return orderTypeView;
+    }
+
+    public void setOrderTypeView(String orderTypeView) {
+        this.orderTypeView = orderTypeView;
     }
 
     public Long getUserId() {

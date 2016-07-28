@@ -15,16 +15,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountGroupMapper {
     /**
-     * 统计团队人数与销售额
+     * 统计团队人数、销售额、订单总数
      * @author muchaofeng
      * @date 2016/6/8 18:14
      */
-    CountGroup countGroup(@Param("userId")Long  userId,@Param("treeCode")String treeCode);
-    /**
-     * 统计团队订单
-     * @author muchaofeng
-     * @date 2016/6/8 18:14
-     */
-    CountGroup countOrderNum(@Param("userId") Long  userId,@Param("treeCode") String treeCode);
+    CountGroup countGroup(@Param("treeCode")String treeCode);
 
 }

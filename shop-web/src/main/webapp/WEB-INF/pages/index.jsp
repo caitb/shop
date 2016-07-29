@@ -214,9 +214,9 @@
                 success: function (data) {
                     var trHtml1 = "";
                     trHtml1 += "<ul>";
-                    trHtml1 += "<li><h1>" + data.countGroup.count + "</h1><p>团队人数</p></li>";
-                    trHtml1 += "<li><h1>" + data.countGroup.groupSum + "</h1><p>团队总销售额</p></li>";
-                    trHtml1 += "<li><h1>" + data.countGroup.orderNum + "</h1><p>团队总订单</p></li>";
+                    trHtml1 += "<li><h1>" + data.count + "</h1><p>团队人数</p></li>";
+                    trHtml1 += "<li><h1>" + data.groupSum + "</h1><p>团队总销售额</p></li>";
+                    trHtml1 += "<li><h1>" + data.orderNum + "</h1><p>团队总订单</p></li>";
                     trHtml1 += "</ul>";
                     $(".floor").empty().html(trHtml1);
                 }

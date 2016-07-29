@@ -21,4 +21,11 @@ public interface CountGroupMapper {
      */
     CountGroup countGroup(@Param("treeCode")String treeCode);
 
+
+    /**
+     * 统计推荐团队人数、销售额、订单总数
+     * @param treeCode pf_user_sku 表 tree_code
+     * @return
+     */
+    CountGroup countRecommendGroup(@Param("treeCode")String treeCode);
 }

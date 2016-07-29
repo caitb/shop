@@ -88,12 +88,13 @@ public class ShopIndexController extends BaseController {
     /**
      * 获取首页的业务数据
      * jjh
+     *
      * @param req
      * @return
      */
     @RequestMapping("/ajaxIndexData.do")
     @ResponseBody
-    public String indexDataAjax(HttpServletRequest req){
+    public String indexDataAjax(HttpServletRequest req) {
         JSONObject object = new JSONObject();
         try {
             ComUser user = getComUser(req);
@@ -104,18 +105,19 @@ public class ShopIndexController extends BaseController {
             if (agentNum != null) {
                 for (PfUserSku pfUserSku : agentNum) {
                     CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
-                    numb += countGroup.getCount() - 1;
-                    countNum = countGroup.getGroupMoney().add(countNum);
-                    orderNum += countGroup.getOrderNum();
+                    CountGroup countRecommendGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
+                    numb += countGroup.getCount() + countRecommendGroup.getR_count();
+                    countNum = countGroup.getGroupMoney().add(countRecommendGroup.getR_groupMoney()).add(countNum);
+                    orderNum += countGroup.getOrderNum() + countRecommendGroup.getR_orderNum();
                 }
             }
             NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
             object.put("count", numb);
             object.put("groupSum", rmbFormat.format(countNum));
             object.put("orderNum", orderNum);
-            object.put("isError",false);
-        }catch (Exception e){
-            object.put("isError",true);
+            object.put("isError", false);
+        } catch (Exception e) {
+            object.put("isError", true);
             log.info(e.getMessage());
         }
         return object.toJSONString();

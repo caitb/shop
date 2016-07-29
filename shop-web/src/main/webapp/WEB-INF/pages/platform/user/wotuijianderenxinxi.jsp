@@ -25,15 +25,15 @@
         </header>
        <nav>
            <p>
-               <span>123</span>
+               <span>${pfUserStatistics.upOrderCount}</span>
                <span>进货次数</span>
            </p>
            <p>
-               <span>31</span>
+               <span>${pfUserStatistics.costFee}</span>
                <span>进货总额</span>
            </p>
            <p>
-               <span>111</span>
+               <span>${countGroup.count}</span>
                <span>ta的推荐团队</span>
            </p>
        </nav>

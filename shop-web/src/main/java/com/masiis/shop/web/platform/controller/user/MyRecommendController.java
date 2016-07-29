@@ -6,6 +6,7 @@ import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.recommend.MyRecommendPo;
+import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
@@ -58,6 +59,8 @@ public class MyRecommendController extends BaseController{
     @Resource
     private PfUserSkuService pfUserSkuService;
 
+    @Resource
+    private CountGroupService countGroupService;
 //    /**
 //     * 我的推荐
 //     * @author muchaofeng
@@ -215,6 +218,10 @@ public class MyRecommendController extends BaseController{
             List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
             List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
 
+            for (UserRecommend userRecommend :sumByUserPid){
+                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),userRecommend.getSkuId());
+                userRecommend.setCountGroup(countGroupService.countGroupInfo(pfUserSku.getTreeCode()));
+            }
             List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
             if(pfUserSkuList==null){
                 throw new BusinessException("代理商品异常，初始化商品列表失败");
@@ -278,9 +285,15 @@ public class MyRecommendController extends BaseController{
             ComSku skuName = skuService.getSkuName(skuId);
             ComUser user = userService.getUserById(userId);
             ComAgentLevel agentLevel = comAgentLevelService.selectByPrimaryKey(certificate.getAgentLevelId());
+            //进货信息
+            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId, skuId);
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+            CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
             modelAndView.addObject("skuName",skuName.getName());
             modelAndView.addObject("userName",user.getRealName());
             modelAndView.addObject("agentLevelName",agentLevel.getName());
+            modelAndView.addObject("pfUserStatistics",pfUserStatistics);
+            modelAndView.addObject("countGroup",countGroup);
             modelAndView.setViewName("platform/user/wotuijianderenxinxi");
             return modelAndView;
         }catch (Exception e){

@@ -7,8 +7,6 @@
  */
 package com.masiis.shop.dao.po;
 
-import java.util.Date;
-
 public class SfTurnTableGift {
 
     /**
@@ -20,6 +18,14 @@ public class SfTurnTableGift {
      */
     private Integer turnTableId;
     /**
+     * 奖品id
+     */
+    private Integer giftId;
+    /**
+     * 奖品奖励数量
+     */
+    private Integer quantity;
+    /**
      * 奖品的总数量
      */
     private Integer toatalQuantity;
@@ -28,21 +34,17 @@ public class SfTurnTableGift {
      */
     private Integer giftedQuantity;
     /**
-     * 序号(奖品处于转盘的位置)
+     * 序号(奖品处于转盘的位置,小到大)
      */
-    private Integer serialNumber;
+    private Integer sort;
     /**
      * 中奖的概率
      */
     private Integer probability;
     /**
-     * 创建时间
+     * 备注
      */
-    private Date createTime;
-    /**
-     * 修改时间
-     */
-    private Date updateTime;
+    private String remark;
 
     public Integer getId() {
         return id;
@@ -56,6 +58,18 @@ public class SfTurnTableGift {
     public void setTurnTableId(Integer turnTableId) {
         this.turnTableId = turnTableId;
     }
+    public Integer getGiftId() {
+        return giftId;
+    }
+    public void setGiftId(Integer giftId) {
+        this.giftId = giftId;
+    }
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
     public Integer getToatalQuantity() {
         return toatalQuantity;
     }
@@ -68,11 +82,11 @@ public class SfTurnTableGift {
     public void setGiftedQuantity(Integer giftedQuantity) {
         this.giftedQuantity = giftedQuantity;
     }
-    public Integer getSerialNumber() {
-        return serialNumber;
+    public Integer getSort() {
+        return sort;
     }
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
     public Integer getProbability() {
         return probability;
@@ -80,16 +94,10 @@ public class SfTurnTableGift {
     public void setProbability(Integer probability) {
         this.probability = probability;
     }
-    public Date getCreateTime() {
-        return createTime;
+    public String getRemark() {
+        return remark;
     }
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

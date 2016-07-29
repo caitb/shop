@@ -16,6 +16,14 @@ public class SfUserTurnTable {
      */
     private Long id;
     /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
+     * 创建人
+     */
+    private Long createMan;
+    /**
      * 用户id
      */
     private Long userId;
@@ -32,19 +40,31 @@ public class SfUserTurnTable {
      */
     private Integer usedTimes;
     /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
      * 更新时间
      */
     private Date updateTime;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public Long getCreateMan() {
+        return createMan;
+    }
+    public void setCreateMan(Long createMan) {
+        this.createMan = createMan;
     }
     public Long getUserId() {
         return userId;
@@ -70,16 +90,16 @@ public class SfUserTurnTable {
     public void setUsedTimes(Integer usedTimes) {
         this.usedTimes = usedTimes;
     }
-    public Date getCreateTime() {
-        return createTime;
-    }
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
     public Date getUpdateTime() {
         return updateTime;
     }
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

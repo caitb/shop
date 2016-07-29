@@ -3,6 +3,8 @@
 <mapper namespace="com.masiis.shop.dao.mall.promotion.SfTurnTableMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfTurnTable" >
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
@@ -20,19 +22,23 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTable" >
-        insert into sf_turn_table (id, name, code, 
-            status, describe, begin_time, 
-            end_time, modify_time, modify_man, 
-            remark)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
-            #{status,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
-            #{endTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, 
-            #{remark,jdbcType=VARCHAR})
+        insert into sf_turn_table (id, create_time, create_man, 
+            name, code, status, 
+            describe, begin_time, end_time, 
+            modify_time, modify_man, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{describe,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+            #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTable" >
         update sf_turn_table
-        set name = #{name,jdbcType=VARCHAR},
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            name = #{name,jdbcType=VARCHAR},
             code = #{code,jdbcType=VARCHAR},
             status = #{status,jdbcType=INTEGER},
             describe = #{describe,jdbcType=VARCHAR},
@@ -45,15 +51,15 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, code, status, describe, begin_time, end_time, modify_time, modify_man, 
-        remark
+        select id, create_time, create_man, name, code, status, describe, begin_time, end_time, 
+        modify_time, modify_man, remark
         from sf_turn_table
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, name, code, status, describe, begin_time, end_time, modify_time, modify_man, 
-        remark
+        select id, create_time, create_man, name, code, status, describe, begin_time, end_time, 
+        modify_time, modify_man, remark
         from sf_turn_table
     </select>
 

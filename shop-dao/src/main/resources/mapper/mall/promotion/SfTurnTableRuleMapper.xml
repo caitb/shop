@@ -3,14 +3,15 @@
 <mapper namespace="com.masiis.shop.dao.mall.promotion.SfTurnTableRuleMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfTurnTableRule" >
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
         <result column="times" property="times" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
         <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -19,39 +20,40 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" >
-        insert into sf_turn_table_rule (id, turn_table_id, times, 
-            status, type, remark, 
-            create_time, modify_time, modify_man
-            )
-        values (#{id,jdbcType=INTEGER}, #{turnTableId,jdbcType=INTEGER}, #{times,jdbcType=INTEGER}, 
-            #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-            #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}
-            )
+        insert into sf_turn_table_rule (id, create_time, create_man, 
+            turn_table_id, times, status, 
+            type, modify_time, modify_man, 
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{turnTableId,jdbcType=INTEGER}, #{times,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{type,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, 
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" >
         update sf_turn_table_rule
-        set turn_table_id = #{turnTableId,jdbcType=INTEGER},
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            turn_table_id = #{turnTableId,jdbcType=INTEGER},
             times = #{times,jdbcType=INTEGER},
             status = #{status,jdbcType=INTEGER},
             type = #{type,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR},
-            create_time = #{createTime,jdbcType=TIMESTAMP},
             modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-            modify_man = #{modifyMan,jdbcType=BIGINT}
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, turn_table_id, times, status, type, remark, create_time, modify_time, 
-        modify_man
+        select id, create_time, create_man, turn_table_id, times, status, type, modify_time, 
+        modify_man, remark
         from sf_turn_table_rule
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, turn_table_id, times, status, type, remark, create_time, modify_time, 
-        modify_man
+        select id, create_time, create_man, turn_table_id, times, status, type, modify_time, 
+        modify_man, remark
         from sf_turn_table_rule
     </select>
 

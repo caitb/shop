@@ -16,6 +16,14 @@ public class SfTurnTable {
      */
     private Integer id;
     /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
+     * 创建人
+     */
+    private Long createMan;
+    /**
      * 转盘名称
      */
     private String name;
@@ -57,6 +65,18 @@ public class SfTurnTable {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public Long getCreateMan() {
+        return createMan;
+    }
+    public void setCreateMan(Long createMan) {
+        this.createMan = createMan;
     }
     public String getName() {
         return name;

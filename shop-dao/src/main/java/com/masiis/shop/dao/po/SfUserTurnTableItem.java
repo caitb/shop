@@ -16,13 +16,17 @@ public class SfUserTurnTableItem {
      */
     private Long id;
     /**
-     * 转盘id
+     * 创建时间
      */
-    private Integer turnTableId;
+    private Date createTime;
     /**
      * 用户转盘id
      */
     private Long userTurnTableId;
+    /**
+     * 转盘id
+     */
+    private Integer turnTableId;
     /**
      * 规则id
      */
@@ -32,17 +36,13 @@ public class SfUserTurnTableItem {
      */
     private Integer type;
     /**
-     * 备注
-     */
-    private String remark;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
      * 次数
      */
     private Integer times;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Long getId() {
         return id;
@@ -50,17 +50,23 @@ public class SfUserTurnTableItem {
     public void setId(Long id) {
         this.id = id;
     }
-    public Integer getTurnTableId() {
-        return turnTableId;
+    public Date getCreateTime() {
+        return createTime;
     }
-    public void setTurnTableId(Integer turnTableId) {
-        this.turnTableId = turnTableId;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
     public Long getUserTurnTableId() {
         return userTurnTableId;
     }
     public void setUserTurnTableId(Long userTurnTableId) {
         this.userTurnTableId = userTurnTableId;
+    }
+    public Integer getTurnTableId() {
+        return turnTableId;
+    }
+    public void setTurnTableId(Integer turnTableId) {
+        this.turnTableId = turnTableId;
     }
     public Integer getTurnTableRuleId() {
         return turnTableRuleId;
@@ -74,22 +80,16 @@ public class SfUserTurnTableItem {
     public void setType(Integer type) {
         this.type = type;
     }
-    public String getRemark() {
-        return remark;
-    }
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-    public Date getCreateTime() {
-        return createTime;
-    }
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
     public Integer getTimes() {
         return times;
     }
     public void setTimes(Integer times) {
         this.times = times;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

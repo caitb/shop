@@ -16,6 +16,14 @@ public class SfTurnTableRule {
      */
     private Integer id;
     /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
+     * 创建人
+     */
+    private Long createMan;
+    /**
      * 转盘id
      */
     private Integer turnTableId;
@@ -32,14 +40,6 @@ public class SfTurnTableRule {
      */
     private Integer type;
     /**
-     * 备注
-     */
-    private String remark;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
      * 修改时间
      */
     private Date modifyTime;
@@ -47,12 +47,28 @@ public class SfTurnTableRule {
      * 修改人
      */
     private Long modifyMan;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Integer getId() {
         return id;
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    public Long getCreateMan() {
+        return createMan;
+    }
+    public void setCreateMan(Long createMan) {
+        this.createMan = createMan;
     }
     public Integer getTurnTableId() {
         return turnTableId;
@@ -78,18 +94,6 @@ public class SfTurnTableRule {
     public void setType(Integer type) {
         this.type = type;
     }
-    public String getRemark() {
-        return remark;
-    }
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-    public Date getCreateTime() {
-        return createTime;
-    }
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
     public Date getModifyTime() {
         return modifyTime;
     }
@@ -101,5 +105,11 @@ public class SfTurnTableRule {
     }
     public void setModifyMan(Long modifyMan) {
         this.modifyMan = modifyMan;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

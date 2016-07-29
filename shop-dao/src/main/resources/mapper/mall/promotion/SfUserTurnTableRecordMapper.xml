@@ -3,13 +3,15 @@
 <mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserTurnTableRecordMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
         <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
         <result column="turn_table_gift_id" property="turnTableGiftId" jdbcType="INTEGER" />
         <result column="gorder_id" property="gorderId" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -18,36 +20,40 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
-        insert into sf_user_turn_table_record (id, user_id, turn_table_id, 
-            turn_table_gift_id, gorder_id, status, 
-            create_time, update_time)
-        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, 
-            #{turnTableGiftId,jdbcType=INTEGER}, #{gorderId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
-            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+        insert into sf_user_turn_table_record (id, create_time, create_man, 
+            user_id, turn_table_id, turn_table_gift_id, 
+            gorder_id, status, update_time, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{turnTableGiftId,jdbcType=INTEGER}, 
+            #{gorderId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
         update sf_user_turn_table_record
-        set user_id = #{userId,jdbcType=BIGINT},
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
             turn_table_id = #{turnTableId,jdbcType=INTEGER},
             turn_table_gift_id = #{turnTableGiftId,jdbcType=INTEGER},
             gorder_id = #{gorderId,jdbcType=BIGINT},
             status = #{status,jdbcType=INTEGER},
-            create_time = #{createTime,jdbcType=TIMESTAMP},
-            update_time = #{updateTime,jdbcType=TIMESTAMP}
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, user_id, turn_table_id, turn_table_gift_id, gorder_id, status, create_time, 
-        update_time
+        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id, 
+        status, update_time, remark
         from sf_user_turn_table_record
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, user_id, turn_table_id, turn_table_gift_id, gorder_id, status, create_time, 
-        update_time
+        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id, 
+        status, update_time, remark
         from sf_user_turn_table_record
     </select>
 

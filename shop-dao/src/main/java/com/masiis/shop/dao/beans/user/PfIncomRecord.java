@@ -53,6 +53,8 @@ public class PfIncomRecord {
      * B/C端标识   1：B端  2：C端
      */
     private Integer flag;
+
+    private String orderDetail;
     /**
      * 收入
      */
@@ -158,6 +160,14 @@ public class PfIncomRecord {
         this.flag = flag;
     }
 
+    public String getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(String orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+
     public BigDecimal getInCome() {
         return inCome;
     }
@@ -218,10 +228,12 @@ public class PfIncomRecord {
                 }else {
                     setOrderTypeView(BOrderType.getByCode(orderType).getDesc());
                 }
+                setOrderDetail("borderManage/deliveryBorderDetils.html?id=");
                 break;
             }
             case 2 : {
                 setOrderTypeView("店铺订单");
+                setOrderDetail("sfOrderController/sfOrderDetal.html?id=");
             }
         }
     }

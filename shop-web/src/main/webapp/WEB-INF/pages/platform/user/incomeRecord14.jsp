@@ -14,7 +14,7 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/wotuijianderen.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/shourujilu.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
 
 </head>
@@ -60,7 +60,7 @@
                     <span>${pfIncomRecord.yearView}</span>
                     <span>${pfIncomRecord.minView}</span>
                 </p>
-                <img src="${pfIncomRecord.headImg}" alt="">
+                <img src="${pfIncomRecord.headImg}" alt="" onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
                 <div onclick="toPersonIncom(${pfIncomRecord.userId})">
                     <p><span><a>${pfIncomRecord.realName}</a></span> <b>+${pfIncomRecord.inComView}</b></p>
                     <p><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
@@ -177,7 +177,11 @@
     }
     function toBack(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>account/home";
+        window.location.href = basePath + "account/home";
+    }
+    function toOrderDetail(url,orderId){
+        fullShow();
+        window.location.href = basePath + url + orderId;
     }
 </script>
 </body>

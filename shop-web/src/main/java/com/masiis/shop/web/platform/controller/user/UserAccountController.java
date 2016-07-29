@@ -250,7 +250,7 @@ public class UserAccountController extends BaseController{
                 sb.append("<div class=\"sec1\"><p>");
                 sb.append("<span>" + pfIncomRecord.getYearView() + "</span>");
                 sb.append("<span>" + pfIncomRecord.getMinView() + "</span></p>");
-                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\">");
+                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\" onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\">");
                 sb.append("<div onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">");
                 sb.append("<p><span><a>" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
                 sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");

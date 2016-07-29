@@ -45,7 +45,7 @@ public class PfBorderRecommenRewardService {
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
 
-    private static final Integer pageSize = 1;
+    private static final Integer pageSize = 10;
 
     /**
      * 获取推荐人

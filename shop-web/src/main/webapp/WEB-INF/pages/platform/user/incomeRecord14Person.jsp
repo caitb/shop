@@ -14,9 +14,8 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/wotuijianderen.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/shourujilu.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
-
 </head>
 <body>
 <input type="hidden" id="uid" name="uid" value="${comUser.id}"/>

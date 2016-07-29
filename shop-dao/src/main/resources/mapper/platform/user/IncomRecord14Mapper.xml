@@ -12,6 +12,7 @@
         <result column="skuName" property="skuName" jdbcType="VARCHAR" />
         <result column="flag" property="flag" jdbcType="INTEGER" />
         <result column="inCome" property="inCome" jdbcType="DECIMAL" />
+        <result column="viewType" property="viewType" jdbcType="VARCHAR" />
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
@@ -93,7 +94,8 @@
         e. NAME AS skuName,
         1 AS flag,
         a.order_pay_amount AS inCome,
-        a.create_date AS createTime
+        a.create_date AS createTime,
+        CONCAT(a.order_sub_type,',',b.order_type,',',1) AS viewType
         FROM
         pf_user_bill_item a
         INNER JOIN pf_border b ON a.pf_border_id = b.id
@@ -116,7 +118,8 @@
         e. NAME AS skuName,
         2 AS flag,
         a.amount - f.amount AS inCome,
-        a.create_time AS createTime
+        a.create_time AS createTime,
+        CONCAT(a.item_type,',',b.order_type,',',2) AS viewType
         FROM
         sf_shop_bill_item a
         INNER JOIN sf_order b ON a.source_id = b.id

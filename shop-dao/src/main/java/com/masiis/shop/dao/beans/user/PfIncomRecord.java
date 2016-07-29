@@ -66,6 +66,8 @@ public class PfIncomRecord {
      */
     private Date createTime;
 
+    private String viewType;
+
     private String yearView;
 
     private String minView;
@@ -98,7 +100,6 @@ public class PfIncomRecord {
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
-        setOrderTypeView(BOrderType.getByCode(orderType).getDesc());
     }
 
     public String getOrderTypeView() {
@@ -198,5 +199,30 @@ public class PfIncomRecord {
 
     public void setMinView(String minView) {
         this.minView = minView;
+    }
+
+    public String getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(String viewType) {
+        this.viewType = viewType;
+        String[] args = viewType.split(",");
+        Integer flag = Integer.valueOf(args[2]);
+        Integer orderType = Integer.valueOf(args[1]);
+        Integer recommenType = Integer.valueOf(args[0]);
+        switch (flag.intValue()){
+            case 1 : {
+                if (recommenType.intValue() == 2){
+                    setOrderTypeView("推荐奖励");
+                }else {
+                    setOrderTypeView(BOrderType.getByCode(orderType).getDesc());
+                }
+                break;
+            }
+            case 2 : {
+                setOrderTypeView("店铺订单");
+            }
+        }
     }
 }

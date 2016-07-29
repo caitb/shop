@@ -36,75 +36,53 @@
                 <main>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                           <%--<p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>--%>
                             <h2>
-                                <%--订单号：<span>${pb.orderCode}</span>--%>
-                                <span>王平的小店</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}">待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
-
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo">
-                                   <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
-                                    <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
-                                </div>
-                            </div></c:forEach>
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
                                 <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
-                                <p>
-                                    <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                    <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
-                                </p>
+                                    <p>
+                                        <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
+                                    </p>
                                 </c:if>
                             </div>
                         </section></c:forEach>
                     </div>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}" >已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
-                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
-                                </div>
-                            </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
+                            </h2>
+                            <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -116,34 +94,24 @@
                     </div>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}" >已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
-                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
-                                </div>
-                            </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
+                            </h2>
+                            <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -155,34 +123,24 @@
                     </div>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}" >已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
-                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
-                                </div>
-                            </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
+                            </h2>
+                            <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -194,34 +152,24 @@
                     </div>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}" >已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"><b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
-                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo" >
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥<fmt:formatNumber value="${pbi.unitPrice}" pattern="##.##" minFractionDigits="2"></fmt:formatNumber></span><b>x${pbi.quantity}</b></p>
-                                </div>
-                            </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计:￥￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
+                            </h2>
+                            <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -233,34 +181,24 @@
                     </div>
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
-                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}">待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">已付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
-                                <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
-                                <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>
-                                <c:if test="${pb.orderStatus ==6}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付</b></c:if>
-                            </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>')">
-                                <p class="photo">
-                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${pb.shopId}&isOwnShip=<c:if test="${pb.sendMan==0}">0</c:if><c:if test="${pb.sendMan!=0}">1</c:if>">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#333;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
-                                </div>
-                            </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} ${pb.shipMoney}</h1>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
+                                <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
+                            </h2>
+                            <c:forEach items="${pb.sfOrderItems}" var="pbi">
+                                <div class="shangpin" onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}');">
+                                    <p class="photo">
+                                        <a>
+                                            <img src="${pbi.skuUrl}" alt="">
+                                        </a>
+                                    </p>
+                                    <div>
+                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
+                                    </div>
+                                </div></c:forEach>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -300,7 +238,6 @@
                
            </div>
        <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
-       <%--<script src="<%=path%>/static/js/common/commonAjax.js"></script>--%>
        <script src="<%=path%>/static/js/pageJs/jinhuoshijian.js"></script>
        <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -323,44 +260,20 @@
                            $.each(data, function(i, sfOrder) {
                                var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
                                trHtml+="<section class='sec1'>";
-                               trHtml+="<p>时间: <span>"+time2 +"</span></p>";
-                               if(sfOrder.orderStatus==0){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"'>待付款</b></h2>";
-                               }else if(sfOrder.orderStatus ==7){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"'>待发货</b></h2>";
-                               }else if(sfOrder.orderStatus ==8){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"'>待收货</b></h2>";
-                               }else if(sfOrder.orderStatus ==3){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已完成</b ></h2>";
-                               }else if(sfOrder.orderStatus ==1){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已付款</b ></h2>";
-                               }else if(sfOrder.orderStatus ==2){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已取消</b ></h2>";
-                               }else if(sfOrder.orderStatus ==4){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >退款中</b ></h2>";
-                               }else if(sfOrder.orderStatus ==5){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已退款</b ></h2>";
-                               }else if(sfOrder.orderStatus ==6){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >排单中</b ></h2>";
-                               }else if(sfOrder.orderStatus ==9){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >线下支付</b ></h2>";
-                               }
-                               var sendMan ="";
-                               if(sfOrder.sendMan==0){
-                                   sendMan="0";
-                               }else{
-                                   sendMan="1";
-                               }
+                               trHtml+="<h2>";
+                               trHtml+="<span onclick=\"javascript:window.location.replace('<%=path%>/"+sfOrder.shopId+"/0/shop.shtml');\">"+sfOrder.shopName+"</span>";
+                               trHtml+="<b class=\"querenshouhuo_"+sfOrder.id+"\">"+sfOrder.orderStatusDes+"</b>";
+                               trHtml+="</h2>";
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
-                                   trHtml+="<div class=\"shangpin\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+"&isOwnShip="+sendMan+" ')\">";
-                                   trHtml+=" <p class=\"photo\">";
-                                   trHtml+="<a href=\"<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId="+sfOrder.shopId+"&isOwnShip="+sendMan+"\">";
-                                   trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
-                                   trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#333;\">￥"+sfOrderItem.skuMoney+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
+                                   trHtml+="<div class=\"shangpin\" onclick=\"javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"');\">";
+                                   trHtml+="<p class=\"photo\">";
+                                   trHtml+="<a><img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
+                                   trHtml+="<div>";
+                                   trHtml+="<h2>"+sfOrderItem.skuName+"<span>零售价：￥"+sfOrderItem.unitPrice+"</span></h2>";
+                                   trHtml+="<p class=\"defult\"><span style=\"float:none;color:#666666;\">x"+sfOrderItem.quantity+"</span><b>合计：￥"+sfOrder.orderAmount+"</b></p>";
+                                   trHtml+="</div></div>";
                                })
-//                               if(sfOrder.orderAmount){}
-                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderMoney+" "+sfOrder.shipMoney+" ";
-                               trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
+                               trHtml+="<div class=\"ding\"><p>时间："+time2+"</p>";
                                if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
                                    trHtml+="<p>";
                                    if(sfOrder.orderStatus ==8 ){

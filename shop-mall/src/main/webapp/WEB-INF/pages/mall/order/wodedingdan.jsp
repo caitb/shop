@@ -37,7 +37,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -66,7 +66,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -95,7 +95,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -124,7 +124,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -153,7 +153,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -182,7 +182,7 @@
                     <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                             <h2>
-                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/${userPid}/shop.shtml');">${pb.shopName}</span>
+                                <span onclick="javascript:window.location.replace('<%=path%>/${pb.shopId}/0/shop.shtml');">${pb.shopName}</span>
                                 <b class="querenshouhuo_${pb.id}">${pb.orderStatusDes}</b>
                             </h2>
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -257,12 +257,11 @@
                        dataType:"Json",
                        success:function(data){
                            var trHtml = "";
-                           var userPid = ${userPid};
                            $.each(data, function(i, sfOrder) {
                                var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
                                trHtml+="<section class='sec1'>";
                                trHtml+="<h2>";
-                               trHtml+="<span onclick=\"javascript:window.location.replace('<%=path%>/"+sfOrder.shopId+"/"+userPid+"/shop.shtml');\">"+sfOrder.shopName+"</span>";
+                               trHtml+="<span onclick=\"javascript:window.location.replace('<%=path%>/"+sfOrder.shopId+"/0/shop.shtml');\">"+sfOrder.shopName+"</span>";
                                trHtml+="<b class=\"querenshouhuo_"+sfOrder.id+"\">"+sfOrder.orderStatusDes+"</b>";
                                trHtml+="</h2>";
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {

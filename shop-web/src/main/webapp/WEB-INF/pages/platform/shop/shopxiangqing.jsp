@@ -27,33 +27,36 @@
     <main>
         <div id="box">
             <div class="sec1">
-                <c:if test="${borderDetail.pfBorder.orderStatus ==7}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7}">
                     <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 35px;height: 25px;top: 18px;">
                     <h1>未发货</h1><p>亲，请及时发货~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus ==0 }">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==0 }">
                     <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>未付款</h1><p>亲，订单还未处理~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus ==8}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==8}">
                     <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 48px;height: 25px;top: 18px;">
                     <h1>未收货</h1><p>亲，订单还未完结~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==3}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==3}">
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>已完成</h1><p>亲，交易成功~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==6}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==6}">
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>排单中</h1><p>亲，订单排单中~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==9}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==9}">
                     <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>线下支付中</h1><p>您的下级选择的是线下支付，请耐心等待~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==2}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==2}">
                     <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 35px;height: 37px;top: 14px;"><h1>已取消</h1>
                     <p>亲，您的订单已取消~~</p>
+                </c:if>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7}">
+                    <button class="fah">发货</button>
                 </c:if>
             </div>
             <div class="sec2">
@@ -66,8 +69,8 @@
                 <p><span>支付日期：</span>
                     <span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><c:forEach items="${orderMallDetail.sfOrderPayments}" var="pp"> <span>${pp.payTypeName}</span></c:forEach></p>
-                <p><span>拿货方式：</span><c:if test="${orderMallDetail.sfOrder.sendType==0}">未选择</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1}">平台发货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==2}">自己发货</c:if></p>
-                <p><span>类　　型：</span>店铺订单</p>
+                <p><span>拿货方式：</span><c:if test="${orderMallDetail.sfOrder.sendType==0}"> <span>未选择</span></c:if><c:if test="${orderMallDetail.sfOrder.sendType==1}"> <span>平台发货</span></c:if><c:if test="${orderMallDetail.sfOrder.sendType==2}"> <span>自己发货</span></c:if></p>
+                <p><span>类　　型：</span> <span>店铺订单</span></p>
                 <p><span>物流状态：</span>
                     <c:if test="${orderMallDetail.sfOrder.orderStatus==3}">
                         <span>已完成</span>
@@ -79,15 +82,15 @@
                         <span>待处理</span>
                     </c:if>
                     <c:if test="${orderMallDetail.sfOrder.orderStatus==7 && orderMallDetail.sfOrder.sendType==2}">
-                        <span>未发货</span><a class="fah">发货</a>
+                        <span>未发货</span>
                     </c:if>
                 </p>
-                <p><span>配送方式：</span><span>物流配送</span></p>
-                <p><span>发货时间：</span><span>
+                <p><span>配送方式：</span> <span>物流配送</span></p>
+                <p><span>发货时间：</span> <span>
                     <fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <c:forEach items="${orderMallDetail.sfOrderFreights}" var="bpf">
                     <c:if test="${not empty bpf.freight}">
-                        <p><span>发货单号：</span><span>${bpf.freight}</span></p>
+                        <p><span>发货单号：</span> <span>${bpf.freight}</span></p>
                     </c:if>
                 </c:forEach>
             </div>
@@ -135,19 +138,24 @@
         </div>
     </main>
 </div>
-</div>
-<div class="back_que" style="display: none">
-    <p>确认发货?</p>
-    <h4>快递公司:<select id="select">
-        <c:forEach items="${comShipMans}" var="comShipMans">
-            <option value="${comShipMans.id}">${comShipMans.name}</option>
-        </c:forEach>
-    </select></h4>
-    <h4>快递单号:<input type="text" id="input"/></h4>
-    <h3 id="faHuo">发货</h3>
-</div>
-<div class="back" style="display: none">
-</div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_que">
+        <div class="backt">
+            <h1>发货信息</h1>
+            <p>
+                <span>快递公司：</span>
+                <label for="" class="bWidth"><b></b><select class="se">
+                    <c:forEach items="${comShipMans}" var="comShipMans">
+                        <option value="${comShipMans.id}">${comShipMans.name}</option>
+                    </c:forEach>
+                </select>
+                </label>
+            </p>
+            <p><span>快递单号：</span><input type="text" id="input"/></p>
+            <button id="faHuo">发货</button>
+        </div>
+    </div>
 </div>
 <script src="<%=path%>/static/shop/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/shop/js/commonAjax.js"></script>
@@ -157,14 +165,17 @@
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
 $(".fah").on("click", function () {
-    $(".back").show();
-    $(".back_que").css("display", "-webkit-box");
+    $(".black").show();
+
+})
+$(".se").on("change",function(){
+    var tabVal=$(".se option:selected").text();
+    $(".bWidth b").html(tabVal);
 })
 $("#faHuo").on("click", function () {
-    $(".back_que").hide();
-    $(".back").hide();
-    var shipManId = $("#select option:selected").val();
-    var shipManName = $("#select option:selected").text();
+    $(".black").hide();
+    var shipManId = $(".se option:selected").val();
+    var shipManName = $(".se option:selected").text();
     var freight = $("#input").val();
     var borderId = ${orderMallDetail.sfOrder.id};
     $.ajax({
@@ -179,13 +190,8 @@ $("#faHuo").on("click", function () {
         }
     })
 })
-$(".close").on("click", function () {
-    $(".back_que").hide();
-    $(".back").hide();
-})
-$(".back").on("click", function () {
-    $(".back_que").hide();
-    $(".back").hide();
+$(".backb").on("click", function () {
+    $(".black").hide();
 })
 </script>
 </body>

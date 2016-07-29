@@ -38,7 +38,7 @@
                 <main>
                     <div class="all">
                         <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}');">
                                 <h2>
                                     订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
                                         <b>${pb.orderStatusDes}</b>
@@ -58,7 +58,7 @@
                     </div>
                         <div class="all">
                             <c:forEach items="${pfBorders}" var="pb">
-                                <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                                <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}');">
                                     <h2>
                                         订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
                                         <b>${pb.orderStatusDes}</b>
@@ -78,7 +78,7 @@
                         </div>
                     <div class="all">
                         <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}');">
                                 <h2>
                                     订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
                                     <b>${pb.orderStatusDes}</b>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="all">
                         <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}');">
                                 <h2>
                                     订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
                                     <b>${pb.orderStatusDes}</b>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="all">
                         <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                            <section class="sec1" onclick="javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}');">
                                 <h2>
                                     订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
                                     <b>${pb.orderStatusDes}</b>
@@ -172,7 +172,7 @@
                                var trHtml = "";
                                $.each(data, function(i, pfBorder) {
                                    var ordertime = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
-                                   trHtml+="<section class=\"sec1\" onclick=\"javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"');\">";
+                                   trHtml+="<section class=\"sec1\" onclick=\"javascript:window.location.replace('<%=path%>/borderManage/deliveryBorderDetils.html?id="+pfBorder.id+"');\">";
                                    trHtml+="<h2>订单号: <span>"+pfBorder.orderCode +"("+pfBorder.orderTypeDes+")</span>";
                                    trHtml+="<b>"+pfBorder.orderStatusDes+"</b>";
                                    trHtml+="</h2>";

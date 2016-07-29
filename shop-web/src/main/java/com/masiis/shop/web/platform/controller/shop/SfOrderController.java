@@ -195,6 +195,29 @@ public class SfOrderController extends BaseController {
         modelAndView.setViewName("platform/shop/dingdanguanli");
         return modelAndView;
     }
+
+    /**
+     * 异步获取收货人信息
+     * jjh
+     * @param id
+     * @return
+     */
+    @RequestMapping("/getSfOrderConsignee.do")
+    @ResponseBody
+    public String getSfOrderConsigneebyId(Long id){
+        JSONObject object = new JSONObject();
+        try {
+            SfOrder sfOrder = sfOrderService.findSforderByorderId(id);
+            SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
+            object.put("sfOrderConsignee",sfOrderConsignee);
+            object.put("buyUser",userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+            object.put("userMsg",sfOrder.getUserMessage());
+            object.put("isError",false);
+        }catch (Exception ex){
+            object.put("isError",true);
+        }
+        return object.toJSONString();
+    }
     /**
      * 异步查询订单
      * @author muchaofeng

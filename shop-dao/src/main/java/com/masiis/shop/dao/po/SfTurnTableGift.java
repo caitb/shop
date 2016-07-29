@@ -42,6 +42,10 @@ public class SfTurnTableGift {
      */
     private Integer probability;
     /**
+     * 状态(0:生效1:失效)
+     */
+    private Integer status;
+    /**
      * 备注
      */
     private String remark;
@@ -93,6 +97,12 @@ public class SfTurnTableGift {
     }
     public void setProbability(Integer probability) {
         this.probability = probability;
+    }
+    public Integer getStatus() {
+        return status;
+    }
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     public String getRemark() {
         return remark;

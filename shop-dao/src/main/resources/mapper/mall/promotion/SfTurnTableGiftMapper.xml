@@ -10,6 +10,7 @@
         <result column="gifted_quantity" property="giftedQuantity" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="probability" property="probability" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -21,12 +22,12 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
         insert into sf_turn_table_gift (id, turn_table_id, gift_id, 
             quantity, toatal_quantity, gifted_quantity, 
-            sort, probability, remark
-            )
+            sort, probability, status, 
+            remark)
         values (#{id,jdbcType=INTEGER}, #{turnTableId,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER}, 
             #{quantity,jdbcType=INTEGER}, #{toatalQuantity,jdbcType=INTEGER}, #{giftedQuantity,jdbcType=INTEGER}, 
-            #{sort,jdbcType=INTEGER}, #{probability,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
-            )
+            #{sort,jdbcType=INTEGER}, #{probability,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
@@ -38,20 +39,21 @@
             gifted_quantity = #{giftedQuantity,jdbcType=INTEGER},
             sort = #{sort,jdbcType=INTEGER},
             probability = #{probability,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort, 
-        probability, remark
+        probability, status, remark
         from sf_turn_table_gift
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort, 
-        probability, remark
+        probability, status, remark
         from sf_turn_table_gift
     </select>
 

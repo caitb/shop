@@ -27,8 +27,8 @@
 <input type="hidden" id="totalCount" name="totalCount" value="${pfIncomRecordPo.totalCount}"/>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>我的收入</p>
+        <a href="#" onClick="toBack()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <p>收入记录</p>
     </header>
 
     <div class="floor">
@@ -174,6 +174,10 @@
     function toPersonIncom(uid){
         fullShow();
         window.location.href = basePath+"account/getIncomRecord14Person.shtml?uid="+uid;
+    }
+    function toBack(){
+        fullShow();//跳转页面钱展示全屏遮罩loading...
+        window.location.href="<%=basePath%>account/home";
     }
 </script>
 </body>

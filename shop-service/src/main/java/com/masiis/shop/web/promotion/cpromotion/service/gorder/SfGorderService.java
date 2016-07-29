@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
+import com.masiis.shop.common.enums.promotion.SfGorderTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
@@ -35,7 +36,7 @@ public class SfGorderService {
 
 
 
-    public SfGorder addGorder(ComUser comUser, Integer promoId, Integer promoRuleId){
+    public SfGorder addGorder(ComUser comUser, Integer promoId, Integer promoRuleId,SfGorderTypeEnum gorderTypeEnum){
         SfGorder sfGorder = new SfGorder();
         SfUserPromotion promotion = promotionService.selectByPrimaryKey(promoId);
         sfGorder.setCreateTime(new Date());
@@ -44,9 +45,20 @@ public class SfGorderService {
         sfGorder.setPromoRuleId(promoRuleId);
         sfGorder.setUserId(comUser.getId());
         sfGorder.setGorderStatus(SfGOrderPayStatusEnum.ORDER_PAID.getCode());//订单状态
-        sfGorder.setGorderCode(OrderMakeUtils.makeOrder("G"));
-        if (promotion!=null){
-            sfGorder.setGorderType(promotion.getPersonType());//订单类型(粉丝活动或者代言人活动)
+        if (gorderTypeEnum.equals(SfGorderTypeEnum.ORDER_PROMOTION)){
+            //活动订单
+            log.info("---------插入活动订单---------");
+            sfGorder.setGorderCode(OrderMakeUtils.makeOrder("G"));
+            if (promotion!=null){
+                sfGorder.setGorderType(promotion.getPersonType());//订单类型(粉丝活动或者代言人活动)
+            }
+            sfGorder.setRemark("领取奖励插入订单");
+        }else if (gorderTypeEnum.equals(SfGorderTypeEnum.ORDER_TURN_TABLE)){
+            //抽奖订单
+            log.info("---------插入抽奖订单---------");
+            sfGorder.setGorderCode(OrderMakeUtils.makeOrder("T"));
+            sfGorder.setGorderType(SfGorderTypeEnum.ORDER_TURN_TABLE.getCode());//订单类型(抽奖订单)
+            sfGorder.setRemark("抽奖插入订单");
         }
         sfGorder.setGorderAmount(BigDecimal.ZERO);//订单金额
         sfGorder.setProductAmount(BigDecimal.ZERO);//奖品金额
@@ -58,13 +70,12 @@ public class SfGorderService {
         sfGorder.setPayStatus(SfGOrderPayStatusEnum.ORDER_PAID.getCode());//支付状态
         sfGorder.setIsShip(0);
         sfGorder.setIsReceipt(0);
-        sfGorder.setRemark("领取奖励插入订单");
         int  i = sfGorderMapper.insert(sfGorder);
         if (i==1){
             return sfGorder;
         }else{
-            log.info("领取奖励插入订单失败");
-            throw new BusinessException("领取奖励插入订单失败");
+            log.info("插入订单失败");
+            throw new BusinessException("插入订单失败");
         }
     }
 }

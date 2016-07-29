@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 
 import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfGorderTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.po.*;
@@ -97,12 +98,12 @@ public class PromotionGorderService {
         }
         //添加订单
         log.info("添加订单-------------start");
-        SfGorder sfGorder = gorderService.addGorder(comUser,promoId,promoRuleId);
+        SfGorder sfGorder = gorderService.addGorder(comUser,promoId,promoRuleId, SfGorderTypeEnum.ORDER_PROMOTION);
         log.info("添加订单---------------end");
         //添加订单item
         log.info("添加订单item------start");
         log.info("订单id-------------"+sfGorder.getId());
-        List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(sfGorder.getId(),sfGorder.getGorderType(),promoId,promoRuleId);
+        List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(sfGorder.getId(),SfGorderTypeEnum.ORDER_PROMOTION,promoId,promoRuleId);
         log.info("添加订单item-------end");
         //添加订单操作日志
         log.info("添加订单操作日志-------start");

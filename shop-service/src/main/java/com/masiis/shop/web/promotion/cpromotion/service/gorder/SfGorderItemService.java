@@ -2,6 +2,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.enums.promotion.SfGorderTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.PromotionGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfGorderItemMapper;
@@ -31,7 +32,22 @@ public class SfGorderItemService {
     @Resource
     private SfUserPromotionGiftService promotionGiftService;
 
-    public List<PromotionGiftInfo> addGorDerItem(Long gorderId,Integer gorderType,Integer promoId,Integer promoRuleId){
+
+    public List<PromotionGiftInfo> addGorDerItem(Long gorderId,SfGorderTypeEnum gorderTypeEnum,Integer promoId,Integer promoRuleId){
+        switch (gorderTypeEnum){
+            case ORDER_PROMOTION :
+                return addGorDerItemForPromotion(gorderId,gorderTypeEnum,promoId,promoRuleId);
+            case ORDER_TURN_TABLE:
+            default:
+                return null;
+        }
+    }
+
+    public void addGorDerItemForTurnTable(){
+
+    }
+
+    public List<PromotionGiftInfo>  addGorDerItemForPromotion(Long gorderId,SfGorderTypeEnum gorderTypeEnum,Integer promoId,Integer promoRuleId){
         List<PromotionGiftInfo> promotionGiftInfos =  promotionGiftService.getPromoGiftInfosByPromoIdAndRuleId(promoId,promoRuleId,false);
         for (PromotionGiftInfo giftInfo:promotionGiftInfos){
             SfGorderItem sfGorderItem = new SfGorderItem();

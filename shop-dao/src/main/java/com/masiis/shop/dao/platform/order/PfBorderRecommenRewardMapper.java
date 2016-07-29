@@ -56,7 +56,17 @@ public interface PfBorderRecommenRewardMapper {
      */
     ComUser selectRecommenUser(Long borderId);
 
+    /**
+     * 查询推荐收入奖励订单
+     * @param userId
+     * @return
+     */
     List<RecommenOrder> selectIncomeRecommenOrder(@Param("userId") Long userId);
 
+    /**
+     * 推荐人发出奖励订单
+     * @param userId
+     * @return
+     */
     List<RecommenOrder> selectSendRecommenOrder(@Param("userId") Long userId);
 }

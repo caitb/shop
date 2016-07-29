@@ -45,7 +45,7 @@ public class PfBorderRecommenRewardService {
     @Resource
     private PfUserRecommendRelationService pfUserRecommendRelationService;
 
-    private static final Integer pageSize = 10;
+    private static final Integer pageSize = 1;
 
     /**
      * 获取推荐人
@@ -129,14 +129,40 @@ public class PfBorderRecommenRewardService {
         myRecommendPo.setIncomeRewards(pfUserStatistics.getRecommenGetFee());
         myRecommendPo.setSendRewards(pfUserStatistics.getRecommenSendFee());
         Page pageHelp = PageHelper.startPage(pageNum, pageSize);
+        List<RecommenOrder> recommenOrders = pfBorderRecommenRewardMapper.selectIncomeRecommenOrder(userId);
         myRecommendPo.setCurrentPage(pageHelp.getPageNum());
         myRecommendPo.setTotalCount(pageHelp.getTotal());
-        List<RecommenOrder> recommenOrders = pfBorderRecommenRewardMapper.selectIncomeRecommenOrder(userId);
         myRecommendPo.setRecommenOrders(recommenOrders);
         return myRecommendPo;
     }
 
-//    public List<RecommenOrder> getRecommenRewardOrder(Long userId, Integer currentPage){
-//
-//    }
+    /**
+     * 查询订单列表
+     * @param userId        用户id
+     * @param currentPage   当前页码
+     * @param tab           查询tab  0：收入奖励订单  1：发出奖励订单
+     * @return
+     */
+    public MyRecommendPo getRecommenRewardOrder(Long userId, Integer currentPage, Integer tab){
+        log.info("查询订单列表....................");
+        MyRecommendPo myRecommendPo = new MyRecommendPo();
+        Page pageHelp = PageHelper.startPage(currentPage + 1, pageSize);
+        List<RecommenOrder> recommenOrders = null;
+        switch (tab.intValue()){
+            case 0 : {
+                //获得奖励订单
+                recommenOrders = pfBorderRecommenRewardMapper.selectIncomeRecommenOrder(userId);
+                break;
+            }
+            case 1 : {
+                //发出奖励订单
+                recommenOrders = pfBorderRecommenRewardMapper.selectSendRecommenOrder(userId);
+                break;
+            }
+        }
+        myRecommendPo.setTotalCount(pageHelp.getTotal());
+        myRecommendPo.setCurrentPage(pageHelp.getPageNum());
+        myRecommendPo.setRecommenOrders(recommenOrders);
+        return myRecommendPo;
+    }
 }

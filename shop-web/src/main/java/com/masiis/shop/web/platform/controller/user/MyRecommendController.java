@@ -2,10 +2,12 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.recommend.MyRecommendPo;
+import com.masiis.shop.dao.beans.recommend.RecommenOrder;
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -200,7 +203,6 @@ public class MyRecommendController extends BaseController{
         return null;
     }
 
-
     /**
      * 我推荐的详情列表
      * @author muchaofeng
@@ -237,6 +239,7 @@ public class MyRecommendController extends BaseController{
         }
         return null;
     }
+
 
     /**
      * 条件查询我推荐的详情列表
@@ -289,7 +292,72 @@ public class MyRecommendController extends BaseController{
         }
         return null;
     }
-    
+
+    /**
+     * ajax查询订单列表
+     * @param request
+     * @param currentPage   当前页码
+     * @param tab           查询tab  0：收入奖励订单  1：发出奖励订单
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/myRecommen.do")
+    @ResponseBody
+    public String ajaxMyRecommen(HttpServletRequest request,
+                                 @RequestParam(value = "currentPage", required = true) Integer currentPage,
+                                 @RequestParam(value = "tab", required = true) Integer tab) throws Exception{
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("用户未登录！");
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            MyRecommendPo myRecommendPo = pfBorderRecommenRewardService.getRecommenRewardOrder(comUser.getId(), currentPage, tab);
+            jsonObject.put("isTrue","true");
+            jsonObject.put("pageNum",myRecommendPo.getCurrentPage());
+            jsonObject.put("totalCount",myRecommendPo.getTotalCount());
+            StringBuffer sb = new StringBuffer("");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            switch (tab.intValue()){
+                case 0 : {
+                    for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
+                        sb.append("<section class=\"sec1\">");
+                        sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
+                        sb.append("<div class=\"shangpin\">");
+                        sb.append("<div>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "(" + recommenOrder.getUnitPriceView() + ")</span><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span></h2>");
+                        sb.append("<h3><b>奖励：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("</div></div>");
+                        sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
+                        sb.append("<span class=\"jixu\">发奖励的人：" + recommenOrder.getSendUserName() + "</span></p></section>");
+                    }
+                    break;
+                }
+                case 1 : {
+                    for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
+                        sb.append("<section class=\"sec1\">");
+                        sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
+                        sb.append("<div class=\"shangpin\">");
+                        sb.append("<div>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "(" + recommenOrder.getUnitPriceView() + ")</span><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span></h2>");
+                        sb.append("<h3><b>支出：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("</div></div>");
+                        sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
+                        sb.append("<span class=\"jixu\">获得奖励的人：" + recommenOrder.getReceiveUserName() + "</span></p></section>");
+                    }
+                    break;
+                }
+            }
+            jsonObject.put("html",sb.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","查询出错");
+        }
+        log.info(jsonObject.toString());
+        return jsonObject.toString();
+    }
+
     /**
      * 获得奖励订单
      * @author muchaofeng

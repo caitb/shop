@@ -170,7 +170,7 @@
             b.create_time as createTime
         FROM
             pf_border a
-        INNER JOIN pf_border_recommen_reward b ON a.id = b.pf_border_id AND b.pay_status = 1
+        INNER JOIN pf_border_recommen_reward b ON a.id = b.pf_border_id AND a.pay_status = 1
         LEFT JOIN com_user c ON a.user_id = c.id
         LEFT JOIN com_user d ON b.recommen_user_id = d.id
         LEFT JOIN com_sku e ON b.sku_id = e.id

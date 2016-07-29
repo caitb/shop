@@ -136,7 +136,8 @@
     line-height: 30px;
     border-top: 1px solid #f6f6f6;
     padding: 5px 10px;
-    position: relative;
+    -webkit-box-pack:justify;
+    -webkit-box-align: center;
 }
 .wrap .box main .all .sec1 .ding p {
     font-size: 12px;
@@ -152,9 +153,6 @@
     border-radius: 5px;
     border: 1px solid #FF0000;
     color: #FF5200;
-    position: absolute;
-    right: 10px;
-    top: 8px;
 }
 .shouhuo {
     width: 90%;

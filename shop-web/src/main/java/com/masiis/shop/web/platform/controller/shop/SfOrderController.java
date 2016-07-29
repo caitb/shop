@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
@@ -159,10 +160,20 @@ public class SfOrderController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         Integer sendType=null;
-//        if(orderStatus==7){
-//            sendType=1;
-//        }
         List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId,sendType);
+        for (SfOrder sfOrder :sfOrders){
+            sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
+            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+            if(sfOrder.getSendType()==1){
+                sfOrder.setSendTypeDes("平台发货");
+            }
+            if(sfOrder.getSendType()==2){
+                sfOrder.setSendTypeDes("自己发货");
+            }
+            if(sfOrder.getSendType()==0){
+                sfOrder.setSendTypeDes("未选择");
+            }
+        }
         String index=null;
         if(orderStatus==null){
             index="0";//全部
@@ -215,6 +226,19 @@ public class SfOrderController extends BaseController {
             }else if(index==5){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 2, shopId,null);
             }
+            for (SfOrder sfOrder :sfOrders){
+                sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
+                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+                if(sfOrder.getSendType()==1){
+                    sfOrder.setSendTypeDes("平台发货");
+                }
+                if(sfOrder.getSendType()==2){
+                    sfOrder.setSendTypeDes("自己发货");
+                }
+                if(sfOrder.getSendType()==0){
+                    sfOrder.setSendTypeDes("未选择");
+                }
+            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -225,4 +249,7 @@ public class SfOrderController extends BaseController {
         return sfOrders;
     }
 
+    private String coverCodeSfBorderStatus(Integer status) {
+        return SfOrderStatusEnum.getByCode(status).getDesc();
+    }
 }

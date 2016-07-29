@@ -44,7 +44,7 @@ public class PfUserBillService {
     @Resource
     private IncomRecord14Mapper incomRecord14Mapper;
 
-    private static final Integer pageSize = 1;
+    private static final Integer pageSize = 10;
 
     /**
      * 根据userId查询用户账单表

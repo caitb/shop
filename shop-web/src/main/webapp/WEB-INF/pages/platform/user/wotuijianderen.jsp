@@ -39,15 +39,14 @@
                         </select>
                     </label>
                 </div>
-                <%--<button >查询</button>--%>
             </div>
             <div class="floor2">
                 <c:forEach items="${sumByUserPid}" var="sumByUser">
                     <div class="sec1" onclick="javascript:window.location.href = '${basePath}myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}';">
                         <img src="${sumByUser.wxHeadImg}" alt="">
                         <div>
-                            <p><span>${sumByUser.name} <b>(${sumByUser.agentName})</b></span><span>ta的团队：80人</span></p>
-                            <h1><span>${sumByUser.skuName}</span><span>他的销售额：123人</span></h1>
+                            <p><span>${sumByUser.name} <b>(${sumByUser.agentName})</b></span><span>ta的团队：${sumByUser.countGroup.count}人</span></p>
+                            <h1><span>${sumByUser.skuName}</span><span>ta的销售额：￥${sumByUser.countGroup.groupMoney}</span></h1>
                         </div>
                     </div>
                 </c:forEach>

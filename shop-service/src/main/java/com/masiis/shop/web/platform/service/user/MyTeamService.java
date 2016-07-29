@@ -89,7 +89,7 @@ public class MyTeamService {
 //            Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
 //            Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
 
-            CountGroup countGroup = countGroupService.countGroupInfo(pus.getUserId(), pus.getTreeCode());
+            CountGroup countGroup = countGroupService.countGroupInfo(pus.getTreeCode());
             agentSkuMap.put("countChild", countGroup.getCount()-1);      //团队人数(不包括自己)
             agentSkuMap.put("countSales", countGroup.getGroupMoney());
 
@@ -155,7 +155,7 @@ public class MyTeamService {
 //        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(pfUserSku.getUserId());
 
         Map<String, Object> teamMap = new HashMap<>();
-        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getUserId(), pfUserSku.getTreeCode());
+        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
         teamMap.put("skuName", comSku.getName());//商品名称
         teamMap.put("totalChildren", userIds.size());//直接下级人数
         teamMap.put("countChild", countGroup.getCount()-1-userIds.size());//间接下级人数
@@ -199,7 +199,7 @@ public class MyTeamService {
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         //Map<String, String> curMap = countChild(pfUserSku.getId());
         //Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
-        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getUserId(), pfUserSku.getTreeCode());
+        CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("userId", comUser.getId());

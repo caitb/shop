@@ -266,6 +266,8 @@
     position:absolute;
     left: 0;
     top: 0px;
+    display: block;
+    width: 100%;
 }
 .backt p span{
     display: block;

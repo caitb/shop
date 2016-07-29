@@ -223,7 +223,7 @@
             <h1>发货信息</h1>
             <p>
                 <span>快递公司：</span>
-                <label for=""><b></b><select class="se">
+                <label for="" class="bWidth"><b></b><select class="se">
                 <c:forEach items="${comShipMans}" var="comShipMans">
                 <option value="${comShipMans.id}">${comShipMans.name}</option>
                 </c:forEach>
@@ -275,8 +275,7 @@
         $("li").eq(index).children("a").addClass("on");
         $(".all").eq(index).show().siblings().hide();
         $(".tapfix").hide();
-        $(".se").width($(".backt p label").width());
-        $(".se").height($(".backt p label").height());
+
     });
     function shouhuorenxinxi(a,b,c,d){
         $("#1").html(a);
@@ -341,7 +340,9 @@
             }
         })
     }
-
+    $(".backb").on("click", function () {
+        $(".black").hide();
+    })
     function fahuo(id,event){
         var event=event||event.window;
         event.stopPropagation();

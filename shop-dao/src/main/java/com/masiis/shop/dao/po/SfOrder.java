@@ -163,6 +163,8 @@ public class SfOrder extends BaseOrder {
 
     private String createUserName;//购买人
 
+    private String shopName;//店铺描述
+
     public Long getId() {
         return id;
     }
@@ -408,4 +410,11 @@ public class SfOrder extends BaseOrder {
         this.createUserName = createUserName;
     }
 
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
 }

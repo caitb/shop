@@ -3,9 +3,12 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.beans.user.PfIncomRecord;
+import com.masiis.shop.dao.beans.user.PfIncomRecordPo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.common.service.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserBillService;
@@ -40,6 +43,8 @@ public class UserAccountController extends BaseController{
     private PfUserBillService pfUserBillService;
     @Resource
     private UserExtractApplyService userExtractApplyService;
+    @Resource
+    private UserService userService;
 
     /*@RequestMapping("/home")
     public String accountHome(HttpServletRequest request, Model model) throws Exception{
@@ -168,6 +173,188 @@ public class UserAccountController extends BaseController{
         mv.addObject("record",userBills);
         mv.setViewName("platform/user/incomeRecord");
         return mv;
+    }
+
+    /**
+     * 进入收入记录首页
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/getIncomRecord14.shtml")
+    public ModelAndView getIncomRecord14(HttpServletRequest request) throws Exception{
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if(comUser == null){
+            throw new BusinessException("用户未登录!");
+        }
+        Date date = new Date();
+        Date firstDate = DateUtil.getFirstTimeInMonth(date);
+        Date lastDate = DateUtil.getLastTimeInMonth(date);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        String monthString;
+        if (month < 10){
+            monthString = "0" + month;
+        }else {
+            monthString = String.valueOf(month);
+        }
+        PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14(comUser.getId(), firstDate, lastDate, null, 1);
+        mv.addObject("user",comUser);
+        mv.addObject("year",year);
+        mv.addObject("month",monthString);
+        mv.addObject("pfIncomRecordPo",pfIncomRecordPo);
+        mv.setViewName("platform/user/incomeRecord14");
+        return mv;
+    }
+
+    /**
+     *  ajax查询收入记录
+     * @param date      查询月份
+     * @param flag      B、C端标识  1：B  2：C  0：全部
+     * @param currentPage   当前页
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getIncomRecord14.do")
+    public String getIncomRecord14Ajax(HttpServletRequest request,
+                                       @RequestParam("date") String date,
+                                       @RequestParam("flag") Integer flag,
+                                       @RequestParam("currentPage") Integer currentPage) throws Exception{
+        log.info("ajax查询收入记录");
+        log.info("date = " + date);
+        log.info("flag = " + flag);
+        log.info("currentPage = " + currentPage);
+        ComUser sessionUser = getComUser(request);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (sessionUser == null){
+                throw new BusinessException("用户未登录!");
+            }
+            log.info("userId = " + sessionUser.getId());
+            Date dateTime = DateUtil.String2Date(date);
+            Date firstDate = DateUtil.getFirstTimeInMonth(dateTime);
+            Date lastDate = DateUtil.getLastTimeInMonth(dateTime);
+            if (flag.intValue() == 0){
+                flag = null;
+            }
+            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14(sessionUser.getId(), firstDate, lastDate, flag, currentPage + 1);
+            jsonObject.put("isTrue","true");
+            jsonObject.put("currentPage", pfIncomRecordPo.getPageNum());
+            jsonObject.put("totalCount", pfIncomRecordPo.getTotalCount());
+            jsonObject.put("totalIncom", pfIncomRecordPo.getTotalIncomView());
+            StringBuffer sb = new StringBuffer("");
+            for (PfIncomRecord pfIncomRecord : pfIncomRecordPo.getPfIncomRecords()){
+                sb.append("<div class=\"sec1\"><p>");
+                sb.append("<span>" + pfIncomRecord.getYearView() + "</span>");
+                sb.append("<span>" + pfIncomRecord.getMinView() + "</span></p>");
+                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\">");
+                sb.append("<div onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">");
+                sb.append("<p><span><a>" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
+                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
+                sb.append("</div></div>");
+            }
+            jsonObject.put("html",sb.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message",e.getMessage());
+        }
+        log.info(jsonObject.toString());
+        return jsonObject.toString();
+    }
+
+    /**
+     * 个人收入记录详情
+     * @param userId    用户id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/getIncomRecord14Person.shtml")
+    public ModelAndView getIncomRecord14Person(@RequestParam(value = "uid", required = true) Long userId,
+                                               HttpServletRequest request) throws Exception{
+        ComUser sessionUser = getComUser(request);
+        if (sessionUser == null){
+            throw new BusinessException("用户未登录!");
+        }
+        log.info("个人收入记录详情");
+        log.info("personUserId = " + userId);
+        ComUser comUser = userService.getUserById(userId);
+        if (comUser == null){
+            throw new BusinessException("用户不存在!");
+        }
+        ModelAndView mv = new ModelAndView();
+        Date date = new Date();
+        Date firstDate = DateUtil.getFirstTimeInMonth(date);
+        Date lastDate = DateUtil.getLastTimeInMonth(date);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        String monthString;
+        if (month < 10){
+            monthString = "0" + month;
+        }else {
+            monthString = String.valueOf(month);
+        }
+        PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14Person(sessionUser.getId(), firstDate, lastDate, null, 1,userId);
+        mv.addObject("comUser",comUser);
+        mv.addObject("year",year);
+        mv.addObject("month",monthString);
+        mv.addObject("pfIncomRecordPo",pfIncomRecordPo);
+        mv.setViewName("platform/user/incomeRecord14Person");
+        return mv;
+    }
+    /**
+     *  ajax查询收入记录
+     * @param date      查询月份
+     * @param currentPage   当前页
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getIncomRecord14Person.do")
+    public String getIncomRecord14PersonAjax(HttpServletRequest request,
+                                       @RequestParam("date") String date,
+                                       @RequestParam("currentPage") Integer currentPage) throws Exception{
+        log.info("ajax查询收入记录");
+        log.info("date = " + date);
+        log.info("currentPage = " + currentPage);
+        ComUser sessionUser = getComUser(request);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (sessionUser == null){
+                throw new BusinessException("用户未登录!");
+            }
+            log.info("userId = " + sessionUser.getId());
+            Date dateTime = DateUtil.String2Date(date);
+            Date firstDate = DateUtil.getFirstTimeInMonth(dateTime);
+            Date lastDate = DateUtil.getLastTimeInMonth(dateTime);
+            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14(sessionUser.getId(), firstDate, lastDate, null, currentPage + 1);
+            jsonObject.put("isTrue","true");
+            jsonObject.put("currentPage", pfIncomRecordPo.getPageNum());
+            jsonObject.put("totalCount", pfIncomRecordPo.getTotalCount());
+            jsonObject.put("totalIncom", pfIncomRecordPo.getTotalIncomView());
+            StringBuffer sb = new StringBuffer("");
+            for (PfIncomRecord pfIncomRecord : pfIncomRecordPo.getPfIncomRecords()){
+                sb.append("<div class=\"sec1\"><p>");
+                sb.append("<span>" + pfIncomRecord.getYearView() + "</span>");
+                sb.append("<span>" + pfIncomRecord.getMinView() + "</span></p>");
+                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\">");
+                sb.append("<div>");
+                sb.append("<p><span><a>" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
+                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
+                sb.append("</div></div>");
+            }
+            jsonObject.put("html",sb.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message",e.getMessage());
+        }
+        log.info(jsonObject.toString());
+        return jsonObject.toString();
     }
 
     /**

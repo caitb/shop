@@ -1,13 +1,23 @@
 package com.masiis.shop.web.platform.service.order;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.masiis.shop.dao.beans.user.CountGroup;
+import com.masiis.shop.dao.beans.recommend.MyRecommendPo;
+import com.masiis.shop.dao.beans.recommend.RecommenOrder;
 import com.masiis.shop.dao.platform.order.PfBorderRecommenRewardMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.CountGroupMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,9 +34,18 @@ public class PfBorderRecommenRewardService {
 
     @Resource
     private ComUserMapper comUserMapper;
-
+    @Resource
+    private CountGroupMapper countGroupMapper;
+    @Resource
+    private PfUserStatisticsService pfUserStatisticsService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
     @Resource
     private PfBorderRecommenRewardMapper pfBorderRecommenRewardMapper;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
+
+    private static final Integer pageSize = 10;
 
     /**
      * 获取推荐人
@@ -80,4 +99,44 @@ public class PfBorderRecommenRewardService {
     public List<PfBorderRecommenReward> selectByPfBorderId(Long orderId){
         return pfBorderRecommenRewardMapper.selectByPfBorderId(orderId);
     }
+
+    /**
+     * 我推荐的人首页service
+     * @param userId
+     * @return
+     */
+    public MyRecommendPo myRecommen(Long userId, Integer pageNum){
+        log.info("我推荐的人首页service");
+        MyRecommendPo myRecommendPo = new MyRecommendPo();
+        PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(userId);
+        //我推荐的人数
+        int myRecommen = pfUserRecommendRelationService.findNumByUserPid(userId);
+        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(userId);
+        //推荐团队总数
+        Integer recommenTeamCount = 0;
+        //总销售额
+        BigDecimal totalSales = new BigDecimal(0);
+        CountGroup countGroup;
+        //计算团队总数及总销售额
+        for (PfUserSku pfUserSku : pfUserSkus){
+            countGroup = countGroupMapper.countRecommendGroup(pfUserSku.getTreeCode());
+            recommenTeamCount += countGroup.getR_count();
+            totalSales = totalSales.add(countGroup.getR_groupMoney());
+        }
+        myRecommendPo.setMyRecommedPeople(myRecommen);
+        myRecommendPo.setRecommenTeamCount(recommenTeamCount);
+        myRecommendPo.setTotalSales(totalSales);
+        myRecommendPo.setIncomeRewards(pfUserStatistics.getRecommenGetFee());
+        myRecommendPo.setSendRewards(pfUserStatistics.getRecommenSendFee());
+        Page pageHelp = PageHelper.startPage(pageNum, pageSize);
+        myRecommendPo.setCurrentPage(pageHelp.getPageNum());
+        myRecommendPo.setTotalCount(pageHelp.getTotal());
+        List<RecommenOrder> recommenOrders = pfBorderRecommenRewardMapper.selectIncomeRecommenOrder(userId);
+        myRecommendPo.setRecommenOrders(recommenOrders);
+        return myRecommendPo;
+    }
+
+//    public List<RecommenOrder> getRecommenRewardOrder(Long userId, Integer currentPage){
+//
+//    }
 }

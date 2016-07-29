@@ -91,7 +91,7 @@
                     </h1>
                     <span>升级管理</span></a>
                 </li>
-                <li class="market"><a class="herf" href="<%=basePath%>myRecommend/feeList">
+                <li class="market"><a class="herf" href="<%=basePath%>myRecommend/myRecommen.shtml">
                     <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
                     <span>我的推荐</span></a>
                 </li>

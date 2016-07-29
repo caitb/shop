@@ -28,7 +28,16 @@ public class PfUserSkuService {
     @Autowired
     private PfSkuAgentMapper pfSkuAgentMapper;
 
-
+    /**
+     * 通过userId查询代理商品关系
+     * @param userId
+     * @return
+     */
+    public List<PfUserSku> getPfUserSkuByUserId(Long userId){
+        PfUserSku pfUserSku = new PfUserSku();
+        pfUserSku.setUserId(userId);
+        return pfUserSkuMapper.selectByCondition(pfUserSku);
+    }
     public int update(PfUserSku po) {
         return pfUserSkuMapper.updateByPrimaryKey(po);
     }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfTurnTableMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfTurnTable" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="describe" property="describe" jdbcType="VARCHAR" />
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from sf_turn_table
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTable" >
+        insert into sf_turn_table (id, name, code, 
+            status, describe, begin_time, 
+            end_time, modify_time, modify_man, 
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+            #{endTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTable" >
+        update sf_turn_table
+        set name = #{name,jdbcType=VARCHAR},
+            code = #{code,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            describe = #{describe,jdbcType=VARCHAR},
+            begin_time = #{beginTime,jdbcType=TIMESTAMP},
+            end_time = #{endTime,jdbcType=TIMESTAMP},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, name, code, status, describe, begin_time, end_time, modify_time, modify_man, 
+        remark
+        from sf_turn_table
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, name, code, status, describe, begin_time, end_time, modify_time, modify_man, 
+        remark
+        from sf_turn_table
+    </select>
+
+</mapper>

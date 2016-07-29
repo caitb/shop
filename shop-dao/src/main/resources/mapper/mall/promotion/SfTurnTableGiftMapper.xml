@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfTurnTableGiftMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfTurnTableGift" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
+        <result column="toatal_quantity" property="toatalQuantity" jdbcType="INTEGER" />
+        <result column="gifted_quantity" property="giftedQuantity" jdbcType="INTEGER" />
+        <result column="serial_number" property="serialNumber" jdbcType="INTEGER" />
+        <result column="probability" property="probability" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from sf_turn_table_gift
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
+        insert into sf_turn_table_gift (id, turn_table_id, toatal_quantity, 
+            gifted_quantity, serial_number, probability, 
+            create_time, update_time)
+        values (#{id,jdbcType=INTEGER}, #{turnTableId,jdbcType=INTEGER}, #{toatalQuantity,jdbcType=INTEGER}, 
+            #{giftedQuantity,jdbcType=INTEGER}, #{serialNumber,jdbcType=INTEGER}, #{probability,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
+        update sf_turn_table_gift
+        set turn_table_id = #{turnTableId,jdbcType=INTEGER},
+            toatal_quantity = #{toatalQuantity,jdbcType=INTEGER},
+            gifted_quantity = #{giftedQuantity,jdbcType=INTEGER},
+            serial_number = #{serialNumber,jdbcType=INTEGER},
+            probability = #{probability,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, turn_table_id, toatal_quantity, gifted_quantity, serial_number, probability, 
+        create_time, update_time
+        from sf_turn_table_gift
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, turn_table_id, toatal_quantity, gifted_quantity, serial_number, probability, 
+        create_time, update_time
+        from sf_turn_table_gift
+    </select>
+
+</mapper>

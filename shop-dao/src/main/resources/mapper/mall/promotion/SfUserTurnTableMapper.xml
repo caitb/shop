@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserTurnTableMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserTurnTable" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
+        <result column="not_used_times" property="notUsedTimes" jdbcType="INTEGER" />
+        <result column="used_times" property="usedTimes" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_turn_table
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTable" >
+        insert into sf_user_turn_table (id, user_id, turn_table_id, 
+            not_used_times, used_times, create_time, 
+            update_time)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, 
+            #{notUsedTimes,jdbcType=INTEGER}, #{usedTimes,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserTurnTable" >
+        update sf_user_turn_table
+        set user_id = #{userId,jdbcType=BIGINT},
+            turn_table_id = #{turnTableId,jdbcType=INTEGER},
+            not_used_times = #{notUsedTimes,jdbcType=INTEGER},
+            used_times = #{usedTimes,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, user_id, turn_table_id, not_used_times, used_times, create_time, update_time
+        from sf_user_turn_table
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, user_id, turn_table_id, not_used_times, used_times, create_time, update_time
+        from sf_user_turn_table
+    </select>
+
+</mapper>

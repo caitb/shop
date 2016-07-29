@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserTurnTableItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
+        <id column="user_turn_table_id" property="userTurnTableId" jdbcType="BIGINT" />
+        <id column="turn_table_rule_id" property="turnTableRuleId" jdbcType="INTEGER" />
+        <id column="type" property="type" jdbcType="INTEGER" />
+        <id column="remark" property="remark" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="times" property="times" jdbcType="INTEGER" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from sf_user_turn_table_item
+        where id = #{id,jdbcType=BIGINT}
+          and turn_table_id = #{turnTableId,jdbcType=INTEGER}
+          and user_turn_table_id = #{userTurnTableId,jdbcType=BIGINT}
+          and turn_table_rule_id = #{turnTableRuleId,jdbcType=INTEGER}
+          and type = #{type,jdbcType=INTEGER}
+          and remark = #{remark,jdbcType=VARCHAR}
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        insert into sf_user_turn_table_item (id, turn_table_id, user_turn_table_id, 
+            turn_table_rule_id, type, remark, 
+            create_time, times)
+        values (#{id,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{userTurnTableId,jdbcType=BIGINT}, 
+            #{turnTableRuleId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{times,jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        update sf_user_turn_table_item
+        set times = #{times,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+          and turn_table_id = #{turnTableId,jdbcType=INTEGER}
+          and user_turn_table_id = #{userTurnTableId,jdbcType=BIGINT}
+          and turn_table_rule_id = #{turnTableRuleId,jdbcType=INTEGER}
+          and type = #{type,jdbcType=INTEGER}
+          and remark = #{remark,jdbcType=VARCHAR}
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+        select id, turn_table_id, user_turn_table_id, turn_table_rule_id, type, remark, create_time, 
+        times
+        from sf_user_turn_table_item
+        where id = #{id,jdbcType=BIGINT}
+          and turn_table_id = #{turnTableId,jdbcType=INTEGER}
+          and user_turn_table_id = #{userTurnTableId,jdbcType=BIGINT}
+          and turn_table_rule_id = #{turnTableRuleId,jdbcType=INTEGER}
+          and type = #{type,jdbcType=INTEGER}
+          and remark = #{remark,jdbcType=VARCHAR}
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, turn_table_id, user_turn_table_id, turn_table_rule_id, type, remark, create_time, 
+        times
+        from sf_user_turn_table_item
+    </select>
+
+</mapper>

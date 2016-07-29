@@ -103,7 +103,7 @@ public class PromotionGorderService {
         //添加订单item
         log.info("添加订单item------start");
         log.info("订单id-------------"+sfGorder.getId());
-        List<PromotionGiftInfo> promotionGiftInfos = gorderItemService.addGorDerItem(sfGorder.getId(),SfGorderTypeEnum.ORDER_PROMOTION,promoId,promoRuleId);
+        List<PromotionGiftInfo> promotionGiftInfos = (List<PromotionGiftInfo>)gorderItemService.addGorDerItem(sfGorder.getId(),SfGorderTypeEnum.ORDER_PROMOTION,promoId,promoRuleId);
         log.info("添加订单item-------end");
         //添加订单操作日志
         log.info("添加订单操作日志-------start");

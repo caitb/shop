@@ -57,4 +57,12 @@
         from sf_turn_table_gift
     </select>
 
+    <select id="getTurnTableGiftInfo" resultMap="BaseResultMap" >
+        select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort,
+        probability, status, remark
+        from sf_turn_table_gift
+        WHERE turn_table_id = #{turnTableId,jdbcType=INTEGER}
+        AND gift_id  = #{giftId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

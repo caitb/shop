@@ -54,5 +54,12 @@
         update_time, remark
         from sf_user_turn_table
     </select>
+    <select id="getSfUserTurnTable" resultMap="BaseResultMap" >
+        select id, create_time, create_man, user_id, turn_table_id, not_used_times, used_times,
+        update_time, remark
+        from sf_user_turn_table
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        AND turn_table_id = #{turnTableId,jdbcType=INTEGER}
+    </select>
 
 </mapper>

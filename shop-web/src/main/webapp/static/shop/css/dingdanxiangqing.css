@@ -229,7 +229,7 @@
 .back_que{
     position: absolute;
     top:50%;
-    margin-top: -195.5px;
+    margin-top: -85px;
     left: 10%;
     background: #fff;
     width: 80%;
@@ -265,6 +265,8 @@
     display: block;
     width: 100%;
     height: 100%;
+    font-size: 12px;
+    padding-left: 5px;
 }
 .backt p select{
     opacity: 0;
@@ -277,12 +279,15 @@
 .backt p span{
     display: block;
     width: 70px;
+    font-size: 12px;
 }
 .backt p input{
     display: block;
     -webkit-box-flex:1;
     border:1px solid #ddd;
     height: 20px;
+    font-size: 12px;
+    padding-left: 5px;
 }
 .backt button{
     display: block;
@@ -292,6 +297,7 @@
     padding: 3px 28px;
     margin: 0 auto;
     margin-top: 5px;
+    font-size: 12px;
 }
 .backd{
     background: #F6F6F6;
@@ -301,8 +307,13 @@
     margin: 8px 0;
     display: -webkit-box;
 }
+.backd p span{
+    font-size:12px;
+}
 .backd p span:first-child{
-    display: block;   width: 70px;
+    display: block;
+    width: 70px;
+    /* text-align: right; */
 }
 .backd p span:last-child{
     color: #666;    display: block;

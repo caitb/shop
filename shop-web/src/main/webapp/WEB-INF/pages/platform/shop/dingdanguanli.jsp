@@ -230,34 +230,34 @@
                     </select>
                     </label>
                     </p>
-            <p><span>快递单号：</span><input type="text"/></p>
-            <button>发货</button>
+            <p><span>快递单号：</span><input type="text" id="input"/></p>
+            <button id="tofaHuo">发货</button>
         </div>
         <div class="backd">
             <p>
                 <span>收货人：</span>
-                <span>阿萨德</span>
+                <span id="shouhuo"></span>
             </p>
 
             <p>
                 <span>收货地址：</span>
-                <span style="width: 100px;">阿萨德啊是打算打算打算大时代</span>
+                <span style="width: 100px;" id="adress"></span>
             </p>
             <p>
                 <span>联系电话：</span>
-                <span>13121527850</span>
+                <span id="mobile"></span>
             </p>
             <p>
                 <span>邮编：</span>
-                <span>100000</span>
+                <span id="youbian"></span>
             </p>
             <p>
                 <span>购买人：</span>
-                <span>李佳霖</span>
+                <span id="buyuser"></span>
             </p>
             <p>
                 <span>留言：</span>
-                <span>马骝的发货！！</span>
+                <span id="msg"></span>
             </p>
         </div>
     </div>
@@ -275,7 +275,6 @@
         $("li").eq(index).children("a").addClass("on");
         $(".all").eq(index).show().siblings().hide();
         $(".tapfix").hide();
-
     });
     function shouhuorenxinxi(a,b,c,d){
         $("#1").html(a);
@@ -283,7 +282,10 @@
         $("#3").html(c);
         $("#4").html(d);
     }
-
+    $(".se").on("change",function(){
+        var tabVal=$(".se option:selected").text();
+        $(".bWidth b").html(tabVal);
+    })
     $(function(){
         $(".tapfix p").on("click",function(){
             var sendType = $(this).index();
@@ -330,10 +332,11 @@
                         trHtml+="</div></div>";
                     });
                     trHtml+="<div class=\'ding\'><p>时间："+ordertime+"</p>";
-                    trHtml+="<p class=\"jixu\">购买人："+sfOrder.createUserName+"</p></div>";
+                    trHtml+="<p class=\"jixu\">购买人："+sfOrder.createUserName+"</p>";
                     if(sfOrder.orderStatus ==7 && sfOrder.sendType==2){
-                        trHtml+="<button class=\"fa\" name=\"fahuo_"+sfOrder.id+"\" onclick=\"fahuo('"+sfOrder.id+"')\">发货</button>";
+                        trHtml+="<button class=\"fa\" name=\"fahuo_"+sfOrder.id+"\" onclick=\"fahuo("+sfOrder.id+",event)\">发货</button>";
                     }
+                    trHtml+="</div>";
                     trHtml+="</section>";
                 });
                 $(".all").eq(index).html(trHtml);
@@ -346,11 +349,28 @@
     function fahuo(id,event){
         var event=event||event.window;
         event.stopPropagation();
+        //异步获取发货信息
+        $.ajax({
+            type:"POST",
+            url : "<%=path%>/sfOrderController/getSfOrderConsignee.do",
+            data:{id:id},
+            dataType:"Json",
+            async:false,
+            success:function(data){
+                $("#shouhuo").html(data.sfOrderConsignee.consignee);
+                $("#adress").html(data.sfOrderConsignee.provinceName+" "+data.sfOrderConsignee.cityName+" "+data.sfOrderConsignee.regionName+" "+data.sfOrderConsignee.address);
+                $("#mobile").html(data.sfOrderConsignee.mobile);
+                $("#youbian").html(data.sfOrderConsignee.zip);
+                $("#buyuser").html(data.buyUser);
+                $("#msg").html(data.userMsg);
+            }
+        })
         $(".black").show();
-        $("#faHuo").on("click",function(){
+
+        $("#tofaHuo").on("click",function(){
             $(".black").hide();
-            var shipManId = $("#select option:selected").val();
-            var shipManName = $("#select option:selected").text();
+            var shipManId = $(".se option:selected").val();
+            var shipManName = $(".se option:selected").text();
             var freight = $("#input").val();
             var aa="fahuo_"+id;
             $.ajax({
@@ -358,7 +378,7 @@
                 url : "<%=path%>/sfOrderController/deliverOrder.do",
                 data:{shipManName:shipManName,freight:freight,orderId:id,shipManId:shipManId},
                 dataType:"Json",
-                success:function(date){
+                success:function(data){
                     $("button[name=" + aa + "]").attr("style", "display:none");
                     $("b." + aa + "").html("待收货");
                     location.reload(true);

@@ -407,4 +407,5 @@ public class SfOrder extends BaseOrder {
     public void setCreateUserName(String createUserName) {
         this.createUserName = createUserName;
     }
+
 }

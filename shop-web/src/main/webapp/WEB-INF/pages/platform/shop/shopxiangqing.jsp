@@ -55,7 +55,9 @@
                     <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 35px;height: 37px;top: 14px;"><h1>已取消</h1>
                     <p>亲，您的订单已取消~~</p>
                 </c:if>
-                <button class="fah">发货</button>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7}">
+                    <button class="fah">发货</button>
+                </c:if>
             </div>
             <div class="sec2">
                 <p><span>订单编号：</span><span>${orderMallDetail.sfOrder.orderCode}</span></p>
@@ -150,35 +152,8 @@
                 </select>
                 </label>
             </p>
-            <p><span>快递单号：</span><input type="text"/></p>
-            <button>发货</button>
-        </div>
-        <div class="backd">
-            <p>
-                <span>收货人：</span>
-                <span>阿萨德</span>
-            </p>
-
-            <p>
-                <span>收货地址：</span>
-                <span style="width: 100px;">阿萨德啊是打算打算打算大时代</span>
-            </p>
-            <p>
-                <span>联系电话：</span>
-                <span>13121527850</span>
-            </p>
-            <p>
-                <span>邮编：</span>
-                <span>100000</span>
-            </p>
-            <p>
-                <span>购买人：</span>
-                <span>李佳霖</span>
-            </p>
-            <p>
-                <span>留言：</span>
-                <span>马骝的发货！！</span>
-            </p>
+            <p><span>快递单号：</span><input type="text" id="input"/></p>
+            <button id="faHuo">发货</button>
         </div>
     </div>
 </div>
@@ -191,11 +166,16 @@
 <script>
 $(".fah").on("click", function () {
     $(".black").show();
+
+})
+$(".se").on("change",function(){
+    var tabVal=$(".se option:selected").text();
+    $(".bWidth b").html(tabVal);
 })
 $("#faHuo").on("click", function () {
     $(".black").hide();
-    var shipManId = $("#select option:selected").val();
-    var shipManName = $("#select option:selected").text();
+    var shipManId = $(".se option:selected").val();
+    var shipManName = $(".se option:selected").text();
     var freight = $("#input").val();
     var borderId = ${orderMallDetail.sfOrder.id};
     $.ajax({

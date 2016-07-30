@@ -222,7 +222,7 @@ public class MyRecommendController extends BaseController{
             List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
 
             for (UserRecommend userRecommend :sumByUserPid){
-                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(),userRecommend.getSkuId());
+                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userRecommend.getUserId(),userRecommend.getSkuId());
                 userRecommend.setCountGroup(countGroupService.countGroupInfo(pfUserSku.getTreeCode()));
             }
             List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());

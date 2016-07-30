@@ -54,7 +54,7 @@
         e.id AS skuId,
         e. NAME AS skuName,
         2 AS flag,
-        a.amount - f.amount AS inCome,
+        a.amount - IFNULL(f.amount,0) AS inCome,
         a.create_time AS createTime
         FROM
         sf_shop_bill_item a
@@ -117,7 +117,7 @@
         e.id AS skuId,
         e. NAME AS skuName,
         2 AS flag,
-        a.amount - f.amount AS inCome,
+        a.amount - IFNULL(f.amount,0) AS inCome,
         a.create_time AS createTime,
         CONCAT(a.item_type,',',b.order_type,',',2) AS viewType
         FROM

@@ -50,8 +50,7 @@
         </div>
     </div>
     <div class="nav">
-        <p>总收入：</p>
-        <p id="totalIncom">${pfIncomRecordPo.totalIncomView}</p>
+        <p>总收入：</p><p id="totalIncom">${pfIncomRecordPo.totalIncomView}</p>
     </div>
     <main id="showDiv">
         <c:forEach items="${pfIncomRecordPo.pfIncomRecords}" var="pfIncomRecord">
@@ -60,8 +59,8 @@
                     <span>${pfIncomRecord.yearView}</span>
                     <span>${pfIncomRecord.minView}</span>
                 </p>
-                <img src="${pfIncomRecord.headImg}" alt="" onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
-                <div onclick="toPersonIncom(${pfIncomRecord.userId})">
+                <img src="${pfIncomRecord.headImg}" alt="" onclick="toPersonIncom(${pfIncomRecord.userId})">
+                <div onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
                     <p><span><a>${pfIncomRecord.realName}</a></span> <b>+${pfIncomRecord.inComView}</b></p>
                     <p><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
                 </div>

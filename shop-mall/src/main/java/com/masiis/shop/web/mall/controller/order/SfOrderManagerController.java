@@ -140,7 +140,7 @@ public class SfOrderManagerController extends BaseController {
         if (sfUserBillItems!=null){
             for (SfUserBillItem sfUserBillItem :sfUserBillItems){
                 SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
-                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getId()).getRealName());
+                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getComUserId()).getRealName());
                 sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
                 sfUserBillItemInfoList.add(sfUserBillItemInfo);
             }

@@ -55,8 +55,8 @@
                    </h2>
                    <div class="shangpin">
                        <div>
-                           <h2><span>${recommenOrder.skuName}(${recommenOrder.unitPriceView})</span><span style="color: #666">x${recommenOrder.quantity}</span></h2>
-                           <h3><b>奖励：${recommenOrder.totalPriceView}</b></h3>
+                           <h2><span>${recommenOrder.skuName}</span></h2>
+                           <h3><span style="color: #666">x${recommenOrder.quantity}</span><b>&nbsp;&nbsp;&nbsp;奖励：${recommenOrder.totalPriceView}</b></h3>
                        </div>
                    </div>
                    <p>时间： <fmt:formatDate value="${recommenOrder.createTime}" pattern="yyyy-MM-dd HH:mm" />

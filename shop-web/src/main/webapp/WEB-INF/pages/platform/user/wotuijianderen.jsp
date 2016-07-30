@@ -11,7 +11,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="${basePath}myRecommend/feeList"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                  <a href="${basePath}myRecommend/myRecommen.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>我推荐的人</p>            
         </header>
         <main>
@@ -39,15 +39,14 @@
                         </select>
                     </label>
                 </div>
-                <%--<button >查询</button>--%>
             </div>
             <div class="floor2">
                 <c:forEach items="${sumByUserPid}" var="sumByUser">
                     <div class="sec1" onclick="javascript:window.location.href = '${basePath}myRecommend/myRecommend?userId=${sumByUser.userId}&skuId=${sumByUser.skuId}';">
                         <img src="${sumByUser.wxHeadImg}" alt="">
                         <div>
-                            <p>${sumByUser.name} <b>${sumByUser.agentName}</b></p>
-                            <p>${sumByUser.skuName}</p>
+                            <p><span>${sumByUser.name} <b>(${sumByUser.agentName})</b></span><span>ta的团队：${sumByUser.countGroup.count}人</span></p>
+                            <h1><span>${sumByUser.skuName}</span><span>ta的销售额：￥${sumByUser.countGroup.groupMoney}</span></h1>
                         </div>
                     </div>
                 </c:forEach>

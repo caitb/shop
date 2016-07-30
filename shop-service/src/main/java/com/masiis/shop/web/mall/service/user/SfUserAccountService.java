@@ -153,17 +153,17 @@ public class SfUserAccountService {
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
-            // 插入店主sf_shop_bill_item
-            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 1);
-            shopBillItemMapper.insert(billItem);
-
             // 计算物流费用
             if(order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0){
-                SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, order.getAgentShipAmount(), 3);
-                shopBillItemMapper.insert(shipbillItem);
+                /*SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, order.getAgentShipAmount(), 3);
+                shopBillItemMapper.insert(shipbillItem);*/
                 // 减去代理商承担的运费
                 countFee = countFee.subtract(order.getAgentShipAmount());
             }
+
+            // 插入店主sf_shop_bill_item
+            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 1);
+            shopBillItemMapper.insert(billItem);
 
             // 计算订单结算中金额计入到account中
             ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,

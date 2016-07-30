@@ -33,4 +33,6 @@ public interface SfUserBillItemMapper {
     SfUserAccountRecord selectByUserIdAndSourceIdAndSubType(@Param("userId") Long userId,
                                                             @Param("sourceId") Long sourceId,
                                                             @Param("subType") Integer subType);
+
+    List<SfUserBillItem> selectBySourceId(@Param("sourceId") Long sourceId);
 }

@@ -1,3 +1,5 @@
+
+
 $(function () {
     var weixinCheckFun = function (data) {
         if ($(data).val() == "") {
@@ -176,3 +178,4 @@ $(function () {
         $(".xieyi").show();
     })
 });
+

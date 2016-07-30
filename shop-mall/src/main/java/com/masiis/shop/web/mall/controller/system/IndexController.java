@@ -206,7 +206,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         shopId =210L;
-        userPid = 337L;
+        userPid = 1750L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

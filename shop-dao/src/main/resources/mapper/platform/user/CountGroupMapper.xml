@@ -2,26 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.user.CountGroupMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.user.CountGroup">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="num" property="count" jdbcType="INTEGER"/>
-        <result column="sam" property="groupMoney" jdbcType="BIGINT"/>
-        <result column="orders" property="orderNum" jdbcType="INTEGER"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="orderNum" property="orderNum" jdbcType="INTEGER"/>
+        <result column="groupMoney" property="groupMoney" jdbcType="BIGINT"/>
+        <result column="r_count" property="r_count" jdbcType="INTEGER"/>
+        <result column="r_orderNum" property="r_orderNum" jdbcType="INTEGER"/>
+        <result column="r_groupMoney" property="r_groupMoney" jdbcType="BIGINT"/>
     </resultMap>
 
     <select id="countGroup" resultMap="BaseResultMap">
-        SELECT COUNT(a.id) as num,IFNULL(SUM(b.income_fee),0) as sam  FROM pf_user_sku a
+        SELECT COUNT(a.id) as count
+        ,IFNULL(SUM(b.up_order_count),0) as orderNum
+        ,IFNULL(SUM(b.cost_fee),0) as groupMoney
+        FROM pf_user_sku a
         LEFT JOIN pf_user_statistics b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
         WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>
 
-    <select id="countOrderNum" resultMap="BaseResultMap">
-        SELECT SUM(b.down_order_count) as orders FROM pf_user_sku a
-        INNER JOIN pf_user_statistics b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
-        WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
+    <select id="countRecommendGroup" resultMap="BaseResultMap">
+        SELECT COUNT(d.id) as r_count
+        ,IFNULL(SUM(e.up_order_count),0) as r_orderNum
+        ,IFNULL(SUM(e.cost_fee),0) as r_groupMoney
+        FROM pf_user_sku a
+        INNER JOIN pf_user_recommen_relation b ON a.user_id=b.user_pid AND a.sku_id=b.sku_id
+        INNER JOIN pf_user_sku c ON b.user_id=c.user_id AND b.sku_id=c.sku_id
+        INNER JOIN pf_user_sku d ON d.tree_code LIKE CONCAT(c.tree_code,'%')
+        INNER JOIN pf_user_statistics e ON d.user_id=e.user_id AND d.sku_id=e.sku_id
+        WHERE a.tree_code = #{treeCode};
     </select>
-
 </mapper>
-
-
-
-

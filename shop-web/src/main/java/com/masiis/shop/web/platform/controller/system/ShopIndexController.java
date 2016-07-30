@@ -88,12 +88,13 @@ public class ShopIndexController extends BaseController {
     /**
      * 获取首页的业务数据
      * jjh
+     *
      * @param req
      * @return
      */
     @RequestMapping("/ajaxIndexData.do")
     @ResponseBody
-    public String indexDataAjax(HttpServletRequest req){
+    public String indexDataAjax(HttpServletRequest req) {
         JSONObject object = new JSONObject();
         try {
             ComUser user = getComUser(req);
@@ -103,24 +104,22 @@ public class ShopIndexController extends BaseController {
             List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
             if (agentNum != null) {
                 for (PfUserSku pfUserSku : agentNum) {
-                    CountGroup countGroup = countGroupService.countGroupInfo(user.getId(), pfUserSku.getTreeCode());
-                    CountGroup countGroup1 = countGroupService.infoOrderNum(user.getId(), pfUserSku.getTreeCode());
-                    numb += countGroup.getCount() - 1;
-                    countNum = countGroup.getGroupMoney().add(countNum);
-                    orderNum += countGroup1.getOrderNum();
+                    CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
+                    CountGroup countRecommendGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
+                    numb += countGroup.getCount() + countRecommendGroup.getR_count();
+                    countNum = countGroup.getGroupMoney().add(countRecommendGroup.getR_groupMoney()).add(countNum);
+                    orderNum += countGroup.getOrderNum() + countRecommendGroup.getR_orderNum();
                 }
             }
-            CountGroup countGroup = new CountGroup();
-            countGroup.setCount(numb);
             NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-            countGroup.setGroupSum(rmbFormat.format(countNum));
-            countGroup.setOrderNum(orderNum);
-            object.put("countGroup", countGroup);
-            object.put("isError",false);
-        }catch (Exception e){
-            object.put("isError",true);
+            object.put("count", numb);
+            object.put("groupSum", rmbFormat.format(countNum));
+            object.put("orderNum", orderNum);
+            object.put("isError", false);
+        } catch (Exception e) {
+            object.put("isError", true);
             log.info(e.getMessage());
         }
-      return object.toJSONString();
+        return object.toJSONString();
     }
 }

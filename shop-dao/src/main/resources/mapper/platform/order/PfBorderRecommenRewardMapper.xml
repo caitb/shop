@@ -13,7 +13,25 @@
         <result column="reward_total_price" property="rewardTotalPrice" jdbcType="DECIMAL" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
-
+    
+    <resultMap id="recommenOrderMap" type="com.masiis.shop.dao.beans.recommend.RecommenOrder">
+        <result column="orderId" property="orderId" jdbcType="BIGINT" />
+        <result column="orderCode" property="orderCode" jdbcType="VARCHAR" />
+        <result column="orderType" property="orderType" jdbcType="INTEGER" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="unitPrice" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="buyUserId" property="buyUserId" jdbcType="BIGINT" />
+        <result column="buyUserName" property="buyUserName" jdbcType="VARCHAR" />
+        <result column="skuId" property="skuId" jdbcType="BIGINT" />
+        <result column="skuName" property="skuName" jdbcType="VARCHAR" />
+        <result column="sendUserId" property="sendUserId" jdbcType="BIGINT" />
+        <result column="sendUserName" property="sendUserName" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="receiveUserId" property="receiveUserId" jdbcType="BIGINT" />
+        <result column="receiveUserName" property="receiveUserName" jdbcType="VARCHAR" />
+    </resultMap>
+    
     <select id="selectByBorderItemId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, pf_border_id, pf_border_item_id, sku_id, recommen_user_id,
         quantity, reward_unit_price, reward_total_price, remark
@@ -111,4 +129,53 @@
               brr.pf_border_id = #{borderId}
     </select>
 
+    <select id="selectIncomeRecommenOrder" resultMap="recommenOrderMap">
+        SELECT
+            a.pf_border_id as orderId,
+            b.order_code as orderCode,
+            b.order_type as orderType,
+            a.quantity as quantity,
+            a.reward_unit_price as unitPrice,
+            a.reward_total_price as totalPrice,
+            c.id as buyUserId,
+            c.real_name as buyUserName,
+            a.sku_id as skuId,
+            d.name as skuName,
+            e.id as sendUserId,
+            e.real_name as sendUserName,
+            a.create_time as createTime
+        FROM
+            pf_border_recommen_reward a
+        INNER JOIN pf_border b ON a.pf_border_id = b.id AND b.pay_status = 1
+        LEFT JOIN com_user c ON b.user_id = c.id
+        LEFT JOIN com_sku d ON a.sku_id = d.id
+        LEFT JOIN com_user e ON b.user_pid = e.id
+        WHERE a.recommen_user_id = #{userId} AND a.reward_total_price <![CDATA[ > ]]> 0
+        ORDER BY a.create_time DESC
+    </select>
+
+    <select id="selectSendRecommenOrder" resultMap="recommenOrderMap">
+        SELECT
+            a.id as orderId,
+            a.order_code as orderCode,
+            a.order_type as orderType,
+            b.quantity as quantity,
+            b.reward_unit_price as unitPrice,
+            b.reward_total_price as totalPrice,
+            c.id as buyUserId,
+            c.real_name as buyUserName,
+            e.id as skuId,
+            e.name as skuName,
+            d.id as receiveUserId,
+            d.real_name as receiveUserName,
+            b.create_time as createTime
+        FROM
+            pf_border a
+        INNER JOIN pf_border_recommen_reward b ON a.id = b.pf_border_id AND a.pay_status = 1
+        LEFT JOIN com_user c ON a.user_id = c.id
+        LEFT JOIN com_user d ON b.recommen_user_id = d.id
+        LEFT JOIN com_sku e ON b.sku_id = e.id
+        WHERE a.user_pid = #{userId} AND b.reward_total_price <![CDATA[ > ]]> 0
+        ORDER BY b.create_time DESC
+    </select>
 </mapper>

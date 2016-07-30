@@ -60,7 +60,7 @@
                 <div onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');"><img src="<%=path%>/static/images/woyao.png" alt=""></div>
                 <p>&nbsp;&nbsp;</p>
                 <div onclick="javascript:window.location.replace('http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333&scene=0#wechat_redirect');"><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
-                    <div class="tallme" onclick="showNowxcode(${isUpload})">联系我</div>
+                    <div class="tallme" onclick="showNowxcode(${isUpload})">联系店主</div>
             </div>
         </div>
 
@@ -157,16 +157,19 @@
                 var trHtml2 = "";
                 var shipName="";
                 var shopId= ${sfShop.id};
+                var tubiaoHtml ="";
                 $.each(data.sfShopDetailList, function(i, SfShopDetails) {
                     trHtml2+="<div class=\"sec1\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+SfShopDetails.skuId+"&shopId="+shopId+"&isOwnShip="+SfShopDetails.isWunShip+"');\">";
                     trHtml2+="<div><img src=\""+SfShopDetails.skuImageUrl+"\" alt=\"\"></div>";
                     if(SfShopDetails.isWunShip==1){
                         shipName="店主发货";
+                        tubiaoHtml ="<div><h2><img src='${path}/static/images/dianzhu.png' alt=''>";
                     }else if(SfShopDetails.isWunShip==0){
                         shipName="平台发货";
+                        tubiaoHtml ="<div><h2><img src='${path}/static/images/ping.png' alt=''>";
                     }
-                    trHtml2+="<div><h2><img src='${path}/static/images/ping.png' alt=''>"+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h1>￥"+SfShopDetails.priceRetail+"</h1>";
-                    trHtml2+="<button>立即购买</button> </div> </div>";
+                    trHtml2+=tubiaoHtml+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h3><b>￥</b>"+SfShopDetails.priceRetail+"<span>"+SfShopDetails.priceMarket+"<img src='${path}/static/images/xie.png'/></span></h3>";
+                    trHtml2+="</div> </div>";
                 })
                 $("#main").html(trHtml2);
                 var bWidth=$(".swiper-slide").width(),

@@ -1,12 +1,16 @@
 package com.masiis.shop.web.platform.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
 import com.masiis.shop.dao.mallBeans.OrderMallDetail;
+import com.masiis.shop.dao.mallBeans.SfUserBillItemInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.mall.service.user.SfUserBillService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.ComShipManService;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
@@ -23,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +53,8 @@ public class SfOrderController extends BaseController {
     private UserService userService;
     @Resource
     private ComShipManService comShipManService;
-
+    @Resource
+    private SfUserBillItemMapper sfUserBillItemMapper;
 
     @RequestMapping("/deliverOrder.do")
     @ResponseBody
@@ -115,12 +121,24 @@ public class SfOrderController extends BaseController {
         List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(id);
         //收货人
         SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
+        // 分销记录信息
+        List<SfUserBillItemInfo> sfUserBillItemInfoList = new ArrayList<>();
+        List<SfUserBillItem> sfUserBillItems = sfUserBillItemMapper.selectBySourceId(id);
+        if (sfUserBillItems!=null){
+            for (SfUserBillItem sfUserBillItem :sfUserBillItems){
+                SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
+                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getId()).getRealName());
+                sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
+                sfUserBillItemInfoList.add(sfUserBillItemInfo);
+            }
+        }
         orderMallDetail.setBuyerName(Buser.getWxNkName());
         orderMallDetail.setSfOrder(order);
         orderMallDetail.setSfOrderPayments(sfOrderPayments);
         orderMallDetail.setSfOrderItems(sfOrderItems);
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
+        orderMallDetail.setSfUserBillItemInfo(sfUserBillItemInfoList);
         ModelAndView modelAndView = new ModelAndView();
         List<ComShipMan> comShipMans = comShipManService.list();
         modelAndView.addObject("comShipMans", comShipMans);
@@ -142,10 +160,20 @@ public class SfOrderController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         Integer sendType=null;
-//        if(orderStatus==7){
-//            sendType=1;
-//        }
         List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId,sendType);
+        for (SfOrder sfOrder :sfOrders){
+            sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
+            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+            if(sfOrder.getSendType()==1){
+                sfOrder.setSendTypeDes("平台发货");
+            }
+            if(sfOrder.getSendType()==2){
+                sfOrder.setSendTypeDes("自己发货");
+            }
+            if(sfOrder.getSendType()==0){
+                sfOrder.setSendTypeDes("未选择");
+            }
+        }
         String index=null;
         if(orderStatus==null){
             index="0";//全部
@@ -166,6 +194,29 @@ public class SfOrderController extends BaseController {
         modelAndView.addObject("sfOrderSize", sfOrders.size());
         modelAndView.setViewName("platform/shop/dingdanguanli");
         return modelAndView;
+    }
+
+    /**
+     * 异步获取收货人信息
+     * jjh
+     * @param id
+     * @return
+     */
+    @RequestMapping("/getSfOrderConsignee.do")
+    @ResponseBody
+    public String getSfOrderConsigneebyId(Long id){
+        JSONObject object = new JSONObject();
+        try {
+            SfOrder sfOrder = sfOrderService.findSforderByorderId(id);
+            SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
+            object.put("sfOrderConsignee",sfOrderConsignee);
+            object.put("buyUser",userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+            object.put("userMsg",sfOrder.getUserMessage());
+            object.put("isError",false);
+        }catch (Exception ex){
+            object.put("isError",true);
+        }
+        return object.toJSONString();
     }
     /**
      * 异步查询订单
@@ -198,6 +249,19 @@ public class SfOrderController extends BaseController {
             }else if(index==5){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), 2, shopId,null);
             }
+            for (SfOrder sfOrder :sfOrders){
+                sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
+                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+                if(sfOrder.getSendType()==1){
+                    sfOrder.setSendTypeDes("平台发货");
+                }
+                if(sfOrder.getSendType()==2){
+                    sfOrder.setSendTypeDes("自己发货");
+                }
+                if(sfOrder.getSendType()==0){
+                    sfOrder.setSendTypeDes("未选择");
+                }
+            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -208,4 +272,7 @@ public class SfOrderController extends BaseController {
         return sfOrders;
     }
 
+    private String coverCodeSfBorderStatus(Integer status) {
+        return SfOrderStatusEnum.getByCode(status).getDesc();
+    }
 }

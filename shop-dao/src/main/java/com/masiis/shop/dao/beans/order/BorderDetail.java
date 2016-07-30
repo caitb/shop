@@ -16,6 +16,7 @@ public class BorderDetail {
     private List<PfBorderFreight> pfBorderFreights;//快递公司信息
     private PfBorderConsignee pfBorderConsignee;//收货人
     private List<PfBorderPayment> pfBorderPayments;//支付方式
+    private String rewordUser;//推荐用户
 
     public void setPfBorderPayments(List<PfBorderPayment> pfBorderPayments) {
         this.pfBorderPayments = pfBorderPayments;
@@ -59,5 +60,13 @@ public class BorderDetail {
 
     public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
         this.pfBorderItems = pfBorderItems;
+    }
+
+    public String getRewordUser() {
+        return rewordUser;
+    }
+
+    public void setRewordUser(String rewordUser) {
+        this.rewordUser = rewordUser;
     }
 }

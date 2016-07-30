@@ -41,7 +41,7 @@ public enum SfOrderStatusEnum {
         this.desc = desc;
     }
 
-    public SfOrderStatusEnum getByCode(Integer code){
+    public static SfOrderStatusEnum getByCode(Integer code){
         if(code == null){
             return null;
         }

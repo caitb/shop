@@ -16,6 +16,8 @@ public class UserRecommend {
     private String skuName;
     private String agentName;
 
+    private CountGroup countGroup;//团队bean
+
     public Long getBorderId() {
         return borderId;
     }
@@ -86,5 +88,13 @@ public class UserRecommend {
 
     public void setSkuName(String skuName) {
         this.skuName = skuName;
+    }
+
+    public CountGroup getCountGroup() {
+        return countGroup;
+    }
+
+    public void setCountGroup(CountGroup countGroup) {
+        this.countGroup = countGroup;
     }
 }

@@ -1,16 +1,16 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.enums.platform.UserAccountRecordFeeType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
+import com.masiis.shop.dao.beans.user.PfIncomRecord;
+import com.masiis.shop.dao.beans.user.PfIncomRecordPo;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
-import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
-import com.masiis.shop.dao.platform.user.PfUserBillMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,10 @@ public class PfUserBillService {
     private SfOrderMapper sfOrderMapper;
     @Resource
     private PfBorderMapper borderMapper;
+    @Resource
+    private IncomRecord14Mapper incomRecord14Mapper;
+
+    private static final Integer pageSize = 10;
 
     /**
      * 根据userId查询用户账单表
@@ -237,5 +241,100 @@ public class PfUserBillService {
 
     public Long queryBillNumsByDateAndUser(Date countStartDay, Date countEndDay, Long userId) {
         return billMapper.selectBillNumsByDateAndUser(countStartDay, countEndDay, userId);
+    }
+
+    /**
+     * B端收入记录查询
+     * @param userId        用户id
+     * @param firstDate     当月第一天
+     * @param lastDate      当月最后一天
+     * @param flag          B/C端标识  1：B端  2：C端 可为null
+     * @return
+     */
+    public PfIncomRecordPo getIncomRecord14(Long userId, Date firstDate, Date lastDate, Integer flag, Integer page){
+        log.info("---------B端收入记录查询--------");
+        log.info("userId = " + userId);
+        log.info("firstDate = " + firstDate);
+        log.info("lastDate = " + lastDate);
+        log.info("flag = " + flag);
+        BigDecimal totalIncom = SumPfIncomgetIncomRecord14(userId, firstDate, lastDate, flag);
+        log.info("totalIncom = " + totalIncom);
+        PfIncomRecordPo pfIncomRecordPo = new PfIncomRecordPo();
+        Page pageHelp = PageHelper.startPage(page, pageSize);
+        List<PfIncomRecord> pfIncomRecords = incomRecord14Mapper.selectPfIncomRecords(userId, firstDate, lastDate, flag, null);
+        Long totalCount = 0l;
+        switch (page.intValue()){
+            case 1 : {
+                totalCount = pageHelp.getTotal();
+                pfIncomRecordPo.setTotalCount(totalCount);
+                break;
+            }
+        }
+        pfIncomRecordPo.setPageNum(pageHelp.getPageNum());
+        pfIncomRecordPo.setPfIncomRecords(pfIncomRecords);
+        pfIncomRecordPo.setTotalIncom(totalIncom);
+        return pfIncomRecordPo;
+    }
+    /**
+     * B端收入记录查询(个人记录)
+     * @param userId        用户id
+     * @param firstDate     当月第一天
+     * @param lastDate      当月最后一天
+     * @param flag          B/C端标识  1：B端  2：C端 可为null
+     * @param personUserId  personUserId
+     * @return
+     */
+    public PfIncomRecordPo getIncomRecord14Person(Long userId, Date firstDate, Date lastDate, Integer flag, Integer page, Long personUserId){
+        log.info("---------B端收入记录查询(展示个人收入记录)--------");
+        log.info("userId = " + userId);
+        log.info("personUserId = " + personUserId);
+        log.info("firstDate = " + firstDate);
+        log.info("lastDate = " + lastDate);
+        log.info("flag = " + flag);
+        BigDecimal totalIncom = SumPfIncomgetIncomRecord14(userId, firstDate, lastDate, flag, personUserId);
+        log.info("totalIncom = " + totalIncom);
+        PfIncomRecordPo pfIncomRecordPo = new PfIncomRecordPo();
+        Page pageHelp = PageHelper.startPage(page, pageSize);
+        List<PfIncomRecord> pfIncomRecords = incomRecord14Mapper.selectPfIncomRecords(userId, firstDate, lastDate, flag, personUserId);
+        Long totalCount = 0l;
+        switch (page.intValue()){
+            case 1 : {
+                totalCount = pageHelp.getTotal();
+                pfIncomRecordPo.setTotalCount(totalCount);
+                break;
+            }
+        }
+        pfIncomRecordPo.setPageNum(pageHelp.getPageNum());
+        pfIncomRecordPo.setPfIncomRecords(pfIncomRecords);
+        pfIncomRecordPo.setTotalIncom(totalIncom);
+        return pfIncomRecordPo;
+    }
+
+    /**
+     * B端收入记录_总收入
+     * @param userId        用户id
+     * @param firstDate     当月第一天
+     * @param lastDate      当月最后一天
+     * @param flag          B/C端标识  1：B端  2：C端 可为null
+     * @return
+     */
+    public BigDecimal SumPfIncomgetIncomRecord14(Long userId, Date firstDate, Date lastDate, Integer flag){
+        BigDecimal inCom = incomRecord14Mapper.selectSumPfIncom(userId, firstDate, lastDate, flag, null);
+        inCom = inCom == null?new BigDecimal(0):inCom;
+        return inCom;
+    }
+
+    /**
+     * B端收入记录_总收入（个人收入记录）
+     * @param userId        用户id
+     * @param firstDate     当月第一天
+     * @param lastDate      当月最后一天
+     * @param flag          B/C端标识  1：B端  2：C端 可为null
+     * @return
+     */
+    public BigDecimal SumPfIncomgetIncomRecord14(Long userId, Date firstDate, Date lastDate, Integer flag, Long personUserId){
+        BigDecimal inCom = incomRecord14Mapper.selectSumPfIncom(userId, firstDate, lastDate, flag, personUserId);
+        inCom = inCom == null?new BigDecimal(0):inCom;
+        return inCom;
     }
 }

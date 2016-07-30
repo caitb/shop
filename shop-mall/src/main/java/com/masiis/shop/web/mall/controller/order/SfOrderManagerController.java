@@ -1,9 +1,12 @@
 package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
 import com.masiis.shop.dao.mallBeans.OrderMallDetail;
+import com.masiis.shop.dao.mallBeans.SfUserBillItemInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -51,7 +54,8 @@ public class SfOrderManagerController extends BaseController {
     private SfUserPromotionService promoService;
     @Resource
     private SfMessageSrRelationService sfMessageSrRelationService;
-
+    @Resource
+    private SfUserBillItemMapper sfUserBillItemMapper;
     /**
      * 确认收货
      * @author muchaofeng
@@ -89,7 +93,6 @@ public class SfOrderManagerController extends BaseController {
     @RequestMapping("/borderDetils.html")
     public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
-        ComUser user = getComUser(request);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         SfOrder order = sfOrderManageService.findOrderByOrderId(id);
         SfShop sfShop = sfShopService.getSfShopById(order.getShopId());
@@ -131,7 +134,18 @@ public class SfOrderManagerController extends BaseController {
         if(userPid==null || userPid==""){
             userPid=0L;
         }
-
+        // 分销记录信息
+        List<SfUserBillItemInfo> sfUserBillItemInfoList = new ArrayList<>();
+        List<SfUserBillItem> sfUserBillItems = sfUserBillItemMapper.selectBySourceId(id);
+        if (sfUserBillItems!=null){
+            for (SfUserBillItem sfUserBillItem :sfUserBillItems){
+                SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
+                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getId()).getRealName());
+                sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
+                sfUserBillItemInfoList.add(sfUserBillItemInfo);
+            }
+        }
+        orderMallDetail.setSfUserBillItemInfo(sfUserBillItemInfoList);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("orderMallDetail", orderMallDetail);
@@ -161,6 +175,10 @@ public class SfOrderManagerController extends BaseController {
             index="3";//待收货
         } else if (orderStatus == 3) {
             index="4";//已完成
+        }
+        for (SfOrder sfOrder :sfOrders){
+            sfOrder.setShopName(sfShopService.getSfShopById(sfOrder.getShopId()).getName());
+            sfOrder.setOrderStatusDes(covertSforderStatus(sfOrder.getOrderStatus()));
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
@@ -195,6 +213,10 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
             }else if(index==5){
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 2, null);
+            }
+            for(SfOrder sfOrder :sfOrders){
+                sfOrder.setShopName(sfShopService.getSfShopById(sfOrder.getShopId()).getName());
+                sfOrder.setOrderStatusDes(covertSforderStatus(sfOrder.getOrderStatus()));
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -257,5 +279,9 @@ public class SfOrderManagerController extends BaseController {
         modelAndView.addObject("countMsg", countMsg);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
+    }
+
+    private String covertSforderStatus(Integer status){
+        return SfOrderStatusEnum.getByCode(status).getDesc();
     }
 }

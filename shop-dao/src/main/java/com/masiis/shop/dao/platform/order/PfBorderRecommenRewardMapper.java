@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.beans.recommend.RecommenOrder;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorderRecommenReward;
 import org.apache.ibatis.annotations.Param;
@@ -54,4 +55,18 @@ public interface PfBorderRecommenRewardMapper {
      * @return
      */
     ComUser selectRecommenUser(Long borderId);
+
+    /**
+     * 查询推荐收入奖励订单
+     * @param userId
+     * @return
+     */
+    List<RecommenOrder> selectIncomeRecommenOrder(@Param("userId") Long userId);
+
+    /**
+     * 推荐人发出奖励订单
+     * @param userId
+     * @return
+     */
+    List<RecommenOrder> selectSendRecommenOrder(@Param("userId") Long userId);
 }

@@ -33,7 +33,7 @@
             <label class="goods">
                 <b></b>
                 <select id="goods" class="search">
-                    <option value="">全部</option>
+                    <option value="" selected="selected">全部</option>
                     <option value="0">平台发货</option>
                     <option value="1">自己发货</option>
                 </select>
@@ -166,10 +166,6 @@
     $(document).ready(function(){
         $(".goods b").html($("#goods option:selected").text());
     })
-    $("#goods").on("change",function(){
-        var tabVal=$("#goods option:selected").text();
-        $(".goods b").html(tabVal);
-    })
     function showDown(a){
         $(".down").show();
         $("#shopSkuId1").val(a);
@@ -192,6 +188,7 @@
     function clickHide(){
         $(".black").hide();
     }
+
     $(".queren").on("click",function(){
         //生成自己的发货类型
         var shopSkuId = $("#shopSkuId").val();
@@ -302,7 +299,8 @@ function onsale(value){
     shopxiajia.currentPage = 1;
     shopxiajia.deliverType =value;
         $(".nav p span").eq(0).addClass("on").siblings().removeClass("on");
-        index=0;
+    $(".goods b").html($("#goods option:eq(0)").text());
+    index=0;
         $.ajax({//上架中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -374,6 +372,8 @@ function outSale(value){
      shopshangjia.currentPage = 1;
      shopshangjia.deliverType =value;
         $(".nav p span").eq(1).addClass("on").siblings().removeClass("on");
+    $("#goods option").attr("selected",false);
+    $(".goods b").html($("#goods option:eq(0)").text());
         index=1;
         $.ajax({//仓库中
             url: '<%=basePath%>shop/deliverSale.do',
@@ -452,6 +452,10 @@ function search() {
         outSale(deliverType);
     }
 }
+$("#goods").on("change",function(){
+    var tabVal=$("#goods option:selected").text();
+    $(".goods b").html(tabVal);
+})
 </script>
 
 </body>

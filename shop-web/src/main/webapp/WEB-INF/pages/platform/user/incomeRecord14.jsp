@@ -172,7 +172,10 @@
 
     function toPersonIncom(uid){
         fullShow();
-        window.location.href = basePath+"account/getIncomRecord14Person.shtml?uid="+uid;
+        var year = $("#year").val();
+        var month = $("#month").val();
+        var date = year + "-" + month + "-01";
+        window.location.href = basePath+"account/getIncomRecord14Person.shtml?uid="+uid+"&date="+date;
     }
     function toBack(){
         fullShow();//跳转页面钱展示全屏遮罩loading...

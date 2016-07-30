@@ -274,6 +274,7 @@ public class UserAccountController extends BaseController{
      */
     @RequestMapping(value = "/getIncomRecord14Person.shtml")
     public ModelAndView getIncomRecord14Person(@RequestParam(value = "uid", required = true) Long userId,
+                                               @RequestParam(value = "date", required = true) String date,
                                                HttpServletRequest request) throws Exception{
         ComUser sessionUser = getComUser(request);
         if (sessionUser == null){
@@ -286,9 +287,10 @@ public class UserAccountController extends BaseController{
             throw new BusinessException("用户不存在!");
         }
         ModelAndView mv = new ModelAndView();
-        Date date = new Date();
-        Date firstDate = DateUtil.getFirstTimeInMonth(date);
-        Date lastDate = DateUtil.getLastTimeInMonth(date);
+        Date dateTime = DateUtil.String2Date(date);
+        Date firstDate = DateUtil.getFirstTimeInMonth(dateTime);
+        Date lastDate = DateUtil.getLastTimeInMonth(dateTime);
+
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;

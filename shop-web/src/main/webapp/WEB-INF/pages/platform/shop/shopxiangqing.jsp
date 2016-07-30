@@ -55,7 +55,7 @@
                     <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 35px;height: 37px;top: 14px;"><h1>已取消</h1>
                     <p>亲，您的订单已取消~~</p>
                 </c:if>
-                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7 && orderMallDetail.sfOrder.sendType==2}">
                     <button class="fah">发货</button>
                 </c:if>
             </div>

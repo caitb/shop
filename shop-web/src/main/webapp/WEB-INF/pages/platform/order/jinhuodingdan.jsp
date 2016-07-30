@@ -61,7 +61,7 @@
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
                                 <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -69,7 +69,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu" onclick="goToPayOrder('${pb.id}')">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -98,8 +98,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                              <span class="jixu"
+                                    onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -107,7 +107,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -136,8 +136,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -145,7 +145,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -174,8 +174,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -183,7 +183,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -212,8 +212,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -221,7 +221,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -250,8 +250,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -259,7 +259,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -287,8 +287,8 @@
                                 <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9 }">
-                                <span class="jixu"
-                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}"
@@ -296,7 +296,7 @@
                                             确认收货</span>
                             </c:if>
                             <c:if test="${pb.orderStatus ==9}">
-                                <span class="jixu">支付变更</span>
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
                                 <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
                             </c:if>
                         </p>
@@ -347,7 +347,9 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
-    function xinxi(orderAmount, payTimes, ids) {
+    function xinxi(orderAmount, payTimes, ids,event) {
+        var event = event || event.window;
+        event.stopPropagation();
         $(".back").css("display", "-webkit-box");
         $(".back_pay").show();
         $("#1").html(ids);
@@ -394,7 +396,7 @@
                         } else if (pfBorder.orderStatus == 0) {
                             trHtml += "<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId=" + pfBorder.id + "\">继续支付</a></span></a>";
                         } else if (pfBorder.orderStatus == 9) {
-                            trHtml += "<span class=\"jixu\" onclick=\"xinxi('" + pfBorder.orderMoney + "','" + pfBorder.payTimes + "','" + pfBorder.orderCode + "')\">支付信息</span></a>";
+                            trHtml += "<span class=\"jixu\" onclick=\"xinxi('" + pfBorder.orderMoney + "','" + pfBorder.payTimes + "','" + pfBorder.orderCode + "',event)\">支付信息</span></a>";
                         } else {
                             trHtml += "</a>";
                         }
@@ -403,7 +405,7 @@
                             trHtml += "<span class=\"fa\"  name=\"querenshouhuo_" + pfBorder.id + "\"  onclick=\"querenshouhuo('" + pfBorder.orderStatus + "','" + pfBorder.id + "',event)\">" + orderStatusName + "</span>";
                         }
                         if (pfBorder.orderStatus == 9) {
-                            trHtml += "<span class=\"jixu\" onclick=\"goToPayOrder('${pb.id}')\">支付变更</span>";
+                            trHtml += "<span class=\"jixu\" onclick=\"goToPayOrder("+pfBorder.id+",event)\">支付变更</span>";
                         } else {
                             trHtml += "";
                         }
@@ -458,7 +460,9 @@
     })
 
     //update zhaoliang
-    function goToPayOrder(bOrderId) {
+    function goToPayOrder(bOrderId,event) {
+        var event = event || event.window;
+        event.stopPropagation();
         window.location.href = "<%=basePath%>border/goToPayBOrder.shtml?bOrderId=" + bOrderId;
     }
 

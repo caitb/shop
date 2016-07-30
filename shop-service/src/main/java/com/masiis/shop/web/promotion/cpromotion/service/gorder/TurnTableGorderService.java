@@ -82,7 +82,7 @@ public class TurnTableGorderService {
         log.info("判断领取次数还有没有--------end");
         //领取后的操作
         log.info("领取后的操作--------start");
-        receiveGiftAfterOpertion(1,comUser.getId(),turnTableId,turnTableRuleId,sfGorderItem.getSfGorderId());
+        receiveGiftAfterOpertion(1,comUser.getId(),turnTableId,turnTableRuleId,giftId,sfGorderItem.getSfGorderId());
         log.info("领取后的操作--------end");
         return null;
     }
@@ -156,12 +156,13 @@ public class TurnTableGorderService {
      * @param turnTableRuleId
      * @param gorderId
      */
-    private void receiveGiftAfterOpertion(Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Long gorderId){
+    private void receiveGiftAfterOpertion(Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId,Long gorderId){
+        //奖品奖励数量减少
         //用户转盘增加已抽奖次数，减少未抽奖次数
         sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
         //增加用户转盘具体信息:减少次数
         sfUserTurnTableItemService.insert(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,turnTableId,turnTableRuleId);
         //增加用户领取奖励记录
-        userTurnTableRecordService.updateRecordStatusAndGorderId(userId,turnTableId,turnTableRuleId, SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode(),gorderId);
+        userTurnTableRecordService.updateRecordStatusAndGorderId(userId,turnTableId,giftId, SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode(),gorderId);
     }
 }

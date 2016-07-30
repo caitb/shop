@@ -90,6 +90,7 @@ public class DateUtil {
      */
     public static final long HOUR_MICRO_SECONDS = 3600 * 1000;
 
+    public static final String CHINESE_YEAR_MONTH_DATE_FMT = "yyyy年MM月dd日";
     public static final String CHINESE_DATE_FMT = "yyyy年MM月dd日 HH时mm分";
 
     public static final String CHINESEALL_DATE_FMT = "yyyy年MM月dd日 HH时mm分ss秒";

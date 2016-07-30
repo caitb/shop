@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserTurnTableRecordMapper" >
+<mapper namespace="com.masiis.shop.dao.SfUserTurnTableRecordMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
-        <result column="turn_table_gift_id" property="turnTableGiftId" jdbcType="INTEGER" />
+        <result column="gift_id" property="giftId" jdbcType="INTEGER" />
         <result column="gorder_id" property="gorderId" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -21,11 +21,11 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
         insert into sf_user_turn_table_record (id, create_time, create_man, 
-            user_id, turn_table_id, turn_table_gift_id, 
+            user_id, turn_table_id, gift_id, 
             gorder_id, status, update_time, 
             remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
-            #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{turnTableGiftId,jdbcType=INTEGER}, 
+            #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER}, 
             #{gorderId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
             #{remark,jdbcType=VARCHAR})
     </insert>
@@ -36,7 +36,7 @@
             create_man = #{createMan,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
             turn_table_id = #{turnTableId,jdbcType=INTEGER},
-            turn_table_gift_id = #{turnTableGiftId,jdbcType=INTEGER},
+            gift_id = #{giftId,jdbcType=INTEGER},
             gorder_id = #{gorderId,jdbcType=BIGINT},
             status = #{status,jdbcType=INTEGER},
             update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -45,25 +45,24 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id, 
-        status, update_time, remark
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status, 
+        update_time, remark
         from sf_user_turn_table_record
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id, 
-        status, update_time, remark
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status, 
+        update_time, remark
         from sf_user_turn_table_record
     </select>
-
     <select id="getRecordByUserIdAndTurnTableIdAndGiftId" resultMap="BaseResultMap" >
-        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id,
-        status, update_time, remark
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
+        update_time, remark
         from sf_user_turn_table_record
         WHERE user_id = #{id,jdbcType=BIGINT}
         AND turn_table_id = #{turnTableId,jdbcType=INTEGER}
-        AND turn_table_gift_id = #{turnTableGiftId,jdbcType=INTEGER}
+        AND gift_id = #{giftId,jdbcType=INTEGER}
     </select>
 
 </mapper>

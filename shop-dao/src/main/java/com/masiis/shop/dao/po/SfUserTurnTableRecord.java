@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-07-29 Created
+ * 2016-07-30 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -32,9 +32,9 @@ public class SfUserTurnTableRecord {
      */
     private Integer turnTableId;
     /**
-     * 转盘奖品id
+     * 奖品id
      */
-    private Integer turnTableGiftId;
+    private Integer giftId;
     /**
      * 订单id
      */
@@ -79,11 +79,11 @@ public class SfUserTurnTableRecord {
     public void setTurnTableId(Integer turnTableId) {
         this.turnTableId = turnTableId;
     }
-    public Integer getTurnTableGiftId() {
-        return turnTableGiftId;
+    public Integer getGiftId() {
+        return giftId;
     }
-    public void setTurnTableGiftId(Integer turnTableGiftId) {
-        this.turnTableGiftId = turnTableGiftId;
+    public void setGiftId(Integer giftId) {
+        this.giftId = giftId;
     }
     public Long getGorderId() {
         return gorderId;

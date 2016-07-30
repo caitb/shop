@@ -19,9 +19,11 @@ public interface SfUserTurnTableRecordMapper {
 
     SfUserTurnTableRecord selectByPrimaryKey(Long id);
 
-    SfUserTurnTableRecord getRecordByUserIdAndTurnTableIdAndGiftId(@Param("userId") Long userId,@Param("turnTableId")  Integer turnTableId,@Param("turnTableGiftId")  Integer turnTableGiftId );
+    SfUserTurnTableRecord getRecordByUserIdAndTurnTableIdAndGiftId(@Param("userId") Long userId,@Param("turnTableId")  Integer turnTableId,@Param("giftId")  Integer giftId );
 
     List<SfUserTurnTableRecord> selectAll();
+
+    List<SfUserTurnTableRecord> getRecordInfoByUserId(Long userId);
 
     int updateByPrimaryKey(SfUserTurnTableRecord record);
 }

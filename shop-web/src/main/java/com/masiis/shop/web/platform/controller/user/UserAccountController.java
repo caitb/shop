@@ -250,10 +250,10 @@ public class UserAccountController extends BaseController{
                 sb.append("<div class=\"sec1\"><p>");
                 sb.append("<span>" + pfIncomRecord.getYearView() + "</span>");
                 sb.append("<span>" + pfIncomRecord.getMinView() + "</span></p>");
-                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\" onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\">");
-                sb.append("<div onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">");
-                sb.append("<p><span><a>" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
-                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
+                sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\" onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">");
+                sb.append("<div>");
+                sb.append("<p><span><a onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
+                sb.append("<p onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\"><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
                 sb.append("</div></div>");
             }
             jsonObject.put("html",sb.toString());

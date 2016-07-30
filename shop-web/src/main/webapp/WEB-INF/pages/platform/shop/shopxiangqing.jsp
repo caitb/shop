@@ -131,7 +131,7 @@
                 <div class="sec3 sec5">
                     <h1>分销信息</h1>
                     <c:forEach items="${orderMallDetail.sfUserBillItemInfo}" var="bill">
-                        <p><span>姓名：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>
+                        <p><span>微信昵称：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>
                     </c:forEach>
                 </div>
             </c:if>

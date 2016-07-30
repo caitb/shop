@@ -135,17 +135,17 @@ public class SfOrderManagerController extends BaseController {
             userPid=0L;
         }
         // 分销记录信息
-        List<SfUserBillItemInfo> sfUserBillItemInfoList = new ArrayList<>();
-        List<SfUserBillItem> sfUserBillItems = sfUserBillItemMapper.selectBySourceId(id);
-        if (sfUserBillItems!=null){
-            for (SfUserBillItem sfUserBillItem :sfUserBillItems){
-                SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
-                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getComUserId()).getRealName());
-                sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
-                sfUserBillItemInfoList.add(sfUserBillItemInfo);
-            }
-        }
-        orderMallDetail.setSfUserBillItemInfo(sfUserBillItemInfoList);
+//        List<SfUserBillItemInfo> sfUserBillItemInfoList = new ArrayList<>();
+//        List<SfUserBillItem> sfUserBillItems = sfUserBillItemMapper.selectBySourceId(id);
+//        if (sfUserBillItems!=null){
+//            for (SfUserBillItem sfUserBillItem :sfUserBillItems){
+//                SfUserBillItemInfo sfUserBillItemInfo = new SfUserBillItemInfo();
+//                sfUserBillItemInfo.setUserNameForBill(userService.getUserById(sfUserBillItem.getComUserId()).getRealName());
+//                sfUserBillItemInfo.setSfUserBillItem(sfUserBillItem);
+//                sfUserBillItemInfoList.add(sfUserBillItemInfo);
+//            }
+//        }
+//        orderMallDetail.setSfUserBillItemInfo(sfUserBillItemInfoList);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("orderMallDetail", orderMallDetail);

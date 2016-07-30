@@ -338,8 +338,8 @@ public class MyRecommendController extends BaseController{
                         sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
                         sb.append("<div class=\"shangpin\">");
                         sb.append("<div>");
-                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "(" + recommenOrder.getUnitPriceView() + ")</span><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span></h2>");
-                        sb.append("<h3><b>奖励：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + ")</h2>");
+                        sb.append("<h3><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span><b>&nbsp;&nbsp;&nbsp;奖励：" + recommenOrder.getTotalPriceView() + "</b></h3>");
                         sb.append("</div></div>");
                         sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
                         sb.append("<span class=\"jixu\">发奖励的人：" + recommenOrder.getSendUserName() + "</span></p></section>");
@@ -352,8 +352,8 @@ public class MyRecommendController extends BaseController{
                         sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
                         sb.append("<div class=\"shangpin\">");
                         sb.append("<div>");
-                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "(" + recommenOrder.getUnitPriceView() + ")</span><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span></h2>");
-                        sb.append("<h3><b>支出：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + ")</h2>");
+                        sb.append("<h3><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span><b>&nbsp;&nbsp;&nbsp;支出：" + recommenOrder.getTotalPriceView() + "</b></h3>");
                         sb.append("</div></div>");
                         sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
                         sb.append("<span class=\"jixu\">获得奖励的人：" + recommenOrder.getReceiveUserName() + "</span></p></section>");

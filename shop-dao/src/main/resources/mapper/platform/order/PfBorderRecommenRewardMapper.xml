@@ -151,6 +151,7 @@
         LEFT JOIN com_sku d ON a.sku_id = d.id
         LEFT JOIN com_user e ON b.user_pid = e.id
         WHERE a.recommen_user_id = #{userId} AND a.reward_total_price <![CDATA[ > ]]> 0
+        ORDER BY a.create_time DESC
     </select>
 
     <select id="selectSendRecommenOrder" resultMap="recommenOrderMap">
@@ -175,5 +176,6 @@
         LEFT JOIN com_user d ON b.recommen_user_id = d.id
         LEFT JOIN com_sku e ON b.sku_id = e.id
         WHERE a.user_pid = #{userId} AND b.reward_total_price <![CDATA[ > ]]> 0
+        ORDER BY b.create_time DESC
     </select>
 </mapper>

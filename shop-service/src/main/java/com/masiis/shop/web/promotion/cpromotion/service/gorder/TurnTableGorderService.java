@@ -13,6 +13,8 @@ import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableItemService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -61,6 +63,7 @@ public class TurnTableGorderService {
         return null;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Integer receiveGift(ComUser comUser, Long addressId, Integer turnTableId, Integer giftId){
         //判断是否满足条件领取
         Integer i = isMayReceiveGift(comUser,turnTableId,giftId);

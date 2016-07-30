@@ -57,4 +57,13 @@
         from sf_user_turn_table_record
     </select>
 
+    <select id="getRecordByUserIdAndTurnTableIdAndGiftId" resultMap="BaseResultMap" >
+        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id,
+        status, update_time, remark
+        from sf_user_turn_table_record
+        WHERE user_id = #{id,jdbcType=BIGINT}
+        AND turn_table_id = #{turnTableId,jdbcType=INTEGER}
+        AND turn_table_gift_id = #{turnTableGiftId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

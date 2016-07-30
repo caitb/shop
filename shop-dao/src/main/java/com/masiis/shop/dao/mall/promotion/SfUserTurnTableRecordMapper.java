@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfUserTurnTableRecord;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface SfUserTurnTableRecordMapper {
@@ -16,6 +18,8 @@ public interface SfUserTurnTableRecordMapper {
     int insert(SfUserTurnTableRecord record);
 
     SfUserTurnTableRecord selectByPrimaryKey(Long id);
+
+    SfUserTurnTableRecord getRecordByUserIdAndTurnTableIdAndGiftId(@Param("userId") Long userId,@Param("turnTableId")  Integer turnTableId,@Param("turnTableGiftId")  Integer turnTableGiftId );
 
     List<SfUserTurnTableRecord> selectAll();
 

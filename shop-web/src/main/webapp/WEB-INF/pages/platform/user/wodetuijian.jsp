@@ -32,7 +32,7 @@
             <div onclick="toTuijian()">
                 <img src="${path}/static/images/tuijian_s%20(1).png" alt="">
                 <p><span>${myRecommendPo.recommenTeamCount}</span></p>
-                <h1>推荐的团队总数</h1>
+                <h1>推荐团队人数</h1>
             </div>
             <div onclick="toTuijian()">
                 <img src="${path}/static/images/tuijian_s%20(3).png" alt="">

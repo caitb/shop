@@ -60,9 +60,9 @@
                     <span>${pfIncomRecord.minView}</span>
                 </p>
                 <img src="${pfIncomRecord.headImg}" alt="" onclick="toPersonIncom(${pfIncomRecord.userId})">
-                <div onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
-                    <p><span><a>${pfIncomRecord.realName}</a></span> <b>+${pfIncomRecord.inComView}</b></p>
-                    <p><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
+                <div>
+                    <p><span><a onclick="toPersonIncom(${pfIncomRecord.userId})">${pfIncomRecord.realName}</a></span> <b>+${pfIncomRecord.inComView}</b></p>
+                    <p onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')"><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
                 </div>
             </div>
         </c:forEach>

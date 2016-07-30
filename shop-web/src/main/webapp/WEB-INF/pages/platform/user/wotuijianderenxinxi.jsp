@@ -33,7 +33,7 @@
                <span>进货总额</span>
            </p>
            <p>
-               <span>${countGroup.count}</span>
+               <span>${countGroup.r_count}</span>
                <span>ta的推荐团队</span>
            </p>
        </nav>

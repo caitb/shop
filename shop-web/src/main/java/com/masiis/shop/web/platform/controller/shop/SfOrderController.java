@@ -132,7 +132,7 @@ public class SfOrderController extends BaseController {
                 sfUserBillItemInfoList.add(sfUserBillItemInfo);
             }
         }
-        orderMallDetail.setBuyerName(Buser.getWxNkName());
+        orderMallDetail.setBuyerName(Buser.getRealName());
         orderMallDetail.setSfOrder(order);
         orderMallDetail.setSfOrderPayments(sfOrderPayments);
         orderMallDetail.setSfOrderItems(sfOrderItems);
@@ -163,7 +163,7 @@ public class SfOrderController extends BaseController {
         List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId,sendType);
         for (SfOrder sfOrder :sfOrders){
             sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
-            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getRealName());
             if(sfOrder.getSendType()==1){
                 sfOrder.setSendTypeDes("平台发货");
             }
@@ -251,7 +251,7 @@ public class SfOrderController extends BaseController {
             }
             for (SfOrder sfOrder :sfOrders){
                 sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
-                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
+                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getRealName());
                 if(sfOrder.getSendType()==1){
                     sfOrder.setSendTypeDes("平台发货");
                 }

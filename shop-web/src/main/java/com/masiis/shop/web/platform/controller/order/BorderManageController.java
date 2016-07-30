@@ -592,7 +592,7 @@ public class BorderManageController extends BaseController {
         List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(id);
         //推荐人信息
         ComUser rewordUser = pfBorderRecommenRewardService.getRecommenRewardUser(id);
-        borderDetail.setBuyerName(Buser.getWxNkName());
+        borderDetail.setBuyerName(Buser.getRealName());
         borderDetail.setPfBorderPayments(pfBorderPayments);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);

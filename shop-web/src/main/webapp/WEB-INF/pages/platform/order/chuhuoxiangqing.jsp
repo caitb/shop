@@ -138,7 +138,7 @@
             <c:if test="${ not empty borderDetail.rewordUser}">
                 <div class="sec3">
                     <h1>推荐信息</h1>
-                    <p><span>推荐奖励：</span> <span>${borderDetail.pfBorder.recommenAmount}</span></p>
+                    <p><span>推荐奖励：</span> <span>￥${borderDetail.pfBorder.recommenAmount}</span></p>
                     <p><span>推荐人：</span> <span>${borderDetail.rewordUser}</span></p>
                 </div>
             </c:if>

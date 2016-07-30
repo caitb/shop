@@ -23,7 +23,6 @@
 <input type="hidden" id="month" name="month" value="${month}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${pfIncomRecordPo.pageNum}"/>
 <input type="hidden" id="totalCount" name="totalCount" value="${pfIncomRecordPo.totalCount}"/>
-<input type="hidden" id="time" name="time" value="1">
 <div class="wrap">
     <header class="xq_header">
         <a href="javascript:;" onClick="goBack()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -52,8 +51,8 @@
                     <span>${pfIncomRecord.minView}</span>
                 </p>
                 <img src="${pfIncomRecord.headImg}" alt="">
-                <div>
-                    <p><span><a>${pfIncomRecord.realName}</a></span> <b>+${pfIncomRecord.inComView}</b></p>
+                <div onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
+                    <p><span>${pfIncomRecord.realName}</span> <b>+${pfIncomRecord.inComView}</b></p>
                     <p><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
                 </div>
             </div>
@@ -108,7 +107,6 @@
     }
 
     function ajaxRequest(date,currentPage){
-        $("#time").val(2);
         $.ajax({
             type:"POST",
             async:true,
@@ -151,8 +149,11 @@
         });
     }
     function goBack(){
-        var times = parseInt($("#time").val());
-        javascript:history.go(0-times);
+        window.location.href = basePath + "account/getIncomRecord14.shtml";
+    }
+    function toOrderDetail(url,orderId){
+        fullShow();
+        window.location.href = basePath + url + orderId;
     }
 </script>
 </body>

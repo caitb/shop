@@ -131,14 +131,14 @@
             <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}"
                                           pattern="yyyy-MM-dd HH:mm"/></span></p>
         </div>
-        <c:if test="${(orderMallDetail.sfUserBillItemInfo)!=null && fn:length(orderMallDetail.sfUserBillItemInfo)>0 }">
-            <div class="sec6">
-                <h1>分销信息</h1>
-                <c:forEach items="${orderMallDetail.sfUserBillItemInfo}" var="bill">
-                    <p><span>姓名：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>
-                </c:forEach>
-            </div>
-        </c:if>
+        <%--<c:if test="${(orderMallDetail.sfUserBillItemInfo)!=null && fn:length(orderMallDetail.sfUserBillItemInfo)>0 }">--%>
+            <%--<div class="sec6">--%>
+                <%--<h1>分销信息</h1>--%>
+                <%--<c:forEach items="${orderMallDetail.sfUserBillItemInfo}" var="bill">--%>
+                    <%--<p><span>姓名：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>--%>
+                <%--</c:forEach>--%>
+            <%--</div>--%>
+        <%--</c:if>--%>
         <div class="floor">
             <c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
                 <button class="btn">

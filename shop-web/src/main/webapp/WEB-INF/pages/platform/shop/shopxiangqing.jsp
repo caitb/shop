@@ -55,7 +55,7 @@
                     <img src="<%=path%>/static/images/quxiao.png" alt="" style="width: 35px;height: 37px;top: 14px;"><h1>已取消</h1>
                     <p>亲，您的订单已取消~~</p>
                 </c:if>
-                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus ==7 && orderMallDetail.sfOrder.sendType==2}">
                     <button class="fah">发货</button>
                 </c:if>
             </div>
@@ -123,15 +123,15 @@
                 </h4>
             </div>
             <div class="sec4">
-                <p><span>运费：</span> <span>${orderMallDetail.sfOrder.shipAmount}</span></p>
-                <p><span>商品合计：</span> <span>${orderMallDetail.sfOrder.productAmount}</span></p>
-                <p><span>实付金额：</span> <span style="color: #f74a11">${orderMallDetail.sfOrder.payAmount}</span></p>
+                <p><span>运费：</span> <span>￥${orderMallDetail.sfOrder.shipAmount}</span></p>
+                <p><span>商品合计：</span> <span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
+                <p><span>实付金额：</span> <span style="color: #f74a11">￥${orderMallDetail.sfOrder.payAmount}</span></p>
             </div>
             <c:if test="${(orderMallDetail.sfUserBillItemInfo)!=null && fn:length(orderMallDetail.sfUserBillItemInfo)>0 }">
                 <div class="sec3 sec5">
                     <h1>分销信息</h1>
                     <c:forEach items="${orderMallDetail.sfUserBillItemInfo}" var="bill">
-                        <p><span>姓名：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>
+                        <p><span>微信昵称：${bill.userNameForBill}</span> <span>分销佣金：￥${bill.sfUserBillItem.amount}</span></p>
                     </c:forEach>
                 </div>
             </c:if>

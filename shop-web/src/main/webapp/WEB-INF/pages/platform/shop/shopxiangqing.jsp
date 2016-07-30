@@ -123,9 +123,9 @@
                 </h4>
             </div>
             <div class="sec4">
-                <p><span>运费：</span> <span>${orderMallDetail.sfOrder.shipAmount}</span></p>
-                <p><span>商品合计：</span> <span>${orderMallDetail.sfOrder.productAmount}</span></p>
-                <p><span>实付金额：</span> <span style="color: #f74a11">${orderMallDetail.sfOrder.payAmount}</span></p>
+                <p><span>运费：</span> <span>￥${orderMallDetail.sfOrder.shipAmount}</span></p>
+                <p><span>商品合计：</span> <span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
+                <p><span>实付金额：</span> <span style="color: #f74a11">￥${orderMallDetail.sfOrder.payAmount}</span></p>
             </div>
             <c:if test="${(orderMallDetail.sfUserBillItemInfo)!=null && fn:length(orderMallDetail.sfUserBillItemInfo)>0 }">
                 <div class="sec3 sec5">

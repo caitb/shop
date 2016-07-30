@@ -253,7 +253,7 @@ public class UserAccountController extends BaseController{
                 sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\" onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">");
                 sb.append("<div>");
                 sb.append("<p><span><a onclick=\"toPersonIncom(" + pfIncomRecord.getUserId() + ")\">" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
-                sb.append("<p onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\"><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
+                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\" style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
                 sb.append("</div></div>");
             }
             jsonObject.put("html",sb.toString());

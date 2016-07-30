@@ -334,7 +334,7 @@ public class MyRecommendController extends BaseController{
             switch (tab.intValue()){
                 case 0 : {
                     for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
-                        sb.append("<section class=\"sec1\">");
+                        sb.append("<section class=\"sec1\" onclick=\"toOrderDetail(" + recommenOrder.getOrderId() + ")\">");
                         sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
                         sb.append("<div class=\"shangpin\">");
                         sb.append("<div>");
@@ -348,7 +348,7 @@ public class MyRecommendController extends BaseController{
                 }
                 case 1 : {
                     for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
-                        sb.append("<section class=\"sec1\">");
+                        sb.append("<section class=\"sec1\" onclick=\"toOrderDetail(" + recommenOrder.getOrderId() + ")\">");
                         sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
                         sb.append("<div class=\"shangpin\">");
                         sb.append("<div>");

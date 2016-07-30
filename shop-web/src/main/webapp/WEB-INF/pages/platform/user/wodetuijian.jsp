@@ -49,7 +49,7 @@
         </main>
         <main id="showDiv">
             <c:forEach items="${myRecommendPo.recommenOrders}" var="recommenOrder">
-               <section class="sec1">
+               <section class="sec1" onclick="toOrderDetail(${recommenOrder.orderId})">
                    <h2>
                        订单号：<span>${recommenOrder.orderCode}(${recommenOrder.orderTypeView})</span><b >购买人：${recommenOrder.buyUserName}</b >
                    </h2>
@@ -139,6 +139,11 @@
                     alert("请求出错，请稍后再试");
                 }
             });
+        }
+
+        function toOrderDetail(orderId){
+            fullShow();
+            window.location.href = basePath + "borderManage/deliveryBorderDetils.html?id=" + orderId;
         }
     </script>
 </body>

@@ -40,8 +40,7 @@
         </div>
     </div>
     <div class="nav">
-        <p>总收入：</p>
-        <p id="totalIncom">${pfIncomRecordPo.totalIncomView}</p>
+        <p id="totalIncom">总收入：${pfIncomRecordPo.totalIncomView}</p>
     </div>
     <main id="showDiv">
         <c:forEach items="${pfIncomRecordPo.pfIncomRecords}" var="pfIncomRecord">
@@ -126,7 +125,7 @@
                         }
                         $("#currentPage").val(data.currentPage);
                         $("#totalCount").val(data.totalCount);
-                        $("#totalIncom").text(data.totalIncom);
+                        $("#totalIncom").text("总收入："+data.totalIncom);
                     }
                     else {
                         $("#showDiv").append(data.html);

@@ -30,7 +30,7 @@ public class SfUserTurnTableRecordService {
      * @param status
      * @return
      */
-    public int updateRecordStatusAndGorderId(Long userId,Integer turnTableId,Integer turnTableGiftId ,int status,Long gorderId){
+    public void updateRecordStatusAndGorderId(Long userId,Integer turnTableId,Integer turnTableGiftId ,int status,Long gorderId){
         SfUserTurnTableRecord userTurnTableRecord = getRecordByUserIdAndTurnTableIdAndGiftId(userId,turnTableId,turnTableGiftId);
         if (userTurnTableRecord!=null){
             userTurnTableRecord.setStatus(status);
@@ -39,7 +39,10 @@ public class SfUserTurnTableRecordService {
             }
             userTurnTableRecord.setUpdateTime(new Date());
             userTurnTableRecord.setRemark("大转盘记录更新状态");
-            return userTurnTableRecordMapper.updateByPrimaryKey(userTurnTableRecord);
+            int i =  userTurnTableRecordMapper.updateByPrimaryKey(userTurnTableRecord);
+            if (i!=1){
+                throw new BusinessException("大转盘记录更新状态---更新失败");
+            }
         }else{
             throw new BusinessException("大转盘记录更新状态,查询实体失败");
         }

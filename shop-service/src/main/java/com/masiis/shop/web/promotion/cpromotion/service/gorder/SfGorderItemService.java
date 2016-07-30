@@ -44,12 +44,10 @@ public class SfGorderItemService {
             case ORDER_PROMOTION :
                 return addGorDerItemForPromotion(gorderId,gorderTypeEnum,promoId,promoRuleId);
             case ORDER_TURN_TABLE:
-                addGorDerItemForTurnTable(gorderId,promoId,promoRuleId);
-                break;
+                return addGorDerItemForTurnTable(gorderId,promoId,promoRuleId);
             default:
                 return null;
         }
-        return null;
     }
 
     /**
@@ -58,7 +56,7 @@ public class SfGorderItemService {
      * @param turnTableId
      * @param giftId
      */
-    public void addGorDerItemForTurnTable(Long gorderId,Integer turnTableId,Integer giftId){
+    public SfGorderItem addGorDerItemForTurnTable(Long gorderId,Integer turnTableId,Integer giftId){
         TurnTableGiftInfo turnTableGiftInfo = turnTableGiftService.getTurnTableGiftInfo(turnTableId,giftId);
         SfGorderItem sfGorderItem = new SfGorderItem();
         if (turnTableGiftInfo!=null){
@@ -76,6 +74,7 @@ public class SfGorderItemService {
             log.info("---大转盘抽奖插入订单明细失败----");
             throw new BusinessException("---大转盘抽奖插入订单明细失败----");
         }
+        return sfGorderItem;
     }
 
     /**

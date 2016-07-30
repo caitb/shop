@@ -299,6 +299,9 @@ public class UserAccountController extends BaseController{
             monthString = String.valueOf(month);
         }
         PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14Person(sessionUser.getId(), firstDate, lastDate, null, 1,userId);
+        if (comUser.getRealName() == null){
+            comUser.setRealName(comUser.getWxNkName());
+        }
         mv.addObject("comUser",comUser);
         mv.addObject("year",year);
         mv.addObject("month",monthString);

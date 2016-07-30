@@ -403,7 +403,11 @@ public class SfShopController extends BaseController {
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);
         //获取店主二维码
-        sfShop.setWxQrCode(sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
+        boolean isUpload = false; //没上传
+        if(StringUtils.isNotBlank(sfShop.getWxQrCode())){
+            sfShop.setWxQrCode(sfShopService.getWXQRImgByCode(sfShop.getWxQrCode()));
+            isUpload = true;
+        }
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
@@ -412,6 +416,7 @@ public class SfShopController extends BaseController {
         mav.addObject("loginUser", user);
         mav.addObject("sfShop", sfShop);
         mav.addObject("isOwnShip", isOwnShip);
+        mav.addObject("isUpload", isUpload);
         mav.addObject("userPid", request.getSession().getAttribute("userPid")==null?0:request.getSession().getAttribute("userPid"));
         return mav;
     }

@@ -67,15 +67,23 @@ public class TurnTableGorderService {
 
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Integer receiveGift(ComUser comUser, Long addressId, Integer turnTableId, Integer giftId,Integer turnTableRuleId){
+        log.info("receiveGift入口参数------userId---"+comUser.getId()+"-----address------"+addressId+"-----turnTableId-----"+turnTableId);
+        log.info("giftId------"+giftId+"-------------turnTableRuleId----"+turnTableRuleId);
         //判断是否满足条件领取
+        log.info("判断奖品还有没有--------start");
         Integer i = isMayReceiveGift(comUser,turnTableId,giftId);
         if (i<3){
             return i;
         }
+        log.info("判断奖品还有没有--------end");
         //领取
+        log.info("判断领取次数还有没有--------start");
         SfGorderItem sfGorderItem = receiveGiftAddGorder(comUser,addressId,turnTableId,giftId);
+        log.info("判断领取次数还有没有--------end");
         //领取后的操作
+        log.info("领取后的操作--------start");
         receiveGiftAfterOpertion(1,comUser.getId(),turnTableId,turnTableRuleId,sfGorderItem.getSfGorderId());
+        log.info("领取后的操作--------end");
         return null;
     }
 

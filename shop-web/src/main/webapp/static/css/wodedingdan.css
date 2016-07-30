@@ -129,7 +129,7 @@
 .wrap .box main .all .sec1 .shangpin div h2 span{
     color: #333333;
     font-size: 14px;
-    display: block;
+    /* display: block; */
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;

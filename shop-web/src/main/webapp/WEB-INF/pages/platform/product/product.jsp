@@ -342,7 +342,7 @@
         }
         if(checkPhone()){
             $("#applyErrorMessageId").empty();
-            $("#applyErrorMessageId").html("改手机号已经申请过！");
+            $("#applyErrorMessageId").html("该手机号已经申请过！");
             return;
         }
         $.ajax({

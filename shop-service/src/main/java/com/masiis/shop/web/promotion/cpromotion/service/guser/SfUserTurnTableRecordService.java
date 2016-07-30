@@ -57,6 +57,11 @@ public class SfUserTurnTableRecordService {
         }
     }
 
+    /**
+     * 获取用户的中奖纪录
+     * @param userId
+     * @return
+     */
     public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId){
         List<SfUserTurnTableRecord>  records =  userTurnTableRecordMapper.getRecordInfoByUserId(userId);
         List<UserTurnTableRecordInfo> recordInfoList = new ArrayList<UserTurnTableRecordInfo>();

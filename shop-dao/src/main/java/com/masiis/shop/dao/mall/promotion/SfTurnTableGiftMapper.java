@@ -21,6 +21,8 @@ public interface SfTurnTableGiftMapper {
 
     SfTurnTableGift getTurnTableGiftInfo(@Param("turnTableId") Integer turnTableId, @Param("giftId") Integer giftId);
 
+    SfTurnTableGift getTurnTableGiftInfoByTableIdAndGiftIdAndStatus(@Param("turnTableId") Integer turnTableId, @Param("giftId") Integer giftId,@Param("status") Integer status);
+
     List<SfTurnTableGift> selectAll();
 
     int updateByPrimaryKey(SfTurnTableGift record);

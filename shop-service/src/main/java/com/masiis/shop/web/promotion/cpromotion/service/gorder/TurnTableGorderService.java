@@ -158,6 +158,7 @@ public class TurnTableGorderService {
      */
     private void receiveGiftAfterOpertion(Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId,Long gorderId){
         //奖品奖励数量减少
+        sfTurnTableGiftService.updateGiftedQuantity(turnTableId,giftId);
         //用户转盘增加已抽奖次数，减少未抽奖次数
         sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
         //增加用户转盘具体信息:减少次数

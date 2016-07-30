@@ -2,6 +2,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.promotion.TurnTableGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableGiftMapper;
 import com.masiis.shop.dao.po.ComGift;
@@ -49,5 +50,21 @@ public class SfTurnTableGiftService {
 
     public SfTurnTableGift getSfTurnTableGift(Integer turnTableId,Integer giftId){
         return turnTableGiftMapper.getTurnTableGiftInfo(turnTableId,giftId);
+    }
+
+    /**
+     * 更新大转盘的已中奖数量
+     * @param turnTableId
+     * @param giftId
+     */
+    public void updateGiftedQuantity(Integer turnTableId,Integer giftId){
+        SfTurnTableGift turnTableGift =  getSfTurnTableGift(turnTableId,giftId);
+        if (turnTableGift!=null){
+            turnTableGift.setGiftedQuantity(turnTableGift.getGiftedQuantity()+turnTableGift.getQuantity());
+            int i = turnTableGiftMapper.updateByPrimaryKey(turnTableGift);
+            if (i!=1){
+                throw new BusinessException("更新大转盘奖品已中奖数量失败");
+            }
+        }
     }
 }

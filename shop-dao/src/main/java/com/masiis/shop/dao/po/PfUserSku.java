@@ -81,96 +81,127 @@ public class PfUserSku {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getCode() {
         return code;
     }
+
     public void setCode(String code) {
         this.code = code == null ? null : code.trim();
     }
+
     public Integer getPid() {
         return pid;
     }
+
     public void setPid(Integer pid) {
         this.pid = pid;
     }
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     public Long getUserPid() {
         return userPid;
     }
+
     public void setUserPid(Long userPid) {
         this.userPid = userPid;
     }
+
     public Integer getSkuId() {
         return skuId;
     }
+
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
     public Integer getAgentLevelId() {
         return agentLevelId;
     }
+
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
+
     public Integer getIsPay() {
         return isPay;
     }
+
     public void setIsPay(Integer isPay) {
         this.isPay = isPay;
     }
+
     public Integer getIsCertificate() {
         return isCertificate;
     }
+
     public void setIsCertificate(Integer isCertificate) {
         this.isCertificate = isCertificate;
     }
+
     public Long getPfBorderId() {
         return pfBorderId;
     }
+
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
     }
+
     public BigDecimal getBail() {
         return bail;
     }
+
     public void setBail(BigDecimal bail) {
         this.bail = bail;
     }
+
     public Long getAgentNum() {
         return agentNum;
     }
+
     public void setAgentNum(Long agentNum) {
         this.agentNum = agentNum;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
     public String getTreeCode() {
         return treeCode;
     }
+
     public void setTreeCode(String treeCode) {
         this.treeCode = treeCode == null ? null : treeCode.trim();
     }
+
     public Integer getTreeLevel() {
         return treeLevel;
     }
+
     public void setTreeLevel(Integer treeLevel) {
         this.treeLevel = treeLevel;
     }
@@ -181,5 +212,28 @@ public class PfUserSku {
 
     public void setRewardUnitPrice(BigDecimal rewardUnitPrice) {
         this.rewardUnitPrice = rewardUnitPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "PfUserSku{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", code='" + code + '\'' +
+                ", pid=" + pid +
+                ", userId=" + userId +
+                ", userPid=" + userPid +
+                ", skuId=" + skuId +
+                ", agentLevelId=" + agentLevelId +
+                ", isPay=" + isPay +
+                ", isCertificate=" + isCertificate +
+                ", pfBorderId=" + pfBorderId +
+                ", bail=" + bail +
+                ", agentNum=" + agentNum +
+                ", remark='" + remark + '\'' +
+                ", treeCode='" + treeCode + '\'' +
+                ", treeLevel=" + treeLevel +
+                ", rewardUnitPrice=" + rewardUnitPrice +
+                '}';
     }
 }

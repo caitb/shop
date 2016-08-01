@@ -29,6 +29,10 @@ public class PfUserRecommendRelationService {
         return pfUserRecopmmenRelationMapper.insert(recommenRelation);
     }
 
+    public int update(PfUserRecommenRelation recommenRelation) {
+        return pfUserRecopmmenRelationMapper.updateByPrimaryKey(recommenRelation);
+    }
+
     /**
      * 帮我推荐的人
      *
@@ -62,30 +66,33 @@ public class PfUserRecommendRelationService {
 
     /**
      * 帮我推荐的单人单品推荐人数
+     *
      * @author muchaofeng
      * @date 2016/6/17 13:57
      */
-    public Integer findGiveNum(Long userId,Integer skuId) {
-        return pfUserRecopmmenRelationMapper.selectGiveNum(userId,skuId);
+    public Integer findGiveNum(Long userId, Integer skuId) {
+        return pfUserRecopmmenRelationMapper.selectGiveNum(userId, skuId);
     }
 
     /**
      * 帮我推荐的人id集合
+     *
      * @author muchaofeng
      * @date 2016/6/17 15:11
      */
 
-    public List<Long> findGiveList(Long userId,Integer skuId) {
-        return pfUserRecopmmenRelationMapper.selectGiveList(userId,skuId);
+    public List<Long> findGiveList(Long userId, Integer skuId) {
+        return pfUserRecopmmenRelationMapper.selectGiveList(userId, skuId);
     }
 
     /**
      * 条件查询帮我推荐的人详情列表
+     *
      * @author muchaofeng
      * @date 2016/6/17 10:30
      */
     public List<UserRecommend> findGiveSumByLike(Integer skuId, Long userId) {
-        return pfUserRecopmmenRelationMapper.selectGiveSumByLike(skuId,userId);
+        return pfUserRecopmmenRelationMapper.selectGiveSumByLike(skuId, userId);
     }
 
     /**
@@ -100,12 +107,13 @@ public class PfUserRecommendRelationService {
 
     /**
      * 条件查询我推荐的详情列表
+     *
      * @author muchaofeng
      * @date 2016/6/17 10:30
      */
 
-    public List<UserRecommend> findSumByLike(Integer skuId, Long userId, Integer agentLevelIdLong ) {
-        return pfUserRecopmmenRelationMapper.selectSumByLike(skuId,userId,agentLevelIdLong);
+    public List<UserRecommend> findSumByLike(Integer skuId, Long userId, Integer agentLevelIdLong) {
+        return pfUserRecopmmenRelationMapper.selectSumByLike(skuId, userId, agentLevelIdLong);
     }
 
     /**
@@ -128,5 +136,18 @@ public class PfUserRecommendRelationService {
      */
     public int updateTreeCodeById(Integer id, String treeCode) {
         return pfUserRecopmmenRelationMapper.updateTreeCodeById(id, treeCode);
+    }
+
+    /**
+     * 批量修改团队树结构
+     *
+     * @param treeCode
+     * @param parentTreeCode
+     * @param idIndex
+     * @param treeLevelDiff
+     * @return
+     */
+    public int updateTreeCodes(String treeCode, String parentTreeCode, Integer idIndex, Integer treeLevelDiff) {
+        return pfUserRecopmmenRelationMapper.updateTreeCodes(treeCode, parentTreeCode, idIndex, treeLevelDiff);
     }
 }

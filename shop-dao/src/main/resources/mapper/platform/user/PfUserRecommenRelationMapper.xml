@@ -230,4 +230,9 @@
         update pf_user_recommen_relation set tree_code = #{treeCode}
         where id = #{id}
     </update>
+
+    <update id="updateTreeCodes">
+        UPDATE pf_user_recommen_relation SET tree_code=CONCAT(#{parentTreeCode},SUBSTRING(tree_code,#{idIndex})),tree_level=tree_level-#{treeLevelDiff}
+        WHERE tree_code LIKE CONCAT(#{treeCode},'%');
+    </update>
 </mapper>

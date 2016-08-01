@@ -9,10 +9,10 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -74,6 +74,10 @@ public class BUpgradePayService {
     private UpgradeWechatNewsService upgradeWechatNewsService;
     @Resource
     private SkuAgentService skuAgentService;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
+    @Resource
+    private PfBorderRecommenRewardService pfBorderRecommenRewardService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -90,6 +94,9 @@ public class BUpgradePayService {
         log.info("插入订单操作日志------start");
         insertOrderOperationLog(pfBorder);
         log.info("插入订单操作日志------end");
+        log.info("v1.4.2 修改推荐关系--------------start");
+        updatePfUserRecommenRelation(pfBorder, pfBorderItems);
+        log.info("v1.4.2 修改推荐关系--------------end");
         //修改证书和插入证书历史表
         log.info("修改证书插入历史-----start");
         inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(), pfBorderItems, null, rootPath);
@@ -132,6 +139,65 @@ public class BUpgradePayService {
         }
 
 
+    }
+
+    /**
+     * 更新推荐关系
+     * @param pfBorder 订单对象
+     * @param pfBorderItems 订单子表
+     */
+    private void updatePfUserRecommenRelation(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if (pfBorderRecommenReward != null) {
+                PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorderRecommenReward.getRecommenUserId(), pfBorderItem.getSkuId());
+                if (pfUserRecommenRelation == null) {
+                    pfUserRecommenRelation = new PfUserRecommenRelation();
+                    pfUserRecommenRelation.setCreateTime(new Date());
+                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+                    pfUserRecommenRelation.setUserId(pfBorder.getUserId());
+                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+                    pfUserRecommenRelation.setSkuId(pfBorderItem.getSkuId());
+                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
+                    pfUserRecommenRelation.setTreeCode("");
+                    pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
+                    pfUserRecommenRelation.setRemark("绑定合伙人推荐关系");
+                    pfUserRecommendRelationService.insert(pfUserRecommenRelation);
+                    String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
+                    if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+                        throw new BusinessException("treeCode修改失败");
+                    }
+                } else {
+                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
+                    pfUserRecommenRelation.setRemark("修改合伙人推荐关系");
+                    int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
+                    if (i <= 0) {
+                        throw new BusinessException("推荐关系树结构修改失败");
+                    }
+                    Integer id = pfUserRecommenRelation.getId();
+                    String treeCode = "," + pfUserRecommenRelation.getTreeCode();
+                    String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
+                    Integer id_index = treeCode.indexOf("," + id + ",") + 1;
+                    Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
+                    if (treeLevel < 0) {
+                        log.info("树结构更换只能挂在高于自己的树枝");
+                        throw new BusinessException("树结构更换只能挂在高于自己的树枝");
+                    }
+                    log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
+                    log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
+                    log.info("id_index-----" + id_index);
+                    log.info("treeLevel-----" + treeLevel);
+                    i = pfUserRecommendRelationService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
+                    if (i <= 0) {
+                        log.info("推荐关系树结构修改失败");
+                        throw new BusinessException("推荐关系树结构修改失败");
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -273,9 +339,9 @@ public class BUpgradePayService {
                     throw new BusinessException("分销关系树结构修改失败");
                 }
                 Integer id = pfUserSku.getId();
-                String treeCode = pfUserSku.getTreeCode();
+                String treeCode = "," + pfUserSku.getTreeCode();
                 String parentTreeCode = parent_treeCode;
-                Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+                Integer id_index = treeCode.indexOf("," + id + ",") + 1;
                 Integer treeLevel = pfUserSku.getTreeLevel() - parent_treeLevel - 1;
                 if (treeLevel < 0) {
                     log.info("树结构更换只能挂在高于自己的树枝");
@@ -514,7 +580,7 @@ public class BUpgradePayService {
         for (PfBorderItem orderItem : orderItems) {
             log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + orderItem.getSkuId());
             List<SfShopSku> sfShopSkus = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
-            for (SfShopSku sfShopSku:sfShopSkus){
+            for (SfShopSku sfShopSku : sfShopSkus) {
                 if (sfShopSku != null) {
                     log.info("修改前的小铺商品的代理等级---之前--" + orderItem.getAgentLevelId());
                     sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
@@ -610,5 +676,4 @@ public class BUpgradePayService {
             }
         }
     }
-
 }

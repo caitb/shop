@@ -539,7 +539,7 @@ public class BOrderPayEndMessageService {
         String[] param = new String[2];
         param[0] = numberFormat.format(pfBorderRecommenReward.getRewardTotalPrice());
         param[1] = simpleDateFormat.format(pfBorderRecommenReward.getCreateTime());
-        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/getRewardBorder";
+        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
         WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
 
         // 给发出推荐奖励的人发
@@ -550,7 +550,7 @@ public class BOrderPayEndMessageService {
                 recommenUser.getRealName()
         };
         ComUser pUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/sendRewardBorder";
+        String pUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
         WxPFNoticeUtils.getInstance().recommendProfitOutNotice(pUser, pParam, pUrl);
     }
 }

@@ -20,6 +20,8 @@ public interface SfTurnTableMapper {
 
     List<SfTurnTable> selectAll();
 
+    List<SfTurnTable> getTurnTableByStatus(Integer status);
+
     int updateByPrimaryKey(SfTurnTable record);
 
     int update(SfTurnTable record);

@@ -11,6 +11,8 @@ import com.masiis.shop.web.common.service.ComGiftService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  转盘奖品表service
@@ -24,6 +26,21 @@ public class SfTurnTableGiftService {
     private SfTurnTableGiftMapper turnTableGiftMapper;
     @Resource
     private ComGiftService comGiftService;
+
+    /**
+     * 查询转盘下的所有奖品信息
+     * @param turnTableId
+     * @return
+     */
+    public List<TurnTableGiftInfo> getTurnTableGiftsByTableId(Integer turnTableId){
+        List<SfTurnTableGift> turnTableGifts = turnTableGiftMapper.listByTurnTableId(turnTableId);
+        List<TurnTableGiftInfo> turnTableGiftInfos = new ArrayList<TurnTableGiftInfo>();
+        for (SfTurnTableGift turnTableGift: turnTableGifts){
+            TurnTableGiftInfo turnTableGiftInfo = getTurnTableGiftInfo(turnTableId,turnTableGift.getGiftId());
+            turnTableGiftInfos.add(turnTableGiftInfo);
+        }
+        return turnTableGiftInfos;
+    }
 
     /**
      * 获得抽中的奖品信息

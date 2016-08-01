@@ -106,6 +106,12 @@
                 AND create_time &lt;=#{endTime}
             </if>
         </where>
-    </select>
 
+    </select>
+    <select id="getTurnTableByStatus" resultMap="BaseResultMap" >
+        select id, create_time, create_man, name, code, status, `describe`, begin_time, end_time,
+        modify_time, modify_man, remark
+        from sf_turn_table
+        WHERE status = #{status,jdbcType=INTEGER}
+    </select>
 </mapper>

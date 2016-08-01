@@ -1,6 +1,7 @@
 package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 
 import com.masiis.shop.dao.mall.promotion.SfTurnTableMapper;
+import com.masiis.shop.dao.po.SfTurnTable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,7 +16,7 @@ public class SfTurnTableService {
     @Resource
     private SfTurnTableMapper turnTableMapper;
 
-    public List<SfTurnTableMapper> getTurnTabbleByStatus(Integer status){
-        return null;
+    public List<SfTurnTable> getTurnTableByStatus(Integer status){
+        return turnTableMapper.getTurnTableByStatus(status);
     }
 }

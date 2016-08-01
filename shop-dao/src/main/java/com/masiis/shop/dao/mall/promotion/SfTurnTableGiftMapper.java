@@ -26,4 +26,10 @@ public interface SfTurnTableGiftMapper {
     List<SfTurnTableGift> selectAll();
 
     int updateByPrimaryKey(SfTurnTableGift record);
+
+    List<SfTurnTableGift> listByTurnTableId(Integer turnTableId);
+
+    int update(SfTurnTableGift record);
+
+
 }

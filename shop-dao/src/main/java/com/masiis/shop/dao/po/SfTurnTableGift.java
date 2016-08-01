@@ -50,6 +50,21 @@ public class SfTurnTableGift {
      */
     private String remark;
 
+    public SfTurnTableGift() {
+    }
+
+    public SfTurnTableGift(Integer id, Integer sort, Integer giftId, Integer probability, Integer toatalQuantity) {
+        this.id = id;
+        this.sort = sort;
+        this.giftId = giftId;
+        this.probability = probability;
+        this.toatalQuantity = toatalQuantity;
+
+        this.quantity = 1;
+        this.giftedQuantity = 0;
+        this.status = 0;
+    }
+
     public Integer getId() {
         return id;
     }

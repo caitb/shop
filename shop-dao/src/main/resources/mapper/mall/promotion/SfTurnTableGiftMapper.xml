@@ -74,4 +74,42 @@
         AND status  = #{status,jdbcType=INTEGER}
     </select>
 
+    <select id="listByTurnTableId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort,
+        probability, status, remark
+        from sf_turn_table_gift
+        where turn_table_id = #{turnTableId,jdbcType=INTEGER }
+    </select>
+
+    <update id="update" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
+        update sf_turn_table_gift
+        <set>
+            <if test="giftId != null">
+                gift_id = #{giftId,jdbcType=INTEGER},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="toatalQuantity != null">
+                toatal_quantity = #{toatalQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="giftedQuantity != null">
+                gifted_quantity = #{giftedQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="probability != null">
+                probability = #{probability,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
 </mapper>

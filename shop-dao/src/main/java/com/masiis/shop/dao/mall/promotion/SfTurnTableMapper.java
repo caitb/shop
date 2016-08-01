@@ -9,6 +9,7 @@ package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfTurnTable;
 import java.util.List;
+import java.util.Map;
 
 public interface SfTurnTableMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +21,9 @@ public interface SfTurnTableMapper {
     List<SfTurnTable> selectAll();
 
     int updateByPrimaryKey(SfTurnTable record);
+
+    int update(SfTurnTable record);
+
+    List<SfTurnTable> selectByCondition(Map<String,Object> condition);
+
 }

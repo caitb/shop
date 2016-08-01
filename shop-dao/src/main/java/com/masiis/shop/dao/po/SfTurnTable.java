@@ -7,9 +7,15 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.common.util.TurnTableMakeUtils;
+import org.apache.commons.lang.time.DateUtils;
+
+import java.text.ParseException;
 import java.util.Date;
 
 public class SfTurnTable {
+
+
 
     /**
      * 转盘主键id
@@ -59,6 +65,34 @@ public class SfTurnTable {
      * 备注
      */
     private String remark;
+
+    public SfTurnTable() {
+    }
+
+    public SfTurnTable(Integer id, String name, String describe, String remark, String beginTimeStr, String endTimeStr, Long createMan) {
+        this.id = id;
+        setName(name);
+        setDescribe(describe);
+        setRemark(remark);
+
+        try {
+            this.beginTime = DateUtils.parseDate(beginTimeStr, new String[]{"yyyy-MM-dd HH:mm:ss"});
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.endTime   = DateUtils.parseDate(endTimeStr,   new String[]{"yyyy-MM-dd HH:mm:ss"});
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.createMan = createMan;
+        this.createTime = new Date();
+        this.code = TurnTableMakeUtils.makeCode();
+        this.status = 0;
+
+    }
 
     public Integer getId() {
         return id;

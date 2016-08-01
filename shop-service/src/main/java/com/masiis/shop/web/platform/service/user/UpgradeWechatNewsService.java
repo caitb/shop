@@ -106,7 +106,7 @@ public class UpgradeWechatNewsService {
             //上级变化
             logger.info("发送微信通知-----------上级变化");
             PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
-            if (!pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
+            if (pfBorderRecommenReward == null || !pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
                 //给原上级发微信
                 String[] _param = new String[1];
                 _param[0] = comUser.getRealName();

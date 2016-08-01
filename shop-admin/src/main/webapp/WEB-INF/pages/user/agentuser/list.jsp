@@ -393,23 +393,6 @@
                         }
                     },
                     {
-                        field: 'bo.send_type',
-                        title: '拿货方式',
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.sendType == 0){
-                                return '未选择';
-                            }
-                            if(row && row.sendType == 1){
-                                return '平台代发';
-                            }
-                            if(row && row.sendType == 2){
-                                return '自己发货';
-                            }
-                        }
-                    },
-                    {
                         field: 'uss.stock',
                         title: '库存',
                         footerFormatter: totalNameFormatter,
@@ -431,23 +414,57 @@
                             if(row && row.userPid){
                                 return row.puRealName;
                             }
-                            return '平台'
+                            return '-'
                         }
                     },
                     {
-                        field: 'us.bail',
-                        title: '保证金',
-                        sortable: true,
-                        //editable: true,
+                        title: '上级合伙人级别',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.bail){
-                                return row.bail;
+                            if(row && row.pLevelName){
+                                return row.pLevelName;
                             }
-                            return 0;
+                            return '-'
                         }
                     },
+                    {
+                        title: '推荐人',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.ruRealName){
+                                return row.ruRealName;
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        title: '推荐人等级',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.rLevelName){
+                                return row.rLevelName;
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        title: 'BOSS 姓名',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.bsRealName){
+                                return row.bsRealName;
+                            }
+                            return '-'
+                        }
+                    },
+
                     {
                         field: 'us.create_time',
                         title: '加入时间',
@@ -458,22 +475,6 @@
                         formatter: function(value, row, index){
                             if(row && row.createTime){
                                 return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
-                            }
-                        }
-                    },
-                    {
-                        field: 'us.is_pay',
-                        title: '是否支付',
-                        sortable: true,
-                        //editable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row && row.isPay == 0){
-                                return '未支付';
-                            }
-                            if(row && row.isPay == 1){
-                                return '已支付';
                             }
                         }
                     },

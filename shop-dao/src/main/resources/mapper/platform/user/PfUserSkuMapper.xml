@@ -303,31 +303,39 @@
     </select>
 
     <select id="selectByMap" parameterType="Map" resultType="java.util.HashMap">
-        select
-                us.id          id,
-                us.create_time createTime,
-                us.code        code,
-                us.is_pay      isPay,
-                us.user_pid    userPid,
-                u.id           uId,
-                u.real_name    realName,
-                u.mobile       mobile,
-                sku.name       skuName,
-                al.name        levelName,
-                bo.send_type   sendType,
-                uss.stock      stock,
-                pu.real_name   puRealName,
-                us.bail        bail,
-                (SELECT COUNT(0) from pf_user_sku where pid=us.id) countLower
+        SELECT
+            us.id          id,
+            us.create_time createTime,
+            us.code        code,
+            us.user_pid    userPid,
+            u.id           uId,
+            u.real_name    realName,
+            u.mobile       mobile,
+            sku.name       skuName,
+            al.name        levelName,
+            uss.stock      stock,
+            pu.real_name   puRealName,
+            pal.name       pLevelName,
+            ru.real_name   ruRealName,
+            ral.name       rLevelName,
+            bsu.real_name  bsRealName,
+            (SELECT COUNT(0) FROM pf_user_sku WHERE pid=us.id) countLower
 
         FROM
-                  pf_user_sku       us
+          pf_user_sku       us
         LEFT JOIN com_user          u   ON u.id  = us.user_id
         LEFT JOIN com_user          pu  ON pu.id = us.user_pid
         LEFT JOIN com_sku           sku ON sku.id = us.sku_id
         LEFT JOIN com_agent_level   al  ON al.id = us.agent_level_id
-        LEFT JOIN pf_border         bo  ON bo.id = us.pf_border_id
         LEFT JOIN pf_user_sku_stock uss ON uss.user_id = us.user_id AND uss.sku_id = us.sku_id
+        LEFT JOIN pf_user_recommen_relation purr ON purr.user_id=us.user_id AND purr.sku_id=us.sku_id
+        LEFT JOIN com_user ru ON ru.id=purr.user_pid
+        LEFT JOIN pf_user_sku       pus ON pus.user_id=us.user_pid AND pus.sku_id=us.sku_id
+        LEFT JOIN com_agent_level   pal ON pal.id=pus.agent_level_id
+        LEFT JOIN pf_user_sku       rus ON rus.user_id=ru.id AND rus.sku_id=us.sku_id
+        LEFT JOIN com_agent_level   ral ON ral.id=rus.agent_level_id
+        LEFT JOIN pf_user_sku       bsus ON us.tree_code LIKE CONCAT(bsus.tree_code,'%') AND bsus.tree_level=1 AND bsus.agent_level_id=1
+        LEFT JOIN com_user          bsu ON bsu.id=bsus.user_id
         <where>
             <if test="realName != null">
                 AND u.real_name LIKE #{realName}

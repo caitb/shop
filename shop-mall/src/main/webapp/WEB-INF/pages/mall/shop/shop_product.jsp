@@ -162,7 +162,7 @@
 </div>
 <footer>
     <section class="sec3">
-        <c:if test="${isOwnShip==1}">
+        <c:if test="${isOwnShip==1 && isUpload==true}">
             <h1 onclick="clickShow()">联系店主</h1>
         </c:if>
         <p onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>

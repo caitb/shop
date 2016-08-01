@@ -30,7 +30,13 @@
     <div class="banner">
         <div class="swiper-container">
             <div class="swiper-wrapper">
+                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/br1.png" alt=""></div>--%>
+                <%--<c:forEach items="${SfShopDetails}" var="SfShopDetails" begin="0" end="4">--%>
+                <%--<div class="swiper-slide"><img src="${SfShopDetails.skuUrl}" alt=""></div>--%>
+                <%--</c:forEach>--%>
+                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/br1.png" alt=""></div>--%>
             </div>
+            <!-- 如果需要分页器 -->
             <div class="swiper-pagination"></div>
             <div class="banner_b"></div>
         </div>
@@ -39,6 +45,11 @@
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
                 <p id="icon">
+                    <%--<img src="<%=path%>/static/images/1.png" alt="">--%>
+                    <%--<img src="<%=path%>/static/images/3.png" alt="">--%>
+                    <%--<c:forEach items="${SfShopDetails}" var="SfShopDetails">--%>
+                    <%--<img src="${SfShopDetails.icon}" alt="">--%>
+                    <%--</c:forEach>--%>
                 </p>
             </div>
             <div class="br_2">
@@ -49,12 +60,23 @@
                 <div onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');"><img src="<%=path%>/static/images/woyao.png" alt=""></div>
                 <p>&nbsp;&nbsp;</p>
                 <div onclick="javascript:window.location.replace('http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=2247483656&idx=1&sn=555876e87000a8b289d535fb12ce4333&scene=0#wechat_redirect');"><img src="<%=path%>/static/images/daiyan.png" alt=""></div>
-                    <div class="tallme" onclick="showNowxcode(${isUpload})">联系我</div>
+                    <div class="tallme" onclick="showNowxcode(${isUpload})">联系店主</div>
             </div>
         </div>
 
     </div>
     <main id="main">
+        <%--<c:forEach items="${SfShopDetails}" var="sd">--%>
+        <%--<div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">--%>
+        <%--<div><img src="${sd.skuImageUrl}" alt=""></div>--%>
+        <%--<div>--%>
+        <%--<h1>${sd.skuAssia}</h1>--%>
+        <%--<p>-${sd.slogan}-</p>--%>
+        <%--<h1>￥${sd.priceRetail}</h1>--%>
+        <%--<button>立即购买</button>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</c:forEach>--%>
     </main>
     <c:if test="${not empty userPromotions}">
         <img src="${path}/static/images/activity.png" onclick="javascript:window.location.replace('<%=path%>/showPromotion/getAllPromoDetail.html');" alt="">
@@ -86,6 +108,15 @@
         <b class="off" onclick="clickHide()"><i>×</i></b>
     </div>
 </div>
+<%--<div class="black nobady">--%>
+    <%--<div class="back_b"></div>--%>
+    <%--<div class="b_n">--%>
+        <%--<img src="${path}/static/images/nobady.png" alt="">--%>
+        <%--<p>该店主还未上传二维码，催他上传吧</p>--%>
+        <%--<button>留下邮箱</button>--%>
+        <%--<b class="off" onclick="clickHide()">×</b>--%>
+    <%--</div>--%>
+<%--</div>--%>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
@@ -93,6 +124,7 @@
 <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <script>
     $(function () {
+
         $.ajax({
             type:"POST",
             url : "<%=path%>/findSfSkuLevelImage.do",
@@ -136,7 +168,7 @@
                         shipName="平台发货";
                         tubiaoHtml ="<div><h2><img src='${path}/static/images/ping.png' alt=''>";
                     }
-                    trHtml2+=tubiaoHtml+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h3><b>￥</b>"+SfShopDetails.priceRetail+"<span>￥"+SfShopDetails.priceMarket+"<img src='${path}/static/images/xie.png'/></span></h3>";
+                    trHtml2+=tubiaoHtml+shipName+"</h2><h1>"+SfShopDetails.skuAssia+"</h1> <p>-"+SfShopDetails.slogan+"-</p> <h3><b>￥</b>"+SfShopDetails.priceRetail+"<span>"+SfShopDetails.priceMarket+"<img src='${path}/static/images/xie.png'/></span></h3>";
                     trHtml2+="</div> </div>";
                 })
                 $("#main").html(trHtml2);
@@ -159,6 +191,23 @@
         $(".b_t").hide();
         $(".back_b").hide();
     }
+
+    <%--$(".tallme").on("click",function(){--%>
+        <%--var array = "${sfShop.wxQrCode}".split("/");--%>
+        <%--var nums = [ ];--%>
+        <%--for (var i=array.length-1 ; i< array.length ; i++)--%>
+        <%--{--%>
+            <%--nums.push(array[i]);--%>
+        <%--}--%>
+        <%--if(nums=="null"){--%>
+            <%--alert("店主还没有上传二维码");--%>
+        <%--}else{--%>
+            <%--$(".black").show();--%>
+            <%--$(".b_t").show();--%>
+            <%--$(".back_b").show();--%>
+        <%--}--%>
+
+    <%--})--%>
     function showNowxcode(value){
        if(value){
            alert("店主还没有上传二维码");

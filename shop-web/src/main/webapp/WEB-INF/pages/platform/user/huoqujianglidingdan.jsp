@@ -12,7 +12,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="${basePath}myRecommend/feeList"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                  <a href="${basePath}myRecommend/myRecommen.shtml"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>获取奖励订单</p>
         </header>
        <div class="sel">

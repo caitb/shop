@@ -62,7 +62,7 @@
                 申请提现
             </button>
             <div class="floor2">
-                <%--<p><a href="#" onclick="toIncomRecord()">收入记录</a></p>--%>
+                <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
             </div>
         </main>
@@ -192,7 +192,8 @@
     }
     function toIncomRecord(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>account/getIncomRecord.shtml";
+        <%--window.location.href="<%=basePath%>account/getIncomRecord.shtml";--%>
+        window.location.href="<%=basePath%>account/getIncomRecord14.shtml";
     }
     function toExtract(){
         fullShow();//跳转页面钱展示全屏遮罩loading...

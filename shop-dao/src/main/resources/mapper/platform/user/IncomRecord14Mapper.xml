@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.IncomRecord14Mapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.user.PfIncomRecord" >
+        <result column="orderId" property="orderId" jdbcType="BIGINT" />
+        <result column="recommenType" property="recommenType" jdbcType="INTEGER" />
+        <result column="orderType" property="orderType" jdbcType="INTEGER" />
+        <result column="userId" property="userId" jdbcType="BIGINT" />
+        <result column="realName" property="realName" jdbcType="VARCHAR" />
+        <result column="headImg" property="headImg" jdbcType="VARCHAR" />
+        <result column="skuId" property="skuId" jdbcType="BIGINT" />
+        <result column="skuName" property="skuName" jdbcType="VARCHAR" />
+        <result column="flag" property="flag" jdbcType="INTEGER" />
+        <result column="inCome" property="inCome" jdbcType="DECIMAL" />
+        <result column="viewType" property="viewType" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectSumPfIncom" resultType="java.math.BigDecimal">
+        SELECT
+        sum(t.inCome)
+        FROM
+        (
+        SELECT
+        b.id AS orderId,
+        a.order_sub_type AS recommenType,
+        b.order_type AS orderType,
+        c.id AS userId,
+        c.real_name AS realName,
+        c.wx_head_img AS headImg,
+        e.id AS skuId,
+        e. NAME AS skuName,
+        1 AS flag,
+        a.order_pay_amount AS inCome,
+        a.create_date AS createTime
+        FROM
+        pf_user_bill_item a
+        INNER JOIN pf_border b ON a.pf_border_id = b.id
+        INNER JOIN com_user c ON b.user_id = c.id
+        LEFT JOIN pf_border_item d ON b.id = d.pf_border_id
+        LEFT JOIN com_sku e ON d.sku_id = e.id
+        WHERE
+        a.user_id = #{userId}
+        AND a.is_count = 1
+        AND b.order_type <![CDATA[ <> ]]> 2
+        UNION ALL
+        SELECT
+        b.id AS orderId,
+        a.item_type AS type,
+        b.order_type AS orderType,
+        c.id AS userId,
+        IFNULL(c.real_name,c.wx_nk_name) AS realName,
+        c.wx_head_img AS headImg,
+        e.id AS skuId,
+        e. NAME AS skuName,
+        2 AS flag,
+        a.amount - IFNULL(f.amount,0) AS inCome,
+        a.create_time AS createTime
+        FROM
+        sf_shop_bill_item a
+        INNER JOIN sf_order b ON a.source_id = b.id
+        INNER JOIN com_user c ON b.user_id = c.id
+        LEFT JOIN sf_order_item d ON b.id = d.sf_order_id
+        LEFT JOIN com_sku e ON d.sku_id = e.id
+        LEFT JOIN sf_shop_bill_item f ON a.source_id = f.source_id
+        AND f.item_type = 3 AND f.is_count = 1
+        WHERE
+        a.com_user_id = #{userId}
+        AND a.item_type = 1
+        AND a.is_count = 1
+        ) t
+        WHERE t.createTime BETWEEN #{firstDate} AND #{lastDate}
+        <if test="flag != null">
+            AND t.flag = #{flag}
+        </if>
+        <if test="personUserId != null">
+            AND t.userId = #{personUserId}
+        </if>
+    </select>
+
+    <select id="selectPfIncomRecords" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        b.id AS orderId,
+        a.order_sub_type AS recommenType,
+        b.order_type AS orderType,
+        c.id AS userId,
+        c.real_name AS realName,
+        c.wx_head_img AS headImg,
+        e.id AS skuId,
+        e. NAME AS skuName,
+        1 AS flag,
+        a.order_pay_amount AS inCome,
+        a.create_date AS createTime,
+        CONCAT(a.order_sub_type,',',b.order_type,',',1) AS viewType
+        FROM
+        pf_user_bill_item a
+        INNER JOIN pf_border b ON a.pf_border_id = b.id
+        INNER JOIN com_user c ON b.user_id = c.id
+        LEFT JOIN pf_border_item d ON b.id = d.pf_border_id
+        LEFT JOIN com_sku e ON d.sku_id = e.id
+        WHERE
+        a.user_id = #{userId}
+        AND a.is_count = 1
+        AND b.order_type <![CDATA[ <> ]]> 2
+        UNION ALL
+        SELECT
+        b.id AS orderId,
+        a.item_type AS type,
+        b.order_type AS orderType,
+        c.id AS userId,
+        IFNULL(c.real_name,c.wx_nk_name) AS realName,
+        c.wx_head_img AS headImg,
+        e.id AS skuId,
+        e. NAME AS skuName,
+        2 AS flag,
+        a.amount - IFNULL(f.amount,0) AS inCome,
+        a.create_time AS createTime,
+        CONCAT(a.item_type,',',b.order_type,',',2) AS viewType
+        FROM
+        sf_shop_bill_item a
+        INNER JOIN sf_order b ON a.source_id = b.id
+        INNER JOIN com_user c ON b.user_id = c.id
+        LEFT JOIN sf_order_item d ON b.id = d.sf_order_id
+        LEFT JOIN com_sku e ON d.sku_id = e.id
+        LEFT JOIN sf_shop_bill_item f ON a.source_id = f.source_id
+        AND f.item_type = 3 AND f.is_count = 1
+        WHERE
+        a.com_user_id = #{userId}
+        AND a.item_type = 1
+        AND a.is_count = 1
+        ) t
+        WHERE t.createTime BETWEEN #{firstDate} AND #{lastDate}
+        <if test="flag != null">
+            AND t.flag = #{flag}
+        </if>
+        <if test="personUserId != null">
+            AND t.userId = #{personUserId}
+        </if>
+        AND t.inCome <![CDATA[ > ]]> 0
+        ORDER BY t.createTime DESC
+    </select>
+
+</mapper>

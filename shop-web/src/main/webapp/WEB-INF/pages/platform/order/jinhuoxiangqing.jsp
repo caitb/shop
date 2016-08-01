@@ -30,7 +30,6 @@
             <header class="xq_header">
                 <a href="<%= url %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>订单详情</p>
-                <%--javascript:window.history.go(-1);--%>
             </header>
             <div class="tai">
                 <c:if test="${borderDetail.pfBorder.orderStatus==0}">
@@ -41,7 +40,7 @@
                     <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 35px;height: 25px;top: 18px;"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p>
                 </c:if>
-                <c:if test="${borderDetail.pfBorder.payStatus==8 && borderDetail.pfBorder.sendType ==2}">
+                <c:if test="${borderDetail.pfBorder.orderStatus==8}">
                     <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 48px;height: 25px;top: 18px;"><h1>已发货</h1>
                     <p>亲，卖家已发货~~</p>
                 </c:if>

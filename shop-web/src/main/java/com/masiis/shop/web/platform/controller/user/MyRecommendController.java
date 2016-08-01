@@ -2,9 +2,13 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.recommend.MyRecommendPo;
+import com.masiis.shop.dao.beans.recommend.RecommenOrder;
+import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.beans.user.UserRecommend;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
@@ -23,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,33 +62,58 @@ public class MyRecommendController extends BaseController{
     @Resource
     private PfUserSkuService pfUserSkuService;
 
-    /**
-     * 我的推荐
-     * @author muchaofeng
-     * @date 2016/6/15 17:44
-     */
-    @RequestMapping("/feeList")
-    public ModelAndView feeList(HttpServletRequest request){
-        try{
-            ModelAndView modelAndView = new ModelAndView();
-            ComUser comUser = getComUser(request);
-            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(comUser.getId());
-            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//帮我推荐的人数
-            int numByUserPid = pfUserRecommendRelationService.findNumByUserPid(comUser.getId());//我推荐的人数
-            Integer borders = pfBorderRecommenRewardService.findBorders(comUser.getId());//获得奖励订单数
-            Integer pBorders = pfBorderRecommenRewardService.findPBorders(comUser.getId());//发出奖励订单数
-            modelAndView.addObject("pfUserStatistics",pfUserStatistics);
-            modelAndView.addObject("numByUserId",numByUserId);
-            modelAndView.addObject("numByUserPid",numByUserPid);
+    @Resource
+    private CountGroupService countGroupService;
+//    /**
+//     * 我的推荐
+//     * @author muchaofeng
+//     * @date 2016/6/15 17:44
+//     */
+//    @RequestMapping("/feeList")
+//    public ModelAndView feeList(HttpServletRequest request){
+//        try{
+//            ModelAndView modelAndView = new ModelAndView();
+//            ComUser comUser = getComUser(request);
+//            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(comUser.getId());
+//            int numByUserId = pfUserRecommendRelationService.findNumByUserId(comUser.getId());//帮我推荐的人数
+//            int numByUserPid = pfUserRecommendRelationService.findNumByUserPid(comUser.getId());//我推荐的人数
+//            Integer borders = pfBorderRecommenRewardService.findBorders(comUser.getId());//获得奖励订单数
+//            Integer pBorders = pfBorderRecommenRewardService.findPBorders(comUser.getId());//发出奖励订单数
+//            modelAndView.addObject("pfUserStatistics",pfUserStatistics);
+//            modelAndView.addObject("numByUserId",numByUserId);
+//            modelAndView.addObject("numByUserPid",numByUserPid);
+//
+//            modelAndView.addObject("borders",borders);
+//            modelAndView.addObject("pBorders",pBorders);
+//            modelAndView.setViewName("platform/user/wodetuijian");
+//            return modelAndView;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            log.error("获取代理产品列表失败!",e);
+//        }
+//        return null;
+//    }
 
-            modelAndView.addObject("borders",borders);
-            modelAndView.addObject("pBorders",pBorders);
-            modelAndView.setViewName("platform/user/wodetuijian");
-            return modelAndView;
-        }catch (Exception e){
-            log.error("获取代理产品列表失败!",e);
+    /**
+     * 我的推荐首页
+     * @param request
+     * @return
+     */
+    @RequestMapping("/myRecommen.shtml")
+    public ModelAndView myRecommen(HttpServletRequest request){
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("用户未登录！");
         }
-        return null;
+        ModelAndView mv = new ModelAndView();
+        try {
+            MyRecommendPo myRecommendPo = pfBorderRecommenRewardService.myRecommen(comUser.getId(),1);
+            mv.addObject("myRecommendPo",myRecommendPo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        mv.setViewName("platform/user/wodetuijian");
+        return mv;
     }
 
     /**
@@ -109,6 +139,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/bangwotuijianderen");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return null;
@@ -133,6 +164,7 @@ public class MyRecommendController extends BaseController{
                 userRecommend.setNumber(giveNum);
             }
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return sumByUser;
@@ -168,6 +200,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/bangwotuijianxinxi");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return null;
@@ -188,6 +221,10 @@ public class MyRecommendController extends BaseController{
             List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
             List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
 
+            for (UserRecommend userRecommend :sumByUserPid){
+                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userRecommend.getUserId(),userRecommend.getSkuId());
+                userRecommend.setCountGroup(countGroupService.countGroupInfo(pfUserSku.getTreeCode()));
+            }
             List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
             if(pfUserSkuList==null){
                 throw new BusinessException("代理商品异常，初始化商品列表失败");
@@ -205,6 +242,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/wotuijianderen");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return null;
@@ -225,6 +263,7 @@ public class MyRecommendController extends BaseController{
 
             sumByUserPid = pfUserRecommendRelationService.findSumByLike(skuId,comUser.getId(),agentLevelIdLong);//我推荐的详情列表
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return sumByUserPid;
@@ -249,17 +288,89 @@ public class MyRecommendController extends BaseController{
             ComSku skuName = skuService.getSkuName(skuId);
             ComUser user = userService.getUserById(userId);
             ComAgentLevel agentLevel = comAgentLevelService.selectByPrimaryKey(certificate.getAgentLevelId());
+            //进货信息
+            PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId, skuId);
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+            CountGroup countGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
             modelAndView.addObject("skuName",skuName.getName());
             modelAndView.addObject("userName",user.getRealName());
             modelAndView.addObject("agentLevelName",agentLevel.getName());
+            modelAndView.addObject("pfUserStatistics",pfUserStatistics);
+            modelAndView.addObject("countGroup",countGroup);
             modelAndView.setViewName("platform/user/wotuijianderenxinxi");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取代理产品列表失败!",e);
         }
         return null;
     }
-    
+
+    /**
+     * ajax查询订单列表
+     * @param request
+     * @param currentPage   当前页码
+     * @param tab           查询tab  0：收入奖励订单  1：发出奖励订单
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/myRecommen.do")
+    @ResponseBody
+    public String ajaxMyRecommen(HttpServletRequest request,
+                                 @RequestParam(value = "currentPage", required = true) Integer currentPage,
+                                 @RequestParam(value = "tab", required = true) Integer tab) throws Exception{
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("用户未登录！");
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            MyRecommendPo myRecommendPo = pfBorderRecommenRewardService.getRecommenRewardOrder(comUser.getId(), currentPage, tab);
+            jsonObject.put("isTrue","true");
+            jsonObject.put("pageNum",myRecommendPo.getCurrentPage());
+            jsonObject.put("totalCount",myRecommendPo.getTotalCount());
+            StringBuffer sb = new StringBuffer("");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            switch (tab.intValue()){
+                case 0 : {
+                    for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
+                        sb.append("<section class=\"sec1\" onclick=\"toOrderDetail(" + recommenOrder.getOrderId() + ")\">");
+                        sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
+                        sb.append("<div class=\"shangpin\">");
+                        sb.append("<div>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "</h2>");
+                        sb.append("<h3><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span><b>&nbsp;&nbsp;&nbsp;奖励：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("</div></div>");
+                        sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
+                        sb.append("<span class=\"jixu\">发奖励的人：" + recommenOrder.getSendUserName() + "</span></p></section>");
+                    }
+                    break;
+                }
+                case 1 : {
+                    for (RecommenOrder recommenOrder : myRecommendPo.getRecommenOrders()){
+                        sb.append("<section class=\"sec1\" onclick=\"toOrderDetail(" + recommenOrder.getOrderId() + ")\">");
+                        sb.append("<h2>订单号：<span>" + recommenOrder.getOrderCode() + "(" + recommenOrder.getOrderTypeView() + ")</span><b >购买人：" + recommenOrder.getBuyUserName() + "</b></h2>");
+                        sb.append("<div class=\"shangpin\">");
+                        sb.append("<div>");
+                        sb.append("<h2><span>" + recommenOrder.getSkuName() + "</h2>");
+                        sb.append("<h3><span style=\"color: #666\">x" + recommenOrder.getQuantity() + "</span><b>&nbsp;&nbsp;&nbsp;支出：" + recommenOrder.getTotalPriceView() + "</b></h3>");
+                        sb.append("</div></div>");
+                        sb.append("<p>时间：" + sdf.format(recommenOrder.getCreateTime()));
+                        sb.append("<span class=\"jixu\">获得奖励的人：" + recommenOrder.getReceiveUserName() + "</span></p></section>");
+                    }
+                    break;
+                }
+            }
+            jsonObject.put("html",sb.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","查询出错");
+        }
+        log.info(jsonObject.toString());
+        return jsonObject.toString();
+    }
+
     /**
      * 获得奖励订单
      * @author muchaofeng
@@ -302,6 +413,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/huoqujianglidingdan");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取获得奖励订单列表失败!",e);
         }
         return null;
@@ -352,6 +464,7 @@ public class MyRecommendController extends BaseController{
             modelAndView.setViewName("platform/user/fachujianglidingdan");
             return modelAndView;
         }catch (Exception e){
+            e.printStackTrace();
             log.error("获取发出奖励订单列表失败!",e);
         }
         return null;

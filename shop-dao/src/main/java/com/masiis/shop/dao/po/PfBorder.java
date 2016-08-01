@@ -165,6 +165,10 @@ public class PfBorder {
     private String beginTime;
     private String endTime;
 
+    private String orderStatusDes;//订单状态描述
+
+    private String orderTypeDes;//订单类型描述
+
     public ComUser getUserName() {
         return userName;
     }
@@ -525,6 +529,20 @@ public class PfBorder {
         this.endTime = endTime;
     }
 
+    public String getOrderStatusDes() {
+        return orderStatusDes;
+    }
+    public void setOrderStatusDes(String orderStatusDes) {
+        this.orderStatusDes = orderStatusDes;
+    }
+
+    public String getOrderTypeDes() {
+        return orderTypeDes;
+    }
+
+    public void setOrderTypeDes(String orderTypeDes) {
+        this.orderTypeDes = orderTypeDes;
+    }
     @Override
     public String toString() {
         return "PfBorder{" +

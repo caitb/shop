@@ -19,587 +19,453 @@
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
-       <div class="wrap">
-           <div class="box">
-                <header class="xq_header">
-                    <a href="<%=path%>/borderManage/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>我的订单</p>
-                </header>
-                <nav>
-                    <ul>
-                        <li><a href="javascript:;" class="on">全部</a></li>
-                        <li><a href="javascript:;">待付款</a></li>
-                        <li><a href="javascript:;">待发货</a></li>
-                        <li><a href="javascript:;">待收货</a></li>
-                        <li><a href="javascript:;">已完成</a></li>
-                        <li><a href="javascript:;">排单中</a></li>
-                        <li><a href="javascript:;">已取消</a></li>
-                    </ul>
-                    <img src="${path}/static/images/youdao.png" alt="" class="you">
-                </nav>
-                <main>
-                    <div class="all">
-                    <c:forEach items="${pfBorders}" var="pb">
-                        <section class="sec1">
-                            <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                            <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:forEach items="${orderStatuses}" var="orderStatus">
-                                    <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                </c:forEach>
-                            </h2>
-                            <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                <div class="shangpin">
-                                    <p class="photo">
-                                        <a href="javascript:void(0);">
-                                            <img src="${pbi.skuUrl}" alt="">
-                                        </a>
-                                    </p>
-                                    <div>
-                                        <h2>${pbi.skuName}</h2>
-                                        <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                    </div>
-                                </div></c:forEach>
-                            <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                            <h1>
-                                <b>发货方：</b><span>${pb.pidUserName}</span>
-                                <b>类型：</b>
-                                <c:forEach items="${bOrderTypes}" var="orderType">
-                                    <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                </c:forEach>
-                            </h1>
-                            <div class="ding">
-                                <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
-                                <c:if test="${pb.orderStatus ==0 }">
-                                    <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
-                                </c:if>
-                                <c:if test="${pb.orderStatus ==9 }">
-                                    <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                </c:if>
-                                <c:if test="${pb.orderStatus ==8}">
-                                        <span class="fa" name="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
-                                            确认收货</span>
-                                </c:if>
-                                <c:if test="${pb.orderStatus ==9}">
-                                    <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                </c:if>
+<div class="wrap">
+    <div class="box">
+        <header class="xq_header">
+            <a href="<%=path%>/borderManage/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>我的订单</p>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="javascript:;" class="on">全部</a></li>
+                <li><a href="javascript:;">待付款</a></li>
+                <li><a href="javascript:;">待发货</a></li>
+                <li><a href="javascript:;">待收货</a></li>
+                <li><a href="javascript:;">已完成</a></li>
+                <li><a href="javascript:;">排单中</a></li>
+                <li><a href="javascript:;">已取消</a></li>
+            </ul>
+            <img src="${path}/static/images/youdao.png" alt="" class="you">
+        </nav>
+        <main>
+            <div class="all">
+                <%--0：显示全部--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
                             </div>
-                        </section>
-                    </c:forEach>
-                </div>
-                    <div class="all">
-                        <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1">
-                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                <h2>
-                                    订单号：<span>${pb.orderCode}</span>
-                                    <c:forEach items="${orderStatuses}" var="orderStatus">
-                                        <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                    </c:forEach>
-                                </h2>
-                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                    <div class="shangpin">
-                                        <p class="photo">
-                                            <a href="javascript:void(0);">
-                                                <img src="${pbi.skuUrl}" alt="">
-                                            </a>
-                                        </p>
-                                        <div>
-                                            <h2>${pbi.skuName}</h2>
-                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                        </div>
-                                    </div></c:forEach>
-                                <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                <h1>
-                                    <b>发货方：</b><span>${pb.pidUserName}</span>
-                                    <b>类型：</b>
-                                    <c:forEach items="${bOrderTypes}" var="orderType">
-                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                    </c:forEach>
-                                </h1>
-                                <div class="ding">
-                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                    <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
-                                    <c:if test="${pb.orderStatus ==0}">
-                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==8}">
-                                        <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                                <span class="jixu"
+                                      onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
                                             确认收货</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9}">
-                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                    </c:if>
-                                </div>
-                            </section>
-                        </c:forEach>
-                    </div>
-                    <div class="all">
-                        <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1">
-                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                <h2>
-                                    订单号：<span>${pb.orderCode}</span>
-                                    <c:forEach items="${orderStatuses}" var="orderStatus">
-                                        <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                    </c:forEach>
-                                </h2>
-                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                    <div class="shangpin">
-                                        <p class="photo">
-                                            <a href="javascript:void(0);">
-                                                <img src="${pbi.skuUrl}" alt="">
-                                            </a>
-                                        </p>
-                                        <div>
-                                            <h2>${pbi.skuName}</h2>
-                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                        </div>
-                                    </div></c:forEach>
-                                <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                <h1>
-                                    <b>发货方：</b><span>${pb.pidUserName}</span>
-                                    <b>类型：</b>
-                                    <c:forEach items="${bOrderTypes}" var="orderType">
-                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                    </c:forEach>
-                                </h1>
-                                <div class="ding">
-                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                    <c:if test="${pb.sendType==0 && pb.orderStatus !=0}">
-                                        <span class="jixu">选择拿货方式</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==0}">
-                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==8}">
-                                    <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
-                                        确认收货
-                                    </span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9}">
-                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                    </c:if>
-                                </div>
-                            </section>
-                        </c:forEach>
-                    </div>
-                        <div class="all">
-                            <c:forEach items="${pfBorders}" var="pb">
-                                <section class="sec1">
-                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                    <h2>
-                                        订单号：<span>${pb.orderCode}</span>
-                                        <c:forEach items="${orderStatuses}" var="orderStatus">
-                                            <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                        </c:forEach>
-                                    </h2>
-                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                        <div class="shangpin">
-                                            <p class="photo">
-                                                <a href="javascript:void(0);">
-                                                    <img src="${pbi.skuUrl}" alt="">
-                                                </a>
-                                            </p>
-                                            <div>
-                                                <h2>${pbi.skuName}</h2>
-                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            </div>
-                                        </div></c:forEach>
-                                    <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                    <h1>
-                                        <b>发货方：</b><span>${pb.pidUserName}</span>
-                                        <b>类型：</b>
-                                        <c:forEach items="${bOrderTypes}" var="orderType">
-                                            <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                        </c:forEach>
-                                    </h1>
-                                    <div class="ding">
-                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                        <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
-                                        <c:if test="${pb.orderStatus ==0}">
-                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==8}">
-                                            <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
-                                                确认收货
-                                            </span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9}">
-                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                        </c:if>
-                                    </div>
-                                </section>
-                            </c:forEach>
-                        </div>
-                        <div class="all">
-                            <c:forEach items="${pfBorders}" var="pb">
-                                <section class="sec1">
-                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                    <h2>
-                                        订单号：<span>${pb.orderCode}</span>
-                                        <c:forEach items="${orderStatuses}" var="orderStatus">
-                                            <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                        </c:forEach>
-                                    </h2>
-                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                        <div class="shangpin">
-                                            <p class="photo">
-                                                <a href="javascript:void(0);">
-                                                    <img src="${pbi.skuUrl}" alt="">
-                                                </a>
-                                            </p>
-                                            <div>
-                                                <h2>${pbi.skuName}</h2>
-                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            </div>
-                                        </div></c:forEach>
-                                    <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                    <h1>
-                                        <b>发货方：</b><span>${pb.pidUserName}</span>
-                                        <b>类型：</b>
-                                        <c:forEach items="${bOrderTypes}" var="orderType">
-                                            <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                        </c:forEach>
-                                    </h1>
-                                    <div class="ding">
-                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                        <c:if test="${pb.sendType==0 && pb.orderStatus !=0}">
-                                            <span class="jixu">选择拿货方式</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==0 }">
-                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==8}">
-                                            <span class="fa"  name="querenshouhuo_${pb.id}"
-                                                  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">确认收货</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9}">
-                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                        </c:if>
-                                    </div>
-                                </section>
-                            </c:forEach>
-                        </div>
-                        <div class="all">
-                            <c:forEach items="${pfBorders}" var="pb">
-                                <section class="sec1">
-                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                    <h2>
-                                        订单号：<span>${pb.orderCode}</span>
-                                        <c:forEach items="${orderStatuses}" var="orderStatus">
-                                            <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                        </c:forEach>
-                                    </h2>
-                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                        <div class="shangpin">
-                                            <p class="photo">
-                                                <a href="javascript:void(0);">
-                                                    <img src="${pbi.skuUrl}" alt="">
-                                                </a>
-                                            </p>
-                                            <div>
-                                                <h2>${pbi.skuName}</h2>
-                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            </div>
-                                        </div></c:forEach>
-                                    <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                    <h1>
-                                        <b>发货方：</b><span>${pb.pidUserName}</span>
-                                        <b>类型：</b>
-                                        <c:forEach items="${bOrderTypes}" var="orderType">
-                                            <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                        </c:forEach>
-                                    </h1>
-                                    <div class="ding">
-                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                        <c:if test="${pb.sendType==0 && pb.orderStatus !=0}">
-                                            <span class="jixu">选择拿货方式</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==0 }">
-                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==8}">
-                                            <span class="fa"  name="querenshouhuo_${pb.id}"
-                                                  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">确认收货</span>
-                                        </c:if>
-                                        <c:if test="${pb.orderStatus ==9}">
-                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                        </c:if>
-                                    </div>
-                                </section>
-                            </c:forEach>
-                        </div>
-                    <div class="all">
-                        <c:forEach items="${pfBorders}" var="pb">
-                            <section class="sec1">
-                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                                <h2>
-                                    订单号：<span>${pb.orderCode}</span>
-                                    <c:forEach items="${orderStatuses}" var="orderStatus">
-                                        <c:if test="${pb.orderStatus ==orderStatus.code}"><b class="querenshouhuo_${pb.id}" >${orderStatus.desc}</b ></c:if>
-                                    </c:forEach>
-                                </h2>
-                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                                    <div class="shangpin">
-                                        <p class="photo">
-                                            <a href="javascript:void(0);">
-                                                <img src="${pbi.skuUrl}" alt="">
-                                            </a>
-                                        </p>
-                                        <div>
-                                            <h2>${pbi.skuName}</h2>
-                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                        </div>
-                                    </div></c:forEach>
-                                <h1><b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
-                                <h1>
-                                    <b>发货方：</b><span>${pb.pidUserName}</span>
-                                    <b>类型：</b>
-                                    <c:forEach items="${bOrderTypes}" var="orderType">
-                                        <c:if test="${orderType.code == pb.orderType}"><span>${orderType.desc}</span></c:if>
-                                    </c:forEach>
-                                </h1>
-                                <div class="ding">
-                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                    <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
-                                    <c:if test="${pb.orderStatus ==0 }">
-                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==8}">
-                                        <span class="fa" name="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
-                                            确认收货</span>
-                                    </c:if>
-                                    <c:if test="${pb.orderStatus ==9}">
-                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
-                                    </c:if>
-                                </div>
-                            </section>
-                        </c:forEach>
-                    </div>
-                </main>
-           </div>
-           <div class="back_shouhuo" style="display: none">
-               <p>确认收到货品?</p>
-               <h4>亲，请您核对商品后再操作确认收货</h4>
-
-               <h3>
-                   <span class="que_qu">取消</span>
-                   <span class="que_que">确认</span>
-               </h3>
-           </div>
-
-           <div class="back_que" style="display: none">
-               <p>确认取消订单？</p>
-               <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
-
-               <h3>
-                   <span class="que_qu">取消</span>
-                   <span class="que_que">确认</span>
-               </h3>
-           </div>
-           <div class="back_pay">
-               <div>
-                   <h1>订单号：<span id="1">1,000,000</span></h1>
-                   <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
-               </div>
-               <%--<div>--%>
-                   <%--<h1>￥1,000,000元</h1>--%>
-                   <%--<p>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</p>--%>
-               <%--</div>--%>
-               <p>*请在汇款单的附言处注明绑定的订单号”（<span>非常重要！</span>）</p>
-               <h1><span></span>麦链对公账户信息</h1>
-               <h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>
-               <h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>
-               <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>
-               <button class="xinxn">我知道了</button>
-           </div>
-            <div class="back" style="display: none">
-
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
             </div>
-       </div>
-       <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-       <script src="<%=path%>/static/js/commonAjax.js"></script>
-       <script src="<%=path%>/static/js/jinhuoshijian.js"></script>
-       <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-       <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-       <script src="<%=path%>/static/js/hideWXShare.js"></script>
-       <script>
+            <div class="all">
+                <%--1：未付款--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                              <span class="jixu"
+                                    onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+            <div class="all">
+                <%--2：代发货--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+            <div class="all">
+                <%--3：待收货--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+            <div class="all">
+                <%--4：已完成--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+            <div class="all">
+                <%--5：排单中--%>
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+            <div class="all">
+                <c:forEach items="${pfBorders}" var="pb">
+                    <section class="sec1"
+                             onclick="javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=${pb.id}');">
+                        <h2>
+                            订单号：<span>${pb.orderCode}(<span>${pb.orderTypeDes}</span>)</span>
+                            <b>${pb.orderStatusDes}</b>
+                        </h2>
+                        <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                            <div class="shangpin">
+                                <div>
+                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
+                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <p>时间： <fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                            <c:if test="${pb.orderStatus ==0 }">
+                                <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9 }">
+                               <span class="jixu"
+                                     onclick="xinxi('${pb.orderMoney}','${pb.payTimes}','${pb.orderCode}',event)">支付信息</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==8}">
+                                        <span class="fa" name="querenshouhuo_${pb.id}"
+                                              onclick="querenshouhuo('${pb.orderStatus}','${pb.id}',event)">
+                                            确认收货</span>
+                            </c:if>
+                            <c:if test="${pb.orderStatus ==9}">
+                                <span class="jixu" onclick="goToPayOrder('${pb.id}',event)">支付变更</span>
+                                <%--<a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a>--%>
+                            </c:if>
+                        </p>
+                    </section>
+                </c:forEach>
+            </div>
+        </main>
+    </div>
+    <div class="back_shouhuo" style="display: none">
+        <p>确认收到货品?</p>
+        <h4>亲，请您核对商品后再操作确认收货</h4>
 
-           function xinxi(orderAmount,payTimes,ids){
-               $(".back").css("display","-webkit-box");
-               $(".back_pay").show();
-               $("#1").html(ids);
-               $("#3").html(orderAmount);
-               $("#2").html(payTimes);
-           }
+        <h3>
+            <span class="que_qu">取消</span>
+            <span class="que_que">确认</span>
+        </h3>
+    </div>
 
-           $(".xinxn").on("click",function(){
-               $(".back_pay").hide();
-               $(".back").hide();
-           })
+    <div class="back_que" style="display: none">
+        <p>确认取消订单？</p>
+        <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
 
-           $(function(){
-            $("li").on("click",function(){
-                var index=$(this).index();
-                $(".all").html("");
-                $(".all").eq(index).show().siblings().hide();
-                $("li").children("a").removeClass("on");
-                $(this).children("a").addClass("on");
-                $.ajax({
-                    type:"POST",
-                    url : "<%=path%>/borderManage/clickType.do",
-                    data:{index:index},
-                    dataType:"Json",
-                    success:function(data){
-                        var trHtml = "";
-                        var orderStatusName="";
-                        var StatusName="";
-                        var orderTypeName="";
-                        $.each(data, function(i, pfBorder) {
-                            var time2 = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
-                            trHtml+="<section class='sec1'>";
-                            trHtml+="<p>时间: <span>"+time2 +"</span></p>";
-                            if(pfBorder.orderStatus==0){
-                                StatusName="待付款";
-                            }else if(pfBorder.orderStatus ==6 && pfBorder.sendType==1){
-                                StatusName="排单中";
-                            }else if(pfBorder.orderStatus ==7){
-                                StatusName="待发货";
-                            }else if(pfBorder.orderStatus ==8){
-                                StatusName="待收货";
-                            }else if(pfBorder.orderStatus ==3){
-                                StatusName="已完成";
-                            }else if(pfBorder.orderStatus ==9){
-                                StatusName="线下支付中";
-                            }else if(pfBorder.orderStatus ==1){
-                                StatusName="已付款";
-                            }else if(pfBorder.orderStatus ==2){
-                                StatusName="已取消";
-                            }else if(pfBorder.orderStatus ==4){
-                                StatusName="退款中";
-                            }else if(pfBorder.orderStatus ==5){
-                                StatusName="已退款";
-                            }
-                            trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";
-                            $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
-                                trHtml+="<div class='shangpin'>";
-                                trHtml+=" <p class=\"photo\">";
-                                trHtml+="<a href=\"javascript:void(0);\">";
-                                trHtml+="<img src=\""+pfBorderItem.skuUrl+"\" alt=\"\"></a></p>";
-                                trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.skuMoney+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
-                                trHtml+="</div></div>";
-                            });
-//                            var df= new DecimalFormat("0.00").Format(pfBorder.orderAmount);
-                            trHtml+="<h1><b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderMoney+"</b>";
-                            if(pfBorder.orderType==0){
-                                trHtml+="(保证金:￥"+pfBorder.bailMoney+")";
-                            }else if(pfBorder.orderType==2){
-                                trHtml+="(运费：到付)";
-                            }else if(pfBorder.orderType==1){
-                                trHtml+="";
-                            }
-                            trHtml+="</h1><h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
-                            if(pfBorder.orderType==2 && pfBorder.sendType==1){
-                                orderTypeName="拿货";
-                            }else if(pfBorder.orderType==0){
-                                orderTypeName="合伙订单";
-                            }else if(pfBorder.orderType==1){
-                                orderTypeName="补货";
-                            }else if(pfBorder.orderType==3){
-                                orderTypeName="升级订单";
-                            }
-                            trHtml+="<b>类型：</b><span>"+orderTypeName+"</span></h1>";
-                            trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
-                            if(pfBorder.sendType==0 && pfBorder.orderStatus !=0){
-                                trHtml+="<span class=\"jixu\">选择拿货方式</span></a>";
-                            }else if(pfBorder.orderStatus ==0){
-                                trHtml+="<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">继续支付</a></span></a>";
-                            }else if(pfBorder.orderStatus ==9){
-                                trHtml+="<span class=\"jixu\" onclick=\"xinxi('"+pfBorder.orderMoney+"','"+pfBorder.payTimes+"','"+pfBorder.orderCode+"')\">支付信息</span></a>";
-                            }else{
-                                trHtml+="</a>";
-                            }
-                            if(pfBorder.orderStatus ==8){
-                                orderStatusName="确认收货";
-                                trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo('"+pfBorder.orderStatus+"','"+pfBorder.id+"')\">"+orderStatusName+"</span>";
-                            }if(pfBorder.orderStatus ==9){
-                                trHtml+="<span><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">改变支付方式</a></span>";
-                            }else{
-                                trHtml+="";
-                            }
-                            trHtml+="</div></section>";
+        <h3>
+            <span class="que_qu">取消</span>
+            <span class="que_que">确认</span>
+        </h3>
+    </div>
+    <div class="back_pay">
+        <div>
+            <h1>订单号：<span id="1">1,000,000</span></h1>
+            <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
+        </div>
+        <p>*请在汇款单的附言处注明绑定的订单号”（<span>非常重要！</span>）</p>
+        <h1><span></span>麦链对公账户信息</h1>
+        <h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>
+        <h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>
+        <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>
+        <button class="xinxn">我知道了</button>
+    </div>
+    <div class="back" style="display: none">
+
+    </div>
+</div>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/js/jinhuoshijian.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script>
+    function xinxi(orderAmount, payTimes, ids,event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back").css("display", "-webkit-box");
+        $(".back_pay").show();
+        $("#1").html(ids);
+        $("#3").html(orderAmount);
+        $("#2").html(payTimes);
+    }
+
+    $(".xinxn").on("click", function () {
+        $(".back_pay").hide();
+        $(".back").hide();
+    })
+    $(function () {
+        $("li").on("click", function () {
+            var index = $(this).index();
+            $(".all").html("");
+            $(".all").eq(index).show().siblings().hide();
+            $("li").children("a").removeClass("on");
+            $(this).children("a").addClass("on");
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/borderManage/clickType.do",
+                data: {index: index},
+                dataType: "Json",
+                success: function (data) {
+                    var trHtml = "";
+                    var orderStatusName = "";
+                    $.each(data, function (i, pfBorder) {
+                        var ordertime = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
+                        trHtml += "<section class=\"sec1\" onclick=\"javascript:window.location.replace('<%=path%>/borderManage/borderDetils.html?id=" + pfBorder.id + "');\">";
+                        trHtml += "<h2>订单号: <span>" + pfBorder.orderCode + "(" + pfBorder.orderTypeDes + ")</span>";
+                        trHtml += "<b>" + pfBorder.orderStatusDes + "</b>";
+                        trHtml += "</h2>";
+                        $.each(pfBorder.pfBorderItems, function (i, pfBorderItem) {
+                            trHtml += "<div class=\"shangpin\"><div>";
+                            trHtml += "<h2><span>" + pfBorderItem.skuName +"</span>";
+                            trHtml += "<span>x" + pfBorderItem.quantity + "</span>";
+                            trHtml += "<h3><b>合计：￥" + pfBorder.orderAmount + "</b></h3>";
+                            trHtml += "</h2>";
+                            trHtml += "</div></div>";
                         });
-                        $(".all").eq(index).html(trHtml);
-                    }
-                })
-            })
-           })
-            $(document).ready(function(){
-                var index=${index};
-                $("li").children("a").removeClass("on")
-                $("li").eq(index).children("a").addClass("on");
-                $(".all").eq(index).show().siblings().hide();
-            });
-
-
-            $(".fa").on("click",function(){
-                $(".back").css("display","-webkit-box");
-                $(".back_shouhuo").css("display","-webkit-box");
-            })
-
-           var oid = "";
-            function querenshouhuo(orderStatus,id) {
-                $(".back").css("display", "-webkit-box");
-                $(".back_shouhuo").css("display", "-webkit-box");
-                oid = id;
-            }
-           $(function(){
-                $(".que_que").on("click",function(){
-                    $(".back_shouhuo").hide();
-                    $(".back").hide();
-                    var aa="querenshouhuo_"+oid;
-                    $.ajax({
-                        type:"POST",
-                        url : "<%=path%>/borderManage/closeDeal.do",
-                        data:{orderStatus:3,shipStatus:9,orderId:oid},
-                        dataType:"Json",
-                        success:function(date){
-//                            if(date.msgs){
-                                $("span[name="+aa+"]").attr("style","display:none");
-                                $("b."+aa+"").html("已完成");
-                                location.reload(true);
-//                            }else{
-//                                alert(date.message);
-//                            }
+                        trHtml += "<p>时间：" + ordertime;
+                        if (pfBorder.sendType == 0 && pfBorder.orderStatus != 0) {
+                            trHtml += "<span class=\"jixu\">选择拿货方式</span></a>";
+                        } else if (pfBorder.orderStatus == 0) {
+                            trHtml += "<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId=" + pfBorder.id + "\">继续支付</a></span></a>";
+                        } else if (pfBorder.orderStatus == 9) {
+                            trHtml += "<span class=\"jixu\" onclick=\"xinxi('" + pfBorder.orderMoney + "','" + pfBorder.payTimes + "','" + pfBorder.orderCode + "',event)\">支付信息</span></a>";
+                        } else {
+                            trHtml += "</a>";
                         }
-                    })
-                })
-           })
-            $(".que_qu").on("click",function(){
-                $(".back_shouhuo").hide();
-                $(".back").hide();
+                        if (pfBorder.orderStatus == 8) {
+                            orderStatusName = "确认收货";
+                            trHtml += "<span class=\"fa\"  name=\"querenshouhuo_" + pfBorder.id + "\"  onclick=\"querenshouhuo('" + pfBorder.orderStatus + "','" + pfBorder.id + "',event)\">" + orderStatusName + "</span>";
+                        }
+                        if (pfBorder.orderStatus == 9) {
+                            trHtml += "<span class=\"jixu\" onclick=\"goToPayOrder("+pfBorder.id+",event)\">支付变更</span>";
+                        } else {
+                            trHtml += "";
+                        }
+                        trHtml += "</p>";
+                        trHtml += "</section>";
+                    });
+                    $(".all").eq(index).html(trHtml);
+                }
             })
+        })
+    })
+    $(document).ready(function () {
+        var index =${index};
+        $("li").children("a").removeClass("on")
+        $("li").eq(index).children("a").addClass("on");
+        $(".all").eq(index).show().siblings().hide();
+    });
+    $(".fa").on("click", function () {
+        $(".back").css("display", "-webkit-box");
+        $(".back_shouhuo").css("display", "-webkit-box");
+    })
 
-       </script>
+    var oid = "";
+    function querenshouhuo(orderStatus, id, event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back").css("display", "-webkit-box");
+        $(".back_shouhuo").css("display", "-webkit-box");
+        oid = id;
+    }
+    $(function () {
+        $(".que_que").on("click", function () {
+            $(".back_shouhuo").hide();
+            $(".back").hide();
+            var aa = "querenshouhuo_" + oid;
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/borderManage/closeDeal.do",
+                data: {orderStatus: 3, shipStatus: 9, orderId: oid},
+                dataType: "Json",
+                success: function (date) {
+                    $("span[name=" + aa + "]").attr("style", "display:none");
+                    $("b." + aa + "").html("已完成");
+                    location.reload(true);
+                }
+            })
+        })
+    })
+    $(".que_qu").on("click", function () {
+        $(".back_shouhuo").hide();
+        $(".back").hide();
+    })
+
+    //update zhaoliang
+    function goToPayOrder(bOrderId,event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        window.location.href = "<%=basePath%>border/goToPayBOrder.shtml?bOrderId=" + bOrderId;
+    }
+
+</script>
 </body>
 </html>

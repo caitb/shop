@@ -18,6 +18,7 @@ public class OrderMallDetail {
     private SfOrderConsignee sfOrderConsignee;//收货人
     private List<SfOrderPayment> sfOrderPayments;//支付方式
     private String buyerShopName;
+    private List<SfUserBillItemInfo> sfUserBillItemInfo;//分销记录Bean
 
     public void setBuyerShopName(String buyerShopName) {
         this.buyerShopName = buyerShopName;
@@ -73,6 +74,14 @@ public class OrderMallDetail {
 
     public String getBuyerName() {
         return buyerName;
+    }
+
+    public List<SfUserBillItemInfo> getSfUserBillItemInfo() {
+        return sfUserBillItemInfo;
+    }
+
+    public void setSfUserBillItemInfo(List<SfUserBillItemInfo> sfUserBillItemInfo) {
+        this.sfUserBillItemInfo = sfUserBillItemInfo;
     }
 }
 

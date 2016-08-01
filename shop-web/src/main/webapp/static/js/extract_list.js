@@ -13,7 +13,9 @@ $(function(){
                 }
                 if(data.resCode == "fail"){
                     _contain.empty();
-                    alert(data.resMsg);
+                    if(data.resMsg != "暂无数据"){
+                        alert(data.resMsg);
+                    }
                 } else if(data.resCode == "success"){
                     _contain.empty();
                     for(var i = 0; data.resData.length; i++){
@@ -46,7 +48,9 @@ $(function(){
                         $(".dropload-down").remove();
                     }
                     if(data.resCode == "fail"){
-                        alert(data.resMsg);
+                        if(data.resMsg != "暂无数据"){
+                            alert(data.resMsg);
+                        }
                     } else if(data.resCode == "success"){
                         var _contain = $("#divall");
                         for(var i = 0; data.resData.length; i++){

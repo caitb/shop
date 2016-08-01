@@ -28,6 +28,7 @@ import java.util.List;
 
 /**
  * 团队统计
+ *
  * @author muchaofeng
  * @date 2016/6/7 10:59
  */
@@ -38,20 +39,22 @@ public class CountGroupService {
     private CountGroupMapper countGroupMapper;
 
     /**
-     * 统计团队
+     * 统计团队人数、销售额、订单总数
+     *
      * @author muchaofeng
      * @date 2016/6/7 11:06
      */
-    public CountGroup countGroupInfo(Long userId,String treeCode){
-        return countGroupMapper.countGroup(userId,treeCode);
-    }
-    /**
-     * 团队订单数
-     * @author muchaofeng
-     * @date 2016/6/7 13:59
-     */
-    public CountGroup infoOrderNum(Long userId,String treeCode){
-        return countGroupMapper.countOrderNum(userId,treeCode);
+    public CountGroup countGroupInfo(String treeCode) {
+        return countGroupMapper.countGroup(treeCode);
     }
 
+    /**
+     * 统计推荐团队人数、销售额、订单总数
+     *
+     * @param treeCode pf_user_sku 表 tree_code
+     * @return
+     */
+    public CountGroup countRecommendGroup(String treeCode) {
+        return countGroupMapper.countRecommendGroup(treeCode);
+    }
 }

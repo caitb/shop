@@ -113,7 +113,7 @@ public class BUpgradePayService {
         log.info("修改用户统计中奖励金额----end");
         //插入一次性奖励
         log.info("插入一次性奖励----start");
-        insertUserRebate(pfBorder, pfUserUpgradeNotice);
+        insertUserRebate(pfBorder, pfBorderItems, pfUserUpgradeNotice);
         log.info("插入一次性奖励----end");
         //修改小铺商品信息
         log.info("修改小铺商品信息----start");
@@ -539,11 +539,12 @@ public class BUpgradePayService {
      *
      * @param pfBorder
      */
-    private void insertUserRebate(PfBorder pfBorder, PfUserUpgradeNotice pfUserUpgradeNotice) {
+    private void insertUserRebate(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserUpgradeNotice pfUserUpgradeNotice) {
         log.info("插入一次性奖励-----orderId-----" + pfBorder.getId());
         log.info("获得奖励人-------" + pfUserUpgradeNotice.getUserPid());
         log.info("支付奖励用户-------" + pfBorder.getUserPid());
-        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid())) {
+        PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
+        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid()) && !pfBorderRecommenReward.getRecommenUserId().equals(pfUserUpgradeNotice.getUserPid())) {
             //原上级和新上级不是同一个人。新上级给原上级发奖励
             PfUserRebate pfUserRebate = new PfUserRebate();
             pfUserRebate.setCreateTime(new Date());

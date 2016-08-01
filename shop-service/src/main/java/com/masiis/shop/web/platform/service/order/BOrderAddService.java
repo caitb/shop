@@ -119,8 +119,10 @@ public class BOrderAddService {
         //v1.4.2 Begin 如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人
         PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
         if (pfUserRecommenRelation == null && bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
+
             List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectAll();
             PfUserSku oldPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getOldPUserId(), bOrderAdd.getSkuId());
+            logger.info("如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人" + oldPfUserSku.toString());
             Boolean bl = false;
             for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
                 if (oldPfUserSku.getAgentLevelId() > pfSkuAgent.getAgentLevelId() && pfSkuAgent.getIsUpgrade().equals(1)) {
@@ -128,6 +130,7 @@ public class BOrderAddService {
                     break;
                 }
             }
+            logger.info("bl:" + bl + ";recommendUserId:" + recommendUserId + ";OldPUserId:" + bOrderAdd.getOldPUserId());
             if (bl == false) {
                 recommendUserId = bOrderAdd.getOldPUserId();
             }

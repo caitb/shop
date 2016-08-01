@@ -544,7 +544,9 @@ public class BUpgradePayService {
         log.info("获得奖励人-------" + pfUserUpgradeNotice.getUserPid());
         log.info("支付奖励用户-------" + pfBorder.getUserPid());
         PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
-        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid()) && !pfBorderRecommenReward.getRecommenUserId().equals(pfUserUpgradeNotice.getUserPid())) {
+        if (!pfBorder.getUserPid().equals(pfUserUpgradeNotice.getUserPid())
+                && (pfBorderRecommenReward == null || !pfBorderRecommenReward.getRecommenUserId().equals(pfUserUpgradeNotice.getUserPid()))
+                ) {
             //原上级和新上级不是同一个人。新上级给原上级发奖励
             PfUserRebate pfUserRebate = new PfUserRebate();
             pfUserRebate.setCreateTime(new Date());

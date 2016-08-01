@@ -282,6 +282,7 @@ public class UserAccountController extends BaseController{
         }
         log.info("个人收入记录详情");
         log.info("personUserId = " + userId);
+        log.info("date = " + date);
         ComUser comUser = userService.getUserById(userId);
         if (comUser == null){
             throw new BusinessException("用户不存在!");
@@ -290,23 +291,14 @@ public class UserAccountController extends BaseController{
         Date dateTime = DateUtil.String2Date(date);
         Date firstDate = DateUtil.getFirstTimeInMonth(dateTime);
         Date lastDate = DateUtil.getLastTimeInMonth(dateTime);
-
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        String monthString;
-        if (month < 10){
-            monthString = "0" + month;
-        }else {
-            monthString = String.valueOf(month);
-        }
+        String[] time = date.split("-");
         PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14Person(sessionUser.getId(), firstDate, lastDate, null, 1,userId);
         if (comUser.getRealName() == null){
             comUser.setRealName(comUser.getWxNkName());
         }
         mv.addObject("comUser",comUser);
-        mv.addObject("year",year);
-        mv.addObject("month",monthString);
+        mv.addObject("year",time[0]);
+        mv.addObject("month",time[1]);
         mv.addObject("pfIncomRecordPo",pfIncomRecordPo);
         mv.setViewName("platform/user/incomeRecord14Person");
         return mv;
@@ -321,8 +313,9 @@ public class UserAccountController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "/getIncomRecord14Person.do")
     public String getIncomRecord14PersonAjax(HttpServletRequest request,
-                                       @RequestParam("date") String date,
-                                       @RequestParam("currentPage") Integer currentPage) throws Exception{
+                                             @RequestParam(value = "uid", required = true) Long userId,
+                                             @RequestParam("date") String date,
+                                             @RequestParam("currentPage") Integer currentPage) throws Exception{
         log.info("ajax查询收入记录");
         log.info("date = " + date);
         log.info("currentPage = " + currentPage);
@@ -332,11 +325,15 @@ public class UserAccountController extends BaseController{
             if (sessionUser == null){
                 throw new BusinessException("用户未登录!");
             }
-            log.info("userId = " + sessionUser.getId());
+            log.info("sessionUserId = " + sessionUser.getId());
+            ComUser comUser = userService.getUserById(userId);
+            if (comUser == null){
+                throw new BusinessException("用户不存在!");
+            }
             Date dateTime = DateUtil.String2Date(date);
             Date firstDate = DateUtil.getFirstTimeInMonth(dateTime);
             Date lastDate = DateUtil.getLastTimeInMonth(dateTime);
-            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14(sessionUser.getId(), firstDate, lastDate, null, currentPage + 1);
+            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14Person(sessionUser.getId(), firstDate, lastDate, null, currentPage + 1,userId);
             jsonObject.put("isTrue","true");
             jsonObject.put("currentPage", pfIncomRecordPo.getPageNum());
             jsonObject.put("totalCount", pfIncomRecordPo.getTotalCount());
@@ -348,8 +345,8 @@ public class UserAccountController extends BaseController{
                 sb.append("<span>" + pfIncomRecord.getMinView() + "</span></p>");
                 sb.append("<img src=\"" + pfIncomRecord.getHeadImg() + "\" alt=\"\">");
                 sb.append("<div>");
-                sb.append("<p><span><a>" + pfIncomRecord.getRealName() + "</a></span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
-                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
+                sb.append("<p><span>" + pfIncomRecord.getRealName() + "</span> <b>+" + pfIncomRecord.getInComView() + "</b></p>");
+                sb.append("<p><span>" + pfIncomRecord.getSkuName() + "</span> <b onclick=\"toOrderDetail('" + pfIncomRecord.getOrderDetail() + "','" + pfIncomRecord.getOrderId() + "')\" style=\"color: #666;\">" + pfIncomRecord.getOrderTypeView() + "</b></p>");
                 sb.append("</div></div>");
             }
             jsonObject.put("html",sb.toString());

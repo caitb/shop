@@ -50,9 +50,9 @@
                     <span>${pfIncomRecord.minView}</span>
                 </p>
                 <img src="${pfIncomRecord.headImg}" alt="">
-                <div onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')">
+                <div>
                     <p><span>${pfIncomRecord.realName}</span> <b>+${pfIncomRecord.inComView}</b></p>
-                    <p><span>${pfIncomRecord.skuName}</span> <b style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
+                    <p><span>${pfIncomRecord.skuName}</span> <b onclick="toOrderDetail('${pfIncomRecord.orderDetail}','${pfIncomRecord.orderId}')" style="color: #666;">${pfIncomRecord.orderTypeView}</b></p>
                 </div>
             </div>
         </c:forEach>
@@ -106,11 +106,12 @@
     }
 
     function ajaxRequest(date,currentPage){
+        var uid = $("#uid").val();
         $.ajax({
             type:"POST",
             async:true,
             url : basePath+"account/getIncomRecord14Person.do",
-            data:{date:date,currentPage:currentPage},
+            data:{date:date,currentPage:currentPage,uid:uid},
             dataType:"Json",
             success:function(data){
                 var isTrue = data.isTrue;

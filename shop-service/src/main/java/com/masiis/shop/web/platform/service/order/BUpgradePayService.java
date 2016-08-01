@@ -143,7 +143,8 @@ public class BUpgradePayService {
 
     /**
      * 更新推荐关系
-     * @param pfBorder 订单对象
+     *
+     * @param pfBorder      订单对象
      * @param pfBorderItems 订单子表
      */
     private void updatePfUserRecommenRelation(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
@@ -190,7 +191,7 @@ public class BUpgradePayService {
                     log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
                     log.info("id_index-----" + id_index);
                     log.info("treeLevel-----" + treeLevel);
-                    i = pfUserRecommendRelationService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
+                    i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
                     if (i <= 0) {
                         log.info("推荐关系树结构修改失败");
                         throw new BusinessException("推荐关系树结构修改失败");
@@ -351,7 +352,7 @@ public class BUpgradePayService {
                 log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
                 log.info("id_index-----" + id_index);
                 log.info("treeLevel-----" + treeLevel);
-                i = pfUserSkuService.updateTreeCodes(treeCode, parentTreeCode, id_index, treeLevel);
+                i = pfUserSkuService.updateTreeCodes(pfUserSku.getTreeCode(), parentTreeCode, id_index, treeLevel);
                 if (i <= 0) {
                     log.info("分销关系树结构修改失败");
                     throw new BusinessException("分销关系树结构修改失败");

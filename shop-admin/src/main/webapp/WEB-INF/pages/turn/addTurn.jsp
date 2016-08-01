@@ -496,8 +496,8 @@
                         $gift.find('input[name=probability]').val(gift.probability);
                         $gift.find('input[name=totalQuantity]').val(gift.toatalQuantity);
 
-                        $gift.find('input[name=sort]').attr('disabled', 'disabled');
-                        $gift.find('select[name=giftId]').attr('disabled', 'disabled');
+                        $gift.find('input[name=sort]').attr('readonly', 'readonly');
+                        $gift.find('select[name=giftId]').attr('readonly', 'readonly');
                     }
                 }
 

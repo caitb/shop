@@ -50,8 +50,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -88,8 +88,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -126,8 +126,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -164,8 +164,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -202,8 +202,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -240,8 +240,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -277,8 +277,8 @@
                         <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <div>
-                                    <h2><span>${pbi.skuName}</span><span>x${pbi.quantity}</span></h2>
-                                    <h3><b>合计：￥${pb.orderAmount}</b></h3>
+                                    <h2><span>${pbi.skuName}</span>￥${pbi.unitPrice}</h2>
+                                    <h3><span>x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></h3>
                                 </div>
                             </div>
                         </c:forEach>
@@ -384,9 +384,8 @@
                         trHtml += "</h2>";
                         $.each(pfBorder.pfBorderItems, function (i, pfBorderItem) {
                             trHtml += "<div class=\"shangpin\"><div>";
-                            trHtml += "<h2><span>" + pfBorderItem.skuName +"</span>";
-                            trHtml += "<span>x" + pfBorderItem.quantity + "</span>";
-                            trHtml += "<h3><b>合计：￥" + pfBorder.orderAmount + "</b></h3>";
+                            trHtml += "<h2><span>" + pfBorderItem.skuName +"</span>￥"+pfBorderItem.unitPrice+"";
+                            trHtml += "<h3><span>x" + pfBorderItem.quantity + "</span><b>合计：￥" + pfBorder.orderAmount + "</b></h3>";
                             trHtml += "</h2>";
                             trHtml += "</div></div>";
                         });

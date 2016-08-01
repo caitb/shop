@@ -51,10 +51,11 @@
                             <div class="shangpin">
                                 <div>
                                     <h2>
-                                        ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                        ${pbi.skuName}　￥${pbi.unitPrice}
                                     </h2>
-                                    <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                    <p class="defult">
+                                        <span> x${pbi.quantity}</span>
+                                        <span>合计：￥${pb.orderAmount}</span></p>
                                 </div>
                             </div>
                                 </a></c:forEach>
@@ -80,10 +81,11 @@
                                 <div class="shangpin">
                                     <div>
                                         <h2>
-                                                ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                                ${pbi.skuName}　￥${pbi.unitPrice}
                                         </h2>
-                                        <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                        <p class="defult">
+                                            <span> x${pbi.quantity}</span>
+                                            <span>合计：￥${pb.orderAmount}</span></p>
                                     </div>
                                 </div>
                             </a></c:forEach>
@@ -109,10 +111,11 @@
                                 <div class="shangpin">
                                     <div>
                                         <h2>
-                                                ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                                ${pbi.skuName}　￥${pbi.unitPrice}
                                         </h2>
-                                        <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                        <p class="defult">
+                                            <span> x${pbi.quantity}</span>
+                                            <span>合计：￥${pb.orderAmount}</span></p>
                                     </div>
                                 </div>
                             </a></c:forEach>
@@ -138,10 +141,11 @@
                                 <div class="shangpin">
                                     <div>
                                         <h2>
-                                                ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                                ${pbi.skuName}　￥${pbi.unitPrice}
                                         </h2>
-                                        <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                        <p class="defult">
+                                            <span> x${pbi.quantity}</span>
+                                            <span>合计：￥${pb.orderAmount}</span></p>
                                     </div>
                                 </div>
                             </a></c:forEach>
@@ -167,10 +171,11 @@
                                 <div class="shangpin">
                                     <div>
                                         <h2>
-                                                ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                                ${pbi.skuName}　￥${pbi.unitPrice}
                                         </h2>
-                                        <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                        <p class="defult">
+                                            <span> x${pbi.quantity}</span>
+                                            <span>合计：￥${pb.orderAmount}</span></p>
                                     </div>
                                 </div>
                             </a></c:forEach>
@@ -196,10 +201,11 @@
                                 <div class="shangpin">
                                     <div>
                                         <h2>
-                                                ${pbi.skuName}
-                                            <span> x${pbi.quantity}</span>
+                                                ${pbi.skuName}　￥${pbi.unitPrice}
                                         </h2>
-                                        <p class="defult">合计：<span>￥${pb.orderAmount}</span></p>
+                                        <p class="defult">
+                                            <span> x${pbi.quantity}</span>
+                                            <span>合计：￥${pb.orderAmount}</span></p>
                                     </div>
                                 </div>
                             </a></c:forEach>
@@ -326,9 +332,8 @@
                     trHtml+="</h2>";
                     $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
                         trHtml+="<div class=\"shangpin\"><div>";
-                        trHtml+="<h2>"+sfOrderItem.skuName;
-                        trHtml+="<span> x"+sfOrderItem.quantity+"</span></h2>";
-                        trHtml+="<p class=\"defult\">合计：<span>￥"+sfOrder.orderAmount+"</span></p>";
+                        trHtml+="<h2>"+sfOrderItem.skuName+"￥"+sfOrderItem.unitPrice+"</h2>";
+                        trHtml+="<p class=\"defult\"><span> x"+sfOrderItem.quantity+"</span><span>合计：￥"+sfOrder.orderAmount+"</span></p>";
                         trHtml+="</div></div>";
                     });
                     trHtml+="<div class=\'ding\'><p>时间："+ordertime+"</p>";

@@ -13,6 +13,9 @@ body{
     padding: 20px 0;
     margin-top: -5px;
 }
+.floor div:first-child:before{
+    border:none;
+}
 .floor div {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -48,43 +51,7 @@ body{
     display: block;
     margin: 0 auto;
 }
-/*.wrap main .floor1 {*/
-/*background: #fff;*/
-/*margin-top: 10px;*/
-/*display: -webkit-box;*/
-/*-webkit-box-orient: vertical;*/
-/*}*/
-/*.wrap main .floor1 > p {*/
-/*padding: 10px;*/
-/*background: url("/static/images/tuijian_3.jpg") no-repeat 10px;*/
-/*background-size: 18px;*/
-/*padding-left: 35px;*/
-/*border-bottom: 1px solid #f6f6f6;*/
-/*}*/
-/*.wrap main .floor1 div {*/
-/*display: -webkit-box;*/
-/*padding: 15px 0;*/
-/*}*/
-/*.wrap main .floor1 div p {*/
-/*-webkit-box-flex: 1;*/
-/*border-right: 1px solid #f6f6f6;*/
-/*}*/
-/*.wrap main .floor1 div p span {*/
-/*display: block;*/
-/*font-size: 14px;*/
-/*text-align: center;*/
-/*}*/
-/*.wrap main .floor1 div p span:first-child {*/
-/*font-weight: 600;*/
-/*margin-bottom: 5px;*/
-/*}*/
-/*.wrap main .floor1 div p span:last-child {*/
-/*color: #666;*/
-/*}*/
-/*.wrap main .floor2 > p {*/
-/*background: url("/static/images/tuijian_4.jpg") 10px no-repeat;*/
-/*background-size: 16px;*/
-/*}*/
+
 .tap{
     background: #fff;
     padding:0 20px;
@@ -132,8 +99,8 @@ main > h1{
 .sec1 > h2 {
     text-indent: 10px;
     font-size: 12px;
-    line-height: 30px;
-    border-bottom: 1px solid #E8E8E8;
+    line-height: 35px;
+    border-bottom: 1px solid #f8f8f8;
 }
 .sec1 > h2 span {
     color: #4E4E4E;
@@ -167,7 +134,7 @@ main > h1{
     -webkit-box-flex: 1;
     display: -webkit-box;
     -webkit-box-pack: justify;
-    -webkit-box-align:center;
+    -webkit-box-orient: vertical;
 }
 .sec1 .shangpin div h2 span{
     color: #333333;
@@ -183,12 +150,12 @@ main > h1{
     color: #999999;
 }
 .sec1 .shangpin div h3 span {
-    font-size: 12px;
+    font-size: 14px;
 }
 .sec1 .shangpin div h3 b {
-    font-size: 12px;
+    font-size: 14px;
     float: right;
-    color: #333;
+    color: #666;
 }
 .sec1 .shangpin div .defult {
     margin-right: 10px;

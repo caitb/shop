@@ -90,8 +90,8 @@
 .wrap .box main .all .sec1 > h2 {
     text-indent: 10px;
     font-size: 12px;
-    line-height: 30px;
-    border-bottom: 1px solid #E8E8E8;
+    line-height: 35px;
+    border-bottom: 1px solid #f8f8f8;
 }
 .wrap .box main .all .sec1 > h2 span {
     color: #4E4E4E;
@@ -123,8 +123,8 @@
 .wrap .box main .all .sec1 .shangpin div {
     -webkit-box-flex: 1;
     display: -webkit-box;
+    -webkit-box-orient: vertical;
     -webkit-box-pack: justify;
-    -webkit-box-align:center;
 }
 .wrap .box main .all .sec1 .shangpin div h2 span{
     color: #333333;
@@ -140,12 +140,13 @@
     color: #999999;
 }
 .wrap .box main .all .sec1 .shangpin div h3 span {
-    font-size: 12px;
+    font-size: 14px;
+    color: #666;
 }
 .wrap .box main .all .sec1 .shangpin div h3 b {
-    font-size: 12px;
+    font-size: 14px;
     float: right;
-    color: #333;
+    color: #666;
 }
 .wrap .box main .all .sec1 .shangpin div .defult {
     margin-right: 10px;

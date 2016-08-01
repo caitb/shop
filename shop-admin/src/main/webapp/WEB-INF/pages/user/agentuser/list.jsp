@@ -441,7 +441,7 @@
                         }
                     },
                     {
-                        title: '推荐人等级',
+                        title: '推荐人级别',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -453,7 +453,7 @@
                         }
                     },
                     {
-                        title: 'BOSS 姓名',
+                        title: '所属BOSS',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',

@@ -12,6 +12,7 @@ import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * BOrderAddService
@@ -104,7 +106,7 @@ public class BOrderAddService {
         }
         logger.info("agentLevelId------" + agentLevelId);
         logger.info("weiXinId------" + weiXinId);
-        //v1.2 Begin如果合伙人和上级的合伙等级相同，那么合伙人的上级将是推荐人的上级
+        //v1.2 Begin 如果合伙人和上级的合伙等级相同，那么合伙人的上级将是推荐人的上级
         Long recommendUserId = 0L;
         PfUserSku _parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getpUserId(), bOrderAdd.getSkuId());
         if (bOrderAdd.getpUserId() != 0 && bOrderAdd.getOrderType().equals(BOrderType.agent.getCode())) {
@@ -113,7 +115,27 @@ public class BOrderAddService {
                 bOrderAdd.setpUserId(_parentPfUserSku.getUserPid());
             }
         }
-        //v1.2 End如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
+        //v1.2 End 如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
+        //v1.4.2 Begin 如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人
+        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
+        if (pfUserRecommenRelation == null && bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
+
+            List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectAll();
+            PfUserSku oldPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getOldPUserId(), bOrderAdd.getSkuId());
+            logger.info("如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人" + oldPfUserSku.toString());
+            Boolean bl = false;
+            for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+                if (oldPfUserSku.getAgentLevelId() > pfSkuAgent.getAgentLevelId() && pfSkuAgent.getIsUpgrade().equals(1)) {
+                    bl = true;
+                    break;
+                }
+            }
+            logger.info("bl:" + bl + ";recommendUserId:" + recommendUserId + ";OldPUserId:" + bOrderAdd.getOldPUserId());
+            if (bl == false) {
+                recommendUserId = bOrderAdd.getOldPUserId();
+            }
+        }
+        //v1.4.2 End
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
         if (pfSkuAgent == null) {
             throw new BusinessException("找不到要代理的商品信息");
@@ -204,7 +226,6 @@ public class BOrderAddService {
         //v1.2 Begin处理订单推荐奖励表
         if (bOrderAdd.getpUserId() != 0) {
             PfBorderRecommenReward pfBorderRecommenReward = null;
-            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
             if (pfUserRecommenRelation != null && pfUserRecommenRelation.getPid() > 0) {
                 pfBorderRecommenReward = new PfBorderRecommenReward();
                 pfBorderRecommenReward.setCreateTime(new Date());

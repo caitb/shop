@@ -120,7 +120,7 @@ public class BOrderAddService {
         PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
         if (bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
             if (pfUserRecommenRelation == null || pfUserRecommenRelation.getPid() == 0) {
-                List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectAll();
+                List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectAllBySkuId(bOrderAdd.getSkuId());
                 PfUserSku oldPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(bOrderAdd.getOldPUserId(), bOrderAdd.getSkuId());
                 logger.info("如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人" + oldPfUserSku.toString());
                 Boolean bl = false;

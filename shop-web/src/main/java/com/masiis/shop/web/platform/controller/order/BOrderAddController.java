@@ -198,7 +198,7 @@ public class BOrderAddController extends BaseController {
             ComUser comUser = getComUser(request);
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, comUser.getId());
             if (pfBorder != null) {
-                throw new BusinessException("您已经有了此款产品的合伙订单，订单号编码为:" + pfBorder.getOrderCode()+"，请去合伙人订单中完成合伙人申请。");
+                throw new BusinessException("您已经有了此款产品的合伙订单，订单号编码为:" + pfBorder.getOrderCode() + "，请去合伙人订单中完成合伙人申请。");
             }
             Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
             if (comUser.getSendType() > 0) {
@@ -382,71 +382,72 @@ public class BOrderAddController extends BaseController {
 
     /**
      * 升级申请插入订单
+     *
      * @param request
      * @param upgradeNoticeId
      */
     @ResponseBody
     @RequestMapping("/upgradeInsertOrder.do")
     public String upgradeInsertOrder(HttpServletRequest request,
-                                    @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
+                                     @RequestParam(value = "upgradeNoticeId", required = true) Long upgradeNoticeId) {
 
         log.info("生成订单数据----start");
         Long orderId = null;
         JSONObject jsonObject = new JSONObject();
         ComUser comUser = getComUser(request);
         BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
-        try{
-            if (upgradeDetail!=null){
-                if (upgradeDetail.getPfBorderId()!=null&&upgradeDetail.getPfBorderId()!=0&&upgradeDetail.getUpgradeStatus()==2){
+        try {
+            if (upgradeDetail != null) {
+                if (upgradeDetail.getPfBorderId() != null && upgradeDetail.getPfBorderId() != 0 && upgradeDetail.getUpgradeStatus() == 2) {
                     //订单存在重定向到收银台
                     jsonObject.put("isError", false);
-                    jsonObject.put("isRedirect",true);
-                    jsonObject.put("redirectUrl","border/goToPayBOrder.shtml?bOrderId="+upgradeDetail.getPfBorderId());
+                    jsonObject.put("isRedirect", true);
+                    jsonObject.put("redirectUrl", "border/goToPayBOrder.shtml?bOrderId=" + upgradeDetail.getPfBorderId());
                     jsonObject.put("bOrderId", upgradeDetail.getPfBorderId());
                     return jsonObject.toJSONString();
                 }
-                if (upgradeDetail.getUpgradeStatus()!=2){
-                    log.info("通知单状态不对不能生成订单----状态---"+upgradeDetail.getUpgradeStatus());
+                if (upgradeDetail.getUpgradeStatus() != 2) {
+                    log.info("通知单状态不对不能生成订单----状态---" + upgradeDetail.getUpgradeStatus());
                     throw new BusinessException("通知单状态不对不能生成订单");
                 }
-                if (upgradeDetail.getApplyAgentLevel()!=0){
+                if (upgradeDetail.getApplyAgentLevel() != 0) {
                     //插入订单表
-                    PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(),upgradeDetail.getApplyAgentLevel());
-                    BOrderAdd  orderAdd = new BOrderAdd();
+                    PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
+                    BOrderAdd orderAdd = new BOrderAdd();
                     orderAdd.setUpgradeNoticeId(upgradeNoticeId);
-                    log.info("升级订单对应的通知单id--------"+upgradeNoticeId);
+                    log.info("升级订单对应的通知单id--------" + upgradeNoticeId);
                     orderAdd.setOrderType(3);
                     orderAdd.setUserId(comUser.getId());
                     orderAdd.setpUserId(upgradeDetail.getNewPUserId());//设置新的上级
-                    log.info("新上级id----------"+upgradeDetail.getNewPUserId());
+                    log.info("新上级id----------" + upgradeDetail.getNewPUserId());
                     orderAdd.setSendType(1);//拿货方式
                     orderAdd.setSkuId(upgradeDetail.getSkuId());
                     orderAdd.setQuantity(newSkuAgent.getQuantity());
-                    log.info("订单数量---------"+newSkuAgent.getQuantity());
+                    log.info("订单数量---------" + newSkuAgent.getQuantity());
                     orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
                     orderAdd.setApplyAgentLevel(upgradeDetail.getApplyAgentLevel());
-                    log.info("原始等级--------"+upgradeDetail.getCurrentAgentLevel());
-                    log.info("期望等级--------"+upgradeDetail.getApplyAgentLevel());
+                    log.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
+                    log.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
+                    orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
                     orderId = bOrderAddService.addBOrder(orderAdd);
-                }else{
-                    log.info("您已不能再升级----当前用户id---"+comUser.getId()+"----当前等级----"+upgradeDetail.getCurrentAgentLevelName());
+                } else {
+                    log.info("您已不能再升级----当前用户id---" + comUser.getId() + "----当前等级----" + upgradeDetail.getCurrentAgentLevelName());
                     throw new BusinessException("您是最顶级不能再升级");
                 }
             }
-        }catch (Exception e){
-            throw new BusinessException("生成订单数据失败------通知单id----"+upgradeNoticeId+"-----出错原因-----"+e.getMessage());
+        } catch (Exception e) {
+            throw new BusinessException("生成订单数据失败------通知单id----" + upgradeNoticeId + "-----出错原因-----" + e.getMessage());
         }
         log.info("生成订单数据----end");
-        if (orderId!=null){
+        if (orderId != null) {
             jsonObject.put("isError", false);
             jsonObject.put("bOrderId", orderId);
-        }else{
+        } else {
             jsonObject.put("isError", false);
             jsonObject.put("bOrderId", orderId);
         }
         return jsonObject.toJSONString();
     }
-
 
 
 }

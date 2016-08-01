@@ -18,9 +18,13 @@ public class BOrderAdd {
      */
     private Long userId = 0L;
     /**
-     * 上级合伙人id
+     * 新上级合伙人id
      */
     private Long pUserId = 0L;
+    /**
+     * 原上级id
+     */
+    private Long  oldPUserId;
     /**
      * 用户留言
      */
@@ -58,8 +62,6 @@ public class BOrderAdd {
      */
     private Long upgradeNoticeId ;
 
-    private Long newPUserId;//新上级，升级增加订单时使用
-
     private Integer currentAgentLevel;//当前级别，升级订单时使用
 
     private Integer applyAgentLevel; //申请级别,升级订单时使用
@@ -86,6 +88,14 @@ public class BOrderAdd {
 
     public void setpUserId(Long pUserId) {
         this.pUserId = pUserId;
+    }
+
+    public Long getOldPUserId() {
+        return oldPUserId;
+    }
+
+    public void setOldPUserId(Long oldPUserId) {
+        this.oldPUserId = oldPUserId;
     }
 
     public String getUserMessage() {
@@ -158,14 +168,6 @@ public class BOrderAdd {
 
     public void setUpgradeNoticeId(Long upgradeNoticeId) {
         this.upgradeNoticeId = upgradeNoticeId;
-    }
-
-    public Long getNewPUserId() {
-        return newPUserId;
-    }
-
-    public void setNewPUserId(Long newPUserId) {
-        this.newPUserId = newPUserId;
     }
 
     public Integer getCurrentAgentLevel() {

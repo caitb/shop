@@ -183,10 +183,6 @@ public class BUpgradePayService {
                     String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
                     Integer id_index = treeCode.indexOf("," + id + ",") + 1;
                     Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
-                    if (treeLevel < 0) {
-                        log.info("树结构更换只能挂在高于自己的树枝");
-                        throw new BusinessException("树结构更换只能挂在高于自己的树枝");
-                    }
                     log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
                     log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
                     log.info("id_index-----" + id_index);

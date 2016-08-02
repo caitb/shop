@@ -382,7 +382,7 @@ public class AgentUpGradeController extends BaseController {
         mv.addObject("former",former.getRealName());
         //新上级
         ComUser user = userService.getUserById(pfUserSku.getUserPid());
-        mv.addObject("newUp",user.getRealName());
+        mv.addObject("newUpUser",user);
         mv.addObject("upGradeInfoPo",upGradeInfoPo);
         mv.addObject("status",UpGradeStatus.statusPickList.get(upGradeInfoPo.getApplyStatus()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

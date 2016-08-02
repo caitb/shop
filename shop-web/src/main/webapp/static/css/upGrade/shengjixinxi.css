@@ -30,12 +30,15 @@ main .floor p {
   margin: 0 25px;
   display: -webkit-box;
   border-bottom: 1px solid #f6f6f6;
-  padding: 8px 0px;
+  padding: 8px 0;
 }
 main .floor p span {
   display: block;
   width: 120px;
   color: #666;
+}
+main .floor p span b{
+  text-decoration: underline;
 }
 main .floor p span:last-child {
   color: #333;
@@ -121,7 +124,6 @@ main .floor2 p {
   line-height: 21px;
 }
 .back_que h3 {
-  margin-top: 10px;
   display: -webkit-box;
   -webkit-box-align: center;
   margin: 15px 10px;
@@ -134,7 +136,6 @@ main .floor2 p {
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;
@@ -144,4 +145,35 @@ main .floor2 p {
   margin-right: 10%;
   background: #0fc420;
   color: white;
+}
+.backt{
+  position: absolute;
+  left:50%;
+  margin-left: -40%;
+  top:50%;
+  margin-top: -103px;
+  background: #fff;
+  width:80%;
+  padding-bottom: 10px;
+}
+.backt h1{
+  padding:10px 0;
+  color: #F74A11;
+  border-bottom: 1px solid #F74A11;
+  margin:0 10px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.backt p{
+  margin:0 20px;
+  padding:5px 0;
+}
+.backt button{
+  width: 50%;
+  display: block;
+  background: #f74a11;
+  margin: 0 auto;
+  color: #fff;
+  padding: 6px 0;
+  margin-top: 20px;
 }

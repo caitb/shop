@@ -42,7 +42,7 @@
                 </p>
                 <p>
                     <span>新上级：</span>
-                    <span>${newUp}</span>
+                    <span><b onclick="showDiv()">${newUpUser.realName}</b></span>
                 </p>
                 <p>
                     <span>原等级：</span>
@@ -67,7 +67,16 @@
             </div>
         </main>
     </div>
-
+    <div class="black" id="black">
+        <div class="backb"></div>
+        <div class="backt">
+            <h1>新上级</h1>
+            <p><span>手机号：</span><span>${newUpUser.mobile}</span></p>
+            <p><span>姓　名：</span><span>${newUpUser.realName}</span></p>
+            <p><span>微信号：</span><span>${newUpUser.wxId}</span></p>
+            <button onclick="clickHide()">确定</button>
+        </div>
+    </div>
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
     <script src="${path}/static/js/commonAjax.js"></script>
     <script src="${path}/static/js/definedAlertWindow.js"></script>
@@ -76,6 +85,13 @@
     <script>
        var path = "${path}";
        var basePath = "${basePath}";
+
+        function showDiv(){
+            $("#black").show();
+        }
+        function clickHide(){
+            $("#black").hide();
+        }
     </script>
 </body>
 </html>

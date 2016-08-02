@@ -73,7 +73,6 @@
             <h1>新上级</h1>
             <p><span>手机号：</span><span>${newUpUser.mobile}</span></p>
             <p><span>姓　名：</span><span>${newUpUser.realName}</span></p>
-            <p><span>微信号：</span><span>${newUpUser.wxId}</span></p>
             <button onclick="clickHide()">确定</button>
         </div>
     </div>

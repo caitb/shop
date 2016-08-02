@@ -12,6 +12,7 @@ public class TurnTablelInfo extends SfTurnTable{
 
     private Integer turnTableId;
     private List<TurnTableGiftInfo> turnTableGiftInfo;
+    private SfUserTurnTable userTurnTable;
     private String beginTimeString;
     private String endTimeString;
 
@@ -45,5 +46,13 @@ public class TurnTablelInfo extends SfTurnTable{
 
     public void setEndTimeString(String endTimeString) {
         this.endTimeString = endTimeString;
+    }
+
+    public SfUserTurnTable getUserTurnTable() {
+        return userTurnTable;
+    }
+
+    public void setUserTurnTable(SfUserTurnTable userTurnTable) {
+        this.userTurnTable = userTurnTable;
     }
 }

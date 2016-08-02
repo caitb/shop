@@ -19,4 +19,8 @@ public class SfTurnTableService {
     public List<SfTurnTable> getTurnTableByStatus(Integer status){
         return turnTableMapper.getTurnTableByStatus(status);
     }
+
+    public List<SfTurnTable> getTurnTableByRuleTypeAndRuleStatusAndTableStatus(Integer ruleType,Integer ruleStatus,Integer tableStatus){
+        return turnTableMapper.getTurnTableByRuleTypeAndRuleStatusAndTableStatus(ruleType,ruleStatus,tableStatus);
+    }
 }

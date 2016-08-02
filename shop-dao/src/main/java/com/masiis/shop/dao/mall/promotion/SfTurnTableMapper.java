@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfTurnTable;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,8 @@ public interface SfTurnTableMapper {
     List<SfTurnTable> selectAll();
 
     List<SfTurnTable> getTurnTableByStatus(Integer status);
+
+    List<SfTurnTable> getTurnTableByRuleTypeAndRuleStatusAndTableStatus(@Param("ruleType")Integer ruleType,@Param("ruleStatus") Integer ruleStatus,@Param("tableStatus") Integer tableStatus);
 
     int updateByPrimaryKey(SfTurnTable record);
 

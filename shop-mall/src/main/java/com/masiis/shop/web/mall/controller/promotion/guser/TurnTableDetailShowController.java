@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping("/turnTableDetailShow")
 public class TurnTableDetailShowController extends BaseController {
 
+    @Resource
     private TurnTableDetailShowService turnTableDetailShowService;
 
     @RequestMapping("/getTurnTableInfo.html")
@@ -30,6 +32,9 @@ public class TurnTableDetailShowController extends BaseController {
                 SfTurnTableRuleStatusEnum.EFFECT.getCode(),
                 SfTurnTableStatusEnum.ING.getCode());
         model.addAttribute("turnTablelInfos",turnTablelInfos);
+        model.addAttribute("turnTableId",turnTablelInfos.get(0).getTurnTableId());
+        model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
+        model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
         return "promotion/guser/turnTableGiftShow";
     }
 }

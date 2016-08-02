@@ -6,7 +6,7 @@ main {
   -webkit-box-orient: vertical;
 }
 main .floor {
-  background: url("../img/jtbg.png") no-repeat;
+  background: url("/static/images/jtbg.png") no-repeat;
   background-size: 100% 100%;
   padding-bottom: 40px;
   position: relative;
@@ -88,7 +88,7 @@ main .floor #xttblog01 {
   top: 0;
 }
 main .floor2 {
-  background: url("../img/jbg.png") no-repeat;
+  background: url("/static/images/jbg.png") no-repeat;
   background-size: 100% 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -96,7 +96,7 @@ main .floor2 {
 main .floor2 .f-one {
   width: 55%;
   margin: 0 auto 20px auto;
-  background: url("../img/yiu.jpg") no-repeat;
+  background: url("/static/images/yiu.jpg") no-repeat;
   background-size: 100% 100%;
   border-radius: 5px;
   border: 1px dashed #a0a0a0;
@@ -120,7 +120,7 @@ main .floor2 .f-one button {
 }
 main .floor2 .list {
   width: 85%;
-  background: #FFD821 url("../img/icon.png") no-repeat center 15px;
+  background: #FFD821 url("/static/images/icon.png") no-repeat center 15px;
   background-size: 20px;
   margin: 0 auto;
   border-radius: 5px;
@@ -158,7 +158,7 @@ main .floor3 {
   border-radius: 10px;
   border: 1px dashed #A0A0A0;
   margin: 20px auto;
-  background: url("../img/yiui.jpg") no-repeat;
+  background: url("/static/images/yiui.jpg") no-repeat;
   background-size: 100% 100%;
   padding-bottom: 8%;
 }

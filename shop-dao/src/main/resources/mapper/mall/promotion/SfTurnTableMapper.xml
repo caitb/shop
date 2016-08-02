@@ -116,8 +116,8 @@
     </select>
 
     <select id="getTurnTableByRuleTypeAndRuleStatusAndTableStatus" resultMap="BaseResultMap" >
-        select id, create_time, create_man, name, code, status, `describe`, begin_time, end_time,
-        modify_time, modify_man, remark
+        select t.id, t.create_time, t.create_man, t.name, t.code, t.status, t.`describe`, t.begin_time, t.end_time,
+        t.modify_time, t.modify_man, t.remark
         from sf_turn_table AS t,sf_turn_table_rule AS r
         WHERE r.type = #{ruleType,jdbcType=INTEGER}
         AND r.status =  #{ruleStatus,jdbcType=INTEGER}

@@ -7,6 +7,7 @@ import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableRec
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -17,12 +18,18 @@ import java.util.List;
  *  大转盘中奖纪录
  */
 @Controller
-@RequestMapping("/turnTableGiftRecordController")
+@RequestMapping("/turnTableGiftRecord")
 public class TurnTableGiftRecordController extends BaseController {
 
     @Resource
     private SfUserTurnTableRecordService userTurnTableRecordService;
 
+    /**
+     * 获取用户的中奖纪录
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("/getPromotionGorderPageInfo.html")
     public String getGiftedRecordInfo(HttpServletRequest request,Model model) {
         ComUser comUser =  getComUser(request);
@@ -31,18 +38,24 @@ public class TurnTableGiftRecordController extends BaseController {
         return "promotion/gorder/turnTableGiftRecord";
     }
 
-
-
+    /**
+     * 用户抽中奖品
+     * @param request
+     * @param turnTableId
+     * @param giftId
+     * @return
+     */
+    @RequestMapping("/winGift.json")
+    @ResponseBody
+    public String winGift(HttpServletRequest request,
+                          @RequestParam(required = true) Integer turnTableId,
+                          @RequestParam(required = true) Integer giftId){
+        int  i = userTurnTableRecordService.winGift(getComUser(request),turnTableId,giftId);
+        return i+"";
+    }
 
     @RequestMapping("/getPage.html")
     public String getPage(HttpServletRequest request) {
         return "promotion/gorder/turnTableRecordDemo";
-    }
-
-    public static void main(String[] ags){
-        String s = "12,1211,12111";
-        int i = s.indexOf("121");
-       System.out.println("----------i----tttttt"+i);
-
     }
 }

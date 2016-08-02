@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.promotion.UserTurnTableRecordInfo;
 import com.masiis.shop.dao.mall.promotion.SfUserTurnTableRecordMapper;
 import com.masiis.shop.dao.po.ComGift;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfUserTurnTableRecord;
 import com.masiis.shop.web.common.service.ComGiftService;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,31 @@ public class SfUserTurnTableRecordService {
     private ComGiftService comGiftService;
 
 
+    public List<SfUserTurnTableRecord> getRecordByTableId(Integer turnTableId){
+        return userTurnTableRecordMapper.getRecordByTableId(turnTableId);
+    }
+
     public SfUserTurnTableRecord getRecordByUserIdAndTurnTableIdAndGiftId(Long userId,Integer turnTableId,Integer giftId ){
         return userTurnTableRecordMapper.getRecordByUserIdAndTurnTableIdAndGiftId(userId,turnTableId,giftId);
+    }
+
+    /**
+     * 用户抽中奖品
+     * @param comUser
+     * @param turnTableId
+     * @param giftId
+     * @return
+     */
+    public int winGift(ComUser comUser,Integer turnTableId,Integer giftId){
+        SfUserTurnTableRecord record = new SfUserTurnTableRecord();
+        record.setUserId(comUser.getId());
+        record.setTurnTableId(turnTableId);
+        record.setGiftId(giftId);
+        record.setStatus(SfUserTurnTableRecordStatusEnum.GIFT_NOT_RECEIVE.getCode());
+        record.setCreateTime(new Date());
+        record.setCreateMan(comUser.getId());
+        record.setRemark("用户大转盘抽中奖品未领取");
+        return userTurnTableRecordMapper.insert(record);
     }
 
     /**

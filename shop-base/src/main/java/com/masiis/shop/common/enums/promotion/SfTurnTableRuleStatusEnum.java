@@ -4,8 +4,8 @@ package com.masiis.shop.common.enums.promotion;
  * Created by hzz on 2016/8/2.
  */
 public enum SfTurnTableRuleStatusEnum {
-    EFFECT(0, "生效"),
-    NO_EFFECT(1, "失效");
+    NO_EFFECT(0, "失效"),
+    EFFECT(1, "生效");
 
     private Integer code;
     private String desc;

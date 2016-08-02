@@ -1030,7 +1030,7 @@ public class WxPFNoticeUtils {
      * 您的下级已升级成功，与您同级，您已是ta的推荐人，您可以获得补货奖励。点击查看详情。
      *
      * @param pUser 上级用户对象
-     * @param params    (第一个,下级名称; 第二个,代理商品名称; 第三个,升级后等级)
+     * @param params    (第一个,下级名称; 第二个,代理商品名称; 第三个,升级前等级; 第四个,升级后等级)
      * @param url   查看升级申请单url
      * @return
      */
@@ -1039,7 +1039,7 @@ public class WxPFNoticeUtils {
         WxNoticeReq<WxPFUpgradeResultNotice> req = new WxNoticeReq<>(notice);
 
         notice.setFirst(new WxNoticeDataItem("您好，您的下级 " + params[0] + " 已成功升级。", null));
-        notice.setKeyword1(new WxNoticeDataItem(params[1] + "-" + params[2] + " 升级", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[1] + "-" + params[2] + " 升级 " + params[3], null));
         notice.setKeyword2(new WxNoticeDataItem("下级升级成功", null));
         notice.setRemark(new WxNoticeDataItem("您的下级已升级成功，与您同级，您已是ta的推荐人，您可以获得补货奖励。点击查看详情。", null));
 

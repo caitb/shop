@@ -1023,6 +1023,35 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 升级申请结果通知(下级脱离上级,上级不能升级)
+     *
+     * 您好，您的下级 王平 已成功升级。
+     * 申请内容：抗引力瘦脸精华-联合创始人升级
+     * 申请结果：下级升级成功
+     * 您的下级已升级成功，与您同级，您已是ta的推荐人，您可以获得补货奖励。点击查看详情。
+     *
+     * @param pUser 上级用户对象
+     * @param params    (第一个,下级名称; 第二个,代理商品名称; 第三个,升级后等级)
+     * @param url   查看升级申请单url
+     * @return
+     */
+    public Boolean upgradeApplyGetOutNotice(ComUser pUser, String[] params, String url){
+        WxPFUpgradeResultNotice notice = new WxPFUpgradeResultNotice();
+        WxNoticeReq<WxPFUpgradeResultNotice> req = new WxNoticeReq<>(notice);
+
+        notice.setFirst(new WxNoticeDataItem("您好，您的下级 " + params[0] + " 已成功升级。", null));
+        notice.setKeyword1(new WxNoticeDataItem(params[1] + "-" + params[2] + " 升级", null));
+        notice.setKeyword2(new WxNoticeDataItem("下级升级成功", null));
+        notice.setRemark(new WxNoticeDataItem("您的下级已升级成功，与您同级，您已是ta的推荐人，您可以获得补货奖励。点击查看详情。", null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_UP_RESULT_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 下级升级成功,仍是原上级的下级
      *
      * @param pUser 上级用户对象

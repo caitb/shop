@@ -174,6 +174,18 @@ $(function(){
     function probability(){
         //获取随机数
         var num = parseInt(Math.random()*(7 - 0 + 0) + 0);
+        var turnTableId = ${turnTableId};
+        $.ajax({
+            type: "POST",
+            url: "/turnTableDetailShow/getRandomByGiftRate.json",
+            async:false,
+            data: {turnTableId:turnTableId},
+            dataType: "Json",
+            success: function (result) {
+                num = result;
+            }
+        })
+
         var giftId = null;
         //概率
         if ( num == 0 ) {
@@ -223,6 +235,18 @@ $(function(){
             notice =$("#giftName_7").val();
             giftId = $("#giftId_7").val();
         }
+        var cartData = {};
+        cartData.turnTableId = "${turnTableId}";
+        cartData.giftId = giftId;
+        $.ajax({
+            type: "POST",
+            url: "/turnTableGiftRecord/winGift.json",
+            async:false,
+            data: cartData,
+            dataType: "Json",
+            success: function (result) {
+            }
+        })
         $("#receiveGiftNameId").html("获得"+notice);
     }
  

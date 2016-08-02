@@ -62,6 +62,7 @@ public class SfTurnTableGiftService {
                 turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
                 turnTableGiftInfo.setImgUrl(comGift.getImgUrl());
                 turnTableGiftInfo.setSort(turnTableGift.getSort());
+                turnTableGiftInfo.setProbability(turnTableGift.getProbability());
             }
         }
         return turnTableGiftInfo;

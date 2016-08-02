@@ -82,7 +82,7 @@ public class TurnTableDetailShowService {
         }
         int i = RandomRateUtil.getInstance().percentageRandom(map);
         if (i!=-1){
-            return  -1;
+            return  i;
         }else{
             throw new BusinessException("获取中奖数字出错------");
         }

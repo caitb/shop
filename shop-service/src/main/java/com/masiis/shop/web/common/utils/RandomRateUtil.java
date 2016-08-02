@@ -60,28 +60,28 @@ public class RandomRateUtil {
         for (Integer key : map.keySet()) {
             switch (key){
                 case 0:
-                    rate0 = map.get(key);
+                    rate0 = map.get(key)/100;
                     break;
                 case 1:
-                    rate1 = map.get(key);
+                    rate1 = map.get(key)/100;
                     break;
                 case 2:
-                    rate2 = map.get(key);
+                    rate2 = map.get(key)/100;
                     break;
                 case 3:
-                    rate3 = map.get(key);
+                    rate3 = map.get(key)/100;
                     break;
                 case 4:
-                    rate4 = map.get(key);
+                    rate4 = map.get(key)/100;
                     break;
                 case 5:
-                    rate5 = map.get(key);
+                    rate5 = map.get(key)/100;
                     break;
                 case 6:
-                    rate6 = map.get(key);
+                    rate6 = map.get(key)/100;
                     break;
                 case 7:
-                    rate7 = map.get(key);
+                    rate7 = map.get(key)/100;
                     break;
                 default:
                     break;

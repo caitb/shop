@@ -9,6 +9,8 @@ import com.masiis.shop.web.promotion.cpromotion.service.guser.TurnTableDetailSho
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -36,5 +38,12 @@ public class TurnTableDetailShowController extends BaseController {
         model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
         model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
         return "promotion/guser/turnTableGiftShow";
+    }
+
+    @RequestMapping("/getRandomByGiftRate.json")
+    @ResponseBody
+    public String getRandomByGiftRate(@RequestParam(required = false) Integer turnTableId) {
+       int i = turnTableDetailShowService.getRandomByGiftRate(turnTableId);
+        return i+"";
     }
 }

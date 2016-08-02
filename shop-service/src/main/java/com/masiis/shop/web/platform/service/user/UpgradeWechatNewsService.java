@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
@@ -30,6 +31,8 @@ public class UpgradeWechatNewsService {
     private UserService comUserService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
+    @Resource
+    private ComAgentLevelService comAgentLevelService;
 
     /**
      * 升级订单支付成功后，进入排单发送微信
@@ -113,6 +116,14 @@ public class UpgradeWechatNewsService {
                 WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser, _param, newPuserUrl, true);
                 //给新的上级发
                 WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser, comUser, DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT), newPuserUrl);
+            } else if (pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
+                ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
+                String[] _param = new String[3];
+                _param[0] = comUser.getRealName();
+                _param[1] = pfBorderItems.get(0).getSkuName();
+                _param[2] = comAgentLevel.getName();
+                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
+                WxPFNoticeUtils.getInstance().upgradeApplyGetOutNotice(oldUser, _param, url);
             }
         }
         return true;

@@ -34,7 +34,7 @@
            </p>
            <p>
                <span>${countGroup.r_count}</span>
-               <span>ta的推荐团队</span>
+               <span>ta的下级</span>
            </p>
        </nav>
         <main>

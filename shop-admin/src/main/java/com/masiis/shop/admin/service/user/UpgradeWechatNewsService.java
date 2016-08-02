@@ -30,6 +30,8 @@ public class UpgradeWechatNewsService {
     private ComUserService comUserService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
+    @Resource
+    private ComAgentLevelService comAgentLevelService;
 
     /**
      * 升级订单支付成功后，进入排单发送微信
@@ -113,6 +115,15 @@ public class UpgradeWechatNewsService {
                 WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser, _param, newPuserUrl, true);
                 //给新的上级发
                 WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser, comUser, DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT), newPuserUrl);
+            } else if (pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
+                ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
+                String[] _param = new String[4];
+                _param[0] = comUser.getRealName();
+                _param[1] = pfBorderItems.get(0).getSkuName();
+                _param[2] = upgradeDetail.getCurrentAgentLevelName();
+                _param[3] = comAgentLevel.getName();
+                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
+                WxPFNoticeUtils.getInstance().upgradeApplyGetOutNotice(oldUser, _param, url);
             }
         }
         return true;

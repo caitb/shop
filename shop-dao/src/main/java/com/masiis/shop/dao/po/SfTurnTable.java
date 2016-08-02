@@ -69,7 +69,7 @@ public class SfTurnTable {
     public SfTurnTable() {
     }
 
-    public SfTurnTable(Integer id, String name, String describe, String remark, String beginTimeStr, String endTimeStr, Long createMan) {
+    public SfTurnTable(Integer id, String name, String describe, String remark, String beginTimeStr, String endTimeStr) {
         this.id = id;
         setName(name);
         setDescribe(describe);
@@ -87,10 +87,8 @@ public class SfTurnTable {
             e.printStackTrace();
         }
 
-        this.createMan = createMan;
-        this.createTime = new Date();
-        this.code = TurnTableMakeUtils.makeCode();
-        this.status = 0;
+
+
 
     }
 

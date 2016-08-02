@@ -16,6 +16,10 @@ public class SfTurnTableRule {
      */
     private Integer id;
     /**
+     * 名称
+     */
+    private String name;
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -58,6 +62,15 @@ public class SfTurnTableRule {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }

@@ -3,6 +3,7 @@
 <mapper namespace="com.masiis.shop.dao.mall.promotion.SfTurnTableRuleMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfTurnTableRule" >
         <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
@@ -19,12 +20,12 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" >
-        insert into sf_turn_table_rule (id, create_time, create_man, 
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" useGeneratedKeys="true" keyProperty="id" >
+        insert into sf_turn_table_rule (id, name, create_time, create_man,
             turn_table_id, times, status, 
             type, modify_time, modify_man, 
             remark)
-        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},  #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
             #{turnTableId,jdbcType=INTEGER}, #{times,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
             #{type,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, 
             #{remark,jdbcType=VARCHAR})
@@ -33,6 +34,7 @@
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" >
         update sf_turn_table_rule
         set create_time = #{createTime,jdbcType=TIMESTAMP},
+            name = #{name,jdbcType=VARCHAR},
             create_man = #{createMan,jdbcType=BIGINT},
             turn_table_id = #{turnTableId,jdbcType=INTEGER},
             times = #{times,jdbcType=INTEGER},
@@ -45,16 +47,59 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, create_time, create_man, turn_table_id, times, status, type, modify_time, 
+        select id, name, create_time, create_man, turn_table_id, times, status, type, modify_time,
         modify_man, remark
         from sf_turn_table_rule
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, turn_table_id, times, status, type, modify_time, 
+        select id, name, create_time, create_man, turn_table_id, times, status, type, modify_time,
         modify_man, remark
         from sf_turn_table_rule
     </select>
+    <select id="listByCondition" resultMap="BaseResultMap" >
+        select id,name, create_time, create_man, turn_table_id, times, status, type, modify_time,
+        modify_man, remark
+        from sf_turn_table_rule
+        <where>
+            <if test="beginTime != null">
+                AND create_time &gt;=#{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;=#{endTime}
+            </if>
+        </where>
+    </select>
 
+    <update id="update" parameterType="com.masiis.shop.dao.po.SfTurnTableRule" >
+        update sf_turn_table_rule
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="turnTableId != null">
+                turn_table_id = #{turnTableId,jdbcType=INTEGER},
+            </if>
+            <if test="times != null">
+                times = #{times,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyMan != null">
+                modify_man = #{modifyMan,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

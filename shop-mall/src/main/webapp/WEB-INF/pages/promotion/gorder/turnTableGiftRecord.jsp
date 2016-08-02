@@ -27,11 +27,11 @@
                 <section>
                     <p><span><b>奖品名称：</b>${record.turnTableGiftName}</span></p>
                     <p>
-                        <span><b>中奖事件：</b>${record.createTimeString}</span>
-                        <c:if test="${record.status==0}">
+                        <span><b>中奖时间：</b>${record.createTimeString}</span>
+                        <c:if test="${record.status==1}">
                             <i>已领取</i>
                         </c:if>
-                        <c:if test="${record.status==1}">
+                        <c:if test="${record.status==0}">
                             <i>未领取</i>
                             <button>立即领取</button>
                         </c:if>

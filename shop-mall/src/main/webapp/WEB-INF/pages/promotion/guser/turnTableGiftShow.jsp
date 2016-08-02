@@ -51,10 +51,10 @@
                 <div class="floor2">
                     <div class="f-one">
                         <p>您今天还有<span>3</span>次机会</p>
-                        <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.shtml');">我的中奖记录</button>
+                        <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.html');">我的中奖记录</button>
                     </div>
                     <div class="list">
-                        <img src="<%=path%>/static/images/zbg.png" alt="" />
+                       <%-- <img src="<%=path%>/static/images/zbg.png" alt="" />--%>
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
                                 <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
@@ -96,7 +96,8 @@
                     <img src="<%=path%>/static/images/xiaol.jpg" alt="" />
                     <p>恭喜你</p>
                     <h1 id="receiveGiftNameId"></h1>
-                    <button>
+                    <input id="giftId" type="hidden" value=""/>
+                    <button onclick="skipToReceiveGiftPage()">
                         立即领取
                     </button>
                 </div>
@@ -173,7 +174,7 @@ $(function(){
     //各奖项对应的旋转角度及中奖公告内容
     function probability(){
         //获取随机数
-        var num = parseInt(Math.random()*(7 - 0 + 0) + 0);
+        var num = null;
         var turnTableId = ${turnTableId};
         $.ajax({
             type: "POST",
@@ -248,6 +249,7 @@ $(function(){
             }
         })
         $("#receiveGiftNameId").html("获得"+notice);
+        $("#giftId").val(giftId);
     }
  
     //绘制转盘
@@ -257,9 +259,6 @@ $(function(){
         var canvas03=document.getElementById('xttblog03');
         var canvas02=document.getElementById('xttblog02');
         var ctx=canvas.getContext('2d');
-        var ctx1=canvas01.getContext('2d');
-        var ctx3=canvas03.getContext('2d');
-        var ctx2=canvas02.getContext('2d');
         createCircle();
 		setTimeout(function(){
         	createCirText();
@@ -306,12 +305,15 @@ $(function(){
                 ctx.restore();
             }
         }
-
         $(".x").on("click",function(){
             $(".black").hide();
         })
     }
 });
+function skipToReceiveGiftPage(){
+    var giftId = $("#giftId").val();
+    window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId=${turnTableId}&giftId="+giftId;
+}
 </script>
 </body>
 </html>

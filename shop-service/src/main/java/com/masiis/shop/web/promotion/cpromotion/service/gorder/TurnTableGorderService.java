@@ -62,7 +62,7 @@ public class TurnTableGorderService {
         TurnTableGiftInfo turnTableGiftInfo = sfTurnTableGiftService.getTurnTableGiftInfo(turnTableId,giftId);
         map.put("address",comUserAddress);
         map.put("turnTableGiftInfo",turnTableGiftInfo);
-        return null;
+        return map;
     }
 
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)

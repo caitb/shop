@@ -56,6 +56,7 @@ public class SfTurnTableGiftService {
             log.info("获得转盘奖品信息-----奖品id-----"+turnTableGift.getGiftId());
             ComGift comGift = comGiftService.getComGiftById(turnTableGift.getGiftId());
             if (comGift!=null){
+                turnTableGiftInfo.setTurnTableId(turnTableGift.getTurnTableId());
                 turnTableGiftInfo.setGiftId(turnTableGift.getGiftId());
                 turnTableGiftInfo.setGiftName(comGift.getName());
                 turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());

@@ -72,4 +72,11 @@
         WHERE turn_table_id = #{turnTableId,jdbcType=INTEGER}
     </select>
 
+    <select id="getRecordInfoByUserId" resultMap="BaseResultMap" >
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
+        update_time, remark
+        from sf_user_turn_table_record
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

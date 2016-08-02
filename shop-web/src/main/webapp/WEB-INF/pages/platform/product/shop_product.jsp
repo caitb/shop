@@ -58,6 +58,7 @@
                             <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>  库存: <span>${sku.stock}</span></p>
                         </div>
                     </div>
+                    <c:if test="${sku.isOwnShip==0}">
                         <ul>
                             <c:if test="${sku.isOwnShip==0 && not empty sku.flagSelf}">
                                 <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
@@ -76,10 +77,11 @@
                                 </c:if>
                             </c:if>
                         </ul>
+                    </c:if>
                     <c:if test="${sku.isOwnShip==1}">
                         <ul>
                             <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b></li>
-                            <li onclick="showStock('${sku.stock}','${sku.skuId}')"><b><img src="<%=path%>/static/images/commodity5.png" alt="" style="width:18px;">库存设置</b></li>
+                            <li class="right myself" onclick="showStock('${sku.stock}','${sku.skuId}')"><b><img src="<%=path%>/static/images/commodity5.png" alt="" style="width:18px;">库存设置</b></li>
                         </ul>
                     </c:if>
                 </div>
@@ -339,7 +341,7 @@ function onsale(value){
                         zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
                         zijiHtml += "</li>";
-                        zijiHtml += "<li onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
+                        zijiHtml += "<li  class=\"right myself\" onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity5.png\" alt=\"\" style=\"width:18px;\">库存设置</b>";
                         zijiHtml += "</li>";
                     }
@@ -413,7 +415,7 @@ function outSale(value){
                         zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                         zijiHtml += "</li>";
-                        zijiHtml += "<li onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
+                        zijiHtml += "<li class=\"right myself\" onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity5.png\" alt=\"\" style=\"width:18px;\">库存设置</b>";
                         zijiHtml += "</li>";
                     }

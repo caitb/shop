@@ -3,10 +3,12 @@ package com.masiis.shop.admin.controller.turn;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.service.turn.SfTurnTableService;
 import com.masiis.shop.admin.utils.DbUtils;
+import com.masiis.shop.dao.mall.promotion.SfTurnTableMapper;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.SfTurnTable;
 import com.masiis.shop.dao.po.SfTurnTableGift;
 import com.masiis.shop.dao.po.SfUserPromotion;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,8 @@ public class SfTurnController {
 
     @Resource
     private SfTurnTableService turnTableService;
+    @Resource
+    private SfTurnTableMapper turnTableMapper;
 
     @RequestMapping("/add.shtml")
     public String add() {
@@ -49,14 +53,10 @@ public class SfTurnController {
         Object obj = request.getSession().getAttribute("pbUser");
         PbUser pbUser = (PbUser) obj;
 
-        SfTurnTable turnTable = new SfTurnTable(turnTableId, name, describe, remark, beginTime, endTime, pbUser.getId());
+        SfTurnTable turnTable = new SfTurnTable(turnTableId, name, describe, remark, beginTime, endTime);
         List<SfTurnTableGift> gifts = turnTableService.createTurnTableGifts(turnTableGiftIdArray, sortArray, giftIdArray, probabilityArray, totalQuantityArray);
 
-        if(turnTableId == null) {   // add
-            turnTableService.insert(turnTable, gifts);
-        } else {    // update
-            turnTableService.update(turnTable, gifts);
-        }
+        turnTableService.save(turnTable, gifts, pbUser);
 
         Map<String, Object> data = new HashMap<>();
         data.put("status", "success");
@@ -90,4 +90,12 @@ public class SfTurnController {
         dataMap.put("rows", turnTables);
         return dataMap;
     }
+
+
+    @RequestMapping("/all.do")
+    @ResponseBody
+    public Object all() {
+        return turnTableMapper.selectAll();
+    }
+
 }

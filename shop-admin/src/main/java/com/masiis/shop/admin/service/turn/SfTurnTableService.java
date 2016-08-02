@@ -1,21 +1,21 @@
 package com.masiis.shop.admin.service.turn;
 
 import com.alibaba.druid.sql.ast.statement.SQLGrantStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.util.TurnTableMakeUtils;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableGiftMapper;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableMapper;
+import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.SfTurnTable;
 import com.masiis.shop.dao.po.SfTurnTableGift;
 import com.masiis.shop.dao.po.SfUserPromotion;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SfTurnTableService {
@@ -57,7 +57,20 @@ public class SfTurnTableService {
         return giftList;
     }
 
-    public void insert(SfTurnTable turnTable, List<SfTurnTableGift> gifts) {
+    public void save(SfTurnTable turnTable, List<SfTurnTableGift> gifts, PbUser pbUser) {
+        if(turnTable.getId() == null) {
+            insert(turnTable, gifts, pbUser);
+        } else {
+            update(turnTable, gifts, pbUser);
+        }
+    }
+
+    public void insert(SfTurnTable turnTable, List<SfTurnTableGift> gifts, PbUser pbUser) {
+        turnTable.setCreateMan(pbUser.getId());
+        turnTable.setCreateTime(new Date());
+        turnTable.setCode(TurnTableMakeUtils.makeCode());
+        turnTable.setStatus(0);
+
         turnTableMapper.insert(turnTable);
         for(SfTurnTableGift gift :gifts) {
             gift.setTurnTableId(turnTable.getId());
@@ -65,7 +78,10 @@ public class SfTurnTableService {
         }
     }
 
-    public void update(SfTurnTable turnTable, List<SfTurnTableGift> gifts) {
+    public void update(SfTurnTable turnTable, List<SfTurnTableGift> gifts, PbUser pbUser) {
+        turnTable.setModifyMan(pbUser.getId());
+        turnTable.setModifyTime(new Date());
+
         turnTableMapper.update(turnTable);
         for(SfTurnTableGift gift : gifts) {
             turnTableGiftMapper.update(gift);

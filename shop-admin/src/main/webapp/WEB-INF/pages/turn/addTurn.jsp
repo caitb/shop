@@ -186,7 +186,6 @@
                             <div class="col-sm-6">
                                 <button type="submit" class="btn btn-lg btn-info" id="turnSave">保存</button>
                             </div>
-                            <button type="button" id="reset">重置</button>
                         </row>
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
@@ -505,7 +504,7 @@
 
         }
 
-        if(${param.turnTableId}) {
+        if(${param.turnTableId}+'') {
             loadTurnTable(${param.turnTableId});
         }
     });

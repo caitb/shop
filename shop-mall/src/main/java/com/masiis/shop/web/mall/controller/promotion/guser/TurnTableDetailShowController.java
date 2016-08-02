@@ -40,6 +40,11 @@ public class TurnTableDetailShowController extends BaseController {
         return "promotion/guser/turnTableGiftShow";
     }
 
+    /**
+     * 获取大转盘的
+     * @param turnTableId
+     * @return
+     */
     @RequestMapping("/getRandomByGiftRate.json")
     @ResponseBody
     public String getRandomByGiftRate(@RequestParam(required = false) Integer turnTableId) {

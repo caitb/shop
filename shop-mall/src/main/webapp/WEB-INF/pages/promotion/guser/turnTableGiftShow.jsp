@@ -51,7 +51,7 @@
                 <div class="floor2">
                     <div class="f-one">
                         <p>您今天还有<span>3</span>次机会</p>
-                        <button>我的中奖记录</button>
+                        <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.shtml');">我的中奖记录</button>
                     </div>
                     <div class="list">
                         <img src="<%=path%>/static/images/zbg.png" alt="" />

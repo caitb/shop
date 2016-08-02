@@ -11,7 +11,7 @@ body .wrap {
     -webkit-box-flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-bottom: 5px;
+    padding-bottom: 50px;
 }
 body .wrap .xinxi {
     background: white url("../images/zhuce_2.png") no-repeat;

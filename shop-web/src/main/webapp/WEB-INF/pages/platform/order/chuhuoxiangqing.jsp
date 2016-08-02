@@ -112,7 +112,7 @@
             <div class="floor">
                 <h1>购买人： ${borderDetail.buyerName}</h1>
                 <c:forEach items="${borderDetail.pfBorderItems}" var="bdpd">
-                <div>
+                <div onclick="javascript:window.location.replace('<%=path%>/product/skuDetails.shtml?skuId=${bdpd.skuId}');">
                     <img src="${bdpd.skuUrl}" alt=""/>
                     <div>
                         <h2>${bdpd.skuName}</h2>

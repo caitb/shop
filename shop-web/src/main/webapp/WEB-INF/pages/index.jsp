@@ -23,8 +23,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     <c:forEach items="${pbBanner}" var="url">
-                        <div class="swiper-slide" onclick="javascript:window.location.replace('<%=path%>
-                            ${url.hyperlinkUrl}');"><img src="${url.imgUrl}" alt=""></div>
+                        <div class="swiper-slide"><a href="<%=path%>${url.hyperlinkUrl}"><img src="${url.imgUrl}"></a></div>
                     </c:forEach>
                 </div>
                 <div class="swiper-pagination"></div>

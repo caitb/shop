@@ -87,7 +87,7 @@
                        </div>
             </section></c:if>
            <c:forEach items="${borderDetail.pfBorderItems}" var="bdpi">
-            <section class="sec2">
+            <section class="sec2" onclick="javascript:window.location.replace('<%=path%>/product/skuDetails.shtml?skuId=${bdpi.skuId}');">
                 <p class="photo">
                    <a href="javascript:;">
                         <img src="${bdpi.skuUrl}" alt="">

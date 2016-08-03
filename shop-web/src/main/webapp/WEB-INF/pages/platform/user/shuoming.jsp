@@ -1,23 +1,17 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/shuoming.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/shuoming.css">
 </head>
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="#" onClick="goBack()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                     <p>说明</p>            
         </header>
         <main>
@@ -56,5 +50,11 @@
             </p>
         </main>
     </div>
+    <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+    <script>
+        function goBack(){
+            window.location.href = "${basePath}account/home";
+        }
+    </script>
 </body>
 </html>

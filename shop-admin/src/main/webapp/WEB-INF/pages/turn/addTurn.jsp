@@ -379,6 +379,74 @@
 
         }
 
+        function checkOrder() {
+            var valid = true;
+
+            var sorts = {};
+            $('#turnForm [name=sort]').each(function() {
+                var sort = $(this).val();
+                if(sort) {
+                    if(isNaN(sort) ) {
+                        valid = false;
+                        alert('序号只能输入数字！');
+                        this.focus();
+                        return;
+                    }
+
+                    if(sorts[sort]) {
+                        valid = false;
+                        alert('序号不能重复！');
+                        $(this).focus();
+                        return;
+                    }
+
+                    sorts[sort] = true;
+                }
+            });
+
+            return valid;
+        }
+
+        function summation(selector) {
+            var sum = 0;
+            $(selector).each(function() {
+                var v =  $(this).val();
+                v = Number(v);
+                sum += v;
+            })
+            return sum;
+        }
+
+        function checkProbability() {
+
+            var valid = true;
+
+            $('#turnForm [name=probability]').each(function () {
+                var num = $(this).val();
+                if(isNaN(num)) {
+                    alert('概率只能输入数字');
+                    $(this).focus();
+                    valid = false;
+                    return;
+                }
+
+                if(num < 0) {
+                    alert('概率必须大于等于零');
+                    $(this).focus();
+                    valid = false;
+                    return;
+                }
+            });
+
+            var sum = summation('#turnForm [name=probability]');
+            if(sum>100) {
+                alert('总概率不能超过100，当前总概率：'+sum);
+                valid = false;
+            }
+
+            return valid;
+        }
+
         $('.turn-rule [name], .turn-rule [attr]').on('keyup change', checkRule);
 
         $('#beginTime,#endTime').on('keyup change', checkTime);
@@ -430,6 +498,14 @@
 
                     if (!checkRule()) {
                         alert('请填写完整 !');
+                        return;
+                    }
+
+                    if(!checkOrder()) {
+                        return;
+                    }
+
+                    if(!checkProbability()) {
                         return;
                     }
 

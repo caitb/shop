@@ -34,7 +34,7 @@
            </p>
            <p>
                <span>${countGroup.count}</span>
-               <span>ta的下级</span>
+               <span>ta的团队</span>
            </p>
        </nav>
         <main>

@@ -33,7 +33,7 @@
                <span>进货总额</span>
            </p>
            <p>
-               <span>${countGroup.r_count}</span>
+               <span>${countGroup.count}</span>
                <span>ta的下级</span>
            </p>
        </nav>

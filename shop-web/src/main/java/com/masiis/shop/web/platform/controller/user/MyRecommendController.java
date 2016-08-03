@@ -291,7 +291,7 @@ public class MyRecommendController extends BaseController{
             //进货信息
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId, skuId);
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
-            CountGroup countGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
+            CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
             modelAndView.addObject("skuName",skuName.getName());
             modelAndView.addObject("userName",user.getRealName());
             modelAndView.addObject("agentLevelName",agentLevel.getName());

@@ -41,14 +41,14 @@
         </div>
     </div>
     <main>
-            <div class="floor">
-                <c:forEach items="${skuInfoList}" var="sku">
+        <div class="floor">
+            <c:forEach items="${skuInfoList}" var="sku">
                 <div class="sec1">
                     <c:if test="${sku.isOwnShip==0}">
                         <h1><img src="<%=path%>/static/images/commodity.png" alt=""><b>平台发货</b></h1>
                     </c:if>
                     <c:if test="${sku.isOwnShip==1}">
-                        <h1><img src="<%=path%>/static/images/commodity.png" alt=""><b>自己发货</b></h1>
+                        <h1><img src="<%=path%>/static/images/commodity2.png" alt=""><b>自己发货</b></h1>
                     </c:if>
                     <div>
                         <p><img src="${sku.comSkuImageUrl}" alt=""></p>
@@ -58,35 +58,33 @@
                             <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>  库存: <span>${sku.stock}</span></p>
                         </div>
                     </div>
-                    <c:if test="${sku.isOwnShip==0}">
-                        <ul>
-                            <c:if test="${sku.isOwnShip==0 && not empty sku.flagSelf}">
-                                <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
+                    <ul>
+                        <c:if test="${sku.isOwnShip==0 && not empty sku.flagSelf}">
+                            <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
+                            </li>
+                        </c:if>
+                        <c:if test="${sku.isOwnShip==0 && empty sku.flagSelf}">
+                            <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
+                            </li>
+                            <c:if test="${ not empty sku.wxqrCode}">
+                                <li class="right myself" onclick="selfclick('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
                                 </li>
                             </c:if>
-                            <c:if test="${sku.isOwnShip==0 && empty sku.flagSelf}">
-                                <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
+                            <c:if test="${empty sku.wxqrCode}">
+                                <li class="right myself" onclick="applyWXCode();"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
                                 </li>
-                                <c:if test="${ not empty sku.wxqrCode}">
-                                    <li class="right myself" onclick="selfclick('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
-                                    </li>
-                                </c:if>
-                                <c:if test="${empty sku.wxqrCode}">
-                                    <li class="right myself" onclick="applyWXCode();"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
-                                    </li>
-                                </c:if>
                             </c:if>
-                        </ul>
-                    </c:if>
+                        </c:if>
+                    </ul>
                     <c:if test="${sku.isOwnShip==1}">
                         <ul>
                             <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b></li>
-                            <li class="right myself" onclick="showStock('${sku.stock}','${sku.skuId}')"><b><img src="<%=path%>/static/images/commodity5.png" alt="" style="width:18px;">库存设置</b></li>
+                            <li onclick="showStock('${sku.stock}','${sku.skuId}')"><b><img src="<%=path%>/static/images/commodity5.png" alt="" style="width:18px;">库存设置</b></li>
                         </ul>
                     </c:if>
                 </div>
-                </c:forEach>
-            </div>
+            </c:forEach>
+        </div>
     </main>
 </div>
 <div class="black down">
@@ -292,17 +290,17 @@
     }
 </script>
 <script>
-//上下架ajax
-var index =0;
-function onsale(value){
-    var shopxiajia = {};
-    shopxiajia.shopId = "${shopId}";
-    shopxiajia.isSale = 1;
-    shopxiajia.currentPage = 1;
-    shopxiajia.deliverType =value;
+    //上下架ajax
+    var index =0;
+    function onsale(value){
+        var shopxiajia = {};
+        shopxiajia.shopId = "${shopId}";
+        shopxiajia.isSale = 1;
+        shopxiajia.currentPage = 1;
+        shopxiajia.deliverType =value;
         $(".nav p span").eq(0).addClass("on").siblings().removeClass("on");
-    $(".goods b").html($("#goods option:eq(0)").text());
-    index=0;
+        $(".goods b").html($("#goods option:eq(0)").text());
+        index=0;
         $.ajax({//上架中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -337,11 +335,11 @@ function onsale(value){
                         }
                     }
                     if (sku.isOwnShip == 1) {
-                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity.png\" alt=\"\"><b>自己发货</b></h1>";
+                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>自己发货</b></h1>";
                         zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
                         zijiHtml += "</li>";
-                        zijiHtml += "<li  class=\"right myself\" onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
+                        zijiHtml += "<li onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity5.png\" alt=\"\" style=\"width:18px;\">库存设置</b>";
                         zijiHtml += "</li>";
                     }
@@ -366,16 +364,16 @@ function onsale(value){
                 fullHide();
             }
         });
-}
-function outSale(value){
-     var shopshangjia = {};
-     shopshangjia.shopId = "${shopId}";
-     shopshangjia.isSale = 0;
-     shopshangjia.currentPage = 1;
-     shopshangjia.deliverType =value;
+    }
+    function outSale(value){
+        var shopshangjia = {};
+        shopshangjia.shopId = "${shopId}";
+        shopshangjia.isSale = 0;
+        shopshangjia.currentPage = 1;
+        shopshangjia.deliverType =value;
         $(".nav p span").eq(1).addClass("on").siblings().removeClass("on");
-    $("#goods option").attr("selected",false);
-    $(".goods b").html($("#goods option:eq(0)").text());
+        $("#goods option").attr("selected",false);
+        $(".goods b").html($("#goods option:eq(0)").text());
         index=1;
         $.ajax({//仓库中
             url: '<%=basePath%>shop/deliverSale.do',
@@ -411,11 +409,11 @@ function outSale(value){
                         }
                     }
                     if (sku.isOwnShip == 1) {
-                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity.png\" alt=\"\"><b>自己发货</b></h1>";
+                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>自己发货</b></h1>";
                         zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                         zijiHtml += "</li>";
-                        zijiHtml += "<li class=\"right myself\" onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
+                        zijiHtml += "<li onclick=\"showStock("+sku.stock+","+sku.skuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity5.png\" alt=\"\" style=\"width:18px;\">库存设置</b>";
                         zijiHtml += "</li>";
                     }
@@ -440,24 +438,24 @@ function outSale(value){
                 fullHide();
             }
         });
-}
-
-//search
-$(".search").on("change", function () {
-    search();
-})
-function search() {
-    var deliverType = $("#goods option:selected").val();
-    if (index==0) { // 出售中
-        onsale(deliverType);
-    } else {
-        outSale(deliverType);
     }
-}
-$("#goods").on("change",function(){
-    var tabVal=$("#goods option:selected").text();
-    $(".goods b").html(tabVal);
-})
+
+    //search
+    $(".search").on("change", function () {
+        search();
+    })
+    function search() {
+        var deliverType = $("#goods option:selected").val();
+        if (index==0) { // 出售中
+            onsale(deliverType);
+        } else {
+            outSale(deliverType);
+        }
+    }
+    $("#goods").on("change",function(){
+        var tabVal=$("#goods option:selected").text();
+        $(".goods b").html(tabVal);
+    })
 </script>
 
 </body>

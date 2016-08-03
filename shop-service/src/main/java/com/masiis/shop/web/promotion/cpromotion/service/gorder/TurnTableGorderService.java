@@ -56,15 +56,27 @@ public class TurnTableGorderService {
      * @param giftId
      * @return
      */
-    public Map<String,Object> getTurnTableGiftInfo(Long userId, Long selectedAddressId,Integer turnTableId,Integer giftId){
+    public Map<String,Object> getTurnTableGiftInfo(Long userId, Long selectedAddressId,Integer turnTableId,Integer giftId,Integer turnTableRule){
         Map<String,Object> map = new HashMap<String,Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress( selectedAddressId, userId);
         TurnTableGiftInfo turnTableGiftInfo = sfTurnTableGiftService.getTurnTableGiftInfo(turnTableId,giftId);
+        if (turnTableGiftInfo!=null){
+            turnTableGiftInfo.setTurnTableRuleId(turnTableRule);
+        }
         map.put("address",comUserAddress);
         map.put("turnTableGiftInfo",turnTableGiftInfo);
         return map;
     }
 
+    /**
+     * 领取奖品
+     * @param comUser
+     * @param addressId
+     * @param turnTableId
+     * @param giftId
+     * @param turnTableRuleId
+     * @return
+     */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Integer receiveGift(ComUser comUser, Long addressId, Integer turnTableId, Integer giftId,Integer turnTableRuleId){
         log.info("receiveGift入口参数------userId---"+comUser.getId()+"-----address------"+addressId+"-----turnTableId-----"+turnTableId);
@@ -157,13 +169,19 @@ public class TurnTableGorderService {
      * @param gorderId
      */
     private void receiveGiftAfterOpertion(Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId,Long gorderId){
+        //增加用户领取奖励记录
+        userTurnTableRecordService.updateRecordStatusAndGorderId(userId,turnTableId,giftId, SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode(),gorderId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    public void receiveGiftUpdateTimesAndQuantity(ComUser comUser,Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId){
         //奖品奖励数量减少
         sfTurnTableGiftService.updateGiftedQuantity(turnTableId,giftId);
         //用户转盘增加已抽奖次数，减少未抽奖次数
-        sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
+        SfUserTurnTable userTurnTable = sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
         //增加用户转盘具体信息:减少次数
-        sfUserTurnTableItemService.insert(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,turnTableId,turnTableRuleId);
-        //增加用户领取奖励记录
-        userTurnTableRecordService.updateRecordStatusAndGorderId(userId,turnTableId,giftId, SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode(),gorderId);
+        sfUserTurnTableItemService.insert(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,turnTableId,turnTableRuleId,userTurnTable.getId());
+        //插入用户转盘记录表数据
+        userTurnTableRecordService.winGift(comUser,turnTableId,giftId);
     }
 }

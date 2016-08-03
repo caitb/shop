@@ -34,7 +34,7 @@ public class SfUserTurnTableService {
      * @param userId
      * @param turnTableId
      */
-    public void reduceTimesOrAddTimes(Integer type,Integer changeTimes,Long userId,Integer turnTableId){
+    public SfUserTurnTable reduceTimesOrAddTimes(Integer type,Integer changeTimes,Long userId,Integer turnTableId){
         //用户转盘增加已抽奖次数，减少未抽奖次数
         SfUserTurnTable sfUserTurnTable = getSfUserTurnTable(userId,turnTableId);
         if (sfUserTurnTable!=null){
@@ -47,6 +47,8 @@ public class SfUserTurnTableService {
             int i = updateSfUserTurnTable(sfUserTurnTable);
             if (i!=1){
                 throw new BusinessException("更新用户转盘次数失败");
+            }else{
+                return sfUserTurnTable;
             }
         }else{
             throw new BusinessException("更新用户转盘次数------查询失败");

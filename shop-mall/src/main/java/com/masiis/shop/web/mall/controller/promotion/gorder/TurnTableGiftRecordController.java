@@ -38,22 +38,6 @@ public class TurnTableGiftRecordController extends BaseController {
         return "promotion/gorder/turnTableGiftRecord";
     }
 
-    /**
-     * 用户抽中奖品
-     * @param request
-     * @param turnTableId
-     * @param giftId
-     * @return
-     */
-    @RequestMapping("/winGift.json")
-    @ResponseBody
-    public String winGift(HttpServletRequest request,
-                          @RequestParam(required = true) Integer turnTableId,
-                          @RequestParam(required = true) Integer giftId){
-        int  i = userTurnTableRecordService.winGift(getComUser(request),turnTableId,giftId);
-        return i+"";
-    }
-
     @RequestMapping("/getPage.html")
     public String getPage(HttpServletRequest request) {
         return "promotion/gorder/turnTableRecordDemo";

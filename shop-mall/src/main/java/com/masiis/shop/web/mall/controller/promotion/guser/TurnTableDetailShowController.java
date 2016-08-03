@@ -26,6 +26,12 @@ public class TurnTableDetailShowController extends BaseController {
     @Resource
     private TurnTableDetailShowService turnTableDetailShowService;
 
+    /**
+     * 获取转盘信息
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("/getTurnTableInfo.html")
     public String getTurnTableInfo(HttpServletRequest request, Model model) {
         List<TurnTablelInfo> turnTablelInfos =  turnTableDetailShowService.getTurnTableInfo(
@@ -35,8 +41,10 @@ public class TurnTableDetailShowController extends BaseController {
                 SfTurnTableStatusEnum.ING.getCode());
         model.addAttribute("turnTablelInfos",turnTablelInfos);
         model.addAttribute("turnTableId",turnTablelInfos.get(0).getTurnTableId());
+        model.addAttribute("turnTableRule",turnTablelInfos.get(0).getTurnTableRule());
         model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
         model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
+        model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
         return "promotion/guser/turnTableGiftShow";
     }
 

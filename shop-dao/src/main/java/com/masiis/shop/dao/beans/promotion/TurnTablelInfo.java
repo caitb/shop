@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.beans.promotion;
 
 import com.masiis.shop.dao.po.SfTurnTable;
+import com.masiis.shop.dao.po.SfTurnTableRule;
 import com.masiis.shop.dao.po.SfUserTurnTable;
 import com.masiis.shop.dao.po.SfUserTurnTableRecord;
 
@@ -18,6 +19,7 @@ public class TurnTablelInfo extends SfTurnTable{
     private Map<Integer,Integer> giftIdMap;//<序号,id>
     private Map<Integer,String> giftNameMap;//<序号,name>
     private SfUserTurnTable userTurnTable;
+    private SfTurnTableRule turnTableRule;
     private String beginTimeString;
     private String endTimeString;
 
@@ -83,5 +85,13 @@ public class TurnTablelInfo extends SfTurnTable{
 
     public void setGiftNameMap(Map<Integer, String> giftNameMap) {
         this.giftNameMap = giftNameMap;
+    }
+
+    public SfTurnTableRule getTurnTableRule() {
+        return turnTableRule;
+    }
+
+    public void setTurnTableRule(SfTurnTableRule turnTableRule) {
+        this.turnTableRule = turnTableRule;
     }
 }

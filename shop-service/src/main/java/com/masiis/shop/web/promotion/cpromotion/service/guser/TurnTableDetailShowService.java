@@ -8,12 +8,10 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.promotion.TurnTableGiftInfo;
 import com.masiis.shop.dao.beans.promotion.TurnTablelInfo;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.SfTurnTable;
-import com.masiis.shop.dao.po.SfUserTurnTable;
-import com.masiis.shop.dao.po.SfUserTurnTableRecord;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.utils.RandomRateUtil;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableGiftService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableService;
 import org.springframework.mail.MailParseException;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,8 @@ public class TurnTableDetailShowService {
     private Log log = LogFactory.getLog(this.getClass());
 
     @Resource
+    private SfTurnTableRuleService turnTableRuleService;
+    @Resource
     private SfTurnTableService turnTableService;
     @Resource
     private SfTurnTableGiftService turnTableGiftService;
@@ -41,12 +41,26 @@ public class TurnTableDetailShowService {
     @Resource
     private SfUserTurnTableRecordService userTurnTableRecordService;
 
+    /**
+     * 获取转盘信息
+     * @param comUser
+     * @param turnTableType
+     * @param turnTableRuleStatus
+     * @param turnTableStatus
+     * @return
+     */
     public List<TurnTablelInfo> getTurnTableInfo(ComUser comUser,Integer turnTableType,Integer turnTableRuleStatus,Integer turnTableStatus){
         //查询所有进行中的转盘
         List<SfTurnTable> turnTables = turnTableService.getTurnTableByRuleTypeAndRuleStatusAndTableStatus(turnTableType,turnTableRuleStatus,turnTableStatus);
         List<TurnTablelInfo> turnTablelInfos = new ArrayList<>();
         for (SfTurnTable turnTable:turnTables){
             TurnTablelInfo turnTablelInfo = new TurnTablelInfo();
+            //转盘规则
+            SfTurnTableRule turnTableRule = turnTableRuleService.getRuleByTurnTableIdAndType(turnTable.getId(),turnTableType);
+            if (turnTableRule==null){
+                throw new BusinessException("-----获取转盘规则失败------");
+            }
+            turnTablelInfo.setTurnTableRule(turnTableRule);
             //转盘信息
             List<TurnTableGiftInfo> turnTableGiftInfos =  turnTableGiftService.getTurnTableGiftsByTableId(turnTable.getId());
             Map<Integer,Integer> giftIdMap = new LinkedHashMap<>();

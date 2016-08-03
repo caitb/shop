@@ -7,6 +7,7 @@ import com.masiis.shop.dao.po.SfTurnTableGift;
  */
 public class TurnTableGiftInfo extends SfTurnTableGift {
 
+    private Integer turnTableRuleId;  //转盘规则id
     private String  giftName;//奖品姓名
     private String imgUrl; //奖品图片url
 
@@ -24,5 +25,13 @@ public class TurnTableGiftInfo extends SfTurnTableGift {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Integer getTurnTableRuleId() {
+        return turnTableRuleId;
+    }
+
+    public void setTurnTableRuleId(Integer turnTableRuleId) {
+        this.turnTableRuleId = turnTableRuleId;
     }
 }

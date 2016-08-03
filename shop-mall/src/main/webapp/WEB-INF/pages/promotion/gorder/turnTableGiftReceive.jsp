@@ -70,7 +70,7 @@
     })
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=turnTableReceiveGift&selectedAddressId=" + selectedAddressId +"&turnTableId=${turnTableGiftInfo.turnTableId}&giftId=${turnTableGiftInfo.giftId}&turnTableRuleId=${turnTableGiftInfo.id}";
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=turnTableReceiveGift&selectedAddressId=" + selectedAddressId +"&turnTableId=${turnTableGiftInfo.turnTableId}&giftId=${turnTableGiftInfo.giftId}&turnTableRuleId=${turnTableGiftInfo.turnTableRuleId}";
     }
     function receiveReward(){
         var addressId = $("#addressId").val();

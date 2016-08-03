@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.promotion;
 
 import com.masiis.shop.dao.po.SfTurnTableRule;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,8 @@ public interface SfTurnTableRuleMapper {
     int insert(SfTurnTableRule record);
 
     SfTurnTableRule selectByPrimaryKey(Integer id);
+
+    SfTurnTableRule getRuleByTurnTableIdAndType(@Param("turnTableId")Integer turnTableId, @Param("type")Integer type);
 
     List<SfTurnTableRule> selectAll();
 

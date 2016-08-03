@@ -50,11 +50,11 @@
                 </div>
                 <div class="floor2">
                     <div class="f-one">
-                        <p>您今天还有<span>3</span>次机会</p>
+                        <p>您今天还有<span id="receiveGiftTimesId">${userTurnTable.notUsedTimes}</span>次机会</p>
                         <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.html');">我的中奖记录</button>
                     </div>
                     <div class="list">
-                       <%-- <img src="<%=path%>/static/images/zbg.png" alt="" />--%>
+                       <img src="<%=path%>/static/images/zbg.png" alt="" />
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
                                 <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
@@ -121,7 +121,7 @@ $(function(){
     //旋转角度
     var angles;
     //可抽奖次数
-    var clickNum = 3;
+    var clickNum = ${userTurnTable.notUsedTimes};
     //旋转次数
     var rotNum = 0;
     //中奖公告
@@ -152,8 +152,10 @@ $(function(){
             //“开始抽奖”按钮无法点击恢复点击
             setTimeout(function(){
                 $(".black").show();
+                $("#receiveGiftTimesId").html(clickNum);
                 $('#tupBtn').removeAttr("disabled", true);
             },6000);
+            updateTimesAndQuantity();
         }
         else{
             alert("亲，抽奖次数已用光！");
@@ -236,18 +238,6 @@ $(function(){
             notice =$("#giftName_7").val();
             giftId = $("#giftId_7").val();
         }
-        var cartData = {};
-        cartData.turnTableId = "${turnTableId}";
-        cartData.giftId = giftId;
-        $.ajax({
-            type: "POST",
-            url: "/turnTableGiftRecord/winGift.json",
-            async:false,
-            data: cartData,
-            dataType: "Json",
-            success: function (result) {
-            }
-        })
         $("#receiveGiftNameId").html("获得"+notice);
         $("#giftId").val(giftId);
     }
@@ -255,9 +245,6 @@ $(function(){
     //绘制转盘
     function canvasRun(){
         var canvas=document.getElementById('xttblog');
-        var canvas01=document.getElementById('xttblog01');
-        var canvas03=document.getElementById('xttblog03');
-        var canvas02=document.getElementById('xttblog02');
         var ctx=canvas.getContext('2d');
         createCircle();
 		setTimeout(function(){
@@ -309,10 +296,26 @@ $(function(){
             $(".black").hide();
         })
     }
+    function updateTimesAndQuantity(){
+        var paramData = {};
+        paramData.turnTableId = "${turnTableId}";
+        paramData.giftId = $("#giftId").val();
+        paramData.turnTableRuleId =  "${turnTableRule.id}";
+        $.ajax({
+            type: "POST",
+            url: "/turnTableGorder/receiveGiftUpdateTimesAndQuantity.json",
+            async:false,
+            data: paramData,
+            dataType: "Json",
+            success: function (result) {
+
+            }
+        })
+    }
 });
 function skipToReceiveGiftPage(){
     var giftId = $("#giftId").val();
-    window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId=${turnTableId}&giftId="+giftId;
+    window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId=${turnTableId}&giftId="+giftId+"&turnTableRuleId=${turnTableRule.id}";
 }
 </script>
 </body>

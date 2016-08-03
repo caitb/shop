@@ -18,6 +18,7 @@ public class TurnTablelInfo extends SfTurnTable{
     private List<SfUserTurnTableRecord> userTurnTableRecords;
     private Map<Integer,Integer> giftIdMap;//<序号,id>
     private Map<Integer,String> giftNameMap;//<序号,name>
+    private Map<Integer,String> giftImgMap;//<序号,path>
     private SfUserTurnTable userTurnTable;
     private SfTurnTableRule turnTableRule;
     private String beginTimeString;
@@ -93,5 +94,13 @@ public class TurnTablelInfo extends SfTurnTable{
 
     public void setTurnTableRule(SfTurnTableRule turnTableRule) {
         this.turnTableRule = turnTableRule;
+    }
+
+    public Map<Integer, String> getGiftImgMap() {
+        return giftImgMap;
+    }
+
+    public void setGiftImgMap(Map<Integer, String> giftImgMap) {
+        this.giftImgMap = giftImgMap;
     }
 }

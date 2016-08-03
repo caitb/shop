@@ -33,7 +33,7 @@
                         </c:if>
                         <c:if test="${record.status==0}">
                             <i>未领取</i>
-                            <button>立即领取</button>
+                            <button onclick="skipToReceiveGiftPage(${record.turnTableId},${record.giftId},${record.id})">立即领取</button>
                         </c:if>
                     </p>
                 </section>
@@ -41,4 +41,9 @@
         </main>
     </div>
 </body>
+<script>
+    function skipToReceiveGiftPage(turnTableId,giftId,userTurnTableRecordId){
+        window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId="+turnTableId+"&giftId="+giftId+"&userTurnTableRecordId="+userTurnTableRecordId;
+    }
+</script>
 </html>

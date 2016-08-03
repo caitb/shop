@@ -20,14 +20,9 @@
 <body>
     <c:forEach items="${turnTablelInfos}" var="turnTablelInfo" >
         <div style="display: none;">
-            <img src="<%=path%>/static/images/a (1).png" alt="" />
-            <img src="<%=path%>/static/images/a (2).png" alt="" />
-            <img src="<%=path%>/static/images/a (3).png" alt="" />
-            <img src="<%=path%>/static/images/a (4).png" alt="" />
-            <img src="<%=path%>/static/images/a (5).png" alt="" />
-            <img src="<%=path%>/static/images/a (6).png" alt="" />
-            <img src="<%=path%>/static/images/a (7).png" alt="" />
-            <img src="<%=path%>/static/images/a (8).png" alt="" />
+            <c:forEach var="entry" items="${giftImgMap}">
+                <img id="giftImg_${entry.key}" src="${entry.value}"/>
+            </c:forEach>
         </div>
         <div class="wrap">
             <header class="xq_header">
@@ -111,6 +106,7 @@
     <c:forEach var="entry" items="${giftIdMap}">
         <input id="giftId_${entry.key}" type="hidden" value="${entry.value}"/>
     </c:forEach>
+
     <script src="/static/js/plugins/msclass.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
@@ -129,16 +125,6 @@ $(function(){
     var notice = "";
     //转盘初始化
     var color = ["#ffd821","#ffd821","rgba(0,0,0,0)","#333333","rgba(0,0,0,0)","rgba(0,0,0,0)"];
-    var info = [
-        "<%=path%>/static/images/a (1).png",
-        "<%=path%>/static/images/a (2).png",
-        "<%=path%>/static/images/a (3).png",
-        "<%=path%>/static/images/a (4).png",
-        "<%=path%>/static/images/a (5).png",
-        "<%=path%>/static/images/a (6).png",
-        "<%=path%>/static/images/a (7).png",
-        "<%=path%>/static/images/a (8).png"
-    ];
     canvasRun();
     $('#tupBtn').on('click',function(){
         if (clickNum >= 1) {
@@ -280,14 +266,14 @@ $(function(){
             var step = 2*Math.PI/8;
             var img=new Image();
             for ( var i = 0; i < 8; i++) {
-            	img.src=info[i];
+            	img.src=$("#giftImg_"+i).attr("src");
                 ctx.save();
                 ctx.beginPath();
                 ctx.translate(140,140);
                 ctx.rotate(i*step);
                 ctx.font = " 20px Microsoft YaHei";
                 ctx.fillStyle = color[3];
-				ctx.drawImage(img,0,0,90,90,-20,-125,60,60);
+				ctx.drawImage(img,0,0,60,60,-20,-125,60,60);
                 ctx.font = " 14px Microsoft YaHei";
                 ctx.closePath();
                 ctx.restore();

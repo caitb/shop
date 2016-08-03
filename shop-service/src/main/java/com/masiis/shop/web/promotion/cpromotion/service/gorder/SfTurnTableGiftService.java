@@ -3,6 +3,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.gorder;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.beans.promotion.TurnTableGiftInfo;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableGiftMapper;
 import com.masiis.shop.dao.po.ComGift;
@@ -61,7 +62,7 @@ public class SfTurnTableGiftService {
                 turnTableGiftInfo.setGiftName(comGift.getName());
                 turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
                 turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
-                turnTableGiftInfo.setImgUrl(comGift.getImgUrl());
+                turnTableGiftInfo.setImgUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
                 turnTableGiftInfo.setSort(turnTableGift.getSort());
                 turnTableGiftInfo.setProbability(turnTableGift.getProbability());
             }

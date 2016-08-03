@@ -18,7 +18,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-                  <a href="<%=path%>/showPromotion/getAllPromoDetail.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="<%=path%>/turnTableDetailShow/getTurnTableInfo.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>领取奖励</p>            
         </header>
         <main>
@@ -86,7 +86,7 @@
                 data: {selectedAddressId: addressId, turnTableId: ${turnTableGiftInfo.turnTableId},giftId: ${turnTableGiftInfo.giftId},userTurnTableRecordId: ${turnTableGiftInfo.userTurnTableRecordId}},
                 dataType: "Json",
                 success: function (result) {
-                    alert(result);
+                    window.location.href = "<%=basePath%>turnTableGorder/skipToReceiveSuccessPage.html";
                 }
             })
         }

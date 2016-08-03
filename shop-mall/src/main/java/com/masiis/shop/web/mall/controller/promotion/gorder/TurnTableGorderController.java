@@ -54,8 +54,6 @@ public class TurnTableGorderController extends BaseController {
         return i+"";
     }
 
-
-
     @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
     @ResponseBody
     public String receiveGiftUpdateTimesAndQuantity(
@@ -69,5 +67,10 @@ public class TurnTableGorderController extends BaseController {
         }else {
             return "";
         }
+    }
+
+    @RequestMapping("/skipToReceiveSuccessPage.html")
+    public String skipToReceiveSuccessPage(){
+        return "promotion/gorder/turnTableGiftReceiveSuccess";
     }
 }

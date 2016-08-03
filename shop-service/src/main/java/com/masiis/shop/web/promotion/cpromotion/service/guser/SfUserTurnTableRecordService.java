@@ -96,6 +96,9 @@ public class SfUserTurnTableRecordService {
         for (SfUserTurnTableRecord record:records){
             UserTurnTableRecordInfo recordInfo = new UserTurnTableRecordInfo();
             recordInfo.setStatus(record.getStatus());
+            recordInfo.setTurnTableId(record.getTurnTableId());
+            recordInfo.setGiftId(record.getGiftId());
+            recordInfo.setId(record.getId());
             recordInfo.setCreateTimeString(DateUtil.Date2String(record.getCreateTime(),DateUtil.CHINESE_YEAR_MONTH_DATE_FMT));
             if (record.getStatus()==SfUserTurnTableRecordStatusEnum.GIFT_NOT_RECEIVE.getCode()){
                 recordInfo.setStatusName("未领取");

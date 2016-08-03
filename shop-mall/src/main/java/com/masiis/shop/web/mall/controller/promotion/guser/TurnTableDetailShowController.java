@@ -44,6 +44,7 @@ public class TurnTableDetailShowController extends BaseController {
         model.addAttribute("turnTableRule",turnTablelInfos.get(0).getTurnTableRule());
         model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
         model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
+        model.addAttribute("giftImgMap",turnTablelInfos.get(0).getGiftImgMap());
         model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
         return "promotion/guser/turnTableGiftShow";
     }

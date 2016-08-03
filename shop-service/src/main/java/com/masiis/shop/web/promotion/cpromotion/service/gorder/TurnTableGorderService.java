@@ -82,10 +82,10 @@ public class TurnTableGorderService {
         log.info("giftId------"+giftId+"---------userTurnTableRecordId------------"+userTurnTableRecordId);
         //判断是否满足条件领取
         log.info("判断奖品还有没有--------start");
-        Integer i = isMayReceiveGift(comUser,turnTableId,giftId);
+/*        Integer i = isMayReceiveGift(comUser,turnTableId,giftId);
         if (i<3&&i!=0){
             return i;
-        }
+        }*/
         log.info("判断奖品还有没有--------end");
         //领取
         log.info("判断领取次数还有没有--------start");

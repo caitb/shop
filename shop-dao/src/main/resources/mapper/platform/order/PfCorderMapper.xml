@@ -413,13 +413,10 @@
         ,co.create_time       createTime
         ,co.order_amount      orderAmount
         ,co.product_amount    productAmount
-        ,co.bail_amount       bailAmount
         ,co.receivable_amount receivableAmount
         ,co.pay_amount        payAmount
-        ,co.recommen_amount   recommenAmount
         ,co.order_status      orderStatus
         ,co.order_type        orderType
-        ,co.send_type         sendType
         ,co.pay_status        payStatus
         ,co.ship_status       shipStatus
         ,pu.real_name         puRealName
@@ -431,12 +428,7 @@
         LEFT JOIN com_user u ON u.id = co.user_id
         LEFT JOIN pf_border_payment bp ON bp.pf_border_id = co.id AND bp.is_enabled = 1
         WHERE
-        co.order_status = 7
-        <![CDATA[
-                AND EXISTS(SELECT 0 FROM pf_corder a
-                INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND a.sku_id=c.sku_id
-                WHERE a.order_status=7 AND 1 <= c.stock AND co.id=a.id)
-                ]]>
+        co.order_status = 1
         <if test="orderCode != null">
             AND co.order_code = #{orderCode}
         </if>

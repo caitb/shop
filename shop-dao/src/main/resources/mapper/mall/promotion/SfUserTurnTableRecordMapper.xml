@@ -19,7 +19,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_turn_table_record (id, create_time, create_man, 
             user_id, turn_table_id, gift_id, 
             gorder_id, status, update_time, 
@@ -60,7 +60,7 @@
         select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
         update_time, remark
         from sf_user_turn_table_record
-        WHERE user_id = #{id,jdbcType=BIGINT}
+        WHERE user_id = #{userId,jdbcType=BIGINT}
         AND turn_table_id = #{turnTableId,jdbcType=INTEGER}
         AND gift_id = #{giftId,jdbcType=INTEGER}
     </select>
@@ -77,6 +77,7 @@
         update_time, remark
         from sf_user_turn_table_record
         WHERE user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY create_time DESC
     </select>
 
 </mapper>

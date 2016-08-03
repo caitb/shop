@@ -27,6 +27,9 @@ public class SfUserTurnTableRecordService {
     @Resource
     private ComGiftService comGiftService;
 
+    public SfUserTurnTableRecord selectByPrimaryKey(Long id){
+        return  userTurnTableRecordMapper.selectByPrimaryKey(id);
+    }
 
     public List<SfUserTurnTableRecord> getRecordByTableId(Integer turnTableId){
         return userTurnTableRecordMapper.getRecordByTableId(turnTableId);
@@ -43,7 +46,7 @@ public class SfUserTurnTableRecordService {
      * @param giftId
      * @return
      */
-    public int winGift(ComUser comUser,Integer turnTableId,Integer giftId){
+    public Long winGift(ComUser comUser,Integer turnTableId,Integer giftId){
         SfUserTurnTableRecord record = new SfUserTurnTableRecord();
         record.setUserId(comUser.getId());
         record.setTurnTableId(turnTableId);
@@ -52,19 +55,20 @@ public class SfUserTurnTableRecordService {
         record.setCreateTime(new Date());
         record.setCreateMan(comUser.getId());
         record.setRemark("用户大转盘抽中奖品未领取");
-        return userTurnTableRecordMapper.insert(record);
+        int i = userTurnTableRecordMapper.insert(record);
+        if (i!=1){
+            throw new BusinessException("用户大转盘抽中奖品未领取--插入失败");
+        }
+        return record.getId();
     }
 
     /**
      * 更新大转盘中奖纪录状态和订单id
-     * @param userId
-     * @param turnTableId
-     * @param giftId
      * @param status
      * @return
      */
-    public void updateRecordStatusAndGorderId(Long userId,Integer turnTableId,Integer giftId ,int status,Long gorderId){
-        SfUserTurnTableRecord userTurnTableRecord = getRecordByUserIdAndTurnTableIdAndGiftId(userId,turnTableId,giftId);
+    public void updateRecordStatusAndGorderId(Long userTurnTableRecordId,int status,Long gorderId){
+        SfUserTurnTableRecord userTurnTableRecord = selectByPrimaryKey(userTurnTableRecordId);
         if (userTurnTableRecord!=null){
             userTurnTableRecord.setStatus(status);
             if (gorderId!=null){

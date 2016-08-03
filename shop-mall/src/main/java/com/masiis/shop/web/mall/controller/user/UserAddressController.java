@@ -134,7 +134,7 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_TURN_TABLE_Id);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID);
-        request.getSession().removeAttribute(SysConstants.SESSION_MALL_TURN_TABLE_RULE_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID);
         return redirectHead+redirectBody;
     }
 
@@ -211,7 +211,7 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "promoRuleId", required = false) Integer promoRuleId,
                                       @RequestParam(value = "turnTableId", required = false) Integer turnTableId,
                                       @RequestParam(value = "giftId", required = false) Integer giftId,
-                                      @RequestParam(value = "turnTableRuleId", required = false) Integer turnTableRuleId,
+                                      @RequestParam(value = "userTurnTableRecordId", required = false) Long userTurnTableRecordId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
@@ -223,7 +223,7 @@ public class UserAddressController extends BaseController {
         request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID, promoRuleId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_TURN_TABLE_Id, turnTableId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID, giftId);
-        request.getSession().setAttribute(SysConstants.SESSION_MALL_TURN_TABLE_RULE_ID, turnTableRuleId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID, userTurnTableRecordId);
         model.addAttribute("addressId", selectedAddressId);
         return "mall/user/xuanze";
     }

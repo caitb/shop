@@ -135,7 +135,7 @@ public class UserAddressService {
             Integer  promoRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
             Integer  turnTableId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_Id);
             Integer  giftId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID);
-            Integer  turnTableRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_RULE_ID);
+            Long  userTurnTableRecordId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
@@ -151,7 +151,7 @@ public class UserAddressService {
                         promoRuleId,
                         turnTableId,
                         giftId,
-                        turnTableRuleId);
+                        userTurnTableRecordId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
@@ -179,7 +179,7 @@ public class UserAddressService {
                                    Integer promoRuleId,
                                    Integer turnTableId,
                                    Integer giftId,
-                                   Integer turnTableRuleId) {
+                                   Long userTurnTableRecordId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -207,7 +207,7 @@ public class UserAddressService {
                 getReceiveRewardPageAddress(sb,promoId,promoRuleId ,selectedAddressId);
                 break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_RECEIVE_GIFT://抽奖领取界面
-                getTurnTableReceiveGiftPageAddress(sb,turnTableId,giftId,turnTableRuleId,selectedAddressId);
+                getTurnTableReceiveGiftPageAddress(sb,turnTableId,giftId,userTurnTableRecordId,selectedAddressId);
                 break;
             default:
                 break;
@@ -379,10 +379,10 @@ public class UserAddressService {
      * @param sb
      * @param turnTableId
      * @param giftId
-     * @param turnTableRuleId
+     * @param userTurnTableRecordId
      * @param selectedAddressId
      */
-    private void getTurnTableReceiveGiftPageAddress(StringBuffer sb,Integer turnTableId,Integer giftId, Integer turnTableRuleId,Long selectedAddressId) {
+    private void getTurnTableReceiveGiftPageAddress(StringBuffer sb,Integer turnTableId,Integer giftId, Long userTurnTableRecordId,Long selectedAddressId) {
         sb.append("/turnTableGorder/getTurnTableGiftInfo.html?");
         if (!StringUtils.isEmpty(turnTableId)) {
             sb.append("turnTableId=").append(turnTableId);
@@ -390,8 +390,8 @@ public class UserAddressService {
         if (!StringUtils.isEmpty(giftId)) {
             sb.append("&giftId=").append(giftId);
         }
-        if (!StringUtils.isEmpty(turnTableRuleId)) {
-            sb.append("&turnTableRuleId=").append(turnTableRuleId);
+        if (!StringUtils.isEmpty(userTurnTableRecordId)) {
+            sb.append("&userTurnTableRecordId=").append(userTurnTableRecordId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);

@@ -10,6 +10,7 @@ public class TurnTableGiftInfo extends SfTurnTableGift {
     private Integer turnTableRuleId;  //转盘规则id
     private String  giftName;//奖品姓名
     private String imgUrl; //奖品图片url
+    private Long userTurnTableRecordId;//这个奖品的中奖纪录
 
     public String getGiftName() {
         return giftName;
@@ -33,5 +34,13 @@ public class TurnTableGiftInfo extends SfTurnTableGift {
 
     public void setTurnTableRuleId(Integer turnTableRuleId) {
         this.turnTableRuleId = turnTableRuleId;
+    }
+
+    public Long getUserTurnTableRecordId() {
+        return userTurnTableRecordId;
+    }
+
+    public void setUserTurnTableRecordId(Long userTurnTableRecordId) {
+        this.userTurnTableRecordId = userTurnTableRecordId;
     }
 }

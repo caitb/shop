@@ -26,10 +26,10 @@ public class TurnTableGorderController extends BaseController {
     public String getTurnTableGiftInfo(@RequestParam(required = false) Long selectedAddressId,
                                        @RequestParam(required = true) Integer turnTableId,
                                        @RequestParam(required = true) Integer giftId,
-                                       @RequestParam(required = true) Integer turnTableRuleId,
+                                       @RequestParam(required = true) Long userTurnTableRecordId,
                                        HttpServletRequest request,
                                        Model model) {
-        Map<String,Object> map =  turnTableGorderService.getTurnTableGiftInfo(getComUser(request).getId(),selectedAddressId,turnTableId,giftId,turnTableRuleId);
+        Map<String,Object> map =  turnTableGorderService.getTurnTableGiftInfo(getComUser(request).getId(),selectedAddressId,turnTableId,giftId,userTurnTableRecordId);
         model.addAttribute("comUserAddress",map.get("address"));
         model.addAttribute("turnTableGiftInfo",map.get("turnTableGiftInfo"));
         return "promotion/gorder/turnTableGiftReceive";
@@ -40,7 +40,6 @@ public class TurnTableGorderController extends BaseController {
      * @param selectedAddressId
      * @param turnTableId
      * @param giftId
-     * @param turnTableRuleId
      * @param request
      * @return
      */
@@ -49,9 +48,9 @@ public class TurnTableGorderController extends BaseController {
     public String receiveGift(@RequestParam(required = false) Long selectedAddressId,
                                        @RequestParam(required = true) Integer turnTableId,
                                        @RequestParam(required = true) Integer giftId,
-                                       @RequestParam(required = true) Integer turnTableRuleId,
+                                        @RequestParam(required = true) Long userTurnTableRecordId,
                                        HttpServletRequest request) {
-       Integer i =  turnTableGorderService.receiveGift(getComUser(request),selectedAddressId,turnTableId,giftId,turnTableRuleId);
+       Integer i =  turnTableGorderService.receiveGift(getComUser(request),selectedAddressId,turnTableId,giftId,userTurnTableRecordId);
         return i+"";
     }
 
@@ -59,11 +58,16 @@ public class TurnTableGorderController extends BaseController {
 
     @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
     @ResponseBody
-    public void receiveGiftUpdateTimesAndQuantity(
+    public String receiveGiftUpdateTimesAndQuantity(
                             HttpServletRequest request,
                             @RequestParam(required = true) Integer turnTableId,
                             @RequestParam(required = false) Integer turnTableRuleId,
                             @RequestParam(required = true) Integer giftId){
-        turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,getComUser(request).getId(),turnTableId,turnTableRuleId,giftId);
+      Long userTurnTableRecordId = turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,getComUser(request).getId(),turnTableId,turnTableRuleId,giftId);
+        if (userTurnTableRecordId!=null){
+            return userTurnTableRecordId+"";
+        }else {
+            return "";
+        }
     }
 }

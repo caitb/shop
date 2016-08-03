@@ -97,6 +97,7 @@
                     <p>恭喜你</p>
                     <h1 id="receiveGiftNameId"></h1>
                     <input id="giftId" type="hidden" value=""/>
+                    <input id="userTurnTableRecordId" type="hidden" value=""/>
                     <button onclick="skipToReceiveGiftPage()">
                         立即领取
                     </button>
@@ -308,14 +309,17 @@ $(function(){
             data: paramData,
             dataType: "Json",
             success: function (result) {
-
+                if (result!=""){
+                    $("#userTurnTableRecordId").val(result);
+                }
             }
         })
     }
 });
 function skipToReceiveGiftPage(){
     var giftId = $("#giftId").val();
-    window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId=${turnTableId}&giftId="+giftId+"&turnTableRuleId=${turnTableRule.id}";
+    var userTurnTableRecordId = $("#userTurnTableRecordId").val();
+    window.location.href="<%=path%>/turnTableGorder/getTurnTableGiftInfo.html?turnTableId=${turnTableId}&giftId="+giftId+"&userTurnTableRecordId="+userTurnTableRecordId;
 }
 </script>
 </body>

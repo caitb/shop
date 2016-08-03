@@ -189,6 +189,8 @@
                                                     <form id="deliveryForm">
                                                     <div class="profile-user-info profile-user-info-striped">
 
+                                                        <input type="hidden" name="pfBorderId" >
+
                                                         <div class="profile-info-row">
                                                             <div class="profile-info-name"> 快递名称 </div>
 
@@ -605,7 +607,7 @@
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
-                                $('#bOrderId').val(row.id);
+                                $('[name=pfBorderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');
                             }
@@ -826,6 +828,8 @@
             data: $('#deliveryForm').serialize(),
             success: function(msg){
                 if(msg == 'success'){
+                    alert('成功！');
+                    $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{
                     $.gritter.add({

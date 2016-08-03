@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -182,6 +182,8 @@
                                                     <!-- #section:pages/profile.info -->
                                                     <form id="deliveryForm">
                                                         <div class="profile-user-info profile-user-info-striped">
+
+                                                            <input type="hidden" name="pfCorderId">
 
                                                             <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 快递名称 </div>
@@ -510,13 +512,13 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1 && row.orderType != 1){
+                            if(row.shipStatus == 0  && row.orderType != 1){
                                 return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
-                                $('#bOrderId').val(row.id);
+                                $('[name=pfCorderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');
                             }
@@ -719,6 +721,8 @@
             data: $('#deliveryForm').serialize(),
             success: function(msg){
                 if(msg == 'success'){
+                    alert('发货成功！');
+                    $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{
                     $.gritter.add({

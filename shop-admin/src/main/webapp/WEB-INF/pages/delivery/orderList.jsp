@@ -169,11 +169,12 @@
                                                     <form id="deliveryForm">
                                                         <div class="profile-user-info profile-user-info-striped">
 
+                                                            <input type="hidden" name="sfOrderId" >
+
                                                             <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 快递名称 </div>
 
                                                                 <div class="profile-info-value">
-                                                                    <input type="hidden" name="id" id="bOrderId" value="" />
                                                                     <input type="hidden" id="shipManName" name="shipManName" value="" />
                                                                     <select class="form-control" id="shipName" name="shipManId">
                                                                         <c:forEach items="${comShipManList}" var="shipMan">
@@ -538,7 +539,7 @@
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
-                                $('#bOrderId').val(row.id);
+                                $('[name=sfOrderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');
                             }
@@ -739,8 +740,11 @@
             url: '<%=basePath%>order/order/delivery.do',
             type: 'POST',
             data: $('#deliveryForm').serialize(),
-            success: function(msg){
-                if(msg == 'success'){
+            dataType:'json',
+            success: function(data){
+                if(data.result_key == 0){
+                    alert('发货成功！');
+                    $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{
                     $.gritter.add({

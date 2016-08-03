@@ -73,6 +73,9 @@ public class SfUserRelationService {
      * @return          Integer
      */
     public Integer getFansNumByUserId(Long userId, Long shopId){
+        logger.info("通过userId获取粉丝总数量");
+        logger.info("userId================"+userId);
+        logger.info("shopId================"+shopId);
         Map<String, Number> map = sfUserRelationMapper.selectFansOrSpokesManNum(userId, shopId, null);
         Integer num = 0;
         if (map != null){
@@ -248,6 +251,20 @@ public class SfUserRelationService {
         return sfUserRelationMapper.selectFansPageView(userId, fansLevel, shopId, sopkenMan);
     }
 
+    /**
+     * 店铺总粉丝量或代言人量
+     * @param shopId    shop
+     * @param isSpoken  true:代言人  false：粉丝
+     * @return
+     */
+    public Integer selectAllSpokesOrFansCountByShopId(Long shopId, boolean isSpoken){
+        logger.info("shopId = " + shopId);
+        if (isSpoken){
+            return sfUserRelationMapper.selectAllSpokesOrFansCountByShopId(shopId,1);
+        }else {
+            return sfUserRelationMapper.selectAllSpokesOrFansCountByShopId(shopId, null);
+        }
+    }
     /**
      * 查询店铺所有代言人信息
      * @param isPaging      是否分页  true 分页，false 不分页

@@ -64,6 +64,8 @@ public interface SfUserRelationMapper {
                                             @Param("spokesMan") Integer spokesMan,
                                             @Param("userId") Long userId);
 
+    Integer selectAllSpokesOrFansCountByShopId(@Param("shopId") Long shopId,
+                                               @Param("spokesMan") Integer spokesMan);
     /**
      * 通过treecode获取粉丝数量
      * 该方法查询的是所有的粉丝包括自己

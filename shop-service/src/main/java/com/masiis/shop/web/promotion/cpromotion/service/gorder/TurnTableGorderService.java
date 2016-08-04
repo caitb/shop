@@ -48,6 +48,11 @@ public class TurnTableGorderService {
     @Resource
     private SfUserTurnTableRecordService userTurnTableRecordService;
 
+
+    private static final Integer RECEIVE_GIFT_QUANTITY_NO_ENOUGH = 1;//奖品数量不足
+    private static final Integer RECEIVE_GIFT_RECORD_NO_EXIST = 2; //奖品记录不存在
+    private static final Integer USER_RECEIVE_GIFT_TIMES_NO_ENOUGH = 3;//个人抽奖次数不足
+
     /**
      * 获取抽中的奖品的信息
      * @param userId
@@ -81,12 +86,12 @@ public class TurnTableGorderService {
         log.info("receiveGift入口参数------userId---"+comUser.getId()+"-----address------"+addressId+"-----turnTableId-----"+turnTableId);
         log.info("giftId------"+giftId+"---------userTurnTableRecordId------------"+userTurnTableRecordId);
         //判断是否满足条件领取
-        log.info("判断奖品还有没有--------start");
-/*        Integer i = isMayReceiveGift(comUser,turnTableId,giftId);
+        log.info("判断是否满足条件领取--------start");
+        Integer i = isMayReceiveGift(comUser,turnTableId,giftId,userTurnTableRecordId);
         if (i<3&&i!=0){
             return i;
-        }*/
-        log.info("判断奖品还有没有--------end");
+        }
+        log.info("判断是否满足条件领取--------end");
         //领取
         log.info("判断领取次数还有没有--------start");
         SfGorderItem sfGorderItem = receiveGiftAddGorder(comUser,addressId,turnTableId,giftId);
@@ -105,27 +110,16 @@ public class TurnTableGorderService {
      * @param giftId
      * @return
      */
-    private Integer isMayReceiveGift(ComUser comUser,Integer turnTableId, Integer giftId){
-        //判断奖品还有没有
-        SfTurnTableGift sfTurnTableGift = sfTurnTableGiftService.getSfTurnTableGift(turnTableId,giftId);
-        if (sfTurnTableGift!=null){
-            if (sfTurnTableGift.getToatalQuantity().equals(0)){
-                //奖品数量没有了
-                return 1;
-            }
-        }else{
-            throw new BusinessException("----奖品存在------");
+    private Integer isMayReceiveGift(ComUser comUser,Integer turnTableId, Integer giftId,Long userTurnTableRecordId){
+        //判断是否有中奖纪录
+        log.info("判断中奖纪录存在不------start");
+        SfUserTurnTableRecord record = userTurnTableRecordService.selectByPrimaryKey(userTurnTableRecordId);
+        if (record==null){
+            //中奖纪录不存在
+            log.info("----中奖纪录不存在----");
+            throw new BusinessException("----中奖纪录不存在----");
         }
-        //判断领取次数还有没有
-        SfUserTurnTable sfUserTurnTable = sfUserTurnTableService.getSfUserTurnTable(comUser.getId(),turnTableId);
-        if (sfUserTurnTable!=null){
-            if (sfUserTurnTable.getNotUsedTimes().equals(0)){
-                //已经没有可抽奖的次数
-                return 2;
-            }
-        }else{
-            throw new BusinessException("-----用户转盘领取信息不存在-----------");
-        }
+        log.info("判断中奖纪录存在不------end");
         return 0;
     }
 
@@ -168,10 +162,47 @@ public class TurnTableGorderService {
         userTurnTableRecordService.updateRecordStatusAndGorderId(userTurnTableRecordId, SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode(),gorderId);
     }
 
+    /**
+     * 抽奖前验抽奖条件是否满足
+     * @param comUser
+     * @param turnTableId
+     * @param giftId
+     * @return
+     */
+    public Integer validateReceiveGiftCondition(ComUser comUser,Integer turnTableId,Integer giftId){
+        log.info("抽奖前验证条件是否满足-------star");
+        log.info("入口参数-----turnTable----"+turnTableId+"-----giftId-----"+giftId+"-----comUserId-----"+comUser.getId());
+        //判断领取次数还有没有
+        log.info("判断领取次数还有没有-----start");
+        SfUserTurnTable sfUserTurnTable = sfUserTurnTableService.getSfUserTurnTable(comUser.getId(),turnTableId);
+        if (sfUserTurnTable!=null){
+            if (sfUserTurnTable.getNotUsedTimes().equals(0)){
+                //已经没有可抽奖的次数
+                return TurnTableGorderService.USER_RECEIVE_GIFT_TIMES_NO_ENOUGH;
+            }
+        }else{
+            throw new BusinessException("-----用户转盘领取信息不存在-----------");
+        }
+        log.info("判断领取次数还有没有-----end");
+        log.info("抽奖前验证条件是否满足-------end");
+        return 0;
+    }
+
+
+    /**
+     * 抽奖后减少用户的抽奖次数和奖品数量
+     * @param comUser
+     * @param changeTimes
+     * @param userId
+     * @param turnTableId
+     * @param turnTableRuleId
+     * @param giftId
+     * @return
+     */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Long  receiveGiftUpdateTimesAndQuantity(ComUser comUser,Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId){
+    public Long  receiveGiftUpdateTimesAndQuantity(ComUser comUser,Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId,Integer turnTableGiftId){
         //奖品奖励数量减少
-        sfTurnTableGiftService.updateGiftedQuantity(turnTableId,giftId);
+        sfTurnTableGiftService.updateGiftedQuantity(turnTableGiftId);
         //用户转盘增加已抽奖次数，减少未抽奖次数
         SfUserTurnTable userTurnTable = sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
         //增加用户转盘具体信息:减少次数

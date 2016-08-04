@@ -54,20 +54,48 @@ public class TurnTableGorderController extends BaseController {
         return i+"";
     }
 
+    /**
+     * 抽奖后减少用户的抽奖次数和奖品数量
+     * @param request
+     * @param turnTableId
+     * @param turnTableRuleId
+     * @param giftId
+     * @return
+     */
     @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
     @ResponseBody
     public String receiveGiftUpdateTimesAndQuantity(
                             HttpServletRequest request,
                             @RequestParam(required = true) Integer turnTableId,
                             @RequestParam(required = false) Integer turnTableRuleId,
+                            @RequestParam(required = false) Integer turnTableGiftId,
                             @RequestParam(required = true) Integer giftId){
-      Long userTurnTableRecordId = turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,getComUser(request).getId(),turnTableId,turnTableRuleId,giftId);
+      Long userTurnTableRecordId = turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,getComUser(request).getId(),turnTableId,turnTableRuleId,giftId,turnTableGiftId);
         if (userTurnTableRecordId!=null){
             return userTurnTableRecordId+"";
         }else {
             return "";
         }
     }
+
+    /**
+     *  抽奖前验抽奖条件是否满足
+     * @param request
+     * @param turnTableId
+     * @param giftId
+     * @return
+     */
+    @RequestMapping("/validateReceiveGiftCondition.json")
+    @ResponseBody
+    public String validateReceiveGiftCondition(
+            HttpServletRequest request,
+            @RequestParam(required = true) Integer turnTableId,
+            @RequestParam(required = true) Integer giftId){
+        Integer i =  turnTableGorderService.validateReceiveGiftCondition(getComUser(request),turnTableId,giftId);
+        return i+"";
+    }
+
+
 
     @RequestMapping("/skipToReceiveSuccessPage.html")
     public String skipToReceiveSuccessPage(){

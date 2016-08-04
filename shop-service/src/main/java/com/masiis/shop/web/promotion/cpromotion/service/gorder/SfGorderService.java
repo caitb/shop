@@ -45,18 +45,18 @@ public class SfGorderService {
         sfGorder.setPromoRuleId(promoRuleId);
         sfGorder.setUserId(comUser.getId());
         sfGorder.setGorderStatus(SfGOrderPayStatusEnum.ORDER_PAID.getCode());//订单状态
+        sfGorder.setGorderCode(OrderMakeUtils.makeOrder("G"));
         if (gorderTypeEnum.equals(SfGorderTypeEnum.ORDER_PROMOTION)){
             //活动订单
             log.info("---------插入活动订单---------");
-            sfGorder.setGorderCode(OrderMakeUtils.makeOrder("G"));
+
             if (promotion!=null){
-                sfGorder.setGorderType(promotion.getPersonType());//订单类型(粉丝活动或者代言人活动)
+                sfGorder.setGorderType(SfGorderTypeEnum.ORDER_PROMOTION.getCode());//订单类型(粉丝活动或者代言人活动)
             }
             sfGorder.setRemark("领取奖励插入订单");
         }else if (gorderTypeEnum.equals(SfGorderTypeEnum.ORDER_TURN_TABLE)){
             //抽奖订单
             log.info("---------插入抽奖订单---------");
-            sfGorder.setGorderCode(OrderMakeUtils.makeOrder("T"));
             sfGorder.setGorderType(SfGorderTypeEnum.ORDER_TURN_TABLE.getCode());//订单类型(抽奖订单)
             sfGorder.setRemark("抽奖插入订单");
         }

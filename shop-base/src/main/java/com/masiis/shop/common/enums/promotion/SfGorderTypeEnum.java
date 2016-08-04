@@ -4,8 +4,8 @@ package com.masiis.shop.common.enums.promotion;
  * Created by hzz on 2016/7/29.
  */
 public enum SfGorderTypeEnum {
-    ORDER_PROMOTION(0, "活动订单"),
-    ORDER_TURN_TABLE(100, "抽奖订单");
+    ORDER_PROMOTION(1, "活动订单"),
+    ORDER_TURN_TABLE(2, "抽奖订单");
 
     private Integer code;
     private String desc;

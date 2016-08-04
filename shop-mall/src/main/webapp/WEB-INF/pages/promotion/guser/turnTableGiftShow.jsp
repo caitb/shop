@@ -20,8 +20,11 @@
 <body>
     <c:forEach items="${turnTablelInfos}" var="turnTablelInfo" >
         <div style="display: none;">
-            <c:forEach var="entry" items="${giftImgMap}">
-                <img id="giftImg_${entry.key}" src="${entry.value}"/>
+            <c:forEach var="entry" items="${turnTablelInfo.turnTableGiftInfo}">
+                <img id="giftImg_${entry.sort}" src="${entry.imgUrl}"/>
+                <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
+                <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
+                <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
             </c:forEach>
         </div>
         <div class="wrap">
@@ -32,7 +35,6 @@
             <main>
                 <div class="floor">
                     <img src="<%=path%>/static/images/z.png" alt="" />
-                    <p>分享</p>
                     <div class="xttblog_box">
                         <canvas id="xttblog" width="280px" height="280px">抱歉！浏览器不支持。</canvas>
                         <canvas id="xttblog01" width="280px" height="280px">抱歉！浏览器不支持。</canvas>
@@ -93,6 +95,7 @@
                     <h1 id="receiveGiftNameId"></h1>
                     <input id="giftId" type="hidden" value=""/>
                     <input id="userTurnTableRecordId" type="hidden" value=""/>
+                    <input id="turnTableGiftId" type="hidden" value=""/>
                     <button onclick="skipToReceiveGiftPage()">
                         立即领取
                     </button>
@@ -100,13 +103,6 @@
             </div>
         </div>
     </c:forEach>
-    <c:forEach var="entry" items="${giftNameMap}">
-        <input id="giftName_${entry.key}" type="hidden" value="${entry.value}"/>
-    </c:forEach>
-    <c:forEach var="entry" items="${giftIdMap}">
-        <input id="giftId_${entry.key}" type="hidden" value="${entry.value}"/>
-    </c:forEach>
-
     <script src="/static/js/plugins/msclass.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
@@ -128,6 +124,8 @@ $(function(){
     canvasRun();
     $('#tupBtn').on('click',function(){
         if (clickNum >= 1) {
+            //通过数据库验证抽奖次数
+            validateCondition();
             //可抽奖次数减一
             clickNum = clickNum-1;
             //转盘旋转
@@ -148,7 +146,24 @@ $(function(){
             alert("亲，抽奖次数已用光！");
         }
     });
- 
+    function validateCondition(){
+        var paramData = {};
+        paramData.turnTableId = "${turnTableId}";
+        paramData.giftId = $("#giftId").val();
+        $.ajax({
+            type: "POST",
+            url: "/turnTableGorder/validateReceiveGiftCondition.json",
+            async:false,
+            data: paramData,
+            dataType: "Json",
+            success: function (result) {
+                if (result==3){
+                    alert("亲，抽奖次数已用光！");
+                    return;
+                }
+            }
+        })
+    }
     //转盘旋转
     function runCup(){
         probability();
@@ -177,56 +192,66 @@ $(function(){
         })
 
         var giftId = null;
+        var turnTableGiftId = null;
         //概率
         if ( num == 0 ) {
             angles = 2160 * rotNum + 1800;
             notice =$("#giftName_0").val();
             giftId = $("#giftId_0").val();
+            turnTableGiftId = $("#turnTableGiftId_0").val();
         }
         //概率
         else if ( num == 1 ) {
             angles = 2160 * rotNum + 1845;
             notice =$("#giftName_1").val();
             giftId = $("#giftId_1").val();
+            turnTableGiftId = $("#turnTableGiftId_1").val();
         }
         //概率
         else if ( num == 2 ) {
             angles = 2160 * rotNum + 1890;
             notice =$("#giftName_2").val();
             giftId = $("#giftId_2").value;
+            turnTableGiftId = $("#turnTableGiftId_2").val();
         }
         //概率
         else if ( num == 3 ) {
             angles = 2160 * rotNum + 1935;
             notice =$("#giftName_3").val();
             giftId = $("#giftId_3").val();
+            turnTableGiftId = $("#turnTableGiftId_3").val();
         }
         //概率
         else if ( num == 4 ) {
             angles = 2160 * rotNum + 1980;
             notice =$("#giftName_4").val();
             giftId = $("#giftId_4").val();
+            turnTableGiftId = $("#turnTableGiftId_4").val();
         }
         //概率
         else if ( num == 5 ) {
             angles = 2160 * rotNum + 2025;
             notice =$("#giftName_5").val();
             giftId = $("#giftId_5").val();
+            turnTableGiftId = $("#turnTableGiftId_5").val();
         }
         //概率
         else if ( num == 6 ) {
             angles = 2160 * rotNum + 2070;
             notice =$("#giftName_6").val();
             giftId = $("#giftId_6").val();
+            turnTableGiftId = $("#turnTableGiftId_6").val();
         }
         //概率
         else if ( num == 7 ) {
             angles = 2160 * rotNum + 2115;
             notice =$("#giftName_7").val();
             giftId = $("#giftId_7").val();
+            turnTableGiftId = $("#turnTableGiftId_7").val();
         }
         $("#receiveGiftNameId").html("获得"+notice);
         $("#giftId").val(giftId);
+        $("#turnTableGiftId").val(turnTableGiftId);
     }
  
     //绘制转盘
@@ -288,6 +313,11 @@ $(function(){
         paramData.turnTableId = "${turnTableId}";
         paramData.giftId = $("#giftId").val();
         paramData.turnTableRuleId =  "${turnTableRule.id}";
+        paramData.turnTableGiftId = $("#turnTableGiftId").val();
+        alert($("#turnTableGiftId").val());
+        if ($("#turnTableGiftId").val()==""){
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/turnTableGorder/receiveGiftUpdateTimesAndQuantity.json",

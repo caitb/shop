@@ -28,6 +28,10 @@ public class SfTurnTableGiftService {
     @Resource
     private ComGiftService comGiftService;
 
+    public SfTurnTableGift selectByPrimaryKey(Integer id){
+       return turnTableGiftMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 查询转盘下的所有奖品信息
      * @param turnTableId
@@ -37,11 +41,28 @@ public class SfTurnTableGiftService {
         List<SfTurnTableGift> turnTableGifts = turnTableGiftMapper.listByTurnTableId(turnTableId);
         List<TurnTableGiftInfo> turnTableGiftInfos = new ArrayList<TurnTableGiftInfo>();
         for (SfTurnTableGift turnTableGift: turnTableGifts){
-            TurnTableGiftInfo turnTableGiftInfo = getTurnTableGiftInfo(turnTableId,turnTableGift.getGiftId());
+            TurnTableGiftInfo turnTableGiftInfo = getTurnTableGiftInfo(turnTableId,turnTableGift.getGiftId(),turnTableGift.getSort());
             turnTableGiftInfos.add(turnTableGiftInfo);
         }
         return turnTableGiftInfos;
     }
+
+
+    /**
+     * 获得大转盘的奖品信息
+     * @param turnTableId   转盘id
+     * @param giftId        奖品id
+     * @return
+     */
+    public TurnTableGiftInfo getTurnTableGiftInfo(Integer turnTableId,Integer giftId,Integer sort){
+        SfTurnTableGift turnTableGift =  turnTableGiftMapper.getTurnTableGiftInfoByTableIdAndGiftIdAndSort(turnTableId,giftId,sort);
+        TurnTableGiftInfo turnTableGiftInfo = null;
+        if (turnTableGift!=null){
+            return generateGiftInfo(turnTableGift);
+        }
+        return turnTableGiftInfo;
+    }
+
 
     /**
      * 获得抽中的奖品信息
@@ -50,43 +71,46 @@ public class SfTurnTableGiftService {
      * @return
      */
     public TurnTableGiftInfo getTurnTableGiftInfo(Integer turnTableId,Integer giftId){
-        SfTurnTableGift turnTableGift =  turnTableGiftMapper.getTurnTableGiftInfo(turnTableId,giftId);
+        List<SfTurnTableGift> turnTableGifts =  turnTableGiftMapper.getTurnTableGiftInfo(turnTableId,giftId);
         TurnTableGiftInfo turnTableGiftInfo = null;
-        if (turnTableGift!=null){
-            turnTableGiftInfo = new TurnTableGiftInfo();
-            log.info("获得转盘奖品信息-----奖品id-----"+turnTableGift.getGiftId());
-            ComGift comGift = comGiftService.getComGiftById(turnTableGift.getGiftId());
-            if (comGift!=null){
-                turnTableGiftInfo.setTurnTableId(turnTableGift.getTurnTableId());
-                turnTableGiftInfo.setGiftId(turnTableGift.getGiftId());
-                turnTableGiftInfo.setGiftName(comGift.getName());
-                turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
-                turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
-                turnTableGiftInfo.setImgUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
-                turnTableGiftInfo.setSort(turnTableGift.getSort());
-                turnTableGiftInfo.setProbability(turnTableGift.getProbability());
-            }
+        if (turnTableGifts!=null&&turnTableGifts.size()!=0){
+            return generateGiftInfo(turnTableGifts.get(0));
         }
         return turnTableGiftInfo;
     }
 
-    public SfTurnTableGift getSfTurnTableGift(Integer turnTableId,Integer giftId){
-        return turnTableGiftMapper.getTurnTableGiftInfo(turnTableId,giftId);
+    private TurnTableGiftInfo generateGiftInfo(SfTurnTableGift turnTableGift ){
+        TurnTableGiftInfo turnTableGiftInfo = new TurnTableGiftInfo();
+        log.info("获得转盘奖品信息-----奖品id-----"+turnTableGift.getGiftId());
+        ComGift comGift = comGiftService.getComGiftById(turnTableGift.getGiftId());
+        if (comGift!=null){
+            turnTableGiftInfo.setTurnTableGiftId(turnTableGift.getId());
+            turnTableGiftInfo.setTurnTableId(turnTableGift.getTurnTableId());
+            turnTableGiftInfo.setGiftId(turnTableGift.getGiftId());
+            turnTableGiftInfo.setGiftName(comGift.getName());
+            turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
+            turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
+            turnTableGiftInfo.setImgUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
+            turnTableGiftInfo.setSort(turnTableGift.getSort());
+            turnTableGiftInfo.setProbability(turnTableGift.getProbability());
+        }
+        return turnTableGiftInfo;
     }
-
     /**
      * 更新大转盘的已中奖数量
-     * @param turnTableId
-     * @param giftId
+     * @param turnTableGiftId
      */
-    public void updateGiftedQuantity(Integer turnTableId,Integer giftId){
-        SfTurnTableGift turnTableGift =  getSfTurnTableGift(turnTableId,giftId);
+    public void updateGiftedQuantity(Integer turnTableGiftId){
+        log.info("更新大转盘的已中奖数量------id----"+turnTableGiftId);
+        SfTurnTableGift turnTableGift =  selectByPrimaryKey(turnTableGiftId);
         if (turnTableGift!=null){
             turnTableGift.setGiftedQuantity(turnTableGift.getGiftedQuantity()+turnTableGift.getQuantity());
             int i = turnTableGiftMapper.updateByPrimaryKey(turnTableGift);
             if (i!=1){
                 throw new BusinessException("更新大转盘奖品已中奖数量失败");
             }
+        }else{
+            throw new BusinessException("更新大转盘奖品已中奖数量失败----转盘奖品不存在");
         }
     }
 }

@@ -7,8 +7,10 @@ import com.masiis.shop.dao.beans.promotion.UserTurnTableRecordInfo;
 import com.masiis.shop.dao.mall.promotion.SfUserTurnTableRecordMapper;
 import com.masiis.shop.dao.po.ComGift;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfTurnTableGift;
 import com.masiis.shop.dao.po.SfUserTurnTableRecord;
 import com.masiis.shop.web.common.service.ComGiftService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableGiftService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +28,8 @@ public class SfUserTurnTableRecordService {
     private SfUserTurnTableRecordMapper userTurnTableRecordMapper;
     @Resource
     private ComGiftService comGiftService;
+    @Resource
+    private SfTurnTableGiftService turnTableGiftService;
 
     public SfUserTurnTableRecord selectByPrimaryKey(Long id){
         return  userTurnTableRecordMapper.selectByPrimaryKey(id);

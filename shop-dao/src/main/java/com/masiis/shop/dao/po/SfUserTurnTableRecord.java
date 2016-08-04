@@ -79,12 +79,15 @@ public class SfUserTurnTableRecord {
     public void setTurnTableId(Integer turnTableId) {
         this.turnTableId = turnTableId;
     }
+
     public Integer getGiftId() {
         return giftId;
     }
+
     public void setGiftId(Integer giftId) {
         this.giftId = giftId;
     }
+
     public Long getGorderId() {
         return gorderId;
     }

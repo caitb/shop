@@ -8,7 +8,7 @@
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
         <result column="gift_id" property="giftId" jdbcType="INTEGER" />
-        <result column="gorder_id" property="gorderId" jdbcType="BIGINT" />
+        <result column="gorder_id" property="turnTableGiftId" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -21,11 +21,11 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableRecord" useGeneratedKeys="true" keyProperty="id">
         insert into sf_user_turn_table_record (id, create_time, create_man, 
-            user_id, turn_table_id, gift_id, 
+            user_id, turn_table_id, gift_id,
             gorder_id, status, update_time, 
             remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
-            #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER}, 
+            #{userId,jdbcType=BIGINT}, #{turnTableId,jdbcType=INTEGER}, #{giftId,jdbcType=INTEGER},
             #{gorderId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
             #{remark,jdbcType=VARCHAR})
     </insert>
@@ -45,19 +45,19 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status, 
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
         update_time, remark
         from sf_user_turn_table_record
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status, 
+        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
         update_time, remark
         from sf_user_turn_table_record
     </select>
     <select id="getRecordByUserIdAndTurnTableIdAndGiftId" resultMap="BaseResultMap" >
-        select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
+        select id, create_time, create_man, user_id, turn_table_id, turn_table_gift_id, gorder_id, status,
         update_time, remark
         from sf_user_turn_table_record
         WHERE user_id = #{userId,jdbcType=BIGINT}

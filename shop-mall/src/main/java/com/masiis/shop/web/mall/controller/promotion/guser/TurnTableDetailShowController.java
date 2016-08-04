@@ -45,7 +45,13 @@ public class TurnTableDetailShowController extends BaseController {
 /*        model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
         model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
         model.addAttribute("giftImgMap",turnTablelInfos.get(0).getGiftImgMap());*/
-        model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
+        if (turnTablelInfos.get(0).getUserTurnTable()!=null){
+            model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
+            model.addAttribute("noUsedTimes",turnTablelInfos.get(0).getUserTurnTable().getNotUsedTimes());
+        }else{
+            model.addAttribute("noUsedTimes",0);
+        }
+
         return "promotion/guser/turnTableGiftShow";
     }
 

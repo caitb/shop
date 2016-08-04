@@ -47,7 +47,7 @@
                 </div>
                 <div class="floor2">
                     <div class="f-one">
-                        <p>您今天还有<span id="receiveGiftTimesId">${userTurnTable.notUsedTimes}</span>次机会</p>
+                        <p>您今天还有<span id="receiveGiftTimesId">${noUsedTimes}</span>次机会</p>
                         <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.html');">我的中奖记录</button>
                     </div>
                     <div class="list">
@@ -114,7 +114,7 @@ $(function(){
     //旋转角度
     var angles;
     //可抽奖次数
-    var clickNum = ${userTurnTable.notUsedTimes};
+    var clickNum = ${noUsedTimes};
     //旋转次数
     var rotNum = 0;
     //中奖公告
@@ -298,7 +298,7 @@ $(function(){
                 ctx.rotate(i*step);
                 ctx.font = " 20px Microsoft YaHei";
                 ctx.fillStyle = color[3];
-				ctx.drawImage(img,0,0,60,60,-20,-125,60,60);
+				ctx.drawImage(img,0,0,130,130,-28,-115,60,60);
                 ctx.font = " 14px Microsoft YaHei";
                 ctx.closePath();
                 ctx.restore();

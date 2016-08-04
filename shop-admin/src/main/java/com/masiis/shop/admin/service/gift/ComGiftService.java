@@ -37,7 +37,7 @@ public class ComGiftService {
             comGift.setCreateMan(pbUser.getId());
             comGift.setCreateTime(new Date());
             comGift.setStatus(1);
-
+            comGift.setIsGift(comGift.getIsGift());
             comGiftMapper.insert(comGift);
             comGift = comGiftMapper.selectByImgUrl(comGift.getImgUrl());
         } else {

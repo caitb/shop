@@ -87,7 +87,8 @@
         <div class="black">
             <div class="backb"></div>
             <div class="backj">
-                <img src="<%=path%>/static/images/jyes.jpg" alt=""/>
+                <img class="giftSuccessFail" src="<%=path%>/static/images/jno.jpg" alt=""/>
+                <img class="giftSuccess" src="<%=path%>/static/images/jyes.jpg" alt=""/>
                 <img src="<%=path%>/static/images/x.png" class="x" />
                 <div>
                     <img src="<%=path%>/static/images/xiaol.jpg" alt="" />
@@ -96,8 +97,11 @@
                     <input id="giftId" type="hidden" value=""/>
                     <input id="userTurnTableRecordId" type="hidden" value=""/>
                     <input id="turnTableGiftId" type="hidden" value=""/>
-                    <button onclick="skipToReceiveGiftPage()">
+                    <button class="receiveGift" onclick="skipToReceiveGiftPage()">
                         立即领取
+                    </button>
+                    <button class="goToPurchaseSku" onclick="skipToReceiveGiftPage()">
+                        立即下单
                     </button>
                 </div>
             </div>

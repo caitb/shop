@@ -186,6 +186,54 @@
                                                             <input type="hidden" name="pfCorderId">
 
                                                             <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 收货人 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="consignee"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 收货地址 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="address"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 联系电话 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="mobile"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 邮编 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="postcode"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 购买人 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="buyUser"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 留言 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="userMessage"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 快递名称 </div>
 
                                                                 <div class="profile-info-value">
@@ -527,6 +575,13 @@
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
+                                $('#consignee').html(row.consignee);
+                                $('#address').html(row.provinceName+row.cityName+row.regionName+row.address);
+                                $('#mobile').html(row.mobile);
+                                $('#postcode').html(row.zip);
+                                $('#buyUser').html(row.uWxNkName);
+                                $('#userMessage').html(row.userMessage);
+
                                 $('[name=pfCorderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');

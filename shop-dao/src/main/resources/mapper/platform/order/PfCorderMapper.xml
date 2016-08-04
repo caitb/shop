@@ -419,10 +419,17 @@
         ,co.order_type        orderType
         ,co.pay_status        payStatus
         ,co.ship_status       shipStatus
+        ,co.user_massage      userMessage
         ,pu.real_name         puRealName
         ,u.wx_nk_name         uWxNkName
         ,bp.pay_type_id       payTypeId
         ,cc.consignee         consignee
+        ,cc.mobile            mobile
+        ,cc.province_name     provinceName
+        ,cc.city_name         cityName
+        ,cc.region_name       regionName
+        ,cc.address           address
+        ,cc.zip               zip
         FROM
         pf_corder co
         LEFT JOIN com_user pu ON pu.id = co.user_pid

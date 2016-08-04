@@ -341,7 +341,6 @@
                o.create_time       createTime,
                o.order_code        orderCode,
                bu.wx_nk_name       bWxNkName,
-               oc.consignee        consignee,
                su.real_name        suRealName,
                o.product_amount    productAmount,
                o.receivable_amount receivableAmount,
@@ -352,12 +351,20 @@
                o.pay_status        payStatus,
                o.ship_status       shipStatus,
                o.is_counting       isCounting
+               ,o.user_message      userMessage
+                ,oc.consignee         consignee
+                ,oc.mobile            mobile
+                ,oc.province_name     provinceName
+                ,oc.city_name         cityName
+                ,oc.region_name       regionName
+                ,oc.address           address
+                ,oc.zip               zip
         FROM
                   sf_order o
         LEFT JOIN com_user           bu ON bu.id          = o.user_id
-        LEFT JOIN sf_order_consignee oc ON oc.sf_order_id = o.id
         LEFT JOIN com_user           su ON su.id          = o.shop_user_id
         LEFT JOIN sf_order_payment   op ON op.sf_order_id = o.id AND op.is_enabled = 1
+        LEFT JOIN sf_order_consignee oc ON oc.sf_order_id = o.id
         WHERE
         <![CDATA[
                 o.order_status = 7

@@ -392,8 +392,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.uRealName){
-                                return row.uRealName;
+                            if(row && row.uWxNkName){
+                                return row.uWxNkName;
                             }
                         }
                     },
@@ -473,6 +473,15 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
+                            if(row && row.payTypeId == 0){
+                                return '微信支付';
+                            }
+                            if(row && row.payTypeId == 1){
+                                return '线下支付';
+                            }
+                            if(row && row.payTypeId == 2){
+                                return '支付宝支付';
+                            }
                         }
                     },
                     {

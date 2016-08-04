@@ -420,13 +420,15 @@
         ,co.pay_status        payStatus
         ,co.ship_status       shipStatus
         ,pu.real_name         puRealName
-        ,u.real_name          uRealName
+        ,u.wx_nk_name         uWxNkName
         ,bp.pay_type_id       payTypeId
+        ,cc.consignee         consignee
         FROM
         pf_corder co
         LEFT JOIN com_user pu ON pu.id = co.user_pid
         LEFT JOIN com_user u ON u.id = co.user_id
-        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = co.id AND bp.is_enabled = 1
+        LEFT JOIN pf_corder_payment bp ON bp.pf_corder_id = co.id AND bp.is_enabled = 1
+        LEFT JOIN pf_corder_consignee cc ON cc.pf_corder_id = co.id
         WHERE
         co.order_status = 1
         <if test="orderCode != null">

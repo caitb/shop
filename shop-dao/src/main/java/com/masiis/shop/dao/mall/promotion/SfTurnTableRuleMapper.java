@@ -22,6 +22,8 @@ public interface SfTurnTableRuleMapper {
 
     SfTurnTableRule getRuleByTurnTableIdAndType(@Param("turnTableId")Integer turnTableId, @Param("type")Integer type);
 
+    List<SfTurnTableRule>  getRuleByTypeAndStatus(@Param("type")Integer type, @Param("status")Integer status);
+
     List<SfTurnTableRule> selectAll();
 
     int updateByPrimaryKey(SfTurnTableRule record);

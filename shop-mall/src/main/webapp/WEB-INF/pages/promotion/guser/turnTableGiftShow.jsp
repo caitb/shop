@@ -314,10 +314,6 @@ $(function(){
         paramData.giftId = $("#giftId").val();
         paramData.turnTableRuleId =  "${turnTableRule.id}";
         paramData.turnTableGiftId = $("#turnTableGiftId").val();
-        alert($("#turnTableGiftId").val());
-        if ($("#turnTableGiftId").val()==""){
-            return;
-        }
         $.ajax({
             type: "POST",
             url: "/turnTableGorder/receiveGiftUpdateTimesAndQuantity.json",

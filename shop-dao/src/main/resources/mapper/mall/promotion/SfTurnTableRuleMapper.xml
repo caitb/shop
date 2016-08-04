@@ -67,6 +67,14 @@
         AND type = #{type,jdbcType=INTEGER}
     </select>
 
+    <select id="getRuleByTypeAndStatus" resultMap="BaseResultMap" >
+        select id, name, create_time, create_man, turn_table_id, times, status, type, modify_time,
+        modify_man, remark
+        from sf_turn_table_rule
+        WHERE type = #{type,jdbcType=INTEGER}
+        AND status = #{status,jdbcType=INTEGER}
+    </select>
+
     <select id="listByCondition" resultMap="BaseResultMap" >
         select id,name, create_time, create_man, turn_table_id, times, status, type, modify_time,
         modify_man, remark

@@ -828,7 +828,11 @@
             data: $('#deliveryForm').serialize(),
             success: function(msg){
                 if(msg == 'success'){
-                    alert('成功！');
+                    $.gritter.add({
+                        title: '温馨提示',
+                        text: '发货成功!',
+                        class_name: 'gritter-success'
+                    });
                     $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{

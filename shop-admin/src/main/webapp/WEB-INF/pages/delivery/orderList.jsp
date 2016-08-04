@@ -743,7 +743,11 @@
             dataType:'json',
             success: function(data){
                 if(data.result_key == 0){
-                    alert('发货成功！');
+                    $.gritter.add({
+                        title: '温馨提示',
+                        text: '发货成功!',
+                        class_name: 'gritter-success'
+                    });
                     $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{

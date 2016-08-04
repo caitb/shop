@@ -132,7 +132,7 @@ public class SfOrderController extends BaseController {
                 sfUserBillItemInfoList.add(sfUserBillItemInfo);
             }
         }
-        orderMallDetail.setBuyerName(Buser.getRealName());
+        orderMallDetail.setBuyerName(Buser.getWxNkName());
         orderMallDetail.setSfOrder(order);
         orderMallDetail.setSfOrderPayments(sfOrderPayments);
         orderMallDetail.setSfOrderItems(sfOrderItems);
@@ -163,7 +163,7 @@ public class SfOrderController extends BaseController {
         List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId,sendType);
         for (SfOrder sfOrder :sfOrders){
             sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
-            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getRealName());
+            sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
             if(sfOrder.getSendType()==1){
                 sfOrder.setSendTypeDes("平台发货");
             }

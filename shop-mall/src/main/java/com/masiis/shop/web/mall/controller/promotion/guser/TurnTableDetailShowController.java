@@ -48,7 +48,9 @@ public class TurnTableDetailShowController extends BaseController {
         if (turnTablelInfos.get(0).getUserTurnTable()!=null){
             model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
             model.addAttribute("noUsedTimes",turnTablelInfos.get(0).getUserTurnTable().getNotUsedTimes());
+            model.addAttribute("isPurchaseSku",true);
         }else{
+            model.addAttribute("isPurchaseSku",false);
             model.addAttribute("noUsedTimes",0);
         }
 

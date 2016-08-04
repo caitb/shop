@@ -6,6 +6,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="isGift" property="isGift" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
         <result column="content" property="content" jdbcType="LONGVARCHAR" />
@@ -21,11 +22,11 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComGift" >
         insert into com_gift (id, create_time, create_man, 
-            status, name, img_url, 
+            status,isGift, name, img_url,
             content, modify_time, modify_man, 
             remark)
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
-            #{status,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{isGift,jdbcType=INTEGER},#{name,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},
             #{content,jdbcType=LONGVARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, 
             #{remark,jdbcType=VARCHAR})
     </insert>
@@ -42,6 +43,9 @@
             <if test="status != null">
                 status = #{status,jdbcType=INTEGER},
             </if>
+        <if test="isGift != null">
+            status = #{isGift,jdbcType=INTEGER},
+        </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
@@ -64,21 +68,21 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, create_time, create_man, status, name, img_url, content, modify_time, 
+        select id, create_time, create_man, status,isGift, name, img_url, content, modify_time,
         modify_man, remark
         from com_gift
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByImgUrl" resultMap="BaseResultMap" parameterType="java.lang.String" >
-        select id, create_time, create_man, status, name, img_url, content, modify_time,
+        select id, create_time, create_man, status,isGift, name, img_url, content, modify_time,
         modify_man, remark
         from com_gift
         where img_url = #{imgUrl,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByMap" resultMap="BaseResultMap" parameterType="Map">
-        select id, create_time, create_man, status, name, img_url, content, modify_time,
+        select id, create_time, create_man, status,isGift, name, img_url, content, modify_time,
         modify_man, remark
         from com_gift
         where 1=1
@@ -94,7 +98,7 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, status, name, img_url, content, modify_time, 
+        select id, create_time, create_man, status,isGift, name, img_url, content, modify_time,
         modify_man, remark
         from com_gift
     </select>

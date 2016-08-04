@@ -41,6 +41,7 @@ public class ComGiftService {
             comGiftMapper.insert(comGift);
             comGift = comGiftMapper.selectByImgUrl(comGift.getImgUrl());
         } else {
+            comGift.setIsGift(comGift.getIsGift());
             comGift.setModifyMan(pbUser.getId());
             comGift.setModifyTime(new Date());
             comGiftMapper.updateByPrimaryKey(comGift);

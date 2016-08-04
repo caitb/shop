@@ -12,6 +12,7 @@ public class TurnTableGiftInfo extends SfTurnTableGift {
     private String  giftName;//奖品姓名
     private String imgUrl; //奖品图片url
     private Long userTurnTableRecordId;//这个奖品的中奖纪录
+    private Integer isGift;//是否是奖品
 
     public String getGiftName() {
         return giftName;
@@ -51,5 +52,13 @@ public class TurnTableGiftInfo extends SfTurnTableGift {
 
     public void setTurnTableGiftId(Integer turnTableGiftId) {
         this.turnTableGiftId = turnTableGiftId;
+    }
+
+    public Integer getIsGift() {
+        return isGift;
+    }
+
+    public void setIsGift(Integer isGift) {
+        this.isGift = isGift;
     }
 }

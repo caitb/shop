@@ -38,7 +38,7 @@ public class SfTurnTableGiftService {
      * @return
      */
     public List<TurnTableGiftInfo> getTurnTableGiftsByTableId(Integer turnTableId){
-        List<SfTurnTableGift> turnTableGifts = turnTableGiftMapper.listByTurnTableId(turnTableId);
+        List<SfTurnTableGift> turnTableGifts = turnTableGiftMapper.getTableGiftsByTurnTableIdAndSortAsc(turnTableId);
         List<TurnTableGiftInfo> turnTableGiftInfos = new ArrayList<TurnTableGiftInfo>();
         for (SfTurnTableGift turnTableGift: turnTableGifts){
             TurnTableGiftInfo turnTableGiftInfo = getTurnTableGiftInfo(turnTableId,turnTableGift.getGiftId(),turnTableGift.getSort());
@@ -93,6 +93,7 @@ public class SfTurnTableGiftService {
             turnTableGiftInfo.setImgUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
             turnTableGiftInfo.setSort(turnTableGift.getSort());
             turnTableGiftInfo.setProbability(turnTableGift.getProbability());
+            turnTableGiftInfo.setIsGift(comGift.getIsGift());
         }
         return turnTableGiftInfo;
     }

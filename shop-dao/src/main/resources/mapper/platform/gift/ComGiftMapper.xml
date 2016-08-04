@@ -44,7 +44,7 @@
                 status = #{status,jdbcType=INTEGER},
             </if>
         <if test="isGift != null">
-            status = #{isGift,jdbcType=INTEGER},
+            isGift = #{isGift,jdbcType=INTEGER},
         </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},

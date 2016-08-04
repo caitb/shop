@@ -25,6 +25,7 @@
                 <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
                 <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
                 <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
+                <input id="isGift_${entry.sort}" type="hidden" value="${entry.isGift}"/>
             </c:forEach>
         </div>
         <div class="wrap">
@@ -87,14 +88,15 @@
         <div class="black">
             <div class="backb"></div>
             <div class="backj">
-                <img class="giftSuccessFail" src="<%=path%>/static/images/jno.jpg" alt=""/>
+                <img class="giftFail" src="<%=path%>/static/images/jno.jpg" alt=""/>
                 <img class="giftSuccess" src="<%=path%>/static/images/jyes.jpg" alt=""/>
                 <img src="<%=path%>/static/images/x.png" class="x" />
                 <div>
                     <img src="<%=path%>/static/images/xiaol.jpg" alt="" />
-                    <p>恭喜你</p>
+                    <p class="congratulate">恭喜你</p>
                     <h1 id="receiveGiftNameId"></h1>
                     <input id="giftId" type="hidden" value=""/>
+                    <input id="isGiftId" type="hidden" value=""/>
                     <input id="userTurnTableRecordId" type="hidden" value=""/>
                     <input id="turnTableGiftId" type="hidden" value=""/>
                     <button class="receiveGift" onclick="skipToReceiveGiftPage()">
@@ -141,13 +143,41 @@ $(function(){
             //“开始抽奖”按钮无法点击恢复点击
             setTimeout(function(){
                 $(".black").show();
+                var isGiftId = $("#isGiftId").val();
+                if (isGiftId==0){
+                    //有奖品
+                    $(".giftSuccess").show();
+                    $(".giftFail").hide();
+                    $(".receiveGift").show();
+                    $(".goToPurchaseSku").hide();
+                    $(".congratulate").show();
+                    updateTimesAndQuantity();
+                }else{
+                    //无奖品
+                    $(".giftSuccess").hide();
+                    $(".giftFail").show();
+                    $(".receiveGift").hide();
+                    $(".goToPurchaseSku").hide();
+                    $(".congratulate").hide();
+                }
                 $("#receiveGiftTimesId").html(clickNum);
                 $('#tupBtn').removeAttr("disabled", true);
             },6000);
-            updateTimesAndQuantity();
         }
         else{
-            alert("亲，抽奖次数已用光！");
+            var isPurchaseSku = "${isPurchaseSku}";
+            if (isPurchaseSku=="true"){
+                alert("亲，抽奖次数已用光！");
+            }else{
+                $(".black").show();
+                $(".giftSuccess").hide();
+                $(".giftFail").show();
+                $(".receiveGift").hide();
+                $(".goToPurchaseSku").show();
+                $(".congratulate").hide();
+                $("#receiveGiftNameId").html("购买订单");
+            }
+
         }
     });
     function validateCondition(){
@@ -197,65 +227,80 @@ $(function(){
 
         var giftId = null;
         var turnTableGiftId = null;
+        var isGift = null;
         //概率
         if ( num == 0 ) {
-            angles = 2160 * rotNum + 1800;
+            angles = 2160 * rotNum + 1080;
             notice =$("#giftName_0").val();
             giftId = $("#giftId_0").val();
             turnTableGiftId = $("#turnTableGiftId_0").val();
+            isGift = $("#isGift_0").val();
         }
         //概率
         else if ( num == 1 ) {
-            angles = 2160 * rotNum + 1845;
+            angles = 2160 * rotNum + 1035;
             notice =$("#giftName_1").val();
             giftId = $("#giftId_1").val();
             turnTableGiftId = $("#turnTableGiftId_1").val();
+            isGift = $("#isGift_1").val();
         }
         //概率
         else if ( num == 2 ) {
-            angles = 2160 * rotNum + 1890;
+            angles = 2160 * rotNum + 990;
             notice =$("#giftName_2").val();
             giftId = $("#giftId_2").value;
             turnTableGiftId = $("#turnTableGiftId_2").val();
+            isGift = $("#isGift_2").val();
         }
         //概率
         else if ( num == 3 ) {
-            angles = 2160 * rotNum + 1935;
+            angles = 2160 * rotNum + 945;
             notice =$("#giftName_3").val();
             giftId = $("#giftId_3").val();
             turnTableGiftId = $("#turnTableGiftId_3").val();
+            isGift = $("#isGift_3").val();
         }
         //概率
         else if ( num == 4 ) {
-            angles = 2160 * rotNum + 1980;
+            angles = 2160 * rotNum + 900;
             notice =$("#giftName_4").val();
             giftId = $("#giftId_4").val();
             turnTableGiftId = $("#turnTableGiftId_4").val();
+            isGift = $("#isGift_4").val();
         }
         //概率
         else if ( num == 5 ) {
-            angles = 2160 * rotNum + 2025;
+            angles = 2160 * rotNum + 855;
             notice =$("#giftName_5").val();
             giftId = $("#giftId_5").val();
             turnTableGiftId = $("#turnTableGiftId_5").val();
+            isGift = $("#isGift_5").val();
         }
         //概率
         else if ( num == 6 ) {
-            angles = 2160 * rotNum + 2070;
+            angles = 2160 * rotNum + 810;
             notice =$("#giftName_6").val();
             giftId = $("#giftId_6").val();
             turnTableGiftId = $("#turnTableGiftId_6").val();
+            isGift = $("#isGift_6").val();
         }
         //概率
         else if ( num == 7 ) {
-            angles = 2160 * rotNum + 2115;
+            angles = 2160 * rotNum + 765;
             notice =$("#giftName_7").val();
             giftId = $("#giftId_7").val();
             turnTableGiftId = $("#turnTableGiftId_7").val();
+            isGift = $("#isGift_7").val();
         }
-        $("#receiveGiftNameId").html("获得"+notice);
+        if (isGift==0){
+            $("#receiveGiftNameId").html("获得"+notice);
+        }else if(isGift==1){
+            $("#receiveGiftNameId").html(notice);
+        }
+
         $("#giftId").val(giftId);
         $("#turnTableGiftId").val(turnTableGiftId);
+        $("#isGiftId").val(isGift);
     }
  
     //绘制转盘

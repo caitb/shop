@@ -81,6 +81,15 @@
         where turn_table_id = #{turnTableId,jdbcType=INTEGER }
     </select>
 
+    <select id="getTableGiftsByTurnTableIdAndSortAsc" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort,
+        probability, status, remark
+        from sf_turn_table_gift
+        where turn_table_id = #{turnTableId,jdbcType=INTEGER }
+        ORDER BY sort ASC
+    </select>
+
+
     <update id="update" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
         update sf_turn_table_gift
         <set>

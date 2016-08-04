@@ -724,6 +724,8 @@
             return;
         }
 
+        $('#submitDeliveryForm').attr('disabled', 'disabled');
+
         $.ajax({
             url: '<%=basePath%>order/corder/delivery.do',
             type: 'POST',
@@ -744,6 +746,8 @@
                         class_name: 'gritter-error'
                     });
                 }
+
+                $('#submitDeliveryForm').removeAttr('disabled');
             }
         });
     });

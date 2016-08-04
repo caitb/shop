@@ -736,6 +736,8 @@
             return;
         }
 
+        $('#submitDeliveryForm').attr('disabled', 'disabled');
+
         $.ajax({
             url: '<%=basePath%>order/order/delivery.do',
             type: 'POST',
@@ -757,6 +759,8 @@
                         class_name: 'gritter-error'
                     });
                 }
+
+                $('#submitDeliveryForm').removeAttr('disabled');
             }
         });
     });

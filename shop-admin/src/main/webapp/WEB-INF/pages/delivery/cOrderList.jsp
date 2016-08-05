@@ -180,7 +180,7 @@
                                                 <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
                                                     <!-- #section:pages/profile.info -->
-                                                    <form id="deliveryForm">
+                                                    <form id="deliveryForm" isSubmiting="false" action="<%=basePath%>order/corder/delivery.do">
                                                         <div class="profile-user-info profile-user-info-striped">
 
                                                             <input type="hidden" name="pfCorderId">
@@ -791,7 +791,8 @@
     });
 
     $('#freight').keypress(function(event){
-        if(event.keyCode == 13){
+        if(event.keyCode == 13 && $('#deliveryForm').attr('isSubmiting') == 'false'){
+            $('#deliveryForm').attr('isSubmiting', 'true');
             submitDeliveryForm();
             return false;
         }
@@ -832,6 +833,7 @@
                 }
 
                 $('#submitDeliveryForm').removeAttr('disabled');
+                $('#deliveryForm').attr('isSubmiting', 'false');
             }
         });
     }

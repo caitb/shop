@@ -373,6 +373,9 @@ public class BOrderController extends BaseController {
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
         mv.addObject("comUser",comUser);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
+        Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        mv.addObject("isTurnTableRule",bl+"");
+        mv.addObject("turnTableRuleTimes", com.masiis.shop.common.constant.platform.SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
         return mv;
     }
 }

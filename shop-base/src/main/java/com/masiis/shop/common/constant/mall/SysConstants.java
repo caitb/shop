@@ -66,5 +66,5 @@ public class SysConstants {
     public static final String  MALL_DOMAIN_NAME_ADDRESS = PropertiesUtils.getStringValue("mall.domain.name.address");//小铺域名地址
 
 
-    public static final Integer  MALL_TURN_TABLE_RULE_TIMES = PropertiesUtils.getIntValue("mall.turn.table.rule.times");//小铺域名地址
+    public static final Integer  MALL_TURN_TABLE_RULE_TIMES = PropertiesUtils.getIntValue("mall.turn.table.rule.times");//小铺大转盘抽奖次数
 }

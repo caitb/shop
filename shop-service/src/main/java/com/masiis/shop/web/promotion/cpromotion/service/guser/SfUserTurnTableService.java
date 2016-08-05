@@ -1,15 +1,22 @@
 package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.enums.promotion.SfUserTurnTableTimesTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.promotion.SfUserTurnTableMapper;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfTurnTableRule;
 import com.masiis.shop.dao.po.SfUserTurnTable;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户转盘信息service
@@ -19,6 +26,12 @@ public class SfUserTurnTableService {
 
     @Resource
     private SfUserTurnTableMapper userTurnTableMapper;
+    @Resource
+    private SfTurnTableRuleService turnTableRuleService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
+    @Resource
+    private UserService comUserService;
 
     public SfUserTurnTable getSfUserTurnTable(Long userId,Integer turnTableId){
         return userTurnTableMapper.getSfUserTurnTable(userId,turnTableId);
@@ -32,6 +45,26 @@ public class SfUserTurnTableService {
         return userTurnTableMapper.insert(sfUserTurnTable);
     }
 
+    /**
+     * 下完单后增加抽奖次数
+     * @param comUser
+     * @param comUserId
+     * @param turnTableRuleType    B端或者C端
+     * @param changeTimes          增加的次数
+     * @return
+     */
+    public SfUserTurnTable addTimes(ComUser comUser,Long comUserId,Integer turnTableRuleType,Integer changeTimes){
+        if (comUser==null){
+            comUser = comUserService.getUserById(comUserId);
+        }
+        //先判断是有转盘活动
+        List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(turnTableRuleType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
+        if (turnTableRules!=null&&turnTableRules.size()>0){
+            SfTurnTableRule rule = turnTableRules.get(0);
+            return userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(), changeTimes,comUser.getId(),rule.getTurnTableId());
+        }
+        return null;
+    }
 
     /**
      * 减少或者增加 用户转盘的次数

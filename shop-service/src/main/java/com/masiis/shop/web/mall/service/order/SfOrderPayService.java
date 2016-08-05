@@ -184,7 +184,7 @@ public class SfOrderPayService {
             updateDisBillAmount(order,orderItems);
             //增加抽奖次数
             ComUser comUser = userService.getUserById(order.getUserId());
-            addUserTurnTableTimes(comUser);
+            userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.C.getCode(), com.masiis.shop.common.constant.mall.SysConstants.MALL_TURN_TABLE_RULE_TIMES);
             //微信短信提醒
             orderNotice(comUser, order, orderItems);
         } catch (Exception e) {
@@ -317,19 +317,6 @@ public class SfOrderPayService {
     private void updateDisBillAmount(SfOrder order,List<SfOrderItem> orderItems){
         updateShopUserDisBillAmount(order,orderItems);
         updateDisUserBillAmount(order,orderItems);
-    }
-
-    /**
-     * 增加抽奖的次数
-     * @param comUser
-     */
-    private void addUserTurnTableTimes(ComUser comUser){
-        //先判断是有转盘活动
-        List<SfTurnTableRule>  turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
-        if (turnTableRules!=null&&turnTableRules.size()>0){
-            SfTurnTableRule rule = turnTableRules.get(0);
-             userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(),SysConstants.MALL_TURN_TABLE_RULE_TIMES,comUser.getId(),rule.getTurnTableId());
-        }
     }
 
 

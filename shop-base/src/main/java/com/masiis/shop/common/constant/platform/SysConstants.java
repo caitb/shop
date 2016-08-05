@@ -62,5 +62,6 @@ public class SysConstants {
     /*商品等级图片*/
     public static final String  AGENT_LEVEL_PRODUCT_ICON_URL = PropertiesUtils.getStringValue("agent_level_product_icon_url");
 
+    public static final Integer  PLATFORM_TURN_TABLE_RULE_TIMES = PropertiesUtils.getIntValue("platform.turn.table.rule.times");//小铺大转盘抽奖次数
 
 }

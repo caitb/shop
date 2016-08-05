@@ -681,14 +681,17 @@
                ,bc.region_name       regionName
                ,bc.address           address
                ,bc.zip               zip
+               ,bi.sku_name          skuName
+               ,bi.quantity          quantity
         FROM
                pf_border bo
-        LEFT JOIN com_user pu ON pu.id = bo.user_pid
+        LEFT JOIN com_user                  pu  ON pu.id = bo.user_pid
         LEFT JOIN pf_border_recommen_reward brr ON brr.pf_border_id = bo.id
-        LEFT JOIN com_user ru ON ru.id = brr.recommen_user_id
-        LEFT JOIN com_user u ON u.id = bo.user_id
-        LEFT JOIN pf_border_payment bp ON bp.pf_border_id = bo.id AND bp.is_enabled = 1
-        LEFT JOIN pf_border_consignee bc ON bc.pf_border_id = bo.id
+        LEFT JOIN com_user                  ru  ON ru.id = brr.recommen_user_id
+        LEFT JOIN com_user                  u   ON u.id = bo.user_id
+        LEFT JOIN pf_border_payment         bp  ON bp.pf_border_id = bo.id AND bp.is_enabled = 1
+        LEFT JOIN pf_border_consignee       bc  ON bc.pf_border_id = bo.id
+        LEFT JOIN pf_border_item            bi  ON bi.pf_border_id = bo.id
         WHERE
               bo.order_status = 7
           AND bo.order_type   = 2

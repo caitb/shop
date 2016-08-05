@@ -172,6 +172,22 @@
                                                             <input type="hidden" name="sfOrderId" >
 
                                                             <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 订单号 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="orderCodeV"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 商品 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="skuName"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 收货人 </div>
 
                                                                 <div class="profile-info-value">
@@ -587,6 +603,8 @@
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
+                                $('#orderCodeV').html(row.orderCode);
+                                $('#skuName').html(row.skuName+'&nbsp;×&nbsp;'+row.quantity);
                                 $('#consignee').html(row.consignee);
                                 $('#address').html(row.provinceName+row.cityName+row.regionName+row.address);
                                 $('#mobile').html(row.mobile);

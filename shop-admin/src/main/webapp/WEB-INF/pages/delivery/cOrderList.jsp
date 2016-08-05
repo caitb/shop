@@ -202,6 +202,14 @@
                                                             </div>
 
                                                             <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 购买人 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="buyUser"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 收货人 </div>
 
                                                                 <div class="profile-info-value">
@@ -230,14 +238,6 @@
 
                                                                 <div class="profile-info-value">
                                                                     <span id="postcode"></span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="profile-info-row">
-                                                                <div class="profile-info-name"> 购买人 </div>
-
-                                                                <div class="profile-info-value">
-                                                                    <span id="buyUser"></span>
                                                                 </div>
                                                             </div>
 

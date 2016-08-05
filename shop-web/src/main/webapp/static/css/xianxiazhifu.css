@@ -24,6 +24,15 @@ body .wrap .sec1 {
     border: 1px solid #CECECE;
     background: #FFFFFF;
     padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.sec1 h3{
+    text-align: center;
+    padding: 15px 0;
+    margin: 0 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #F6F6F6;
+    margin-bottom: 5px;
 }
 body .wrap .sec1 > div {
     background: #E6EBF1;
@@ -50,9 +59,8 @@ body .wrap .sec1 p span {
 }
 body .wrap .sec1 > h1 {
     margin: 0 10px;
-    margin-top: 20px;
     font-size: 12px;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 body .wrap .sec1 > h1 span {
     display: inline-block;
@@ -73,11 +81,12 @@ body .wrap .sec1 h2 span {
     font-size: 12px;
 }
 body .wrap .sec1 h2 span:nth-child(1) {
-    width: 70px;
+    width: 75px;
 }
 body .wrap > h1 {
     margin: 0 10px;
     margin-top: 1em;
+    margin-bottom: 5px;
 }
 body .wrap > img {
     width: 100%;

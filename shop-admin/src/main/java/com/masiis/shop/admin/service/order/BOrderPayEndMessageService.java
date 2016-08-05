@@ -138,6 +138,10 @@ public class BOrderPayEndMessageService {
                 pushMessageRecommenRebate(pfBorder, comUser, recommenUser, pfBorderRecommenReward, simpleDateFormat, numberFormat);
             }
         }
+        //代理，补货，升级 发送大转盘抽奖提醒
+        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
+            sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
+        }
     }
 
     /**
@@ -184,6 +188,32 @@ public class BOrderPayEndMessageService {
                 pushMoblieMessageSupplement(comUser,pComUser,pfBorder,pfBorderItems,comAgentLevel,true);
             }
         }
+    }
+
+    /**
+     * 代理，补货，升级 发送大转盘抽奖提醒
+     * @param comUser
+     * @param pfBorder
+     * @param pfBorderPayment
+     * @param pfBorderItems
+     * @param comAgentLevel
+     * @param simpleDateFormat
+     * @param numberFormat
+     */
+    private void sendTurnTableGiftWxNotice(ComUser comUser,
+                                           PfBorder pfBorder,
+                                           PfBorderPayment pfBorderPayment,
+                                           List<PfBorderItem> pfBorderItems,
+                                           ComAgentLevel comAgentLevel,
+                                           SimpleDateFormat simpleDateFormat,
+                                           NumberFormat numberFormat){
+        String[] params = new String[4];
+        params[0] = numberFormat.format(pfBorder.getPayAmount());
+        params[1] = pfBorderPayment.getPayTypeName();
+        params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
+        params[3] = simpleDateFormat.format(pfBorder.getPayTime());
+        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/turnTableDetailShow/getTurnTableInfo.html";
+        WxPFNoticeUtils.getInstance().paySuccessWithAwardNotice(comUser, params,url);
     }
 
     /**

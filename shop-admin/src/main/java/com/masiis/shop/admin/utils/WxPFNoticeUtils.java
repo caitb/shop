@@ -773,7 +773,7 @@ public class WxPFNoticeUtils {
      * @param params 参数数组,(第一个,抽奖次数; 第二个,支付金额; 第三个,支付方式; 第四个,支付详情; 第五个,支付时间)
      * @return  返回是否成功调用
      */
-    public Boolean paySuccessWithAwardNotice(ComUser user, String[] params) {
+    public Boolean paySuccessWithAwardNotice(ComUser user, String[] params, String url) {
         WxPFPartnerApplyOK applyOK = new WxPFPartnerApplyOK();
         WxNoticeReq<WxPFPartnerApplyOK> req = new WxNoticeReq<>(applyOK);
 
@@ -785,6 +785,7 @@ public class WxPFNoticeUtils {
         applyOK.setKeyword4(new WxNoticeDataItem(params[4], null));
 
         req.setTouser(getOpenIdByComUser(user));
+        req.setUrl(url);
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
 
         return wxNotice(WxCredentialUtils.getInstance()

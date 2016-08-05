@@ -39,21 +39,22 @@ public class TurnTableDetailShowController extends BaseController {
                 SfTurnTableRuleTypeEnum.B.getCode(),
                 SfTurnTableRuleStatusEnum.EFFECT.getCode(),
                 SfTurnTableStatusEnum.ING.getCode());
-        model.addAttribute("turnTablelInfos",turnTablelInfos);
-        model.addAttribute("turnTableId",turnTablelInfos.get(0).getTurnTableId());
-        model.addAttribute("turnTableRule",turnTablelInfos.get(0).getTurnTableRule());
+        if (turnTablelInfos!=null&&turnTablelInfos.size()>0){
+            model.addAttribute("turnTablelInfos",turnTablelInfos);
+            model.addAttribute("turnTableId",turnTablelInfos.get(0).getTurnTableId());
+            model.addAttribute("turnTableRule",turnTablelInfos.get(0).getTurnTableRule());
 /*        model.addAttribute("giftIdMap",turnTablelInfos.get(0).getGiftIdMap());
         model.addAttribute("giftNameMap",turnTablelInfos.get(0).getGiftNameMap());
         model.addAttribute("giftImgMap",turnTablelInfos.get(0).getGiftImgMap());*/
-        if (turnTablelInfos.get(0).getUserTurnTable()!=null){
-            model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
-            model.addAttribute("noUsedTimes",turnTablelInfos.get(0).getUserTurnTable().getNotUsedTimes());
-            model.addAttribute("isPurchaseSku","true");
-        }else{
-            model.addAttribute("isPurchaseSku","false");
-            model.addAttribute("noUsedTimes",0);
+            if (turnTablelInfos.get(0).getUserTurnTable()!=null){
+                model.addAttribute("userTurnTable",turnTablelInfos.get(0).getUserTurnTable());
+                model.addAttribute("noUsedTimes",turnTablelInfos.get(0).getUserTurnTable().getNotUsedTimes());
+                model.addAttribute("isPurchaseSku","true");
+            }else{
+                model.addAttribute("isPurchaseSku","false");
+                model.addAttribute("noUsedTimes",0);
+            }
         }
-
         return "promotion/guser/turnTableGiftShow";
     }
 

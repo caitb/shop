@@ -136,6 +136,15 @@
         <h2>后台正在为您生成店铺，请稍等...</h2>
     </div>
 </div>
+<div class="black" style="display: block">
+    <div class="backb"></div>
+    <div class="backi">
+        <img src="${path}/static/images/cbg.png" alt="" class="cbg"/>
+        <p>获得${turnTableRuleTimes}次抽奖机会</p>
+        <img onclick="goToReceiveGift()" src="${path}/static/images/cbtn.png" alt="" class="cbtn"/>
+        <img  onclick="closeGiftWindow()" src="${path}/static/images/xx.png" alt="" class="x"/>
+    </div>
+</div>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="${path}/static/js/hideWXShare.js"></script>
@@ -158,9 +167,17 @@
     function timedMsg() {
         var t = setTimeout(function () {
                 $(".back_h").hide();
+                $(".black").show();
         }, 3000);
     }
     timedMsg();
+    $(".black").show();
+    function closeGiftWindow(){
+        $(".black").hide();
+    }
+    function goToReceiveGift(){
+        window.location.href = "${path}/turnTableDetailShow/getTurnTableInfo.html";
+    }
 </script>
 </body>
 </html>

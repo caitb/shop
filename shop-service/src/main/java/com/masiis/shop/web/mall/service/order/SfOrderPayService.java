@@ -1,5 +1,8 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
+import com.masiis.shop.common.enums.promotion.SfUserTurnTableTimesTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -24,6 +27,8 @@ import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -84,7 +89,10 @@ public class SfOrderPayService {
     private SfShopMapper sfShopMapper;
     @Resource
     private SfShopService sfShopService;
-
+    @Resource
+    private SfTurnTableRuleService turnTableRuleService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
 
     /**
      * 获得需要支付的订单的信息
@@ -174,8 +182,10 @@ public class SfOrderPayService {
             updateStatistics(order,orderItems);
             //更新小铺用户结算中信息
             updateDisBillAmount(order,orderItems);
-            //微信短信提醒
+            //增加抽奖次数
             ComUser comUser = userService.getUserById(order.getUserId());
+            addUserTurnTableTimes(comUser);
+            //微信短信提醒
             orderNotice(comUser, order, orderItems);
         } catch (Exception e) {
             throw new BusinessException(e);
@@ -308,6 +318,21 @@ public class SfOrderPayService {
         updateShopUserDisBillAmount(order,orderItems);
         updateDisUserBillAmount(order,orderItems);
     }
+
+    /**
+     * 增加抽奖的次数
+     * @param comUser
+     */
+    private void addUserTurnTableTimes(ComUser comUser){
+        //先判断是有转盘活动
+        List<SfTurnTableRule>  turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
+        if (turnTableRules!=null&&turnTableRules.size()>0){
+            SfTurnTableRule rule = turnTableRules.get(0);
+             userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(),3,comUser.getId(),rule.getTurnTableId());
+        }
+    }
+
+
     /**
      * 更新小铺用户人结算中信息
      * 结算中(结算中 = 之前结算中 + (商品的购买价格 - 商品的分润 -  代理运费 ) )

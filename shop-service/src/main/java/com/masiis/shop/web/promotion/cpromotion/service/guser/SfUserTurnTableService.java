@@ -51,17 +51,28 @@ public class SfUserTurnTableService {
                 sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()-changeTimes);
                 //已使用的次数
                 sfUserTurnTable.setUsedTimes(sfUserTurnTable.getUsedTimes()+changeTimes);
+                sfUserTurnTable.setUpdateTime(new Date());
+                sfUserTurnTable.setRemark("抽奖减少次数");
                 i = updateSfUserTurnTable(sfUserTurnTable);
             }
         }else if (type.equals(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode())){
-                sfUserTurnTable = new SfUserTurnTable();
-                sfUserTurnTable.setTurnTableId(turnTableId);
-                sfUserTurnTable.setCreateTime(new Date());
-                sfUserTurnTable.setCreateMan(userId);
-                sfUserTurnTable.setNotUsedTimes(0);
-                //未使用的次数
-                sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()-changeTimes);
-                i = insert(sfUserTurnTable);
+                SfUserTurnTable userTurnTable = getSfUserTurnTable(userId,turnTableId);
+                if (userTurnTable!=null){
+                    sfUserTurnTable.setNotUsedTimes(userTurnTable.getNotUsedTimes()+changeTimes);
+                    sfUserTurnTable.setUpdateTime(new Date());
+                    sfUserTurnTable.setRemark("下单更新抽奖次数");
+                    i = updateSfUserTurnTable(sfUserTurnTable);
+                }else {
+                    sfUserTurnTable = new SfUserTurnTable();
+                    sfUserTurnTable.setTurnTableId(turnTableId);
+                    sfUserTurnTable.setCreateTime(new Date());
+                    sfUserTurnTable.setCreateMan(userId);
+                    sfUserTurnTable.setNotUsedTimes(0);
+                    //未使用的次数
+                    sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()-changeTimes);
+                    sfUserTurnTable.setRemark("下单新增抽奖次数");
+                    i = insert(sfUserTurnTable);
+                }
             }
         if (i!=1){
             throw new BusinessException("更新或增加用户转盘次数失败");

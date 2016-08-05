@@ -799,6 +799,17 @@
     }
 
     $('#submitDeliveryForm').on('click', function(){
+        submitDeliveryForm();
+    });
+
+    $('#freight').keypress(function(event){
+        if(event.keyCode == 13){
+            submitDeliveryForm();
+            return false;
+        }
+    });
+
+    function submitDeliveryForm(){
         $('#shipManName').val($('#shipName option:selected').text());
         if(!$('#freight').val()){
             $.gritter.add({
@@ -836,8 +847,7 @@
                 $('#submitDeliveryForm').removeAttr('disabled');
             }
         });
-    });
-
+    }
 
 </script>
 </body>

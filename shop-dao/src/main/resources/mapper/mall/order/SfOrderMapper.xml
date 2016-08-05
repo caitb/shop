@@ -371,6 +371,7 @@
         WHERE
         <![CDATA[
                 o.order_status = 7
+                AND o.pay_status = 1 AND o.ship_status = 0 AND o.send_type = 1
                 AND NOT EXISTS(SELECT 0 FROM sf_order a
                 INNER JOIN sf_order_item b ON a.id=b.sf_order_id
                 INNER JOIN pf_user_sku_stock c ON a.shop_user_id=c.user_id AND b.sku_id=c.sku_id

@@ -172,6 +172,34 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 下级加入通知(升级方式加入，不需要给一次性奖励)
+     *
+     * @param pUser 上级代理用户对象
+     * @param user  下级代理用户对象
+     * @param params    (第一个,推荐人; 第二个,加入时间; 第三个,商品名称)
+     * @Param url   查看详情
+     * @return  返回是否成功调用
+     */
+    public Boolean partnerJoinByUpgradeWithNoAwardNotice(ComUser pUser, ComUser user, String[] params, String url) {
+        WxPFPartnerJoin join = new WxPFPartnerJoin();
+        WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
+
+        join.setFirst(new WxNoticeDataItem("您有一个新的" + params[2] + "下级加入。", null));
+        join.setRemark(new WxNoticeDataItem("此人是通过升级方式成为您的下级，ta的推荐人是"
+                + params[0] + "。点击查看详情", null));
+        join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
+        join.setKeyword2(new WxNoticeDataItem(params[1], null));
+        join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
+
+        req.setTouser(getOpenIdByComUser(pUser));
+        // 调用下线加入模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_JOIN_NOTICE);
+        req.setUrl(url);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 实名认证通知
      *
      * @param user

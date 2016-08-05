@@ -245,6 +245,9 @@ public class SfOrderService {
         sfUserAccountService.countingSfOrder(sfOrder);
         // 进行订单状态修改
         sfOrder.setOrderStatus(3);
+        sfOrder.setShipStatus(9);//已收货
+        sfOrder.setIsReceipt(1);
+        sfOrder.setReceiptTime(new Date());
         sfOrderMapper.updateByPrimaryKey(sfOrder);
         SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
         sfOrderOperationLog.setCreateMan(sfOrder.getUserId());

@@ -15,7 +15,7 @@ public class TurnTablelInfo extends SfTurnTable{
 
     private Integer turnTableId;
     private List<TurnTableGiftInfo> turnTableGiftInfo;
-    private List<SfUserTurnTableRecord> userTurnTableRecords;
+    private List<UserTurnTableRecordInfo> userTurnTableRecordInfos;
     private Map<Integer,Integer> giftIdMap;//<序号,id>
     private Map<Integer,String> giftNameMap;//<序号,name>
     private Map<Integer,String> giftImgMap;//<序号,path>
@@ -64,12 +64,12 @@ public class TurnTablelInfo extends SfTurnTable{
         this.userTurnTable = userTurnTable;
     }
 
-    public List<SfUserTurnTableRecord> getUserTurnTableRecords() {
-        return userTurnTableRecords;
+    public List<UserTurnTableRecordInfo> getUserTurnTableRecordInfos() {
+        return userTurnTableRecordInfos;
     }
 
-    public void setUserTurnTableRecords(List<SfUserTurnTableRecord> userTurnTableRecords) {
-        this.userTurnTableRecords = userTurnTableRecords;
+    public void setUserTurnTableRecordInfos(List<UserTurnTableRecordInfo> userTurnTableRecordInfos) {
+        this.userTurnTableRecordInfos = userTurnTableRecordInfos;
     }
 
     public Map<Integer, Integer> getGiftIdMap() {

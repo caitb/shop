@@ -8,6 +8,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.promotion.TurnTableGiftInfo;
 import com.masiis.shop.dao.beans.promotion.TurnTablelInfo;
+import com.masiis.shop.dao.beans.promotion.UserTurnTableRecordInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.utils.RandomRateUtil;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableGiftService;
@@ -83,8 +84,8 @@ public class TurnTableDetailShowService {
             SfUserTurnTable userTurnTable = userTurnTableService.getSfUserTurnTable(comUser.getId(),turnTable.getId());
             turnTablelInfo.setUserTurnTable(userTurnTable);
             //转盘中的奖品的所有中奖纪录
-            List<SfUserTurnTableRecord> records = userTurnTableRecordService.getRecordByTableId(turnTable.getId());
-            turnTablelInfo.setUserTurnTableRecords(records);
+            List<UserTurnTableRecordInfo> recordInfos = userTurnTableRecordService.getRecordInfoByTableId(turnTable.getId());
+            turnTablelInfo.setUserTurnTableRecordInfos(recordInfos);
             turnTablelInfos.add(turnTablelInfo);
         }
         return turnTablelInfos;

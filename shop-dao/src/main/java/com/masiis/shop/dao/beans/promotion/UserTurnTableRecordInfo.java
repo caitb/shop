@@ -10,6 +10,7 @@ public class UserTurnTableRecordInfo extends SfUserTurnTableRecord {
     private String turnTableGiftName;
     private String statusName;
     private String createTimeString;
+    private String phone;
 
 
     public String getTurnTableGiftName() {
@@ -34,5 +35,13 @@ public class UserTurnTableRecordInfo extends SfUserTurnTableRecord {
 
     public void setCreateTimeString(String createTimeString) {
         this.createTimeString = createTimeString;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

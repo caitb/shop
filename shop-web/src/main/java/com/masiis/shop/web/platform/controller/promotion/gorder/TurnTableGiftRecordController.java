@@ -31,7 +31,7 @@ public class TurnTableGiftRecordController extends BaseController {
     @RequestMapping("/getPromotionGorderPageInfo.html")
     public String getGiftedRecordInfo(HttpServletRequest request,Model model) {
         ComUser comUser =  getComUser(request);
-        List<UserTurnTableRecordInfo> records =  userTurnTableRecordService.getRecordInfoByUserId(comUser.getId());
+        List<UserTurnTableRecordInfo> records =  userTurnTableRecordService.getRecordInfoByUserId(comUser.getId(),null);
         model.addAttribute("records",records);
         return "promotion/gorder/turnTableGiftRecord";
     }

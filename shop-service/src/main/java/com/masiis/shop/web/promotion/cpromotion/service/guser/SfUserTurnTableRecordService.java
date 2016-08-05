@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfTurnTableGift;
 import com.masiis.shop.dao.po.SfUserTurnTableRecord;
 import com.masiis.shop.web.common.service.ComGiftService;
+import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableGiftService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public class SfUserTurnTableRecordService {
     private ComGiftService comGiftService;
     @Resource
     private SfTurnTableGiftService turnTableGiftService;
+    @Resource
+    private UserService comUserService;
 
     public SfUserTurnTableRecord selectByPrimaryKey(Long id){
         return  userTurnTableRecordMapper.selectByPrimaryKey(id);
@@ -37,6 +40,14 @@ public class SfUserTurnTableRecordService {
 
     public List<SfUserTurnTableRecord> getRecordByTableId(Integer turnTableId){
         return userTurnTableRecordMapper.getRecordByTableId(turnTableId);
+    }
+
+    public List<UserTurnTableRecordInfo> getRecordInfoByTableId(Integer turnTableId){
+        List<SfUserTurnTableRecord> records = getRecordByTableId(turnTableId);
+        if (records!=null){
+            return  getRecordInfoByUserId(null,records);
+        }
+        return null;
     }
 
     public SfUserTurnTableRecord getRecordByUserIdAndTurnTableIdAndGiftId(Long userId,Integer turnTableId,Integer giftId ){
@@ -94,8 +105,10 @@ public class SfUserTurnTableRecordService {
      * @param userId
      * @return
      */
-    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId){
-        List<SfUserTurnTableRecord>  records =  userTurnTableRecordMapper.getRecordInfoByUserId(userId);
+    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId,List<SfUserTurnTableRecord>  records ){
+        if (records==null){
+            records =  userTurnTableRecordMapper.getRecordInfoByUserId(userId);
+        }
         List<UserTurnTableRecordInfo> recordInfoList = new ArrayList<UserTurnTableRecordInfo>();
         for (SfUserTurnTableRecord record:records){
             UserTurnTableRecordInfo recordInfo = new UserTurnTableRecordInfo();
@@ -112,6 +125,10 @@ public class SfUserTurnTableRecordService {
             ComGift comGift = comGiftService.getComGiftById(record.getGiftId());
             if (comGift!=null){
                 recordInfo.setTurnTableGiftName(comGift.getName());
+            }
+            ComUser comUser = comUserService.getUserById(userId);
+            if (comUser!=null){
+                recordInfo.setPhone(comUser.getMobile());
             }
             recordInfoList.add(recordInfo);
         }

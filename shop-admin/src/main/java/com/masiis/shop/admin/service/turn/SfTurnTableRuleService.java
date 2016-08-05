@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.turn;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableRuleMapper;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.SfTurnTable;
@@ -22,6 +23,19 @@ public class SfTurnTableRuleService {
 
     public List<SfTurnTableRule> getRuleByTypeAndStatus(Integer type,Integer status){
         return turnTableRuleMapper.getRuleByTypeAndStatus(type,status);
+    }
+
+    /**
+     * 判断是否有大转盘抽奖活动
+     * @param turnTableRuleType
+     * @return
+     */
+    public Boolean isTurnTableRule(Integer turnTableRuleType){
+        List<SfTurnTableRule>  turnTableRules = getRuleByTypeAndStatus(turnTableRuleType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
+        if (turnTableRules==null||turnTableRules.size()==0){
+            return false;
+        }
+        return true;
     }
 
     public void save(SfTurnTableRule rule, PbUser pbUser) {

@@ -71,7 +71,6 @@
 }
 .wrap .box main .all .sec1 > p span {
     font-size: 12px;
-    color: #999999;
     text-align: center;
     width: 67px;
     display: inline-block;
@@ -96,6 +95,7 @@
     margin-right: 10px;
     color: #FF6F35;
     line-height: 35px;
+    font-size: 12px;
 }
 .wrap .box main .all .sec1 .shangpin {
     background: white;
@@ -242,13 +242,22 @@
 .back_pay{
     position: fixed;
     left:5%;
-    top:20%;
+    top: 50%;
     width:90%;
     border-radius: 5px;
     background: #fff;
     z-index: 11;
     overflow: hidden;
     display: none;
+    margin-top: -252px;
+}
+.back_pay h3{
+    text-align: center;
+    padding: 15px 0;
+    margin: 0 10px;
+    font-size: 16px;
+    border-bottom: 1px solid #F6F6F6;
+    margin-bottom: 5px;
 }
 .back_pay button{
     margin: 1em 0 1em 15%;
@@ -302,14 +311,15 @@
 }
 .back_pay h2{
     margin: 0 25px;
-    border-bottom: 1px solid #cecece;
+    border-bottom: 1px solid #f6f6f6;
 }
 .back_pay h2 span{
     display: inline-block;
     line-height: 35px;
+    font-size: 12px;
 }
 .back_pay h2 span:nth-child(1){
-    width:70px;
+    width: 75px;
 }
 .wrap .back {
     width: 100%;

@@ -109,11 +109,11 @@
             </div>
         </div>
     </c:forEach>
-    <script src="/static/js/msclass.js"></script>
+<%--    <script src="/static/js/msclass.js"></script>--%>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
 <script>
-	new Marquee(["hottitle","ulid"],0,2,"80%","40%",150,0,0);
+/*	new Marquee(["hottitle","ulid"],0,2,"80%","40%",150,0,0);*/
 </script>
 <script>
 $(function(){

@@ -85,6 +85,8 @@ public class SfOrderPayController extends BaseController {
         log.info("userPid--------------------"+request.getSession().getAttribute("userPid"));
         model.addAttribute("userPid",request.getSession().getAttribute("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
+        model.addAttribute("isTurnTableRule",map.get("isTurnTableRule"));
+        model.addAttribute("turnTableRuleTimes",SysConstants.MALL_TURN_TABLE_RULE_TIMES);
         return "mall/order/paySuccess";
     }
 

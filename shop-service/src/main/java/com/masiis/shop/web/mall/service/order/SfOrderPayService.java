@@ -328,7 +328,7 @@ public class SfOrderPayService {
         List<SfTurnTableRule>  turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
         if (turnTableRules!=null&&turnTableRules.size()>0){
             SfTurnTableRule rule = turnTableRules.get(0);
-             userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(),3,comUser.getId(),rule.getTurnTableId());
+             userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(),SysConstants.MALL_TURN_TABLE_RULE_TIMES,comUser.getId(),rule.getTurnTableId());
         }
     }
 
@@ -576,6 +576,9 @@ public class SfOrderPayService {
             //订单信息
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
+            //查看是否有进行中的活动，如果有则显示抽奖，如果没有则不显示抽奖
+            Boolean bl = isTurnTableRule();
+            map.put("isTurnTableRule",bl+"");
             //获得用户的分销关系的父id
            /* Long userPid = getUserPid(order.getUserId());
             map.put("userPid", userPid);*/
@@ -585,6 +588,13 @@ public class SfOrderPayService {
         return map;
     }
 
+    private Boolean isTurnTableRule(){
+        List<SfTurnTableRule>  turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
+        if (turnTableRules==null||turnTableRules.size()==0){
+            return false;
+        }
+        return true;
+    }
 
     /**
      * 查看订单详情

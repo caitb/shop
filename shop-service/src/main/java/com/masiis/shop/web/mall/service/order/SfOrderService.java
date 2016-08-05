@@ -238,6 +238,7 @@ public class SfOrderService {
      *
      * @param sfOrder
      */
+    @Transactional
     public void confirmOrderReceive(SfOrder sfOrder) {
         //SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
         // 进行订单分润和代理商销售额、收入计算
@@ -252,5 +253,23 @@ public class SfOrderService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark("订单完成");
         logMapper.insert(sfOrderOperationLog);
+    }
+
+    /**
+     * 查询指定过期发货时间的待收货订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    public List<SfOrder> findListByStatusAndShipTime(Date expiraTime, Integer orderStatus, int payStatus) {
+        log.info("查询发货时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
+                + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + "的订单");
+        // 查询
+        List<SfOrder> resList = sfOrderMapper.selectByStatusAndShipTime(expiraTime, orderStatus, payStatus);
+        if(resList == null || resList.size() == 0)
+            return null;
+        return resList;
     }
 }

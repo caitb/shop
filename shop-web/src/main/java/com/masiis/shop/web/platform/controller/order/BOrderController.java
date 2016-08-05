@@ -316,6 +316,7 @@ public class BOrderController extends BaseController {
 //        mav.addObject("isUserForcus", isUserForcus);
         Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
         mav.addObject("isTurnTableRule",bl+"");
+        mav.addObject("turnTableRuleTimes", com.masiis.shop.common.constant.platform.SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
         return mav;
     }
 

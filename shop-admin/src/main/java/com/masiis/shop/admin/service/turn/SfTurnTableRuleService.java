@@ -20,6 +20,10 @@ public class SfTurnTableRuleService {
     @Resource
     private SfTurnTableRuleMapper turnTableRuleMapper;
 
+    public List<SfTurnTableRule> getRuleByTypeAndStatus(Integer type,Integer status){
+        return turnTableRuleMapper.getRuleByTypeAndStatus(type,status);
+    }
+
     public void save(SfTurnTableRule rule, PbUser pbUser) {
         if(rule.getId() == null) {
             insert(rule, pbUser);

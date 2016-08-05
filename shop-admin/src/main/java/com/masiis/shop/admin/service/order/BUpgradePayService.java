@@ -3,11 +3,14 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuAgentService;
+import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.shop.SfShopSkuService;
 import com.masiis.shop.admin.service.user.*;
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
@@ -72,6 +75,8 @@ public class BUpgradePayService {
     private UpgradeWechatNewsService upgradeWechatNewsService;
     @Resource
     private SkuAgentService skuAgentService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -120,6 +125,10 @@ public class BUpgradePayService {
         log.info("修改通知单的状态----start");
         updateUpgradeNotice(pfBorder.getId());
         log.info("修改通知单的状态----end");
+        //增加抽奖的次数
+        log.info("增加抽奖的次数----start");
+        userTurnTableService.addTimes(null,pfBorder.getUserId(), SfTurnTableRuleTypeEnum.B.getCode(), SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        log.info("增加抽奖的次数----end");
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             log.info("------处理平台发货类型订单----start");

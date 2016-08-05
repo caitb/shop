@@ -562,7 +562,7 @@ public class SfOrderPayService {
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
             //查看是否有进行中的活动，如果有则显示抽奖，如果没有则不显示抽奖
-            Boolean bl = isTurnTableRule();
+            Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.C.getCode());
             map.put("isTurnTableRule",bl+"");
             //获得用户的分销关系的父id
            /* Long userPid = getUserPid(order.getUserId());
@@ -571,14 +571,6 @@ public class SfOrderPayService {
             throw new BusinessException(e);
         }
         return map;
-    }
-
-    private Boolean isTurnTableRule(){
-        List<SfTurnTableRule>  turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
-        if (turnTableRules==null||turnTableRules.size()==0){
-            return false;
-        }
-        return true;
     }
 
     /**

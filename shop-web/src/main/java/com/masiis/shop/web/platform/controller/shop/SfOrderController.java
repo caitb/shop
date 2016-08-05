@@ -251,7 +251,7 @@ public class SfOrderController extends BaseController {
             }
             for (SfOrder sfOrder :sfOrders){
                 sfOrder.setOrderStatusDes(coverCodeSfBorderStatus(sfOrder.getOrderStatus()));//订单状态描述
-                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getRealName());
+                sfOrder.setCreateUserName(userService.getUserById(sfOrder.getCreateMan()).getWxNkName());
                 if(sfOrder.getSendType()==1){
                     sfOrder.setSendTypeDes("平台发货");
                 }

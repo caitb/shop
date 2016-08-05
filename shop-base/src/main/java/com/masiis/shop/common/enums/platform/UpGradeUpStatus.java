@@ -66,9 +66,8 @@ public enum UpGradeUpStatus {
     public static final Map<Integer,String> upStatusPickList = new HashMap<>();
 
     static {
-        for (UpGradeStatus s : EnumSet.allOf(UpGradeStatus.class)){
+        for (UpGradeUpStatus s : EnumSet.allOf(UpGradeUpStatus.class)){
             upStatusPickList.put(s.getCode(),s.getMessage());
         }
     }
-
 }

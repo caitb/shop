@@ -84,8 +84,6 @@ public class SfOrderPayService {
     @Resource
     private SfUserAccountService sfUserAccountService;
     @Resource
-    private SkuService skuService;
-    @Resource
     private SfShopMapper sfShopMapper;
     @Resource
     private SfShopService sfShopService;

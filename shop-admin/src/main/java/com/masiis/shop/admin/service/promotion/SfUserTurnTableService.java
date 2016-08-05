@@ -28,8 +28,6 @@ public class SfUserTurnTableService {
     @Resource
     private SfTurnTableRuleService turnTableRuleService;
     @Resource
-    private SfUserTurnTableService userTurnTableService;
-    @Resource
     private ComUserService comUserService;
 
     public SfUserTurnTable getSfUserTurnTable(Long userId,Integer turnTableId){
@@ -60,7 +58,7 @@ public class SfUserTurnTableService {
         List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(turnTableRuleType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
         if (turnTableRules!=null&&turnTableRules.size()>0){
             SfTurnTableRule rule = turnTableRules.get(0);
-            return userTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(), changeTimes,comUser.getId(),rule.getTurnTableId());
+            return reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(), changeTimes,comUser.getId(),rule.getTurnTableId());
         }
         return null;
     }

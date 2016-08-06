@@ -56,32 +56,65 @@ public class RandomRateUtil {
     }
 
 
-    private static void initRate(Map<Integer,Double> map){
+    private static void initRate(Map<Integer,Double> map,Map<Integer,Boolean> quantityEnoughMap){
         for (Integer key : map.keySet()) {
             switch (key){
                 case 0:
-                    rate0 = map.get(key)/100;
+                    if (quantityEnoughMap.get(0)){
+                        rate0 = map.get(key)/100;
+                    }else{
+                        rate0 = 0;
+                    }
                     break;
                 case 1:
-                    rate1 = map.get(key)/100;
+                    if (quantityEnoughMap.get(1)){
+                        rate1 = map.get(key)/100;
+                    }else{
+                        rate1 = 0;
+                    }
                     break;
                 case 2:
-                    rate2 = map.get(key)/100;
+                    if (quantityEnoughMap.get(2)){
+                        rate2 = map.get(key)/100;
+                    }else{
+                        rate2 = 0;
+                    }
                     break;
                 case 3:
-                    rate3 = map.get(key)/100;
+                    if (quantityEnoughMap.get(3)){
+                        rate3 = map.get(key)/100;
+                    }else{
+                        rate3 = 0;
+                    }
                     break;
                 case 4:
-                    rate4 = map.get(key)/100;
+                    if (quantityEnoughMap.get(4)){
+                        rate4 = map.get(key)/100;
+                    }else{
+                        rate4 = 0;
+                    }
                     break;
                 case 5:
-                    rate5 = map.get(key)/100;
+                    if (quantityEnoughMap.get(5)){
+                        rate5 = map.get(key)/100;
+                    }else{
+                        rate5 = 0;
+                    }
                     break;
                 case 6:
-                    rate6 = map.get(key)/100;
+                    if (quantityEnoughMap.get(6)){
+                        rate6 = map.get(key)/100;
+                    }else{
+                        rate6 = 0;
+                    }
+
                     break;
                 case 7:
-                    rate7 = map.get(key)/100;
+                    if (quantityEnoughMap.get(7)){
+                        rate7 = map.get(key)/100;
+                    }else{
+                        rate7 = 0;
+                    }
                     break;
                 default:
                     break;
@@ -96,10 +129,10 @@ public class RandomRateUtil {
      * @return int
      *
      */
-    public static  int percentageRandom(Map<Integer,Double> map)
+    public static  int percentageRandom(Map<Integer,Double> rateMap,Map<Integer,Boolean> quantityEnoughMap ,Map<Integer,Boolean> isGiftMap)
     {
         double randomNumber;
-        initRate(map);
+        initRate(rateMap,quantityEnoughMap);
         randomNumber = Math.random();
         if (randomNumber >= 0 && randomNumber <= rate0)
         {
@@ -141,6 +174,12 @@ public class RandomRateUtil {
                 + rate5 + rate6 + rate7)
         {
             return 7;
+        }
+        //如果条件不满足
+        for (Integer key : isGiftMap.keySet()) {
+            if (!isGiftMap.get(key)){
+                return key;
+            }
         }
         return -1;
     }

@@ -2,6 +2,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.enums.promotion.ComGiftIsGiftEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -94,11 +95,27 @@ public class TurnTableDetailShowService {
     public int getRandomByGiftRate(Integer turnTableId){
         //获取转盘中的奖品
         List<TurnTableGiftInfo> turnTableGiftInfos =  turnTableGiftService.getTurnTableGiftsByTableId(turnTableId);
-        Map<Integer,Double> map = new LinkedHashMap<>();
+        Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
+        Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
+        Map<Integer,Boolean> isGiftMap = new LinkedHashMap<>(); //是否是奖品
         for (TurnTableGiftInfo turnTableGiftInfo: turnTableGiftInfos){
-                map.put(turnTableGiftInfo.getSort(),Double.parseDouble(turnTableGiftInfo.getProbability()+""));
+            //奖品概率
+            rateMap.put(turnTableGiftInfo.getSort(),Double.parseDouble(turnTableGiftInfo.getProbability()+""));
+            //是否是奖品
+            if (turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+                isGiftMap.put(turnTableGiftInfo.getSort(),true);
+            }else{
+                isGiftMap.put(turnTableGiftInfo.getSort(),false);
+            }
+            //奖品是否还足够
+            if (turnTableGiftInfo.getGiftedQuantity()>=turnTableGiftInfo.getToatalQuantity()){
+                quantityEnoughMap.put(turnTableGiftInfo.getSort(),false);
+            }else{
+                quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
+            }
+
         }
-        int i = RandomRateUtil.getInstance().percentageRandom(map);
+        int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap);
         if (i!=-1){
             return  i;
         }else{

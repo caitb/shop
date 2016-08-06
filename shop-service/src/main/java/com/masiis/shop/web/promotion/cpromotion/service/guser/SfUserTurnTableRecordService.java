@@ -126,9 +126,18 @@ public class SfUserTurnTableRecordService {
             if (comGift!=null){
                 recordInfo.setTurnTableGiftName(comGift.getName());
             }
-            ComUser comUser = comUserService.getUserById(userId);
+            ComUser comUser = comUserService.getUserById(record.getUserId());
             if (comUser!=null){
-                recordInfo.setPhone(comUser.getMobile());
+                String mobile = comUser.getMobile();
+                recordInfo.setPhone(mobile);
+                String prefixMobile  = mobile.substring(0,3);
+                String suffixesMobile = mobile.substring(mobile.length()-3,mobile.length());
+                StringBuffer middleMobile = new StringBuffer();
+                for (int i=0;i<5;i++){
+                    middleMobile.append("*");
+                }
+                String phoneFormat = prefixMobile+middleMobile.toString()+suffixesMobile;
+                recordInfo.setPhoneFormat(phoneFormat);
             }
             recordInfoList.add(recordInfo);
         }

@@ -55,21 +55,9 @@
                        <img src="<%=path%>/static/images/zbg.png" alt="" />
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
-                                <li><span class='name'>123xxxxx123</span><span class='gift-type'>获得</span><span>123</span></li>
+                                <c:forEach items="${turnTablelInfo.userTurnTableRecordInfos}" var="recordInfo">
+                                    <li><span class='name'>${recordInfo.phoneFormat}</span><span class='gift-type'>获得</span><span>${recordInfo.turnTableGiftName}</span></li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>

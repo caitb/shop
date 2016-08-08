@@ -24,7 +24,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorderConsignee" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfGorderConsignee"  >
         insert into sf_gorder_consignee (id, create_time, sf_gorder_id, 
             user_id, consignee, mobile, 
             province_id, province_name, city_id, 

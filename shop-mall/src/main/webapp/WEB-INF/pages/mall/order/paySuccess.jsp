@@ -52,10 +52,27 @@
            <a onclick="returnHomePage()">返回首页</a>
        </div>
     </div>
+   <c:if test="${isTurnTableRule==true}">
+       <div class="black">
+           <div class="back_b"></div>
+           <div class="backi">
+               <img src="${path}/static/images/cbg.png" alt="" class="cbg"/>
+               <p>获得${turnTableRuleTimes}次抽奖机会</p>
+               <img onclick="goToReceiveGift()" src="${path}/static/images/cbtn.png" alt="" class="cbtn"/>
+               <img  onclick="closeGiftWindow()" src="${path}/static/images/xx.png" alt="" class="x"/>
+           </div>
+       </div>
+   </c:if>
 </body>
 <script>
     function returnHomePage(){
         window.location.href="${mallDomainNameAddress}/${order.shopId}/${userPid}/shop.shtml";
+    }
+    function closeGiftWindow(){
+        $(".black").hide();
+    }
+    function goToReceiveGift(){
+        window.location.href = "${path}/turnTableDetailShow/getTurnTableInfo.html";
     }
 </script>
 </html>

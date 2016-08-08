@@ -54,13 +54,11 @@ public class SysConstants {
     public static final String ID_CARD_PATH = "/static/upload/user/idCard/";
 
     public static final String  MALL_DOMAIN_NAME_ADDRESS = PropertiesUtils.getStringValue("mall.domain.name.address");//小铺域名地址
-
     /*线下支付最晚往后推迟几天 */
     public static final int  OFFINE_PAYMENT_LATEST_TIME = 7;
+
     /*升级支付最晚往后推迟几天*/
     public static final int UPGRADE_LATEST_TIME = 2;
-
     /*商品等级图片*/
     public static final String  AGENT_LEVEL_PRODUCT_ICON_URL = PropertiesUtils.getStringValue("agent_level_product_icon_url");
-
 }

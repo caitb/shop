@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.promotion.SfUserTurnTableItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_turn_table_id" property="userTurnTableId" jdbcType="BIGINT" />
+        <result column="turn_table_id" property="turnTableId" jdbcType="INTEGER" />
+        <result column="turn_table_rule_id" property="turnTableRuleId" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="times" property="times" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_turn_table_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        insert into sf_user_turn_table_item (id, create_time, user_turn_table_id, 
+            turn_table_id, turn_table_rule_id, type, 
+            times, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userTurnTableId,jdbcType=BIGINT}, 
+            #{turnTableId,jdbcType=INTEGER}, #{turnTableRuleId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+            #{times,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserTurnTableItem" >
+        update sf_user_turn_table_item
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_turn_table_id = #{userTurnTableId,jdbcType=BIGINT},
+            turn_table_id = #{turnTableId,jdbcType=INTEGER},
+            turn_table_rule_id = #{turnTableRuleId,jdbcType=INTEGER},
+            type = #{type,jdbcType=INTEGER},
+            times = #{times,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_turn_table_id, turn_table_id, turn_table_rule_id, type, 
+        times, remark
+        from sf_user_turn_table_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_turn_table_id, turn_table_id, turn_table_rule_id, type, 
+        times, remark
+        from sf_user_turn_table_item
+    </select>
+
+</mapper>

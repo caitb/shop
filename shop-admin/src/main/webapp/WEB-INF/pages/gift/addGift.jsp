@@ -100,7 +100,15 @@
                                     <input type="text" class="form-control" id="name" name="name" placeholder="" value="${gift.name}">
                                 </div>
                             </div>
-                            
+                            <div class="form-group">
+                                <label for="isGift" class="col-sm-2 control-label">是否是奖品</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="isGift" name="isGift">
+                                        <option value="0">是</option>
+                                        <option value="1">否</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="file" class="control-label col-sm-2">奖品图片</label>
                                 <div class="col-sm-9">

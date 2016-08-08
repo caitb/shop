@@ -90,10 +90,10 @@ public class PfBorderController extends BaseController {
                 conditionMap.put("orderCode", orderCode);
             }
             if(StringUtils.isNotBlank(request.getParameter("uRealName"))){
-                conditionMap.put("uRealName", "%"+new String(request.getParameter("uRealName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+                conditionMap.put("uRealName", "%"+request.getParameter("uRealName")+"%");
             }
             if(StringUtils.isNotBlank(request.getParameter("skuName"))){
-                conditionMap.put("skuName", "%"+new String(request.getParameter("skuName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+                conditionMap.put("skuName", "%"+request.getParameter("skuName")+"%");
             }
             if(orderType != null){
                 conditionMap.put("orderType", orderType);
@@ -172,7 +172,7 @@ public class PfBorderController extends BaseController {
                 conditionMap.put("orderCode", request.getParameter("orderCode"));
             }
             if(StringUtils.isNotBlank(request.getParameter("realName"))){
-                conditionMap.put("realName", "%"+new String(request.getParameter("realName").getBytes("ISO-8859-1"), "UTF-8")+"%");
+                conditionMap.put("realName", "%"+request.getParameter("realName")+"%");
             }
             if(StringUtils.isNotBlank(request.getParameter("orderType"))){
                 conditionMap.put("orderType", request.getParameter("orderType"));

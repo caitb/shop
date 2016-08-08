@@ -4,6 +4,9 @@ import com.masiis.shop.common.enums.platform.BOrderShipStatus;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.SkuStockLogType;
 import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
+import com.masiis.shop.common.enums.promotion.SfUserTurnTableTimesTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -30,6 +33,8 @@ import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
 import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,6 +112,10 @@ public class BOrderPayService {
     private BOrderPayEndMessageService bOrderPayEndMessageService;
     @Resource
     private BOrderShipService bOrderShipService;
+    @Resource
+    private SfTurnTableRuleService turnTableRuleService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
 
     /**
      * 订单支付回调入口
@@ -451,6 +460,10 @@ public class BOrderPayService {
         orderStatisticsService.statisticsOrder(pfBorder.getId());
         log.info("<14>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
+        //增加抽奖的次数
+        log.info("增加抽奖的次数----start");
+        userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.B.getCode());
+        log.info("增加抽奖的次数----end");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
@@ -522,6 +535,10 @@ public class BOrderPayService {
         orderStatisticsService.statisticsOrder(pfBorder.getId());
         log.info("<6>修改结算中数据");
         billAmountService.orderBillAmount(pfBorder.getId());
+        //增加抽奖的次数
+        log.info("增加抽奖的次数----start");
+        userTurnTableService.addTimes(null,pfBorder.getUserId(),SfTurnTableRuleTypeEnum.B.getCode());
+        log.info("增加抽奖的次数----end");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单

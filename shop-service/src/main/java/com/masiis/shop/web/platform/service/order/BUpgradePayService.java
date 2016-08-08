@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.service.order;
 
+import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
@@ -14,6 +16,7 @@ import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +81,8 @@ public class BUpgradePayService {
     private PfUserRecommendRelationService pfUserRecommendRelationService;
     @Resource
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -129,6 +134,10 @@ public class BUpgradePayService {
         log.info("修改通知单的状态----start");
         updateUpgradeNotice(pfBorder.getId());
         log.info("修改通知单的状态----end");
+        //增加抽奖的次数
+        log.info("增加抽奖的次数----start");
+        userTurnTableService.addTimes(null,pfBorder.getUserId(),SfTurnTableRuleTypeEnum.B.getCode());
+        log.info("增加抽奖的次数----end");
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             log.info("------处理平台发货类型订单----start");
@@ -618,7 +627,6 @@ public class BUpgradePayService {
             log.info("修改当前申请升级的通知单状态状态失败");
         }
     }
-
     /**
      * 修改当前申请升级的通知单状态
      *

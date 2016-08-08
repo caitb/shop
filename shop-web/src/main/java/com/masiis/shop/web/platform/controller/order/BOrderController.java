@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -17,6 +18,7 @@ import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.wx.WxPFBeanUtils;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +54,7 @@ public class BOrderController extends BaseController {
     @Resource
     private PfUserRelationService pfUserRelationService;
     @Resource
-    private PfUserSkuMapper pfUserSkuMapper;
+    private SfTurnTableRuleService turnTableRuleService;
 
     /**
      * 选择拿货方式(暂不使用)
@@ -312,6 +314,14 @@ public class BOrderController extends BaseController {
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
 //        boolean isUserForcus = WxPFUserUtils.getInstance().isUserForcusPF(comUser);
 //        mav.addObject("isUserForcus", isUserForcus);
+        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        String bl = map.get("isTurnTableRule");
+        mav.addObject("isTurnTableRule",bl);
+        if (bl.equals("true")){
+            mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }else{
+            mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }
         return mav;
     }
 
@@ -368,6 +378,14 @@ public class BOrderController extends BaseController {
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
         mv.addObject("comUser",comUser);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
+        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        String bl = map.get("isTurnTableRule");
+        mv.addObject("isTurnTableRule",bl);
+        if (bl.equals("true")){
+            mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }else{
+            mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }
         return mv;
     }
 }

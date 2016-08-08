@@ -108,11 +108,11 @@ public class BaseController {
      */
     protected ComUser getComUser(HttpServletRequest request) {
         ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
-        if (user == null) {
+/*        if (user == null) {
             return null;
         }
-        log.info("缓存user的id为----"+user.getId());
-        user = userService.getUserById(user.getId());
+        log.info("缓存user的id为----"+user.getId());*/
+        user = userService.getUserById(539L);
         return user;
     }
 

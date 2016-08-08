@@ -133,10 +133,25 @@ public class UserAddressService {
             Long  shopId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
             Integer  promoId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
             Integer  promoRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
+            Integer  turnTableId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_Id);
+            Integer  giftId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID);
+            Long  userTurnTableRecordId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
-                return getOrderAddress(orderType,agentOrderForAddressJson, supplementeOrderForAddress,  orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId,promoId,promoRuleId);
+                return getOrderAddress(orderType,
+                        agentOrderForAddressJson,
+                        supplementeOrderForAddress,
+                        orderId,
+                        skuId,
+                        selectedAddressId,
+                        pfUserSkuStockId,
+                        shopId,
+                        promoId,
+                        promoRuleId,
+                        turnTableId,
+                        giftId,
+                        userTurnTableRecordId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
@@ -152,7 +167,19 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, String agentOrderForAddressJson, String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId,Integer promoId,Integer promoRuleId) {
+    private String getOrderAddress(String orderType,
+                                   String agentOrderForAddressJson,
+                                   String supplementeOrderForAddress,
+                                   Long orderId,
+                                   Integer skuId,
+                                   Long selectedAddressId,
+                                   Long pfUserSkuStockId,
+                                   Long shopId,
+                                   Integer promoId,
+                                   Integer promoRuleId,
+                                   Integer turnTableId,
+                                   Integer giftId,
+                                   Long userTurnTableRecordId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -178,6 +205,9 @@ public class UserAddressService {
                 break;
             case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_RECEIVE_REWARD://活动领取奖励界面
                 getReceiveRewardPageAddress(sb,promoId,promoRuleId ,selectedAddressId);
+                break;
+            case com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_RECEIVE_GIFT://抽奖领取界面
+                getTurnTableReceiveGiftPageAddress(sb,turnTableId,giftId,userTurnTableRecordId,selectedAddressId);
                 break;
             default:
                 break;
@@ -338,6 +368,30 @@ public class UserAddressService {
         }
         if (!StringUtils.isEmpty(promoRuleId)) {
             sb.append("&promoRuleId=").append(promoRuleId);
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("&selectedAddressId=").append(selectedAddressId);
+        }
+    }
+
+    /**
+     * 获取小铺端转盘领取界面地址
+     * @param sb
+     * @param turnTableId
+     * @param giftId
+     * @param userTurnTableRecordId
+     * @param selectedAddressId
+     */
+    private void getTurnTableReceiveGiftPageAddress(StringBuffer sb,Integer turnTableId,Integer giftId, Long userTurnTableRecordId,Long selectedAddressId) {
+        sb.append("/turnTableGorder/getTurnTableGiftInfo.html?");
+        if (!StringUtils.isEmpty(turnTableId)) {
+            sb.append("turnTableId=").append(turnTableId);
+        }
+        if (!StringUtils.isEmpty(giftId)) {
+            sb.append("&giftId=").append(giftId);
+        }
+        if (!StringUtils.isEmpty(userTurnTableRecordId)) {
+            sb.append("&userTurnTableRecordId=").append(userTurnTableRecordId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);

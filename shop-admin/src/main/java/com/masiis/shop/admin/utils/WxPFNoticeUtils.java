@@ -795,6 +795,32 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 支付成功抽奖提示
+     *
+     * @param user
+     * @param params 参数数组,(第一个,抽奖次数; 第二个,支付金额; 第三个,支付方式; 第四个,支付详情; 第五个,支付时间)
+     * @return  返回是否成功调用
+     */
+    public Boolean paySuccessWithAwardNotice(ComUser user, String[] params, String url) {
+        WxPFPartnerApplyOK applyOK = new WxPFPartnerApplyOK();
+        WxNoticeReq<WxPFPartnerApplyOK> req = new WxNoticeReq<>(applyOK);
+
+        applyOK.setFirst(new WxNoticeDataItem("恭喜您，支付成功！获得" + params[0] + "次抽奖机会。", null));
+        applyOK.setRemark(new WxNoticeDataItem("点击立即抽奖。", null));
+        applyOK.setKeyword1(new WxNoticeDataItem(params[1], null));
+        applyOK.setKeyword2(new WxNoticeDataItem(params[2], null));
+        applyOK.setKeyword3(new WxNoticeDataItem(params[3], null));
+        applyOK.setKeyword4(new WxNoticeDataItem(params[4], null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setUrl(url);
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
+
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 下级代理申请升级通知
      *
      * @param pUser 上级用户对象

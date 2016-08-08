@@ -24,6 +24,8 @@ public class ComGift {
      * 状态(0:无效1:有效)
      */
     private Integer status;
+
+    private Integer isGift;
     /**
      * 奖品名称
      */
@@ -108,5 +110,13 @@ public class ComGift {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getIsGift() {
+        return isGift;
+    }
+
+    public void setIsGift(Integer isGift) {
+        this.isGift = isGift;
     }
 }

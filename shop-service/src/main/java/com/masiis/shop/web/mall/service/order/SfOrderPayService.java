@@ -1,5 +1,8 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
+import com.masiis.shop.common.enums.promotion.SfUserTurnTableTimesTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -24,6 +27,8 @@ import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -79,12 +84,13 @@ public class SfOrderPayService {
     @Resource
     private SfUserAccountService sfUserAccountService;
     @Resource
-    private SkuService skuService;
-    @Resource
     private SfShopMapper sfShopMapper;
     @Resource
     private SfShopService sfShopService;
-
+    @Resource
+    private SfTurnTableRuleService turnTableRuleService;
+    @Resource
+    private SfUserTurnTableService userTurnTableService;
 
     /**
      * 获得需要支付的订单的信息
@@ -174,8 +180,10 @@ public class SfOrderPayService {
             updateStatistics(order,orderItems);
             //更新小铺用户结算中信息
             updateDisBillAmount(order,orderItems);
-            //微信短信提醒
+            //增加抽奖次数
             ComUser comUser = userService.getUserById(order.getUserId());
+            userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.C.getCode());
+            //微信短信提醒
             orderNotice(comUser, order, orderItems);
         } catch (Exception e) {
             throw new BusinessException(e);
@@ -308,6 +316,8 @@ public class SfOrderPayService {
         updateShopUserDisBillAmount(order,orderItems);
         updateDisUserBillAmount(order,orderItems);
     }
+
+
     /**
      * 更新小铺用户人结算中信息
      * 结算中(结算中 = 之前结算中 + (商品的购买价格 - 商品的分润 -  代理运费 ) )
@@ -551,6 +561,11 @@ public class SfOrderPayService {
             //订单信息
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
+            //查看是否有进行中的活动，如果有则显示抽奖，如果没有则不显示抽奖
+            Map<String,String> _map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.C.getCode());
+            map.put("isTurnTableRule",_map.get("isTurnTableRule"));
+            map.put("turnTableRuleTimes",_map.get("turnTableRuleTimes"));
+
             //获得用户的分销关系的父id
            /* Long userPid = getUserPid(order.getUserId());
             map.put("userPid", userPid);*/
@@ -559,7 +574,6 @@ public class SfOrderPayService {
         }
         return map;
     }
-
 
     /**
      * 查看订单详情

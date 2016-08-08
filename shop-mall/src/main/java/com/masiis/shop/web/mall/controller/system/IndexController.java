@@ -14,7 +14,6 @@ import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +49,6 @@ public class IndexController extends BaseController {
     @Resource
     private SfUserPromotionService promoService;
 
-    private static final Logger logger = Logger.getLogger(IndexController.class);
     /**
      * 小铺首页
      * @param shopId
@@ -66,9 +64,7 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        logger.info("shopId = " + shopId);
-        logger.info("userId = " + user.getId());
-        logger.info("shopUserId = " + userPid);
+
         if(req.getSession().getAttribute("userPid")==null){
             req.getSession().setAttribute("userPid", userPid);
         }else{
@@ -85,10 +81,9 @@ public class IndexController extends BaseController {
         if(userPid!=null){
             pUser = userService.getUserById(userPid);
         }
-
-        Integer allSfSpokesManNum = sfUserRelationService.selectAllSpokesOrFansCountByShopId(shopId, false);
         sfUserShopViewService.addShopView(user.getId(), shopId);
 //        Integer countByShopId = sfUserShopViewService.findCountByShopId(shopId);//浏览量
+        Integer allSfSpokesManNum = sfUserRelationService.getFansOrSpokesMansNum(shopId, false, user.getId());
         //获取所有进行中的活动
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         SfShop sfShop = null;
@@ -146,7 +141,6 @@ public class IndexController extends BaseController {
                 sfShopDetail.setSkuName(comSku.getName());
                 sfShopDetail.setSkuAssia(comSku.getAlias());
                 sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
-                sfShopDetail.setPriceMarket(comSku.getPriceMarket());
 //                SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
 //                sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
                 sfShopDetail.setSkuId(comSku.getId());
@@ -210,8 +204,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =210L;
-        userPid = 1750L;
+        shopId =336L;
+        userPid = 538L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

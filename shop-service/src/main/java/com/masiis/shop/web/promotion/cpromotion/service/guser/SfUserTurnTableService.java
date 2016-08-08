@@ -90,7 +90,7 @@ public class SfUserTurnTableService {
                     userTurnTable.setNotUsedTimes(userTurnTable.getNotUsedTimes()+changeTimes);
                     userTurnTable.setUpdateTime(new Date());
                     userTurnTable.setRemark("下单更新抽奖次数--");
-                    i = updateSfUserTurnTable(sfUserTurnTable);
+                    i = updateSfUserTurnTable(userTurnTable);
                 }else {
                     sfUserTurnTable = new SfUserTurnTable();
                     sfUserTurnTable.setTurnTableId(turnTableId);

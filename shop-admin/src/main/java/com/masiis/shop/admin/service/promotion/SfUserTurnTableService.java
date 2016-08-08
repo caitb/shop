@@ -87,10 +87,10 @@ public class SfUserTurnTableService {
         }else if (type.equals(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode())){
                 SfUserTurnTable userTurnTable = getSfUserTurnTable(userId,turnTableId);
                 if (userTurnTable!=null){
-                    sfUserTurnTable.setNotUsedTimes(userTurnTable.getNotUsedTimes()+changeTimes);
-                    sfUserTurnTable.setUpdateTime(new Date());
-                    sfUserTurnTable.setRemark("下单更新抽奖次数");
-                    i = updateSfUserTurnTable(sfUserTurnTable);
+                    userTurnTable.setNotUsedTimes(userTurnTable.getNotUsedTimes()+changeTimes);
+                    userTurnTable.setUpdateTime(new Date());
+                    userTurnTable.setRemark("下单更新抽奖次数--");
+                    i = updateSfUserTurnTable(userTurnTable);
                 }else {
                     sfUserTurnTable = new SfUserTurnTable();
                     sfUserTurnTable.setTurnTableId(turnTableId);

@@ -314,9 +314,14 @@ public class BOrderController extends BaseController {
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
 //        boolean isUserForcus = WxPFUserUtils.getInstance().isUserForcusPF(comUser);
 //        mav.addObject("isUserForcus", isUserForcus);
-        Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
-        mav.addObject("isTurnTableRule",bl+"");
-        mav.addObject("turnTableRuleTimes", com.masiis.shop.common.constant.platform.SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        String bl = map.get("isTurnTableRule");
+        mav.addObject("isTurnTableRule",bl);
+        if (bl.equals("true")){
+            mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }else{
+            mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }
         return mav;
     }
 
@@ -373,9 +378,14 @@ public class BOrderController extends BaseController {
         mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
         mv.addObject("comUser",comUser);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
-        Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
-        mv.addObject("isTurnTableRule",bl+"");
-        mv.addObject("turnTableRuleTimes", com.masiis.shop.common.constant.platform.SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        String bl = map.get("isTurnTableRule");
+        mv.addObject("isTurnTableRule",bl);
+        if (bl.equals("true")){
+            mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }else{
+            mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
+        }
         return mv;
     }
 }

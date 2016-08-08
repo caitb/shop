@@ -7,7 +7,9 @@ import com.masiis.shop.dao.po.SfTurnTableRule;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 转盘规则service
@@ -32,11 +34,15 @@ public class SfTurnTableRuleService {
      * @param turnTableRuleType
      * @return
      */
-    public Boolean isTurnTableRule(Integer turnTableRuleType){
+    public Map<String,String> isTurnTableRule(Integer turnTableRuleType){
         List<SfTurnTableRule>  turnTableRules = getRuleByTypeAndStatus(turnTableRuleType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
+        Map<String,String> map = new LinkedHashMap<>();
         if (turnTableRules==null||turnTableRules.size()==0){
-            return false;
+            map.put("isTurnTableRule","false");
+        }else{
+            map.put("isTurnTableRule","true");
+            map.put("turnTableRuleTimes",turnTableRules.get(0).getTimes().toString());
         }
-        return true;
+        return map;
     }
 }

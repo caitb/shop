@@ -462,7 +462,7 @@ public class BOrderPayService {
         billAmountService.orderBillAmount(pfBorder.getId());
         //增加抽奖的次数
         log.info("增加抽奖的次数----start");
-        userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.B.getCode(), SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.B.getCode());
         log.info("增加抽奖的次数----end");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
@@ -537,7 +537,7 @@ public class BOrderPayService {
         billAmountService.orderBillAmount(pfBorder.getId());
         //增加抽奖的次数
         log.info("增加抽奖的次数----start");
-        userTurnTableService.addTimes(null,pfBorder.getUserId(),SfTurnTableRuleTypeEnum.B.getCode(), SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        userTurnTableService.addTimes(null,pfBorder.getUserId(),SfTurnTableRuleTypeEnum.B.getCode());
         log.info("增加抽奖的次数----end");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {

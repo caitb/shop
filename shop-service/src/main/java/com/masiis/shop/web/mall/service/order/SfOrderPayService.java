@@ -182,7 +182,7 @@ public class SfOrderPayService {
             updateDisBillAmount(order,orderItems);
             //增加抽奖次数
             ComUser comUser = userService.getUserById(order.getUserId());
-            userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.C.getCode(), com.masiis.shop.common.constant.mall.SysConstants.MALL_TURN_TABLE_RULE_TIMES);
+            userTurnTableService.addTimes(comUser,null,SfTurnTableRuleTypeEnum.C.getCode());
             //微信短信提醒
             orderNotice(comUser, order, orderItems);
         } catch (Exception e) {
@@ -562,8 +562,10 @@ public class SfOrderPayService {
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
             //查看是否有进行中的活动，如果有则显示抽奖，如果没有则不显示抽奖
-            Boolean bl = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.C.getCode());
-            map.put("isTurnTableRule",bl+"");
+            Map<String,String> _map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.C.getCode());
+            map.put("isTurnTableRule",_map.get("isTurnTableRule"));
+            map.put("turnTableRuleTimes",_map.get("turnTableRuleTimes"));
+
             //获得用户的分销关系的父id
            /* Long userPid = getUserPid(order.getUserId());
             map.put("userPid", userPid);*/

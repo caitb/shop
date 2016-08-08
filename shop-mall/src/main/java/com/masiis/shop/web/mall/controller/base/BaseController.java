@@ -112,7 +112,7 @@ public class BaseController {
             return null;
         }
         log.info("缓存user的id为----"+user.getId());
-        user = userService.getUserById(539L);
+        user = userService.getUserById(user.getId());
         return user;
     }
 

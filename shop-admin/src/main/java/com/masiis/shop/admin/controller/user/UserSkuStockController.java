@@ -1,6 +1,5 @@
 package com.masiis.shop.admin.controller.user;
 
-import com.masiis.shop.admin.service.user.UserSkuStockService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/userSkuStock")
 public class UserSkuStockController {
 
-    @Resource
-    private UserSkuStockService userSkuStockService;
+
 
     @RequestMapping("/list.do")
     @ResponseBody

@@ -89,11 +89,12 @@ public class SfTurnTableGiftService {
             turnTableGiftInfo.setGiftId(turnTableGift.getGiftId());
             turnTableGiftInfo.setGiftName(comGift.getName());
             turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
-            turnTableGiftInfo.setQuantity(turnTableGift.getQuantity());
             turnTableGiftInfo.setImgUrl(OSSObjectUtils.OSS_GIFT_URL + comGift.getImgUrl());
             turnTableGiftInfo.setSort(turnTableGift.getSort());
             turnTableGiftInfo.setProbability(turnTableGift.getProbability());
             turnTableGiftInfo.setIsGift(comGift.getIsGift());
+            turnTableGiftInfo.setToatalQuantity(turnTableGift.getToatalQuantity());
+            turnTableGiftInfo.setGiftedQuantity(turnTableGift.getGiftedQuantity());
         }
         return turnTableGiftInfo;
     }

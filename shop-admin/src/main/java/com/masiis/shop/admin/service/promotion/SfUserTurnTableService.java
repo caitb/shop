@@ -50,7 +50,7 @@ public class SfUserTurnTableService {
      * @param changeTimes          增加的次数
      * @return
      */
-    public SfUserTurnTable addTimes(ComUser comUser,Long comUserId,Integer turnTableRuleType,Integer changeTimes){
+    public SfUserTurnTable addTimes(ComUser comUser,Long comUserId,Integer turnTableRuleType){
         if (comUser==null){
             comUser = comUserService.getUserById(comUserId);
         }
@@ -58,7 +58,7 @@ public class SfUserTurnTableService {
         List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(turnTableRuleType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
         if (turnTableRules!=null&&turnTableRules.size()>0){
             SfTurnTableRule rule = turnTableRules.get(0);
-            return reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(), changeTimes,comUser.getId(),rule.getTurnTableId());
+            return reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.ADD_TIMES.getCode(), rule.getTimes(),comUser.getId(),rule.getTurnTableId());
         }
         return null;
     }

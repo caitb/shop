@@ -134,7 +134,7 @@ public class BUpgradePayService {
         log.info("修改通知单的状态----end");
         //增加抽奖的次数
         log.info("增加抽奖的次数----start");
-        userTurnTableService.addTimes(null,pfBorder.getUserId(), SfTurnTableRuleTypeEnum.B.getCode(), SysConstants.PLATFORM_TURN_TABLE_RULE_TIMES);
+        userTurnTableService.addTimes(null,pfBorder.getUserId(), SfTurnTableRuleTypeEnum.B.getCode());
         log.info("增加抽奖的次数----end");
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单

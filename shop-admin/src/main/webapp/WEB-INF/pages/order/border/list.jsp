@@ -54,7 +54,7 @@
 
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
-<div class="main-container" id="main-container">
+<div class="main-container" id="main-container" style="width: 1290px;">
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
@@ -84,17 +84,13 @@
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <div class="form-group">
-                                                <label for="orderCode">订单日期：</label>
+                                                <label for="orderCode">购买人</label>
+                                                <input type="text" class="form-control" id="buyUser" name="uRealName" placeholder="购买人">
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                                <label for="orderCode">商品</label>
+                                                <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品">
                                             </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <%--<div class="form-group">--%>
-                                                <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
-                                            <%--</div>--%>
                                             <div class="form-group">
                                                 <label for="orderType">订单类型</label>
                                                 <select id="orderType" name="orderType">
@@ -280,6 +276,8 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                if($('#buyUser').val()) params.uRealName = $('#buyUser').val();
+                if($('#skuName').val()) params.skuName = $('#skuName').val();
                 if($('#orderType').val()){
                     params.orderType = $('#orderType').val();
                 }
@@ -294,12 +292,6 @@
                 }
                 if($('#payTypeId').val()){
                     params.payTypeId = $('#payTypeId').val();
-                }
-                if($('#beginTime').val()){
-                    params.beginTime = $('#beginTime').val();
-                }
-                if($('#endTime').val()){
-                    params.endTime = $('#endTime').val();
                 }
                 if($('#isCounting').val()){
                     params.isCounting = $('#isCounting').val();
@@ -333,48 +325,48 @@
                     },
                     {
                         title: 'ID',
-                        field: 'id',
+                        field: 'bo.id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.id){
-                                return row.pfBorder.id;
+                            if(row && row.id){
+                                return row.id;
                             }
                         }
                     },
                     {
-                        field: 'order_code',
+                        field: 'bo.order_code',
                         title: '订单号',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderCode){
-                                return row.pfBorder.orderCode;
+                            if(row && row.orderCode){
+                                return row.orderCode;
                             }
                         }
                     },
                     {
-                        field: 'create_time',
+                        field: 'bo.create_time',
                         title: '订单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            return new Date(row.pfBorder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                         }
                     },
                     {
-                        field: 'user_pid',
+                        field: 'bo.user_pid',
                         title: '上级合伙人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pUser && row.pUser.realName){
-                                return row.pUser.realName;
+                            if(row && row.puRealName){
+                                return row.puRealName;
                             }
                         }
                     },
@@ -384,8 +376,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.recommenUser && row.recommenUser.realName){
-                                return row.recommenUser.realName;
+                            if(row && row.ruRealName){
+                                return row.ruRealName;
                             }
                         }
                     },
@@ -396,8 +388,20 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row && row.uRealName){
+                                return row.uRealName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'sku.name',
+                        title: '商品',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.skuName){
+                                return row.skuName;
                             }
                         }
                     },
@@ -408,8 +412,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.productAmount;
+                            if(row){
+                                return row.productAmount;
                             }
                         }
                     },
@@ -420,8 +424,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.bailAmount;
+                            if(row){
+                                return row.bailAmount;
                             }
                         }
                     },
@@ -432,8 +436,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.receivableAmount;
+                            if(row){
+                                return row.receivableAmount;
                             }
                         }
                     },
@@ -444,8 +448,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.payAmount;
+                            if(row){
+                                return row.payAmount;
                             }
                         }
                     },
@@ -456,9 +460,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder){
-                                return row.pfBorder.recommenAmount;
+                            if(row && row.recommenAmount){
+                                return row.recommenAmount;
                             }
+                            return "0.00";
                         }
                     },
                     {
@@ -468,31 +473,31 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderStatus == 0){
+                            if(row && row.orderStatus == 0){
                                 return '未处理';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 1){
+                            if(row && row.orderStatus == 1){
                                 return '已付款';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 2){
+                            if(row && row.orderStatus == 2){
                                 return '已取消';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
+                            if(row && row.orderStatus == 3){
                                 return '已完成';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 4){
+                            if(row && row.orderStatus == 4){
                                 return '退款中';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 5){
+                            if(row && row.orderStatus == 5){
                                 return '已退款';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 6){
+                            if(row && row.orderStatus == 6){
                                 return '排单中';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 7){
+                            if(row && row.orderStatus == 7){
                                 return '待发货';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 8){
+                            if(row && row.orderStatus == 8){
                                 return '已发货';
                             }
                         }
@@ -503,14 +508,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorderPayments){
-                                var sHtm = '';
-                                for(var i in row.pfBorderPayments){
-                                    if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 1) sHtm += '线下支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 2) sHtm += '支付宝支付';
-                                }
-                                return sHtm;
+                            if(row){
+                                if(row.payTypeId == 0) return '微信支付';
+                                if(row.payTypeId == 1) return '线下支付';
+                                if(row.payTypeId == 2) return '支付宝支付';
                             }
                         }
                     },
@@ -521,16 +522,16 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderType == 0){
+                            if(row && row.orderType == 0){
                                 return '合伙人订单';
                             }
-                            if(row.pfBorder && row.pfBorder.orderType == 1){
+                            if(row && row.orderType == 1){
                                 return '补货订单';
                             }
-                            if(row.pfBorder && row.pfBorder.orderType == 2){
+                            if(row && row.orderType == 2){
                                 return '拿货订单';
                             }
-                            if(row.pfBorder && row.pfBorder.orderType == 3){
+                            if(row && row.orderType == 3){
                                 return '升级订单';
                             }
                         }
@@ -542,10 +543,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.payStatus == 0){
+                            if(row && row.payStatus == 0){
                                 return '待付款';
                             }
-                            if(row.pfBorder && row.pfBorder.payStatus == 1){
+                            if(row && row.payStatus == 1){
                                 return '已付款';
                             }
                         }
@@ -557,13 +558,13 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.shipStatus == 0){
+                            if(row && row.shipStatus == 0){
                                 return '未发货';
                             }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 5){
+                            if(row && row.shipStatus == 5){
                                 return '已发货';
                             }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 9){
+                            if(row && row.shipStatus == 9){
                                 return '已收货';
                             }
 
@@ -576,10 +577,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.isCounting == 0){
+                            if(row && row.isCounting == 0){
                                 return '未结算';
                             }
-                            if(row.pfBorder && row.pfBorder.isCounting == 1){
+                            if(row && row.isCounting == 1){
                                 return '已结算';
                             }
 
@@ -590,7 +591,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
+                            if(row && row.userPid == 0 && row.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
 
@@ -598,12 +599,12 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                                parent.window.$('#myTabbable').add('border-detail-'+row.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.id);
                             },
                             'click .scheduling': function(e, value, row, index){
                                 $.ajax({
                                     url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
+                                    data: {borderId: row.id, sendType: row.sendType},
                                     success: function(msg){
                                         msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
                                         $.gritter.add({
@@ -616,7 +617,7 @@
                                 })
                             },
                             'click .receipt': function(e, value, row, index){
-                                $('#bOrderId').val(row.pfBorder.id);
+                                $('#bOrderId').val(row.id);
                                 $('#modal-receipt').modal('show');
                             }
                         }

@@ -330,7 +330,11 @@
             <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
         </div>
         <p>*请在汇款单的附言处注明绑定的订单号”（<span>非常重要！</span>）</p>
-        <h1><span></span>麦链对公账户信息</h1>
+        <h3>支付信息</h3>
+        <h1><span></span>支付宝转账</h1>
+        <h2><span>名称：</span><span>北京麦士网络科技有限公司</span></h2>
+        <h2><span>支付宝账号：</span><span>mailian@iimai.com</span></h2>
+        <h1><span></span>银行转账</h1>
         <h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>
         <h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>
         <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>

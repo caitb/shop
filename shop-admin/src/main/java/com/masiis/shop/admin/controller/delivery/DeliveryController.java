@@ -57,6 +57,8 @@ public class DeliveryController {
 
         try {
             List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
+            List<ComShipMan> comShipManList = comShipManService.listByCondition(new ComShipMan());
+            model.addAttribute("comShipManList", comShipManList);
             model.addAttribute("wuliuList", wuliuList);
             model.addAttribute("orderStatusList", SfOrderStatusEnum.values());
         } catch (Exception e) {

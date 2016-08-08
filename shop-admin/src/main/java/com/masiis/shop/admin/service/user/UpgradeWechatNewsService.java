@@ -123,7 +123,15 @@ public class UpgradeWechatNewsService {
                 _param[2] = upgradeDetail.getCurrentAgentLevelName();
                 _param[3] = comAgentLevel.getName();
                 String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
+                //给原上级发微信
                 WxPFNoticeUtils.getInstance().upgradeApplyGetOutNotice(oldUser, _param, url);
+                //给新的上级发
+                String[] _param1 = new String[3];
+                _param1[0] = oldUser.getRealName();
+                _param1[1] = DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT);
+                _param1[2] = pfBorderItems.get(0).getSkuName();
+                String url1 = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
+                WxPFNoticeUtils.getInstance().partnerJoinByUpgradeWithNoAwardNotice(newComUser, comUser, _param1, url1);
             }
         }
         return true;

@@ -302,6 +302,18 @@
         AND create_time <![CDATA[ <= ]]> #{expiraTime,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectByStatusAndShipTime" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
+        modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
+        pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, ship_remark, send_type,send_man,  order_type, order_status, ship_status, pay_status,
+        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        from sf_order
+        where order_status = #{orderStatus,jdbcType=INTEGER}
+        and pay_status = #{payStatus,jdbcType=INTEGER}
+        AND ship_time <![CDATA[ <= ]]> #{expiraTime,jdbcType=TIMESTAMP}
+    </select>
+
     <update id="updateOrderCancelById">
         UPDATE sf_order
         SET order_status = #{orderStatus,jdbcType=INTEGER}
@@ -341,29 +353,40 @@
                o.create_time       createTime,
                o.order_code        orderCode,
                bu.wx_nk_name       bWxNkName,
-               oc.consignee        consignee,
                su.real_name        suRealName,
                o.product_amount    productAmount,
                o.receivable_amount receivableAmount,
                o.pay_amount        payAmount,
-               o.send_type        sendType,
+               o.send_type         sendType,
                o.order_status      orderStatus,
                op.pay_type_id      payTypeId,
                o.pay_status        payStatus,
                o.ship_status       shipStatus,
                o.is_counting       isCounting
+               ,o.user_message     userMessage
+               ,oc.consignee       consignee
+               ,oc.mobile          mobile
+               ,oc.province_name   provinceName
+               ,oc.city_name       cityName
+               ,oc.region_name     regionName
+               ,oc.address         address
+               ,oc.zip             zip
+               ,oi.sku_name        skuName
+               ,oi.quantity        quantity
         FROM
                   sf_order o
         LEFT JOIN com_user           bu ON bu.id          = o.user_id
-        LEFT JOIN sf_order_consignee oc ON oc.sf_order_id = o.id
         LEFT JOIN com_user           su ON su.id          = o.shop_user_id
         LEFT JOIN sf_order_payment   op ON op.sf_order_id = o.id AND op.is_enabled = 1
+        LEFT JOIN sf_order_consignee oc ON oc.sf_order_id = o.id
+        LEFT JOIN sf_order_item      oi ON oi.sf_order_id = o.id
         WHERE
         <![CDATA[
                 o.order_status = 7
+                AND o.pay_status = 1 AND o.ship_status = 0 AND o.send_type = 1
                 AND NOT EXISTS(SELECT 0 FROM sf_order a
                 INNER JOIN sf_order_item b ON a.id=b.sf_order_id
-                INNER JOIN pf_user_sku_stock c ON a.user_id=c.user_id AND b.sku_id=c.sku_id
+                INNER JOIN pf_user_sku_stock c ON a.shop_user_id=c.user_id AND b.sku_id=c.sku_id
                 WHERE a.order_status=7 AND b.quantity > c.stock AND o.id=a.id)
                 ]]>
         <if test="orderCode != null">

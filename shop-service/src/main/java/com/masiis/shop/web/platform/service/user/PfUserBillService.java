@@ -65,14 +65,17 @@ public class PfUserBillService {
     @Transactional
     public void createBillByUserAndDate(ComUser user, Date start, Date end, Date balanceDate) {
         try{
+            // 根据用户来查询账单子项(已完成且未结算状态订单)
+            List<PfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), start, end);
+            if(items == null || items.size() <= 0){
+                throw new BusinessException("用户id:" + user.getId() + ",该日期内没有账单可创建");
+            }
             // 组织账单对象
             PfUserBill bill = createBillBean(user, start, end, balanceDate);
             billMapper.insert(bill);
 
             log.info("日账单记录创建成功,日账单id:" + bill.getId());
 
-            // 根据用户来查询账单子项(已完成且未结算状态订单)
-            List<PfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), start, end);
             BigDecimal rewardAmount = new BigDecimal(0);
             for(PfUserBillItem item:items){
                 item.setPfUserBillId(bill.getId());

@@ -173,7 +173,7 @@ public class COrderService extends BaseService {
      * @return
      */
     public Map<String, Object> listDeliveryByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
-        String sort = "bo.create_time desc";
+        String sort = "co.create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
 
         PageHelper.startPage(pageNumber, pageSize, sort);

@@ -68,12 +68,12 @@ public class SfOrderTaskService {
      */
     public void confirmOrderReceived() {
         // 7天前时间
-        Date expiraTime = DateUtil.getDateNextdays(-7);
+        Date expiraTime = DateUtil.getDateNextdays(-5);
         log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
 
         // 查询已发货状态且发货时间距离现在超过7天
         // 查询代理订单
-        List<SfOrder> bList = orderService.findListByStatusAndDate(expiraTime,
+        List<SfOrder> bList = orderService.findListByStatusAndShipTime(expiraTime,
                 SfOrderStatusEnum.ORDER_SHIPED.getCode(), 1);
         if (bList == null) {
             log.info("暂无超7天未收货代理订单!");

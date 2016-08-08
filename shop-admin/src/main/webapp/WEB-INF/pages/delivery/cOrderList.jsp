@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -180,8 +180,74 @@
                                                 <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
                                                     <!-- #section:pages/profile.info -->
-                                                    <form id="deliveryForm">
+                                                    <form id="deliveryForm" isSubmiting="false" action="<%=basePath%>order/corder/delivery.do">
                                                         <div class="profile-user-info profile-user-info-striped">
+
+                                                            <input type="hidden" name="pfCorderId">
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 订单号 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="orderCodeV"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 商品 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="skuName"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 购买人 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="buyUser"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 收货人 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="consignee"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 收货地址 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="address"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 联系电话 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="mobile"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 邮编 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="postcode"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 留言 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span id="userMessage"></span>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="profile-info-row">
                                                                 <div class="profile-info-name"> 快递名称 </div>
@@ -390,8 +456,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.uRealName){
-                                return row.uRealName;
+                            if(row && row.uWxNkName){
+                                return row.uWxNkName;
                             }
                         }
                     },
@@ -471,6 +537,15 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
+                            if(row && row.payTypeId == 0){
+                                return '微信支付';
+                            }
+                            if(row && row.payTypeId == 1){
+                                return '线下支付';
+                            }
+                            if(row && row.payTypeId == 2){
+                                return '支付宝支付';
+                            }
                         }
                     },
                     {
@@ -510,13 +585,22 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.payStatus == 1 && row.shipStatus == 0 && row.sendType == 1 && row.orderType != 1){
+                            if(row.shipStatus == 0  && row.orderType != 1){
                                 return '<a class="delivery" href="javascript:void(0);">发货</a>';
                             }
                         },
                         events: {
                             'click .delivery': function(e, value, row, index){
-                                $('#bOrderId').val(row.id);
+                                $('#orderCodeV').html(row.orderCode);
+                                $('#skuName').html(row.skuName+'&nbsp;×&nbsp;'+1);
+                                $('#consignee').html(row.consignee);
+                                $('#address').html(row.provinceName+row.cityName+row.regionName+row.address);
+                                $('#mobile').html(row.mobile);
+                                $('#postcode').html(row.zip);
+                                $('#buyUser').html(row.uWxNkName);
+                                $('#userMessage').html(row.userMessage);
+
+                                $('[name=pfCorderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');
                             }
@@ -703,6 +787,18 @@
     }
 
     $('#submitDeliveryForm').on('click', function(){
+        submitDeliveryForm();
+    });
+
+    $('#freight').keypress(function(event){
+        if(event.keyCode == 13 && $('#deliveryForm').attr('isSubmiting') == 'false'){
+            $('#deliveryForm').attr('isSubmiting', 'true');
+            submitDeliveryForm();
+            return false;
+        }
+    });
+
+    function submitDeliveryForm(){
         $('#shipManName').val($('#shipName option:selected').text());
         if(!$('#freight').val()){
             $.gritter.add({
@@ -713,12 +809,20 @@
             return;
         }
 
+        $('#submitDeliveryForm').attr('disabled', 'disabled');
+
         $.ajax({
             url: '<%=basePath%>order/corder/delivery.do',
             type: 'POST',
             data: $('#deliveryForm').serialize(),
             success: function(msg){
                 if(msg == 'success'){
+                    $.gritter.add({
+                        title: '温馨提示',
+                        text: '发货成功!',
+                        class_name: 'gritter-success'
+                    });
+                    $('#modal-delivery').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 }else{
                     $.gritter.add({
@@ -727,9 +831,12 @@
                         class_name: 'gritter-error'
                     });
                 }
+
+                $('#submitDeliveryForm').removeAttr('disabled');
+                $('#deliveryForm').attr('isSubmiting', 'false');
             }
         });
-    });
+    }
 
 
 </script>

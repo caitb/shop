@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Created by admin on 2016/8/8.
  */
+@Service
 public class UserSkuStockService {
 
     @Resource

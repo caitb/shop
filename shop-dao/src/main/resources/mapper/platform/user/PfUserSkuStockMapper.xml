@@ -102,4 +102,18 @@
         LEFT JOIN com_sku sku ON s.sku_id = sku.id
         LEFT JOIN com_user u ON s.user_id = u.id
     </select>
+
+    <select id="selectByCondition" parameterType="Map" resultType="java.util.HashMap">
+        SELECT
+               uss.id                    id
+               ,uss.frozen_stock         frozenStock
+               ,uss.stock                stock
+               ,uss.frozen_custom_stock  frozenCustomStock
+               ,uss.custom_stock         customStock
+               ,u.real_name              realName
+               ,sku.name                 skuName
+        FROM      pf_user_sku_stock uss
+        LEFT JOIN com_user          u   ON u.id   = uss.user_id
+        LEFT JOIN com_sku           sku ON sku.id = uss.sku_id
+    </select>
 </mapper>

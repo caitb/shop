@@ -47,7 +47,6 @@ public class SfUserTurnTableService {
      * @param comUser
      * @param comUserId
      * @param turnTableRuleType    B端或者C端
-     * @param changeTimes          增加的次数
      * @return
      */
     public SfUserTurnTable addTimes(ComUser comUser,Long comUserId,Integer turnTableRuleType){
@@ -101,7 +100,7 @@ public class SfUserTurnTableService {
                     sfUserTurnTable.setUserId(userId);
                     sfUserTurnTable.setUsedTimes(0);
                     //未使用的次数
-                    sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()-changeTimes);
+                    sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()+changeTimes);
                     sfUserTurnTable.setRemark("下单新增抽奖次数");
                     i = insert(sfUserTurnTable);
                 }

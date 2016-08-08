@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.controller.wxevent;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SHAUtils;
@@ -98,8 +99,8 @@ public class WxEventController extends BaseController {
     }
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
@@ -119,7 +120,11 @@ public class WxEventController extends BaseController {
         sub_button1.add(new Button("素材库", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/materielList/infoC"));
 
         buttons.add(new Button("关于麦链", sub_button1));
-        buttons.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
+
+        List<Button> sub_button2 = new ArrayList<>();
+        sub_button2.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
+        sub_button2.add(new Button("七夕秒杀", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/activity/qixi/seckill.shtml"));
+        buttons.add(new Button("浏览店铺", sub_button2));
         buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 

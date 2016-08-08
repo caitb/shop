@@ -70,7 +70,8 @@ public class RandomRateUtil {
                     if (quantityEnoughMap.get(1)){
                         rate1 = map.get(key)/100;
                     }else{
-                        rate1 = 0;
+                        rate1 = map.get(key)/100;
+                        //rate1 = 0;
                     }
                     break;
                 case 2:

@@ -90,7 +90,7 @@
                     <button class="receiveGift" onclick="skipToReceiveGiftPage()">
                         立即领取
                     </button>
-                    <button class="goToPurchaseSku" onclick="skipToReceiveGiftPage()">
+                    <button class="goToPurchaseSku" onclick="goToPurchaseSku()">
                         立即下单
                     </button>
                 </div>

@@ -158,7 +158,7 @@ public class UpgradeNoticeService {
     }
 
     public String coverCodeByLowerUpgrade(Integer upStatus) {
-        return UpGradeUpStatus.upStatusPickList.get(upStatus);
+        return UpGradeStatus.statusPickList.get(upStatus);
     }
 	/**
      * 处理代理用户升级

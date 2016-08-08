@@ -98,6 +98,7 @@ public class SfUserTurnTableService {
                     sfUserTurnTable.setCreateTime(new Date());
                     sfUserTurnTable.setCreateMan(userId);
                     sfUserTurnTable.setNotUsedTimes(0);
+                    sfUserTurnTable.setUserId(userId);
                     //未使用的次数
                     sfUserTurnTable.setNotUsedTimes(sfUserTurnTable.getNotUsedTimes()-changeTimes);
                     sfUserTurnTable.setRemark("下单新增抽奖次数");

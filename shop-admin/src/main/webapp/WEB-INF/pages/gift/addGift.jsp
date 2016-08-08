@@ -104,8 +104,8 @@
                                 <label for="isGift" class="col-sm-2 control-label">是否是奖品</label>
                                 <div class="col-sm-3">
                                     <select class="form-control" id="isGift" name="isGift">
-                                        <option value="0">是</option>
-                                        <option value="1">否</option>
+                                        <option value="0" <c:if test="${gift.isGift == 0}">selected</c:if> >是</option>
+                                        <option value="1" <c:if test="${gift.isGift == 1}">selected</c:if> >否</option>
                                     </select>
                                 </div>
                             </div>

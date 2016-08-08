@@ -21,8 +21,8 @@ public class SfTurnTableRuleService {
     private SfTurnTableRuleMapper turnTableRuleMapper;
 
 
-    public SfTurnTableRule getRuleByTurnTableIdAndType(Integer turnTableId,Integer type){
-        return turnTableRuleMapper.getRuleByTurnTableIdAndType(turnTableId,type);
+    public SfTurnTableRule getRuleByTurnTableIdAndTypeAndStatus(Integer turnTableId,Integer type,Integer status){
+        return turnTableRuleMapper.getRuleByTurnTableIdAndTypeAndStatus(turnTableId,type,status);
     }
 
     public List<SfTurnTableRule> getRuleByTypeAndStatus(Integer type,Integer status){

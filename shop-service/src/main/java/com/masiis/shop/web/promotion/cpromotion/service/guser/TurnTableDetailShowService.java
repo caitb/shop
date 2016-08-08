@@ -3,6 +3,7 @@ package com.masiis.shop.web.promotion.cpromotion.service.guser;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.enums.promotion.ComGiftIsGiftEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -58,7 +59,7 @@ public class TurnTableDetailShowService {
         for (SfTurnTable turnTable:turnTables){
             TurnTablelInfo turnTablelInfo = new TurnTablelInfo();
             //转盘规则
-            SfTurnTableRule turnTableRule = turnTableRuleService.getRuleByTurnTableIdAndType(turnTable.getId(),turnTableType);
+            SfTurnTableRule turnTableRule = turnTableRuleService.getRuleByTurnTableIdAndTypeAndStatus(turnTable.getId(),turnTableType, SfTurnTableRuleStatusEnum.EFFECT.getCode());
             if (turnTableRule==null){
                 throw new BusinessException("-----获取转盘规则失败------");
             }

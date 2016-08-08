@@ -50,7 +50,7 @@ public class TurnTableGorderService {
 
 
     private static final Integer RECEIVE_GIFT_QUANTITY_NO_ENOUGH = 1;//奖品数量不足
-    private static final Integer RECEIVE_GIFT_RECORD_NO_EXIST = 2; //奖品记录不存在
+    private static final Integer RECEIVE_GIFT_RECORD_GIFT_RECEIVED = 2; //奖品已经领取
     private static final Integer USER_RECEIVE_GIFT_TIMES_NO_ENOUGH = 3;//个人抽奖次数不足
 
     /**
@@ -118,6 +118,8 @@ public class TurnTableGorderService {
             //中奖纪录不存在
             log.info("----中奖纪录不存在----");
             throw new BusinessException("----中奖纪录不存在----");
+        }else if (record.getStatus().equals(SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED)){
+            return RECEIVE_GIFT_RECORD_GIFT_RECEIVED ;
         }
         log.info("判断中奖纪录存在不------end");
         return 0;

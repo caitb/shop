@@ -86,7 +86,11 @@
                 data: {selectedAddressId: addressId, turnTableId: ${turnTableGiftInfo.turnTableId},giftId: ${turnTableGiftInfo.giftId},userTurnTableRecordId: ${turnTableGiftInfo.userTurnTableRecordId}},
                 dataType: "Json",
                 success: function (result) {
-                    window.location.href = "<%=basePath%>turnTableGorder/skipToReceiveSuccessPage.html";
+                    if(result=="2"){
+                        alert("奖品已领取！");
+                    }else {
+                        window.location.href = "<%=basePath%>turnTableGorder/skipToReceiveSuccessPage.html";
+                    }
                 }
             })
         }

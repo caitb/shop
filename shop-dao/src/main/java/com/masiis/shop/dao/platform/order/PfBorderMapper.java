@@ -32,7 +32,7 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
-    List<PfBorder> selectByCondition(Map<String, Object> conditionMap);
+    List<Map<String, Object>> selectByCondition(Map<String, Object> conditionMap);
 
     /**
      * 获得奖励订单

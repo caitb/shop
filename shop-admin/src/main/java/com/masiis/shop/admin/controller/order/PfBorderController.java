@@ -89,11 +89,11 @@ public class PfBorderController extends BaseController {
             if(StringUtils.isNotBlank(orderCode)){
                 conditionMap.put("orderCode", orderCode);
             }
-            if(StringUtils.isNotBlank(beginTime)){
-                conditionMap.put("beginTime", beginTime);
+            if(StringUtils.isNotBlank(request.getParameter("uRealName"))){
+                conditionMap.put("uRealName", "%"+new String(request.getParameter("uRealName").getBytes("ISO-8859-1"), "UTF-8")+"%");
             }
-            if(StringUtils.isNotBlank(endTime)){
-                conditionMap.put("endTime", endTime);
+            if(StringUtils.isNotBlank(request.getParameter("skuName"))){
+                conditionMap.put("skuName", "%"+new String(request.getParameter("skuName").getBytes("ISO-8859-1"), "UTF-8")+"%");
             }
             if(orderType != null){
                 conditionMap.put("orderType", orderType);

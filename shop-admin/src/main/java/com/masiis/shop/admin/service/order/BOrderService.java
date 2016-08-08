@@ -93,48 +93,24 @@ public class BOrderService {
     /**
      * 根据条件查询记录
      *
-     * @param pageNo
+     * @param pageNumber
      * @param pageSize
+     * @param sortName
+     * @param sortOrder
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
-        String sort = "create_time desc";
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "bo.create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
-        PageHelper.startPage(pageNo, pageSize, sort);
-        List<PfBorder> pfBorders = pfBorderMapper.selectByCondition(conditionMap);
-        PageInfo<PfBorder> pageInfo = new PageInfo<>(pfBorders);
 
-        List<Order> orders = new ArrayList<>();
-        for (PfBorder pbo : pfBorders) {
-            ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
-            ComUser pUser   = comUserMapper.selectByPrimaryKey(pbo.getUserPid());
-            ComUser recommenUser = pfBorderRecommenRewardMapper.selectRecommenUser(pbo.getId());
-            PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
-            PfBorderPayment pfBorderPayment = new PfBorderPayment();
-            pfBorderPayment.setPfBorderId(pbo.getId());
-            pfBorderPayment.setIsEnabled(1);
-            if(conditionMap.get("payTypeId") !=null){
-                pfBorderPayment.setPayTypeId((Integer)conditionMap.get("payTypeId"));
-            }
-            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByCondition(pfBorderPayment);
-            List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pbo.getId());
-
-            Order order = new Order();
-            order.setPfBorder(pbo);
-            order.setComUser(comUser);
-            order.setpUser(pUser);
-            order.setRecommenUser(recommenUser);
-            order.setPfBorderConsignee(pfBorderConsignee);
-            order.setPfBorderPayments(pfBorderPayments);
-            order.setPfBorderItems(pfBorderItems);
-
-            orders.add(order);
-        }
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String, Object>> orderMaps = pfBorderMapper.selectByCondition(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(orderMaps);
 
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());
-        pageMap.put("rows", orders);
+        pageMap.put("rows", orderMaps);
 
         return pageMap;
     }

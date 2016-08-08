@@ -264,116 +264,76 @@
         from pf_border
     </select>
 
-    <select id="selectByCondition" parameterType="Map" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
-        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
-        from
-        pf_border
+    <select id="selectByCondition" parameterType="Map" resultType="java.util.HashMap">
+        SELECT
+                bo.id                id
+                ,bo.order_code        orderCode
+                ,bo.create_time       createTime
+                ,bo.order_amount      orderAmount
+                ,bo.product_amount    productAmount
+                ,bo.bail_amount       bailAmount
+                ,bo.receivable_amount receivableAmount
+                ,bo.pay_amount        payAmount
+                ,bo.recommen_amount   recommenAmount
+                ,bo.order_status      orderStatus
+                ,bo.order_type        orderType
+                ,bo.send_type         sendType
+                ,bo.pay_status        payStatus
+                ,bo.ship_status       shipStatus
+                ,bo.is_counting       isCounting
+                ,bo.user_message      userMessage
+                ,pu.real_name         puRealName
+                ,ru.real_name         ruRealName
+                ,u.real_name          uRealName
+                ,bp.pay_type_id       payTypeId
+                ,bc.consignee         consignee
+                ,bc.mobile            mobile
+                ,bc.province_name     provinceName
+                ,bc.city_name         cityName
+                ,bc.region_name       regionName
+                ,bc.address           address
+                ,bc.zip               zip
+                ,bi.sku_name          skuName
+                ,bi.quantity          quantity
+                ,sku.name             name
+                ,sku.alias            alias
+        FROM
+                pf_border bo
+        LEFT JOIN com_user                  pu  ON pu.id = bo.user_pid
+        LEFT JOIN pf_border_recommen_reward brr ON brr.pf_border_id = bo.id
+        LEFT JOIN com_user                  ru  ON ru.id = brr.recommen_user_id
+        LEFT JOIN com_user                  u   ON u.id = bo.user_id
+        LEFT JOIN pf_border_payment         bp  ON bp.pf_border_id = bo.id AND bp.is_enabled = 1
+        LEFT JOIN pf_border_consignee       bc  ON bc.pf_border_id = bo.id
+        LEFT JOIN pf_border_item            bi  ON bi.pf_border_id = bo.id
+        LEFT JOIN com_sku                   sku ON sku.id = bi.sku_id
         <where>
-            <if test="id != null">
-                AND id = #{id,jdbcType=BIGINT}
-            </if>
-            <if test="createTime != null">
-                AND create_time = #{createTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="createMan != null">
-                AND create_man = #{createMan,jdbcType=BIGINT}
-            </if>
             <if test="orderCode != null">
-                AND order_code = #{orderCode,jdbcType=VARCHAR}
+                AND bo.order_code = #{orderCode}
             </if>
-            <if test="userId != null">
-                AND user_id = #{userId,jdbcType=BIGINT}
+            <if test="uRealName != null">
+                AND u.real_name LIKE #{uRealName}
             </if>
-            <if test="userPid != null">
-                AND user_pid = #{userPid,jdbcType=BIGINT}
-            </if>
-            <if test="userMessage != null">
-                AND user_message = #{userMessage,jdbcType=VARCHAR}
-            </if>
-            <if test="supplierId != null">
-                AND supplier_id = #{supplierId,jdbcType=INTEGER}
-            </if>
-            <if test="modifyTime != null">
-                AND modify_time = #{modifyTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="modifyMan != null">
-                AND modify_man = #{modifyMan,jdbcType=BIGINT}
-            </if>
-            <if test="receivableAmount != null">
-                AND receivable_amount = #{receivableAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="orderAmount != null">
-                AND order_amount = #{orderAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="productAmount != null">
-                AND product_amount = #{productAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="recommenAmount != null">
-                AND recommen_amount = #{recommenAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="shipAmount != null">
-                AND ship_amount = #{shipAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="payAmount != null">
-                AND pay_amount = #{payAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="payTime != null">
-                AND pay_time = #{payTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="shipManId != null">
-                AND ship_man_id = #{shipManId,jdbcType=INTEGER}
-            </if>
-            <if test="shipManName != null">
-                AND ship_man_name = #{shipManName,jdbcType=VARCHAR}
-            </if>
-            <if test="shipType != null">
-                AND ship_type = #{shipType,jdbcType=INTEGER}
-            </if>
-            <if test="shipTime != null">
-                AND ship_time = #{shipTime,jdbcType=TIMESTAMP}
+            <if test="skuName != null">
+                AND sku.name LIKE #{skuName}
             </if>
             <if test="orderType != null">
-                AND order_type = #{orderType,jdbcType=INTEGER}
+                AND bo.order_type = #{orderType}
+            </if>
+            <if test="payTypeId != null">
+                AND bp.pay_type_id = #{payTypeId}
             </if>
             <if test="orderStatus != null">
-                AND order_status = #{orderStatus,jdbcType=INTEGER}
-            </if>
-            <if test="shipStatus != null">
-                AND ship_status = #{shipStatus,jdbcType=INTEGER}
+                AND bo.order_status = #{orderStatus}
             </if>
             <if test="payStatus != null">
-                AND pay_status = #{payStatus,jdbcType=INTEGER}
+                AND bo.pay_status = #{payStatus}
+            </if>
+            <if test="shipStatus != null">
+                AND bo.ship_status = #{shipStatus}
             </if>
             <if test="isCounting != null">
-                AND is_counting = #{isCounting,jdbcType=INTEGER}
-            </if>
-            <if test="isShip != null">
-                AND is_ship = #{isShip,jdbcType=INTEGER}
-            </if>
-            <if test="isReceipt != null">
-                AND is_receipt = #{isReceipt,jdbcType=INTEGER}
-            </if>
-            <if test="receiptTime != null">
-                AND receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="remark != null">
-                AND remark = #{remark,jdbcType=VARCHAR}
-            </if>
-            <if test="bailAmount != null">
-                AND bail_amount=#{bailAmount,jdbcType=DECIMAL}
-            </if>
-            <if test="sendType != null">
-                AND send_type=#{sendType,jdbcType=INTEGER}
-            </if>
-            <if test="beginTime != null"  >
-                AND create_time &gt;=#{beginTime}
-            </if>
-            <if test="endTime != null"  >
-                AND create_time &lt;=#{endTime}
+                AND bo.is_counting = #{isCounting}
             </if>
         </where>
     </select>

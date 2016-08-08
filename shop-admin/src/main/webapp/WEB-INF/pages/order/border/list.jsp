@@ -591,7 +591,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
+                            if(row && row.userPid == 0 && row.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
 
@@ -599,12 +599,12 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                                parent.window.$('#myTabbable').add('border-detail-'+row.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.id);
                             },
                             'click .scheduling': function(e, value, row, index){
                                 $.ajax({
                                     url: '<%=basePath%>order/border/scheduling.do',
-                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
+                                    data: {borderId: row.id, sendType: row.sendType},
                                     success: function(msg){
                                         msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
                                         $.gritter.add({
@@ -617,7 +617,7 @@
                                 })
                             },
                             'click .receipt': function(e, value, row, index){
-                                $('#bOrderId').val(row.pfBorder.id);
+                                $('#bOrderId').val(row.id);
                                 $('#modal-receipt').modal('show');
                             }
                         }

@@ -266,7 +266,7 @@
 
     <select id="selectByCondition" parameterType="Map" resultType="java.util.HashMap">
         SELECT
-                bo.id                id
+                bo.id                 id
                 ,bo.order_code        orderCode
                 ,bo.create_time       createTime
                 ,bo.order_amount      orderAmount
@@ -282,6 +282,7 @@
                 ,bo.ship_status       shipStatus
                 ,bo.is_counting       isCounting
                 ,bo.user_message      userMessage
+                ,bo.user_pid          userPid
                 ,pu.real_name         puRealName
                 ,ru.real_name         ruRealName
                 ,u.real_name          uRealName

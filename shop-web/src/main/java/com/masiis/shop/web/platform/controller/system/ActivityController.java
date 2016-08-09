@@ -18,4 +18,9 @@ public class ActivityController extends BaseController {
         return "platform/activity/qixi";
     }
 
+    @RequestMapping("/qixi_miaosha.shtml")
+    public String baiWanMiaoSha(){
+        return "platform/activity/qixi_baiwanmiaosha";
+    }
+
 }

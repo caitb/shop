@@ -1,5 +1,6 @@
 package com.masiis.shop.web.promotion.cpromotion.service.guser;
 
+import com.masiis.shop.common.enums.promotion.ComGiftIsGiftEnum;
 import com.masiis.shop.common.enums.promotion.SfUserTurnTableRecordStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -45,7 +46,7 @@ public class SfUserTurnTableRecordService {
     public List<UserTurnTableRecordInfo> getRecordInfoByTableId(Integer turnTableId){
         List<SfUserTurnTableRecord> records = getRecordByTableId(turnTableId);
         if (records!=null){
-            return  getRecordInfoByUserId(null,records);
+            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode());
         }
         return null;
     }
@@ -62,6 +63,7 @@ public class SfUserTurnTableRecordService {
      * @return
      */
     public Long winGift(ComUser comUser,Integer turnTableId,Integer giftId){
+
         SfUserTurnTableRecord record = new SfUserTurnTableRecord();
         record.setUserId(comUser.getId());
         record.setTurnTableId(turnTableId);
@@ -105,41 +107,43 @@ public class SfUserTurnTableRecordService {
      * @param userId
      * @return
      */
-    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId,List<SfUserTurnTableRecord>  records ){
+    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId,List<SfUserTurnTableRecord>  records ,Integer isGift){
         if (records==null){
             records =  userTurnTableRecordMapper.getRecordInfoByUserId(userId);
         }
         List<UserTurnTableRecordInfo> recordInfoList = new ArrayList<UserTurnTableRecordInfo>();
         for (SfUserTurnTableRecord record:records){
-            UserTurnTableRecordInfo recordInfo = new UserTurnTableRecordInfo();
-            recordInfo.setStatus(record.getStatus());
-            recordInfo.setTurnTableId(record.getTurnTableId());
-            recordInfo.setGiftId(record.getGiftId());
-            recordInfo.setId(record.getId());
-            recordInfo.setCreateTimeString(DateUtil.Date2String(record.getCreateTime(),DateUtil.CHINESE_YEAR_MONTH_DATE_FMT));
-            if (record.getStatus()==SfUserTurnTableRecordStatusEnum.GIFT_NOT_RECEIVE.getCode()){
-                recordInfo.setStatusName("未领取");
-            }else if (record.getStatus()==SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode()){
-                recordInfo.setStatusName("已领领取");
-            }
             ComGift comGift = comGiftService.getComGiftById(record.getGiftId());
-            if (comGift!=null){
-                recordInfo.setTurnTableGiftName(comGift.getName());
-            }
-            ComUser comUser = comUserService.getUserById(record.getUserId());
-            if (comUser!=null){
-                String mobile = comUser.getMobile();
-                recordInfo.setPhone(mobile);
-                String prefixMobile  = mobile.substring(0,3);
-                String suffixesMobile = mobile.substring(mobile.length()-3,mobile.length());
-                StringBuffer middleMobile = new StringBuffer();
-                for (int i=0;i<5;i++){
-                    middleMobile.append("*");
+            if (isGift.equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+                UserTurnTableRecordInfo recordInfo = new UserTurnTableRecordInfo();
+                recordInfo.setStatus(record.getStatus());
+                recordInfo.setTurnTableId(record.getTurnTableId());
+                recordInfo.setGiftId(record.getGiftId());
+                recordInfo.setId(record.getId());
+                recordInfo.setCreateTimeString(DateUtil.Date2String(record.getCreateTime(),DateUtil.CHINESE_YEAR_MONTH_DATE_FMT));
+                if (record.getStatus()==SfUserTurnTableRecordStatusEnum.GIFT_NOT_RECEIVE.getCode()){
+                    recordInfo.setStatusName("未领取");
+                }else if (record.getStatus()==SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode()){
+                    recordInfo.setStatusName("已领领取");
                 }
-                String phoneFormat = prefixMobile+middleMobile.toString()+suffixesMobile;
-                recordInfo.setPhoneFormat(phoneFormat);
+                if (comGift!=null){
+                    recordInfo.setTurnTableGiftName(comGift.getName());
+                }
+                ComUser comUser = comUserService.getUserById(record.getUserId());
+                if (comUser!=null){
+                    String mobile = comUser.getMobile();
+                    recordInfo.setPhone(mobile);
+                    String prefixMobile  = mobile.substring(0,3);
+                    String suffixesMobile = mobile.substring(mobile.length()-3,mobile.length());
+                    StringBuffer middleMobile = new StringBuffer();
+                    for (int i=0;i<5;i++){
+                        middleMobile.append("*");
+                    }
+                    String phoneFormat = prefixMobile+middleMobile.toString()+suffixesMobile;
+                    recordInfo.setPhoneFormat(phoneFormat);
+                }
+                recordInfoList.add(recordInfo);
             }
-            recordInfoList.add(recordInfo);
         }
         return recordInfoList;
     }

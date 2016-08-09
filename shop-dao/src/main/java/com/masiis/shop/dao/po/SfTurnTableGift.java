@@ -60,9 +60,6 @@ public class SfTurnTableGift {
         this.probability = probability;
         this.toatalQuantity = toatalQuantity;
 
-        this.quantity = 1;
-        this.giftedQuantity = 0;
-        this.status = 0;
     }
 
     public Integer getId() {

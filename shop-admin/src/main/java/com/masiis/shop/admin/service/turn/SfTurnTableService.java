@@ -74,6 +74,9 @@ public class SfTurnTableService {
         turnTableMapper.insert(turnTable);
         for(SfTurnTableGift gift :gifts) {
             gift.setTurnTableId(turnTable.getId());
+            gift.setQuantity(1);
+            gift.setGiftedQuantity(0);
+            gift.setStatus(0);
             turnTableGiftMapper.insert(gift);
         }
     }

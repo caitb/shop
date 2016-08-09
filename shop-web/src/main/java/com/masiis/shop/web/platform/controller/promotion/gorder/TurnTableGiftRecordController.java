@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.promotion.gorder;
 
+import com.masiis.shop.common.enums.promotion.ComGiftIsGiftEnum;
 import com.masiis.shop.dao.beans.promotion.UserTurnTableRecordInfo;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -31,7 +32,7 @@ public class TurnTableGiftRecordController extends BaseController {
     @RequestMapping("/getPromotionGorderPageInfo.html")
     public String getGiftedRecordInfo(HttpServletRequest request,Model model) {
         ComUser comUser =  getComUser(request);
-        List<UserTurnTableRecordInfo> records =  userTurnTableRecordService.getRecordInfoByUserId(comUser.getId(),null);
+        List<UserTurnTableRecordInfo> records =  userTurnTableRecordService.getRecordInfoByUserId(comUser.getId(),null, ComGiftIsGiftEnum.isGift_true.getCode());
         model.addAttribute("records",records);
         return "promotion/gorder/turnTableGiftRecord";
     }

@@ -16,6 +16,6 @@ public class ActivityController extends BaseController {
 
     @RequestMapping("/qixi/seckill.shtml")
     public String qixiSeckill(){
-        return "mall/activity/qixi_seckill";
+        return "mall/activity/qixi_seckill_now";
     }
 }

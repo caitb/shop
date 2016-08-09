@@ -86,7 +86,7 @@ public class TurnTableDetailShowService {
             SfUserTurnTable userTurnTable = userTurnTableService.getSfUserTurnTable(comUser.getId(),turnTable.getId());
             turnTablelInfo.setUserTurnTable(userTurnTable);
             //转盘中的奖品的所有中奖纪录
-            List<UserTurnTableRecordInfo> recordInfos = userTurnTableRecordService.getRecordInfoByTableId(turnTable.getId());
+            List<UserTurnTableRecordInfo> recordInfos = userTurnTableRecordService.getRecordInfoByTableIdAndType(turnTable.getId(),turnTableType);
             turnTablelInfo.setUserTurnTableRecordInfos(recordInfos);
             turnTablelInfos.add(turnTablelInfo);
         }

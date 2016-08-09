@@ -27,5 +27,7 @@ public interface SfUserTurnTableRecordMapper {
 
     List<SfUserTurnTableRecord> getRecordByTableId(Integer turnTableId);
 
+    List<SfUserTurnTableRecord> getRecordByTableIdAndType(@Param("turnTableId")Integer turnTableId,@Param("turnTableType")Integer turnTableType);
+
     int updateByPrimaryKey(SfUserTurnTableRecord record);
 }

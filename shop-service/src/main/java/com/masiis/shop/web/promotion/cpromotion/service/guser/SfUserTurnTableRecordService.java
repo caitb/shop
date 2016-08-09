@@ -43,8 +43,21 @@ public class SfUserTurnTableRecordService {
         return userTurnTableRecordMapper.getRecordByTableId(turnTableId);
     }
 
+    public List<SfUserTurnTableRecord> getRecordByTableIdAndType(Integer turnTableId,Integer turnTableType){
+        return userTurnTableRecordMapper.getRecordByTableIdAndType(turnTableId,turnTableType);
+    }
+
+
     public List<UserTurnTableRecordInfo> getRecordInfoByTableId(Integer turnTableId){
         List<SfUserTurnTableRecord> records = getRecordByTableId(turnTableId);
+        if (records!=null){
+            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode());
+        }
+        return null;
+    }
+
+    public List<UserTurnTableRecordInfo> getRecordInfoByTableIdAndType(Integer turnTableId,Integer turnTableType){
+        List<SfUserTurnTableRecord> records = getRecordByTableIdAndType(turnTableId,turnTableType);
         if (records!=null){
             return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode());
         }

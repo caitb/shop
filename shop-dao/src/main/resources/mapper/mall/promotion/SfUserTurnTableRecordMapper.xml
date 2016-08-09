@@ -72,6 +72,15 @@
         WHERE turn_table_id = #{turnTableId,jdbcType=INTEGER}
     </select>
 
+    <select id="getRecordByTableIdAndType" resultMap="BaseResultMap" >
+        select u.id, u.create_time, u.create_man, u.user_id, u.turn_table_id, u.gift_id, u.gorder_id, u.status,
+        u.update_time, u.remark
+        from sf_user_turn_table_record as u , sf_turn_table_rule AS  t
+        WHERE u.turn_table_id = #{turnTableId,jdbcType=INTEGER}
+        AND u.turn_table_id = t.turn_table_id
+        AND t.type = #{turnTableType,jdbcType=INTEGER}
+    </select>
+
     <select id="getRecordInfoByUserId" resultMap="BaseResultMap" >
         select id, create_time, create_man, user_id, turn_table_id, gift_id, gorder_id, status,
         update_time, remark

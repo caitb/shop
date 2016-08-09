@@ -146,12 +146,15 @@ main .floor2 .list div li {
   margin-bottom: 5px;
 }
 main .floor2 .list div li span:first-child {
-  width: 50%;
+  width: 41%;
 }
 main .floor2 .list div li span {
   width: 20%;
   color: #666;
   display: inline-block;
+}
+main .floor2 .list div li span:last-child{
+  width: 39%;
 }
 main .floor3 {
   width: 85%;

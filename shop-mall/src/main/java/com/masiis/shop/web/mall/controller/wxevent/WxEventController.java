@@ -122,9 +122,9 @@ public class WxEventController extends BaseController {
         buttons.add(new Button("关于麦链", sub_button1));
 
         List<Button> sub_button2 = new ArrayList<>();
-        sub_button2.add(new Button("七夕秒杀", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/activity/qixi/seckill.shtml"));
         sub_button2.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
-        buttons.add(new Button("七夕秒杀", sub_button2));
+        sub_button2.add(new Button("七夕秒杀", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/activity/qixi/seckill.shtml"));
+        buttons.add(new Button("浏览店铺", sub_button2));
         buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 

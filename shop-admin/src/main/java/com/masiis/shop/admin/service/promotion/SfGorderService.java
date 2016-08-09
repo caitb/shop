@@ -8,6 +8,7 @@ import com.masiis.shop.common.enums.promotion.SfGOrderPayStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfGorderShipStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.promotion.SfGorderConsigneeMapper;
+import com.masiis.shop.dao.mall.promotion.SfGorderFreightMapper;
 import com.masiis.shop.dao.mall.promotion.SfGorderItemMapper;
 import com.masiis.shop.dao.mall.promotion.SfGorderMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -35,6 +36,8 @@ public class SfGorderService {
     private SfGorderConsigneeMapper consigneeMapper;
     @Resource
     private SfGorderItemMapper sfGorderItemMapper;
+    @Resource
+    private SfGorderFreightMapper freightMapper;
 
     public SfGorder selectByPrimaryKey(Long id){
         return sfGorderMapper.selectByPrimaryKey(id);
@@ -81,6 +84,7 @@ public class SfGorderService {
             ComUser comUser = comUserMapper.selectByPrimaryKey(gorder.getCreateMan());
             SfGorderConsignee consignee =consigneeMapper.selectByGorderId(gorder.getId());
             SfGorderItem gorderItem = sfGorderItemMapper.selectByGorderId(gorder.getId());
+            SfGorderFreight freight =freightMapper.selectByGorderId(gorder.getId());
 
 
             Map<String,Object> gorderWrap = new HashMap<>();
@@ -88,6 +92,7 @@ public class SfGorderService {
             gorderWrap.put("comUser", comUser);
             gorderWrap.put("consignee", consignee);
             gorderWrap.put("item", gorderItem);
+            gorderWrap.put("freight", freight);
             gorderWraps.add(gorderWrap);
         }
 

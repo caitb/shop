@@ -45,4 +45,10 @@
         from sf_gorder_freight
     </select>
 
+    <select id="selectByGorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_gorder_id, ship_man_id, ship_man_name, freight
+        from sf_gorder_freight
+        where sf_gorder_id = #{gorderId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

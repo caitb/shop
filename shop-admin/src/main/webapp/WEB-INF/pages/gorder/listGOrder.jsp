@@ -341,16 +341,21 @@
             return;
         }
 
+        $('#submitDeliveryForm').attr('disabled', 'disabled')
         $.ajax({
             url : '<%=basePath%>promotion/deliveryGift.do',
             type : 'post',
             data : $sendForm.serialize(),
             success : function(data) {
+                $('#submitDeliveryForm').removeAttr('disabled');
                 if(data == 'success') {
                     $sendDialog.modal('hide');
                     bootbox.alert("发货成功");
                     $table.bootstrapTable('refresh');
                 }
+            },
+            error : function(data) {
+                $('#submitDeliveryForm').removeAttr('disabled');
             }
         });
 

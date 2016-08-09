@@ -73,7 +73,7 @@ public class PromotionGorderService {
         log.info("领取奖品发货发送微信通知-----start");
         List<SfUserPromotionGift> userPromotionGifts =  userPromotionGiftService.getPromoGiftByPromoIdAndRuleId(gorder.getPromoId(),gorder.getPromoRuleId());
         String promotionGiftName = "";
-        Integer promotionGiftQuantity = 0;
+        Integer promotionGiftQuantity = 1;
         if (userPromotionGifts!=null&&userPromotionGifts.size()!=0){
             SfUserPromotionGift userPromotionGift =  userPromotionGifts.get(0);
             ComGift comGift = comGiftService.getComGiftById(userPromotionGift.getGiftValue());

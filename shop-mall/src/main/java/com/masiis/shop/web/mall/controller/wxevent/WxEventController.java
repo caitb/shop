@@ -99,8 +99,8 @@ public class WxEventController extends BaseController {
     }
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
-        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc1e40e02b2e88dad&secret=9568581471a3d711fe80fadd0ca5f154";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
@@ -122,9 +122,9 @@ public class WxEventController extends BaseController {
         buttons.add(new Button("关于麦链", sub_button1));
 
         List<Button> sub_button2 = new ArrayList<>();
-        sub_button2.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
         sub_button2.add(new Button("七夕秒杀", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/activity/qixi/seckill.shtml"));
-        buttons.add(new Button("浏览店铺", sub_button2));
+        sub_button2.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
+        buttons.add(new Button("七夕秒杀", sub_button2));
         buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 

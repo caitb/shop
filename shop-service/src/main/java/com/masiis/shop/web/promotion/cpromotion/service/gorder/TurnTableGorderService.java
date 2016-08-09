@@ -118,7 +118,7 @@ public class TurnTableGorderService {
             //中奖纪录不存在
             log.info("----中奖纪录不存在----");
             throw new BusinessException("----中奖纪录不存在----");
-        }else if (record.getStatus().equals(SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED)){
+        }else if (record.getStatus().equals(SfUserTurnTableRecordStatusEnum.GIFT_RECEIVED.getCode())){
             return RECEIVE_GIFT_RECORD_GIFT_RECEIVED ;
         }
         log.info("判断中奖纪录存在不------end");

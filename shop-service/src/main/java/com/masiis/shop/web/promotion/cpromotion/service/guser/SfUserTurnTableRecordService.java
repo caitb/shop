@@ -114,7 +114,7 @@ public class SfUserTurnTableRecordService {
         List<UserTurnTableRecordInfo> recordInfoList = new ArrayList<UserTurnTableRecordInfo>();
         for (SfUserTurnTableRecord record:records){
             ComGift comGift = comGiftService.getComGiftById(record.getGiftId());
-            if (isGift.equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+            if (comGift!=null&&isGift.equals(comGift.getIsGift())){
                 UserTurnTableRecordInfo recordInfo = new UserTurnTableRecordInfo();
                 recordInfo.setStatus(record.getStatus());
                 recordInfo.setTurnTableId(record.getTurnTableId());

@@ -20,6 +20,12 @@
 <body>
     <c:forEach items="${turnTablelInfos}" var="turnTablelInfo" >
         <div style="display: none;">
+            <c:forEach var="entry" items="${turnTablelInfo.turnTableGiftInfo}">
+                <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
+                <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
+                <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
+                <input id="isGift_${entry.sort}" type="hidden" value="${entry.isGift}"/>
+            </c:forEach>
             <img id="giftImg_0" src="<%=path%>/static/images/turnTable/char.png"/>
             <img id="giftImg_1" src="<%=path%>/static/images/turnTable/thankyouPart.png"/>
             <img id="giftImg_2" src="<%=path%>/static/images/turnTable/flat.png"/>
@@ -28,12 +34,6 @@
             <img id="giftImg_5" src="<%=path%>/static/images/turnTable/noLoseHeart.png"/>
             <img id="giftImg_6" src="<%=path%>/static/images/turnTable/faceLift.png"/>
             <img id="giftImg_7" src="<%=path%>/static/images/turnTable/goodLuck.png"/>
-            <c:forEach var="entry" items="${turnTablelInfo.turnTableGiftInfo}">
-                <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
-                <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
-                <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
-                <input id="isGift_${entry.sort}" type="hidden" value="${entry.isGift}"/>
-            </c:forEach>
         </div>
         <div class="wrap">
             <header class="xq_header">
@@ -254,7 +254,7 @@
                 else if ( num == 2 ) {
                     angles = 2160 * rotNum + 990;
                     notice =$("#giftName_2").val();
-                    giftId = $("#giftId_2").value;
+                    giftId = $("#giftId_2").val();
                     turnTableGiftId = $("#turnTableGiftId_2").val();
                     isGift = $("#isGift_2").val();
                 }
@@ -303,7 +303,6 @@
                 }else if(isGift==1){
                     $("#receiveGiftNameId").html(notice);
                 }
-
                 $("#giftId").val(giftId);
                 $("#turnTableGiftId").val(turnTableGiftId);
                 $("#isGiftId").val(isGift);

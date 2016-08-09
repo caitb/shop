@@ -252,7 +252,7 @@
                 else if ( num == 2 ) {
                     angles = 2160 * rotNum + 990;
                     notice =$("#giftName_2").val();
-                    giftId = $("#giftId_2").value;
+                    giftId = $("#giftId_2").val();
                     turnTableGiftId = $("#turnTableGiftId_2").val();
                     isGift = $("#isGift_2").val();
                 }

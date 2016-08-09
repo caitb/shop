@@ -20,8 +20,15 @@
 <body>
     <c:forEach items="${turnTablelInfos}" var="turnTablelInfo" >
         <div style="display: none;">
+            <img id="giftImg_0" src="<%=path%>/static/images/turnTable/char.png"/>
+            <img id="giftImg_1" src="<%=path%>/static/images/turnTable/thankyouPart.png"/>
+            <img id="giftImg_2" src="<%=path%>/static/images/turnTable/flat.png"/>
+            <img id="giftImg_3" src="<%=path%>/static/images/turnTable/makePersistentEfforts.png"/>
+            <img id="giftImg_4" src="<%=path%>/static/images/turnTable/vocalConcert.png"/>
+            <img id="giftImg_5" src="<%=path%>/static/images/turnTable/noLoseHeart.png"/>
+            <img id="giftImg_6" src="<%=path%>/static/images/turnTable/faceLift.png"/>
+            <img id="giftImg_7" src="<%=path%>/static/images/turnTable/goodLuck.png"/>
             <c:forEach var="entry" items="${turnTablelInfo.turnTableGiftInfo}">
-                <img id="giftImg_${entry.sort}" src="${entry.imgUrl}"/>
                 <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
                 <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
                 <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
@@ -117,6 +124,7 @@
             var notice = "";
             //转盘初始化
             var color = ["#ffd821","#ffd821","rgba(0,0,0,0)","#333333","rgba(0,0,0,0)","rgba(0,0,0,0)"];
+            var info= ["<%=path%>/static/images/turnTable/char.png","<%=path%>/static/images/turnTable/thankyouPart.png","<%=path%>/static/images/turnTable/flat.png","<%=path%>/static/images/turnTable/makePersistentEfforts.png","<%=path%>/static/images/turnTable/vocalConcert.png","<%=path%>/static/images/turnTable/noLoseHeart.png","<%=path%>/static/images/turnTable/faceLift.png","<%=path%>/static/images/turnTable/goodLuck.png"]
             canvasRun();
             $('#tupBtn').on('click',function(){
                 if (clickNum >= 1) {
@@ -306,8 +314,8 @@
                 var canvas=document.getElementById('xttblog');
                 var ctx=canvas.getContext('2d');
                 createCircle();
-                setTimeout(function(){
-                    createCirText();
+                setInterval(function(){
+                        createCirText();
                 },0)
                 //外圆
                 function createCircle(){
@@ -331,25 +339,23 @@
                     }
                 }
                 //各奖项
+                var img=new Image();
                 function createCirText(){
                     ctx.textAlign='start';
                     ctx.textBaseline='middle';
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
-                    var img=new Image();
                     for ( var i = 0; i < 8; i++) {
-                        img.src=$("#giftImg_"+i).attr("src");
+                        img.src=info[i];
                         ctx.save();
                         ctx.beginPath();
                         ctx.translate(140,140);
                         ctx.rotate(i*step);
-                        ctx.font = " 20px Microsoft YaHei";
-                        ctx.fillStyle = color[3];
                         ctx.drawImage(img,0,0,130,130,-28,-115,60,60);
-                        ctx.font = " 14px Microsoft YaHei";
-                        ctx.closePath();
+//                        ctx.closePath();
                         ctx.restore();
                     }
+
                 }
                 $(".x").on("click",function(){
                     $(".black").hide();

@@ -134,7 +134,7 @@
   width: 100%;
 }
 .backi img.cbtn{
-  width:40%;
+  width: 37%;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -143,7 +143,7 @@
 }
 .backi p{
   font-size: 1.3rem;
-  color: #f74a11;
+  color: #333;
   position: absolute;
   top: 50%;
   margin-top: -0.5%;

@@ -20,4 +20,6 @@ public interface SfGorderFreightMapper {
     List<SfGorderFreight> selectAll();
 
     int updateByPrimaryKey(SfGorderFreight record);
+
+    SfGorderFreight selectByGorderId(Long gorderId);
 }

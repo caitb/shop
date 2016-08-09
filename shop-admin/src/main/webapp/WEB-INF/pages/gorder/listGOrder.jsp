@@ -55,41 +55,120 @@
 
 <body class="no-skin">
 
-<div class="modal fade" id="sendDialog" role="document">
+<div id="modal-delivery" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">发货</h4>
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    发货信息
+                </div>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="sfGorderId" />
 
-                    <div class="form-group">
-                        <label for="shipManId" class="control-label col-sm-4">快递公司</label>
+            <div class="modal-body no-padding">
+                <div>
+                    <div id="user-profile-1" class="user-profile row">
+                        <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
-                        <div class="col-sm-6">
-                            <select name="shipManId" id="shipManId" class="form-control">
-                            </select>
-                            <input type="hidden" name="shipManName" />
+                            <!-- #section:pages/profile.info -->
+                            <form id="deliveryForm" isSubmiting="false" action="<%=basePath%>order/order/delivery.do">
+                                <div class="profile-user-info profile-user-info-striped">
+
+                                    <input type="hidden" name="sfOrderId" >
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 订单号 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="orderCodeV"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 奖品 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="giftName"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 收货人 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="consignee"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 收货地址 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="address"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 联系电话 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="mobile"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 邮编 </div>
+
+                                        <div class="profile-info-value">
+                                            <span id="postcode"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 快递名称 </div>
+
+                                        <div class="profile-info-value">
+                                            <input type="hidden" id="shipManName" name="shipManName" value="" />
+                                            <select class="form-control" name="shipManId">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> 快递单号 </div>
+
+                                        <div class="profile-info-value">
+                                            <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="sfGorderId" >
+
+                                </div>
+                            </form>
+
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="freight" class="control-label col-sm-4">运单号</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="freight" name="freight" class="form-control">
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="submitSend">发货</button>
+
+            <div class="modal-footer no-margin-top">
+                <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                    <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                    <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal" onclick="clearDeliveryModal">
+                        取消
+                    </button>
+                    <button class="btn btn-sm btn-info pull-left ok" id="submitDeliveryForm">
+                        确认
+                    </button>
+                </div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div><!-- PAGE CONTENT ENDS -->
+
 
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -219,16 +298,18 @@
 //    }
 
 
-    var $sendDialog = $('#sendDialog');
+    var $sendDialog = $('#modal-delivery');
 
-    function loadShipMan() {
-        var $shipManSelect = $sendDialog.find('select[name=shipManId]');
+    +function loadShipMan() {
+        var $shipManSelect = $('select[name=shipManId]');
+        console.log($shipManSelect);
         if(!$shipManSelect.html().trim()) {
             $shipManSelect.append('<option></option>');
             $.ajax({
                 url : '<%=basePath%>comshipman/list.do',
                 dataType : 'json',
                 success : function(data) {
+                    console.log(data);
                     $.each(data, function() {
                         var $option= $('<option value="'+this.id+'">'+this.name+'</option>');
                         $shipManSelect.append($option);
@@ -236,35 +317,15 @@
                 }
             });
         }
-    }
-
-    function sendDialog(gorderId) {
-        $sendDialog.modal();
-        loadShipMan();
-
-        $sendDialog.find('[name]').each(function() {
-            $(this).css("border-color", "");
-            $(this).val('');
-        })
-
-        $('[name=sfGorderId]').val(gorderId);
-    }
-
-    $sendDialog.find('[name]').on('change keydown',function() {
-        if($(this).val()) {
-            $(this).css('border-color', '');
-        }
-    });
+    }();
 
     $('select[name=shipManId]').change(function(){
         var shipManName = $(this).find('option:selected').text().trim();
         $('input[name=shipManName]').val(shipManName);
     });
 
-
-
-    $('#submitSend').click(function() {
-        var $sendForm = $sendDialog.find("form");
+    $('#submitDeliveryForm').click(function() {
+        var $sendForm = $('#deliveryForm');
 
         var isValid = true;
         $sendForm.find('[name]:visible').each(function() {
@@ -286,14 +347,20 @@
             data : $sendForm.serialize(),
             success : function(data) {
                 if(data == 'success') {
-                    bootbox.alert("发货成功");
                     $sendDialog.modal('hide');
+                    bootbox.alert("发货成功");
                     $table.bootstrapTable('refresh');
                 }
             }
         });
 
     });
+
+    function clearDeliveryModal() {
+        $('.profile-info-value span:visible').text("");
+        $sendDialog.find('input').val('');
+        $sendDialog.find('select').val('');
+    }
 
     function initTable() {
         $table.bootstrapTable({
@@ -411,17 +478,61 @@
                         formatter: function(value, row, index){
                             if(row.gorder && row.gorder.isShip==1) {
 
-//                                return '<a class="look" href="javascript:void(0);">查看</a>';
+                                return '<a class="look" href="javascript:void(0);">查看</a>';
                             } else if(row.gorder && row.gorder.isShip==0){
                                 return '<a class="send" href="javascript:void(0);">发货</a>';
                             }
                         },
                         events: {
                             'click .look': function(e, value, row, index) {
-                                viewFreight(row.gorder.id);
+                                console.log(row);
+                                clearDeliveryModal();
+                                $('#submitDeliveryForm').hide();
+
+
+                                var consignee = row.consignee
+                                var address = consignee.provinceName+consignee.cityName+consignee.regionName+consignee.address;
+
+                                $('input[name=sfGorderId]').val(row.gorder.id);
+                                $('#orderCodeV').text(row.gorder.gorderCode);
+                                $('#giftName').text(row.item.giftName);
+                                $('#address').text(address);
+                                $('#mobile').text(consignee.mobile);
+                                $('#postcode').html(consignee.zip);
+                                $('#consignee').html(consignee.consignee);
+                                $('[name=shipManId]').val(row.gorder.shipManId);
+                                $('[name=shipManName]').val(row.gorder.shipManName);
+                                $('[name=freight]').val(row.freight.freight);
+
+                                $('[name=shipManId]').attr('disabled', 'disabled');
+                                $('[name=shipManName]').attr('disabled', 'disabled');
+                                $('[name=freight]').attr('disabled', 'disabled');
+
+                                var $dialog = $('#modal-delivery');
+
+                                $dialog.modal('show');
                             },
                             'click .send' : function(e, value, row, index) {
-                                sendDialog(row.gorder.id);
+                                clearDeliveryModal();
+                                $('#submitDeliveryForm').show();
+
+                                var consignee = row.consignee
+                                var address = consignee.provinceName+consignee.cityName+consignee.regionName+consignee.address;
+
+                                $('input[name=sfGorderId]').val(row.gorder.id);
+                                $('#orderCodeV').text(row.gorder.gorderCode);
+                                $('#giftName').text(row.item.giftName);
+                                $('#address').text(address);
+                                $('#mobile').text(consignee.mobile);
+                                $('#postcode').html(consignee.zip);
+                                $('#consignee').html(consignee.consignee);
+
+                                $('[name=shipManId]').removeAttr('disabled', 'disabled');
+                                $('[name=shipManName]').removeAttr('disabled', 'disabled');
+                                $('[name=freight]').removeAttr('disabled', 'disabled');
+
+                                var $dialog = $('#modal-delivery');
+                                $dialog.modal('show');
                             }
                         }
                     }

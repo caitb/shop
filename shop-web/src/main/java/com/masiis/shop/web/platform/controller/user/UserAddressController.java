@@ -131,6 +131,9 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SUPPLEMENT_PARAM);
+        request.getSession().removeAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_Id);
+        request.getSession().removeAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_GIFT_ID);
+        request.getSession().removeAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_USER_TURN_TABLE_RECORD_ID);
         return redirectHead+redirectBody;
     }
 
@@ -203,7 +206,9 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
                                       @RequestParam(value = "supplementOrderParamForAddress", required = false) String supplementOrderParamForAddress,
                                       @RequestParam(value = "agentOrderparamForAddress", required = false) String agentOrderparamForAddress,
-
+                                      @RequestParam(value = "turnTableId", required = false) Integer turnTableId,
+                                      @RequestParam(value = "giftId", required = false) Integer giftId,
+                                      @RequestParam(value = "userTurnTableRecordId", required = false) Long userTurnTableRecordId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
@@ -212,6 +217,9 @@ public class UserAddressController extends BaseController {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, orderId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
         request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);
+        request.getSession().setAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_Id, turnTableId);
+        request.getSession().setAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_GIFT_ID, giftId);
+        request.getSession().setAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_USER_TURN_TABLE_RECORD_ID, userTurnTableRecordId);
         model.addAttribute("addressId", selectedAddressId);
         return "platform/order/xuanze";
     }

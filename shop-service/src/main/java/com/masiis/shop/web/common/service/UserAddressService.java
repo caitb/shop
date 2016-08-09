@@ -133,9 +133,9 @@ public class UserAddressService {
             Long  shopId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
             Integer  promoId = (Integer) request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
             Integer  promoRuleId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
-            Integer  turnTableId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_Id);
-            Integer  giftId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID);
-            Long  userTurnTableRecordId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID);
+            Integer  turnTableId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_Id);
+            Integer  giftId = (Integer)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_TURN_TABLE_GIFT_ID);
+            Long  userTurnTableRecordId = (Long)request.getSession().getAttribute(com.masiis.shop.common.constant.mall.SysConstants.SESSION_USER_TURN_TABLE_RECORD_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{

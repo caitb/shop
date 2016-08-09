@@ -45,10 +45,10 @@ public class SysConstants {
     public static final String SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID = "promoId";//活动领取奖励的活动id
     public static final String SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID = "promoRuleId";//活动规则id
 
-    public static final String SESSION_MALL_TURN_TABLE_Id = "turnTableId";//转盘id
-    public static final String SESSION_MALL_TURN_TABLE_GIFT_ID = "giftId";//转盘中的奖品id
+    public static final String SESSION_TURN_TABLE_Id = "turnTableId";//转盘id
+    public static final String SESSION_TURN_TABLE_GIFT_ID = "giftId";//转盘中的奖品id
     public static final String SESSION_MALL_TURN_TABLE_RULE_ID = "turnTableRuleId";//转盘规则id
-    public static final String SESSION_MALL_USER_TURN_TABLE_RECORD_ID = "userTurnTableRecordId";//用户转盘记录id
+    public static final String SESSION_USER_TURN_TABLE_RECORD_ID = "userTurnTableRecordId";//用户转盘记录id
     /**
      * 商品最小图片
      */

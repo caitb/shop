@@ -61,4 +61,9 @@ public class SysConstants {
     public static final int UPGRADE_LATEST_TIME = 2;
     /*商品等级图片*/
     public static final String  AGENT_LEVEL_PRODUCT_ICON_URL = PropertiesUtils.getStringValue("agent_level_product_icon_url");
+
+    public static final String SESSION_TURN_TABLE_Id = "turnTableId";//转盘id
+    public static final String SESSION_TURN_TABLE_GIFT_ID = "giftId";//转盘中的奖品id
+    public static final String SESSION_MALL_TURN_TABLE_RULE_ID = "turnTableRuleId";//转盘规则id
+    public static final String SESSION_USER_TURN_TABLE_RECORD_ID = "userTurnTableRecordId";//用户转盘记录id
 }

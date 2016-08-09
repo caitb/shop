@@ -132,9 +132,9 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID);
-        request.getSession().removeAttribute(SysConstants.SESSION_MALL_TURN_TABLE_Id);
-        request.getSession().removeAttribute(SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID);
-        request.getSession().removeAttribute(SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_TURN_TABLE_Id);
+        request.getSession().removeAttribute(SysConstants.SESSION_TURN_TABLE_GIFT_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_USER_TURN_TABLE_RECORD_ID);
         return redirectHead+redirectBody;
     }
 
@@ -221,9 +221,9 @@ public class UserAddressController extends BaseController {
         request.getSession().setAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID, shopId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_ID, promoId);
         request.getSession().setAttribute(SysConstants.SESSION_MALL_PROMOTION_RECEIVE_REWARD_PROMO_RULE_ID, promoRuleId);
-        request.getSession().setAttribute(SysConstants.SESSION_MALL_TURN_TABLE_Id, turnTableId);
-        request.getSession().setAttribute(SysConstants.SESSION_MALL_TURN_TABLE_GIFT_ID, giftId);
-        request.getSession().setAttribute(SysConstants.SESSION_MALL_USER_TURN_TABLE_RECORD_ID, userTurnTableRecordId);
+        request.getSession().setAttribute(SysConstants.SESSION_TURN_TABLE_Id, turnTableId);
+        request.getSession().setAttribute(SysConstants.SESSION_TURN_TABLE_GIFT_ID, giftId);
+        request.getSession().setAttribute(SysConstants.SESSION_USER_TURN_TABLE_RECORD_ID, userTurnTableRecordId);
         model.addAttribute("addressId", selectedAddressId);
         return "mall/user/xuanze";
     }

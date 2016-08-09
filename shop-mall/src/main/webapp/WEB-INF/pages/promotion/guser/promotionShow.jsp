@@ -83,6 +83,7 @@
         </h1>
     </div>
 </div>
+   </body>
    <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script>
         var imgSize=$(".f_l").width()

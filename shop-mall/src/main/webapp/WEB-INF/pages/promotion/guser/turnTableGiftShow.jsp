@@ -61,7 +61,7 @@
                         <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.html');">我的中奖记录</button>
                     </div>
                     <div class="list">
-                       <img src="<%=path%>/static/images/zbg.png" alt="" />
+                       <img src="<%=path%>/static/images/zbg.jpg" alt="" />
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
                                 <c:forEach items="${turnTablelInfo.userTurnTableRecordInfos}" var="recordInfo">
@@ -352,7 +352,8 @@
                         ctx.beginPath();
                         ctx.translate(140,140);
                         ctx.rotate(i*step);
-                        ctx.drawImage(img,-28,-115,60,40);
+                        ctx.drawImage(img, -35, -130, 68,50);
+
 //                        ctx.closePath();
                         ctx.restore();
                     }

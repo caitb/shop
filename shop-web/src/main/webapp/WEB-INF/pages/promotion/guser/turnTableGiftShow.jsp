@@ -42,7 +42,7 @@
             </header>
             <main>
                 <div class="floor">
-                    <img src="<%=path%>/static/images/z.png" alt="" />
+                    <img src="<%=path%>/static/images/z.png" alt=""/>
                     <div class="xttblog_box">
                         <canvas id="xttblog" width="280px" height="280px">抱歉！浏览器不支持。</canvas>
                         <canvas id="xttblog01" width="280px" height="280px">抱歉！浏览器不支持。</canvas>
@@ -59,7 +59,7 @@
                         <button onclick="javascript:window.location.replace('<%=basePath%>turnTableGiftRecord/getPromotionGorderPageInfo.html');">我的中奖记录</button>
                     </div>
                     <div class="list">
-                       <img src="<%=path%>/static/images/zbg.png" alt="" />
+                       <img src="<%=path%>/static/images/zbg.jpg" alt="" />
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
                                 <c:forEach items="${turnTablelInfo.userTurnTableRecordInfos}" var="recordInfo">

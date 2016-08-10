@@ -49,7 +49,7 @@
         set
         gifted_quantity = #{giftedQuantity,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
-        AND  gifted_quantity &lt;=  toatal_quantity
+        AND  gifted_quantity &lt;  toatal_quantity
     </update>
 
 

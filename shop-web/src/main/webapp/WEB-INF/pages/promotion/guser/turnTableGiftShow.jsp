@@ -225,7 +225,8 @@
                     data: {turnTableId:turnTableId},
                     dataType: "Json",
                     success: function (result) {
-                        num = result;
+                        num = result.random;
+                        $("#userTurnTableRecordId").val(result.recordId);
                     }
                 })
 

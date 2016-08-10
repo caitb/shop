@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.promotion.guser;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableStatusEnum;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hzzh on 2016/8/1.
@@ -66,7 +68,10 @@ public class TurnTableDetailShowController extends BaseController {
     @RequestMapping("/getRandomByGiftRate.json")
     @ResponseBody
     public String getRandomByGiftRate(HttpServletRequest request,@RequestParam(required = false) Integer turnTableId) {
-       int i = turnTableDetailShowService.getRandomByGiftRate(getComUser(request),turnTableId,  SfTurnTableRuleTypeEnum.B.getCode());
-        return i+"";
+        JSONObject obj = new JSONObject();
+        Map<String,Object> map = turnTableDetailShowService.getRandomByGiftRate(getComUser(request),turnTableId,  SfTurnTableRuleTypeEnum.B.getCode());
+        obj.put("random",map.get("random"));
+        obj.put("recordId",map.get("recordId"));
+        return obj.toJSONString();
     }
 }

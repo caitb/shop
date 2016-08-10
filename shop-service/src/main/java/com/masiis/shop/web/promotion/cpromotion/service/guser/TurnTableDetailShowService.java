@@ -98,8 +98,9 @@ public class TurnTableDetailShowService {
         return turnTablelInfos;
     }
 
-    public int getRandomByGiftRate(ComUser comUser,Integer turnTableId,Integer turnTableType){
+    public Map<String,Object> getRandomByGiftRate(ComUser comUser,Integer turnTableId,Integer turnTableType){
         //获取转盘中的奖品
+        Map<String,Object> returnMap = new LinkedHashMap<>();
         List<TurnTableGiftInfo> turnTableGiftInfos =  turnTableGiftService.getTurnTableGiftsByTableId(turnTableId);
         Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
         Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
@@ -136,12 +137,14 @@ public class TurnTableDetailShowService {
             TurnTableGiftInfo _turnTableGiftInfo = (TurnTableGiftInfo)map.get("turnTableGiftInfo");
             SfTurnTableRule turnTableRule = turnTableRuleService.getRuleByTurnTableIdAndTypeAndStatus(turnTableId, turnTableType,SfTurnTableRuleStatusEnum.EFFECT.getCode());
             //抽奖后减少用户的抽奖次数和增加纪录
-            turnTableGorderService.updateTimesAndInsertRecord(comUser,1,comUser.getId(), turnTableId,
+           Long recordId =  turnTableGorderService.updateTimesAndInsertRecord(comUser,1,comUser.getId(), turnTableId,
                     turnTableRule.getId(),
                     _turnTableGiftInfo.getGiftId());
             log.info("中奖返回的序号-------------"+random);
             if (random!=-1){
-                return  random;
+                returnMap.put("random",random);
+                returnMap.put("recordId",recordId);
+                return  returnMap;
             }else{
                 throw new BusinessException("获取中奖数字出错------");
             }

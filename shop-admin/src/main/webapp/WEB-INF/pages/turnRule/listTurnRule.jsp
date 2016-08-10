@@ -262,15 +262,15 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.type){
-                                if(row.type == 0) {
-                                    return 'B 端';
-                                }
-                                if(row.type == 1) {
-                                    return 'C 端';
-                                }
-                                return '-';
+
+                            if(row.type == 0) {
+                                return 'B 端';
                             }
+                            if(row.type == 1) {
+                                return 'C 端';
+                            }
+                            return '-';
+
                         }
                     },
                     {

@@ -99,7 +99,7 @@ public class TurnTableDetailShowService {
         Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
         Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
         Map<Integer,Boolean> isGiftMap = new LinkedHashMap<>(); //是否是奖品
-        Integer[] noGiftSortArray = new Integer[10];
+        List<Integer> noGiftSorts = new ArrayList<Integer>();
         if (turnTableGiftInfos!=null){
             for(int i=0;i<turnTableGiftInfos.size();i++){
                 TurnTableGiftInfo turnTableGiftInfo = turnTableGiftInfos.get(i);
@@ -110,7 +110,7 @@ public class TurnTableDetailShowService {
                     isGiftMap.put(turnTableGiftInfo.getSort(),true);
                 }else{
                     isGiftMap.put(turnTableGiftInfo.getSort(),false);
-                    noGiftSortArray[i] = turnTableGiftInfo.getSort();
+                    noGiftSorts.add(turnTableGiftInfo.getSort());
                 }
                 //奖品是否还足够
                 if (turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
@@ -123,7 +123,7 @@ public class TurnTableDetailShowService {
                     quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
                 }
             }
-            int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSortArray);
+            int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSorts);
             log.info("中奖返回的序号-------------"+i);
             if (i!=-1){
                 return  i;

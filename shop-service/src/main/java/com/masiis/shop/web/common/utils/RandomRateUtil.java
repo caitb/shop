@@ -3,6 +3,7 @@ package com.masiis.shop.web.common.utils;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -141,7 +142,7 @@ public class RandomRateUtil {
      * @return int
      *
      */
-    public static  int percentageRandom(Map<Integer,Double> rateMap,Map<Integer,Boolean> quantityEnoughMap ,Map<Integer,Boolean> isGiftMap,Integer[] noGiftSortArray)
+    public static  int percentageRandom(Map<Integer,Double> rateMap,Map<Integer,Boolean> quantityEnoughMap ,Map<Integer,Boolean> isGiftMap,List<Integer> noGiftSorts)
     {
         double randomNumber;
         initRate(rateMap,quantityEnoughMap,isGiftMap);
@@ -191,10 +192,10 @@ public class RandomRateUtil {
             //从不是奖品中随机选取一个
             log.info("-----从不是奖品中随机选取一个------");
             Random rand = new Random();
-            for (int i= 0;i<noGiftSortArray.length;i++){
-                log.info("-----不是奖品的序号-----"+noGiftSortArray[i]);
+            for (int i= 0;i<noGiftSorts.size();i++){
+                log.info("-----不是奖品的序号-----"+noGiftSorts.get(i));
             }
-            return noGiftSortArray[rand.nextInt(noGiftSortArray.length)] ;
+            return noGiftSorts.get(rand.nextInt(noGiftSorts.size())) ;
         }
     }
 }

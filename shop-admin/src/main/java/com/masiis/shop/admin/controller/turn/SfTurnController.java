@@ -4,10 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.service.turn.SfTurnTableService;
 import com.masiis.shop.admin.utils.DbUtils;
 import com.masiis.shop.dao.mall.promotion.SfTurnTableMapper;
-import com.masiis.shop.dao.po.PbUser;
-import com.masiis.shop.dao.po.SfTurnTable;
-import com.masiis.shop.dao.po.SfTurnTableGift;
-import com.masiis.shop.dao.po.SfUserPromotion;
+import com.masiis.shop.dao.mall.promotion.SfTurnTableRuleMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,8 @@ public class SfTurnController {
     private SfTurnTableService turnTableService;
     @Resource
     private SfTurnTableMapper turnTableMapper;
+    @Resource
+    private SfTurnTableRuleMapper turnTableRuleMapper;
 
     @RequestMapping("/add.shtml")
     public String add() {
@@ -95,7 +96,23 @@ public class SfTurnController {
     @RequestMapping("/all.do")
     @ResponseBody
     public Object all() {
-        return turnTableMapper.selectAll();
+
+        List<SfTurnTable> turnTables = turnTableMapper.selectAll();
+        List<SfTurnTableRule> turnTableRules = turnTableRuleMapper.selectAll();
+
+        List<Integer> usedTurnTableIds = new LinkedList<>();
+        for(SfTurnTableRule rule : turnTableRules) {
+            usedTurnTableIds.add(rule.getTurnTableId());
+        }
+
+        for(int i=turnTables.size()-1; i>-1; i--) {
+            SfTurnTable turnTable = turnTables.get(i);
+            if(usedTurnTableIds.contains(turnTable.getId())) {
+                turnTables.remove(i);
+            }
+        }
+
+        return turnTables;
     }
 
 }

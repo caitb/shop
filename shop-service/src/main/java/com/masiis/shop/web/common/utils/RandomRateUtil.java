@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by hzzh on 2016/8/2.
@@ -133,7 +134,7 @@ public class RandomRateUtil {
      * @return int
      *
      */
-    public static  int percentageRandom(Map<Integer,Double> rateMap,Map<Integer,Boolean> quantityEnoughMap ,Map<Integer,Boolean> isGiftMap)
+    public static  int percentageRandom(Map<Integer,Double> rateMap,Map<Integer,Boolean> quantityEnoughMap ,Map<Integer,Boolean> isGiftMap,Integer[] noGiftSortArray)
     {
         double randomNumber;
         initRate(rateMap,quantityEnoughMap,isGiftMap);
@@ -178,14 +179,10 @@ public class RandomRateUtil {
                 + rate5 + rate6 + rate7)
         {
             return 7;
+        }else{
+            //从不是奖品中随机选取一个
+            Random rand = new Random();
+            return noGiftSortArray[rand.nextInt(noGiftSortArray.length)] ;
         }
-        //如果条件不满足
-        for (Integer key : isGiftMap.keySet()) {
-            log.info("--------条件不满足，从不是奖品中选则出一个---------");
-            if (!isGiftMap.get(key)){
-                return key;
-            }
-        }
-        return -1;
     }
 }

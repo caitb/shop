@@ -99,28 +99,35 @@ public class TurnTableDetailShowService {
         Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
         Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
         Map<Integer,Boolean> isGiftMap = new LinkedHashMap<>(); //是否是奖品
-        for (TurnTableGiftInfo turnTableGiftInfo: turnTableGiftInfos){
-            //奖品概率
-            rateMap.put(turnTableGiftInfo.getSort(),Double.parseDouble(turnTableGiftInfo.getProbability()+""));
-            //是否是奖品
-            if (turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
-                isGiftMap.put(turnTableGiftInfo.getSort(),true);
-            }else{
-                isGiftMap.put(turnTableGiftInfo.getSort(),false);
-            }
-            //奖品是否还足够
-            if (turnTableGiftInfo.getGiftedQuantity()>=turnTableGiftInfo.getToatalQuantity()){
-                quantityEnoughMap.put(turnTableGiftInfo.getSort(),false);
-            }else{
-                quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
-            }
+        Integer[] noGiftSortArray = new Integer[]{10};
+        if (turnTableGiftInfos!=null){
+            for(int i=0;i<turnTableGiftInfos.size();i++){
+                TurnTableGiftInfo turnTableGiftInfo = turnTableGiftInfos.get(i);
+                //奖品概率
+                rateMap.put(turnTableGiftInfo.getSort(),Double.parseDouble(turnTableGiftInfo.getProbability()+""));
+                //是否是奖品
+                if (turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+                    isGiftMap.put(turnTableGiftInfo.getSort(),true);
+                }else{
+                    isGiftMap.put(turnTableGiftInfo.getSort(),false);
+                    noGiftSortArray[i] = turnTableGiftInfo.getSort();
+                }
+                //奖品是否还足够
+                if (turnTableGiftInfo.getGiftedQuantity()>=turnTableGiftInfo.getToatalQuantity()){
+                    quantityEnoughMap.put(turnTableGiftInfo.getSort(),false);
+                }else{
+                    quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
+                }
 
-        }
-        int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap);
-        if (i!=-1){
-            return  i;
+            }
+            int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSortArray);
+            if (i!=-1){
+                return  i;
+            }else{
+                throw new BusinessException("获取中奖数字出错------");
+            }
         }else{
-            throw new BusinessException("获取中奖数字出错------");
+            throw new BusinessException("----获取概率转盘中没有奖品-------");
         }
     }
 

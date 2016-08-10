@@ -344,16 +344,17 @@
                     ctx.textBaseline='middle';
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
-                    for ( var i = 0; i < 8; i++) {
+                        for ( var i = 0; i < 8; i++) {
                         img.src=info[i];
                         ctx.save();
                         ctx.beginPath();
                         ctx.translate(140,140);
                         ctx.rotate(i*step);
-                        ctx.drawImage(img,0,0,130,130,-28,-115,60,60);
+                        ctx.drawImage(img,-28,-115,60,40);
 //                        ctx.closePath();
                         ctx.restore();
                     }
+
 
                 }
                 $(".x").on("click",function(){

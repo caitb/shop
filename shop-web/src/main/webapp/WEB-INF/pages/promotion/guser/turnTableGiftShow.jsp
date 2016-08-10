@@ -108,7 +108,7 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 
 <script>
-    new Marquee(["hottitle","ulid"],0,2,"80%","18%",150,0,0);
+    new Marquee(["hottitle","ulid"],0,2,"80%",200,150,0,0);
 </script>
     <script>
         $(function(){
@@ -312,9 +312,9 @@
                 var canvas=document.getElementById('xttblog');
                 var ctx=canvas.getContext('2d');
                 createCircle();
-//                setInterval(function(){
+                setInterval(function(){
                     createCirText();
-//                },0)
+                },0)
                 //外圆
                 function createCircle(){
                     var startAngle = 0;//扇形的开始弧度
@@ -343,8 +343,8 @@
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
                     var img=new Image();
-                    img.src=$("#giftImg_0").attr("src");
-                    img.onload=function() {
+//                    img.src=$("#giftImg_0").attr("src");
+//                    img.onload=function() {
                         for (var i = 0; i < 8; i++) {
                             img.src = $("#giftImg_" + i).attr("src");
                             ctx.save();
@@ -353,12 +353,12 @@
                             ctx.rotate(i * step);
                             ctx.font = " 20px Microsoft YaHei";
                             ctx.fillStyle = color[3];
-                            ctx.drawImage(img, -32, -115, 65, 45);
+                            ctx.drawImage(img, -35, -130, 70,50);
                             ctx.font = " 14px Microsoft YaHei";
                             ctx.closePath();
                             ctx.restore();
                         }
-                    }
+//                    }
                 }
                 $(".x").on("click",function(){
                     $(".black").hide();

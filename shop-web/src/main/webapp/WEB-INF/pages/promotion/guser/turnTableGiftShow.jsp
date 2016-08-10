@@ -312,9 +312,9 @@
                 var canvas=document.getElementById('xttblog');
                 var ctx=canvas.getContext('2d');
                 createCircle();
-                setInterval(function(){
+//                setInterval(function(){
                     createCirText();
-                },0)
+//                },0)
                 //外圆
                 function createCircle(){
                     var startAngle = 0;//扇形的开始弧度
@@ -343,18 +343,21 @@
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
                     var img=new Image();
-                    for ( var i = 0; i < 8; i++) {
-                        img.src=$("#giftImg_"+i).attr("src");
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.translate(140,140);
-                        ctx.rotate(i*step);
-                        ctx.font = " 20px Microsoft YaHei";
-                        ctx.fillStyle = color[3];
-                        ctx.drawImage(img,0,0,130,130,-28,-115,60,60);
-                        ctx.font = " 14px Microsoft YaHei";
-                        ctx.closePath();
-                        ctx.restore();
+                    img.src=$("#giftImg_0").attr("src");
+                    img.onload=function() {
+                        for (var i = 0; i < 8; i++) {
+                            img.src = $("#giftImg_" + i).attr("src");
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.translate(140, 140);
+                            ctx.rotate(i * step);
+                            ctx.font = " 20px Microsoft YaHei";
+                            ctx.fillStyle = color[3];
+                            ctx.drawImage(img, -32, -115, 65, 45);
+                            ctx.font = " 14px Microsoft YaHei";
+                            ctx.closePath();
+                            ctx.restore();
+                        }
                     }
                 }
                 $(".x").on("click",function(){

@@ -44,6 +44,15 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <update id="updateGiftedQuantity" parameterType="com.masiis.shop.dao.po.SfTurnTableGift" >
+        update sf_turn_table_gift
+        set
+        gifted_quantity = #{giftedQuantity,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+        AND  gifted_quantity &lt;=  toatal_quantity
+    </update>
+
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, turn_table_id, gift_id, quantity, toatal_quantity, gifted_quantity, sort, 
         probability, status, remark

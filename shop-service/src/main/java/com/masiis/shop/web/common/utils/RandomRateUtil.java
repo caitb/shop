@@ -191,11 +191,15 @@ public class RandomRateUtil {
         }else{
             //从不是奖品中随机选取一个
             log.info("-----从不是奖品中随机选取一个------");
-            Random rand = new Random();
-            for (int i= 0;i<noGiftSorts.size();i++){
-                log.info("-----不是奖品的序号-----"+noGiftSorts.get(i));
-            }
-            return noGiftSorts.get(rand.nextInt(noGiftSorts.size())) ;
+            return getRandowNumberFromList(noGiftSorts);
         }
+    }
+
+    public static int getRandowNumberFromList(List<Integer> noGiftSorts){
+        Random rand = new Random();
+        for (int i= 0;i<noGiftSorts.size();i++){
+            log.info("-----不是奖品的序号-----"+noGiftSorts.get(i));
+        }
+        return noGiftSorts.get(rand.nextInt(noGiftSorts.size())) ;
     }
 }

@@ -16,6 +16,7 @@ import com.masiis.shop.web.common.utils.RandomRateUtil;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableGiftService;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
 import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.TurnTableGorderService;
 import org.springframework.mail.MailParseException;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,10 @@ public class TurnTableDetailShowService {
     private SfUserTurnTableService userTurnTableService;
     @Resource
     private SfUserTurnTableRecordService userTurnTableRecordService;
+
+    @Resource
+    private TurnTableGorderService turnTableGorderService;
+
 
     /**
      * 获取转盘信息
@@ -93,16 +98,18 @@ public class TurnTableDetailShowService {
         return turnTablelInfos;
     }
 
-    public int getRandomByGiftRate(Integer turnTableId){
+    public int getRandomByGiftRate(ComUser comUser,Integer turnTableId,Integer turnTableType){
         //获取转盘中的奖品
         List<TurnTableGiftInfo> turnTableGiftInfos =  turnTableGiftService.getTurnTableGiftsByTableId(turnTableId);
         Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
         Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
         Map<Integer,Boolean> isGiftMap = new LinkedHashMap<>(); //是否是奖品
+        Map<Integer,TurnTableGiftInfo> turnTableGiftInfoMap = new LinkedHashMap<Integer,TurnTableGiftInfo>();
         List<Integer> noGiftSorts = new ArrayList<Integer>();
         if (turnTableGiftInfos!=null){
             for(int i=0;i<turnTableGiftInfos.size();i++){
                 TurnTableGiftInfo turnTableGiftInfo = turnTableGiftInfos.get(i);
+                turnTableGiftInfoMap.put(turnTableGiftInfo.getSort(),turnTableGiftInfo);
                 //奖品概率
                 rateMap.put(turnTableGiftInfo.getSort(),Double.parseDouble(turnTableGiftInfo.getProbability()+""));
                 //是否是奖品
@@ -123,16 +130,71 @@ public class TurnTableDetailShowService {
                     quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
                 }
             }
-            int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSorts);
-            log.info("中奖返回的序号-------------"+i);
-            if (i!=-1){
-                return  i;
+            //获取抽奖的序号和减少数量
+            Map<String,Object> map = getRandowAndTableGiftQuantity(rateMap, quantityEnoughMap , isGiftMap, turnTableGiftInfoMap , noGiftSorts);
+            int random = (int)map.get("random");
+            TurnTableGiftInfo _turnTableGiftInfo = (TurnTableGiftInfo)map.get("turnTableGiftInfo");
+            SfTurnTableRule turnTableRule = turnTableRuleService.getRuleByTurnTableIdAndTypeAndStatus(turnTableId, turnTableType,SfTurnTableRuleStatusEnum.EFFECT.getCode());
+            //抽奖后减少用户的抽奖次数和增加纪录
+            turnTableGorderService.updateTimesAndInsertRecord(comUser,1,comUser.getId(), turnTableId,
+                    turnTableRule.getId(),
+                    _turnTableGiftInfo.getGiftId());
+            log.info("中奖返回的序号-------------"+random);
+            if (random!=-1){
+                return  random;
             }else{
                 throw new BusinessException("获取中奖数字出错------");
             }
         }else{
             throw new BusinessException("----获取概率转盘中没有奖品-------");
         }
+    }
+
+    /**
+     * 获取奖品的序号和减少数量
+     * @param rateMap
+     * @param quantityEnoughMap
+     * @param isGiftMap
+     * @param turnTableGiftInfoMap
+     * @param noGiftSorts
+     * @return
+     */
+    private Map<String,Object> getRandowAndTableGiftQuantity(Map<Integer,Double> rateMap,
+                                                        Map<Integer,Boolean> quantityEnoughMap ,
+                                                        Map<Integer,Boolean> isGiftMap,
+                                                        Map<Integer,TurnTableGiftInfo> turnTableGiftInfoMap ,
+                                                        List<Integer> noGiftSorts){
+
+        Map<String,Object> map = new LinkedHashMap<>();
+        int random = 1;
+        Boolean bl = true;
+        Boolean isReGetRandow = false;
+        TurnTableGiftInfo _turnTableGiftInfo = null;
+        while(bl){
+            if (!isReGetRandow){
+                log.info("---------第一次获取随机数--------");
+                //第一次获取随机数
+                random = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSorts);
+            }else{
+                //第二次从不是奖品中获取随机数
+                log.info("---------第二次从不是奖品中获取随机数--------");
+                random = RandomRateUtil.getInstance().getRandowNumberFromList(noGiftSorts);
+            }
+            _turnTableGiftInfo = turnTableGiftInfoMap.get(random);
+            if (_turnTableGiftInfo!=null){
+                int i = turnTableGiftService.updateGiftedQuantity(_turnTableGiftInfo.getTurnTableGiftId());
+                if (i!=1){
+                    //重新获取概率
+                    isReGetRandow = true;
+                }else{
+                    //终止while循环
+                    bl =false;
+                }
+            }
+        }
+        map.put("random",random);
+        map.put("turnTableGiftInfo",_turnTableGiftInfo);
+        return map;
     }
 
 }

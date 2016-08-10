@@ -65,8 +65,8 @@ public class TurnTableDetailShowController extends BaseController {
      */
     @RequestMapping("/getRandomByGiftRate.json")
     @ResponseBody
-    public String getRandomByGiftRate(@RequestParam(required = false) Integer turnTableId) {
-       int i = turnTableDetailShowService.getRandomByGiftRate(turnTableId);
+    public String getRandomByGiftRate(HttpServletRequest request,@RequestParam(required = false) Integer turnTableId) {
+       int i = turnTableDetailShowService.getRandomByGiftRate(getComUser(request),turnTableId,  SfTurnTableRuleTypeEnum.B.getCode());
         return i+"";
     }
 }

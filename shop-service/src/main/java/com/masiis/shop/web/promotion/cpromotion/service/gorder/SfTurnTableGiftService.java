@@ -102,17 +102,16 @@ public class SfTurnTableGiftService {
      * 更新大转盘的已中奖数量
      * @param turnTableGiftId
      */
-    public void updateGiftedQuantity(Integer turnTableGiftId){
+    public int updateGiftedQuantity(Integer turnTableGiftId){
         log.info("更新大转盘的已中奖数量------id----"+turnTableGiftId);
         SfTurnTableGift turnTableGift =  selectByPrimaryKey(turnTableGiftId);
+        int i = 0;
         if (turnTableGift!=null){
             turnTableGift.setGiftedQuantity(turnTableGift.getGiftedQuantity()+turnTableGift.getQuantity());
-            int i = turnTableGiftMapper.updateByPrimaryKey(turnTableGift);
-            if (i!=1){
-                throw new BusinessException("更新大转盘奖品已中奖数量失败");
-            }
+            i = turnTableGiftMapper.updateGiftedQuantity(turnTableGift.getId(),turnTableGift.getGiftedQuantity());
         }else{
             throw new BusinessException("更新大转盘奖品已中奖数量失败----转盘奖品不存在");
         }
+        return i;
     }
 }

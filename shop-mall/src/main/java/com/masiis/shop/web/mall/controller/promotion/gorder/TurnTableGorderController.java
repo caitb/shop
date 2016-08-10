@@ -62,7 +62,7 @@ public class TurnTableGorderController extends BaseController {
      * @param giftId
      * @return
      */
-    @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
+/*    @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
     @ResponseBody
     public String receiveGiftUpdateTimesAndQuantity(
                             HttpServletRequest request,
@@ -70,13 +70,18 @@ public class TurnTableGorderController extends BaseController {
                             @RequestParam(required = false) Integer turnTableRuleId,
                             @RequestParam(required = false) Integer turnTableGiftId,
                             @RequestParam(required = true) Integer giftId){
-      Long userTurnTableRecordId = turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,getComUser(request).getId(),turnTableId,turnTableRuleId,giftId,turnTableGiftId);
+      Long userTurnTableRecordId = turnTableGorderService.receiveGiftUpdateTimesAndQuantity(getComUser(request),1,
+              getComUser(request).getId(),
+              turnTableId,
+              turnTableRuleId,
+              giftId,turnTableGiftId,
+              true);
         if (userTurnTableRecordId!=null){
             return userTurnTableRecordId+"";
         }else {
             return "";
         }
-    }
+    }*/
 
     /**
      *  抽奖前验抽奖条件是否满足

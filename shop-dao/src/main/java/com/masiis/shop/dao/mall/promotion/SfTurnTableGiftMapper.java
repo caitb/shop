@@ -27,6 +27,8 @@ public interface SfTurnTableGiftMapper {
 
     int updateByPrimaryKey(SfTurnTableGift record);
 
+    int updateGiftedQuantity( @Param("id") Integer id, @Param("giftedQuantity") Integer giftedQuantity);
+
     List<SfTurnTableGift> listByTurnTableId(Integer turnTableId);
 
     List<SfTurnTableGift> getTableGiftsByTurnTableIdAndSortAsc(Integer turnTableId);

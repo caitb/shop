@@ -158,7 +158,7 @@
                             $(".congratulate").hide();
                             $("#receiveGiftNameId").html("很遗憾，未中奖！");
                         }
-                        updateTimesAndQuantity();
+                      //  updateTimesAndQuantity();
                         $("#receiveGiftTimesId").html(clickNum);
                         $('#tupBtn').removeAttr("disabled", true);
                     },6000);

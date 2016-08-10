@@ -62,7 +62,7 @@ public class TurnTableGorderController extends BaseController {
      * @param giftId
      * @return
      */
-    @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
+/*    @RequestMapping("/receiveGiftUpdateTimesAndQuantity.json")
     @ResponseBody
     public String receiveGiftUpdateTimesAndQuantity(
                             HttpServletRequest request,
@@ -76,7 +76,7 @@ public class TurnTableGorderController extends BaseController {
         }else {
             return "";
         }
-    }
+    }*/
 
     /**
      *  抽奖前验抽奖条件是否满足

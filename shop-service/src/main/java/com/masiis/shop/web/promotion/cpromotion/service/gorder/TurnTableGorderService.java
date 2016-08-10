@@ -13,6 +13,7 @@ import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableItemService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableRecordService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
+import com.masiis.shop.web.promotion.cpromotion.service.guser.TurnTableDetailShowService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,8 @@ public class TurnTableGorderService {
     private SfUserTurnTableItemService sfUserTurnTableItemService;
     @Resource
     private SfUserTurnTableRecordService userTurnTableRecordService;
+    @Resource
+    private TurnTableDetailShowService turnTableDetailShowService;
 
 
     private static final Integer RECEIVE_GIFT_QUANTITY_NO_ENOUGH = 1;//奖品数量不足
@@ -189,10 +192,8 @@ public class TurnTableGorderService {
         log.info("抽奖前验证条件是否满足-------end");
         return 0;
     }
-
-
     /**
-     * 抽奖后减少用户的抽奖次数和奖品数量
+     * 抽奖后减少用户的抽奖次数和增加纪录
      * @param comUser
      * @param changeTimes
      * @param userId
@@ -201,15 +202,16 @@ public class TurnTableGorderService {
      * @param giftId
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Long  receiveGiftUpdateTimesAndQuantity(ComUser comUser,Integer changeTimes,Long userId,Integer turnTableId,Integer turnTableRuleId,Integer giftId,Integer turnTableGiftId){
-        //奖品奖励数量减少
-        sfTurnTableGiftService.updateGiftedQuantity(turnTableGiftId);
+    public Long updateTimesAndInsertRecord(ComUser comUser,Integer changeTimes,Long userId,
+                                           Integer turnTableId,
+                                           Integer turnTableRuleId,
+                                           Integer giftId) {
         //用户转盘增加已抽奖次数，减少未抽奖次数
-        SfUserTurnTable userTurnTable = sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,userId,turnTableId);
+        SfUserTurnTable userTurnTable = sfUserTurnTableService.reduceTimesOrAddTimes(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(), changeTimes, userId, turnTableId);
         //增加用户转盘具体信息:减少次数
-        sfUserTurnTableItemService.insert(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(),changeTimes,turnTableId,turnTableRuleId,userTurnTable.getId());
+        sfUserTurnTableItemService.insert(SfUserTurnTableTimesTypeEnum.REDUCE_TIMES.getCode(), changeTimes, turnTableId, turnTableRuleId, userTurnTable.getId());
         //插入用户转盘记录表数据
-        return userTurnTableRecordService.winGift(comUser,turnTableId,giftId);
+        return userTurnTableRecordService.winGift(comUser, turnTableId, giftId);
     }
+
 }

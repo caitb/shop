@@ -99,7 +99,7 @@ public class TurnTableDetailShowService {
         Map<Integer,Double> rateMap = new LinkedHashMap<>();//奖品的概率
         Map<Integer,Boolean> quantityEnoughMap = new LinkedHashMap<>();//奖品是否还足够
         Map<Integer,Boolean> isGiftMap = new LinkedHashMap<>(); //是否是奖品
-        Integer[] noGiftSortArray = new Integer[]{10};
+        Integer[] noGiftSortArray = new Integer[10];
         if (turnTableGiftInfos!=null){
             for(int i=0;i<turnTableGiftInfos.size();i++){
                 TurnTableGiftInfo turnTableGiftInfo = turnTableGiftInfos.get(i);

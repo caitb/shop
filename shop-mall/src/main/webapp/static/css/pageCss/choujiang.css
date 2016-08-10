@@ -1,251 +1,251 @@
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 main {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 main .floor {
-  background: url("/static/images/jtbg.png") no-repeat;
-  background-size: 100% 100%;
-  padding-bottom: 40px;
-  position: relative;
+    background: url("/static/images/jtbg.png") no-repeat;
+    background-size: 100% 100%;
+    padding-bottom: 40px;
+    position: relative;
 }
 main .floor p {
-  position: absolute;
-  right: 20px;
-  top: 10px;
-  color: #FFF;
-  border: 1px solid #FFF;
-  padding: 0 10px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #FFF;
+    border: 1px solid #FFF;
+    padding: 0 10px;
 }
 main .floor > img {
-  width: 75%;
-  margin: 40px auto 20px auto;
-  display: block;
+    width: 75%;
+    margin: 40px auto 20px auto;
+    display: block;
 }
 main .floor .xttblog_box {
-  width: 280px;
-  height: 280px;
-  margin: 0 auto;
-  position: relative;
-  border-radius: 200px;
-  border: 5px solid #fff;
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 200px;
+    border: 5px solid #fff;
 }
 main .floor .xttblog_box canvas {
-  position: absolute;
+    position: absolute;
 }
 main .floor #xttblog {
-  border-radius: 100%;
+    border-radius: 100%;
 }
 main .floor #xttblog01,
 main .floor #xttblog03 {
-  left: 50px;
-  top: 50px;
-  z-index: 30;
+    left: 50px;
+    top: 50px;
+    z-index: 30;
 }
 main .floor #xttblog02 {
-  left: 75px;
-  top: 75px;
-  z-index: 20;
+    left: 75px;
+    top: 75px;
+    z-index: 20;
 }
 main .floor #xttblog {
-  -o-transform: transform 6s;
-  -ms-transform: transform 6s;
-  -moz-transform: transform 6s;
-  -webkit-transform: transform 6s;
-  transition: transform 6s;
-  -o-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  -moz-transform-origin: 50% 50%;
-  -webkit-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
+    -o-transform: transform 6s;
+    -ms-transform: transform 6s;
+    -moz-transform: transform 6s;
+    -webkit-transform: transform 6s;
+    transition: transform 6s;
+    -o-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
 }
 main .floor .taoge_btn {
-  width: 200px;
-  left: 50%;
-  top: 50%;
-  border-radius: 100%;
-  position: absolute;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  margin-left: -64px;
-  margin-top: -71px;
-  outline: none;
-  z-index: 40;
-  width: 128px;
-  height: 143px;
+    width: 200px;
+    left: 50%;
+    top: 50%;
+    border-radius: 100%;
+    position: absolute;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    margin-left: -64px;
+    margin-top: -71px;
+    outline: none;
+    z-index: 40;
+    width: 128px;
+    height: 143px;
 }
 main .floor .taoge_btn img {
-  width: 200px;
-  pointer-events: none;
+    width: 200px;
+    pointer-events: none;
 }
 main .floor #xttblog01 {
-  box-shadow: 0px 3px 1px -1px #e6ae4f;
-  border-radius: 258px;
-  left: 0;
-  top: 0;
+    box-shadow: 0px 3px 1px -1px #e6ae4f;
+    border-radius: 258px;
+    left: 0;
+    top: 0;
 }
 main .floor2 {
-  background: url("/static/images/jbg.png") no-repeat;
-  background-size: 100% 100%;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+    background: url("/static/images/jbg.png") no-repeat;
+    background-size: 100% 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 main .floor2 .f-one {
-  width: 55%;
-  margin: 0 auto 20px auto;
-  background: url("/static/images/yiu.jpg") no-repeat;
-  background-size: 100% 100%;
-  border-radius: 5px;
-  border: 1px dashed #a0a0a0;
-  padding: 10px 0;
+    width: 55%;
+    margin: 0 auto 20px auto;
+    background: url("/static/images/yiu.jpg") no-repeat;
+    background-size: 100% 100%;
+    border-radius: 5px;
+    border: 1px dashed #a0a0a0;
+    padding: 10px 0;
 }
 main .floor2 .f-one p {
-  text-align: center;
-  padding: 2px 0 10px 0;
+    text-align: center;
+    padding: 2px 0 10px 0;
 }
 main .floor2 .f-one p span {
-  color: #F7523C;
-  font-size: 18px;
+    color: #F7523C;
+    font-size: 18px;
 }
 main .floor2 .f-one button {
-  background: #F7523C;
-  color: #742A20;
-  padding: 4px 10px;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 5px;
+    background: #F7523C;
+    color: #742A20;
+    padding: 4px 10px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5px;
 }
 main .floor2 .list {
-  width: 85%;
-  background: #FFD821 url("/static/images/icon.png") no-repeat center 15px;
-  background-size: 20px;
-  margin: 0 auto;
-  border-radius: 5px;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+    width: 85%;
+    background: #FFD821 url("/static/images/icon.png") no-repeat center 15px;
+    background-size: 20px;
+    margin: 0 auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
 }
 main .floor2 .list img {
-  width: 80%;
-  display: block;
-  margin: 0 auto;
-  margin-top: 55px;
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 55px;
 }
 main .floor2 .list div {
-  width: 80%;
-  border-radius: 5px;
-  border: 1px dashed #a0a0a0;
-  background: #fff;
-  padding: 15px 0;
-  margin: 20px auto;
-  overflow: hidden;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px dashed #a0a0a0;
+    background: #fff;
+    padding: 15px 0;
+    margin: 20px auto;
+    overflow: hidden;
 }
 main .floor2 .list div li {
-  margin: 0 15px;
-  margin-bottom: 5px;
+    margin: 0 15px;
+    margin-bottom: 5px;
 }
 main .floor2 .list div li span:first-child {
-  width: 41%;
+    width: 47%;
 }
 main .floor2 .list div li span {
-  width: 20%;
-  color: #666;
-  display: inline-block;
+    width: 20%;
+    color: #666;
+    display: inline-block;
 }
 main .floor2 .list div li span:last-child{
-  width: 39%;
+    width: 30%;
 }
 main .floor3 {
-  width: 85%;
-  border-radius: 10px;
-  border: 1px dashed #A0A0A0;
-  margin: 20px auto;
-  background: url("/static/images/yiui.jpg") no-repeat;
-  background-size: 100% 100%;
-  padding-bottom: 8%;
+    width: 85%;
+    border-radius: 10px;
+    border: 1px dashed #A0A0A0;
+    margin: 20px auto;
+    background: url("/static/images/yiui.jpg") no-repeat;
+    background-size: 100% 100%;
+    padding-bottom: 8%;
 }
 main .floor3 h1 {
-  padding: 25px;
-  position: relative;
-  color: #f74a11;
+    padding: 25px;
+    position: relative;
+    color: #f74a11;
 }
 main .floor3 h1 img {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 15px;
-  height: 15px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 15px;
+    height: 15px;
 }
 main .floor3 p {
-  padding: 0 25px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  color: #666666;
+    padding: 0 25px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #666666;
 }
 main .floor3 p span {
-  color: #666666;
-  font-size: 12px;
-  display: block;
-  margin-top: 5px;
+    color: #666666;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
 }
 .black {
-  z-index: 100;
+    z-index: 100;
 }
 .backb {
-  z-index: 100;
+    z-index: 100;
 }
 .backj {
-  width: 90%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -45%;
-  margin-top: -78px;
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -45%;
+    margin-top: -78px;
 }
 .backj > img {
-  width: 100%;
-  display: block;
+    width: 100%;
+    display: block;
 }
 .backj .x {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 25px;
-  z-index: 6;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    z-index: 6;
 }
 .backj div {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  left: 0;
-  top: 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  z-index: 5;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    left: 0;
+    top: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    z-index: 5;
 }
 .backj div img {
-  width: 10%;
-  margin: o auto;
-  display: block;
-  margin-top: 2%;
+    width: 10%;
+    margin: o auto;
+    display: block;
+    margin-top: 2%;
 }
 .backj div p {
-  margin-top: 5px;
-  color: #666666;
+    margin-top: 5px;
+    color: #666666;
 }
 .backj div h1 {
-  color: #666666;
-  margin-bottom: 4px;
+    color: #666666;
+    margin-bottom: 4px;
 }
 .backj div button {
-  display: block;
-  background: #F7523E;
-  color: #fff;
-  width: 46%;
-  padding: 5px 0;
-  margin-top: 2px;
+    display: block;
+    background: #F7523E;
+    color: #fff;
+    width: 46%;
+    padding: 5px 0;
+    margin-top: 2px;
 }
 /*# sourceMappingURL=choujiang.css.map */

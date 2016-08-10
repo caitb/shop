@@ -110,7 +110,8 @@
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 
 <script>
-	new Marquee(["hottitle","ulid"],0,2,"80%","18%",150,0,0);
+	new Marquee(["hottitle","ulid"],0,2,"80%",200,150,0,0);
+
 </script>
     <script>
         $(function(){

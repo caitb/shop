@@ -382,7 +382,7 @@
             }
         });
         function goToPurchaseSku(){
-            window.location.href = "<%=basePath%>${shopId}/0/shop.shtml";
+            window.location.href = "<%=basePath%>shopview/home.shtml";
         }
         function skipToReceiveGiftPage(){
             var giftId = $("#giftId").val();

@@ -113,14 +113,18 @@ public class TurnTableDetailShowService {
                     noGiftSortArray[i] = turnTableGiftInfo.getSort();
                 }
                 //奖品是否还足够
-                if (turnTableGiftInfo.getGiftedQuantity()>=turnTableGiftInfo.getToatalQuantity()){
-                    quantityEnoughMap.put(turnTableGiftInfo.getSort(),false);
+                if (turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+                    if (turnTableGiftInfo.getGiftedQuantity()>=turnTableGiftInfo.getToatalQuantity()){
+                        quantityEnoughMap.put(turnTableGiftInfo.getSort(),false);
+                    }else{
+                        quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
+                    }
                 }else{
                     quantityEnoughMap.put(turnTableGiftInfo.getSort(),true);
                 }
-
             }
             int i = RandomRateUtil.getInstance().percentageRandom(rateMap,quantityEnoughMap,isGiftMap,noGiftSortArray);
+            log.info("中奖返回的序号-------------"+i);
             if (i!=-1){
                 return  i;
             }else{

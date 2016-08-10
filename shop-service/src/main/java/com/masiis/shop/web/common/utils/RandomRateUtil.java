@@ -70,6 +70,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(0)){
                         rate0 = 0;
                     }
+                    log.info("rate0-------------"+rate0);
                     break;
                 case 1:
                     if (quantityEnoughMap.get(1)){
@@ -77,6 +78,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(1)){
                         rate1 = 0;
                     }
+                    log.info("rate1-------------"+rate1);
                     break;
                 case 2:
                     if (quantityEnoughMap.get(2)){
@@ -84,6 +86,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(2)){
                         rate2 = 0;
                     }
+                    log.info("rate2-------------"+rate2);
                     break;
                 case 3:
                     if (quantityEnoughMap.get(3)){
@@ -91,6 +94,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(3)){
                         rate3 = 0;
                     }
+                    log.info("rate3-------------"+rate3);
                     break;
                 case 4:
                     if (quantityEnoughMap.get(4)){
@@ -98,6 +102,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(4)){
                         rate4 = 0;
                     }
+                    log.info("rate4-------------"+rate4);
                     break;
                 case 5:
                     if (quantityEnoughMap.get(5)){
@@ -105,6 +110,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(5)){
                         rate5 = 0;
                     }
+                    log.info("rate5-------------"+rate5);
                     break;
                 case 6:
                     if (quantityEnoughMap.get(6)){
@@ -112,7 +118,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(6)){
                         rate6 = 0;
                     }
-
+                    log.info("rate6-------------"+rate6);
                     break;
                 case 7:
                     if (quantityEnoughMap.get(7)){
@@ -120,6 +126,7 @@ public class RandomRateUtil {
                     }else if (isGiftMap.get(7)){
                         rate7 = 0;
                     }
+                    log.info("rate7-------------"+rate7);
                     break;
                 default:
                     break;
@@ -139,6 +146,7 @@ public class RandomRateUtil {
         double randomNumber;
         initRate(rateMap,quantityEnoughMap,isGiftMap);
         randomNumber = Math.random();
+        log.info("randomNumber-------------"+randomNumber);
         if (randomNumber >= 0 && randomNumber <= rate0)
         {
             return 0;
@@ -181,7 +189,11 @@ public class RandomRateUtil {
             return 7;
         }else{
             //从不是奖品中随机选取一个
+            log.info("-----从不是奖品中随机选取一个------");
             Random rand = new Random();
+            for (int i= 0;i<noGiftSortArray.length;i++){
+                log.info("-----不是奖品的序号-----"+noGiftSortArray[i]);
+            }
             return noGiftSortArray[rand.nextInt(noGiftSortArray.length)] ;
         }
     }

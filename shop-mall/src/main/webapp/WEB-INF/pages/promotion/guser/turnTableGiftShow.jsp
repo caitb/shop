@@ -381,7 +381,7 @@
             }
         });
         function goToPurchaseSku(){
-            window.location.href = "<%=basePath%>marketGood/market";
+            window.location.href = "<%=basePath%>${shopId}/0/shop.shtml";
         }
         function skipToReceiveGiftPage(){
             var giftId = $("#giftId").val();

@@ -37,7 +37,7 @@
         </div>
         <div class="wrap">
             <header class="xq_header">
-                <a onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
+                <a onclick="returnShopHomePage()">
                     <img src="<%=path%>/static/images/xq_rt.png" alt="">
                 </a>
                 <p>抽奖</p>
@@ -381,6 +381,9 @@
                 })
             }
         });
+        function returnShopHomePage(){
+            window.location.href ="<%=basePath%>${shopId}/0/shop.shtml";
+        }
         function goToPurchaseSku(){
             window.location.href = "<%=basePath%>shopview/home.shtml";
         }

@@ -93,40 +93,6 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态：</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                    <option value="">全部</option>
-                                                    <c:forEach items="${orderStatusList}" var="os">
-                                                        <option value="${os.code}">${os.desc}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态：</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                    <option value="">全部</option>
-                                                    <c:forEach items="${wuliuList}" var="wl">
-                                                        <option value="${wl.key}">${wl.value}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isCounting">是否结算：</label>
-                                                <select id="isCounting" name="isCounting">
-                                                    <option value="">全部</option>
-                                                    <option value="0">未结算</option>
-                                                    <option value="1">已结算</option>
-                                                </select>
-                                            </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
                                     </div>

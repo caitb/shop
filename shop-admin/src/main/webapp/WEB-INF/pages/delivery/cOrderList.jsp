@@ -94,53 +94,6 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
-                                            <%--<div class="form-group">--%>
-                                            <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
-                                            <%--</div>--%>
-                                            <div class="form-group">
-                                                <label for="orderType">订单类型</label>
-                                                <select id="orderType" name="orderType">
-                                                    <option value="" selected="selected">所有订单</option>
-                                                    <c:forEach items="${bOrderTypes}" var="orderType">
-                                                        <option value="${orderType.code}">${orderType.desc}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payTypeId">支付方式</label>
-                                                <select id="payTypeId" name="payTypeId">
-                                                    <option value="">全部</option>
-                                                    <c:forEach items="${payTypes}" var="payType">
-                                                        <option value="${payType.key}">${payType.value}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="orderStatus">订单状态</label>
-                                                <select id="orderStatus" name="orderStatus">
-                                                    <option value="">全部</option>
-                                                    <c:forEach items="${bOrderStatuses}" var="orderStatus">
-                                                        <option value="${orderStatus.code}">${orderStatus.desc}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="payStatus">支付状态：</label>
-                                                <select id="payStatus" name="payStatus">
-                                                    <option value="">全部</option>
-                                                    <option value="0">待付款</option>
-                                                    <option value="1">已付款</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="shipStatus">物流状态</label>
-                                                <select id="shipStatus" name="shipStatus">
-                                                    <option value="">全部</option>
-                                                    <c:forEach items="${bOrderShipStatuses}" var="shipStatus">
-                                                        <option value="${shipStatus.code}">${shipStatus.desc}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
                                     </div>

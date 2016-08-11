@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.SfUserTurnTableRecord;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SfUserTurnTableRecordMapper {
     int deleteByPrimaryKey(Long id);
@@ -30,4 +31,10 @@ public interface SfUserTurnTableRecordMapper {
     List<SfUserTurnTableRecord> getRecordByTableIdAndType(@Param("turnTableId")Integer turnTableId,@Param("turnTableType")Integer turnTableType);
 
     int updateByPrimaryKey(SfUserTurnTableRecord record);
+
+    int countUserByTurnTableId(Map<String,Object> conditionMap);
+
+    int countByTurnTableId(Map<String,Object> conditionMap);
+
+    int countByTurnTableIdAndGiftId(Map<String,Object> map);
 }

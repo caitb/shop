@@ -64,9 +64,26 @@
                        <img src="<%=path%>/static/images/zbg.jpg" alt="" />
                         <div id="hottitle" class="hot">
                             <ul id="ulid">
-                                <c:forEach items="${turnTablelInfo.userTurnTableRecordInfos}" var="recordInfo">
-                                    <li><span class='name'>${recordInfo.phoneFormat}</span><span class='gift-type'>获得</span><span>${recordInfo.turnTableGiftName}</span></li>
-                                </c:forEach>
+                                <li><span class='name'>136****6903</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>155****2361</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>156****6358</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>153****3605</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>136****4773</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>150****1148</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>156****8586</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>131****4829</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>155****0979</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>151****1678</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>152****4195</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>158****1492</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>136****2811</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>151****2679</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>134****3645</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>133****6778</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>137****7885</span><span class='gift-type'>获得</span><span>三等奖</span></li>
+                                <li><span class='name'>131****1207</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>137****0595</span><span class='gift-type'>获得</span><span>二等奖</span></li>
+                                <li><span class='name'>157****8630</span><span class='gift-type'>获得</span><span>三等奖</span></li>
                             </ul>
                         </div>
                     </div>

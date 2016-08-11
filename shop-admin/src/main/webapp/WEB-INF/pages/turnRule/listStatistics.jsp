@@ -68,7 +68,7 @@
                     <thead>
                         <tr class="row">
                             <th class="col-sm-5">奖品名称</th>
-                            <th class="col-sm-7">中奖次数</th>
+                            <th class="col-sm-7">抽奖次数</th>
                         </tr>
                     </thead>
                     <tbody>

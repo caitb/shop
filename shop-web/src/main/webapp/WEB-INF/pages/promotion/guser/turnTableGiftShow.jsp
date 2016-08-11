@@ -362,10 +362,8 @@
                             ctx.beginPath();
                             ctx.translate(140, 140);
                             ctx.rotate(i * step);
-                            ctx.font = " 20px Microsoft YaHei";
                             ctx.fillStyle = color[3];
-                            ctx.drawImage(img, -35, -130, 70,50);
-                            ctx.font = " 14px Microsoft YaHei";
+                            ctx.drawImage(img, -35, -130, 68,50);
                             ctx.closePath();
                             ctx.restore();
                         }

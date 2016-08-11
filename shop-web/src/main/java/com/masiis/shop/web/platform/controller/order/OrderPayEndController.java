@@ -54,8 +54,7 @@ public class OrderPayEndController extends BaseController {
                                                         HttpServletRequest request) throws Exception {
 
         ModelAndView mv = new ModelAndView();
-
-/*        if (getComUser(request) == null) {
+        if (getComUser(request) == null) {
             throw new BusinessException("请重新登录");
         }
         log.info("进入补货订单支付完成");
@@ -80,7 +79,7 @@ public class OrderPayEndController extends BaseController {
         if (pfBorder.getSendType() == 2 || pfBorder.getOrderType() == 2) {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee", pfBorderConsignee);
-        }*/
+        }
         Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
         String bl = map.get("isTurnTableRule");
         mv.addObject("isTurnTableRule",bl);

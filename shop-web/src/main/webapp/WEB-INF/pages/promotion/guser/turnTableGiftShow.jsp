@@ -366,7 +366,8 @@
 //                    img.src=$("#giftImg_0").attr("src");
 //                    img.onload=function() {
                     var ratio = getPixelRatio(ctx);
-
+                    var fuu= -30*ratio;
+                    var fu= -125*ratio;
                     for (var i = 0; i < 8; i++) {
                             img.src = $("#giftImg_" + i).attr("src");
                             ctx.save();
@@ -374,10 +375,9 @@
                             ctx.translate(140, 140);
                             ctx.rotate(i * step);
                             ctx.fillStyle = color[3];
-                            ctx.drawImage(img, -60, -250,55*ratio,45*ratio);
+                            ctx.drawImage(img, fuu, fu ,55*ratio,45*ratio);
                             ctx.closePath();
-                            ctx.restore();
-                        }
+                            ctx.restore();                        }
 //                    }
                 }
                 $(".x").on("click",function(){

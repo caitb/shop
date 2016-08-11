@@ -81,6 +81,7 @@ main .floor .taoge_btn {
     width: 128px;
     height: 143px;
     -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
 }
 main .floor .taoge_btn img {
     width: 200px;

@@ -26,6 +26,8 @@ public interface SfUserTurnTableRecordMapper {
 
     List<SfUserTurnTableRecord> getRecordInfoByUserId(Long userId);
 
+    List<SfUserTurnTableRecord> getRecordInfoByUserIdAndRuleType(@Param("userId") Long userId,@Param("ruleType") Integer ruleType);
+
     List<SfUserTurnTableRecord> getRecordByTableId(Integer turnTableId);
 
     List<SfUserTurnTableRecord> getRecordByTableIdAndType(@Param("turnTableId")Integer turnTableId,@Param("turnTableType")Integer turnTableType);

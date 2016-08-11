@@ -89,6 +89,17 @@
         ORDER BY create_time DESC
     </select>
 
+
+    <select id="getRecordInfoByUserIdAndRuleType" resultMap="BaseResultMap" >
+        select u.id, u.create_time, u.create_man, u.user_id, u.turn_table_id, u.gift_id, u.gorder_id, u.status,
+        u.update_time, u.remark
+        from sf_user_turn_table_record As u , sf_turn_table_rule As t
+        WHERE u.user_id = #{userId,jdbcType=BIGINT}
+		and u.turn_table_id = t.turn_table_id
+		and t.type =  #{ruleType,jdbcType=BIGINT}
+        ORDER BY create_time DESC
+    </select>
+
     <select id="countUserByTurnTableId" resultType="int">
         select count(distinct user_id)
         from sf_user_turn_table_record

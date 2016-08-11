@@ -367,7 +367,8 @@
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
                     var ratio = getPixelRatio(ctx);
-
+                    var fuu= -30*ratio;
+                    var fu= -125*ratio;
                     for ( var i = 0; i < 8; i++) {
                             img.src = $("#giftImg_" + i).attr("src");
                         ctx.save();
@@ -375,7 +376,7 @@
                         ctx.translate(140,140);
                         ctx.rotate(i*step);
 //                        ctx.drawImage(img, -35, -130, 68,50);
-                        ctx.drawImage(img, -60, -250,55*ratio,45*ratio);
+                        ctx.drawImage(img, fuu, fu,55*ratio,45*ratio);
 
 //                        ctx.closePath();
                         ctx.restore();

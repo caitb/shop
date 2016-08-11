@@ -37,7 +37,7 @@
         </div>
         <div class="wrap">
             <header class="xq_header">
-                <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'">
+                <a href="javascript:window.location.href='<%=path%>/sfOrderManagerController/borderManagement.html'">
                     <img src="<%=path%>/static/images/xq_rt.png" alt="">
                 </a>
                 <p>抽奖</p>

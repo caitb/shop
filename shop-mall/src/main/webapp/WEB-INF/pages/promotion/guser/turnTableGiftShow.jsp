@@ -37,7 +37,7 @@
         </div>
         <div class="wrap">
             <header class="xq_header">
-                <a onclick="returnShopHomePage()">
+                <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'">
                     <img src="<%=path%>/static/images/xq_rt.png" alt="">
                 </a>
                 <p>抽奖</p>
@@ -357,30 +357,9 @@
 //                        ctx.closePath();
                         ctx.restore();
                     }
-
-
                 }
                 $(".x").on("click",function(){
                     $(".black").hide();
-                })
-            }
-            function updateTimesAndQuantity(){
-                var paramData = {};
-                paramData.turnTableId = "${turnTableId}";
-                paramData.giftId = $("#giftId").val();
-                paramData.turnTableRuleId =  "${turnTableRule.id}";
-                paramData.turnTableGiftId = $("#turnTableGiftId").val();
-                $.ajax({
-                    type: "POST",
-                    url: "/turnTableGorder/receiveGiftUpdateTimesAndQuantity.json",
-                    async:false,
-                    data: paramData,
-                    dataType: "Json",
-                    success: function (result) {
-                        if (result!=""){
-                            $("#userTurnTableRecordId").val(result);
-                        }
-                    }
                 })
             }
         });

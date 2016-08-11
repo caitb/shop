@@ -79,4 +79,38 @@ public class SfTurnTableRuleController {
         return "success";
     }
 
+    /**
+     * 统计
+     * @return
+     */
+    @RequestMapping("/listStatistics.shtml")
+    public String statistic() {
+        return "turnRule/listStatistics";
+    }
+
+    @RequestMapping("/listStatistics.do")
+    @ResponseBody
+    public Object listStatistics(Integer pageSize,Integer pageNumber,
+                                 String beginTime,
+                                 String endTime) {
+        Map<String,Object> conditionMap = DbUtils.createTimeCondition(beginTime, endTime, null);
+        List turnTableRules = turnTableRuleService.statisticsTurnTable(pageNumber, pageSize, conditionMap);
+        PageInfo rulesPageInfo = new PageInfo<>(turnTableRules);
+
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("total", rulesPageInfo.getTotal());
+        dataMap.put("rows", turnTableRules);
+        return dataMap;
+    }
+
+    @RequestMapping("/detailStatistics.do")
+    @ResponseBody
+    public Object detailStatistics(Integer turnTableId,
+                                   String beginTime,
+                                   String endTime) {
+        Map<String,Object> conditionMap = DbUtils.createTimeCondition(beginTime, endTime, null);
+
+        return turnTableRuleService.statisticGift(turnTableId, conditionMap);
+    }
+
 }

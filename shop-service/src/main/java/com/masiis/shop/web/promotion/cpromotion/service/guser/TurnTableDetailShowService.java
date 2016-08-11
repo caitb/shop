@@ -43,9 +43,6 @@ public class TurnTableDetailShowService {
     @Resource
     private SfUserTurnTableService userTurnTableService;
     @Resource
-    private SfUserTurnTableRecordService userTurnTableRecordService;
-
-    @Resource
     private TurnTableGorderService turnTableGorderService;
 
 
@@ -71,17 +68,6 @@ public class TurnTableDetailShowService {
             turnTablelInfo.setTurnTableRule(turnTableRule);
             //转盘信息
             List<TurnTableGiftInfo> turnTableGiftInfos =  turnTableGiftService.getTurnTableGiftsByTableId(turnTable.getId());
-/*            Map<Integer,Integer> giftIdMap = new LinkedHashMap<>();
-            Map<Integer,String> giftNameMap = new LinkedHashMap<>();
-            Map<Integer,String> giftImgMap = new LinkedHashMap<>();
-            for (TurnTableGiftInfo turnTableGiftInfo:turnTableGiftInfos){
-                giftIdMap.put(turnTableGiftInfo.getSort(),turnTableGiftInfo.getGiftId());
-                giftNameMap.put(turnTableGiftInfo.getSort(),turnTableGiftInfo.getGiftName());
-                giftImgMap.put(turnTableGiftInfo.getSort(),turnTableGiftInfo.getImgUrl());
-            }
-            turnTablelInfo.setGiftIdMap(giftIdMap);
-            turnTablelInfo.setGiftNameMap(giftNameMap);
-            turnTablelInfo.setGiftImgMap(giftImgMap);*/
             turnTablelInfo.setTurnTableGiftInfo(turnTableGiftInfos);
             turnTablelInfo.setTurnTableId(turnTable.getId());
             turnTablelInfo.setBeginTimeString(DateUtil.Date2String(turnTable.getBeginTime(),DateUtil.CHINESE_YEAR_MONTH_DATE_FMT));
@@ -90,9 +76,6 @@ public class TurnTableDetailShowService {
             //用户抽奖次数信息
             SfUserTurnTable userTurnTable = userTurnTableService.getSfUserTurnTable(comUser.getId(),turnTable.getId());
             turnTablelInfo.setUserTurnTable(userTurnTable);
-            //转盘中的奖品的所有中奖纪录
-            List<UserTurnTableRecordInfo> recordInfos = userTurnTableRecordService.getRecordInfoByTableIdAndType(turnTable.getId(),turnTableType);
-            turnTablelInfo.setUserTurnTableRecordInfos(recordInfos);
             turnTablelInfos.add(turnTablelInfo);
         }
         return turnTablelInfos;

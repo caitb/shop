@@ -122,6 +122,10 @@ public class SfUserAccountService {
                 throw new BusinessException("订单状态不匹配,订单不是"
                           + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态" + ",sf_order_id:" + order.getId());
             }
+            if(order.getReceivableAmount().compareTo(BigDecimal.ZERO) < 0){
+                log.error("应收金额小于0,错误");
+                throw new BusinessException("应收金额小于0,错误");
+            }
 
             // 计算店主的各种钱
             //  获取店主用户

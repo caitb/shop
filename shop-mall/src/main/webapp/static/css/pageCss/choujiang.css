@@ -25,8 +25,8 @@ main .floor > img {
     width: 100%;
     display: block;
     /* position: absolute; */
-    top: 0px;
-    left: 0px;
+    /*top: 0px;*/
+    /*left: 0px;*/
 }
 main .floor .xttblog_box {
     width: 280px;
@@ -81,10 +81,14 @@ main .floor .taoge_btn {
     width: 128px;
     height: 143px;
     -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
 }
 main .floor .taoge_btn img {
     width: 200px;
     pointer-events: none;
+    position: absolute;
+    left: 0px;
+    top: 0;
 }
 main .floor #xttblog01 {
     box-shadow: 0px 3px 1px -1px #e6ae4f;

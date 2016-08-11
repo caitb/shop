@@ -4,6 +4,8 @@ body {
 main {
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    width:100%;
+    overflow-x: hidden;
 }
 main .floor {
     background: url(/static/images/z.jpg) no-repeat;
@@ -78,6 +80,7 @@ main .floor .taoge_btn {
     z-index: 40;
     width: 128px;
     height: 143px;
+    -webkit-appearance: none;
 }
 main .floor .taoge_btn img {
     width: 200px;

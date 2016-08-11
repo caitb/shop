@@ -98,6 +98,13 @@ public class TurnTableDetailShowService {
         return turnTablelInfos;
     }
 
+    /**
+     * 获得随机的奖品的随机数字
+     * @param comUser
+     * @param turnTableId
+     * @param turnTableType
+     * @return
+     */
     public Map<String,Object> getRandomByGiftRate(ComUser comUser,Integer turnTableId,Integer turnTableType){
         //获取转盘中的奖品
         Map<String,Object> returnMap = new LinkedHashMap<>();
@@ -183,16 +190,25 @@ public class TurnTableDetailShowService {
                 log.info("---------第二次从不是奖品中获取随机数--------");
                 random = RandomRateUtil.getInstance().getRandowNumberFromList(noGiftSorts);
             }
+            log.info("random---------"+random);
             _turnTableGiftInfo = turnTableGiftInfoMap.get(random);
             if (_turnTableGiftInfo!=null){
-                int i = turnTableGiftService.updateGiftedQuantity(_turnTableGiftInfo.getTurnTableGiftId());
-                if (i!=1){
-                    //重新获取概率
-                    isReGetRandow = true;
+                if (_turnTableGiftInfo.getIsGift().equals(ComGiftIsGiftEnum.isGift_true.getCode())){
+                    int i = turnTableGiftService.updateGiftedQuantity(_turnTableGiftInfo.getTurnTableGiftId());
+                    if (i!=1){
+                        //重新获取概率
+                        isReGetRandow = true;
+                    }else{
+                        //终止while循环
+                        bl =false;
+                    }
                 }else{
                     //终止while循环
                     bl =false;
                 }
+            }else{
+                //重新获取概率
+                isReGetRandow = true;
             }
         }
         map.put("random",random);

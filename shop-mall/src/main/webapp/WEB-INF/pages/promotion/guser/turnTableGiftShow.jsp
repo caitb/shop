@@ -21,19 +21,12 @@
     <c:forEach items="${turnTablelInfos}" var="turnTablelInfo" >
         <div style="display: none;">
             <c:forEach var="entry" items="${turnTablelInfo.turnTableGiftInfo}">
+                <img id="giftImg_${entry.sort}" src="${entry.imgUrl}"/>
                 <input id="giftName_${entry.sort}" type="hidden" value="${entry.giftName}"/>
                 <input id="giftId_${entry.sort}" type="hidden" value="${entry.giftId}"/>
                 <input id="turnTableGiftId_${entry.sort}" type="hidden" value="${entry.turnTableGiftId}"/>
                 <input id="isGift_${entry.sort}" type="hidden" value="${entry.isGift}"/>
             </c:forEach>
-            <img id="giftImg_0" src="<%=path%>/static/images/turnTable/char.png"/>
-            <img id="giftImg_1" src="<%=path%>/static/images/turnTable/thankyouPart.png"/>
-            <img id="giftImg_2" src="<%=path%>/static/images/turnTable/flat.png"/>
-            <img id="giftImg_3" src="<%=path%>/static/images/turnTable/makePersistentEfforts.png"/>
-            <img id="giftImg_4" src="<%=path%>/static/images/turnTable/vocalConcert.png"/>
-            <img id="giftImg_5" src="<%=path%>/static/images/turnTable/noLoseHeart.png"/>
-            <img id="giftImg_6" src="<%=path%>/static/images/turnTable/faceLift.png"/>
-            <img id="giftImg_7" src="<%=path%>/static/images/turnTable/goodLuck.png"/>
         </div>
         <div class="wrap">
             <header class="xq_header">
@@ -364,7 +357,7 @@
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
                         for ( var i = 0; i < 8; i++) {
-                        img.src=info[i];
+                            img.src = $("#giftImg_" + i).attr("src");
                         ctx.save();
                         ctx.beginPath();
                         ctx.translate(140,140);

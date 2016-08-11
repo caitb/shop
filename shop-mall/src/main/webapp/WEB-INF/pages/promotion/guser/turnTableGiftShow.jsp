@@ -118,6 +118,7 @@
     </c:forEach>
     <script src="/static/js/plugins/msclass.js"></script>
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+    <script src="${path}/static/js/hidpi-canvas.min.js"></script>
 
 <script>
 	new Marquee(["hottitle","ulid"],0,2,"80%",200,150,0,0);
@@ -324,6 +325,15 @@
             function canvasRun(){
                 var canvas=document.getElementById('xttblog');
                 var ctx=canvas.getContext('2d');
+                var getPixelRatio = function(context) {
+                    var backingStore = context.backingStorePixelRatio ||
+                            context.webkitBackingStorePixelRatio ||
+                            context.mozBackingStorePixelRatio ||
+                            context.msBackingStorePixelRatio ||
+                            context.oBackingStorePixelRatio ||
+                            context.backingStorePixelRatio || 1;
+                    return (window.devicePixelRatio || 1) / backingStore;
+                };
                 createCircle();
                 setInterval(function(){
                         createCirText();
@@ -356,13 +366,16 @@
                     ctx.textBaseline='middle';
                     ctx.fillStyle = color[3];
                     var step = 2*Math.PI/8;
-                        for ( var i = 0; i < 8; i++) {
+                    var ratio = getPixelRatio(ctx);
+
+                    for ( var i = 0; i < 8; i++) {
                             img.src = $("#giftImg_" + i).attr("src");
                         ctx.save();
                         ctx.beginPath();
                         ctx.translate(140,140);
                         ctx.rotate(i*step);
-                        ctx.drawImage(img, -35, -130, 68,50);
+//                        ctx.drawImage(img, -35, -130, 68,50);
+                        ctx.drawImage(img, -60, -250,55*ratio,45*ratio);
 
 //                        ctx.closePath();
                         ctx.restore();

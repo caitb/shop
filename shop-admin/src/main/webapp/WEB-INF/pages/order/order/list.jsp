@@ -118,6 +118,14 @@
                                                     <option value="1">已结算</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="sendType">发货方式：</label>
+                                                <select id="sendType" name="sendType">
+                                                    <option value="">全部</option>
+                                                    <option value="1">平台发货</option>
+                                                    <option value="2">店主发货</option>
+                                                </select>
+                                            </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
                                     </div>
@@ -344,6 +352,9 @@
                 if($('#isCounting').val()){
                     params.isCounting = $('#isCounting').val();
                 }
+                if($('#sendType').val()) {
+                    params.sendType = $('#sendType').val();
+                }
 
                 return params;
             },
@@ -541,6 +552,20 @@
                             if(row.sfOrder && row.sfOrder.payStatus == 1){
                                 return '已付款';
                             }
+                        }
+                    },
+                    {
+                        title : '发货方式',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            console.log(row);
+                            if(row.sfOrder.sendType == 1) {
+                                return '平台发货';
+                            }
+                            if(row.sfOrder.sendType == 2) {
+                                return '店主发货';
+                            }
+                            return '-';
                         }
                     },
                     {

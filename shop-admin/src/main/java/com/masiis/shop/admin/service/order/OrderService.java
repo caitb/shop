@@ -167,6 +167,7 @@ public class OrderService {
     public Order find(Long id) {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(id);
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
+        ComUser shopUser = comUserMapper.selectByPrimaryKey(sfOrder.getShopUserId());
         SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
         List<SfOrderFreight> sfOrderFreights = sfOrderFreightMapper.selectByOrderId(sfOrder.getId());
         List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(sfOrder.getId());
@@ -190,6 +191,7 @@ public class OrderService {
         order.setSfOrderFreights(sfOrderFreights);
         order.setSfOrderItems(sfOrderItems);
         order.setProductInfos(productInfos);
+        order.setShopUser(shopUser);
 
         if (sfOrder.getPayStatus().intValue() == 1) {
             SfOrderPayment sfOrderPayment = new SfOrderPayment();

@@ -287,6 +287,9 @@
             <if test="isCounting!= null">
                 AND is_counting = #{isCounting}
             </if>
+            <if test="sendType != null">
+                AND send_type = #{sendType}
+            </if>
         </where>
     </select>
 

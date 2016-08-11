@@ -220,6 +220,23 @@
                                             </div>
                                         </div>
 
+                                        <c:if test="${order.sfOrder.sendType == 2}">
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> 店主 </div>
+
+                                                <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
+                                                    <span class="" id="shopOwn">${order.shopUser.realName}</span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> 店主手机号 </div>
+
+                                                <div class="profile-info-value">
+                                                    <span>${order.shopUser.mobile}</span>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
                                         <div class="profile-info-row">
                                             <div class="profile-info-name"> 收货人 </div>
 

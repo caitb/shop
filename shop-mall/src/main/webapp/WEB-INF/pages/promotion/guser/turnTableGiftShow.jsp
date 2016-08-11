@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="floor3">
-                        <h1><img src="<%=path%>/static/images/i.png" alt="" />活动规则</h1>
+                        <h1>活动规则</h1>
                         <p>活动时间：<span>${turnTablelInfo.beginTimeString}-${turnTablelInfo.endTimeString}</span></p>
                         <p>活动说明：
 	        			<span>

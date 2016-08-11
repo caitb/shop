@@ -281,8 +281,11 @@ main {
 .backi{
     position: absolute;
     left: 0;
-    top: 50%;
-    margin-top: -85%;
+    top: 0;
+    background: url("/static/images/cbg.png") center;
+    width:100%;
+    height: 100%;
+    background-size: 100%;
 }
 .backi img.cbg{
     width: 100%;

@@ -51,7 +51,7 @@ public class SfUserTurnTableRecordService {
     public List<UserTurnTableRecordInfo> getRecordInfoByTableId(Integer turnTableId){
         List<SfUserTurnTableRecord> records = getRecordByTableId(turnTableId);
         if (records!=null){
-            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode());
+            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode(),null);
         }
         return null;
     }
@@ -59,7 +59,7 @@ public class SfUserTurnTableRecordService {
     public List<UserTurnTableRecordInfo> getRecordInfoByTableIdAndType(Integer turnTableId,Integer turnTableType){
         List<SfUserTurnTableRecord> records = getRecordByTableIdAndType(turnTableId,turnTableType);
         if (records!=null){
-            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode());
+            return  getRecordInfoByUserId(null,records,ComGiftIsGiftEnum.isGift_true.getCode(),null);
         }
         return null;
     }
@@ -120,9 +120,9 @@ public class SfUserTurnTableRecordService {
      * @param userId
      * @return
      */
-    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId,List<SfUserTurnTableRecord>  records ,Integer isGift){
+    public List<UserTurnTableRecordInfo> getRecordInfoByUserId(Long userId,List<SfUserTurnTableRecord>  records ,Integer isGift,Integer turnTableRuleType){
         if (records==null){
-            records =  userTurnTableRecordMapper.getRecordInfoByUserId(userId);
+            records =  userTurnTableRecordMapper.getRecordInfoByUserIdAndRuleType(userId,turnTableRuleType);
         }
         List<UserTurnTableRecordInfo> recordInfoList = new ArrayList<UserTurnTableRecordInfo>();
         for (SfUserTurnTableRecord record:records){

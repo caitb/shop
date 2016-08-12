@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuAgentService;
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.shop.SfShopSkuService;
 import com.masiis.shop.admin.service.user.*;
@@ -81,6 +82,8 @@ public class BUpgradePayService {
     private PfBorderRecommenRewardService pfBorderRecommenRewardService;
     @Resource
     private SfUserTurnTableService userTurnTableService;
+    @Resource
+    private SkuService skuService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -432,13 +435,14 @@ public class BUpgradePayService {
                     pfUserCertificate.setCode(pfUserCertificateService.getCertificateCode(pfUserCertificate));
                     ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                     String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
+                    ComSku comSku = skuService.getSkuById(orderItem.getSkuId());
                     String picName = bOrderPayService.uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                             rootPath + "/static/font/",//字体路径
                             pfUserCertificate.getCode(),//certificateCode - 证书编号
                             comUser.getRealName(),//userName - 用户名称
                             comAgentLevel.getName(),//levelName - 代理等级名称
                             orderItem.getSkuName(),//skuName - 商品名称
-                            orderItem.getSkuName(),
+                            comSku.geteName(),
                             newIdCard,//idCard - 身份证号
                             comUser.getMobile(),//mobile - 手机号
                             pfUserCertificate.getWxId(),//wxId - 微信号

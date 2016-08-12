@@ -93,7 +93,7 @@
             </main>
         </div>
         <div class="black">
-            <div class="backb"></div>
+            <div class="back_b"></div>
             <div class="backj">
                 <img class="giftFail" src="<%=path%>/static/images/jno.jpg" alt=""/>
                 <img class="giftSuccess" src="<%=path%>/static/images/jyes.jpg" alt=""/>

@@ -80,7 +80,7 @@
 
                                 <div>
                                     <div id="toolbar">
-                                        <div class="form-inline pull-right">
+                                        <div class="form-inline pull-left">
                                             <div class="form-group">
                                                 <label for="beginTime">创建日期：</label>
                                             </div>
@@ -96,6 +96,7 @@
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-detail-view="false"
+                                           data-show-export="true"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
                                            data-pagination="true"

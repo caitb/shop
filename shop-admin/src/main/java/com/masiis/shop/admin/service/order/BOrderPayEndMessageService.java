@@ -139,9 +139,11 @@ public class BOrderPayEndMessageService {
             }
         }
         //代理，补货，升级 发送大转盘抽奖提醒
-        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
+        logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------start");
+/*        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
             sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
-        }
+        }*/
+        logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------end");
     }
 
     /**

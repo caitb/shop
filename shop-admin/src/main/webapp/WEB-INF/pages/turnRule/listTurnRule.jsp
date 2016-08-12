@@ -323,7 +323,7 @@
                                 operateElement = '<a class="operate" status="0" href="javascript:void(0);">结束</a>';
                             }
 
-                            return '<a class="edit" href="javascript:void(0);">修改</a> &nbsp;&nbsp;&nbsp;&nbsp;'+operateElement;
+                            return operateElement;
                         },
                         events: {
                             'click .edit': function(e, value, row, index){

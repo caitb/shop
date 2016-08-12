@@ -144,7 +144,7 @@ public class BOrderPayEndMessageService {
             }
         }
         //代理，补货，升级 发送大转盘抽奖提醒
-/*        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
+        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
             //先判断是有转盘活动
             List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.B.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
             if (turnTableRules!=null&&turnTableRules.size()>0){
@@ -152,7 +152,7 @@ public class BOrderPayEndMessageService {
                 sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
                 logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------end");
             }
-        }*/
+        }
     }
 
     /**

@@ -2,6 +2,8 @@ package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
@@ -15,6 +17,7 @@ import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.promotion.cpromotion.service.gorder.SfTurnTableRuleService;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserPromotionService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -55,7 +58,7 @@ public class SfOrderManagerController extends BaseController {
     @Resource
     private SfMessageSrRelationService sfMessageSrRelationService;
     @Resource
-    private SfUserBillItemMapper sfUserBillItemMapper;
+    private SfTurnTableRuleService turnTableRuleService;
     /**
      * 确认收货
      * @author muchaofeng
@@ -271,12 +274,15 @@ public class SfOrderManagerController extends BaseController {
         List<SfUserPromotion> userPromotions = promoService.getPromotionByStatus(0);
         //获取消息数量
         Integer countMsg = sfMessageSrRelationService.queryUnseeMessageNumsByToUser(user.getId());
+        //抽奖
+        List<SfTurnTableRule> turnTableRules = turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.C.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("sfOrders0", sfOrders0.size() + sfOrders8.size());
         modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPromotions", userPromotions);
         modelAndView.addObject("countMsg", countMsg);
+        modelAndView.addObject("turnTableRules",turnTableRules);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

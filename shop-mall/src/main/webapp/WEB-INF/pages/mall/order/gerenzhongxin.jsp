@@ -81,14 +81,19 @@
                 </span>
                 <span>消息中心</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/turnTableDetailShow/getTurnTableInfo.html');">
-                <span><img src="<%=path%>/static/images/turnTable.png" alt="">
-                    <c:if test="${countMsg>0}">
-                        <b></b>
-                    </c:if>
-                </span>
-                <span>抽奖</span>
-            </li>
+            <c:if test="${not empty turnTableRules}">
+                <li onclick="javascript:window.location.replace('<%=path%>/turnTableDetailShow/getTurnTableInfo.html');">
+                    <span><img src="<%=path%>/static/images/turnTable.png" alt="">
+                        <c:if test="${countMsg>0}">
+                            <b></b>
+                        </c:if>
+                    </span>
+                    <span>抽奖</span>
+                </li>
+            </c:if>
+            <c:if test="${empty turnTableRules}">
+                <li style="background:#f3f4f5;border: none;"></li>
+            </c:if>
             <li style="background:#f3f4f5;border: none;"></li>
         </ul>
     </nav>

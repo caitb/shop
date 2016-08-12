@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.turn.SfTurnTableRuleService;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
 import com.masiis.shop.admin.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.admin.service.user.UpgradeNoticeService;
@@ -8,6 +9,8 @@ import com.masiis.shop.admin.service.user.UpgradeWechatNewsService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
+import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
@@ -59,6 +62,8 @@ public class BOrderPayEndMessageService {
     private PfBorderRecommenRewardService recommenRewardService;
     @Resource
     private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SfTurnTableRuleService turnTableRuleService;
 
     /**
      * 支付完成推送消息
@@ -139,11 +144,15 @@ public class BOrderPayEndMessageService {
             }
         }
         //代理，补货，升级 发送大转盘抽奖提醒
-        logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------start");
 /*        if (!pfBorder.getOrderType().equals(BOrderType.Take.getCode())) {
-            sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
+            //先判断是有转盘活动
+            List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.B.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
+            if (turnTableRules!=null&&turnTableRules.size()>0){
+                logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------start");
+                sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
+                logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------end");
+            }
         }*/
-        logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------end");
     }
 
     /**
@@ -210,10 +219,14 @@ public class BOrderPayEndMessageService {
                                            SimpleDateFormat simpleDateFormat,
                                            NumberFormat numberFormat){
         String[] params = new String[4];
+        logger.info("订单金额-------"+numberFormat.format(pfBorder.getPayAmount()));
         params[0] = numberFormat.format(pfBorder.getPayAmount());
         params[1] = pfBorderPayment.getPayTypeName();
+        logger.info("支付类型名称-----------"+pfBorderPayment.getPayTypeName());
+        logger.info("商品名称-----------"+pfBorderItems.get(0).getSkuName()+"------等级名称------"+comAgentLevel.getName());
         params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
         params[3] = simpleDateFormat.format(pfBorder.getPayTime());
+        logger.info("支付时间----------"+pfBorder.getPayTime());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/turnTableDetailShow/getTurnTableInfo.html";
         WxPFNoticeUtils.getInstance().paySuccessWithAwardNotice(comUser, params,url);
     }

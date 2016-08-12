@@ -194,12 +194,10 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar">
-                                        <div class="form-inline pull-right">
+                                    <div id="toolbar" >
+                                        <form class="form-inline pull-left">
                                             <div class="form-group">
                                                 <label for="isShip" class="control-label">状态</label>
-                                            </div>
-                                            <div class="form-group">
                                                 <select id="isShip" name="isShip" class="form-control">
                                                     <option value="">全部</option>
                                                     <option value="0">未发货</option>
@@ -208,19 +206,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="beginTime">创建日期：</label>
-                                            </div>
-                                            <div class="form-group">
                                                 <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
-                                            </div>
-                                            <div class="form-group">
                                                 <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
-
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
-                                        </div>
+                                        </form>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-detail-view="false"
+                                           data-show-export="true"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
                                            data-pagination="true"

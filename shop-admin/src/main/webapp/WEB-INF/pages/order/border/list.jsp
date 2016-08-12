@@ -54,7 +54,7 @@
 
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
-<div class="main-container" id="main-container" style="width: 1290px;">
+<div class="main-container" id="main-container">
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
@@ -85,7 +85,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="orderCode">购买人</label>
-                                                <input type="text" class="form-control" id="buyUser" name="uRealName" placeholder="购买人">
+                                                <input type="text" class="form-control" id="buyUser" name="uRealName" placeholder="购买人" style="width:80px;">
                                             </div>
                                             <div class="form-group">
                                                 <label for="orderCode">商品</label>
@@ -148,6 +148,7 @@
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
+                                           data-show-export="true"
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"

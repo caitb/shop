@@ -103,7 +103,7 @@
                                            data-show-refresh="true"
                                            data-show-toggle="true"
                                     <%--data-show-columns="true"--%>
-                                    <%--data-show-export="true"--%>
+                                           data-show-export="true"
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"

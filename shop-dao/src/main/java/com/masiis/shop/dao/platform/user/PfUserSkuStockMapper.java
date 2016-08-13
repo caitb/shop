@@ -32,4 +32,6 @@ public interface PfUserSkuStockMapper {
     PfUserSkuStock selectByUserIdAndSkuId(Long userId, Integer skuId);
 
     List<Map<String,Object>> selectReplenishStock();
+
+    List<Map<String,Object>> selectByCondition(Map<String,Object> conditionMap);
 }

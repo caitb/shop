@@ -111,9 +111,24 @@
                ,uss.frozen_custom_stock  frozenCustomStock
                ,uss.custom_stock         customStock
                ,u.real_name              realName
+               ,u.mobile                 mobile
                ,sku.name                 skuName
         FROM      pf_user_sku_stock uss
         LEFT JOIN com_user          u   ON u.id   = uss.user_id
         LEFT JOIN com_sku           sku ON sku.id = uss.sku_id
+        <where>
+            <if test="realName != null">
+                AND u.real_name = #{realName,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null">
+                AND u.mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="skuName != null">
+                AND sku.name = #{skuName,jdbcType=VARCHAR}
+            </if>
+        </where>
     </select>
+
+
+
 </mapper>

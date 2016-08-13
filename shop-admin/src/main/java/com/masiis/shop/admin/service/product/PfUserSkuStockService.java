@@ -1,18 +1,21 @@
 package com.masiis.shop.admin.service.product;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.product.PfUserSkuStockLogMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.dao.po.PfUserSkuStockLog;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Date 2016/5/13
@@ -25,6 +28,8 @@ public class PfUserSkuStockService {
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private PfUserSkuStockLogMapper userSkuStockLogMapper;
+    @Resource
+    private ComUserMapper comUserMapper;
 
 
     /**
@@ -185,4 +190,25 @@ public class PfUserSkuStockService {
     public PfUserSkuStock findByUserIdAndSkuId(Long userId, Integer skuId){
         return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
+
+    public List<Map<String,Object>> selectByCondition(Integer pageNumber, Integer pageSize,
+                                  String realName, String mobile, String skuName) {
+
+        Map<String,Object> conditionMap = new HashMap<>();
+        if(StringUtils.isNotBlank(realName)) {
+            conditionMap.put("realName", realName);
+        }
+        if(StringUtils.isNotBlank(mobile)) {
+            conditionMap.put("mobile", mobile);
+        }
+        if(StringUtils.isNotBlank(skuName)) {
+            conditionMap.put("skuName", skuName);
+        }
+
+        PageHelper.startPage(pageNumber, pageSize, null);
+        List<Map<String,Object>> userSkuStockList = pfUserSkuStockMapper.selectByCondition(conditionMap);
+
+        return userSkuStockList;
+    }
+
 }

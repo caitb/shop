@@ -234,6 +234,10 @@ public class VerifyController extends BaseController {
                     // 更新wxUser的信息
                     updateWxUserByRftkn(rfResBean, userRes, wxUser);
                     wxUserService.updateWxUser(wxUser);
+                    if(StringUtils.isNotBlank(userRes.getHeadimgurl())){
+                        user.setWxHeadImg(userRes.getHeadimgurl());
+                        userService.updateComUser(user);
+                    }
                     // 登录
                     session.invalidate();
                     session = request.getSession();
@@ -323,6 +327,10 @@ public class VerifyController extends BaseController {
                 updateWxUserByInfo(res, userRes, wxUser);
                 wxUserService.updateWxUser(wxUser);
                 ComUser user = userService.getUserByUnionid(wxUser.getUnionid());
+                if(StringUtils.isNotBlank(userRes.getHeadimgurl())){
+                    user.setWxHeadImg(userRes.getHeadimgurl());
+                    userService.updateComUser(user);
+                }
                 // 登录
                 session.invalidate();
                 session = request.getSession();

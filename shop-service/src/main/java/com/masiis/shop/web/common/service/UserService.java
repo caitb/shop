@@ -319,6 +319,10 @@ public class UserService {
             log.info("创建新comWxUser");
             // 无openid创建新的wxUser
             wxUser = createWxUserInit(res, userRes, user, appid);
+            if(StringUtils.isNotBlank(userRes.getHeadimgurl())){
+                user.setWxHeadImg(userRes.getHeadimgurl());
+                comUserMapper.updateByPrimaryKey(user);
+            }
             wxUserMapper.insert(wxUser);
         } else {
             log.info("更新comWxUser");

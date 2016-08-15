@@ -216,12 +216,17 @@ public class DevelopingController extends BaseController {
              */
             /* 拼接等级ID  */
             StringBuilder sLevelIds = new StringBuilder();
+            List<Integer> agentLevelIds = new ArrayList<>();
             if(levelIds != null && levelIds.length > 0){
                 for(String levelId : levelIds){
                     sLevelIds.append(levelId);
                     sLevelIds.append(",");
+
+                    agentLevelIds.add(Integer.valueOf(levelId));
                 }
             }
+
+
             //获取海报1:如果海报已存在并且未过期,直接返回
             PfUserShareParam userShareParam = new PfUserShareParam();
             userShareParam.setfUserId(comUser.getId());
@@ -288,7 +293,7 @@ public class DevelopingController extends BaseController {
                 String fontPath = request.getServletContext().getRealPath("/")+"static/font";
                 //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
                 //font1.deriveFont(Font.PLAIN, 32);
-                Font font1 = new Font("华文细黑", Font.PLAIN, 32);
+                Font font1 = new Font("华文细黑", Font.PLAIN, 30);
                 Font font2 = new Font("华文细黑", Font.PLAIN, 20);
                 Date curDate = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -300,45 +305,78 @@ public class DevelopingController extends BaseController {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date createTime                   = new Date();
                 String posterName                 = simpleDateFormat.format(createTime)+random+".png";
-                if("kangyinli.png".equals(comSkuExtension.getPoster())){
-                    Element headImgElement = new Element(88, 619, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
-                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-                    Element qrcodeImgElement = new Element(566, 776, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
-                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    Element text1Element = new Element(92, 775, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
-                    Element text2Element = new Element(603, 990, font2, new Color(102,102,102), "该二维码有效期:");
-                    Element text3Element = new Element(570, 1046, font2, new Color(102,102,102), startTime+"-"+endDate);
-                    text1Element.setLineCount(11);
-                    text3Element.setLineStyle(0);
-                    List<Element> drawElements = new ArrayList<>();
-                    drawElements.add(headImgElement);
-                    drawElements.add(bgPosterImgElement);
-                    drawElements.add(qrcodeImgElement);
-                    drawElements.add(text1Element);
-                    drawElements.add(text2Element);
-                    drawElements.add(text3Element);
 
-                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
-                }else if("mss.png".equals(comSkuExtension.getPoster())){
-                    Element headImgElement = new Element(36, 878, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
-                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-                    Element qrcodeImgElement = new Element(604, 874, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
-                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    Element text1Element = new Element(176, 880, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
-                    Element text2Element = new Element(638, 1086, font2, new Color(102,102,102), "该二维码有效期:");
-                    Element text3Element = new Element(610, 1145, font2, new Color(102,102,102), startTime+"-"+endDate);
-                    text1Element.setLineCount(13);
-                    text3Element.setLineStyle(0);
-                    List<Element> drawElements = new ArrayList<>();
-                    drawElements.add(headImgElement);
-                    drawElements.add(bgPosterImgElement);
-                    drawElements.add(qrcodeImgElement);
-                    drawElements.add(text1Element);
-                    drawElements.add(text2Element);
-                    drawElements.add(text3Element);
-
-                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
+                StringBuilder agentLevelNames = new StringBuilder();
+                              agentLevelNames.append("可注册等级:");
+                List<ComAgentLevel> comAgentLevels = comAgentLevelMapper.selectByIds(agentLevelIds);
+                for(ComAgentLevel agentLevel : comAgentLevels){
+                    agentLevelNames.append(agentLevel.getName());
+                    agentLevelNames.append("、");
                 }
+                agentLevelNames.deleteCharAt(agentLevelNames.length()-1);
+
+                Element headImgElement = new Element(373, 433, 156, 156, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+                Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+                Element qrcodeImgElement = new Element(124, 833, 243, 243, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                Element text1Element = new Element(98, 651, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
+                Element text2Element = new Element(421, 967, font2, new Color(102,102,102), "该二维码有效期:");
+                Element text3Element = new Element(421, 1026, font2, new Color(102,102,102), startTime+"-"+endDate);
+                Element text4Element = new Element(421, 1035, font2, new Color(102, 102, 102), agentLevelNames.toString());
+                text1Element.setLineCount(22);
+                text3Element.setLineStyle(0);
+                List<Element> drawElements = new ArrayList<>();
+                drawElements.add(headImgElement);
+                drawElements.add(bgPosterImgElement);
+                drawElements.add(qrcodeImgElement);
+                drawElements.add(text1Element);
+                drawElements.add(text2Element);
+                drawElements.add(text3Element);
+                drawElements.add(text4Element);
+
+                DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
+
+//                if("kangyinli.png".equals(comSkuExtension.getPoster())){
+//                    Element headImgElement = new Element(373, 433, 156, 156, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+//                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+//                    Element qrcodeImgElement = new Element(124, 833, 243, 243, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+//                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+//                    Element text1Element = new Element(98, 651, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
+//                    Element text2Element = new Element(421, 967, font2, new Color(102,102,102), "该二维码有效期:");
+//                    Element text3Element = new Element(421, 1026, font2, new Color(102,102,102), startTime+"-"+endDate);
+//                    Element text4Element = new Element(421, 1085, font2, new Color(102, 102, 102), agentLevelNames.toString());
+//                    text1Element.setLineCount(22);
+//                    text3Element.setLineStyle(0);
+//                    List<Element> drawElements = new ArrayList<>();
+//                    drawElements.add(headImgElement);
+//                    drawElements.add(bgPosterImgElement);
+//                    drawElements.add(qrcodeImgElement);
+//                    drawElements.add(text1Element);
+//                    drawElements.add(text2Element);
+//                    drawElements.add(text3Element);
+//                    drawElements.add(text4Element);
+//
+//                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
+//                }else if("mss.png".equals(comSkuExtension.getPoster())){
+//                    Element headImgElement = new Element(36, 878, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+//                    Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+//                    Element qrcodeImgElement = new Element(604, 874, 220, 220, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+//                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+//                    Element text1Element = new Element(176, 880, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
+//                    Element text2Element = new Element(638, 1086, font2, new Color(102,102,102), "该二维码有效期:");
+//                    Element text3Element = new Element(610, 1145, font2, new Color(102,102,102), startTime+"-"+endDate);
+//                    text1Element.setLineCount(13);
+//                    text3Element.setLineStyle(0);
+//                    List<Element> drawElements = new ArrayList<>();
+//                    drawElements.add(headImgElement);
+//                    drawElements.add(bgPosterImgElement);
+//                    drawElements.add(qrcodeImgElement);
+//                    drawElements.add(text1Element);
+//                    drawElements.add(text2Element);
+//                    drawElements.add(text3Element);
+//
+//                    DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/"+posterName);
+//                }
 
 
                 //保存二维码海报图片地址

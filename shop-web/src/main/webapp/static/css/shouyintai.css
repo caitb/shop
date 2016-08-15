@@ -134,9 +134,9 @@
 }
 .back_que h3 {
     display: -webkit-box;
-    -webkit-box-align: center;
-    margin: 15px 10px;
-    border-top: 1px solid #999;
+    /* -webkit-box-align: center; */
+    margin: 0 10px 15px 10px;
+    /* border-top: 1px solid #999; */
 }
 .back_que h3 span {
     display: block;
@@ -148,7 +148,6 @@
     width: 1px;
     border-radius: 5px;
     color: #333;
-    margin-top: 15px;
 }
 .back_que h3 span:nth-child(2) {
     margin-right: 10%;
@@ -156,7 +155,6 @@
     color: white;
 }
 h3{
-    background: #f6f6f6;
-    padding-top: 3em;
+    padding-top: 1em;
     text-align: center;
 }

@@ -309,39 +309,17 @@
                         }
                     },
                     {
-                        title: '平台库存',
+                        title: '库存',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.stock){
-                                return row.stock;
-                            }
+                            return row.stock;
                         }
                     },
                     {
-                        title: '平台冻结库存',
+                        title: '冻结量',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.frozenStock){
-                                return row.frozenStock;
-                            }
-                        }
-                    },
-                    {
-                        title: '自发货库存',
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.customStock){
-                                return row.customStock;
-                            }
-                        }
-                    },
-                    {
-                        title : '自发货冻结库存',
-                        align : 'center',
-                        formatter : function (value, row, index) {
-                            if(row.frozenCustomStock) {
-                                return row.frozenCustomStock;
-                            }
+                            return row.frozenStock;
                         }
                     }
                 ]

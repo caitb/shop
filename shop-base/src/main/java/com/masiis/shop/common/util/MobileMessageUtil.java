@@ -403,7 +403,8 @@ public class MobileMessageUtil {
         content[2] = date;
         content[3] = mes;
         content[4] = SMSConstants.consumerHotline;
-        return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
+//        return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
+        return true;
     }
 
     /**

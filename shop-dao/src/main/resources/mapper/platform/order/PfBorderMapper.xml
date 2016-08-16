@@ -214,6 +214,7 @@
         <if test="sendType != null">
             AND send_type = #{sendType,jdbcType=INTEGER}
         </if>
+        AND order_type &lt;&gt;2
         ORDER BY id DESC
     </select>
 

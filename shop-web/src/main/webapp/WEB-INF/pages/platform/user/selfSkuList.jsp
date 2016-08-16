@@ -32,7 +32,7 @@
                     <c:forEach items="${userProducts}" var="sku">
                         <h1>
                             <img src="<%=path%>/static/images/ip.png" alt="">
-                            拿货方式：<span>自己发货</span>
+                            拿货方式：<span>店主发货</span>
                         </h1>
                         <section class="sec2">
                             <p class="photo">

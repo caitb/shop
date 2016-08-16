@@ -20,7 +20,7 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="<%=basePath%>sfOrderController/stockShipOrder"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>订单详情</p>
 </header>
 <div class="wrap">

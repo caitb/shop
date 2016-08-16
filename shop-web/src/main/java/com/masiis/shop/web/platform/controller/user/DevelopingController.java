@@ -310,7 +310,7 @@ public class DevelopingController extends BaseController {
                               agentLevelNames.append("可注册等级:");
                 List<ComAgentLevel> comAgentLevels = comAgentLevelMapper.selectByIds(agentLevelIds);
                 for(ComAgentLevel agentLevel : comAgentLevels){
-                    agentLevelNames.append(agentLevel.getName());
+                    agentLevelNames.append(agentLevel.getId().intValue()==1?"联合创始人":agentLevel.getName());
                     agentLevelNames.append("、");
                 }
                 agentLevelNames.deleteCharAt(agentLevelNames.length()-1);
@@ -318,7 +318,7 @@ public class DevelopingController extends BaseController {
                 Element headImgElement = new Element(373, 433, 156, 156, ImageIO.read(new File(posterDirPath+"/"+headImg)));
                 Element bgPosterImgElement = new Element(0, 0, 904, 1200, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
                 Element qrcodeImgElement = new Element(124, 833, 243, 243, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
-                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId().intValue()==1?2:pfUserCertificate.getAgentLevelId());//隐藏联合创始人
                 Element text1Element = new Element(98, 651, font1, new Color(51,51,51), "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧");
                 Element text2Element = new Element(421, 967, font2, new Color(102,102,102), "该二维码有效期:");
                 Element text3Element = new Element(421, 1026, font2, new Color(102,102,102), startTime+"-"+endDate);

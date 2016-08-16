@@ -37,12 +37,12 @@
         <div class="content">
             <div class="sec1">
                 <h1>拿货方式简介</h1>
-                <p>麦链商城提供两种拿货方式：平台代发货和自己发货，以下为两种方式的对比介绍，请您阅读后酌情选择。</p>
+                <p>麦链商城提供两种拿货方式：平台代发货和店主发货，以下为两种方式的对比介绍，请您阅读后酌情选择。</p>
                 <table>
                     <tr>
                         <td></td>
                         <td>平台代发</td>
-                        <td>自己发货</td>
+                        <td>店主发货</td>
                     </tr>
                     <tr>
                         <td>仓库</td>
@@ -62,7 +62,7 @@
                     <tr>
                         <td>店铺发货</td>
                         <td>平台代发</td>
-                        <td>自己发货（人工成本高）</td>
+                        <td>店主发货（人工成本高）</td>
                     </tr>
                     <tr>
                         <td>消费者发票</td>
@@ -84,7 +84,7 @@
             <div class="sec2">
                 <h1>请选择拿货方式</h1>
                 <button id="platformSendGoodsId" onclick="platformSendGoods()" class="active">平台代发货（90%的用户选择）</button>
-                <button id="ownSendGoodsId" onclick="ownSendGoods()">自己发货</button>
+                <button id="ownSendGoodsId" onclick="ownSendGoods()">店主发货</button>
                 <p>*选择后，您的其他合伙商品将使用同一种方式，不可更改</p>
             </div>
             <button onclick="submit(this)">确定</button>

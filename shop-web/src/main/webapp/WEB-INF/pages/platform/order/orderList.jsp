@@ -79,7 +79,7 @@
                             <span>
                             <c:if test="${orderMap.sendType == 0}">未选择</c:if>
                             <c:if test="${orderMap.sendType == 1}">平台代发</c:if>
-                            <c:if test="${orderMap.sendType == 2}">自己发货</c:if>
+                            <c:if test="${orderMap.sendType == 2}">店主发货</c:if>
                             </span>
                             <b>类型：</b>
                             <c:forEach items="${orderTypes}" var="orderType">

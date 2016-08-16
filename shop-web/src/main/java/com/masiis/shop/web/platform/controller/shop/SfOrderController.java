@@ -168,7 +168,7 @@ public class SfOrderController extends BaseController {
                 sfOrder.setSendTypeDes("平台发货");
             }
             if(sfOrder.getSendType()==2){
-                sfOrder.setSendTypeDes("自己发货");
+                sfOrder.setSendTypeDes("店主发货");
             }
             if(sfOrder.getSendType()==0){
                 sfOrder.setSendTypeDes("未选择");
@@ -256,7 +256,7 @@ public class SfOrderController extends BaseController {
                     sfOrder.setSendTypeDes("平台发货");
                 }
                 if(sfOrder.getSendType()==2){
-                    sfOrder.setSendTypeDes("自己发货");
+                    sfOrder.setSendTypeDes("店主发货");
                 }
                 if(sfOrder.getSendType()==0){
                     sfOrder.setSendTypeDes("未选择");

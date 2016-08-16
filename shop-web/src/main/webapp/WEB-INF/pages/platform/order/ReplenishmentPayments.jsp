@@ -61,7 +61,7 @@
                 <p>发货方式：<span>平台代发</span></p>
             </c:if>
             <c:if test="${pfBorder.sendType == 2}">
-                <p>发货方式：<span>自己发货</span></p>
+                <p>发货方式：<span>店主发货</span></p>
                 <p>承运公司：<span></span></p>
                 <p>运单编号：<span></span></p>
             </c:if>

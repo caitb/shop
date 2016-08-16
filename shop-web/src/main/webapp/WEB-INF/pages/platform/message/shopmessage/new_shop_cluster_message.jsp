@@ -133,7 +133,7 @@
                         if(data.skus[i].isOwnShip == 0){
                             sendType = "平台代发";
                         } else if(data.skus[i].isOwnShip == 1) {
-                            sendType = "自己发货";
+                            sendType = "店主发货";
                         }
                         $("#url_setting").append($("<span id='" + data.skus[i].id + "'>"
                                 + data.skus[i].skuName + "_" + sendType + "_详情页</span>"));

@@ -295,7 +295,7 @@ public class BOrderController extends BaseController {
         } else if (pfBorder.getSendType() == 1) {
             sendTypeName = "平台代发";
         } else if (pfBorder.getSendType() == 2) {
-            sendTypeName = "自己发货";
+            sendTypeName = "店主发货";
         }
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);

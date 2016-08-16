@@ -62,7 +62,7 @@
                 </c:if>
             </div>
             <div class="kuaidi">
-                <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
+                <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">店主发货</c:if></span></p>
                 <p>类    型：<span>
                             <c:forEach items="${bOrderTypes}" var="orderType">
                                 <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>

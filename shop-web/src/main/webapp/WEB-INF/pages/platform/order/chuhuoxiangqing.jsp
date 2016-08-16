@@ -75,7 +75,7 @@
                 <p><span>支付日期：</span><span>
                     <fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><c:forEach items="${borderDetail.pfBorderPayments}" var="pp"> <span>${pp.payTypeName}</span></c:forEach></p>
-                <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}"> <span>未选择</span></c:if><c:if test="${borderDetail.pfBorder.sendType==1}"> <span>平台发货</span></c:if><c:if test="${borderDetail.pfBorder.sendType==2}"><span>自己发货</span></c:if></p>
+                <p><span>拿货方式：</span><c:if test="${borderDetail.pfBorder.sendType==0}"> <span>未选择</span></c:if><c:if test="${borderDetail.pfBorder.sendType==1}"> <span>平台发货</span></c:if><c:if test="${borderDetail.pfBorder.sendType==2}"><span>店主发货</span></c:if></p>
                 <p><span>类　　型：</span>
                     <c:forEach items="${bOrderTypes}" var="orderType">
                         <c:if test="${orderType.code == borderDetail.pfBorder.orderType}"><span>${orderType.desc}</span></c:if>

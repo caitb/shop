@@ -206,6 +206,7 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/repetitionForm.js"></script>
 <script>
     $(document).ready(function () {
         productJS.initPage();
@@ -350,11 +351,18 @@
             type: 'post',
             data: ApplyData,
             dataType: 'json',
+            async:false,
+            beforeSend:function(){
+                fullShow();
+            },
             success: function (data) {
                 if (data.isError == false) {
                     alert("您的申请已经提交，请耐心等待");
                     $(".black").hide();
                 }
+            },
+            complete:function(){
+                fullHide();
             }
         });
     }

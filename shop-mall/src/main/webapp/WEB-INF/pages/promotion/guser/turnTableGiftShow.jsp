@@ -82,10 +82,21 @@
                     </div>
                     <div class="floor3">
                         <h1>活动规则</h1>
-                        <p>活动时间：<span>${turnTablelInfo.beginTimeString}-${turnTablelInfo.endTimeString}</span></p>
+                        <p>活动时间：<span>2016年8月16日-2016年8月31日</span></p>
+                        <p>奖品设置：
+	        			<span>
+                        特等奖： 特斯拉model 3预定资格（1个）<br>
+                        一等奖： iPad一部（1个）<br>
+                        二等奖：明星演唱会一张（50）<br>
+                        三等奖：麦士抗引力纤颜奢养光感精华液（100个）
+	        			</span>
+                        </p>
                         <p>活动说明：
 	        			<span>
-                            ${turnTablelInfo.describe}
+                        1、用户成功下单，可获得3次抽奖机会。<br>
+                        2、中奖者以麦链电话通知为准，我们会在活动结束后，5个工作日内与您取得联系。<br>
+                        3、所有奖品以实物为准，无质量问题不接受退换。<br>
+                        4、本活动最终解释权归麦链所有。
 	        			</span>
                         </p>
                     </div>

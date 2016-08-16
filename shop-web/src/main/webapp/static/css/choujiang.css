@@ -168,7 +168,6 @@ main .floor2 .list div li span:last-child{
 main .floor3 {
     width: 85%;
     border-radius: 10px;
-    border: 1px dashed #A0A0A0;
     margin: 20px auto;
     background: url("/static/images/yiui.jpg") no-repeat;
     background-size: 100% 100%;

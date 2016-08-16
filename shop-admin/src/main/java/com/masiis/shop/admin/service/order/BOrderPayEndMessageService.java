@@ -219,7 +219,7 @@ public class BOrderPayEndMessageService {
                                            SimpleDateFormat simpleDateFormat,
                                            NumberFormat numberFormat,
                                            Integer times){
-        String[] params = new String[4];
+        String[] params = new String[5];
         logger.info("订单金额-------"+numberFormat.format(pfBorder.getPayAmount()));
         logger.info("抽奖次数-----------------"+times);
         params[0] = times+"";

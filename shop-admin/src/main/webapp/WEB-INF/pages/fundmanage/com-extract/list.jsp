@@ -435,93 +435,117 @@
                     },
                     {
                         title: 'ID',
-                        field: 'id',
+                        field: 'a.id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.id){
-                                return row.comUserExtractApply.id;
+                            if(row && row.id){
+                                return row.id;
                             }
                         }
                     },
                     {
-                        field: 'createTime',
+                        field: 'a.apply_time',
                         title: '申请日期',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.applyTime){
-                                return new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.apply_time){
+                                return new Date(row.apply_time).pattern('yyyy-MM-dd');
                             }
                         }
                     },
                     {
-                        field: 'name',
+                        field: 's.real_name',
                         title: '申请人',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row&& row.real_name){
+                                return row.real_name;
                             }
                         }
                     },
                     {
-                        field: 'extractFee',
+                        field: 'a.extract_fee',
                         title: '申请金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.extractFee){
-                                return '￥' + row.comUserExtractApply.extractFee;
+                            if(row && row.extract_fee){
+                                return '￥' + row.extract_fee;
                             }
                         }
                     },
                     {
                         align: 'center',
-                        field: 'extractableFee',
+                        field: 'u.extractable_fee',
                         title: '账户余额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount){
-                                return '￥' + row.comUserAccount.extractableFee;
+                            if(row){
+                                return '￥' + row.extractable_fee;
                             }
                         }
                     },
                     {
                         align: 'center',
-                        field: 'bankName',
+                        field: 'a.bank_name',
                         title: '提现方式',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.bankName){
-                                return row.comUserExtractApply.bankName;
+                            if(row && row.bank_name){
+                                return row.bank_name;
                             }
                         }
                     },
                     {
-                        field: 'auditType',
+                        align: 'center',
+                        field: 'a.bank_card',
+                        title: '银行卡号',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        formatter: function(value, row, index){
+                            if(row && row.bank_card){
+                                return row.bank_card;
+                            }
+                        }
+                    },
+                    {
+                        align: 'center',
+                        field: 'a.bank_name',
+                        title: '银行名称',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        formatter: function(value, row, index){
+                            if(row && row.bank_name){
+                                return row.bank_name;
+                            }
+                        }
+                    },
+                    {
+                        field: 'a.audit_type',
                         title: '打款状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
+                            if(row && row.audit_type == 0) {
                                 return '<span class="label label-sm label-grey">待审核</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 1) {
+                            }else if(row && row.audit_type == 1) {
                                 return '<span class="label label-sm label-danger">已拒绝</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
+                            }else if(row && row.audit_type == 2) {
                                 return '<span class="label label-sm label-info">待打款</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 3){
+                            }else if(row && row.audit_type == 3){
                                 return '<span class="label label-sm label-success">已打款</span>';
                             }
                         }

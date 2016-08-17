@@ -51,7 +51,8 @@ public class ExtractApplyController extends BaseController{
         Map<String, Object> con = null;
         try {
             con = new HashMap<>();
-            Map<String, Object> pageMap = extractApplyService.listByCondition(pageNumber, pageSize, con);
+          // Map<String, Object> pageMap = extractApplyService.listByCondition(pageNumber, pageSize, con);
+            Map<String, Object> pageMap = extractApplyService.selectAllExtract(pageNumber, pageSize, con);
             return pageMap;
         } catch (Exception e) {
             log.error("获取提现申请列表失败![comUserExtractApply="+con+"]");

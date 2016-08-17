@@ -68,15 +68,15 @@
                     <img src="<%=basePath%>static/images/guanli.png" alt="">审核不通过
                 </c:if>
             </span></p>
-            <p><span>身份证号</span><span>${memberMap.idCard}</span></p>
-            <p><span>身份证扫描件</span><span class="four">
-                <c:if test="${memberMap.idCardImg != null}">
-                    已上传
-                </c:if>
-                <c:if test="${memberMap.idCardImg == null}">
-                    未上传
-                </c:if>
-            </span></p>
+            <%--<p><span>身份证号</span><span>${memberMap.idCard}</span></p>--%>
+            <%--<p><span>身份证扫描件</span><span class="four">--%>
+                <%--<c:if test="${memberMap.idCardImg != null}">--%>
+                    <%--已上传--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${memberMap.idCardImg == null}">--%>
+                    <%--未上传--%>
+                <%--</c:if>--%>
+            <%--</span></p>--%>
             <p><span>授权证书</span><span><b><img src="${memberMap.certificateImg}" alt=""></b></span></p>
             <p><span>加入时间</span><span><fmt:formatDate value="${memberMap.applyTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span></p>
         </div>

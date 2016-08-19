@@ -24,7 +24,7 @@
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span></p>
+                    <p>拿货方式：<span>店主发货</span></p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>

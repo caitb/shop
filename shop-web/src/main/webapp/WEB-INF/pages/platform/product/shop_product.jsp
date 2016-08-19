@@ -35,7 +35,7 @@
                 <select id="goods" class="search">
                     <option value="" selected="selected">全部</option>
                     <option value="0">平台发货</option>
-                    <option value="1">自己发货</option>
+                    <option value="1">店主发货</option>
                 </select>
             </label>
         </div>
@@ -48,7 +48,7 @@
                         <h1><img src="<%=path%>/static/images/commodity.png" alt=""><b>平台发货</b></h1>
                     </c:if>
                     <c:if test="${sku.isOwnShip==1}">
-                        <h1><img src="<%=path%>/static/images/commodity2.png" alt=""><b>自己发货</b></h1>
+                        <h1><img src="<%=path%>/static/images/commodity2.png" alt=""><b>店主发货</b></h1>
                     </c:if>
                     <div>
                         <p><img src="${sku.comSkuImageUrl}" alt=""></p>
@@ -335,7 +335,7 @@
                         }
                     }
                     if (sku.isOwnShip == 1) {
-                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>自己发货</b></h1>";
+                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>店主发货</b></h1>";
                         zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
                         zijiHtml += "</li>";
@@ -409,7 +409,7 @@
                         }
                     }
                     if (sku.isOwnShip == 1) {
-                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>自己发货</b></h1>";
+                        fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity2.png\" alt=\"\"><b>店主发货</b></h1>";
                         zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                         zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                         zijiHtml += "</li>";

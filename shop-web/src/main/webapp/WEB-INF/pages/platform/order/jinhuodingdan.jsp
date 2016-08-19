@@ -334,10 +334,10 @@
         <h1><span></span>支付宝转账</h1>
         <h2><span>名称：</span><span>北京麦士网络科技有限公司</span></h2>
         <h2><span>支付宝账号：</span><span>mailian@iimai.com</span></h2>
-        <h1><span></span>银行转账</h1>
-        <h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>
-        <h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>
-        <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>
+        <%--<h1><span></span>银行转账</h1>--%>
+        <%--<h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>--%>
+        <%--<h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>--%>
+        <%--<h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>--%>
         <button class="xinxn">我知道了</button>
     </div>
     <div class="back" style="display: none">

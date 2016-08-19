@@ -214,6 +214,7 @@
         <if test="sendType != null">
             AND send_type = #{sendType,jdbcType=INTEGER}
         </if>
+        AND order_type &lt;&gt;2
         ORDER BY id DESC
     </select>
 
@@ -296,6 +297,7 @@
                 ,bc.zip               zip
                 ,bi.sku_name          skuName
                 ,bi.quantity          quantity
+                ,bi.unit_price        unitPrice
                 ,sku.name             name
                 ,sku.alias            alias
         FROM

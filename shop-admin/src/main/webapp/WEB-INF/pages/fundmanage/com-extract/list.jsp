@@ -499,12 +499,30 @@
                     {
                         align: 'center',
                         field: 'bankName',
-                        title: '提现方式',
+                        title: '银行名称',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
                             if(row.comUserExtractApply && row.comUserExtractApply.bankName){
                                 return row.comUserExtractApply.bankName;
+                            }
+                        }
+                    },
+                    {
+                        title : '银行卡号',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            if(row.comUserExtractApply && row.comUserExtractApply.bankCard){
+                                return row.comUserExtractApply.bankCard;
+                            }
+                        }
+                    },
+                    {
+                        title : '持卡人姓名',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            if(row.comUserExtractApply && row.comUserExtractApply.cardOwnerName){
+                                return row.comUserExtractApply.cardOwnerName;
                             }
                         }
                     },

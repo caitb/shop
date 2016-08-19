@@ -149,7 +149,7 @@ public class BOrderPayEndMessageService {
             List<SfTurnTableRule> turnTableRules =  turnTableRuleService.getRuleByTypeAndStatus(SfTurnTableRuleTypeEnum.B.getCode(), SfTurnTableRuleStatusEnum.EFFECT.getCode());
             if (turnTableRules!=null&&turnTableRules.size()>0){
                 logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------start");
-                sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat);
+                sendTurnTableGiftWxNotice(comUser, pfBorder, pfBorderPayment, pfBorderItems, comAgentLevel, simpleDateFormat, numberFormat,turnTableRules.get(0).getTimes());
                 logger.info("-----------代理，补货，升级 发送大转盘抽奖提醒-------------end");
             }
         }
@@ -217,15 +217,18 @@ public class BOrderPayEndMessageService {
                                            List<PfBorderItem> pfBorderItems,
                                            ComAgentLevel comAgentLevel,
                                            SimpleDateFormat simpleDateFormat,
-                                           NumberFormat numberFormat){
-        String[] params = new String[4];
+                                           NumberFormat numberFormat,
+                                           Integer times){
+        String[] params = new String[5];
         logger.info("订单金额-------"+numberFormat.format(pfBorder.getPayAmount()));
-        params[0] = numberFormat.format(pfBorder.getPayAmount());
-        params[1] = pfBorderPayment.getPayTypeName();
+        logger.info("抽奖次数-----------------"+times);
+        params[0] = times+"";
+        params[1] = numberFormat.format(pfBorder.getPayAmount());
+        params[2] = pfBorderPayment.getPayTypeName();
         logger.info("支付类型名称-----------"+pfBorderPayment.getPayTypeName());
         logger.info("商品名称-----------"+pfBorderItems.get(0).getSkuName()+"------等级名称------"+comAgentLevel.getName());
-        params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
-        params[3] = simpleDateFormat.format(pfBorder.getPayTime());
+        params[3] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
+        params[4] = simpleDateFormat.format(pfBorder.getPayTime());
         logger.info("支付时间----------"+pfBorder.getPayTime());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/turnTableDetailShow/getTurnTableInfo.html";
         WxPFNoticeUtils.getInstance().paySuccessWithAwardNotice(comUser, params,url);

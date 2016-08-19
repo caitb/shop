@@ -71,7 +71,7 @@
         <div class="kuaidi">
             <p>拿货方式：<span><c:if test="${orderMallDetail.sfOrder.sendType==0}">未选择</c:if><c:if
                     test="${orderMallDetail.sfOrder.sendType==1}">平台代发</c:if><c:if
-                    test="${orderMallDetail.sfOrder.sendType==2}">自己发货</c:if></span></p>
+                    test="${orderMallDetail.sfOrder.sendType==2}">店主发货</c:if></span></p>
             ${stringBuffer}
         </div>
         <div class="shop" onclick="javascript:window.location.replace('<%=basePath%>${orderMallDetail.sfOrder.shopId}/${userPid}/shop.shtml');">

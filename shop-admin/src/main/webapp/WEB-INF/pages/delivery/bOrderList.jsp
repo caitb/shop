@@ -133,7 +133,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            发货信息
+                                            <div id="modal-title">发货信息</div>
                                         </div>
                                     </div>
 
@@ -641,6 +641,12 @@
                                 $('[name=pfBorderId]').val(row.id);
                                 $('#freight').val('');
                                 $('#modal-delivery').modal('show');
+
+                                if(row.orderType == 2) {
+                                    $('#modal-title').html('发货信息 &nbsp;&nbsp;<b style="color:darkred;">（货到付款）</b>');
+                                } else {
+                                    $('#modal-title').html('发货信息');
+                                }
                             }
                         }
                     }

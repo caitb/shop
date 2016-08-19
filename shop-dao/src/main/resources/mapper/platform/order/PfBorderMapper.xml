@@ -297,6 +297,7 @@
                 ,bc.zip               zip
                 ,bi.sku_name          skuName
                 ,bi.quantity          quantity
+                ,bi.unit_price        unitPrice
                 ,sku.name             name
                 ,sku.alias            alias
         FROM

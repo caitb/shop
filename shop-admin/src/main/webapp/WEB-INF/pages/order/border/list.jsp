@@ -407,6 +407,20 @@
                         }
                     },
                     {
+                        title : '数量',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            return row.quantity
+                        }
+                    },
+                    {
+                        title : '单价',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            return row.unitPrice
+                        }
+                    },
+                    {
                         field: 'product_amount',
                         title: '订单金额',
                         sortable: true,

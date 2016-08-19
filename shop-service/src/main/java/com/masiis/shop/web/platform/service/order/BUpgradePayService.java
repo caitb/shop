@@ -86,6 +86,8 @@ public class BUpgradePayService {
     private SfUserTurnTableService userTurnTableService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         //修改订单支付
@@ -144,7 +146,7 @@ public class BUpgradePayService {
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
             //处理平台发货类型订单
             log.info("------处理平台发货类型订单----start");
-            saveBOrderSendType(pfBorder);
+            bOrderShipService.shipAndReceiptBOrder(pfBorder);
             log.info("------处理平台发货类型订单----end");
         } else {
             log.info("没有处理平台发货类型订单-----pfBorder.getSendType()======" + pfBorder.getSendType() + "------pfBorder.getOrderStatus()====" + pfBorder.getOrderStatus());
@@ -543,9 +545,9 @@ public class BUpgradePayService {
      *
      * @param pfBorder
      */
-    public void saveBOrderSendType(PfBorder pfBorder) {
-//        bOrderPayService.saveBOrderSendType(pfBorder);
-    }
+/*    public void saveBOrderSendType(PfBorder pfBorder) {
+       bOrderPayService.saveBOrderSendType(pfBorder);
+    }*/
 
 
     /**

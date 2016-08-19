@@ -518,6 +518,15 @@
                         }
                     },
                     {
+                        title : '持卡人姓名',
+                        align : 'center',
+                        formatter : function(value, row, index) {
+                            if(row.comUserExtractApply && row.comUserExtractApply.cardOwnerName){
+                                return row.comUserExtractApply.cardOwnerName;
+                            }
+                        }
+                    },
+                    {
                         field: 'auditType',
                         title: '打款状态',
                         sortable: true,

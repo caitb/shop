@@ -372,6 +372,17 @@
                         }
                     },
                     {
+                        field: 'pu.user_monile',
+                        title: '上级合伙人电话',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.puMobile){
+                                return row.puMobile;
+                            }
+                        }
+                    },
+                    {
                         field: 'recommenUser',
                         title: '推荐人',
                         footerFormatter: totalNameFormatter,
@@ -403,6 +414,18 @@
                         formatter: function(value, row, index){
                             if(row && row.skuName){
                                 return row.skuName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'bi.quantity',
+                        title: '数量',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.quantity){
+                                return row.quantity;
                             }
                         }
                     },

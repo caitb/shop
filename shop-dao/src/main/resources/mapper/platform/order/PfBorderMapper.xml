@@ -285,6 +285,7 @@
                 ,bo.user_message      userMessage
                 ,bo.user_pid          userPid
                 ,pu.real_name         puRealName
+                ,pu.mobile            puMobile
                 ,ru.real_name         ruRealName
                 ,u.real_name          uRealName
                 ,bp.pay_type_id       payTypeId

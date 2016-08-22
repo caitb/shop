@@ -500,7 +500,6 @@
                         align: 'center',
                         field: 'bankName',
                         title: '银行名称',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
                             if(row.comUserExtractApply && row.comUserExtractApply.bankName){
@@ -508,6 +507,16 @@
                             }
                         }
                     },
+                    {
+                        title: '开户行',
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.comUserExtractApply && row.comUserExtractApply.depositBankName){
+                                return row.comUserExtractApply.depositBankName;
+                            }
+                        }
+                    },
+
                     {
                         title : '银行卡号',
                         align : 'center',

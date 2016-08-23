@@ -31,7 +31,7 @@ public class PfBOrderTaskService {
     /**
      * 自动取消7天未支付的线下支付订单
      */
-    public void autoCancelOfflineBorder(){
+    public void autoCancelOfflineBorder() {
         Date expiraTime = DateUtil.getDateNextdays(-7);
         log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
 
@@ -49,11 +49,11 @@ public class PfBOrderTaskService {
             @Override
             public Boolean doMyJob(Object obj) throws Exception {
                 PfBorder bOrder = (PfBorder) obj;
-                try{
+                try {
                     log.info("开始取消线下订单,订单号为:" + bOrder.getOrderCode());
                     bOrderService.cancelOfflinePayBOrder(bOrder);
                     log.info("取消订单线下成功,订单号为:" + bOrder.getOrderCode());
-                    synchronized (this){
+                    synchronized (this) {
                         notices.add(bOrder);
                     }
                     return true;
@@ -65,7 +65,7 @@ public class PfBOrderTaskService {
             }
         }, new LinkedBlockingDeque<Object>(bList), 0);
 
-        for(PfBorder np:notices){
+        for (PfBorder np : notices) {
             bOrderService.sendWxNoitceByCancelBorder(np, 7);
         }
     }
@@ -90,11 +90,11 @@ public class PfBOrderTaskService {
             @Override
             public Boolean doMyJob(Object obj) throws Exception {
                 PfBorder bOrder = (PfBorder) obj;
-                try{
+                try {
                     log.info("开始取消订单,订单号为:" + bOrder.getOrderCode());
                     bOrderService.cancelUnPayBOrder(bOrder);
                     log.info("取消订单成功,订单号为:" + bOrder.getOrderCode());
-                    synchronized (this){
+                    synchronized (this) {
                         notices.add(bOrder);
                     }
                     return true;
@@ -106,7 +106,7 @@ public class PfBOrderTaskService {
             }
         }, new LinkedBlockingDeque<Object>(bList), 0);
 
-        for(PfBorder np:notices){
+        for (PfBorder np : notices) {
             bOrderService.sendWxNoitceByCancelBorder(np, 3);
         }
     }
@@ -129,11 +129,14 @@ public class PfBOrderTaskService {
         } else {
             log.info("超过7天未收货代理订单个数:" + bList.size());
             // 多线程处理
-            for(PfBorder bOrder:bList) {
+            for (PfBorder bOrder : bList) {
                 try {
-                    log.info("开始代理订单收货,订单号为:" + bOrder.getOrderCode());
-                    bOrderShipService.shipAndReceiptBOrder(bOrder);
-                    log.info("代理订单收货成功,订单号为:" + bOrder.getOrderCode());
+                    if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1 || bOrder.getOrderType() == 3) {
+                        bOrderShipService.shipAndReceiptBOrder(bOrder);
+                    } else if (bOrder.getOrderType() == 2) {
+                        bOrderShipService.receiptBOrder(bOrder);
+                    }
+
                 } catch (Exception e) {
                     log.info("代理订单收货失败,订单号为:" + bOrder.getOrderCode());
                     log.error(e.getMessage(), e);

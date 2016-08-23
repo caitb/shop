@@ -566,48 +566,48 @@
                         },
                         events: {
                             'click .view': function(e, value, row, index){
-                                $('#applyId2').val(row.comUserExtractApply.id);
-                                $('#applyTime2').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName2').html(row.comUser.realName);
-                                $('#extractFee2').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee2').html(row.comUserAccount.extractableFee);
-                                if(row.comUserExtractApply.extractWay == 1){
+                                $('#applyId2').val(row.id);
+                                $('#applyTime2').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName2').html(row.real_name);
+                                $('#extractFee2').html(row.extract_fee);
+                                $('#extractableFee2').html(row.extractable_fee);
+                                if(row.extract_way == 1){
                                     $('#extractWay2').html('微信');
                                 }
-                                if(row.comUserExtractApply.extractWay == 2){
+                                if(row.extract_way == 2){
                                     $('#extractWay2').html('支付宝');
                                 }
-                                if(row.comUserExtractApply.extractWay == 3){
+                                if(row.extract_way == 3){
                                     $('#extractWay2').html('银行卡');
                                 }
-                                $('#bankCard2').html(row.comUserExtractApply.bankCard);
-                                $('#bankName2').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName2').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName2').html(row.comUserExtractApply.cardOwnerName);
-                                $('#auditCause2').val(row.comUserExtractApply.auditCause);
+                                $('#bankCard2').html(row.bank_card);
+                                $('#bankName2').html(row.bank_name);
+                                $('#depositBankName2').html(row.deposit_bank_name);
+                                $('#cardOwnerName2').html(row.card_owner_name);
+                                $('#auditCause2').val(row.audit_cause);
 
                                 $('#modal-view').modal('show');
                             },
                             'click .audit': function(e, value, row, index){
-                                $('#applyId').val(row.comUserExtractApply.id);
-                                $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName').html(row.comUser.realName);
-                                $('#extractFee').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                if(row.comUserExtractApply.extractWay==1){
-                                    $('#extractWay').html('微信');
+                                $('#applyId2').val(row.id);
+                                $('#applyTime2').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName2').html(row.real_name);
+                                $('#extractFee2').html(row.extract_fee);
+                                $('#extractableFee2').html(row.extractable_fee);
+                                if(row.extract_way == 1){
+                                    $('#extractWay2').html('微信');
                                 }
-                                if(row.comUserExtractApply.extractWay==2){
-                                    $('#extractWay').html('支付宝');
+                                if(row.extract_way == 2){
+                                    $('#extractWay2').html('支付宝');
                                 }
-                                if(row.comUserExtractApply.extractWay==3){
-                                    $('#extractWay').html('银行卡');
+                                if(row.extract_way == 3){
+                                    $('#extractWay2').html('银行卡');
                                 }
-                                $('#bankCard').html(row.comUserExtractApply.bankCard);
-                                $('#bankName').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
-                                $('#auditCause').val('');
+                                $('#bankCard2').html(row.bank_card);
+                                $('#bankName2').html(row.bank_name);
+                                $('#depositBankName2').html(row.deposit_bank_name);
+                                $('#cardOwnerName2').html(row.card_owner_name);
+                                $('#auditCause2').val(row.audit_cause);
 
                                 $('#modal-audit').modal('show');
                             },

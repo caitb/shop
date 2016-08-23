@@ -458,6 +458,7 @@
                     },
                     {
                         title : '商品名称',
+                        align:'center',
                         formatter : function(value, row, index) {
                             if(row.sfOrderItems) {
                                 return row.sfOrderItems[0].skuName;
@@ -466,6 +467,7 @@
                     },
                     {
                         title : '单价',
+                        align:'center',
                         formatter : function(value, row, index) {
                             if(row.sfOrderItems) {
                                 return row.sfOrderItems[0].unitPrice;
@@ -474,6 +476,7 @@
                     },
                     {
                         title : '数量',
+                        align:'center',
                         formatter : function(value, row, index) {
                             if(row.sfOrderItems) {
                                 return row.sfOrderItems[0].quantity;

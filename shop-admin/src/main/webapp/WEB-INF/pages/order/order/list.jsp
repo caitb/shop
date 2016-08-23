@@ -457,6 +457,30 @@
                         }
                     },
                     {
+                        title : '商品名称',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].skuName;
+                            }
+                        }
+                    },
+                    {
+                        title : '单价',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].unitPrice;
+                            }
+                        }
+                    },
+                    {
+                        title : '数量',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].quantity;
+                            }
+                        }
+                    },
+                    {
                         field: 'product_amount',
                         title: '订单金额',
                         sortable: true,

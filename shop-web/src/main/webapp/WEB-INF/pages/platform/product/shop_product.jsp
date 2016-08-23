@@ -28,7 +28,7 @@
             <span class="on" onclick="onsale()">出售中</span>
             <span onclick="outSale()">仓库中</span>
         </p>
-        <div>
+<%--        <div>
             <span>筛选条件：</span>
             <label class="goods">
                 <b></b>
@@ -38,7 +38,7 @@
                     <option value="1">店主发货</option>
                 </select>
             </label>
-        </div>
+        </div>--%>
     </div>
     <main>
         <div class="floor">
@@ -66,14 +66,14 @@
                         <c:if test="${sku.isOwnShip==0 && empty sku.flagSelf}">
                             <li onclick="showDown('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity3.png" alt="">下架</b>
                             </li>
-                            <c:if test="${ not empty sku.wxqrCode}">
+<%--                            <c:if test="${ not empty sku.wxqrCode}">
                                 <li class="right myself" onclick="selfclick('${sku.shopSkuId}')"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
                                 </li>
                             </c:if>
                             <c:if test="${empty sku.wxqrCode}">
                                 <li class="right myself" onclick="applyWXCode();"><b><img src="<%=path%>/static/images/commodity4.png" alt="">我要自己发货</b>
                                 </li>
-                            </c:if>
+                            </c:if>--%>
                         </c:if>
                     </ul>
                     <c:if test="${sku.isOwnShip==1}">
@@ -321,13 +321,13 @@
                             zijiHtml += "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
                             zijiHtml += "</li>";
-                            if(sku.wxqrCode==null || sku.wxqrCode==""){
+                           /* if(sku.wxqrCode==null || sku.wxqrCode==""){
                                 zijiHtml += "<li class=\"right myself\" onclick=\"applyWXCode()\">";
                             }else{
                                 zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
                             }
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";
-                            zijiHtml += "</li>";
+                            zijiHtml += "</li>";*/
                         }else{
                             zijiHtml = "<li onclick=\"showDown("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">下架</b>";
@@ -392,7 +392,7 @@
                     if (sku.isOwnShip == 0) {
                         fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity.png\" alt=\"\"><b>平台发货</b></h1>";
                         if(sku.flagSelf==null || sku.flagSelf==""){
-                            zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
+                            /*zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                             zijiHtml += "</li>";
                             if(sku.wxqrCode==null || sku.wxqrCode==""){
@@ -401,7 +401,7 @@
                                 zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
                             }
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";
-                            zijiHtml += "</li>";
+                            zijiHtml += "</li>";*/
                         }else{
                             zijiHtml = "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";

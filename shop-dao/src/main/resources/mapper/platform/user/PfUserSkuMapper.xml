@@ -315,10 +315,12 @@
             al.name        levelName,
             uss.stock      stock,
             pu.real_name   puRealName,
+            pu.mobile      puMobile,
             pal.name       pLevelName,
             ru.real_name   ruRealName,
             ral.name       rLevelName,
             bsu.real_name  bsRealName,
+            bsu.mobile     bsMobile,
             (SELECT COUNT(0) FROM pf_user_sku WHERE pid=us.id) countLower
 
         FROM

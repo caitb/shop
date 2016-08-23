@@ -160,4 +160,23 @@ public class ExtractApplyService {
             throw new Exception("日志新建合伙人提现失败!");
         }
     }
+
+    /**
+     * 查询合伙人订单
+     * @param pageNumber
+     * @param pageSize
+     * @param con
+     * @return
+     */
+    public Map<String,Object> selectAllExtract(Integer pageNumber, Integer pageSize, Map<String, Object> con) {
+        String sort = "a.id desc";
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String,Object>> comUserExtract = comUserExtractApplyMapper.selectAllExtract(con);
+        PageInfo pageInfo = new PageInfo<>(comUserExtract);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", comUserExtract);
+        return pageMap;
+    }
 }

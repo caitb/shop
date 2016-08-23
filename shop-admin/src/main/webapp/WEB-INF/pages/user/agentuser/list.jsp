@@ -418,6 +418,19 @@
                         }
                     },
                     {
+                        field: 'pu.mobile',
+                        title: '上级合伙人电话',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.puMobile){
+                                return row.puMobile;
+                            }
+                            return '-'
+                        }
+                    },
+                    {
                         title: '上级合伙人级别',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -460,6 +473,18 @@
                         formatter: function(value, row, index){
                             if(row && row.bsRealName){
                                 return row.bsRealName;
+                            }
+                            return '-'
+                        }
+                    },
+                    {
+                        title: 'BOSS电话',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.bsMobile){
+                                return row.bsMobile;
                             }
                             return '-'
                         }

@@ -55,7 +55,12 @@
                         <div>
                             <h1>${sku.skuName}</h1>
                             <p style="color: #ff5200;">￥${sku.priceRetail}</p>
-                            <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>  库存: <span>${sku.stock}</span></p>
+                            <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>
+                                库存: <span>${sku.stock}</span>
+                                <c:if test="${sku.stock==0}">
+                                    <span style="color: red;">已售磬,请补货</span>
+                                </c:if>
+                            </p>
                         </div>
                     </div>
                     <ul>
@@ -350,7 +355,12 @@
                     trHtml += "<div>";
                     trHtml += "<h1>" + sku.skuName + "</h1>";
                     trHtml += "<p style=\"color: #ff5200;\">￥" + returnfloat(sku.priceRetail) + "</p>";
-                    trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span></p>";
+                    //trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span></p>";
+                    trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span>";
+                    if(sku.stock==0){
+                        trHtml += "<span style=\"color: red;\">已售磬,请补货</span>";
+                    }
+                    trHtml += "</p>";
                     trHtml += "</div>";
                     trHtml += "</div>";
                     trHtml += "<ul>";
@@ -424,7 +434,11 @@
                     trHtml += "<div>";
                     trHtml += "<h1>" + sku.skuName + "</h1>";
                     trHtml += "<p style=\"color: #ff5200;\">￥" + returnfloat(sku.priceRetail) + "</p>";
-                    trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span></p>";
+                    //trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span></p>";
+                    trHtml += "<p>已售：<span>" + sku.saleNum + "</span>&nbsp;&nbsp;库存: <span>" + sku.stock + "</span>";
+                    if(sku.stock==0){
+                        trHtml += "<span style=\"color: red;\">已售磬,请补货</span>";
+                    }
                     trHtml += "</div>";
                     trHtml += "</div>";
                     trHtml += "<ul>";

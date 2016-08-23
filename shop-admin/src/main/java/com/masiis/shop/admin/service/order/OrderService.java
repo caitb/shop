@@ -124,6 +124,7 @@ public class OrderService {
             order.setSfOrderConsignee(sfOrderConsignee);
             order.setSfOrderFreights(sfOrderFreights);
             order.setSfOrderPayments(sfOrderPayments);
+            order.setSfOrderItems(sfOrderItems);
             order.setShopUser(shopUser);
             order.setSfOrderItems(sfOrderItems);
 

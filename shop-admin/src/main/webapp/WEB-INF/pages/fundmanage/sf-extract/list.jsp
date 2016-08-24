@@ -554,6 +554,7 @@
                             }else if(row.sfUserExtractApply && row.sfUserExtractApply.auditType == 3){
                                 return '<span class="label label-sm label-success">已打款</span>';
                             }
+
                         }
                     },
                     {

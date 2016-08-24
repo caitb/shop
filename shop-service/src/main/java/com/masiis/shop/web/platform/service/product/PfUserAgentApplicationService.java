@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by jiajinghao on 2016/7/4.
@@ -25,7 +26,7 @@ public class PfUserAgentApplicationService {
        return pfUserAgentApplicationMapper.insert(pfUserAgentApplication);
     }
 
-    public PfUserAgentApplication getPfUserAgentApplicationByPhone(String phone){
+    public List<PfUserAgentApplication> getPfUserAgentApplicationByPhone(String phone){
         return pfUserAgentApplicationMapper.selectByPhone(phone);
     }
 }

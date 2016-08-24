@@ -24,7 +24,7 @@ public interface PfUserAgentApplicationMapper {
 
     int updateByPrimaryKey(PfUserAgentApplication record);
 
-    PfUserAgentApplication selectByPhone(@Param("mobile") String mobile);
+    List<PfUserAgentApplication> selectByPhone(@Param("mobile") String mobile);
 
     /**
      * 条件查询

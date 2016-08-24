@@ -515,6 +515,30 @@
                         }
                     },
                     {
+                        align: 'center',
+                        field: 'bankCard',
+                        title: '银行卡号',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        formatter: function(value, row, index){
+                            if(row.sfUserExtractApply && row.sfUserExtractApply.bankCard){
+                                return row.sfUserExtractApply.bankCard;
+                            }
+                        }
+                    },
+                    {
+                        align: 'center',
+                        field: 'bankName',
+                        title: '银行名称',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        formatter: function(value, row, index){
+                            if(row.sfUserExtractApply.bankCard && row.sfUserExtractApply.bankName){
+                                return row.sfUserExtractApply.bankName;
+                            }
+                        }
+                    },
+                    {
                         field: 'auditType',
                         title: '打款状态',
                         sortable: true,

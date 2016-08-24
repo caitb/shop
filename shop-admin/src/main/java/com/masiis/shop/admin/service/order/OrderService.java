@@ -115,6 +115,7 @@ public class OrderService {
             SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
             List<SfOrderFreight> sfOrderFreights = sfOrderFreightMapper.selectByOrderId(sfOrder.getId());
             List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(sfOrder.getId());
+            List<SfOrderItem> sfOrderItems = sfOrderItemMapper.selectBySfOrder(sfOrder.getId());
             ComUser shopUser = comUserMapper.selectByPrimaryKey(sfOrder.getShopUserId());//店铺主人
 
             Order order = new Order();
@@ -123,7 +124,9 @@ public class OrderService {
             order.setSfOrderConsignee(sfOrderConsignee);
             order.setSfOrderFreights(sfOrderFreights);
             order.setSfOrderPayments(sfOrderPayments);
+            order.setSfOrderItems(sfOrderItems);
             order.setShopUser(shopUser);
+            order.setSfOrderItems(sfOrderItems);
 
             orders.add(order);
         }

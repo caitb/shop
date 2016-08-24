@@ -60,4 +60,6 @@ public interface ComUserExtractApplyMapper {
     Map<String, BigDecimal> selectSumExtractfeeByUserId(@Param("userId") Long userId);
 
     List<Map<String, Object>> findSumExtractfeeByUserIdList(@Param("userId") Long userId);
+
+    List<Map<String,Object>> selectAllExtract(Map<String, Object> con);
 }

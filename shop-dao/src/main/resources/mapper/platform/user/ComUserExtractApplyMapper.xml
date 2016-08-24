@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT"/>
         <result column="extract_fee" property="extractFee" jdbcType="DECIMAL"/>
+        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL"/>
         <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT"/>
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
         <result column="extract_way" property="extractWay" jdbcType="BIGINT"/>
@@ -255,5 +256,30 @@
 
     <select id="findSumExtractfeeByUserIdList" resultType="java.util.HashMap" parameterType="java.lang.Long">
         select sum(extract_fee) as extractFee, audit_type type from com_user_extract_apply where com_user_id = #{userId} group by audit_type
+    </select>
+
+    <select id="selectAllExtract" parameterType="Map" resultType="java.util.HashMap">
+          SELECT
+                a.id,
+                a.com_user_id,
+                a.extract_fee,
+                a.extractway_info_id,
+                a.apply_time,
+                a.extract_way,
+                a.extract_time,
+                a.pay_time,
+                a.audit_type,
+                a.audit_cause,
+                a.bank_card,
+                a.bank_name,
+                a.card_owner_name,
+                a.deposit_bank_name,
+                a.remark,
+                u.extractable_fee,
+                s.real_name
+            FROM
+                com_user_extract_apply a
+            LEFT JOIN com_user_account u ON a.com_user_id = u.com_user_id
+            LEFT JOIN com_user s ON s.id = u.com_user_id
     </select>
 </mapper>

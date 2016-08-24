@@ -102,13 +102,6 @@ public class BOrderShipService {
         if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
             throw new BusinessException("订单状态异常，订单号:" + pfBorder.getId() + "，订单状态:" + pfBorder.getOrderStatus() + "。");
         }
-        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-            if (pfBorderItem.getQuantity() > 0) {
-                logger.info("增加收货方库存");
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-                pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderItem.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.agent);
-            }
-        }
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
         pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
         pfBorder.setIsReceipt(1);
@@ -118,6 +111,13 @@ public class BOrderShipService {
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
         //订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1 || pfBorder.getOrderType() == 3) {
+            for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+                if (pfBorderItem.getQuantity() > 0) {
+                    logger.info("增加收货方库存");
+                    PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderItem.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.agent);
+                }
+            }
             comUserAccountService.countingByOrder(pfBorder);
         }
     }

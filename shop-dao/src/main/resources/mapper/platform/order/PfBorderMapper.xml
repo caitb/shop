@@ -285,6 +285,7 @@
                 ,bo.user_message      userMessage
                 ,bo.user_pid          userPid
                 ,pu.real_name         puRealName
+                ,pu.mobile            puMobile
                 ,ru.real_name         ruRealName
                 ,u.real_name          uRealName
                 ,bp.pay_type_id       payTypeId
@@ -365,7 +366,7 @@
               and is_counting = 0
     </select>
 
-    <select id="selectByStatusAndDate" resultMap="BaseResultMap">
+    <select id="selectByStatusAndShipDate" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
@@ -374,7 +375,7 @@
         from pf_border
         <where>
             <if test="expiraTime != null">
-                create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+                ship_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
             </if>
             <if test="orderStatus != null">
                 AND order_status = #{orderStatus,jdbcType=INTEGER}

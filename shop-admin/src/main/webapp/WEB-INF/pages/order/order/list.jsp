@@ -456,6 +456,51 @@
                             }
                         }
                     },
+ {
+
+
+
+
+
+                        field: 'shop_user_mobile',
+                        title: '店铺所属人电话',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.shopUser && row.shopUser.mobile){
+                                return row.shopUser.mobile;
+                            }
+                        }
+                    },
+
+                    {
+                        title : '商品名称',
+                        align:'center',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].skuName;
+                            }
+                        }
+                    },
+                    {
+                        title : '单价',
+                        align:'center',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].unitPrice;
+                            }
+                        }
+                    },
+                    {
+                        title : '数量',
+                        align:'center',
+                        formatter : function(value, row, index) {
+                            if(row.sfOrderItems) {
+                                return row.sfOrderItems[0].quantity;
+                            }
+                        }
+                    },
                     {
                         field: 'product_amount',
                         title: '订单金额',
@@ -466,6 +511,23 @@
                             if(row.sfOrder && row.sfOrder.productAmount){
                                 return row.sfOrder.productAmount;
                             }
+                        }
+                    },
+                    {
+                        field: 'quantity',
+                        title: '数量',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            var q = 0;
+                            if(row.sfOrderItems && row.sfOrderItems){
+                                var items = row.sfOrderItems;
+                               for(var i in items){
+                                   q += items[i].quantity;
+                               }
+                            }
+                            return q;
                         }
                     },
                     {

@@ -435,79 +435,88 @@
                     },
                     {
                         title: 'ID',
-                        field: 'id',
+                        field: 'a.id',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         footerFormatter: totalTextFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.id){
-                                return row.comUserExtractApply.id;
+                            if(row && row.id){
+                                return row.id;
                             }
                         }
                     },
                     {
-                        field: 'createTime',
+                        field: 'a.apply_time',
                         title: '申请日期',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.applyTime){
-                                return new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.apply_time){
+                                return new Date(row.apply_time).pattern('yyyy-MM-dd');
                             }
                         }
                     },
                     {
-                        field: 'name',
+                        field: 's.real_name',
                         title: '申请人',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row&& row.real_name){
+                                return row.real_name;
                             }
                         }
                     },
                     {
-                        field: 'extractFee',
+                        field: 'a.extract_fee',
                         title: '申请金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.extractFee){
-                                return '￥' + row.comUserExtractApply.extractFee;
+                            if(row && row.extract_fee){
+                                return '￥' + row.extract_fee;
                             }
                         }
                     },
                     {
                         align: 'center',
-                        field: 'extractableFee',
+                        field: 'u.extractable_fee',
                         title: '账户余额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount){
-                                return '￥' + row.comUserAccount.extractableFee;
+                            if(row){
+                                return '￥' + row.extractable_fee;
                             }
                         }
                     },
                     {
                         align: 'center',
-                        field: 'bankName',
+                        field: 'a.bank_name',
                         title: '银行名称',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.bankName){
-                                return row.comUserExtractApply.bankName;
+                            if(row && row.bank_name){
+                                return row.bank_name;
                             }
                         }
                     },
+                    {
+                        title: '开户行',
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.comUserExtractApply && row.comUserExtractApply.depositBankName){
+                                return row.comUserExtractApply.depositBankName;
+                            }
+                        }
+                    },
+
                     {
                         title : '银行卡号',
                         align : 'center',
@@ -533,13 +542,13 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
+                            if(row && row.audit_type == 0) {
                                 return '<span class="label label-sm label-grey">待审核</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 1) {
+                            }else if(row && row.audit_type == 1) {
                                 return '<span class="label label-sm label-danger">已拒绝</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
+                            }else if(row && row.audit_type == 2) {
                                 return '<span class="label label-sm label-info">待打款</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 3){
+                            }else if(row && row.audit_type == 3){
                                 return '<span class="label label-sm label-success">已打款</span>';
                             }
                         }
@@ -560,48 +569,48 @@
                         },
                         events: {
                             'click .view': function(e, value, row, index){
-                                $('#applyId2').val(row.comUserExtractApply.id);
-                                $('#applyTime2').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName2').html(row.comUser.realName);
-                                $('#extractFee2').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee2').html(row.comUserAccount.extractableFee);
-                                if(row.comUserExtractApply.extractWay == 1){
+                                $('#applyId2').val(row.id);
+                                $('#applyTime2').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName2').html(row.real_name);
+                                $('#extractFee2').html(row.extract_fee);
+                                $('#extractableFee2').html(row.extractable_fee);
+                                if(row.extract_way == 1){
                                     $('#extractWay2').html('微信');
                                 }
-                                if(row.comUserExtractApply.extractWay == 2){
+                                if(row.extract_way == 2){
                                     $('#extractWay2').html('支付宝');
                                 }
-                                if(row.comUserExtractApply.extractWay == 3){
+                                if(row.extract_way == 3){
                                     $('#extractWay2').html('银行卡');
                                 }
-                                $('#bankCard2').html(row.comUserExtractApply.bankCard);
-                                $('#bankName2').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName2').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName2').html(row.comUserExtractApply.cardOwnerName);
-                                $('#auditCause2').val(row.comUserExtractApply.auditCause);
+                                $('#bankCard2').html(row.bank_card);
+                                $('#bankName2').html(row.bank_name);
+                                $('#depositBankName2').html(row.deposit_bank_name);
+                                $('#cardOwnerName2').html(row.card_owner_name);
+                                $('#auditCause2').val(row.audit_cause);
 
                                 $('#modal-view').modal('show');
                             },
                             'click .audit': function(e, value, row, index){
-                                $('#applyId').val(row.comUserExtractApply.id);
-                                $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName').html(row.comUser.realName);
-                                $('#extractFee').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                if(row.comUserExtractApply.extractWay==1){
-                                    $('#extractWay').html('微信');
+                                $('#applyId2').val(row.id);
+                                $('#applyTime2').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName2').html(row.real_name);
+                                $('#extractFee2').html(row.extract_fee);
+                                $('#extractableFee2').html(row.extractable_fee);
+                                if(row.extract_way == 1){
+                                    $('#extractWay2').html('微信');
                                 }
-                                if(row.comUserExtractApply.extractWay==2){
-                                    $('#extractWay').html('支付宝');
+                                if(row.extract_way == 2){
+                                    $('#extractWay2').html('支付宝');
                                 }
-                                if(row.comUserExtractApply.extractWay==3){
-                                    $('#extractWay').html('银行卡');
+                                if(row.extract_way == 3){
+                                    $('#extractWay2').html('银行卡');
                                 }
-                                $('#bankCard').html(row.comUserExtractApply.bankCard);
-                                $('#bankName').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
-                                $('#auditCause').val('');
+                                $('#bankCard2').html(row.bank_card);
+                                $('#bankName2').html(row.bank_name);
+                                $('#depositBankName2').html(row.deposit_bank_name);
+                                $('#cardOwnerName2').html(row.card_owner_name);
+                                $('#auditCause2').val(row.audit_cause);
 
                                 $('#modal-audit').modal('show');
                             },

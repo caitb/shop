@@ -500,7 +500,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row && row.orderStatus == 0){
-                                return '未处理';
+                                return '待付款';
                             }
                             if(row && row.orderStatus == 1){
                                 return '已付款';
@@ -524,7 +524,10 @@
                                 return '待发货';
                             }
                             if(row && row.orderStatus == 8){
-                                return '已发货';
+                                return '待收货';
+                            }
+                            if(row && row.orderStatus == 9){
+                                return '线下支付未付款';
                             }
                         }
                     },

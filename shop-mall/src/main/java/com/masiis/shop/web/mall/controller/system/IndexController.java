@@ -130,7 +130,8 @@ public class IndexController extends BaseController {
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
         Long shopId = (Long) req.getSession().getAttribute("shopId");
         try {
-            List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+            //List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+            List<SfShopSku> sfShopSkus = skuService.selectByShopIdAndIsOwnShip(shopId,0);
             for (SfShopSku sfShopSku : sfShopSkus) {
                 ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
                 ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
@@ -205,8 +206,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =336L;
-        userPid = 538L;
+        shopId =261L;
+        userPid = 1838L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

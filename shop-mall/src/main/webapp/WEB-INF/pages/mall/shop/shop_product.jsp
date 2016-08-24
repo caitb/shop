@@ -125,13 +125,17 @@
         <span id="price"><b>￥</b>${skuInfo.comSku.priceRetail}</span>
     </p>
     <h1>
+        <span style="color: #333;font-size: 14px;">库存：${skuInfo.stock}</span>
+    </h1>
+    <h1>
         <span>发货类型：</span>
         <c:if test="${isOwnShip==0}">
             <span id="isOwnShip">平台发货</span>
+            <%--<span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>--%>
         </c:if>
         <c:if test="${isOwnShip==1}">
             <span id="isOwnShip">店主发货</span>
-            <span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>
+            <%--<span style="float: right;color: #999;font-size: 14px;">库存：${skuInfo.stock}</span>--%>
         </c:if>
     </h1>
     <h1>
@@ -236,6 +240,10 @@
         cartData.isOwnShip = "${isOwnShip}";
         var isOwnShip = "${isOwnShip}";
         var customerStock = "${skuInfo.stock}";
+        if ((customerStock-i)<0){
+            alert("您购买的商品库存不足，无法购买");
+            return;
+        }
         if(isOwnShip==1 && (customerStock-i)<0 ){//店主发货
             alert("当前商品为店主发货，可用库存不足！");
             $(".shoping").hide();

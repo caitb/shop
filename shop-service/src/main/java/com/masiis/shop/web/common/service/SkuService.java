@@ -149,6 +149,17 @@ public class SkuService {
         return sfShopSkuMapper.selectByShopId(shopId);
     }
 
+    /**
+     * 获取小铺的商品
+     * @param shopId     小铺id
+     * @param isOwnShip  是否自己发货
+     * @return
+     * @throws Exception
+     */
+    public List<SfShopSku> selectByShopIdAndIsOwnShip(Long shopId,Integer isOwnShip ) throws Exception {
+        return sfShopSkuMapper.selectByShopIdAndIsOwnShip(shopId,isOwnShip);
+    }
+
 
     /**
      * SkuImage List 信息

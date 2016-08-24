@@ -47,11 +47,11 @@ public class PfBorderService {
     private ComSkuMapper skuMapper;
 
 
-    public List<PfBorder> findListByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
+    public List<PfBorder> findListByStatusAndShipDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
         log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
                 + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + "的订单");
         // 查询
-        List<PfBorder> resList = borderMapper.selectByStatusAndDate(expiraTime, orderStatus, payStatus);
+        List<PfBorder> resList = borderMapper.selectByStatusAndShipDate(expiraTime, orderStatus, payStatus);
         if (resList == null || resList.size() == 0)
             return null;
         return resList;

@@ -63,7 +63,7 @@ public interface PfBorderMapper {
      * @param payStatus
      * @return
      */
-    List<PfBorder> selectByStatusAndDate(@Param("expiraTime") Date expiraTime,
+    List<PfBorder> selectByStatusAndShipDate(@Param("expiraTime") Date expiraTime,
                                          @Param("orderStatus") Integer orderStatus,
                                          @Param("payStatus") Integer payStatus);
 

@@ -224,7 +224,9 @@ public class SfUserRelationService {
         }
         //查询粉丝总数量
 //        Integer totalCount = this.getFansNumByUserId(userId, shopId);
-        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        //三级分销改成两级分销
+//        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
         pageViewPo.setTotalCount(totalCount);
         logger.info("粉丝总数量："+totalCount);
         //查询展示列表

@@ -375,7 +375,7 @@
         from pf_border
         <where>
             <if test="expiraTime != null">
-                create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+                ship_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
             </if>
             <if test="orderStatus != null">
                 AND order_status = #{orderStatus,jdbcType=INTEGER}

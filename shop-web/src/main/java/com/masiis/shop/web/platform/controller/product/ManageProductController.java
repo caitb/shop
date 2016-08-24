@@ -113,6 +113,7 @@ public class ManageProductController extends BaseController {
         try {
             ComUser comUser = getComUser(request);
             int pageSize = 20; //ajax请求时默认每页显示条数为20条
+            deliverType= 0;
             List<SkuInfo> skuInfoList  = manageShopProductService.getShopProductsList(shopId, isSale, comUser.getId(), deliverType, currentPage, pageSize);
             object.put("isError", false);
             object.put("skuInfoList",skuInfoList);

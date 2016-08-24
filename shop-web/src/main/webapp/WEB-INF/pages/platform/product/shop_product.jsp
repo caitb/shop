@@ -23,6 +23,7 @@
         <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index')"><img src="<%=path%>/static/shop/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
+    <p class="header">由于微信支付原因，麦链平台暂时关闭店主发货功能</p>
     <div class="nav">
         <p>
             <span class="on" onclick="onsale()">出售中</span>

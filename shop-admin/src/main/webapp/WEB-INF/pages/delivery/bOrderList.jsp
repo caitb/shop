@@ -894,6 +894,7 @@
                     });
                 }
 
+
                 $('#submitDeliveryForm').removeAttr('disabled');
                 $('#deliveryForm').attr('isSubmiting', 'false');
             }

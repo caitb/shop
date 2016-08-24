@@ -511,8 +511,8 @@
                         title: '开户行',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.depositBankName){
-                                return row.comUserExtractApply.depositBankName;
+                            if(row && row.deposit_bank_name){
+                                return row.deposit_bank_name;
                             }
                         }
                     },
@@ -521,8 +521,8 @@
                         title : '银行卡号',
                         align : 'center',
                         formatter : function(value, row, index) {
-                            if(row.comUserExtractApply && row.comUserExtractApply.bankCard){
-                                return row.comUserExtractApply.bankCard;
+                            if(row && row.bank_card){
+                                return row.bank_card;
                             }
                         }
                     },
@@ -530,8 +530,8 @@
                         title : '持卡人姓名',
                         align : 'center',
                         formatter : function(value, row, index) {
-                            if(row.comUserExtractApply && row.comUserExtractApply.cardOwnerName){
-                                return row.comUserExtractApply.cardOwnerName;
+                            if(row && row.card_owner_name){
+                                return row.card_owner_name;
                             }
                         }
                     },
@@ -558,10 +558,10 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var sArr = ['<a class="view" href="javascript:void(0);">查看</a>'];
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
+                            if(row && row.audit_type == 0) {
                                 sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
                             }
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
+                            if(row && row.audit_type == 2) {
                                 sArr.push('&nbsp;&nbsp;<a class="yes" href="javascript:void(0);">确认打款</a>');
                             }
 
@@ -619,7 +619,7 @@
                                     if(result) {
                                         $.ajax({
                                             url: '<%=basePath%>fundmanage/com-extract/audit.do',
-                                            data: {id:row.comUserExtractApply.id, auditType: 3},
+                                            data: {id:row.id, auditType: 3},
                                             success: function(msg){
                                                 $('#table').bootstrapTable('refresh');
                                                 $.gritter.add({

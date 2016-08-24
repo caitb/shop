@@ -54,7 +54,6 @@
         <h4>您需要在${downPayLatestTime}前将￥${pfBorder.receivableAmount}转到麦链合伙人对公账户。</h4>
         <h4>*请在汇款单的附言处注明订单号</h4>
         <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
-        <h4>麦链合伙人重要提示：因平台升级，线下银行转账短时间内暂停使用，但您可以继续使用支付宝完成付款。</h4>
         <h3>
             <span class="que_qu" id="downPayCancel">取消</span>
             <span class="que_que" id="downPayConfirm">确定</span>

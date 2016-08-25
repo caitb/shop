@@ -301,6 +301,9 @@
                 ,bi.unit_price        unitPrice
                 ,sku.name             name
                 ,sku.alias            alias
+                ,bf.ship_man_id       shipManId
+                ,bf.ship_man_name     shipManName
+                ,bf.freight           freight
         FROM
                 pf_border bo
         LEFT JOIN com_user                  pu  ON pu.id = bo.user_pid
@@ -311,6 +314,7 @@
         LEFT JOIN pf_border_consignee       bc  ON bc.pf_border_id = bo.id
         LEFT JOIN pf_border_item            bi  ON bi.pf_border_id = bo.id
         LEFT JOIN com_sku                   sku ON sku.id = bi.sku_id
+        LEFT JOIN pf_border_freight         bf  ON bf.pf_border_id = bo.id
         <where>
             <if test="orderCode != null">
                 AND bo.order_code = #{orderCode}

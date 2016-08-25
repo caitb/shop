@@ -650,14 +650,26 @@
                         }
                     },
                     {
-                        field: 'ship_status',
+                        field: 'shipManName',
                         title: '配送方式',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row.sfOrder && row.sfOrderFreights && row.sfOrderFreights.length > 0){
-                                return row.sfOrderFreights[0].;
+                                return row.sfOrderFreights[0].shipManName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'ship_status',
+                        title: '运单号',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrderFreights && row.sfOrderFreights.length > 0){
+                                return row.sfOrderFreights[0].freight;
                             }
                         }
                     },

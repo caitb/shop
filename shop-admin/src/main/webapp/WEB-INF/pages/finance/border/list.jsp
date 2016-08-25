@@ -6,7 +6,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="zh-CN" style="width: 1480px;">
+<html lang="zh-CN" style="width: 1560px;">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
@@ -597,6 +597,28 @@
                                 return '已收货';
                             }
 
+                        }
+                    },
+                    {
+                        field: 'shipManName',
+                        title: '配送方式',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.shipManName){
+                                return row.shipManName;
+                            }
+                        }
+                    },
+                    {
+                        field: 'ship_status',
+                        title: '运单号',
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.freight){
+                                return row.freight;
+                            }
                         }
                     },
                     {

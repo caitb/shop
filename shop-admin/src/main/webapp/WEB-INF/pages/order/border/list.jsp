@@ -6,7 +6,7 @@
 %>
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="width: 1510px;">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />

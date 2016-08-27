@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ComWxUserMapper {
@@ -47,4 +48,11 @@ public interface ComWxUserMapper {
 
     ComWxUser selectByOpenidAndAppid(@Param("openId") String openId,
                                      @Param("appId") String appId);
+
+    /**
+     * 注册用户量
+     * @param beginTime
+     * @return
+     */
+    List<Map<String, Object>> registerCountUser(String beginTime);
 }

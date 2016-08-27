@@ -55,4 +55,11 @@ public interface ComWxUserMapper {
      * @return
      */
     List<Map<String, Object>> registerCountUser(String beginTime);
+
+    /**
+     * 新增注册用户量
+     * @param beginTime
+     * @return
+     */
+    List<Map<String, Object>> registerNewCountUser(String beginTime);
 }

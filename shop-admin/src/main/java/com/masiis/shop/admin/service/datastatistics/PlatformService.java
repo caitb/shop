@@ -20,4 +20,13 @@ public class PlatformService {
     public List<Map<String, Object>> registerCountUser(String beginTime){
         return comWxUserMapper.registerCountUser(beginTime);
     }
+
+    /**
+     * 新增注册用户量
+     * @param beginTime
+     * @return
+     */
+    public List<Map<String, Object>> registerNewCountUser(String beginTime){
+        return comWxUserMapper.registerNewCountUser(beginTime);
+    }
 }

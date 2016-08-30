@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.statistic.StatisticUserMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.statistic.StatisticUser">
+        <result column="registerCountUser" property="registerCountUser" jdbcType="VARCHAR"/>
+        <result column="registerCount" property="total" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 注册用户量 -->
+    <select id="userList" resultMap="BaseResultMap">
+        SET @begin_date= #{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT CASE appid
+        WHEN #{appid}
+        THEN '麦链商城' ELSE '麦链合伙人'
+        END 'registerCountUser',COUNT(0) registerCount FROM com_wx_user WHERE create_time &lt;= @end_date GROUP BY appid
+    </select>
+
+    <!-- 新增用户量 -->
+    <select id="newUserList" resultMap="BaseResultMap">
+        SET @begin_date= #{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT CASE appid WHEN #{appid} THEN '麦链商城' ELSE '麦链合伙人' END 'registerCountUser',COUNT(0) registerCount  FROM com_wx_user WHERE create_time &gt;=@begin_date AND create_time &lt;= @end_date GROUP BY appid;
+    </select>
+
+    <select id="useList" resultMap="BaseResultMap">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(0) 'registerCount' FROM pf_user_sku WHERE create_time &lt;= @end_date;
+    </select>
+
+    <select id="newUseList" resultMap="BaseResultMap">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        <![CDATA[ SELECT COUNT(0) 'registerCount' FROM pf_user_sku WHERE create_time>=@begin_date AND create_time <= @end_date]]>
+    </select>
+
+    <select id="cityNum" resultMap="BaseResultMap">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(DISTINCT a.user_id) 'registerCount' FROM sf_order a
+        INNER JOIN sf_order_item b ON a.id=b.sf_order_id
+        WHERE a.pay_status=1 AND a.pay_time &lt;= @end_date;
+    </select>
+
+    <select id="newCityNum" resultMap="BaseResultMap">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(DISTINCT a.user_id) 'registerCount' FROM sf_order a
+        INNER JOIN sf_order_item b ON a.id=b.sf_order_id
+        WHERE a.pay_status=1 AND a.pay_time &gt; @begin_date AND a.pay_time &lt;= @end_date;
+    </select>
+
+</mapper>

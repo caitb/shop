@@ -26,6 +26,7 @@ public class PlatformController {
 
     private final static Log log = LogFactory.getLog(PlatformController.class);
 
+
     @Resource
     private StatisticUserService statisticUserService;
 

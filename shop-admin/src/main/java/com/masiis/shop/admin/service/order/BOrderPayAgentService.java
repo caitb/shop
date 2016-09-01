@@ -5,6 +5,7 @@ import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.shop.SfShopStatisticsService;
 import com.masiis.shop.admin.service.user.*;
+import com.masiis.shop.admin.utils.AsyncUploadCertUtil;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderUserSource;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -292,7 +293,11 @@ public class BOrderPayAgentService {
                 throw new BusinessException("treeCode修改失败");
             }
             //添加合伙证书 回写证书编号
-            pfUserCertificateService.addUserCertificate(comUser, comSku, thisUS);
+            try {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
+            } catch (InterruptedException e) {
+                logger.error("阻塞住了");
+            }
         }
     }
 

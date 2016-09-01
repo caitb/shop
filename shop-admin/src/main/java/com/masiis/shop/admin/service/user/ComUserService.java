@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.shop.ShopService;
+import com.masiis.shop.admin.utils.AsyncUploadCertUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.platform.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -16,7 +17,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
 import com.masiis.shop.dao.po.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,13 +45,11 @@ public class ComUserService {
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
-    private PfUserSkuService pfUserSkuService;
-    @Resource
-    private PfUserCertificateService pfUserCertificateService;
-    @Resource
     private SkuService skuService;
     @Resource
     private ShopService shopService;
+
+    private Logger logger = Logger.getLogger(this.getClass());
 
     /**
      * 根据用户id获取用户
@@ -217,17 +216,15 @@ public class ComUserService {
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
                     comUser.getAuditStatus() == 2 ? true : false,
                     comUser.getAuditStatus() == 2 ? url : PropertiesUtils.getStringValue("web.domain.name.address") + "/identityAuth/toInentityAuthPage.html?defaultValue=3");
-            List<PfUserSku> pfUserSkus = pfUserSkuService.findListByUserId(comUser.getId());
-            for (PfUserSku pfUserSku : pfUserSkus) {
-                if (StringUtils.isBlank(pfUserSku.getCode())) {
-                    ComSku comSku = skuService.findById(pfUserSku.getSkuId());
-                    pfUserCertificateService.addUserCertificate(comUser, comSku, pfUserSku);
-                }
+            //添加合伙证书 回写证书编号
+            try {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
+            } catch (InterruptedException e) {
+                logger.error("阻塞住了");
             }
-
             //开店
             SfShop sfShop = shopService.loadShopByUserId(comUser.getId());
-            if(sfShop != null && sfShop.getStatus().intValue() == 0){
+            if (sfShop != null && sfShop.getStatus().intValue() == 0) {
                 sfShop.setStatus(1);
                 shopService.update(sfShop);
             }

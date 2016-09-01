@@ -42,15 +42,6 @@ public class SfShopSkuService {
         return shopSkuMapper.updateByPrimaryKey(shopSku);
     }
 
-    /**
-     * 添加小铺商品信息
-     * @author ZhaoLiang
-     * @date 2016/4/11 11:26
-     */
-    public void AddSfShopSku(SfShopSku sfShopSku) {
-        shopSkuMapper.insert(sfShopSku);
-    }
-
     public List<SfShopSku> getSfShopSkuByUserIdAndSkuId(Long shopUserId,Integer skuId){
         return shopSkuMapper.getSfShopSkuByShopUserIdAndSkuId(shopUserId,skuId);
     }

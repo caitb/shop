@@ -8,6 +8,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -154,5 +155,15 @@ public class PfUserSkuService {
         PfUserSku pfUserSku = new PfUserSku();
         pfUserSku.setUserId(userId);
         return pfUserSkuMapper.selectByCondition(pfUserSku);
+    }
+
+    /**
+     * 根据用户id 和品牌id 查询这个用户这个品牌下的非主打商品
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    public List<PfUserSku> getNoMainUserSkuByUserIdAndBrandId(Long userId,Integer brandId){
+        return pfUserSkuMapper.getNoMainUserSkuByUserIdAndBrandId(userId,brandId);
     }
 }

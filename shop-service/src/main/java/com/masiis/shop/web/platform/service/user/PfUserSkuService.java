@@ -243,4 +243,15 @@ public class PfUserSkuService {
     public PfUserSku getFirstPfUserSku(Long userId){
         return pfUserSkuMapper.selectFirstPfUserSku(userId);
     }
+
+
+    /**
+     * 根据用户id 和品牌id 查询这个用户这个品牌下的非主打商品
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    public List<PfUserSku> getNoMainUserSkuByUserIdAndBrandId(Long userId,Integer brandId){
+        return pfUserSkuMapper.getNoMainUserSkuByUserIdAndBrandId(userId,brandId);
+    }
 }

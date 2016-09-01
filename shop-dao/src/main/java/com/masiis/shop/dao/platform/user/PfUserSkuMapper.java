@@ -278,4 +278,12 @@ public interface PfUserSkuMapper {
      * @return
      */
     PfUserSku selectFirstPfUserSku(@Param("userId") Long userId);
+
+    /**
+     * 根据用户id 和品牌id 查询这个用户这个品牌下的非主打商品
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    List<PfUserSku> getNoMainUserSkuByUserIdAndBrandId(@Param("userId")Long userId, @Param("brandId") Integer brandId);
 }

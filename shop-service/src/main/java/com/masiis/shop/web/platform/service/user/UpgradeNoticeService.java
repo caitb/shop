@@ -186,9 +186,9 @@ public class UpgradeNoticeService {
                 if (rebateType == null){
                     pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateALLType(skuId, comUser.getId());
                 } else if (rebateType.intValue() == 0) {//获得返利
-                    pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, null, comUser.getId());
-                } else if (rebateType.intValue() == 1) { //支付返利
                     pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, comUser.getId(), null);
+                } else if (rebateType.intValue() == 1) { //支付返利
+                    pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, null, comUser.getId());
                 }
             }
         }

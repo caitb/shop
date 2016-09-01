@@ -128,7 +128,6 @@ public class UserIdentityAuthController extends BaseController {
                                   @RequestParam(value = "name", required = true) String name,
                                   @RequestParam(value = "wxId", required = true) String wxId,
                                   @RequestParam(value = "idCard", required = true) String idCard,
-                                  @RequestParam(value = "wxId", required = true) String wxId,
                                   @RequestParam(value = "idCardFrontName", required = true) String idCardFrontName,
                                   @RequestParam(value = "idCardBackName", required = true) String idCardBackName,
                                   @RequestParam(value = "type", required = false,defaultValue = "0") int type

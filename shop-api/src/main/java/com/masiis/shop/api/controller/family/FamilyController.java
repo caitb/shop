@@ -140,9 +140,10 @@ public class FamilyController extends BaseController {
     @RequestMapping("/allWorldFamily")
     @ResponseBody
     @SignValid(paramType = FamilyInfoReq.class)
-    public familyInfosRes worldOFFamilyInfoPage(HttpServletRequest request, FamilyInfoReq req, ComUser user) {
-        familyInfosRes res = new familyInfosRes();
+    public FamilyInfoRes worldOFFamilyInfoPage(HttpServletRequest request, FamilyInfoReq req, ComUser user) {
+        FamilyInfoRes res = new FamilyInfoRes();
         try {
+
             List<FamilyList> familyLists = pfUserBrandService.allFamilyPaging(agentLevelId_family, req.getPageNum(), pageSize);
             res.setFamilyLists(familyLists);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
@@ -163,9 +164,9 @@ public class FamilyController extends BaseController {
     @RequestMapping("/upper")
     @ResponseBody
     @SignValid(paramType = UpperFamilyReq.class)
-    public familyInfosRes upperFamilyListInfoPage(HttpServletRequest request, UpperFamilyReq req, ComUser user) {
+    public FamilyInfoRes upperFamilyListInfoPage(HttpServletRequest request, UpperFamilyReq req, ComUser user) {
         log.info("小白用户选择上级--当前品牌为" + req.getBrandId() + "");
-        familyInfosRes res = new familyInfosRes();
+        FamilyInfoRes res = new FamilyInfoRes();
         try {
             List<FamilyList> familyLists = pfUserBrandService.familyListForWorldPaging(req.getAgentLevelId(), req.getPageNum(), pageSize, req.getReorder(), req.getBrandId());
             res.setLimitMoney(getLimitMoneyBySkuId(comSkuMapper.getPrimarySkuByBrandId(req.getBrandId()).get(0).getId(), req.getAgentLevelId() + 1));

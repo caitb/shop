@@ -146,8 +146,6 @@
                                                     <form id="deliveryForm" isSubmiting="false" action="<%=basePath%>order/border/delivery.do">
                                                     <div class="profile-user-info profile-user-info-striped">
 
-                                                        <input type="hidden" name="pfBorderId" >
-
                                                         <div class="profile-info-row">
                                                             <div class="profile-info-name"> 订单号 </div>
 
@@ -861,6 +859,7 @@
     });
 
     function submitDeliveryForm(){
+        alert($('#shipName option:selected').text());
         $('#shipManName').val($('#shipName option:selected').text());
         if(!$('#freight').val()){
             $.gritter.add({

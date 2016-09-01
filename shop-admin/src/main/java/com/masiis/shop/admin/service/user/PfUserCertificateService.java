@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.user;
 
 
 import com.masiis.shop.admin.service.product.BrandService;
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -10,7 +11,7 @@ import com.masiis.shop.common.util.RootPathUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.*;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by hzz on 2016/6/16.
@@ -33,8 +35,6 @@ import java.util.Date;
 @Service
 @Transactional
 public class PfUserCertificateService {
-
-    private Logger logger = Logger.getLogger(this.getClass());
 
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
@@ -45,7 +45,11 @@ public class PfUserCertificateService {
     @Resource
     private BrandService comBrandService;
     @Resource
-    private  ComBrandCertificateService comBrandCertificateService;
+    private ComBrandCertificateService comBrandCertificateService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private ComUserService comUserService;
 
     public int update(PfUserCertificate po) {
         return pfUserCertificateMapper.updateById(po);
@@ -88,7 +92,7 @@ public class PfUserCertificateService {
      * @param comSku    SKU对象
      * @param pfUserSku 用户合伙关系对象
      */
-    public void addUserCertificate(ComUser comUser, ComSku comSku, PfUserSku pfUserSku) {
+    private void addUserCertificate(ComUser comUser, ComSku comSku, PfUserSku pfUserSku) {
         String rootPath = RootPathUtils.getRootPath();
         PfUserCertificate pfUserCertificate = selectByUserSkuId(pfUserSku.getId());
         if (pfUserCertificate == null && comUser.getAuditStatus() == 2) {
@@ -100,7 +104,6 @@ public class PfUserCertificateService {
             pfUserCertificate.setIdCard(comUser.getIdCard());
             pfUserCertificate.setMobile(comUser.getMobile());
             pfUserCertificate.setWxId(comUser.getWxId());
-            pfUserCertificate.setWxId("");
             Calendar calendar = Calendar.getInstance();
             pfUserCertificate.setBeginTime(calendar.getTime());
             calendar.set(Calendar.MONTH, 11);
@@ -112,7 +115,6 @@ public class PfUserCertificateService {
             pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
             pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-            logger.info("给jpg添加文字并上传----start");
             String picName = uploadUserCertificate(rootPath,
                     pfUserCertificate.getCode(),//certificateCode - 证书编号
                     comUser,
@@ -121,7 +123,6 @@ public class PfUserCertificateService {
                     DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期
                     DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null),
                     pfUserCertificate.getAgentLevelId());//endDate - 结束日期
-            logger.info("给jpg添加文字并上传----end");
             pfUserCertificate.setImgUrl(picName + ".jpg");
             pfUserCertificateMapper.insert(pfUserCertificate);
             pfUserSku.setCode(pfUserCertificate.getCode());
@@ -148,19 +149,16 @@ public class PfUserCertificateService {
                                         String beginDate,
                                         String endDate,
                                         Integer agentLevelId) {
-        logger.info("------根据skuId---获得品牌信息-----skuId-----");
         ComBrand comBrand = comBrandService.getBySkuId(comSku.getId());
-        if (comBrand==null){
-            throw new BusinessException("------根据skuId---获得品牌信息出错-----skuId-----"+comSku.getId());
+        if (comBrand == null) {
+            throw new BusinessException("------根据skuId---获得品牌信息出错-----skuId-----" + comSku.getId());
         }
-        ComBrandCertificate comBrandCertificate = comBrandCertificateService.getBrandCertificateByBrandIdAndLevelId(comBrand.getId(),agentLevelId);
-        logger.info("-----根据品牌id和等级id查询证书信息为null----brandId----"+comBrand.getId()+"-----agentLevelId----"+agentLevelId);
-        if (comBrandCertificate==null){
-            throw new BusinessException("-----根据品牌id和等级id查询证书信息为null----brandId----"+comBrand.getId()+"-----agentLevelId----"+agentLevelId);
+        ComBrandCertificate comBrandCertificate = comBrandCertificateService.getBrandCertificateByBrandIdAndLevelId(comBrand.getId(), agentLevelId);
+        if (comBrandCertificate == null) {
+            throw new BusinessException("-----根据品牌id和等级id查询证书信息为null----brandId----" + comBrand.getId() + "-----agentLevelId----" + agentLevelId);
         }
         //原图的物理路径
         String filePath = rootPath + "/static/images/certificate/backgroundimg/" + comBrandCertificate.getBackimgUrl();
-        logger.info("filePath----------"+filePath);
         //字体路径
         String fontPath = rootPath + "/static/font/";
         String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
@@ -182,7 +180,7 @@ public class PfUserCertificateService {
         Font simsun_font_30 = simsun_font.deriveFont(Font.PLAIN, 30);
         Font simsun_font_45 = simsun_font.deriveFont(Font.PLAIN, 45);
         Font simsun_font_50 = simsun_font.deriveFont(Font.PLAIN, 50);
-        java.util.List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
+        List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
         //授权书编号
         DrawPicUtil.DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
         drawPicParam1.setX(comBrandCertificate.getCertificateCodeX());
@@ -211,7 +209,7 @@ public class PfUserCertificateService {
         drawPicParam4.setFont(msyh_font_25);
         drawPicParams.add(drawPicParam4);
         DrawPicUtil.DrawPicParam drawPicParam11 = drawPicUtil.getDrawPicParam();
-        drawPicParam11.setY(comBrandCertificate.getSkuEnameY()+35);
+        drawPicParam11.setY(comBrandCertificate.getSkuEnameY() + 35);
         drawPicParam11.setContent("via both e-commerce channel and physical store. ");
         drawPicParam11.setFont(msyh_font_25);
         drawPicParams.add(drawPicParam11);
@@ -237,17 +235,30 @@ public class PfUserCertificateService {
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         try {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
-            logger.info("-----bufferedImage------"+bufferedImage);
-            logger.info("-----drawPicParams------"+drawPicParams);
-            logger.info("-----imOut------"+imOut);
             ImageIO.write(drawPicUtil.modifyImage(bufferedImage, drawPicParams), "png", imOut);
         } catch (Exception ex) {
-            throw new BusinessException("生成证书异常-----"+ex.getMessage());
+            throw new BusinessException("生成证书异常");
         }
         InputStream is = new ByteArrayInputStream(bs.toByteArray());
         String pname = SysBeanUtils.getRandomFileName();
         OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
         return pname;
+    }
+
+    /**
+     * 异步上传证书
+     *
+     * @param userId
+     */
+    public void asyncUploadUserCertificate(Long userId) {
+        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(userId);
+        for (PfUserSku pfUserSku : pfUserSkus) {
+            if (StringUtils.isBlank(pfUserSku.getCode())) {
+                ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+                ComUser comUser = comUserService.getUserById(userId);
+                addUserCertificate(comUser, comSku, pfUserSku);
+            }
+        }
     }
 }
 

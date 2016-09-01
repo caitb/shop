@@ -263,9 +263,6 @@
     laydate({
         elem: '#beginTime'
     });
-    laydate({
-        elem: '#endTime'
-    });
 </script>
 <script>
     var $table = $('#table'),

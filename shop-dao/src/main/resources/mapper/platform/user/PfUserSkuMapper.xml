@@ -874,6 +874,10 @@
         WHERE
             s.user_pid = #{userId,jdbcType=BIGINT};
     </select>
+
+    <select id="selectFirstPfUserSku" resultMap="BaseResultMap">
+        select * from pf_user_sku where user_id = #{userId} and id =(select MAX(id) from pf_user_sku where user_id = #{userId});
+    </select>
 </mapper>
 
 

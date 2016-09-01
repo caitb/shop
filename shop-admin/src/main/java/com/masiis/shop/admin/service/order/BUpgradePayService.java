@@ -527,6 +527,7 @@ public class BUpgradePayService {
      */
     private void inserHistoryAndUpdatePfUserCertificate(Long userId, List<PfBorderItem> orderItems, Integer spuId, String rootPath) {
         for (PfBorderItem orderItem : orderItems) {
+            ComSpu comSpu = spuService.selectBrandBySkuId(orderItem.getSkuId());
             inserHistoryAndUpdatePfUserCertificateAutom(userId, orderItem.getSkuId(), orderItem.getAgentLevelId(), spuId, rootPath);
         }
     }
@@ -572,8 +573,8 @@ public class BUpgradePayService {
                 throw new BusinessException("修改证书插入历史失败-----");
             }
         } else {
-            log.info("修改证书失败，之前的证书为null");
-            throw new BusinessException("修改证书失败，之前的证书为null");
+            log.info("-----没有证书，之前的证书为null------");
+           // throw new BusinessException("修改证书失败，之前的证书为null");
         }
     }
 

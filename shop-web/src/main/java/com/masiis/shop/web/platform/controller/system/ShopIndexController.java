@@ -7,12 +7,12 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic;
-import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
-import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.dao.po.PfUserBrand;
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-
 import com.masiis.shop.web.platform.service.message.PfMessageSrRelationService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
@@ -20,6 +20,7 @@ import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.statistics.RecommentBrandStatisticService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.CountGroupService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,15 +30,15 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by muchaofeng on 2016/3/2.
  */
 
 @Controller
-//@RequestMapping("/index")
 public class ShopIndexController extends BaseController {
 
     private final static Log log = LogFactory.getLog(ShopIndexController.class);
@@ -60,6 +61,8 @@ public class ShopIndexController extends BaseController {
     private BrandStatisticService brandStatisticService;
     @Resource
     private RecommentBrandStatisticService recommentBrandStatisticService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
@@ -70,30 +73,27 @@ public class ShopIndexController extends BaseController {
         for (PbBanner banner : pbBanner) {
             banner.setImgUrl(value + banner.getImgUrl());
         }
-        Date date = new Date();//获取当前时间
-        Date date1 = DateUtil.addInteger(user.getCreateTime(), 3);
-        int  status;
-        if (date.getTime() > date1.getTime()) {
+        int status = 0;
+        PfUserSku pfUserSku = pfUserSkuService.getFirstPfUserSku(user.getId());
+        if (pfUserSku == null){
             status = 0;
-           } else{
-             status = 1;
-          }//验证是否超过三天
+        }else {
+            if (user.getAuditStatus().intValue() != 2){
+                Date date = new Date();//获取当前时间
+                Date date1 = DateUtil.addInteger(pfUserSku.getCreateTime(), 3);
+                if (date.getTime() > date1.getTime()) {
+                    status = 0;
+                } else {
+                    status = 1;
+                }//验证是否超过三天
+            }
+        }
         log.info("是否超过三天:" + status);
-//        List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
-//        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
-//        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
-//        for (PfBorder pfBord : pfBorders) {
-//            if (pfBord.getOrderStatus() == 6) {
-//                pfBorders6.add(pfBord);//排单中
-//            } else if (pfBord.getOrderStatus() == 7) {
-//                pfBorders10.add(pfBord);//代发货
-//            }
-//        }
-//        modelAndView.addObject("borderNum", pfBorders10.size() + pfBorders6.size());//订单数量
+
         modelAndView.addObject("pbBanner", pbBanner);//封装图片地址集合
-        modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
         modelAndView.addObject("status",status);
+        modelAndView.setViewName("index");
         String curUrl = req.getRequestURL().toString();
         log.info("===========================B-index[curUrl=" + curUrl + "]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);

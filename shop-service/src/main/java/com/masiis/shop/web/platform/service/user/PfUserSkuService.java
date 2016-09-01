@@ -234,4 +234,13 @@ public class PfUserSkuService {
     public List<Long> getChildsByUserIdAndBrandId(Long userId, Integer brandId) {
         return pfUserSkuMapper.selectChildsByUserIdAndBrandId(userId, brandId);
     }
+
+    /**
+     * 查询代理最早的一款产品
+     * @param userId    userId
+     * @return  PfUserSku
+     */
+    public PfUserSku getFirstPfUserSku(Long userId){
+        return pfUserSkuMapper.selectFirstPfUserSku(userId);
+    }
 }

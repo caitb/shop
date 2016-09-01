@@ -574,8 +574,8 @@ public class BUpgradePayService {
                 throw new BusinessException("修改证书插入历史失败-----");
             }
         } else {
-            log.info("修改证书失败，之前的证书为null");
-            throw new BusinessException("修改证书失败，之前的证书为null");
+            log.info("-----没有证书，之前的证书为null------");
+            // throw new BusinessException("修改证书失败，之前的证书为null");
         }
     }
 

@@ -11,6 +11,8 @@ import com.masiis.shop.dao.po.SfOrderConsignee;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface SfOrderConsigneeMapper {
     int deleteByPrimaryKey(Long id);
@@ -23,7 +25,6 @@ public interface SfOrderConsigneeMapper {
 
     int updateByPrimaryKey(SfOrderConsignee record);
 
-    /*获得订单的收货地址*/
     SfOrderConsignee getOrdConByOrdId(Long orderId);
 
 }

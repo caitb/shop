@@ -367,6 +367,7 @@ public class BOrderAddController extends BaseController {
             bOrderAdd.setUserMessage(userMessage);
             bOrderAdd.setUserAddressId(userAddressId);
             bOrderAdd.setQuantity(quantity);
+            bOrderAdd.setUserSource(0);
             Long bOrderId = bOrderAddService.addBOrder(bOrderAdd);
             jsonObject.put("isError", false);
             jsonObject.put("bOrderId", bOrderId);
@@ -425,10 +426,10 @@ public class BOrderAddController extends BaseController {
                     orderAdd.setQuantity(newSkuAgent.getQuantity());
                     log.info("订单数量---------" + newSkuAgent.getQuantity());
                     orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
-                    orderAdd.setApplyAgentLevel(upgradeDetail.getApplyAgentLevel());
+                    orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
                     log.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
                     log.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
-                    orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
+                    orderAdd.setUserSource(0);
                     orderId = bOrderAddService.addBOrder(orderAdd);
                 } else {
                     log.info("您已不能再升级----当前用户id---" + comUser.getId() + "----当前等级----" + upgradeDetail.getCurrentAgentLevelName());

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserBrandMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserBrand" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_user_brand
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBrand" >
+        insert into pf_user_brand (id, create_time, user_id, 
+            brand_id, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{brandId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserBrand" >
+        update pf_user_brand
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            brand_id = #{brandId,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, user_id, brand_id, remark
+        from pf_user_brand
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, brand_id, remark
+        from pf_user_brand
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, user_id, brand_id, remark
+        from pf_user_brand
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectBtBrandId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, create_time, user_id, brand_id, remark
+        from pf_user_brand
+        WHERE brand_id = #{brandId,jdbcType=INTEGER}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByUserIdAndBrandId" resultMap="BaseResultMap">
+        select id, create_time, user_id, brand_id, remark
+        from pf_user_brand
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and brand_id = #{brandId,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectMyBrandNum" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*) from pf_user_brand where user_id = #{userId};
+    </select>
+
+    <select id="selectAgentBrandIds" resultType="Integer" parameterType="java.lang.Long">
+        SELECT brand_id FROM pf_user_brand WHERE user_id = #{userId}
+    </select>
+</mapper>

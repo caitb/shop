@@ -30,4 +30,43 @@
         INNER JOIN pf_user_statistics e ON d.user_id=e.user_id AND d.sku_id=e.sku_id
         WHERE a.tree_code = #{treeCode};
     </select>
+
+    <!-- 统计团队人数和总销售额 -->
+    <select id="allCountGroup" resultType="java.util.HashMap">
+        SELECT
+        COUNT(DISTINCT e.user_id) AS COUNT,
+        IFNULL(SUM(f.up_order_count), 0) AS orderNum,
+        IFNULL(SUM(f.cost_fee), 0) AS groupMoney
+        FROM
+        pf_user_brand a
+        INNER JOIN com_spu b ON a.brand_id = b.brand_id
+        INNER JOIN com_sku c ON b.id = c.spu_id
+        INNER JOIN pf_user_sku d ON a.user_id = d.user_id
+        AND c.id = d.sku_id
+        INNER JOIN pf_user_sku e ON e.tree_code LIKE CONCAT(d.tree_code, '%')
+        INNER JOIN pf_user_statistics f ON e.user_id = f.user_id
+        AND c.id = f.sku_id
+        WHERE
+        a.user_id = #{userId}
+    </select>
+
+    <!-- 统计团队人数和总销售额 -->
+    <select id="countGroupByBrandId" resultType="java.util.HashMap">
+        SELECT
+        COUNT(DISTINCT e.user_id) AS COUNT,
+        IFNULL(SUM(f.up_order_count), 0) AS orderNum,
+        IFNULL(SUM(f.cost_fee), 0) AS groupMoney
+        FROM
+        pf_user_brand a
+        INNER JOIN com_spu b ON a.brand_id = b.brand_id
+        INNER JOIN com_sku c ON b.id = c.spu_id
+        INNER JOIN pf_user_sku d ON a.user_id = d.user_id
+        AND c.id = d.sku_id
+        INNER JOIN pf_user_sku e ON e.tree_code LIKE CONCAT(d.tree_code, '%')
+        INNER JOIN pf_user_statistics f ON e.user_id = f.user_id
+        AND c.id = f.sku_id
+        WHERE
+        a.user_id = #{userId}
+        AND a.brand_id = #{brandId}
+    </select>
 </mapper>

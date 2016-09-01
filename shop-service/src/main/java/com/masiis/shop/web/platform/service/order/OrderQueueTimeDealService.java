@@ -2,14 +2,15 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class OrderQueueTimeDealService {
+public class
+OrderQueueTimeDealService {
 
     private static final Logger logger = Logger.getLogger(OrderQueueTimeDealService.class);
 
@@ -42,20 +44,21 @@ public class OrderQueueTimeDealService {
     /**
      * 定时处理排单状态订单
      */
-    public void commonQueuingOrder(){
+    public void commonQueuingOrder() {
         logger.info("1:查询出所有的排单状态的订单，按照userpid 与 createtime排序查询");
         List<PfBorder> pfBorders = pfBorderMapper.selectAllQueuingOrder(BOrderStatus.MPS.getCode());
         logger.info("查询排单订单数量：" + pfBorders.size());
-        for (PfBorder pfBorder : pfBorders){
-            try{
-                logger.info(pfBorder.getSendType() == 1?"平台代发货":"自己发货");
-                if (pfBorder.getSendType() == 1){//平台代发货
+        for (PfBorder pfBorder : pfBorders) {
+            try {
+                logger.info(pfBorder.getSendType() == 1 ? "平台代发货" : "自己发货");
+                if (pfBorder.getSendType() == 1) {//平台代发货
                     pfQueuingOrder(pfBorder.getId());
-                }else if (pfBorder.getSendType() == 2){//自己发货
+                } else if (pfBorder.getSendType() == 2) {//自己发货
                     userQueuingOrder(pfBorder.getId());
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
+                throw new BusinessException(e.getMessage());
             }
         }
 
@@ -63,10 +66,11 @@ public class OrderQueueTimeDealService {
 
     /**
      * 平台代发处理排单
+     *
      * @param orderId 订单id
      * @throws Exception
      */
-    private void pfQueuingOrder(Long orderId) throws Exception{
+    private void pfQueuingOrder(Long orderId) throws Exception {
         logger.info("进入平台代发排单处理Service");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
         if (pfBorder == null) {
@@ -81,7 +85,7 @@ public class OrderQueueTimeDealService {
             return;
         }
         //判断库存是否充足,库存不足直接返回
-        if (!checkBOrderStock(pfBorder)){
+        if (!checkBOrderStock(pfBorder)) {
             logger.info("库存不足");
             return;
         }
@@ -96,20 +100,21 @@ public class OrderQueueTimeDealService {
             quantity = orderItem.getQuantity();
             //根据sku_id查询商品sku库存数据
             PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
-            if (quantity >= pfSkuStock.getStock() - pfSkuStock.getFrozenStock()){
+            if (quantity >= pfSkuStock.getStock() - pfSkuStock.getFrozenStock()) {
                 dealOrder = false;
             }
         }
-        if (dealOrder){
+        if (dealOrder) {
             pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
-            this.sendMessage(pfBorder,orderItems);
+            this.sendMessage(pfBorder, orderItems);
         }
     }
 
     /**
      * 用户自发货订单排单处理
-     * @param orderId       订单id
+     *
+     * @param orderId 订单id
      * @throws Exception
      */
     private void userQueuingOrder(Long orderId) throws Exception {
@@ -169,6 +174,7 @@ public class OrderQueueTimeDealService {
         }
         return true;
     }
+
     /**
      * 判断库存是否足够
      */
@@ -186,38 +192,39 @@ public class OrderQueueTimeDealService {
 
     /**
      * 向用户发送信息
+     *
      * @param pfBorder
      */
-    private void sendMessage(PfBorder pfBorder,List<PfBorderItem> pfBorderItems){
+    private void sendMessage(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
 
         ComUser comUser = userService.getUserById(pfBorder.getUserId());
-        try{
+        try {
             //平台代发货
-            if (pfBorder.getSendType().equals(1)){
-                MobileMessageUtil.getInitialization("").dealQueueOrderRemind(comUser.getMobile(), pfBorder.getOrderCode() ,pfBorder.getSendType());
+            if (pfBorder.getSendType().equals(1)) {
+                MobileMessageUtil.getInitialization("").dealQueueOrderRemind(comUser.getMobile(), pfBorder.getOrderCode(), pfBorder.getSendType());
                 String[] params;
-                for (PfBorderItem pfBorderItem : pfBorderItems){
+                for (PfBorderItem pfBorderItem : pfBorderItems) {
                     params = new String[5];
                     params[0] = pfBorderItem.getSkuName();
                     params[1] = String.valueOf(pfBorder.getOrderAmount());
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
                     params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.Complete.getDesc();
-                    WxPFNoticeUtils.getInstance().dealWithOrderInQueueByPlatForm(comUser,params);
+                    SysNoticeUtils.getInstance().dealWithOrderInQueueByPlatForm(comUser,params);
                 }
-            }else {//自己发货
+            } else {//自己发货
                 String[] params;
-                for (PfBorderItem pfBorderItem : pfBorderItems){
+                for (PfBorderItem pfBorderItem : pfBorderItems) {
                     params = new String[5];
                     params[0] = pfBorderItem.getSkuName();
                     params[1] = String.valueOf(pfBorder.getOrderAmount());
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
                     params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.WaitShip.getDesc();
-                    WxPFNoticeUtils.getInstance().dealWithOrderInQueueBySelf(comUser,params);
+                    SysNoticeUtils.getInstance().dealWithOrderInQueueBySelf(comUser,params);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -37,7 +37,7 @@
                     <option value="0">全部</option>
                     <option value="1">一级粉丝</option>
                     <option value="2">二级粉丝</option>
-                    <option value="3">三级粉丝</option>
+                    <%--<option value="3">三级粉丝</option>--%>
                 </select>
             </label>
         </div>
@@ -58,10 +58,10 @@
                 <span id="second">${pageViewPo.secondCount}</span>
                 <span>二级粉丝</span>
             </p>
-            <p>
-                <span id="third">${pageViewPo.thirdCount}</span>
-                <span>三级粉丝</span>
-            </p>
+            <%--<p>--%>
+                <%--<span id="third">${pageViewPo.thirdCount}</span>--%>
+                <%--<span>三级粉丝</span>--%>
+            <%--</p>--%>
         </nav>
     </div>
     <main id="distributions">

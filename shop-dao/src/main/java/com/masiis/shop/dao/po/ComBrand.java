@@ -31,6 +31,9 @@ public class ComBrand {
     private String content;
     private String remark;
 
+    private String brandPosterName;
+    private String illustratingPictureName;
+
     public Integer getId() {
         return id;
     }
@@ -87,6 +90,22 @@ public class ComBrand {
         this.remark = remark;
     }
 
+    public String getBrandPosterName() {
+        return brandPosterName;
+    }
+
+    public void setBrandPosterName(String brandPosterName) {
+        this.brandPosterName = brandPosterName;
+    }
+
+    public String getIllustratingPictureName() {
+        return illustratingPictureName;
+    }
+
+    public void setIllustratingPictureName(String illustratingPictureName) {
+        this.illustratingPictureName = illustratingPictureName;
+    }
+
     @Override
     public String toString() {
         return "ComBrand{" +
@@ -97,6 +116,8 @@ public class ComBrand {
                 ", logoUrl='" + logoUrl + '\'' +
                 ", content='" + content + '\'' +
                 ", remark='" + remark + '\'' +
+                ", brandPosterName='" + brandPosterName + '\'' +
+                ", illustratingPictureName='" + illustratingPictureName + '\'' +
                 '}';
     }
 }

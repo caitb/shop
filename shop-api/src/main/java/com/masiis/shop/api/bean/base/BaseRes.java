@@ -1,12 +1,10 @@
 package com.masiis.shop.api.bean.base;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.masiis.shop.common.annotation.SignField;
 
 /**
  * Created by wangbingjian on 2016/4/22.
  */
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class BaseRes {
     /**
      * 返回状态结果码 0为成功 其他各业务自定义

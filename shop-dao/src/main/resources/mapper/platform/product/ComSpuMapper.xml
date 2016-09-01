@@ -29,6 +29,7 @@
         <result column="art_no" property="artNo" jdbcType="VARCHAR"/>
         <result column="unit" property="unit" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="ResultMapWithBLOBs" type="com.masiis.shop.dao.po.ComSpu" extends="BaseResultMap">
@@ -39,18 +40,17 @@
         id, name, brand_id, create_time, create_man, up_time, down_time, modify_time,
         modify_man, category_id, category_name, status, slogan, is_sale, is_delete, is_trial, is_own_ship,
         content, policy, weight, pack_length, pack_width, pack_height, ship_amount, art_no, unit,
-        remark
+        remark,type
     </sql>
 
     <sql id="Blob_Column_List">
         content
     </sql>
-
-    <select id="selectById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, name, brand_id, create_time, create_man, up_time, down_time, modify_time,
+        modify_man, category_id, category_name, status, slogan, is_sale, is_delete, is_trial,
+        is_own_ship, content, weight, pack_length, pack_width, pack_height, ship_amount,
+        art_no, unit, remark, policy, type
         from com_spu
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -81,7 +81,7 @@
             is_trial, is_own_ship, content, policy, weight,
             pack_length, pack_width, pack_height,
             ship_amount, art_no, unit,
-            remark)
+            remark,type)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER},
             #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, #{upTime,jdbcType=TIMESTAMP},
             #{downTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT},
@@ -90,7 +90,7 @@
             #{isTrial,jdbcType=INTEGER}, #{isOwnShip,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{policy,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL},
             #{packLength,jdbcType=DECIMAL}, #{packWidth,jdbcType=DECIMAL}, #{packHeight,jdbcType=DECIMAL},
             #{shipAmount,jdbcType=DECIMAL}, #{artNo,jdbcType=VARCHAR}, #{unit,jdbcType=INTEGER},
-            #{remark,jdbcType=VARCHAR})
+            #{remark,jdbcType=VARCHAR},#{type,jdbcType=INTEGER})
     </insert>
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.ComSpu">
@@ -182,4 +182,57 @@
     <delete id="deleteById" parameterType="java.lang.Integer">
         delete from com_spu where id = #{id,jdbcType=INTEGER}
     </delete>
+
+    <select id="selectAll" resultType="java.util.HashMap">
+         select
+                 brand.id brandId,
+                 brand.cname,
+                 spu.id spuId,
+                 spu.name
+         from com_brand brand
+         left join com_spu spu on spu.brand_id = brand.id
+         where spu.type = 0
+    </select>
+
+    <select id="brandList" resultType="java.util.HashMap">
+        SELECT
+               brand.id, brand.cname
+        FROM com_brand brand
+        WHERE NOT  EXISTS(
+        SELECT spu.brand_id FROM com_spu spu WHERE spu.type = 0 AND spu.brand_id = brand.id
+        )
+    </select>
+
+    <select id="spuList" resultType="java.util.HashMap">
+        select spu.id, spu.name, spu.brand_id brandId from com_spu spu
+    </select>
+
+    <select id="selectByBrandId" resultType="java.util.HashMap">
+        SELECT id, name FROM  com_spu WHERE brand_id = #{brandId}
+    </select>
+
+    <update id="updateSpuMaim">
+      update com_spu set type = #{type}
+      <where>
+          <if test="spuId != null">
+             AND id = #{spuId}
+          </if>
+          <if test="brandId != null">
+             AND  brand_id = #{brandId}
+          </if>
+      </where>
+    </update>
+
+    <select id="selectBrandBySkuId" resultMap="BaseResultMap">
+      select b.id, p.brand_id
+      from com_sku as k ,com_spu as p ,com_brand as b
+      where k.id = #{skuId}
+      and k.spu_id=p.id
+      and p.brand_id = b.id
+    </select>
+
+    <update id="deleteMain">
+        UPDATE  com_spu SET  type = 1 WHERE  id = #{spuId}
+    </update>
+
 </mapper>

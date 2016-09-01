@@ -254,3 +254,41 @@ nav ul li b{
     float: left;
     margin-top: 4px;
 }
+.back_a{
+    position: absolute;
+    left: 50%;
+    margin-left: -128px;
+    top: 50%;
+    margin-top: -73px;
+    width: 80%;
+    background: #fff;
+    border-radius: 5px;
+}
+.back_a img{
+    display: block;
+    width: 50px;
+    margin: 20px auto 10px auto;
+}
+.back_a p{
+    text-align: center;
+}
+.back_a h1{
+    display: -webkit-box;
+    width: 80%;
+    -webkit-box-pack:justify;
+    margin: 10px auto;
+    font-weight: normal;
+}
+.back_a h1 span{
+    display: block;
+    width: 90px;
+    padding: 2px 0;
+    background: #f74a11;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+}
+.back_a h1 span:nth-child(1){
+    background:#E8E8E8 ;
+    color: #333;
+}

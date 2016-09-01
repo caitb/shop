@@ -14,7 +14,7 @@ import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.UpgradeMobileMessageService;
 import com.masiis.shop.web.platform.service.user.UpgradeNoticeService;
 import com.masiis.shop.web.platform.service.user.UpgradeWechatNewsService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -162,7 +162,7 @@ public class BOrderPayEndMessageService {
         param[2] = pfBorderItems.get(0).getQuantity().toString();
         param[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
         param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
-        WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
+        SysNoticeUtils.getInstance().orderInQueue(comUser, param);
         MobileMessageUtil.getInitialization("B").joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
         if (pComUser != null) {
             String[] paramIn = new String[2];
@@ -171,9 +171,9 @@ public class BOrderPayEndMessageService {
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             if (pfBorder.getOrderType().intValue() == BOrderType.Supplement.getCode().intValue()) {
-                WxPFNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
+                SysNoticeUtils.getInstance().newSupplementOrderNotice(pComUser, paramIn, url, false);
             } else {
-                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
+                SysNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
             }
             //发送短信
             if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())) {
@@ -210,7 +210,7 @@ public class BOrderPayEndMessageService {
         params[1] = pfBorderPayment.getPayTypeName();
         params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
         params[3] = simpleDateFormat.format(pfBorder.getPayTime());
-        WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
+        SysNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
         MobileMessageUtil.getInitialization("B").partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
         //给上级推送
         if (pComUser != null) {
@@ -220,9 +220,9 @@ public class BOrderPayEndMessageService {
                 String[] paramsI = new String[2];
                 paramsI[0] = recommenUser.getWxNkName();
                 paramsI[1] = simpleDateFormat.format(pfBorder.getCreateTime());
-                WxPFNoticeUtils.getInstance().partnerJoinByRecommendNotice(pComUser, comUser, paramsI, "");
+                SysNoticeUtils.getInstance().partnerJoinByRecommendNotice(pComUser, comUser, paramsI, "");
             } else {
-                WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
+                SysNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, simpleDateFormat.format(pfBorder.getCreateTime()));
             }
             // MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             //发送短信并给这个人的团队所有成员发微信
@@ -344,10 +344,10 @@ public class BOrderPayEndMessageService {
                         } else {
                             bossTeamParam[3] = simpleDateFormat.format(pfBorder.getCreateTime());
                         }
-                        if (WxPFNoticeUtils.getInstance().newMemberJoinNotice(teamComUser, bossTeamParam)) {
-                            logger.info("新合伙人加入----发微信通知----" + teamComUser.getRealName() + "------success");
-                        } else {
-                            logger.info("新合伙人加入----发微信通知----" + teamComUser.getRealName() + "------fail");
+                        if(SysNoticeUtils.getInstance().newMemberJoinNotice(teamComUser,bossTeamParam)){
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------success");
+                        }else{
+                            logger.info("新合伙人加入----发微信通知----"+teamComUser.getRealName()+"------fail");
                         }
                     } else {
                         logger.info("查询boss团队里的这个人查询不到-----userId---" + teamUserSku.getUserId());
@@ -379,7 +379,7 @@ public class BOrderPayEndMessageService {
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
         param[2] = pfBorderItems.get(0).getQuantity().toString();
         param[3] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
-        WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
+        SysNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
         MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
         if (pfBorder.getUserPid() != 0) {
             String[] paramI = new String[6];
@@ -390,7 +390,7 @@ public class BOrderPayEndMessageService {
             paramI[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
             paramI[5] = comUser.getRealName();
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-            WxPFNoticeUtils.getInstance().supplementSuccessToUp(pComUser, paramI, url);
+            SysNoticeUtils.getInstance().supplementSuccessToUp(pComUser, paramI, url);
         }
     }
 
@@ -496,14 +496,14 @@ public class BOrderPayEndMessageService {
         param[1] = numberFormat.format(pfBorder.getOrderAmount());
         param[2] = pfBorderItems.get(0).getQuantity().toString();
         param[3] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
-        WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
+        SysNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
         MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
         if (pfBorder.getUserPid() != 0) {
             String[] paramIn = new String[2];
             paramIn[0] = pfBorder.getOrderCode();
             paramIn[1] = simpleDateFormat.format(pfBorder.getCreateTime());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-            WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, true);
+            SysNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, true);
             MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
         }
     }
@@ -518,7 +518,7 @@ public class BOrderPayEndMessageService {
                                      ComUser recommenUser) {
         String[] param = new String[1];
         param[0] = comUser.getWxNkName();
-        WxPFNoticeUtils.getInstance().recommendSuccessNotice(recommenUser, param);
+        SysNoticeUtils.getInstance().recommendSuccessNotice(recommenUser, param);
     }
 
     /**
@@ -540,7 +540,7 @@ public class BOrderPayEndMessageService {
         param[0] = numberFormat.format(pfBorderRecommenReward.getRewardTotalPrice());
         param[1] = simpleDateFormat.format(pfBorderRecommenReward.getCreateTime());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
-        WxPFNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
+        SysNoticeUtils.getInstance().recommendProfitNotice(recommenUser, param, url);
 
         // 给发出推荐奖励的人发
         String[] pParam = {
@@ -551,6 +551,6 @@ public class BOrderPayEndMessageService {
         };
         ComUser pUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
         String pUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
-        WxPFNoticeUtils.getInstance().recommendProfitOutNotice(pUser, pParam, pUrl);
+        SysNoticeUtils.getInstance().recommendProfitOutNotice(pUser, pParam, pUrl);
     }
 }

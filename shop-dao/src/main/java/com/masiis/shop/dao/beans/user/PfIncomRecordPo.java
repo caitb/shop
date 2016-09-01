@@ -27,6 +27,14 @@ public class PfIncomRecordPo {
      * 总数量
      */
     private Long totalCount;
+    /**
+     * 总页数
+     */
+    private Integer totalPage;
+    /**
+     * 每页展示条数
+     */
+    private Integer pageSize;
 
     private List<PfIncomRecord> pfIncomRecords;
 
@@ -48,6 +56,22 @@ public class PfIncomRecordPo {
 
     public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public Integer getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     public void setTotalIncom(BigDecimal totalIncom) {

@@ -23,4 +23,12 @@ public class PfCorderConsigneeService {
             throw new Exception("试用申请订单插入收获地址失败"+e);
         }
     }
+    /**
+     * 根据订单id查询订单地址
+     * @author hanzengzhi
+     * @date 2016/5/25 15:42
+     */
+    public PfCorderConsignee getOrdConByOrdId(Long ordId){
+        return pfCorderConsigneeMapper.selectByCorderId(ordId);
+    }
 }

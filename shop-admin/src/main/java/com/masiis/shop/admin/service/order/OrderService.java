@@ -333,19 +333,6 @@ public class OrderService {
             shopBillItemMapper.insert(billItem);
             log.info("店主结算中减少");
 
-            // 退货订单扣除结算中金额计
-            ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
-                    UserAccountRecordFeeType.SF_Refund_SubCountingFee.getCode(), comUserAccount);
-            countRecord.setPrevFee(comUserAccount.getCountingFee());
-            comUserAccount.setCountingFee(comUserAccount.getCountingFee().subtract(countFee));
-            countRecord.setNextFee(comUserAccount.getCountingFee());
-
-            // 店主此次退货总销售额减少(利润和运费也算销售额)
-            ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
-                    UserAccountRecordFeeType.SF_Refund_SubTotalIncomeFee.getCode(), comUserAccount);
-            pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().subtract(order.getPayAmount()));
-            pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
             log.info("小铺店主的结算中和总销售额减少金额:" + countFee);
 
             Set<Long> fenRunUserSet = new HashSet<Long>();
@@ -377,12 +364,6 @@ public class OrderService {
             if (profitBefore == null) {
                 throw new BusinessException("");
             }
-            ComUserAccountRecord pfprofitRecord = cloneComUserAccountRecordByTypeAndHandleType(
-                    UserAccountRecordFeeType.SF_Refund_SubProfitFee.getCode(), 0, profitBefore);
-            // 设置店主总利润回退
-            pfprofitRecord.setPrevFee(comUserAccount.getProfitFee());
-            comUserAccount.setProfitFee(comUserAccount.getProfitFee().subtract(profitBefore.getHandleFee()));
-            pfprofitRecord.setNextFee(comUserAccount.getProfitFee());
             log.info("小铺店主总利润回退:" + profitBefore.getHandleFee());
 
             int result = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
@@ -391,10 +372,6 @@ public class OrderService {
                 res.put("resMsg", "该订单退货失败,请重试");
                 throw new BusinessException("小铺店主account修改失败!");
             }
-            // 插入变动记录
-            comUserAccountRecordMapper.insert(countRecord);
-            comUserAccountRecordMapper.insert(pfIncomeRecord);
-            comUserAccountRecordMapper.insert(pfprofitRecord);
 
             log.info("计算小铺订单分润");
 

@@ -38,6 +38,10 @@ public class CertificateInfo extends PfUserSku {
 
     private String skuIcon;//商品lOGO
 
+    private String brandIcon;//品牌的logo
+
+    private Integer brandId;//品牌id
+
     public String getCtName() {
         return ctName;
     }
@@ -140,5 +144,21 @@ public class CertificateInfo extends PfUserSku {
 
     public void setSkuIcon(String skuIcon) {
         this.skuIcon = skuIcon;
+    }
+
+    public String getBrandIcon() {
+        return brandIcon;
+    }
+
+    public void setBrandIcon(String brandIcon) {
+        this.brandIcon = brandIcon;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
 }

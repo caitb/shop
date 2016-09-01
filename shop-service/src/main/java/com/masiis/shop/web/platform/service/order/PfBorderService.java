@@ -11,9 +11,9 @@ import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.service.order.BOrderOperationLogService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +47,11 @@ public class PfBorderService {
     private ComSkuMapper skuMapper;
 
 
-    public List<PfBorder> findListByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
+    public List<PfBorder> findListByStatusAndShipDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
         log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
                 + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + "的订单");
         // 查询
-        List<PfBorder> resList = borderMapper.selectByStatusAndDate(expiraTime, orderStatus, payStatus);
+        List<PfBorder> resList = borderMapper.selectByStatusAndShipDate(expiraTime, orderStatus, payStatus);
         if (resList == null || resList.size() == 0)
             return null;
         return resList;
@@ -175,11 +175,11 @@ public class PfBorderService {
                 NumberFormat.getCurrencyInstance(Locale.CHINA).format(pfBorder.getOrderAmount())
         };
         if(day == 2) {
-            WxPFNoticeUtils.getInstance().orderUnpayTwoDayCancelNotice(user, params, null);
+            SysNoticeUtils.getInstance().orderUnpayTwoDayCancelNotice(user, params, null);
         } else if(day == 3) {
-            WxPFNoticeUtils.getInstance().orderUnpayThreeDayCancelNotice(user, params, null);
+            SysNoticeUtils.getInstance().orderUnpayThreeDayCancelNotice(user, params, null);
         } else if(day == 7) {
-            WxPFNoticeUtils.getInstance().orderUnpaySevenDayCancelNotice(user, params, null);
+            SysNoticeUtils.getInstance().orderUnpaySevenDayCancelNotice(user, params, null);
         }
     }
 }

@@ -7,6 +7,9 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PfMessageContent {
@@ -18,6 +21,7 @@ public class PfMessageContent {
     /**
      * 创建时间
      */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
      * 创建人id,0为平台
@@ -36,12 +40,21 @@ public class PfMessageContent {
      */
     private String contentUrl;
     /**
+     * app消息跳转类型: 1,跳商品详情页
+     */
+    private Integer urlAppType;
+    /**
+     * app消息跳转参数,json格式
+     */
+    private String urlAppParam;
+    /**
      * 状态: 0,草稿; 1,启用; 2,不启用; 3,删除
      */
     private Integer status;
     /**
      * 更新时间
      */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /**
      * 备注
@@ -84,6 +97,23 @@ public class PfMessageContent {
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl == null ? null : contentUrl.trim();
     }
+
+    public Integer getUrlAppType() {
+        return urlAppType;
+    }
+
+    public void setUrlAppType(Integer urlAppType) {
+        this.urlAppType = urlAppType;
+    }
+
+    public String getUrlAppParam() {
+        return urlAppParam;
+    }
+
+    public void setUrlAppParam(String urlAppParam) {
+        this.urlAppParam = urlAppParam;
+    }
+
     public Integer getStatus() {
         return status;
     }

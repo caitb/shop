@@ -46,7 +46,7 @@ public class UserIdentityAuthController extends BaseController {
     public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
                                      @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
-                                     @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
+                                     @RequestParam(value = "auditStatus",defaultValue = "0",required = false)int auditStatus,
                                      Model model) {
         ComUser comUser = getComUser(request);
         model.addAttribute("comUser",comUser);
@@ -126,6 +126,7 @@ public class UserIdentityAuthController extends BaseController {
     @RequestMapping("sumbitAudit.do")
     public String sumbitAudit(HttpServletRequest request,
                                   @RequestParam(value = "name", required = true) String name,
+                                  @RequestParam(value = "wxId", required = true) String wxId,
                                   @RequestParam(value = "idCard", required = true) String idCard,
                                   @RequestParam(value = "idCardFrontName", required = true) String idCardFrontName,
                                   @RequestParam(value = "idCardBackName", required = true) String idCardBackName,
@@ -143,6 +144,9 @@ public class UserIdentityAuthController extends BaseController {
             if (org.apache.commons.lang.StringUtils.isBlank(name)) {
                 throw new BusinessException("姓名不能为空");
             }
+            if (org.apache.commons.lang.StringUtils.isBlank(wxId)) {
+                throw new BusinessException("微信号不能为空");
+            }
             if (org.apache.commons.lang.StringUtils.isBlank(idCard)) {
                 throw new BusinessException("身份证不能为空");
             }
@@ -153,7 +157,9 @@ public class UserIdentityAuthController extends BaseController {
                 throw new BusinessException("身份证照片不能为空");
             }
             comUser.setRealName(name);
+            comUser.setWxId(wxId);
             comUser.setIdCard(idCard);
+            comUser.setWxId(wxId);
             int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontName,idCardBackName,type);
             if (i == 1){
                 object.put("isError", false);

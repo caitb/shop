@@ -37,6 +37,7 @@ public class PfUserSkuService {
 
     /**
      * 查询合伙人列表
+     *
      * @param searchParam
      * @return
      */
@@ -47,6 +48,7 @@ public class PfUserSkuService {
 
     /**
      * 查询下级人数
+     *
      * @param pid
      * @return
      */
@@ -56,6 +58,7 @@ public class PfUserSkuService {
 
     /**
      * 合伙信息
+     *
      * @param id
      * @return
      */
@@ -65,8 +68,8 @@ public class PfUserSkuService {
 
     public Integer findCertificateBySkuId(Integer userSkuId) {
         PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
-        Integer status=null;
-        if (pfUserCertificate!=null){
+        Integer status = null;
+        if (pfUserCertificate != null) {
             status = pfUserCertificate.setStatus(pfUserCertificate.getStatus());
         }
         return status;
@@ -79,6 +82,7 @@ public class PfUserSkuService {
 
     /**
      * 查询这个人的boss的团队的所有成员
+     *
      * @param treeCode
      * @return
      */
@@ -119,5 +123,24 @@ public class PfUserSkuService {
      */
     public List<UserSkuInfo> findSkusByUserId(Long userId) {
         return pfUserSkuMapper.selectSkusByUserId(userId);
+    }
+
+    public int insert(PfUserSku pfUserSku) {
+        return pfUserSkuMapper.insert(pfUserSku);
+    }
+
+    public int updateTreeCodeById(Integer id, String treeCode) {
+        return pfUserSkuMapper.updateTreeCodeById(id, treeCode);
+    }
+
+    /**
+     * 根据用户ID 获取合伙数据
+     * @param userId
+     * @return
+     */
+    public List<PfUserSku> findListByUserId(Long userId) {
+        PfUserSku pfUserSku = new PfUserSku();
+        pfUserSku.setUserId(userId);
+        return pfUserSkuMapper.selectByCondition(pfUserSku);
     }
 }

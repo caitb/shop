@@ -5,18 +5,20 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.PfSupplierBankService;
-import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.web.common.service.SkuService;
-import com.masiis.shop.web.platform.service.system.ComDictionaryService;
-import com.masiis.shop.web.platform.service.order.ComShipManService;
-import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.mall.service.order.*;
+import com.masiis.shop.web.mall.service.product.SkuImageService;
+import com.masiis.shop.web.platform.service.order.*;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2016/5/5
@@ -40,6 +43,8 @@ public class BOrderManagementController extends BaseController {
 
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SfOrderService sfOrderService;
     @Resource
     private SkuService skuService;
     @Resource
@@ -54,6 +59,24 @@ public class BOrderManagementController extends BaseController {
     private PfSupplierBankService pfSupplierBankService;
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
+    @Resource
+    private SfOrderConsigneeService sfOrderConsigneeService;
+    @Resource
+    private SfOrderItemService sfOrderItemService;
+    @Resource
+    private SfOrderPaymentService sfOrderPaymentService;
+    @Resource
+    private SfOrderItemDistributionService sfOrderItemDistributionService;
+    @Resource
+    private UserSkuService userSkuService;
+    @Resource
+    private SkuImageService skuImageService;
+    @Resource
+    private BOrderPayService payBOrderService;
+    @Resource
+    private BOrderShipService bOrderShipService;
+    @Resource
+    private PfBorderConsigneeService pfBorderConsigneeService;
 
     /**
      * 订单管理
@@ -261,7 +284,7 @@ public class BOrderManagementController extends BaseController {
         Long orderId = req.getOrderId();
         try {
             PfBorder border = bOrderService.getPfBorderById(orderId);
-//            bOrderService.completeBOrder(border);
+            bOrderShipService.receiptBOrder(border);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception ex) {
@@ -541,6 +564,421 @@ public class BOrderManagementController extends BaseController {
             } else {
                 res.setResMsg("网络错误");
             }
+        }
+        return res;
+    }
+
+    /**
+     * 零售 店铺订单 列表带分页（店主发货，平台代发，状态(待发货，待付款，已发货，已完成，全部)筛选）
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/shopOrderList.do")
+    @ResponseBody
+    @SignValid(paramType = OrderListReq.class)
+    public OrderListRes shopOrderList(HttpServletRequest request, OrderListReq req, ComUser user){
+        OrderListRes res = new OrderListRes();
+        int pageSize = 20;
+        try{
+            List<Map<String, Object>> orderList = sfOrderService.getShopOrderList(user.getId(), req.getOrderStatus(), req.getSendType(), req.getPageNum()+1, pageSize);
+            res.setImgUrlPrefix(PropertiesUtils.getStringValue("index_product_220_220_url"));
+            res.setOrderList(orderList);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询店铺订单列表失败！userId=" + user.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 零售 店铺订单 收货人信息
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/getConsigneeInfo.do")
+    @ResponseBody
+    @SignValid(paramType = OrderConsigneeReq.class)
+    public OrderConsigneeRes getConsigneeInfo(HttpServletRequest request, OrderConsigneeReq req, ComUser user){
+        OrderConsigneeRes res = new OrderConsigneeRes();
+        try{
+            SfOrderConsignee conignee = sfOrderConsigneeService.getOrdConByOrdId(req.getOrderId());
+            res.setConsignee(conignee);//收货人信息
+            res.setWxNkName(user.getWxNkName());//购买人
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询收货人信息失败！userId=" + user.getId() +",orderId=" + req.getOrderId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 获取所有快递公司
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/getAllShipMans.do")
+    @ResponseBody
+    @SignValid(paramType = ShipMapReq.class)
+    public ShipManRes getAllShipMans(HttpServletRequest request, ShipMapReq req, ComUser user){
+        ShipManRes res = new ShipManRes();
+        try {
+            List<ComShipMan> comShipMans = comShipManService.list();
+            res.setComShipMans(comShipMans);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("获取所有快递公司失败！userId= " + user.getId());
+        }
+        return res;
+    }
+
+    /**
+     * 零售 店铺订单 订单详情
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/shopOrderDetail.do")
+    @ResponseBody
+    @SignValid(paramType = OrderDetailReq.class)
+    public OrderDetailRes shopOrderDetail(HttpServletRequest request, OrderDetailReq req, ComUser user){
+        OrderDetailRes res = new OrderDetailRes();
+        try{
+            SfOrder sfOrder = sfOrderService.getOrderById(req.getOrderId());
+            ComDictionary comDictionary = comDictionaryService.findComDictionary(sfOrder.getOrderStatus());
+            sfOrder.setOrderSkuStatus(comDictionary.getValue());
+            SfOrderConsignee conignee = sfOrderConsigneeService.getOrdConByOrdId(req.getOrderId());
+            List<SfOrderItem> orderItems = sfOrderItemService.getOrderItemByOrderId(req.getOrderId());
+            List<SfOrderFreight> orderFreights = sfOrderService.getFreightByOrderId(req.getOrderId());
+            List<SfOrderPayment> orderPayments = sfOrderPaymentService.selectBySfOrderId(req.getOrderId());
+            List<SfOrderItemDistribution> distribution = sfOrderItemDistributionService.selectBySfOrderId(req.getOrderId());
+            ComUser buyerUser = userService.getUserById(sfOrder.getUserId());
+
+            res.setSfOrder(sfOrder);//订单
+            res.setConsignee(conignee);//收货人信息
+            res.setBuyerName(buyerUser.getRealName());//购买人
+            res.setOrderItems(orderItems);//订单子项
+            res.setOrderFreights(orderFreights);//快递公司信息
+            res.setPayments(orderPayments);//支付方式
+            res.setDistribution(distribution);//三级分佣
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch(Exception e){
+            log.error("查询店铺订单详情失败！userId=" + user.getId() +",orderId=" + req.getOrderId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 家族 我的订单 列表带分页 状态(待发货，排单中，已发货，待付款，已完成，线下支付未付款，全部)筛选
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/myOrderList.do")
+    @ResponseBody
+    @SignValid(paramType = MyOrderListReq.class)
+    public MyOrderListRes myOrderList(HttpServletRequest request, MyOrderListReq req, ComUser user){
+        MyOrderListRes res = new MyOrderListRes();
+        int pageSize = 20;
+        try{
+            Map<String, Object> pfBorderMap = bOrderService.findMyOrderList(user.getId(), req.getOrderStatus(), req.getPageNum()+1, pageSize);
+            res.setPfBorders((List<PfBorder>)pfBorderMap.get("pfBorderList"));
+            res.setTotalPage((Integer)pfBorderMap.get("totalPage"));
+            String imgUrlPrefix = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            res.setImgUrlPrefix(imgUrlPrefix);
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询家族我的订单列表失败！userId=" + user.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+   /*
+     * 家族 我的订单 线下支付 支付信息（弃用）
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     *//*
+    @RequestMapping(value = "getOffinePaymentDeatil.do")
+    @ResponseBody
+    @SignValid(paramType = OffinePaymentReq.class)
+    public OffinePaymentRes getOffinePaymentDeatil(HttpServletRequest request, OffinePaymentReq req, ComUser user) {
+        OffinePaymentRes res = new OffinePaymentRes();
+        try{
+            Map<String, Object> map = bOrderService.getOffinePaymentDeatil(req.getOrderId());
+            if (map != null) {
+                res.setSupplierBank((PfSupplierBank)map.get("supplierBank"));
+                res.setLatestTime((String)map.get("latestTime"));
+                res.setOrderItem((PfBorderItem)map.get("orderItem"));
+                res.setPfBorder((PfBorder)map.get("border"));
+
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            }
+        }catch (Exception e){
+            log.error("查询我的订单支付信息失败！userId=" + user.getId() + "，orderId=" + req.getOrderId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }*/
+
+    /**
+     * 家族 我的订单 继续支付、更改支付方式 (去收银台)
+     */
+    @RequestMapping(value = "/toPfBorderCashierdesk.do")
+    @ResponseBody
+    @SignValid(paramType = PfBorderCashierdeskReq.class)
+    public PfBorderCashierdeskRes toPfBorderCashierdesk(HttpServletRequest request, PfBorderCashierdeskReq req, ComUser user){
+        PfBorderCashierdeskRes res = new PfBorderCashierdeskRes();
+        try{
+            PfBorder pfBorder = bOrderService.getPfBorderById(req.getOrderId());
+            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(req.getOrderId());
+            Map<String, Object> agentInfo = bOrderService.getAgentInfo(user.getId(), pfBorder.getId());
+            res.setPfBorder(pfBorder);
+            res.setPfBorderItems(pfBorderItems);
+            res.setAgentInfo(agentInfo);//代理信息
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询我的订单去收银台信息失败！userId=" + user.getId() + "，orderId=" + req.getOrderId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 家族 我的订单 订单详情
+     */
+    @RequestMapping("/pfBorderDetail.do")
+    @ResponseBody
+    @SignValid(paramType = BorderDetailReq.class)
+    public BorderDetailRes pfBorderDetail(HttpServletRequest request, BorderDetailReq req, ComUser user) {
+        BorderDetailRes res = new BorderDetailRes();
+        Long id = req.getId();
+        BorderDetail borderDetail = new BorderDetail();
+        try{
+            String imgUrlPrefix = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            PfBorder pfBorder = bOrderService.getPfBorderById(id);
+            pfBorder.setOrderStatusDes(BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc());
+            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
+            //支付方式
+            String paymentDesc = bOrderService.getPfBorderPaymentsByOrderId(id);
+            //推荐人信息
+            Map<String, Object> rewordInfo = bOrderService.getRewordInfoByOrderId(id);
+            //商品图片
+            String skuImgUrl = bOrderService.getSkuDefaultImgUrlBySkuId(pfBorderItems.get(0).getSkuId());
+            //收货人信息
+            PfBorderConsignee consignee = pfBorderConsigneeService.getByBOrderId(id);
+
+            borderDetail.setPfBorder(pfBorder);
+            borderDetail.setPfBorderItems(pfBorderItems);
+            borderDetail.setPfBorderConsignee(consignee);
+
+            res.setBorderDetail(borderDetail);
+            res.setImgUrlPrefix(imgUrlPrefix);
+            res.setPaymentDesc(paymentDesc);
+            res.setRewordInfo(rewordInfo);
+            res.setSkuImgUrl(skuImgUrl);
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询我的订单 订单详情 失败！userId=" + user.getId() + "，orderId=" + req.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 获取下级合伙人（id name） 列表
+     */
+    @RequestMapping("/getLowerLevelPartnerListByUserPid.do")
+    @ResponseBody
+    @SignValid(paramType = LowerLevelPartnerReq.class)
+    public LowerLevelPartnerRes getLowerLevelPartnerListByUserPid(HttpServletRequest request, LowerLevelPartnerReq req, ComUser user){
+        LowerLevelPartnerRes res = new LowerLevelPartnerRes();
+        try{
+            List<Map<String, Object>> lowerLevelPartnerList = userSkuService.getLowerLevelPartnerListByUserPid(user.getId());
+            res.setLowerLevelPartnerList(lowerLevelPartnerList);
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询下级合伙人失败！userId=" + user.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+
+    /**
+     * 家族 下级订单列表 带分页
+     */
+    @RequestMapping("/lowerLevelOrderList.do")
+    @ResponseBody
+    @SignValid(paramType = LowerLevelOrderReq.class)
+    public LowerLevelOrderRes lowerLevelOrderList(HttpServletRequest request, LowerLevelOrderReq req, ComUser user){
+        LowerLevelOrderRes res = new LowerLevelOrderRes();
+        int pageSize = 20;
+        try{
+            Map<String, Object> pfBorderMap = bOrderService.getLowerLevelOrderList(user.getId(), req.getLowerId(), req.getOrderStatus(), req.getPageNum()+1, pageSize);
+            res.setPfBorders((List<PfBorder>)pfBorderMap.get("pfBorderList"));
+            res.setTotalPage((Integer)pfBorderMap.get("totalPage"));
+            String imgUrlPrefix = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            res.setImgUrlPrefix(imgUrlPrefix);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch(Exception e){
+            log.error("查询下级订单列表失败！userId=" + user.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 家族 下级订单 订单详情
+     */
+    @RequestMapping("/lowerLevelBorderDetail.do")
+    @ResponseBody
+    @SignValid(paramType = BorderDetailReq.class)
+    public BorderDetailRes lowerLevelBorderDetail(HttpServletRequest request, BorderDetailReq req, ComUser user) {
+        BorderDetailRes res = new BorderDetailRes();
+        Long id = req.getId();
+        BorderDetail borderDetail = new BorderDetail();
+        try{
+            String imgUrlPrefix = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            PfBorder pfBorder = bOrderService.getPfBorderById(id);
+            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
+            //支付方式
+            String paymentDesc = bOrderService.getPfBorderPaymentsByOrderId(id);
+            //推荐人信息
+            Map<String, Object> rewordInfo = bOrderService.getRewordInfoByOrderId(id);
+            //商品默认图片
+            ComSkuImage defaultImg = skuImageService.defaultImg(pfBorderItems.get(0).getSkuId());
+
+            borderDetail.setPfBorder(pfBorder);
+            borderDetail.setPfBorderItems(pfBorderItems);
+            ComUser buyerUser = userService.getUserById(pfBorder.getUserId());
+            String buyerName = buyerUser.getRealName();
+            if(buyerName==null || buyerName.length()==0){
+                buyerName = buyerUser.getWxNkName();
+            }
+            borderDetail.setBuyerName(buyerName);//购买人
+
+            res.setBorderDetail(borderDetail);
+            res.setImgUrlPrefix(imgUrlPrefix);
+            res.setPaymentDesc(paymentDesc);
+            res.setRewordInfo(rewordInfo);
+            res.setDefaultImg(defaultImg);
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error("查询下级订单 订单详情 失败！userId=" + user.getId() + "，orderId=" + req.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 线下支付 修改状态
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/offinePayment.do")
+    @ResponseBody
+    @SignValid(paramType = BorderOffineReq.class)
+    public BorderOffineRes offinePayment(HttpServletRequest request, BorderOffineReq req, ComUser user) {
+        Boolean bl = false;
+        BorderOffineRes res = new BorderOffineRes();
+        try {
+            if (req==null||req.getbOrderId()==null){
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+                return res;
+            }else{
+                bl = payBOrderService.offinePayment(user, req.getbOrderId());
+            }
+            res.setIsOffinSuccess(bl);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+         }
+        return res;
+    }
+
+
+    /**
+     *  获取线下支付详情
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/getOffinePaymentDeatil.do")
+    @ResponseBody
+    @SignValid(paramType = BorderOffineReq.class)
+    public BorderOffineRes getOffinePaymentDeatil(HttpServletRequest request, BorderOffineReq req, ComUser user) {
+        BorderOffineRes res = new BorderOffineRes();
+        try {
+            if (req==null||req.getbOrderId()==null){
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+                return res;
+            }
+            Map<String, Object> map = payBOrderService.getOffinePaymentDeatil(req.getbOrderId());
+            if (map != null) {
+                PfBorder pfBorder = (PfBorder)map.get("border");
+                if (pfBorder!=null){
+                    res.setOrderCode(pfBorder.getOrderCode());
+                }
+                PfBorderItem pfBorderItem = (PfBorderItem)map.get("orderItem");
+                if (pfBorderItem!=null){
+                    res.setSkuName(pfBorderItem.getSkuName());
+                    res.setTotalPrice(pfBorderItem.getTotalPrice());
+                }
+                res.setLatestTime((String) map.get("latestTime"));
+                res.setPfSupplierBank((PfSupplierBank) map.get("supplierBank"));
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            }
+        } catch (Exception e) {
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
         }
         return res;
     }

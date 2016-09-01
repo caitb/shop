@@ -1,28 +1,24 @@
 package com.masiis.shop.api.controller.shop;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.order.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.order.SfOrderService;
-import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
-import com.masiis.shop.web.platform.service.system.ComDictionaryService;
-import com.masiis.shop.web.platform.service.order.ComShipManService;
-import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.mall.service.order.SfOrderService;
+import com.masiis.shop.web.platform.service.order.ComShipManService;
+import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +66,8 @@ public class SfOrderController extends BaseController {
             String shipManId = req.getShipManId();
             String shipManName = req.getShipManName();
             sfOrderService.deliver(shipManName,orderId,freight,shipManId,user);
+            Integer waitShipNum = sfOrderService.getUnshippedOrderCount(req.getShopId(), user.getId());
+            res.setWaitShipNum(waitShipNum);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception ex) {

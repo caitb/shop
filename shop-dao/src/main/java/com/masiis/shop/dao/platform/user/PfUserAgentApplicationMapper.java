@@ -9,10 +9,12 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserAgentApplication;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface PfUserAgentApplicationMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -24,7 +26,9 @@ public interface PfUserAgentApplicationMapper {
 
     int updateByPrimaryKey(PfUserAgentApplication record);
 
-    PfUserAgentApplication selectByPhone(@Param("mobile") String mobile);
+    List<PfUserAgentApplication> selectByPhone(@Param("mobile") String mobile);
+
+    PfUserAgentApplication selectByPhoneAndSkuId(@Param("mobile") String mobile,@Param("skuId") Integer skuId);
 
     /**
      * 条件查询

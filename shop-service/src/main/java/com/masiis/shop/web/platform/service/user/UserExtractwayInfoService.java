@@ -60,6 +60,16 @@ public class UserExtractwayInfoService {
     }
 
     /**
+     * 根据银行卡号和userId查询
+     * @param bankCard
+     * @param userId
+     * @return
+     */
+    public ComUserExtractwayInfo findByBankcardAndCardUserId(String bankCard, Long userId){
+        return comUserExtractwayInfoMapper.selectByBankcardAndCardUserId(bankCard, userId);
+    }
+
+    /**
      * 通过主键更新
      * @param comUserExtractwayInfo
      * @return

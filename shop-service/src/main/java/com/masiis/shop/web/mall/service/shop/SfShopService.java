@@ -130,8 +130,8 @@ public class SfShopService {
      * 更新店铺信息
      * @param sfShop
      */
-    public void updateById(SfShop sfShop){
-        sfShopMapper.updateByPrimaryKey(sfShop);
+    public int updateById(SfShop sfShop){
+        return sfShopMapper.updateByPrimaryKey(sfShop);
     }
 
     /**

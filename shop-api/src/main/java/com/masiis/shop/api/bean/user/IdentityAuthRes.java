@@ -14,6 +14,9 @@ public class IdentityAuthRes extends BaseRes {
     private String idCardBackName; //反面名字
     private String idCardFrontUrl;//正面地址
     private String idCardBackUrl;//反面地址
+    private String wxId; //微信号
+    private String auditReason;//审核不通过原因
+    private Boolean isAudit;//是否审核通过
 
     public String getName() {
         return name;
@@ -61,5 +64,29 @@ public class IdentityAuthRes extends BaseRes {
 
     public void setIdCardBackUrl(String idCardBackUrl) {
         this.idCardBackUrl = idCardBackUrl;
+    }
+
+    public String getWxId() {
+        return wxId;
+    }
+
+    public void setWxId(String wxId) {
+        this.wxId = wxId;
+    }
+
+    public String getAuditReason() {
+        return auditReason;
+    }
+
+    public void setAuditReason(String auditReason) {
+        this.auditReason = auditReason;
+    }
+
+    public Boolean getAudit() {
+        return isAudit;
+    }
+
+    public void setAudit(Boolean audit) {
+        isAudit = audit;
     }
 }

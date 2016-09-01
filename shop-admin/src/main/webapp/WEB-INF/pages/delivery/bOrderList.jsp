@@ -216,7 +216,7 @@
                                                             <div class="profile-info-name"> 快递名称 </div>
 
                                                             <div class="profile-info-value">
-                                                                <input type="hidden" name="id" id="bOrderId" value="" />
+                                                                <input type="hidden" name="pfBorderId" id="bOrderId" value="" />
                                                                 <input type="hidden" id="shipManName" name="shipManName" value="" />
                                                                 <select class="form-control" id="shipName" name="shipManId">
                                                                     <c:forEach items="${comShipManList}" var="shipMan">
@@ -893,6 +893,7 @@
                         class_name: 'gritter-error'
                     });
                 }
+
 
                 $('#submitDeliveryForm').removeAttr('disabled');
                 $('#deliveryForm').attr('isSubmiting', 'false');

@@ -3,14 +3,21 @@ package com.masiis.shop.web.platform.controller.system;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.statistic.BrandStatistic;
+import com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic;
 import com.masiis.shop.dao.beans.user.CountGroup;
+import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 
 import com.masiis.shop.web.platform.service.message.PfMessageSrRelationService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
+import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
+import com.masiis.shop.web.platform.service.statistics.RecommentBrandStatisticService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.CountGroupService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -23,10 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by muchaofeng on 2016/3/2.
@@ -50,7 +54,12 @@ public class ShopIndexController extends BaseController {
     private JSSDKPFService jssdkService;
     @Resource
     private PfMessageSrRelationService pfMessageSrRelationService;
-
+    @Resource
+    private PfUserBrandMapper pfUserBrandMapper;
+    @Resource
+    private BrandStatisticService brandStatisticService;
+    @Resource
+    private RecommentBrandStatisticService recommentBrandStatisticService;
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
@@ -61,6 +70,15 @@ public class ShopIndexController extends BaseController {
         for (PbBanner banner : pbBanner) {
             banner.setImgUrl(value + banner.getImgUrl());
         }
+        Date date = new Date();//获取当前时间
+        Date date1 = DateUtil.addInteger(user.getCreateTime(), 3);
+        int  status;
+        if (date.getTime() > date1.getTime()) {
+            status = 0;
+           } else{
+             status = 1;
+          }//验证是否超过三天
+        log.info("是否超过三天:" + status);
 //        List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
 //        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
 //        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
@@ -75,6 +93,7 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("pbBanner", pbBanner);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("status",status);
         String curUrl = req.getRequestURL().toString();
         log.info("===========================B-index[curUrl=" + curUrl + "]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
@@ -98,23 +117,22 @@ public class ShopIndexController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             ComUser user = getComUser(req);
-            int orderNum = 0;
-            int numb = 0;
-            BigDecimal countNum = new BigDecimal("0");
-            List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
-            if (agentNum != null) {
-                for (PfUserSku pfUserSku : agentNum) {
-                    CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
-                    CountGroup countRecommendGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
-                    numb += countGroup.getCount() + countRecommendGroup.getR_count();
-                    countNum = countGroup.getGroupMoney().add(countRecommendGroup.getR_groupMoney()).add(countNum);
-                    orderNum += countGroup.getOrderNum() + countRecommendGroup.getR_orderNum();
-                }
+            Integer totalUserNum = 0;
+            Integer totalOrderNum = 0;
+            BigDecimal totalSaleAmount = BigDecimal.ZERO;
+            List<PfUserBrand> pfUserBrands = pfUserBrandMapper.selectByUserId(user.getId());
+            for (PfUserBrand pfUserBrand : pfUserBrands) {
+                BrandStatistic brandStatistic = brandStatisticService.selectBrandStatisticByUserIdAndBrandId(pfUserBrand.getUserId(), pfUserBrand.getBrandId());
+                RecommendBrandStatistic recommendBrandStatistic = recommentBrandStatisticService.selectRecommentBrandStatisticByUserIdAndBrandId(pfUserBrand.getUserId(), pfUserBrand.getBrandId());
+                totalOrderNum += brandStatistic.getOrderNum() + recommendBrandStatistic.getOrderNum();
+                totalUserNum += brandStatistic.getUserNum() + recommendBrandStatistic.getUserNum();
+                totalSaleAmount = totalSaleAmount.add(brandStatistic.getSellAmount()).add(recommendBrandStatistic.getSellAmount());
             }
-            NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-            object.put("count", numb);
-            object.put("groupSum", rmbFormat.format(countNum));
-            object.put("orderNum", orderNum);
+
+
+            object.put("count", totalUserNum);
+            object.put("groupSum", totalUserNum);
+            object.put("orderNum", totalOrderNum);
             object.put("isError", false);
         } catch (Exception e) {
             object.put("isError", true);

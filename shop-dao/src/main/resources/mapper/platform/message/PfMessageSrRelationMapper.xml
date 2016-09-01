@@ -13,7 +13,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="MessageGroupByToUser" type="com.masiis.shop.dao.beans.message.PfMessageCenterDetail">
-        <result column="isSeeNum" property="isSeeNum" jdbcType="INTEGER" />
+        <result column="notSeeNum" property="notSeeNum" jdbcType="INTEGER" />
         <result column="headUrl" property="headUrl" jdbcType="VARCHAR" />
         <result column="fromUserName" property="fromUserName" jdbcType="VARCHAR" />
         <result column="fromUserId" property="fromUserId" jdbcType="VARCHAR" />
@@ -26,6 +26,8 @@
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="content_url" property="contentUrl" jdbcType="VARCHAR" />
+        <result column="url_app_type" property="urlAppType" jdbcType="INTEGER" />
+        <result column="url_app_param" property="urlAppParam" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -93,7 +95,7 @@
 
     <select id="queryByToUserWithPaging" resultMap="MessageGroupByToUser">
         SELECT
-          r2.notSeeNum as isSeeNum,
+          r2.notSeeNum as notSeeNum,
           s.wx_head_img as headUrl,
           s.real_name as fromUserName,
           s.id as fromUserId,

@@ -108,4 +108,23 @@ public class SfMessageContentService {
     public List<SfMessageContent> queryDetailByFromUserAndToUserWithPaging(Long userId, Long fUserId, Integer start, Integer pageSize){
         return sfMessageContentMapper.queryDetailByFromUserAndToUserWithPaging(userId, fUserId, start, pageSize);
     }
+
+    public SfMessageContent createMessageByShopAndAppType(SfShop shop,
+                      String message, Integer messageType, String remark, String url, Integer appType, String appParam) {
+        SfMessageContent content = new SfMessageContent();
+
+        content.setContent(message);
+        content.setCreateTime(new Date());
+        content.setShopId(shop.getId());
+        content.setStatus(1);
+        content.setType(messageType);
+        content.setUserId(shop.getUserId());
+        content.setUpdateTime(new Date());
+        content.setContentUrl(url);
+        content.setUrlAppType(appType);
+        content.setUrlAppParam(appParam);
+        content.setRemark(remark);
+
+        return content;
+    }
 }

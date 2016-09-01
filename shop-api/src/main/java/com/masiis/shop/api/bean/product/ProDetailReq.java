@@ -18,6 +18,7 @@ public class ProDetailReq extends BaseReq {
 
     private Integer skuId;
 
+
     public Integer getSkuId() {
         return skuId;
     }
@@ -25,5 +26,6 @@ public class ProDetailReq extends BaseReq {
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
 }
 

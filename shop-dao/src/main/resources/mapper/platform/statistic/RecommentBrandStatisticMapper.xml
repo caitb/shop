@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.statistic.RecommentBrandStatisticMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic">
+        <result column="userNum" property="userNum" jdbcType="INTEGER"/>
+        <result column="orderNum" property="orderNum" jdbcType="INTEGER"/>
+        <result column="sellAmount" property="sellAmount" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="selectRecommentBrandStatisticByUserIdAndBrandId" resultMap="BaseResultMap">
+        SELECT COUNT(DISTINCT a.user_id) AS userNum
+        ,IFNULL(SUM(d.up_order_count),0) AS orderNum
+        ,IFNULL(SUM(d.cost_fee),0) AS sellAmount
+        FROM pf_user_recommen_relation a
+        INNER JOIN pf_user_sku b ON a.user_id=b.user_id AND a.sku_id=b.sku_id
+        INNER JOIN pf_user_sku c ON c.tree_code LIKE CONCAT(b.tree_code,'%')
+        INNER JOIN pf_user_statistics d ON d.user_id=c.user_id AND d.sku_id=c.sku_id
+        WHERE a.user_pid = #{userId}
+        AND EXISTS(SELECT 0 FROM com_sku sku
+		INNER JOIN com_spu spu ON sku.spu_id=spu.id
+		WHERE sku.id=a.sku_id AND spu.brand_id=#{brandId})
+    </select>
+
+</mapper>

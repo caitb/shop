@@ -25,7 +25,7 @@ import java.util.Map;
  * @Author lzh
  */
 public class WxPFKFNoticeUtils {
-    private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
+    private static Logger log = Logger.getLogger(WxPFKFNoticeUtils.class);
     private WxUserService wxUserService = (WxUserService) ApplicationContextUtil.getBean("wxUserService");
 
     private static class Holder {

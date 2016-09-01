@@ -58,7 +58,8 @@ public class SfUserRelationController extends BaseController {
         mv.addObject("shops",shops);
         SfSpokenAndFansPageViewPo pageViewPo = sfUserRelationService.dealWithFansPageView(comUser.getId(), null, null, true, 1, pageSize);
         //用户分页使用，三级粉丝总数量
-        Integer threeSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        //改成二级分销mshop1.5.3
+        Integer threeSum = pageViewPo.getTotalCount();
         logger.info("三级粉丝总数量：" + threeSum);
         //获取总页数
         Integer pageNums = threeSum%pageSize == 0 ? threeSum/pageSize : threeSum/pageSize + 1;
@@ -202,7 +203,8 @@ public class SfUserRelationController extends BaseController {
         mv.addObject("shops",shops);
         SfSpokenAndFansPageViewPo pageViewPo = sfUserRelationService.dealWithSpokesManPageView(comUser.getId(), null, null, true, 1, pageSize, 1);
         //用户分页使用，三级粉丝总数量
-        Integer twoSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+//        Integer twoSum = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+        Integer twoSum = pageViewPo.getTotalCount();
         logger.info("两级代言人总数量：" + twoSum);
         //获取总页数
         Integer pageNums = twoSum%pageSize == 0 ? twoSum/pageSize : twoSum/pageSize + 1;

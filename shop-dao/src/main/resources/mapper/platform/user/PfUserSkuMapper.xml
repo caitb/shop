@@ -18,7 +18,6 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="tree_code" property="treeCode" jdbcType="VARCHAR"/>
         <result column="tree_level" property="treeLevel" jdbcType="INTEGER"/>
-        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL"/>
     </resultMap>
 
 
@@ -92,8 +91,39 @@
         <result column="app_token_expire" property="appTokenExpire" jdbcType="TIMESTAMP"/>
         <result column="is_buy" property="isBuy" jdbcType="INTEGER"/>
         <result column="is_spokesman" property="isSpokesman" jdbcType="INTEGER"/>
-        <result column="pName" property="pName" jdbcType="VARCHAR" />
-        <result column="unitName" property="unitName" jdbcType="VARCHAR" />
+        <result column="pName" property="pName" jdbcType="VARCHAR"/>
+        <result column="unitName" property="unitName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="skuAgentMap" type="com.masiis.shop.dao.po.PfSkuAgent">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL"/>
+        <result column="bail" property="bail" jdbcType="DECIMAL"/>
+        <result column="back_img" property="backImg" jdbcType="VARCHAR"/>
+        <result column="is_show" property="isShow" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="TeamMemberInfoMap" type="com.masiis.shop.dao.beans.family.TeamMemberInfo">
+        <result column="skuName" property="skuName" jdbcType="VARCHAR"/>
+        <result column="agentLevelName" property="agentLevelName" jdbcType="VARCHAR"/>
+        <result column="agentLevel" property="agentLevel" jdbcType="INTEGER"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="wxId" property="wxId" jdbcType="VARCHAR"/>
+        <result column="auditStatus" property="auditStatus" jdbcType="VARCHAR"/>
+        <result column="realName" property="realName" jdbcType="VARCHAR"/>
+        <result column="idCard" property="idCard" jdbcType="VARCHAR"/>
+        <result column="certImg" property="certImg" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="userPid" property="userPid" jdbcType="BIGINT"/>
+        <result column="skuId" property="skuId" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -107,13 +137,13 @@
             sku_id, agent_level_id, is_pay,
             is_certificate, pf_border_id, bail,
             agent_num, remark, tree_code,
-            tree_level, reward_unit_price)
+            tree_level)
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR},
             #{pid,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
             #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER},
             #{isCertificate,jdbcType=INTEGER}, #{pfBorderId,jdbcType=BIGINT}, #{bail,jdbcType=DECIMAL},
             #{agentNum,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{treeCode,jdbcType=VARCHAR},
-            #{treeLevel,jdbcType=INTEGER}, #{rewardUnitPrice,jdbcType=DECIMAL})
+            #{treeLevel,jdbcType=INTEGER})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku">
@@ -165,9 +195,6 @@
             <if test="treeLevel != null">
                 tree_level = #{treeLevel,jdbcType=INTEGER},
             </if>
-            <if test="rewardUnitPrice">
-                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
-            </if>
         </set>
         where
         id = #{id,jdbcType=INTEGER}
@@ -179,7 +206,7 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from
         pf_user_sku
         where
@@ -188,7 +215,7 @@
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from pf_user_sku
     </select>
 
@@ -197,7 +224,7 @@
     </select>
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from
                pf_user_sku
         where
@@ -244,7 +271,7 @@
 
     <select id="selectByOrderIdAndUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from pf_user_sku
         where pf_border_id = #{bOrderId}
         and user_id = #{userId}
@@ -253,7 +280,7 @@
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         FROM
         pf_user_sku
         <where>
@@ -296,48 +323,35 @@
             <if test="userPid != null">
                 and user_pid = #{userPid,jdbcType=BIGINT}
             </if>
-            <if test="rewardUnitPrice">
-                and reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
-            </if>
         </where>
     </select>
 
     <select id="selectByMap" parameterType="Map" resultType="java.util.HashMap">
-        SELECT
-            us.id          id,
-            us.create_time createTime,
-            us.code        code,
-            us.user_pid    userPid,
-            u.id           uId,
-            u.real_name    realName,
-            u.mobile       mobile,
-            sku.name       skuName,
-            al.name        levelName,
-            uss.stock      stock,
-            pu.real_name   puRealName,
-            pu.mobile      puMobile,
-            pal.name       pLevelName,
-            ru.real_name   ruRealName,
-            ral.name       rLevelName,
-            bsu.real_name  bsRealName,
-            bsu.mobile     bsMobile,
-            (SELECT COUNT(0) FROM pf_user_sku WHERE pid=us.id) countLower
+        select
+        us.id id,
+        us.create_time createTime,
+        us.code code,
+        us.is_pay isPay,
+        us.user_pid userPid,
+        u.id uId,
+        u.real_name realName,
+        u.mobile mobile,
+        sku.name skuName,
+        al.name levelName,
+        bo.send_type sendType,
+        uss.stock stock,
+        pu.real_name puRealName,
+        us.bail bail,
+        (SELECT COUNT(0) from pf_user_sku where pid=us.id) countLower
 
         FROM
-          pf_user_sku       us
-        LEFT JOIN com_user          u   ON u.id  = us.user_id
-        LEFT JOIN com_user          pu  ON pu.id = us.user_pid
-        LEFT JOIN com_sku           sku ON sku.id = us.sku_id
-        LEFT JOIN com_agent_level   al  ON al.id = us.agent_level_id
+        pf_user_sku us
+        LEFT JOIN com_user u ON u.id = us.user_id
+        LEFT JOIN com_user pu ON pu.id = us.user_pid
+        LEFT JOIN com_sku sku ON sku.id = us.sku_id
+        LEFT JOIN com_agent_level al ON al.id = us.agent_level_id
+        LEFT JOIN pf_border bo ON bo.id = us.pf_border_id
         LEFT JOIN pf_user_sku_stock uss ON uss.user_id = us.user_id AND uss.sku_id = us.sku_id
-        LEFT JOIN pf_user_recommen_relation purr ON purr.user_id=us.user_id AND purr.sku_id=us.sku_id
-        LEFT JOIN com_user ru ON ru.id=purr.user_pid
-        LEFT JOIN pf_user_sku       pus ON pus.user_id=us.user_pid AND pus.sku_id=us.sku_id
-        LEFT JOIN com_agent_level   pal ON pal.id=pus.agent_level_id
-        LEFT JOIN pf_user_sku       rus ON rus.user_id=ru.id AND rus.sku_id=us.sku_id
-        LEFT JOIN com_agent_level   ral ON ral.id=rus.agent_level_id
-        LEFT JOIN pf_user_sku       bsus ON us.tree_code LIKE CONCAT(bsus.tree_code,'%') AND bsus.tree_level=1 AND bsus.agent_level_id=1
-        LEFT JOIN com_user          bsu ON bsu.id=bsus.user_id
         <where>
             <if test="realName != null">
                 AND u.real_name LIKE #{realName}
@@ -440,15 +454,17 @@
           a.user_pid as userPid
         FROM
 	      pf_user_sku a
-        LEFT JOIN com_agent_level b ON a.agent_level_id = b.id
-        LEFT JOIN com_sku c ON a.sku_id = c.id
+        INNER JOIN com_agent_level b ON a.agent_level_id = b.id
+        INNER JOIN com_sku c ON a.sku_id = c.id
+        INNER JOIN com_spu d on c.spu_id = d.id
         WHERE
 	      a.user_id = #{userId}
+	      AND d.type = 0
     </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from
         pf_user_sku
         where
@@ -474,7 +490,7 @@
 
     <select id="selectByUserIdNotPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level, reward_unit_price
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
         from
         pf_user_sku
         where
@@ -523,6 +539,340 @@
         INNER JOIN pf_user_sku c ON c.tree_code LIKE CONCAT(b.tree_code,'%')
         WHERE a.tree_code=#{treeCode,jdbcType=VARCHAR}
         AND c.tree_code!=#{treeCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectMaxAgentIdByUserId" resultMap="BaseResultMap">
+       SELECT id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        from pf_user_sku
+       WHERE agent_level_id = (SELECT MIN(agent_level_id) from pf_user_sku WHERE user_id = #{userId,jdbcType=BIGINT}) and user_id  = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAgentNumByLevelAndSku" resultType="java.lang.Integer">
+        select count(*) from pf_user_sku where sku_id = #{skuId} and agent_level_id = #{agentLevel};
+    </select>
+
+    <select id="selectNumByBrandId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        pf_user_sku pfsku
+        LEFT JOIN com_sku sku ON sku.id = pfsku.sku_id
+        LEFT JOIN com_spu spu ON spu.id = sku.spu_id
+        WHERE spu.brand_id = #{brandId}
+    </select>
+
+    <select id="getLowerLevelPartnerListByUserPid" resultType="map">
+        select distinct u.id, ifnull(u.real_name, u.wx_nk_name) realName
+        from com_user u
+        left join pf_user_sku s on s.user_id = u.id
+        where s.user_pid = #{userPid}
+    </select>
+
+    <select id="selectOthersByUserIdAndDefaultSkuId" resultMap="skuAgentMap">
+        SELECT
+            a.*
+        FROM
+            com_brand b1
+        INNER JOIN com_spu p1 ON (p1.brand_id = b1.id AND p1.type=1)
+        INNER JOIN com_sku s1 ON s1.spu_id = p1.id
+        INNER JOIN pf_user_sku ps ON (s1.id=ps.sku_id AND ps.user_id=#{userId,jdbcType=BIGINT})
+        LEFT JOIN pf_sku_agent a ON (ps.agent_level_id=a.agent_level_id AND a.sku_id=ps.sku_id)
+        WHERE
+            b1.id = (
+                SELECT
+                    b.id
+                FROM
+                    com_sku s
+                INNER JOIN com_spu p ON p.id = s.spu_id
+                INNER JOIN com_brand b ON b.id = p.brand_id
+                WHERE
+                    s.id = #{skuId,jdbcType=INTEGER}
+            );
+    </select>
+
+    <select id="selectFamilyUser" resultMap="BaseResultMap">
+        select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
+        is_certificate, pf_border_id, bail, agent_num, remark, tree_code, tree_level
+        from pf_user_sku
+        where
+             sku_id = #{skuId}
+             AND agent_level_id = #{agentLevelId}
+             tree_code LIKE #{treeCode}
+    </select>
+
+    <select id="selectAgentBrand" resultType="java.util.HashMap">
+        SELECT
+        a.user_id           userId
+        ,b.id             	skuId
+        ,b.name           	skuName
+        ,e.id             	brandId
+        ,e.cname          	brandName
+        ,e.content        	brandContent
+        ,e.logo_url       	brandLogoUrl
+        ,e.illustrating_picture_name       	illustratingPictureName
+        ,e.remark         	brandRemark
+        ,d.id             	organizationId
+        ,d.name           	organizationName
+        ,d.agent_level_id   levelId
+        ,d.logo           	organizationLogo
+        ,d.back_img       	organizationBackImg
+        ,d.wx_qr_code     	organizationWxQrCode
+        ,d.wx_id          	organizationWxId
+        ,d.add_description	organizationAddDescription
+        ,d.slogan         	organizationSlogan
+        ,d.introduction   	organizationIntroduction
+        ,d.freeman_num    	organizationFreemanNum
+        ,f.freeman_upper_num    organizationFreemanUpperNum
+        FROM pf_user_sku a
+        INNER JOIN com_sku b ON a.sku_id=b.id
+        INNER JOIN com_spu c ON b.spu_id=c.id AND c.type=0
+        INNER JOIN pf_user_organization d ON a.user_id=d.user_id AND c.brand_id=d.brand_id
+        INNER JOIN com_brand e ON c.brand_id=e.id
+        INNER JOIN pf_sku_agent f ON a.sku_id=f.sku_id AND a.agent_level_id=f.agent_level_id
+        WHERE a.user_id = #{userId}
+        AND d.STATUS = 1
+        <if test="brandId != null">
+            AND d.brand_id= #{brandId}
+        </if>
+    </select>
+
+    <select id="selectPAgentBrand" resultType="java.util.HashMap">
+        SELECT
+        a.user_pid           userId
+        ,b.id             	skuId
+        ,b.name           	skuName
+        ,e.id             	brandId
+        ,e.cname          	brandName
+        ,e.content        	brandContent
+        ,e.logo_url       	brandLogoUrl
+        ,e.remark         	brandRemark
+        ,d.id             	organizationId
+        ,d.name           	organizationName
+        ,d.agent_level_id   levelId
+        ,d.logo           	organizationLogo
+        ,d.back_img       	organizationBackImg
+        ,d.wx_qr_code     	organizationWxQrCode
+        ,d.wx_id          	organizationWxId
+        ,d.add_description	organizationAddDescription
+        ,d.slogan         	organizationSlogan
+        ,d.introduction   	organizationIntroduction
+        ,d.freeman_num    	organizationFreemanNum
+        ,f.freeman_upper_num    organizationFreemanUpperNum
+        FROM pf_user_sku a
+        INNER JOIN com_sku b ON a.sku_id=b.id
+        INNER JOIN com_spu c ON b.spu_id=c.id AND c.type=0
+        INNER JOIN pf_user_organization d ON a.user_pid=d.user_id AND c.brand_id=d.brand_id
+        INNER JOIN com_brand e ON c.brand_id=e.id
+        INNER JOIN pf_sku_agent f ON a.sku_id=f.sku_id AND a.agent_level_id=f.agent_level_id
+        WHERE a.user_id = #{userId}
+        AND d.STATUS = 1
+        <if test="brandId != null">
+            AND d.brand_id= #{brandId}
+        </if>
+    </select>
+
+    <select id="selectParentAgentBrand" resultType="java.util.HashMap">
+        SELECT
+        d.id                   userSkuId
+        ,d.user_id             userPid
+        ,d.tree_code           treeCode
+        ,c.id                  skuId
+        ,c.`name`              skuName
+        ,b.id                  spuId
+        ,b.`name`              spuName
+        ,f.id                  brandId
+        ,f.cname               brandName
+        ,f.content             brandContent
+        ,f.logo_url            brandLogoUrl
+        ,f.remark              brandRemark
+        ,e.id                  levelId
+        ,e.name                levelName
+        ,e.organization_suffix organizationSuffix
+        ,g.id              organizationId
+        ,g.`name`          organizationName
+        ,g.logo            organizationLogo
+        ,g.back_img        organizationBackImg
+        ,g.wx_qr_code      organizationWxQrCode
+        ,g.wx_id           organizationWxId
+        ,g.add_description organizationAddDescription
+        ,g.slogan          organizationSlogan
+        ,g.introduction    organizationIntroduction
+        ,g.freeman_num     organizationFreemanNum
+        FROM pf_user_brand a
+        INNER JOIN com_spu b ON a.brand_id=b.brand_id AND TYPE=0
+        INNER JOIN com_sku c ON b.id=c.spu_id
+        INNER JOIN pf_user_sku d ON a.user_id=d.user_id AND c.id=d.sku_id
+        INNER JOIN com_agent_level e ON d.agent_level_id=e.id
+        INNER JOIN com_brand f ON a.brand_id=f.id
+        LEFT  JOIN pf_user_organization g ON g.brand_id = a.brand_id AND g.user_id = a.user_id AND g.status=1
+        WHERE 1=1
+        <if test="userId != null">
+            AND d.user_pid = #{userId}
+        </if>
+        <if test="brandId != null">
+            AND f.id = #{brandId}
+        </if>
+    </select>
+
+    <select id="countAgentNumBySkuId" resultType="int" parameterType="java.lang.Integer">
+        select count(1)
+        from
+        pf_user_sku
+        where
+        sku_id = #{skuId}
+    </select>
+
+    <select id="selectBrandSku" resultMap="BaseResultMap">
+        SELECT
+            d.*
+        FROM
+            pf_user_organization a
+        INNER JOIN com_spu b ON a.brand_id = b.brand_id
+        INNER JOIN com_sku c ON b.id = c.spu_id
+        INNER JOIN pf_user_sku d ON d.sku_id = c.id
+        AND d.user_id = a.user_id
+        WHERE a.user_id = #{userId}
+        AND a.brand_id = #{brandId}
+    </select>
+
+    <select id="selectUpBrand" resultType="java.util.Map">
+        SELECT
+        a.user_pid AS userPid,
+        c.brand_id AS brandId,
+        b.id AS skuId
+        FROM
+        pf_user_sku a
+        INNER JOIN com_sku b ON a.sku_id = b.id
+        INNER JOIN com_spu c ON b.spu_id = c.id
+        WHERE
+        a.user_id = #{userId}
+        AND c.type = 0
+        AND a.user_pid <![CDATA[ <> ]]> 0;
+    </select>
+
+    <select id="selectTeamCountById" resultType="java.lang.Integer">
+        SELECT
+          count(a.id)
+        FROM
+          pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code, '%')
+        <if test="userId != null">
+            AND a.user_id <![CDATA[ <> ]]> b.user_id
+        </if>
+        WHERE
+          b.id = #{id};
+    </select>
+
+    <select id="selectTeamCountByUserId" resultType="java.lang.Integer">
+        SELECT
+          count(a.id)
+        FROM
+          pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code, '%')
+        AND a.user_id <![CDATA[ <> ]]> b.user_id
+        WHERE
+        b.user_id = #{userId};
+    </select>
+
+    <select id="selectdirectNumByUserId" resultType="java.lang.Integer">
+        SELECT
+            count(a.id)
+        FROM
+            pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code, '%')
+        AND a.user_pid = b.user_id
+        WHERE
+            b.user_id = #{userId};
+    </select>
+
+    <select id="selectdirectNumById" resultType="java.lang.Integer">
+        SELECT
+	      count(a.id) as directNum
+        FROM
+            pf_user_sku b
+        left JOIN pf_user_sku a ON a.user_pid = b.user_id
+        WHERE
+            b.id = #{id}
+        AND a.sku_id = b.sku_id;
+    </select>
+
+    <select id="selectDirectListByuserId" resultType="java.util.HashMap">
+        SELECT
+            c.id AS userId,
+			c.real_name AS userName,
+			IFNULL(c.wx_id,'') AS wxId,
+			IFNULL(a.CODE,'') AS CODE,
+			a.agent_level_id as agentLevel,
+			d.name as agentLevelName,
+			e.icon AS agentLevelImg,
+			c.wx_head_img AS wxHeadImg,
+			a.sku_id as skuId,
+			a.id as userSkuId
+		FROM
+			pf_user_sku a
+		INNER JOIN pf_user_sku b ON a.user_pid = b.user_id and a.sku_id = b.sku_id
+		INNER JOIN com_user c ON c.id = a.user_id
+		INNER JOIN com_agent_level d ON a.agent_level_id = d.id
+		INNER JOIN pf_sku_agent e on b.sku_id = e.sku_id and b.agent_level_id = e.agent_level_id
+        WHERE
+            b.id = #{userSkuId}
+    </select>
+
+    <select id="selectMemberInfo" resultMap="TeamMemberInfoMap">
+        SELECT
+            c.name as skuName,
+            d.name as agentLevelName,
+            d.id as agentLevel,
+            b.mobile as mobile,
+            IFNULL(b.wx_id,'') as wxId,
+            b.audit_status as auditStatus,
+            b.real_name as realName,
+            IFNULL(b.id_card,'') as idCard,
+            IFNULL(e.img_url,'') as certImg,
+            e.status as status,
+            b.id as userId,
+            a.user_pid as userPid,
+            a.sku_id as skuId,
+            a.create_time as createTime
+        FROM
+            pf_user_sku a
+        INNER JOIN com_user b ON a.user_id = b.id
+        INNER JOIN com_sku c ON a.sku_id = c.id
+        INNER JOIN com_agent_level d ON a.agent_level_id = d.id
+        LEFT JOIN pf_user_certificate e ON a.id = e.pf_user_sku_id
+        where a.id = #{userSkuId}
+    </select>
+    <!-->代理的主打商品<-->
+    <select id="selectPrimarySkuByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select b.id, b.create_time, b.code, b.pid, b.user_id, b.user_pid, b.sku_id, b.agent_level_id, b.is_pay,
+        b.is_certificate, b.pf_border_id, b.bail, b.agent_num, b.remark, b.tree_code, b.tree_level
+        from pf_user_sku b
+            INNER JOIN com_sku sku ON sku.id = b.sku_id
+            INNER JOIN com_spu spu ON spu.id = sku.spu_id
+            WHERE spu.is_sale=1 AND spu.is_delete=0 AND spu.TYPE=0
+        AND b.user_id = #{userId}
+    </select>
+
+    <select id="selectGTLastLevelNumByUserId" resultType="java.lang.Integer">
+        SELECT
+          count(0)
+        FROM
+          pf_user_sku s
+        WHERE
+          s.user_id = #{userId,jdbcType=BIGINT}
+          AND s.agent_level_id <![CDATA[ < ]]> 5;
+    </select>
+
+    <select id="selectChildsByUserIdAndBrandId" resultType="java.lang.Long">
+        SELECT
+            count(DISTINCT s.user_id)
+        FROM
+            pf_user_sku s
+        INNER JOIN com_sku cs ON cs.id=s.sku_id
+        INNER JOIN com_spu sp ON sp.id=cs.spu_id
+        INNER JOIN com_brand cb ON cb.id=sp.brand_id AND cb.id=#{brandId,jdbcType=INTEGER}
+        WHERE
+            s.user_pid = #{userId,jdbcType=BIGINT};
     </select>
 </mapper>
 

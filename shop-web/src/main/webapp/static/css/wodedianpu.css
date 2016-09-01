@@ -47,6 +47,21 @@
   width: 100%;
   background: #fff;
 }
+.header h4{
+    color: #fff;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    background: #f74a11;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+.header h4 a{
+    display: block;
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 10px;
+    font-size: 12px;
+}
 .wrap .header > div {
   background: url("../images/mybackground.png") no-repeat;
   background-size: 100% 100%;

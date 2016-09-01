@@ -21,6 +21,7 @@ public class PbBanner {
     /**
      * 创建时间
      */
+
     private Date createTime;
     /**
      * 名称
@@ -39,40 +40,74 @@ public class PbBanner {
      */
     private String remark;
 
+    private Integer sort;
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
+
     public String getImgUrl() {
         return imgUrl;
     }
+
     public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl == null ? null : imgUrl.trim();
+        this.imgUrl = imgUrl;
     }
+
     public String getHyperlinkUrl() {
         return hyperlinkUrl;
     }
+
     public void setHyperlinkUrl(String hyperlinkUrl) {
-        this.hyperlinkUrl = hyperlinkUrl == null ? null : hyperlinkUrl.trim();
+        this.hyperlinkUrl = hyperlinkUrl;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    @Override
+    public String toString() {
+        return "PbBanner{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", name='" + name + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", hyperlinkUrl='" + hyperlinkUrl + '\'' +
+                ", remark='" + remark + '\'' +
+                ", sort=" + sort +
+                '}';
     }
 }

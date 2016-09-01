@@ -1,6 +1,7 @@
 package com.masiis.shop.api.bean.user;
 
 import com.masiis.shop.api.bean.base.BaseBusinessRes;
+import com.masiis.shop.dao.beans.user.AgentSkuViewInfo;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class PartnerApplyRegisterRes extends BaseBusinessRes {
     /**
      * 可代理的等级list
      */
-    private List<AgentSkuView> agentSkuViews;
+    private List<AgentSkuViewInfo> agentSkuViews;
 
     public String getSkuName() {
         return skuName;
@@ -86,11 +87,11 @@ public class PartnerApplyRegisterRes extends BaseBusinessRes {
         this.queueNum = queueNum;
     }
 
-    public List<AgentSkuView> getAgentSkuViews() {
+    public List<AgentSkuViewInfo> getAgentSkuViews() {
         return agentSkuViews;
     }
 
-    public void setAgentSkuViews(List<AgentSkuView> agentSkuViews) {
+    public void setAgentSkuViews(List<AgentSkuViewInfo> agentSkuViews) {
         this.agentSkuViews = agentSkuViews;
     }
 }

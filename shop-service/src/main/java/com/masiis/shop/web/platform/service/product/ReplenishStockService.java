@@ -4,7 +4,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class ReplenishStockService {
                 params[1] = skuName;
                 params[2] = String.valueOf(stock);
                 ComUser comUser = userService.getUserById(userId);
-                WxPFNoticeUtils.getInstance().inventoryShortageNotice(comUser,params,url);
+                SysNoticeUtils.getInstance().inventoryShortageNotice(comUser,params,url);
             }
         }
     }

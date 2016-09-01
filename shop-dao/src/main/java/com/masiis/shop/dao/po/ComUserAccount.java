@@ -22,18 +22,6 @@ public class ComUserAccount {
      */
     private Long comUserId;
     /**
-     * 总销售额
-     */
-    private BigDecimal totalIncomeFee;
-    /**
-     * 总成本
-     */
-    private BigDecimal costFee;
-    /**
-     * 总利润
-     */
-    private BigDecimal profitFee;
-    /**
      * 可提现额度
      */
     private BigDecimal extractableFee;
@@ -41,10 +29,6 @@ public class ComUserAccount {
      * 已经申请提现金额
      */
     private BigDecimal appliedFee;
-    /**
-     * 结算中
-     */
-    private BigDecimal countingFee;
     /**
      * 代理结算中
      */
@@ -91,30 +75,6 @@ public class ComUserAccount {
         this.comUserId = comUserId;
     }
 
-    public BigDecimal getTotalIncomeFee() {
-        return totalIncomeFee;
-    }
-
-    public void setTotalIncomeFee(BigDecimal totalIncomeFee) {
-        this.totalIncomeFee = totalIncomeFee;
-    }
-
-    public BigDecimal getCostFee() {
-        return costFee;
-    }
-
-    public void setCostFee(BigDecimal costFee) {
-        this.costFee = costFee;
-    }
-
-    public BigDecimal getProfitFee() {
-        return profitFee;
-    }
-
-    public void setProfitFee(BigDecimal profitFee) {
-        this.profitFee = profitFee;
-    }
-
     public BigDecimal getExtractableFee() {
         return extractableFee;
     }
@@ -133,21 +93,12 @@ public class ComUserAccount {
         setViewAppliedFee(rmbFormat.format(appliedFee));
     }
 
-    public BigDecimal getCountingFee() {
-        return countingFee;
-    }
-
-    public void setCountingFee(BigDecimal countingFee) {
-        this.countingFee = countingFee == null?new BigDecimal(0):countingFee;
-        setViewCountingFee(rmbFormat.format(this.countingFee));
-    }
-
     public BigDecimal getAgentBillAmount() {
         return agentBillAmount;
     }
 
     public void setAgentBillAmount(BigDecimal agentBillAmount) {
-        this.agentBillAmount = agentBillAmount == null?new BigDecimal(0):agentBillAmount;
+        this.agentBillAmount = agentBillAmount == null ? new BigDecimal(0) : agentBillAmount;
         setViewAgentBillAmount(rmbFormat.format(this.agentBillAmount));
     }
 
@@ -156,7 +107,7 @@ public class ComUserAccount {
     }
 
     public void setDistributionBillAmount(BigDecimal distributionBillAmount) {
-        this.distributionBillAmount = distributionBillAmount == null?new BigDecimal(0):distributionBillAmount;
+        this.distributionBillAmount = distributionBillAmount == null ? new BigDecimal(0) : distributionBillAmount;
         setViewDistributionBillAmount(rmbFormat.format(this.distributionBillAmount));
     }
 
@@ -245,7 +196,7 @@ public class ComUserAccount {
     }
 
     public void setRecommenBillAmount(BigDecimal recommenBillAmount) {
-        this.recommenBillAmount = recommenBillAmount == null?new BigDecimal(0):recommenBillAmount;
+        this.recommenBillAmount = recommenBillAmount == null ? new BigDecimal(0) : recommenBillAmount;
         setViewRecommenBillAmount(rmbFormat.format(this.recommenBillAmount));
     }
 
@@ -260,14 +211,11 @@ public class ComUserAccount {
     @Override
     public String toString() {
         return "ComUserAccount{" +
-                "id=" + id +
+                "rmbFormat=" + rmbFormat +
+                ", id=" + id +
                 ", comUserId=" + comUserId +
-                ", totalIncomeFee=" + totalIncomeFee +
-                ", costFee=" + costFee +
-                ", profitFee=" + profitFee +
                 ", extractableFee=" + extractableFee +
                 ", appliedFee=" + appliedFee +
-                ", countingFee=" + countingFee +
                 ", agentBillAmount=" + agentBillAmount +
                 ", distributionBillAmount=" + distributionBillAmount +
                 ", bailFee=" + bailFee +
@@ -279,6 +227,7 @@ public class ComUserAccount {
                 ", viewDistributionBillAmount='" + viewDistributionBillAmount + '\'' +
                 ", viewExtractableFee='" + viewExtractableFee + '\'' +
                 ", viewAppliedFee='" + viewAppliedFee + '\'' +
+                ", viewRecommenBillAmount='" + viewRecommenBillAmount + '\'' +
                 ", version=" + version +
                 ", recommenBillAmount=" + recommenBillAmount +
                 '}';

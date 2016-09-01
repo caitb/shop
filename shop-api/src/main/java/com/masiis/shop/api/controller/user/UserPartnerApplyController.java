@@ -5,6 +5,7 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.dao.beans.user.AgentSkuViewInfo;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -176,9 +177,9 @@ public class UserPartnerApplyController extends BaseController {
             pUserLevelId = pfUserSku.getAgentLevelId();
         }
         // 创建该sku代理商的代理门槛信息
-        List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
+        List<AgentSkuViewInfo> agentSkuViews = new ArrayList<AgentSkuViewInfo>();
         for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-            AgentSkuView view = new AgentSkuView();
+            AgentSkuViewInfo view = new AgentSkuViewInfo();
             view.setQuantity(pfSkuAgent.getQuantity());
             view.setBailFee(pfSkuAgent.getBail());
             for (ComAgentLevel comAgentLevel : comAgentLevels) {

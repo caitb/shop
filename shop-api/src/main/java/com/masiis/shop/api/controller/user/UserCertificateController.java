@@ -1,20 +1,19 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.base.BasePagingReq;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.UserCertificateRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserCertificate;
-import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +41,8 @@ public class UserCertificateController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private UserService userService;
-
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
 
 
     /**
@@ -52,11 +52,11 @@ public class UserCertificateController extends BaseController {
       */
     @RequestMapping("/list")
     @ResponseBody
-    @SignValid(paramType = CommonReq.class)
-    public UserCertificateRes listOfCertificateByUser(HttpServletRequest request, CommonReq req, ComUser user) {
+    @SignValid(paramType = BasePagingReq.class)
+    public UserCertificateRes listOfCertificateByUser(HttpServletRequest request, BasePagingReq req, ComUser user) {
         UserCertificateRes userCertificateRes = new UserCertificateRes();
         try {
-            List<CertificateInfo> pfUserCertificates = userCertificateService.CertificateByUser(user.getId());
+            List<CertificateInfo> pfUserCertificates = userCertificateService.CertificateByUserForApp(user.getId(),req.getPageNum());
             userCertificateRes.setCertificateInfoList(pfUserCertificates);
             userCertificateRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userCertificateRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -81,7 +81,13 @@ public class UserCertificateController extends BaseController {
             PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(req.getId().intValue());
             String ctName = userCertificateService.getCtname(cdetail.getAgentLevelId());
             ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
+            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(cdetail.getUserId(),cdetail.getSkuId());
             userCertificateRes.setCtname(ctName);
+            if(pfUserRecommenRelation!=null && pfUserRecommenRelation.getUserPid()!=0){//有推荐人
+                userCertificateRes.setUpgradeUser(userService.getUserById(pfUserRecommenRelation.getUserPid()).getRealName());
+            }else{
+                userCertificateRes.setUpgradeUser("");
+            }
             userCertificateRes.setSkuName(comSku.getName());
             userCertificateRes.setSjName(cdetail.getSjName());
             userCertificateRes.setImgUrl(cdetail.getImgUrl());
@@ -120,6 +126,7 @@ public class UserCertificateController extends BaseController {
             userCertificateRes.setCtname(ctName);
             userCertificateRes.setPfUserCertificate(pfUserCertificate);
             userCertificateRes.setsDate(sDate);
+            userCertificateRes.setWxId(user.getWxId());
             userCertificateRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userCertificateRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

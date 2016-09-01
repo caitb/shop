@@ -411,6 +411,21 @@ public class DevelopingController extends BaseController {
         return mav;
     }
 
+    public Font loadFont(File file){
+        Font font = new Font("华文细黑", Font.PLAIN, 20);
+        try {
+            FileInputStream fi = new FileInputStream(file);
+            BufferedInputStream fb = new BufferedInputStream(fi);
+            font = Font.createFont(Font.TRUETYPE_FONT, fb);
+        }
+        catch (Exception e) {
+            log.error("读取本地字体文件出错了"+e);
+            e.printStackTrace();
+        }
+
+        return font;
+    }
+
     public static void main(String[] args) {
         // 创建日期对象
         Date d = new Date();

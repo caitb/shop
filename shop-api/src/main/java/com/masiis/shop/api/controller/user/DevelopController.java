@@ -1,13 +1,15 @@
 package com.masiis.shop.api.controller.user;
 
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
-import com.masiis.shop.api.bean.user.AgentSku;
-import com.masiis.shop.api.bean.user.AgentSkuRes;
-import com.masiis.shop.api.bean.user.PopularizeReq;
-import com.masiis.shop.api.bean.user.PopularizeRes;
+import com.masiis.shop.api.bean.base.BaseBusinessRes;
+import com.masiis.shop.api.bean.family.DevelopOrganizationRes;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
+import com.masiis.shop.dao.platform.product.ComBrandMapper;
+import com.masiis.shop.dao.platform.user.PfUserOrganizationMapper;
 import com.masiis.shop.web.common.service.BrandService;
+import com.masiis.shop.web.common.utils.NetFileUtils;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.SpuService;
@@ -18,10 +20,10 @@ import com.masiis.shop.api.utils.image.Element;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.user.AgentLevelService;
-import com.masiis.shop.web.platform.service.user.CertificateService;
-import com.masiis.shop.web.platform.service.user.SkuExtensionService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.user.*;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -30,11 +32,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -46,24 +50,26 @@ public class DevelopController {
 
     private final static Log log = LogFactory.getLog(DevelopController.class);
 
+    private static final String organizationLogoUrlRoot = PropertiesUtils.getStringValue("organization_img_url");
+    private static final String developPosterDefault = PropertiesUtils.getStringValue("develop_poster_default");
+
     @Resource
     private UserSkuService userSkuService;
     @Resource
     private SkuService skuService;
     @Resource
-    private SpuService spuService;
-    @Resource
     private AgentLevelService agentLevelService;
-    @Resource
-    private BrandService brandService;
-    @Resource
-    private SkuAgentService skuAgentService;
     @Resource
     private CertificateService certificateService;
     @Resource
     private WeiXinPFQRCodeService weiXinPFQRCodeService;
     @Resource
     private SkuExtensionService skuExtensionService;
+    @Resource
+    private PfUserOrganizationMapper pfUserOrganizationMapper;
+    @Resource
+    private DevelopService developService;
+
 
     @RequestMapping("/listAgentSku")
     @ResponseBody
@@ -171,4 +177,90 @@ public class DevelopController {
 
         return popularizeRes;
     }
+
+
+    @RequestMapping("/listOrganization")
+    @ResponseBody
+    @SignValid(paramType = BaseBusinessReq.class)
+    public DevelopOrganizationRes listOrganization(HttpServletRequest request, ComUser comUser) {
+        DevelopOrganizationRes res = new DevelopOrganizationRes();
+
+        try {
+            List<Map<String,Object>> orgs = pfUserOrganizationMapper.listCreateAndJoinOrganization(comUser.getId());
+
+            for(Map<String,Object> map : orgs) {
+                String orgLogo = (String) map.get("orgLogo");
+                if(StringUtils.isNotBlank(orgLogo)) {
+                    map.put("orgLogo",organizationLogoUrlRoot+orgLogo);
+                }
+            }
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            res.setOrganWrapList(orgs);
+        } catch(Exception e) {
+            e.printStackTrace();
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+        }
+
+        return res;
+    }
+
+    @RequestMapping("/poster")
+    @SignValid(paramType = DevelopPosterReq.class)
+    public BaseBusinessRes poster(HttpServletRequest request,
+                     HttpServletResponse response,
+                     DevelopPosterReq req,
+                     ComUser comUser) throws Exception {
+
+        List<Map<String,Object>> orgMaps = pfUserOrganizationMapper.listCreateAndJoinOrganization(comUser.getId());
+
+        if(orgMaps==null || orgMaps.size()==0) {
+            new RuntimeException("没有代理任何品牌");
+        }
+
+        // 如果没有传 brandId, 则随机选一个
+        Integer orgId = null;
+        PfUserOrganization org = null;
+
+        if(req.getBrandId() == null) {
+            for(Map<String,Object> map : orgMaps) {
+                orgId = (Integer) map.get("orgId");
+                if(orgId != null) {
+                    break;
+                }
+            }
+        } else {
+            for(Map<String,Object> map : orgMaps) {
+                if(req.getBrandId().equals(map.get("brandId"))) {
+                    orgId = (Integer) map.get("orgId");
+                }
+            }
+        }
+
+        org = pfUserOrganizationMapper.selectByPrimaryKey(orgId);
+
+        BufferedImage bufferedImage = null;
+        if(org == null) {
+            bufferedImage = NetFileUtils.getBufferedImage(developPosterDefault);        // 如果还没有设置组织（家族，团队），则返回默认图片
+        } else  {
+            bufferedImage = developService.createDevelopPoster(org, comUser, request);  // 生成海报图片
+        }
+
+        ByteArrayOutputStream drawByteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", drawByteArrayOutputStream);
+        byte[] bytes = drawByteArrayOutputStream.toByteArray();
+
+        response.setContentType("image/gif"); //设置返回的文件类型
+        OutputStream os = response.getOutputStream();
+        os.write(bytes);
+
+        os.flush();
+        os.close();
+        return null;
+    }
+
+
 }
+

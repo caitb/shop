@@ -55,15 +55,15 @@
                 </select>
             </label>
 
-            <span>等级：</span>
-            <label for="level" class="level">
-                <b></b>
-                <select id="level">
-                    <option value="0">全部</option>
-                    <option value="1">一级代言人</option>
-                    <option value="2">二级代言人</option>
-                    </select>
-            </label>
+            <%--<span>等级：</span>--%>
+            <%--<label for="level" class="level">--%>
+                <%--<b></b>--%>
+                <%--<select id="level">--%>
+                    <%--<option value="0">全部</option>--%>
+                    <%--<option value="1">一级代言人</option>--%>
+                    <%--<option value="2">二级代言人</option>--%>
+                    <%--</select>--%>
+            <%--</label>--%>
         </div>
         <%--<button >查询</button>--%>
     </div>
@@ -74,14 +74,14 @@
                 <span id="total">${pageViewPo.totalCount}</span>
                 <span>位代言人</span>
             </p>
-            <p>
-                <span id="first">${pageViewPo.firstCount}</span>
-                <span>一级代言人</span>
-            </p>
-            <p>
-                <span id="second">${pageViewPo.secondCount}</span>
-                <span>二级代言人</span>
-            </p>
+            <%--<p>--%>
+                <%--<span id="first">${pageViewPo.firstCount}</span>--%>
+                <%--<span>一级代言人</span>--%>
+            <%--</p>--%>
+            <%--<p>--%>
+                <%--<span id="second">${pageViewPo.secondCount}</span>--%>
+                <%--<span>二级代言人</span>--%>
+            <%--</p>--%>
         </nav>
     </div>
     <main id="distributions">
@@ -115,11 +115,11 @@
     var basepath = "${basePath}";
     $(document).ready(function(){
         var goodsWidth=$(".goods").width();
-        var levelWidth=$(".level").width();
+//        var levelWidth=$(".level").width();
         $(".goods b").html($("#goods option:selected").text());
-        $(".level b").html($("#level option:selected").text());
+//        $(".level b").html($("#level option:selected").text());
         $("#goods").width(goodsWidth);
-        $("#level").width(levelWidth);
+//        $("#level").width(levelWidth);
     })
     $("#goods").on("change",function(){
         var tabVal=$("#goods option:selected").text();
@@ -127,11 +127,11 @@
 //        $("#shop").html(tabVal);
         querySpokesMan(1);
     })
-    $("#level").on("change",function(){
-        var tabVal=$("#level option:selected").text();
-        $(".level b").html(tabVal);
-        querySpokesMan(0);
-    })
+//    $("#level").on("change",function(){
+//        var tabVal=$("#level option:selected").text();
+//        $(".level b").html(tabVal);
+//        querySpokesMan(0);
+//    })
 </script>
 </body>
 </html>

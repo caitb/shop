@@ -4,20 +4,16 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAccount">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
-        <result column="total_income_fee" property="totalIncomeFee" jdbcType="DECIMAL" />
-        <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
-        <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
         <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL" />
         <result column="applied_fee" property="appliedFee" jdbcType="DECIMAL" />
-        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL" />
         <result column="agent_bill_amount" property="agentBillAmount" jdbcType="DECIMAL" />
+        <result column="recommen_bill_amount" property="recommenBillAmount" jdbcType="DECIMAL" />
         <result column="distribution_bill_amount" property="distributionBillAmount" jdbcType="DECIMAL" />
         <result column="bail_fee" property="bailFee" jdbcType="DECIMAL" />
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
         <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
         <result column="changed_by" property="changedBy" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
-        <result column="recommen_bill_amount" property="recommenBillAmount" jdbcType="DECIMAL" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -26,17 +22,15 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount"  useGeneratedKeys="true" keyProperty="id">
-        insert into com_user_account (id, com_user_id, total_income_fee,
-            cost_fee, profit_fee, extractable_fee,
-            applied_fee, counting_fee, agent_bill_amount,
+        insert into com_user_account (id, com_user_id, extractable_fee,
+            applied_fee, agent_bill_amount, recommen_bill_amount,
             distribution_bill_amount, bail_fee, created_time,
-            changed_time, changed_by, version, recommen_bill_amount
+            changed_time, changed_by, version
             )
-        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
-            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL},
-            #{appliedFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{agentBillAmount,jdbcType=DECIMAL},
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractableFee,jdbcType=DECIMAL},
+            #{appliedFee,jdbcType=DECIMAL}, #{agentBillAmount,jdbcType=DECIMAL}, #{recommenBillAmount,jdbcType=DECIMAL},
             #{distributionBillAmount,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL}, #{createdTime,jdbcType=TIMESTAMP},
-            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{recommenBillAmount,jdbcType=DECIMAL}
+            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
             )
     </insert>
 
@@ -46,23 +40,11 @@
             <if test="comUserId != null">
                 com_user_id = #{comUserId,jdbcType=BIGINT},
             </if>
-            <if test="totalIncomeFee != null">
-                total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
-            </if>
-            <if test="costFee != null">
-                cost_fee = #{costFee,jdbcType=DECIMAL},
-            </if>
-            <if test="profitFee != null">
-                profit_fee = #{profitFee,jdbcType=DECIMAL},
-            </if>
             <if test="extractableFee != null">
                 extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             </if>
             <if test="appliedFee != null">
                 applied_fee = #{appliedFee,jdbcType=DECIMAL},
-            </if>
-            <if test="countingFee != null">
-                counting_fee = #{countingFee,jdbcType=DECIMAL},
             </if>
             <if test="agentBillAmount != null">
                 agent_bill_amount = #{agentBillAmount,jdbcType=DECIMAL},
@@ -91,50 +73,29 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, applied_fee, counting_fee,
-        agent_bill_amount, distribution_bill_amount,bail_fee,
-        created_time, changed_time, changed_by, version, recommen_bill_amount
+        select id, com_user_id, extractable_fee, applied_fee, agent_bill_amount, recommen_bill_amount,
+        distribution_bill_amount, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
-        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time,
-        changed_time, changed_by, version, recommen_bill_amount
+        select id, com_user_id, extractable_fee, applied_fee, agent_bill_amount, recommen_bill_amount,
+        distribution_bill_amount, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
     </select>
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
-        counting_fee, agent_bill_amount, distribution_bill_amount,bail_fee, bail_fee, created_time,
-        changed_time, changed_by, version, recommen_bill_amount
+        select id, com_user_id, extractable_fee, applied_fee, agent_bill_amount, recommen_bill_amount,
+        distribution_bill_amount, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
         where com_user_id = #{comUserId}
     </select>
-
-    <update id="payBOrderToUpdateUserAccount">
-        update com_user_account
-        set total_income_fee = totalIncomeFee+#{orderPayAmount},
-        counting_fee = counting_fee+#{orderPayAmount}
-        where com_user_id = #{comUserId}
-    </update>
-
-    <update id="addIncomeByCounting">
-        update com_user_account
-        set total_income_fee = total_income_fee + #{billAmount,jdbcType=DECIMAL},
-            extractable_fee = extractable_fee + #{billAmount,jdbcType=DECIMAL}
-        WHERE com_user_id = #{userid,jdbcType=DECIMAL}
-    </update>
 
     <update id="updateByIdWithVersion" parameterType="com.masiis.shop.dao.po.ComUserAccount">
         update com_user_account
         set com_user_id = #{comUserId,jdbcType=BIGINT},
-            total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
-            cost_fee = #{costFee,jdbcType=DECIMAL},
-            profit_fee = #{profitFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             applied_fee = #{appliedFee,jdbcType=DECIMAL},
-            counting_fee = #{countingFee,jdbcType=DECIMAL},
             agent_bill_amount = #{agentBillAmount,jdbcType=DECIMAL},
             distribution_bill_amount = #{distributionBillAmount,jdbcType=DECIMAL},
             bail_fee = #{bailFee,jdbcType=DECIMAL},
@@ -148,19 +109,6 @@
 
     <select id="sumIncomeFeeByUserIds" parameterType="String" resultType="Double">
         SELECT sum(total_income_fee) FROM com_user_account WHERE FIND_IN_SET(com_user_id,#{userIds})
-    </select>
-
-    <!-- 统计销售额 -->
-    <select id="totalIncomeFeeByUserIds" parameterType="List" resultType="BigDecimal">
-        SELECT
-        sum(total_income_fee)
-        FROM
-        com_user_account
-        WHERE
-        com_user_id IN
-        <foreach collection="list" index="index" item="userId" open="(" separator="," close=")">
-            #{userId}
-        </foreach>
     </select>
 
 </mapper>

@@ -11,6 +11,7 @@
         <result column="distribution_amount" property="distributionAmount" jdbcType="DECIMAL" />
         <result column="is_counting" property="isCounting" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="wx_nk_name" property="nkName" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="CommissionRecordResultMap" type="com.masiis.shop.dao.po.SfOrderItemDistribution" >
@@ -106,10 +107,11 @@
     </select>
 
     <select id="selectBySfOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, sf_order_id, sf_order_item_id, user_id, sf_sku_distribution_id,
-        distribution_amount, is_counting, remark
-        from sf_order_item_distribution
-        where sf_order_id = #{orderId,jdbcType=BIGINT}
+        select i.id, i.create_time, i.sf_order_id, i.sf_order_item_id, i.user_id, i.sf_sku_distribution_id,
+        i.distribution_amount, i.is_counting, i.remark, ifnull(u.real_name, u.wx_nk_name) as 'wx_nk_name'
+        from sf_order_item_distribution i
+        left join com_user u on i.user_id = u.id
+        where sf_order_id = #{orderId,jdbcType=BIGINT} order by distribution_amount desc
     </select>
 
 </mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="com.masiis.shop.dao.platform.statistic.StatisticOrderMapper">
+
+    <resultMap id="StatisticOrder" type="com.masiis.shop.dao.beans.statistic.StatisticOrder">
+        <result column="orderTotal" property="orderTotal" jdbcType="INTEGER"/>
+        <result column="newOrderTotal" property="newOrderTotal" jdbcType="INTEGER"/>
+        <result column="sale" property="sale" jdbcType="DECIMAL"/>
+        <result column="newSale" property="newSale" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectOrder" resultMap="StatisticOrder">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(0) 'orderTotal',SUM(a.pay_amount) 'sale' FROM pf_border a
+        INNER JOIN pf_border_item b ON a.id=b.pf_border_id
+        WHERE a.pay_status=1
+        AND a.order_type IN (0,1,3) AND a.pay_time &lt;= @end_date;
+    </select>
+
+    <select id="newSelectOrder" resultMap="StatisticOrder">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(0) 'newOrderTotal',SUM(a.pay_amount) 'newSale' FROM pf_border a
+        INNER JOIN pf_border_item b ON a.id=b.pf_border_id
+        WHERE a.pay_status=1
+        AND a.order_type IN (0,1,3) AND a.pay_time &gt; @begin_date AND a.pay_time &lt;= @end_date;
+    </select>
+
+    <select id="cityOrder" resultMap="StatisticOrder">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(0) 'orderTotal',SUM(a.pay_amount) 'sale' FROM sf_order a
+        INNER JOIN sf_order_item b ON a.id=b.sf_order_id
+        WHERE a.pay_status=1 AND a.pay_time &lt;= @end_date;
+    </select>
+
+    <select id="newCityOrder"  resultMap="StatisticOrder">
+        SET @begin_date=#{beginTime};
+        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
+        SELECT COUNT(0) 'newOrderTotal',SUM(a.pay_amount) 'newSale' FROM sf_order a
+        INNER JOIN sf_order_item b ON a.id=b.sf_order_id
+        WHERE a.pay_status=1 AND a.pay_time &gt; @begin_date AND a.pay_time &lt;= @end_date;
+    </select>
+
+</mapper>

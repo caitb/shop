@@ -55,6 +55,7 @@ public class BOrderShipService {
 
     /**
      * 合伙人订单发货
+     *
      * @param pfBorder
      */
     public void shipBOrder(PfBorder pfBorder) {
@@ -96,6 +97,7 @@ public class BOrderShipService {
 
     /**
      * 合伙人订单收货
+     *
      * @param pfBorder
      */
     public void receiptBOrder(PfBorder pfBorder) {
@@ -109,7 +111,7 @@ public class BOrderShipService {
         bOrderService.updatePfBorder(pfBorder);
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-        //订单类型(0代理1补货2拿货)
+        //订单类型(0代理1补货2拿货3升级)
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1 || pfBorder.getOrderType() == 3) {
             for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
                 if (pfBorderItem.getQuantity() > 0) {

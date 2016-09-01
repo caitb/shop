@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.beans.user;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -85,11 +87,11 @@ public class SfSpokesAndFansInfo {
     public void setHeadImg(String headImg) {
         this.headImg = headImg;
     }
-
+    @JSONField(name = "ID")
     public String getID() {
         return ID;
     }
-
+    @JSONField(name = "ID")
     public void setID(String ID) {
         this.ID = ID;
     }

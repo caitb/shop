@@ -164,7 +164,7 @@ public class BOrderController extends BaseController {
             }
             if (pfBorderPayment.getIsEnabled() == 0) {
                 // 调用borderService的方法处理
-                payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
+                payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString());
             }
             String successURL = "border/payBOrdersSuccessBefore.shtml";
             attrs.addAttribute("bOrderId", bOrderId);

@@ -8,6 +8,8 @@
         <result column="type" property="type" jdbcType="INTEGER" />
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="content_url" property="contentUrl" jdbcType="VARCHAR" />
+        <result column="url_app_type" property="urlAppType" jdbcType="INTEGER" />
+        <result column="url_app_param" property="urlAppParam" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -20,12 +22,12 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfMessageContent" useGeneratedKeys="true" keyProperty="id">
         insert into pf_message_content (id, create_time, user_id, 
-            type, content, content_url, 
+            type, content, content_url, url_app_type, url_app_param,
             status, update_time, remark
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{contentUrl,jdbcType=VARCHAR}, 
-            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+            #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{contentUrl,jdbcType=VARCHAR}, #{urlAppType,jdbcType=INTEGER},
+            #{urlAppParam,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
             )
     </insert>
 
@@ -36,6 +38,8 @@
             type = #{type,jdbcType=INTEGER},
             content = #{content,jdbcType=VARCHAR},
             content_url = #{contentUrl,jdbcType=VARCHAR},
+            url_app_type =  #{urlAppType,jdbcType=INTEGER},
+            url_app_param = #{urlAppParam,jdbcType=VARCHAR},
             status = #{status,jdbcType=INTEGER},
             update_time = #{updateTime,jdbcType=TIMESTAMP},
             remark = #{remark,jdbcType=VARCHAR}
@@ -43,20 +47,20 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, type, content, content_url, status, update_time, 
+        select id, create_time, user_id, type, content, content_url, url_app_type, url_app_param, status, update_time,
         remark
         from pf_message_content
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, type, content, content_url, status, update_time, 
+        select id, create_time, user_id, type, content, content_url, url_app_type, url_app_param, status, update_time,
         remark
         from pf_message_content
     </select>
 
     <select id="queryByUserId" resultMap="BaseResultMap">
-        select id, create_time, user_id, type, content, content_url, status, update_time,
+        select id, create_time, user_id, type, content, content_url, url_app_type, url_app_param, status, update_time,
           remark
         from pf_message_content
         WHERE
@@ -66,7 +70,7 @@
     </select>
 
     <select id="queryLatestByUserIdAndType" resultMap="BaseResultMap">
-        select id, create_time, user_id, type, content, content_url, status, update_time,
+        select id, create_time, user_id, type, content, content_url, url_app_type, url_app_param, status, update_time,
           remark
         from pf_message_content
         WHERE

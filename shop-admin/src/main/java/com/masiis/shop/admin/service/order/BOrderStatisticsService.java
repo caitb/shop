@@ -121,7 +121,7 @@ public class BOrderStatisticsService {
         statistics = new PfUserStatistics();
         statistics.setCreateTime(new Date());
         statistics.setUserId(order.getUserId());
-        statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+        statistics.setSkuId(pfBorderItem.getSkuId().intValue());
         statistics.setIncomeFee(new BigDecimal(0));
         statistics.setProfitFee(new BigDecimal(0));
         BigDecimal ordAmount = order.getOrderAmount();
@@ -219,7 +219,7 @@ public class BOrderStatisticsService {
         statistics = new PfUserStatistics();
         statistics.setCreateTime(new Date());
         statistics.setUserId(userPid);
-        statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+        statistics.setSkuId(pfBorderItem.getSkuId().intValue());
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();
         BigDecimal recommenAmount = order.getRecommenAmount();
@@ -310,29 +310,6 @@ public class BOrderStatisticsService {
      */
     public PfBorder getPfBorderById(Long id) {
         return pfBorderMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     *  获得推荐单价
-     * @param pUserId   border里新上级puserId
-     * @param skuId     商品的skuId
-     * @return
-     */
-    public BigDecimal getRewardUnitPrice(Long pUserId, Integer skuId){
-        BigDecimal rewardUnitPrice = null;
-        try {
-            PfUserSku userSku = getUserSkuByUserIdAndSkuId(pUserId,skuId);
-            if (userSku!=null){
-                rewardUnitPrice = userSku.getRewardUnitPrice();
-            }else {
-                logger.info("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
-                throw new BusinessException("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
-            }
-        }catch (Exception e){
-            logger.info("获得奖励单价出错----"+e.getMessage());
-            throw new BusinessException("获得奖励单价出错----"+e.getMessage());
-        }
-        return rewardUnitPrice;
     }
 
 

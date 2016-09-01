@@ -7,18 +7,19 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -36,6 +37,14 @@ public class UserIdentityAuthService {
     private final Integer updateType = 1;//更新操作
 
     private String identityAuthRealPath = null;
+
+    private final static String[] charArrs = {"A", "D", "E", "C", "H", "Y", "6", "7", "8", "9",
+            "M", "N", "O", "Z", "1", "5", "P", "Q", "R", "S", "2", "3", "4", "T", "I", "J", "F",
+            "G", "B", "K", "L", "W", "X", "U", "V", "0"};
+
+    public ComUser getUser(Long userId){
+        return userService.getUserById(userId);
+    }
 
     /**
      * 获得身份证信息
@@ -112,8 +121,8 @@ public class UserIdentityAuthService {
         try{
             /*String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
-            String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
+            String frontFillFullName = uploadUserCertificate(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+            String backFillFullName = uploadUserCertificate(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             if (type.equals(updateType)){
                 //第一次审核不通过重新提交身份证审核,删除服务器之前的身份证
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
@@ -141,7 +150,7 @@ public class UserIdentityAuthService {
             comUser.setIdCardBackUrl(idCardBackName);
             comUser.setAuditStatus(1);
             int i = userService.updateComUser(comUser);
-            if (i == 1){
+/*            if (i == 1){
                 log.info("发送短信-------start");
                 if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
@@ -153,9 +162,9 @@ public class UserIdentityAuthService {
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
                 log.info("发送微信-------end");
                 //删除最新上传的本地服务器照片
-                /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
-                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/
-            }
+                *//*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*//*
+            }*/
             return i;
         }catch (Exception ex){
             if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
@@ -176,5 +185,18 @@ public class UserIdentityAuthService {
         File frontFile = new File(filePath);
         OSSObjectUtils.uploadFile(frontFile, "static/user/idCard/");
         return frontFile.getName();
+    }
+    /**
+     * 生成32位随机字符串
+     *
+     * @return
+     */
+    private static String createGenerateStr(){
+        int len = 10;
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < len; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
     }
 }

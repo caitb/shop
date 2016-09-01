@@ -64,6 +64,8 @@ public class Product extends ComSku {
 
     private Integer needStockNum;//需进货数量
 
+    private BigDecimal unitPrice;//合伙人价
+
     public String getSpuName() {
         return spuName;
     }
@@ -270,5 +272,13 @@ public class Product extends ComSku {
 
     public void setNeedStockNum(Integer needStockNum) {
         this.needStockNum = needStockNum;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

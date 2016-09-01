@@ -7,9 +7,10 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+import com.masiis.shop.dao.beans.family.TeamMemberInfo;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.beans.user.UserSkuInfo;
-import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
@@ -169,4 +170,105 @@ public interface PfUserSkuMapper {
      * @return
      */
     List<UserSkuInfo> selectSkusByUserId(@Param("userId") Long userId);
+
+    PfUserSku selectMaxAgentIdByUserId(@Param("userId") Long userId);
+
+    Integer selectAgentNumByLevelAndSku(@Param("agentLevel") Integer agentLevel,
+                                        @Param("skuId") Integer skuId);
+
+    List<PfUserSku> selectNumByBrandId(Integer brandId);
+
+    List<Map<String,Object>> getLowerLevelPartnerListByUserPid(Long userPid);
+
+    /**
+     * 查找家族user
+     * @return
+     */
+    PfUserSku selectFamilyUser(@Param("skuId")Integer skuId, @Param("agentLevelId")Integer agentLevelId, @Param("treeCode")String treeCode);
+
+    /**
+     * 获取代理的品牌
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    List<Map<String, Object>> selectAgentBrand(@Param("userId")Long userId, @Param("brandId")Integer brandId);
+
+    /**
+     * 获取上级代理的品牌
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    List<Map<String, Object>> selectPAgentBrand(@Param("userId")Long userId, @Param("brandId")Integer brandId);
+
+
+    List<PfSkuAgent> selectOthersByUserIdAndDefaultSkuId(@Param("userId") Long userId,
+                                                         @Param("skuId") Integer skuId);
+
+    int countAgentNumBySkuId(Integer skuId);
+
+    /**
+     * 獲取用戶代理品牌下所代理的商品
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    List<PfUserSku> selectBrandSku(@Param("userId") Long userId,
+                                   @Param("brandId") Integer brandId);
+
+    List<Map<String, Number>> selectUpBrand(@Param("userId") Long userId);
+
+    /**
+     * 根据id查询总人数
+     * @param id       id
+     * @param userId  当userId为null时 查询的是商品团队总数（包含自己）
+     *                当userId不为null时 查询的是不包含自己的商品团队总数
+     * @return
+     */
+    Integer selectTeamCountById(@Param("id") Integer id, @Param("userId") Long userId);
+
+    /**
+     * 通过userId查询所有产品下级代理人数
+     * @param userId
+     * @return
+     */
+    Integer selectTeamCountByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据id查询直接下级代理人数
+     * @param id
+     * @return
+     */
+    Integer selectdirectNumById(@Param("id") Integer id);
+
+    /**
+     * 根据userid查询所有产品直接下级代理人数
+     * @param userId
+     * @return
+     */
+    Integer selectdirectNumByUserId(@Param("userId") Long userId);
+
+    /**
+     * 查询直接下级的团队列表
+     * @param userSkuId
+     * @return
+     */
+    List<Map<String,Object>> selectDirectListByuserId(@Param("userSkuId") Integer userSkuId);
+
+    TeamMemberInfo selectMemberInfo(@Param("userSkuId") Integer userSkuId);
+
+
+    List<PfUserSku> selectPrimarySkuByUserId(Long userId);
+
+    Integer selectGTLastLevelNumByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据userId和品牌id查询下级id
+     *
+     * @param userId
+     * @param brandId
+     * @return
+     */
+    List<Long> selectChildsByUserIdAndBrandId(@Param("userId")Long userId, @Param("brandId") Integer brandId);
 }

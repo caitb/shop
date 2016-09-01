@@ -76,7 +76,7 @@ public class SfUserAccountService {
         return sfUserAccountMapper.selectByUserId(userId);
     }
 
-    public int updateByIdAndVersion(SfUserAccount userAccount){
+    public int updateByIdAndVersion(SfUserAccount userAccount) {
         return sfUserAccountMapper.updateByIdAndVersion(userAccount);
     }
 
@@ -120,7 +120,7 @@ public class SfUserAccountService {
                     || order.getPayStatus() != 1) {
                 log.error("订单状态不匹配,订单不是" + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
                 throw new BusinessException("订单状态不匹配,订单不是"
-                          + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态" + ",sf_order_id:" + order.getId());
+                        + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态" + ",sf_order_id:" + order.getId());
             }
             if(order.getReceivableAmount().compareTo(BigDecimal.ZERO) < 0){
                 log.error("应收金额小于0,错误");
@@ -158,7 +158,7 @@ public class SfUserAccountService {
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
             // 计算物流费用
-            if(order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0){
+            if (order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0) {
                 /*SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, order.getAgentShipAmount(), 3);
                 shopBillItemMapper.insert(shipbillItem);*/
                 // 减去代理商承担的运费
@@ -168,20 +168,6 @@ public class SfUserAccountService {
             // 插入店主sf_shop_bill_item
             SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 1);
             shopBillItemMapper.insert(billItem);
-
-            // 计算订单结算中金额计入到account中
-            ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
-                    UserAccountRecordFeeType.SF_AddCountingFee.getCode(), comUserAccount);
-            countRecord.setPrevFee(comUserAccount.getCountingFee());
-            comUserAccount.setCountingFee(comUserAccount.getCountingFee().add(countFee));
-            countRecord.setNextFee(comUserAccount.getCountingFee());
-
-            // 计算店主此次总销售额(利润和运费也算销售额)
-            ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
-                    UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
-            pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
-            pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
             log.info("小铺店主的结算中增加金额:" + countFee);
             log.info("小铺店主的总销售额增加金额:" + order.getPayAmount());
@@ -214,13 +200,6 @@ public class SfUserAccountService {
             if (profit.compareTo(BigDecimal.ZERO) < 0) {
                 throw new BusinessException("店主此订单利润小于0,异常!");
             }
-            // 计算店主此次总利润
-            ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,
-                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), comUserAccount);
-            // 设置店主总利润
-            pfprofitRecord.setPrevFee(comUserAccount.getProfitFee());
-            comUserAccount.setProfitFee(comUserAccount.getProfitFee().add(profit));
-            pfprofitRecord.setNextFee(comUserAccount.getProfitFee());
 
             log.info("小铺店主总利润增加:" + profit);
 
@@ -228,10 +207,6 @@ public class SfUserAccountService {
             if (res != 1) {
                 throw new BusinessException("小铺店主account修改失败!");
             }
-            // 插入变动记录
-            //comUserAccountRecordMapper.insert(countRecord);
-            comUserAccountRecordMapper.insert(pfIncomeRecord);
-            comUserAccountRecordMapper.insert(pfprofitRecord);
 
             log.info("计算小铺订单分润");
 

@@ -285,6 +285,7 @@ public class ProductController extends BaseController {
             pfUserAgentApplication.setSkuId(skuId);
             pfUserAgentApplication.setStatus(0);
             pfUserAgentApplication.setRemark("");
+            pfUserAgentApplication.setAgentLevelId(0);
             pfUserAgentApplicationService.addApplicationUser(pfUserAgentApplication);
             object.put("isError", false);
         }catch (Exception ex){
@@ -305,8 +306,8 @@ public class ProductController extends BaseController {
     public String isBindedPhone(@RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
         try {
-            PfUserAgentApplication pfUserAgentApplication = pfUserAgentApplicationService.getPfUserAgentApplicationByPhone(phone);
-            if (pfUserAgentApplication != null) {
+            List<PfUserAgentApplication> pfUserAgentApplication = pfUserAgentApplicationService.getPfUserAgentApplicationByPhone(phone);
+            if (pfUserAgentApplication != null && pfUserAgentApplication.size()>0) {
                 obj.put("isError", true);
                 obj.put("isBinded", true);
                 obj.put("msg", "手机号已经被绑定请更换手机号");

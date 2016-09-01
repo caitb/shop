@@ -232,8 +232,8 @@ public class SfOrderPurchaseService {
                 return -2L; //购物车清空了，微信上返回获取不到购物车数据
             }
             //判断商品是否有足够的库存
-            //if (isEnoughStock(sfShopCartSkuDetails)) {
-            if (true) {
+            if (isEnoughStock(sfShopCartSkuDetails)) {
+            //if (true) {
                 //初始化全局数据
                 initData();
                 //获得每款商品的分润信息
@@ -640,7 +640,7 @@ public class SfOrderPurchaseService {
         if (sfUserRelation != null) {
             sfUserRelationList.add(sfUserRelation);
         }
-        if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 3) {
+        if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 2) {
             getSfUserRelation(shopId,sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
         }
         log.info("关系----start");

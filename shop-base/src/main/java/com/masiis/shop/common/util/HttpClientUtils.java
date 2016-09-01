@@ -1,6 +1,7 @@
 package com.masiis.shop.common.util;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -37,7 +38,7 @@ public class HttpClientUtils {
                 //解决中文乱码问题
                 StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");
                 entity.setContentEncoding("UTF-8");
-                entity.setContentType("application/json");
+                entity.setContentType("application/json;charset=utf-8");
                 method.setEntity(entity);
             }
             HttpResponse result = httpClient.execute(method);
@@ -48,6 +49,20 @@ public class HttpClientUtils {
                 try {
                     /**读取服务器返回过来的json字符串数据**/
                     res = EntityUtils.toString(result.getEntity());
+                    String contentType = result.getHeaders("Content-Type")[0].getValue();
+                    logger.info("Content-Type:" + contentType);
+                    if(contentType.contains("UTF-8") || contentType.contains("utf-8")){
+                        // UTF-8的不用解析
+                    } else if(contentType.contains("GBK") || contentType.contains("gbk")){
+                        res = new String(res.getBytes("GBK"), "UTF-8");
+                    } else if(contentType.contains("ISO-8859-1") || contentType.contains("iso-8859-1")) {
+                        res = new String(res.getBytes("ISO-8859-1"), "UTF-8");
+                    } else if(contentType.contains("gb2312") || contentType.contains("GB2312")) {
+                        res = new String(res.getBytes("gb2312"), "UTF-8");
+                    } else {
+                        res = new String(res.getBytes("ISO-8859-1"), "UTF-8");
+                    }
+                    logger.info("请求res:" + res);
                 } catch (Exception e) {
                     logger.error("post请求提交失败:" + url, e);
                 }

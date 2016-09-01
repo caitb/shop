@@ -64,6 +64,14 @@
         where bank_card = #{bankCard,jdbcType=VARCHAR}
         AND card_owner_name = #{cardOwnerName,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectByBankcardAndCardUserId" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComUserExtractwayInfo">
+        select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id,
+        extract_way, is_default, is_enable, created_time, changed_time, changed_by
+        from com_user_extractway_info
+        where bank_card = #{bankCard}
+        AND com_user_id = #{comUserId}
+    </select>
     
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id, 
@@ -76,6 +84,7 @@
         extract_way, card_img, is_default, is_enable, created_time, changed_time, changed_by
         from com_user_extractway_info
         WHERE com_user_id = #{comUserId,jdbcType=BIGINT}
+        ORDER BY is_default asc, created_time desc
     </select>
 
     <select id="selectDefault" resultMap="BaseResultMap" parameterType="java.lang.Long">

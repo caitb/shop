@@ -27,4 +27,13 @@ public class WxConsAPP {
      * APP支付异步回调地址
      */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = WxPropertiesUtils.getStringValue("wx.conf.app.WX_PAY_URL_UNIORDER_NOTIFY");;
+
+    /**
+     * 微信支付交易类型:APP支付为APP
+     */
+    public static final String WX_PAY_TRADE_TYPE = "APP";
+    /**
+     * 统一下单url
+     */
+    public static final String WX_PAY_URL_UNIORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 }

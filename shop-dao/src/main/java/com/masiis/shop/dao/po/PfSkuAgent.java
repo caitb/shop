@@ -54,114 +54,98 @@ public class PfSkuAgent {
      */
     private Integer isUpgrade;
     /**
-     * 推荐奖励单价
+     * 推荐人奖励单价
      */
     private BigDecimal rewardUnitPrice;
+    /**
+     * 招募小白上限数量
+     */
+    private Integer freemanUpperNum;
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Integer getSkuId() {
         return skuId;
     }
-
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
-
     public Integer getAgentLevelId() {
         return agentLevelId;
     }
-
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
-
     public String getIcon() {
         return icon;
     }
-
     public void setIcon(String icon) {
-        this.icon = icon;
+        this.icon = icon == null ? null : icon.trim();
     }
-
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
-
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-
     public Integer getQuantity() {
         return quantity;
     }
-
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
-
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
-
     public BigDecimal getBail() {
         return bail;
     }
-
     public void setBail(BigDecimal bail) {
         this.bail = bail;
     }
-
     public String getBackImg() {
         return backImg;
     }
-
     public void setBackImg(String backImg) {
-        this.backImg = backImg;
+        this.backImg = backImg == null ? null : backImg.trim();
     }
-
     public Integer getIsShow() {
         return isShow;
     }
-
     public void setIsShow(Integer isShow) {
         this.isShow = isShow;
     }
-
     public String getRemark() {
         return remark;
     }
-
     public void setRemark(String remark) {
-        this.remark = remark;
+        this.remark = remark == null ? null : remark.trim();
     }
-
     public Integer getIsUpgrade() {
         return isUpgrade;
     }
-
     public void setIsUpgrade(Integer isUpgrade) {
         this.isUpgrade = isUpgrade;
     }
-
     public BigDecimal getRewardUnitPrice() {
         return rewardUnitPrice;
     }
-
     public void setRewardUnitPrice(BigDecimal rewardUnitPrice) {
         this.rewardUnitPrice = rewardUnitPrice;
     }
-
+    public Integer getFreemanUpperNum() {
+        return freemanUpperNum;
+    }
+    public void setFreemanUpperNum(Integer freemanUpperNum) {
+        this.freemanUpperNum = freemanUpperNum;
+    }
     @Override
     public String toString() {
         return "PfSkuAgent{" +

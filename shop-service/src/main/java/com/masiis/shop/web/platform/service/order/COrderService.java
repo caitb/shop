@@ -56,6 +56,26 @@ public class COrderService {
     List<PfCorder> existTrilPfCorder = null;
 
     /**
+     * 根据订单id获取订单详情
+     * @author hanzengzhi
+     * @date 2016/5/25 15:46
+     */
+    public Map<String, Object> getOrderDetail(Long corderId){
+        Map<String, Object> pfCorderMap = new HashMap<String, Object>();
+        PfCorder pfCorder = queryPfCorderById(corderId);
+        PfCorderConsignee corderConsignee = null;
+        Product product = null;
+        if (pfCorder != null){
+            corderConsignee = pfCorderConsigneeService.getOrdConByOrdId(corderId);
+            product = getProductDetail(pfCorder.getSkuId());
+            pfCorderMap.put("corderConsignee",corderConsignee);
+            pfCorderMap.put("product",product);
+        }
+        pfCorderMap.put("pfCorder",pfCorder);
+        return pfCorderMap;
+    }
+
+    /**
      * 确认订单
      * @author hanzengzhi
      * @date 2016/3/8 14:55
@@ -405,4 +425,5 @@ public class COrderService {
         PfCorder pfCorder = pfCorderService.getPfCorderById(id);
         return pfCorder;
     }
+
 }

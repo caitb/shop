@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.service.product;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
@@ -9,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/4.
@@ -69,6 +73,51 @@ public class SkuAgentService {
      */
     public List<PfSkuAgent> getSkuLevelIconByUserId(Long userId){
         return pfSkuAgentMapper.getSkuLevelIconByUserId(userId);
+    }
+
+    /**
+     * 分页列表
+     * @param pageNumber
+     * @param pageSize
+     * @param sortName
+     * @param sortOrder
+     * @param conditionMap
+     * @return
+     */
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+        String sort = "sa.sku_id asc, sa.agent_level_id asc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String, Object>> skuAgents = pfSkuAgentMapper.selectByCondition(conditionMap);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(skuAgents);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", skuAgents);
+
+        return pageMap;
+    }
+
+    /**
+     * 保存
+     * @param pfSkuAgent
+     */
+    public void save(PfSkuAgent pfSkuAgent){
+        if(pfSkuAgent == null) return;
+
+        if(pfSkuAgent.getId() != null){
+            pfSkuAgentMapper.updateByPrimaryKey(pfSkuAgent);
+        }else{
+            pfSkuAgentMapper.insert(pfSkuAgent);
+        }
+    }
+
+    public PfSkuAgent findBySkuIdAndLevelId(Integer skuId, Integer levelId){
+        return pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
+    }
+
+    public PfSkuAgent loadById(Integer id){
+        return pfSkuAgentMapper.selectByPrimaryKey(id);
     }
 
 }

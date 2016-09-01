@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.certificate.ComBrandCertificateMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComBrandCertificate" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="brand_id" property="brandId" jdbcType="INTEGER" />
+        <id column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="backimg_url" property="backimgUrl" jdbcType="VARCHAR" />
+        <result column="certificate_code_x" property="certificateCodeX" jdbcType="INTEGER" />
+        <result column="certificate_code_y" property="certificateCodeY" jdbcType="INTEGER" />
+        <result column="certificate_data_x" property="certificateDataX" jdbcType="INTEGER" />
+        <result column="certificate_data_y" property="certificateDataY" jdbcType="INTEGER" />
+        <result column="level_name_x" property="levelNameX" jdbcType="INTEGER" />
+        <result column="level_name_y" property="levelNameY" jdbcType="INTEGER" />
+        <result column="sku_name_x" property="skuNameX" jdbcType="INTEGER" />
+        <result column="sku_name_y" property="skuNameY" jdbcType="INTEGER" />
+        <result column="sku_ename_x" property="skuEnameX" jdbcType="INTEGER" />
+        <result column="sku_ename_y" property="skuEnameY" jdbcType="INTEGER" />
+        <result column="user_realname_x" property="userRealnameX" jdbcType="INTEGER" />
+        <result column="user_realname_y" property="userRealnameY" jdbcType="INTEGER" />
+        <result column="user_idcard_x" property="userIdcardX" jdbcType="INTEGER" />
+        <result column="user_idcard_y" property="userIdcardY" jdbcType="INTEGER" />
+        <result column="user_mobile_x" property="userMobileX" jdbcType="INTEGER" />
+        <result column="user_mobile_y" property="userMobileY" jdbcType="INTEGER" />
+        <result column="user_wxid_x" property="userWxidX" jdbcType="INTEGER" />
+        <result column="user_wxid_y" property="userWxidY" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from com_brand_certificate
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComBrandCertificate" >
+        insert into com_brand_certificate (id, brand_id, agent_level_id, 
+            create_time, create_man, backimg_url, 
+            certificate_code_x, certificate_code_y, certificate_data_x, 
+            certificate_data_y, level_name_x, level_name_y, 
+            sku_name_x, sku_name_y, sku_ename_x, 
+            sku_ename_y, user_realname_x, user_realname_y, 
+            user_idcard_x, user_idcard_y, user_mobile_x, 
+            user_mobile_y, user_wxid_x, user_wxid_y, 
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{brandId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, #{backimgUrl,jdbcType=VARCHAR}, 
+            #{certificateCodeX,jdbcType=INTEGER}, #{certificateCodeY,jdbcType=INTEGER}, #{certificateDataX,jdbcType=INTEGER}, 
+            #{certificateDataY,jdbcType=INTEGER}, #{levelNameX,jdbcType=INTEGER}, #{levelNameY,jdbcType=INTEGER}, 
+            #{skuNameX,jdbcType=INTEGER}, #{skuNameY,jdbcType=INTEGER}, #{skuEnameX,jdbcType=INTEGER}, 
+            #{skuEnameY,jdbcType=INTEGER}, #{userRealnameX,jdbcType=INTEGER}, #{userRealnameY,jdbcType=INTEGER}, 
+            #{userIdcardX,jdbcType=INTEGER}, #{userIdcardY,jdbcType=INTEGER}, #{userMobileX,jdbcType=INTEGER}, 
+            #{userMobileY,jdbcType=INTEGER}, #{userWxidX,jdbcType=INTEGER}, #{userWxidY,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComBrandCertificate" >
+        update com_brand_certificate
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            backimg_url = #{backimgUrl,jdbcType=VARCHAR},
+            certificate_code_x = #{certificateCodeX,jdbcType=INTEGER},
+            certificate_code_y = #{certificateCodeY,jdbcType=INTEGER},
+            certificate_data_x = #{certificateDataX,jdbcType=INTEGER},
+            certificate_data_y = #{certificateDataY,jdbcType=INTEGER},
+            level_name_x = #{levelNameX,jdbcType=INTEGER},
+            level_name_y = #{levelNameY,jdbcType=INTEGER},
+            sku_name_x = #{skuNameX,jdbcType=INTEGER},
+            sku_name_y = #{skuNameY,jdbcType=INTEGER},
+            sku_ename_x = #{skuEnameX,jdbcType=INTEGER},
+            sku_ename_y = #{skuEnameY,jdbcType=INTEGER},
+            user_realname_x = #{userRealnameX,jdbcType=INTEGER},
+            user_realname_y = #{userRealnameY,jdbcType=INTEGER},
+            user_idcard_x = #{userIdcardX,jdbcType=INTEGER},
+            user_idcard_y = #{userIdcardY,jdbcType=INTEGER},
+            user_mobile_x = #{userMobileX,jdbcType=INTEGER},
+            user_mobile_y = #{userMobileY,jdbcType=INTEGER},
+            user_wxid_x = #{userWxidX,jdbcType=INTEGER},
+            user_wxid_y = #{userWxidY,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and brand_id = #{brandId,jdbcType=INTEGER}
+          and agent_level_id = #{agentLevelId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+        select id, brand_id, agent_level_id, create_time, create_man, backimg_url, certificate_code_x, 
+        certificate_code_y, certificate_data_x, certificate_data_y, level_name_x, level_name_y, 
+        sku_name_x, sku_name_y, sku_ename_x, sku_ename_y, user_realname_x, user_realname_y, 
+        user_idcard_x, user_idcard_y, user_mobile_x, user_mobile_y, user_wxid_x, user_wxid_y, 
+        remark
+        from com_brand_certificate
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getBrandCertificateByBrandIdAndLevelId" resultMap="BaseResultMap" parameterType="map" >
+        select id, brand_id, agent_level_id, create_time, create_man, backimg_url, certificate_code_x,
+        certificate_code_y, certificate_data_x, certificate_data_y, level_name_x, level_name_y,
+        sku_name_x, sku_name_y, sku_ename_x, sku_ename_y, user_realname_x, user_realname_y,
+        user_idcard_x, user_idcard_y, user_mobile_x, user_mobile_y, user_wxid_x, user_wxid_y,
+        remark
+        from com_brand_certificate
+        where brand_id = #{brandId,jdbcType=INTEGER}
+          and agent_level_id = #{agentLevelId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, brand_id, agent_level_id, create_time, create_man, backimg_url, certificate_code_x, 
+        certificate_code_y, certificate_data_x, certificate_data_y, level_name_x, level_name_y, 
+        sku_name_x, sku_name_y, sku_ename_x, sku_ename_y, user_realname_x, user_realname_y, 
+        user_idcard_x, user_idcard_y, user_mobile_x, user_mobile_y, user_wxid_x, user_wxid_y, 
+        remark
+        from com_brand_certificate
+    </select>
+
+</mapper>

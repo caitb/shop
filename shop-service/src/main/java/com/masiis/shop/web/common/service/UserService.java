@@ -341,13 +341,17 @@ public class UserService {
         user.setWxHeadImg(userRes.getHeadimgurl());
     }
 
-    private ComUser createComUser(WxUserInfo userRes) {
+    public ComUser createComUser(WxUserInfo userRes) {
         ComUser user = new ComUser();
 
-        user.setWxNkName(EmojiUtils.removeNonBmpUnicode(userRes.getNickname()));
-        user.setWxHeadImg(userRes.getHeadimgurl());
+        if(userRes != null) {
+            user.setWxNkName(EmojiUtils.removeNonBmpUnicode(userRes.getNickname()));
+            user.setRealName(user.getWxNkName());
+            user.setWxHeadImg(userRes.getHeadimgurl());
+            user.setSex(StringUtils.isBlank(userRes.getSex()) ? 0 : Integer.valueOf(userRes.getSex()));
+            user.setWxUnionid(userRes.getUnionid());
+        }
         user.setCreateTime(new Date());
-        user.setWxUnionid(userRes.getUnionid());
         user.setIsAgent(0);
         user.setIsBinding(0);
         user.setAuditStatus(0);
@@ -444,5 +448,13 @@ public class UserService {
 
     public List<ComUser> findAll() {
         return comUserMapper.selectAll();
+    }
+
+    @Transactional
+    public void insertComUserWithAccount(ComUser user) {
+        comUserMapper.insert(user);
+        accountService.createAccountByUser(user);
+        sfAccountService.createSfAccountByUser(user);
+        sfUserStatisticsService.initSfUserStatistics(user);
     }
 }

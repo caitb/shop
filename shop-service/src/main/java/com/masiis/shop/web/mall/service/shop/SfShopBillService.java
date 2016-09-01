@@ -80,15 +80,6 @@ public class SfShopBillService {
             bill.setStatus(1);
             // 修改account账户结算额和可提现额
             ComUserAccount account = accountMapper.findByUserId(pa.getUserId());
-            ComUserAccountRecord record = createAccountRecord(account, bill, UserAccountRecordFeeType.SFSHOP_COUNTING_SUB.getCode());
-            record.setUserAccountId(account.getId());
-            // 修改结算
-            log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
-            record.setPrevFee(account.getCountingFee());
-            account.setCountingFee(account.getCountingFee().subtract(bill.getCountAmount()));
-            log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
-            record.setNextFee(account.getCountingFee());
-            recordMapper.insert(record);
             // 修改可提现
             ComUserAccountRecord recordEx = createAccountRecord(account, bill, UserAccountRecordFeeType.SFSHOP_EXTRACTABLE_ADD.getCode());
             log.info("修改账户的可提现金额,之前可提现金额是:" + account.getExtractableFee());

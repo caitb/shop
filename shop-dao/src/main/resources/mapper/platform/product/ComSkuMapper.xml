@@ -5,7 +5,6 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="alias" property="alias" jdbcType="VARCHAR" />
-        <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
         <result column="e_name" property="eName" jdbcType="VARCHAR" />
         <result column="icon" property="icon" jdbcType="VARCHAR" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
@@ -18,6 +17,7 @@
         <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
         <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="cname" property="cName" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -29,7 +29,6 @@
         set
             name = #{name,jdbcType=VARCHAR},
             alias = #{alias,jdbcType=VARCHAR},
-            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
             e_name = #{eName,jdbcType=VARCHAR},
             icon = #{icon,jdbcType=VARCHAR},
             spu_id = #{spuId,jdbcType=INTEGER},
@@ -46,20 +45,20 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, alias, reward_unit_price, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{id,jdbcType=INTEGER}
     </select>
     <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, alias, reward_unit_price, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{skuId,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, name, alias, reward_unit_price, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
     </select>
@@ -80,7 +79,6 @@
                id,
                name,
                alias,
-               reward_unit_price,
                e_name,
                icon,
                spu_id,
@@ -105,7 +103,6 @@
                id,
                name,
                alias,
-               reward_unit_price,
                e_name,
                icon,
                spu_id,
@@ -146,7 +143,6 @@
                 id,
                 name,
                 alias,
-                reward_unit_price,
                 e_name,
                 icon,
                 spu_id,
@@ -164,7 +160,6 @@
                 #{id,jdbcType=INTEGER},
                 #{name,jdbcType=VARCHAR},
                 #{alias,jdbcType=VARCHAR},
-                #{rewardUnitPrice,jdbcType=DECIMAL},
                 #{eName,jdbcType=VARCHAR},
                 #{icon,jdbcType=VARCHAR},
                 #{spuId,jdbcType=INTEGER},
@@ -226,9 +221,6 @@
             <if test="remark != null">
             remark = #{remark},
             </if>
-            <if test="rewardUnitPrice != null">
-            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
-            </if>
         </set>
         WHERE
                id = #{id}
@@ -239,4 +231,78 @@
         DELETE FROM com_sku WHERE id = #{id}
     </delete>
 
+    <select id="getSkuListByBrandId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT sku.id, sku.name, sku.alias, sku.e_name, sku.icon, sku.spu_id, sku.create_time, sku.create_man, sku.modify_time, sku.modify_man, sku.bar_code,
+                sku.price_cost, sku.price_market, sku.price_retail, sku.remark
+        FROM com_sku sku
+        INNER JOIN com_spu spu ON spu.id = sku.spu_id
+        where EXISTS (SELECT 0 from com_brand b WHERE b.id = spu.brand_id AND b.id = #{brandId})
+        AND spu.is_delete=0 AND spu.is_sale=1 and spu.type =1
+    </select>
+
+
+    <select id="getProductsByUserNotAgent" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT sku.id, sku.name, sku.alias, sku.e_name, sku.icon, sku.spu_id, sku.create_time, sku.create_man, sku.modify_time, sku.modify_man, sku.bar_code,
+                sku.price_cost, sku.price_market, sku.price_retail, sku.remark,b.cname
+        FROM
+        pf_user_brand brand
+        INNER JOIN com_spu spu ON spu.brand_id = brand.brand_id
+        INNER JOIN com_sku sku ON sku.spu_id = spu.id
+        LEFT JOIN  com_brand b ON b.id = brand.brand_id
+        WHERE spu.is_sale = 1
+        AND spu.is_delete = 0
+        AND spu.TYPE = 1
+        AND NOT EXISTS (SELECT 0 FROM pf_user_sku WHERE user_id = brand.user_id AND sku.id = sku_id)
+        AND brand.user_id = #{userId}
+    </select>
+
+    <select id="selectMainByBrandId" resultMap="BaseResultMap" parameterType="Integer">
+        SELECT
+               sku.id,
+               sku.name,
+               sku.alias,
+               sku.e_name,
+               sku.icon,
+               sku.spu_id,
+               sku.create_time,
+               sku.create_man,
+               sku.modify_time,
+               sku.modify_man,
+               sku.bar_code,
+               sku.price_cost,
+               sku.price_market,
+               sku.price_retail,
+               sku.remark
+        FROM
+                   com_sku sku
+        RIGHT JOIN com_spu spu ON spu.id = sku.spu_id
+        WHERE
+               spu.brand_id = #{brandId}
+    </select>
+
+    <select id="getPrimarySkuByBrandId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT sku.id, sku.name, sku.alias, sku.e_name, sku.icon, sku.spu_id, sku.create_time, sku.create_man, sku.modify_time, sku.modify_man, sku.bar_code,
+        sku.price_cost, sku.price_market, sku.price_retail, sku.remark
+        from com_brand b
+        INNER JOIN com_spu spu ON spu.brand_id = b.id
+        INNER JOIN com_sku sku ON sku.spu_id = spu.id
+        WHERE spu.is_sale=1 AND spu.is_delete=0 AND spu.TYPE=0
+        AND b.id = #{brandId}
+    </select>
+
+
+    <select id="getProductsByUserNotAgentForBoss" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT sku.id, sku.name, sku.alias, sku.e_name, sku.icon, sku.spu_id, sku.create_time, sku.create_man, sku.modify_time, sku.modify_man, sku.bar_code,
+        sku.price_cost, sku.price_market, sku.price_retail, sku.remark,b.cname
+        FROM
+        pf_user_brand brand
+        INNER JOIN com_spu spu ON spu.brand_id = brand.brand_id
+        INNER JOIN com_sku sku ON sku.spu_id = spu.id
+        LEFT JOIN  com_brand b ON b.id = brand.brand_id
+        WHERE spu.is_sale = 1
+        AND spu.is_delete = 0
+        AND spu.TYPE = 1
+        AND NOT EXISTS (SELECT 0 FROM pf_user_sku WHERE user_id = brand.user_id AND sku.id = sku_id)
+        AND brand.user_id = #{userId}
+    </select>
 </mapper>

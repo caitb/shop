@@ -1,8 +1,7 @@
 package com.masiis.shop.admin.service.order;
 
-import com.masiis.shop.admin.service.product.PfSkuStockService;
-import com.masiis.shop.admin.service.product.PfUserSkuStockService;
-import com.masiis.shop.admin.service.product.SkuAgentService;
+import com.masiis.shop.admin.service.product.*;
+import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.shop.SfShopSkuService;
@@ -14,6 +13,7 @@ import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.RootPathUtils;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -46,8 +46,6 @@ public class BUpgradePayService {
     private PfUserSkuService pfUserSkuService;
     @Resource
     private PfUserCertificateService pfUserCertificateService;
-    @Resource
-    private BOrderPayService bOrderPayService;
     @Resource
     private ComUserService comUserService;
     @Resource
@@ -84,8 +82,13 @@ public class BUpgradePayService {
     private SfUserTurnTableService userTurnTableService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SpuService spuService;
+    @Resource
+    private BOrderShipService bOrderShipService;
 
-    public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
+        String rootPath = RootPathUtils.getRootPath();
         //修改订单支付
         log.info("更新订单支付表------start");
         updatePfBorderPayment(pfBorderPayment, outOrderId);
@@ -100,12 +103,15 @@ public class BUpgradePayService {
         log.info("插入订单操作日志------start");
         insertOrderOperationLog(pfBorder);
         log.info("插入订单操作日志------end");
+        log.info("v1.4.2 修改推荐关系--------------start");//已改
+        updatePfUserRecommenRelation(pfBorder, pfBorderItems);
+        log.info("v1.4.2 修改推荐关系--------------end");
         //修改证书和插入证书历史表
-        log.info("修改证书插入历史-----start");
+        log.info("修改证书插入历史-----start");  //已改
         inserHistoryAndUpdatePfUserCertificate(pfBorder.getUserId(), pfBorderItems, null, rootPath);
         log.info("修改证书插入历史-----end");
         //修改上下级绑定关系和插入历史表
-        log.info("修改上下级关系插入历史-------start");
+        log.info("修改上下级关系插入历史-------start"); //已改
         inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
         log.info("修改上下级关系插入历史-------end");
         log.info("v1.4.2 修改推荐关系--------------start");
@@ -124,7 +130,7 @@ public class BUpgradePayService {
         insertUserRebate(pfBorder, pfBorderItems, pfUserUpgradeNotice);
         log.info("插入一次性奖励----end");
         //修改小铺商品信息
-        log.info("修改小铺商品信息----start");
+        log.info("修改小铺商品信息----start");// 已改
         updateSfShopSku(pfBorder.getUserId(), pfBorderItems);
         log.info("修改小铺商品信息----end");
         //修改用户账户
@@ -147,8 +153,68 @@ public class BUpgradePayService {
         } else {
             log.info("没有处理平台发货类型订单-----pfBorder.getSendType()======" + pfBorder.getSendType() + "------pfBorder.getOrderStatus()====" + pfBorder.getOrderStatus());
         }
+        //非主打商品的升级
+        log.info("非主打商品的品牌下的商品升级---------start");
+        skipNoBrandSkuUpgrade(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorderItems);
+        log.info("非主打商品的品牌下的商品升级---------end");
+    }
 
+    private void skipNoBrandSkuUpgrade(Long userId, Long userPid, List<PfBorderItem> pfBorderItems) {
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            Integer agentLevelId = pfBorderItem.getAgentLevelId();
+            log.info("升级后的等级-------------" + agentLevelId);
+            ComSpu comSpu = spuService.selectBrandBySkuId(pfBorderItem.getSkuId());
+            if (comSpu != null) {
+                log.info("品牌id-----------" + comSpu.getBrandId());
+                List<ComSku> comSkus = skuService.getNoMainSkuByBrandId(comSpu.getBrandId());
+                for (ComSku comSku : comSkus) {
+                    log.info("主打商品的品牌下有非主打商品----skuId----" + comSku.getId());
+                    PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
+                    if (pfSkuAgent != null) {
+                        BigDecimal bailAmount = pfSkuAgent.getBail();
+                        log.info("保证金-----" + bailAmount.toString());
+                        noMainBrandSkuUpgrade(userId, userPid, comSku.getId(), bailAmount, agentLevelId, comSpu.getId());
+                    }
+                }
+            } else {
+                log.info("主打商品的品牌下无非主打商品----主打商品skuId----" + pfBorderItem.getSkuId());
+            }
+        }
+    }
 
+    /**
+     * 非主打商品的升级
+     *
+     * @param userId
+     * @param userPid
+     * @param skuId
+     * @param bailAmount
+     * @param agentLevelId
+     * @param spuId
+     */
+    private void noMainBrandSkuUpgrade(Long userId,
+                                       Long userPid,
+                                       Integer skuId,
+                                       BigDecimal bailAmount,
+                                       Integer agentLevelId,
+                                       Integer spuId) {
+        String rootPath = RootPathUtils.getRootPath();
+        //修改推荐关系
+        log.info("修改推荐关系-----start");
+        updatePfUserRecommenRelationAtom(userId, skuId, null);
+        log.info("修改推荐关系-----end");
+        //修改证书和插入证书历史表
+        log.info("修改证书和插入证书历史表-----start");
+        inserHistoryAndUpdatePfUserCertificateAutom(userId, skuId, agentLevelId, spuId, rootPath);
+        log.info("修改证书和插入证书历史表-----end");
+        //修改上下级绑定关系和插入历史表
+        log.info("修改上下级绑定关系和插入历史表-----start");
+        inserHistoryAndUpdatePfUserSkuAtom(userId, userPid, skuId, null, agentLevelId);
+        log.info("修改上下级绑定关系和插入历史表-----end");
+        //修改小铺商品信息
+        log.info("修改小铺商品信息-------start");
+        updateSfShopSkuAtom(userId, skuId, agentLevelId, bailAmount);
+        log.info("修改小铺商品信息-------end");
     }
 
     /**
@@ -159,50 +225,73 @@ public class BUpgradePayService {
      */
     private void updatePfUserRecommenRelation(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
-            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
-            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-            if (pfBorderRecommenReward != null) {
-                PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorderRecommenReward.getRecommenUserId(), pfBorderItem.getSkuId());
-                if (pfUserRecommenRelation == null) {
-                    pfUserRecommenRelation = new PfUserRecommenRelation();
-                    pfUserRecommenRelation.setCreateTime(new Date());
-                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
-                    pfUserRecommenRelation.setUserId(pfBorder.getUserId());
-                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
-                    pfUserRecommenRelation.setSkuId(pfBorderItem.getSkuId());
-                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
-                    pfUserRecommenRelation.setTreeCode("");
-                    pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
-                    pfUserRecommenRelation.setRemark("绑定合伙人推荐关系");
-                    pfUserRecommendRelationService.insert(pfUserRecommenRelation);
-                    String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
-                    if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
-                        throw new BusinessException("treeCode修改失败");
-                    }
+            updatePfUserRecommenRelationAtom(pfBorder.getUserId(), pfBorderItem.getSkuId(), pfBorder.getId());
+        }
+    }
+
+    /**
+     * 更新推荐关系原子操作
+     *
+     * @param userId
+     * @param skuId
+     * @param pfBorderId
+     */
+    private void updatePfUserRecommenRelationAtom(Long userId, Integer skuId, Long pfBorderId) {
+        log.info("更新推荐关系原子操作----参数----userId----" + userId + "----skuId----" + skuId + "----pfBorderId-----" + pfBorderId);
+        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, skuId);
+        PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfUserRecommenRelation.getUserPid(), skuId);
+        if (pfUserRecommenRelation == null) {
+            log.info("-------推荐关系不存在插入--------");
+            pfUserRecommenRelation = new PfUserRecommenRelation();
+            pfUserRecommenRelation.setCreateTime(new Date());
+            pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+            pfUserRecommenRelation.setUserId(userId);
+            pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+            pfUserRecommenRelation.setSkuId(skuId);
+            pfUserRecommenRelation.setPfBorderId(pfBorderId);
+            pfUserRecommenRelation.setTreeCode("");
+            pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
+            if (pfBorderId != null) {
+                pfUserRecommenRelation.setRemark("主打商品绑定合伙人推荐关系");
+            } else {
+                pfUserRecommenRelation.setRemark("不是主打商品绑定合伙人推荐关系");
+            }
+            pfUserRecommendRelationService.insert(pfUserRecommenRelation);
+            String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
+            if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+                throw new BusinessException("主打商品----treeCode修改失败");
+            }
+        } else {
+            log.info("-------推荐关系存在更新--------");
+            if (parentPfUserRecommenRelation!=null){
+                pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+                pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+                pfUserRecommenRelation.setPfBorderId(pfBorderId);
+                if (pfBorderId != null) {
+                    pfUserRecommenRelation.setRemark("主打商品修改合伙人推荐关系");
                 } else {
-                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
-                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
-                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
-                    pfUserRecommenRelation.setRemark("修改合伙人推荐关系");
-                    int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
-                    if (i <= 0) {
-                        throw new BusinessException("推荐关系树结构修改失败");
-                    }
-                    Integer id = pfUserRecommenRelation.getId();
-                    String treeCode = "," + pfUserRecommenRelation.getTreeCode();
-                    String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
-                    Integer id_index = treeCode.indexOf("," + id + ",") + 1;
-                    Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
-                    log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
-                    log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
-                    log.info("id_index-----" + id_index);
-                    log.info("treeLevel-----" + treeLevel);
-                    i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
-                    if (i <= 0) {
-                        log.info("推荐关系树结构修改失败");
-                        throw new BusinessException("推荐关系树结构修改失败");
-                    }
+                    pfUserRecommenRelation.setRemark("不是主打商品修改合伙人推荐关系");
                 }
+                int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
+                if (i <= 0) {
+                    throw new BusinessException("推荐关系树结构修改失败");
+                }
+                Integer id = pfUserRecommenRelation.getId();
+                String treeCode = "," + pfUserRecommenRelation.getTreeCode();
+                String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
+                Integer id_index = treeCode.indexOf("," + id + ",") + 1;
+                Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
+                log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
+                log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
+                log.info("id_index-----" + id_index);
+                log.info("treeLevel-----" + treeLevel);
+                i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
+                if (i <= 0) {
+                    log.info("推荐关系树结构修改失败");
+                    throw new BusinessException("推荐关系树结构修改失败");
+                }
+            }else {
+                log.info("-----更新推荐关系，上级为平台，不做任何操作--------");
             }
         }
     }
@@ -271,38 +360,49 @@ public class BUpgradePayService {
      */
     private void inserHistoryAndUpdatePfUserSku(Long userId, Long userPid, Long borderId, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem orderItem : pfBorderItems) {
-            log.info("修改商品的的代理关系-----userId---" + userId + "----skuId----" + orderItem.getSkuId());
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, orderItem.getSkuId());
-            int i = insertUserSkuHistory(pfUserSku);
-            if (i == 1) {
-                log.info("插入商品历史表成功----修改商品关系---start");
-                int _i = updatePfUserSku(userPid, borderId, orderItem, pfUserSku);
-                if (_i == 1) {
-                    log.info("插入商品历史表成功----修改商品关系---end");
-                } else {
-                    log.info("插入商品历史表成功----修改商品关系---失败");
-                }
-            } else {
-                log.info("插入商品历史表成功----失败");
-                throw new BusinessException("");
-            }
+            inserHistoryAndUpdatePfUserSkuAtom(userId, userPid, orderItem.getSkuId(), orderItem.getPfBorderId(), orderItem.getAgentLevelId());
         }
     }
 
+    /**
+     * 修改商品的代理关系 原子操作
+     *
+     * @param userId
+     * @param userPid
+     * @param skuId
+     * @param borderId
+     * @param agentLevelId
+     */
+    private void inserHistoryAndUpdatePfUserSkuAtom(Long userId, Long userPid, Integer skuId, Long borderId, Integer agentLevelId) {
+        log.info("修改商品的的代理关系-----userId---" + userId + "----skuId----" + skuId);
+        PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+        int i = insertUserSkuHistory(pfUserSku);
+        if (i == 1) {
+            log.info("插入商品历史表成功----修改商品关系---start");
+            int _i = updatePfUserSku(userPid, borderId, pfUserSku, skuId, agentLevelId);
+            if (_i == 1) {
+                log.info("插入商品历史表成功----修改商品关系---end");
+            } else {
+                log.info("插入商品历史表成功----修改商品关系---失败");
+            }
+        } else {
+            log.info("插入商品历史表成功----失败");
+            throw new BusinessException("");
+        }
+    }
 
     /**
      * 修改商品的代理关系
      *
      * @param userPid
      * @param borderId
-     * @param orderItem
      * @param pfUserSku
+     * @param skuId
+     * @param agentLevelId
      * @return
      */
-    private int updatePfUserSku(Long userPid, Long borderId, PfBorderItem orderItem, PfUserSku pfUserSku) {
+    private int updatePfUserSku(Long userPid, Long borderId, PfUserSku pfUserSku, Integer skuId, Integer agentLevelId) {
         log.info("---修改商品的代理关系-----订单id-----" + borderId);
-        Integer skuId = orderItem.getSkuId();
-        Integer agentLevelId = orderItem.getAgentLevelId();
         int i = 0;
         if (pfUserSku != null) {
             log.info("---修改商品的代理关系-----用户新上级-----userId----" + userPid + "-----skuId----" + skuId);
@@ -341,6 +441,11 @@ public class BUpgradePayService {
                     log.info("新等级的保证金-----" + pfUserSku.getBail());
                 } else {
                     throw new BusinessException("获取新的等级的保证金，代理商品为null");
+                }
+                if (borderId != null) {
+                    pfUserSku.setRemark("主打商品升级修改商品的代理关系");
+                } else {
+                    pfUserSku.setRemark("非主打商品升级修改商品的代理关系");
                 }
                 i = pfUserSkuService.update(pfUserSku);
                 if (i <= 0) {
@@ -400,7 +505,6 @@ public class BUpgradePayService {
         userSkuHistory.setRemark("升级修改sku关系增加历史");
         userSkuHistory.setTreeCode(pfUserSku.getTreeCode());
         userSkuHistory.setTreeLevel(pfUserSku.getTreeLevel());
-        userSkuHistory.setRewardUnitPrice(pfUserSku.getRewardUnitPrice());
         int i = pfUserSkuHistoryService.insert(userSkuHistory);
         if (i != 1) {
             log.info("升级修改sku关系增加历史");
@@ -419,48 +523,56 @@ public class BUpgradePayService {
      */
     private void inserHistoryAndUpdatePfUserCertificate(Long userId, List<PfBorderItem> orderItems, Integer spuId, String rootPath) {
         for (PfBorderItem orderItem : orderItems) {
-            log.info("---修改证书----userId----" + userId + "----skuId---" + orderItem.getSkuId() + "----spuId----" + spuId);
-            PfUserCertificate pfUserCertificate = pfUserCertificateService.selectByUserIdAndSkuId(userId, orderItem.getSkuId());
-            if (pfUserCertificate != null) {
-                int i = insertCertificateHistory(pfUserCertificate);
-                if (i == 1) {
-                    ComUser comUser = comUserService.getUserById(userId);
-                    Calendar calendar = Calendar.getInstance();
-                    pfUserCertificate.setBeginTime(calendar.getTime());
-                    calendar.set(Calendar.MONTH, 11);
-                    calendar.set(Calendar.DAY_OF_MONTH, 31);
-                    pfUserCertificate.setEndTime(calendar.getTime());
-                    pfUserCertificate.setAgentLevelId(orderItem.getAgentLevelId());
-                    pfUserCertificate.setStatus(1);
-                    pfUserCertificate.setCode(pfUserCertificateService.getCertificateCode(pfUserCertificate));
-                    ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
-                    ComSku comSku = skuService.getSkuById(orderItem.getSkuId());
-                    String picName = bOrderPayService.uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
-                            rootPath + "/static/font/",//字体路径
-                            pfUserCertificate.getCode(),//certificateCode - 证书编号
-                            comUser.getRealName(),//userName - 用户名称
-                            comAgentLevel.getName(),//levelName - 代理等级名称
-                            orderItem.getSkuName(),//skuName - 商品名称
-                            comSku.geteName(),
-                            newIdCard,//idCard - 身份证号
-                            comUser.getMobile(),//mobile - 手机号
-                            pfUserCertificate.getWxId(),//wxId - 微信号
-                            DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期
-                            DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null));//endDate - 结束日期
-                    pfUserCertificate.setImgUrl(picName + ".jpg");
-                    pfUserCertificate.setRemark("升级支付成功修改证书");
-                    pfUserCertificateService.update(pfUserCertificate);
-                } else {
-                    log.info("修改证书插入历史失败-----");
-                    throw new BusinessException("修改证书插入历史失败-----");
-                }
-            } else {
-                log.info("修改证书失败，之前的证书为null");
-                throw new BusinessException("修改证书失败，之前的证书为null");
-            }
+            inserHistoryAndUpdatePfUserCertificateAutom(userId, orderItem.getSkuId(), orderItem.getAgentLevelId(), spuId, rootPath);
         }
     }
+
+    /**
+     * 修改证书 原子操作
+     *
+     * @param userId
+     * @param skuId
+     * @param spuId
+     * @param rootPath
+     */
+    private void inserHistoryAndUpdatePfUserCertificateAutom(Long userId, Integer skuId, Integer agentLevelId, Integer spuId, String rootPath) {
+        log.info("---修改证书----userId----" + userId + "----skuId---" + skuId + "----spuId----" + spuId);
+        PfUserCertificate pfUserCertificate = pfUserCertificateService.selectByUserIdAndSkuId(userId, skuId);
+        if (pfUserCertificate != null) {
+            int i = insertCertificateHistory(pfUserCertificate);
+            if (i == 1) {
+                ComUser comUser = comUserService.getUserById(userId);
+                Calendar calendar = Calendar.getInstance();
+                pfUserCertificate.setBeginTime(calendar.getTime());
+                calendar.set(Calendar.MONTH, 11);
+                calendar.set(Calendar.DAY_OF_MONTH, 31);
+                pfUserCertificate.setEndTime(calendar.getTime());
+                pfUserCertificate.setAgentLevelId(agentLevelId);
+                pfUserCertificate.setStatus(1);
+                pfUserCertificate.setCode(pfUserCertificateService.getCertificateCode(pfUserCertificate));
+                ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                ComSku comSku = skuService.getSkuById(skuId);
+                String picName = pfUserCertificateService.uploadUserCertificate(rootPath,
+                        pfUserCertificate.getCode(),//certificateCode - 证书编号
+                        comUser,
+                        comSku,
+                        comAgentLevel.getName(),//levelName - 代理等级名称
+                        DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期
+                        DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null),
+                        agentLevelId);//endDate - 结束日期
+                pfUserCertificate.setImgUrl(picName + ".jpg");
+                pfUserCertificate.setRemark("升级支付成功修改证书");
+                pfUserCertificateService.update(pfUserCertificate);
+            } else {
+                log.info("修改证书插入历史失败-----");
+                throw new BusinessException("修改证书插入历史失败-----");
+            }
+        } else {
+            log.info("修改证书失败，之前的证书为null");
+            throw new BusinessException("修改证书失败，之前的证书为null");
+        }
+    }
+
 
     private int insertCertificateHistory(PfUserCertificate userCertificate) {
         log.info("----插入证书历史表-------");
@@ -543,7 +655,7 @@ public class BUpgradePayService {
      * @param pfBorder
      */
     public void saveBOrderSendType(PfBorder pfBorder) {
-        bOrderPayService.saveBOrderSendType(pfBorder);
+        bOrderShipService.shipAndReceiptBOrder(pfBorder);
     }
 
 
@@ -590,25 +702,38 @@ public class BUpgradePayService {
      */
     private void updateSfShopSku(Long shopUserId, List<PfBorderItem> orderItems) {
         for (PfBorderItem orderItem : orderItems) {
-            log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + orderItem.getSkuId());
-            List<SfShopSku> sfShopSkus = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, orderItem.getSkuId());
-            for (SfShopSku sfShopSku : sfShopSkus) {
-                if (sfShopSku != null) {
-                    log.info("修改前的小铺商品的代理等级---之前--" + orderItem.getAgentLevelId());
-                    sfShopSku.setAgentLevelId(orderItem.getAgentLevelId());
-                    log.info("修改前的小铺商品的代理等级---之后--" + orderItem.getAgentLevelId());
-                    log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
-                    sfShopSku.setBail(orderItem.getBailAmount());
-                    log.info("修改后的小铺保证金-----" + orderItem.getBailAmount());
-                    int i = sfShopSkuService.update(sfShopSku);
-                    if (i != 1) {
-                        log.info("修改小铺商品的sku等级和保证金失败");
-                        throw new BusinessException("修改小铺商品的sku等级和保证金失败");
-                    }
+            updateSfShopSkuAtom(shopUserId, orderItem.getSkuId(), orderItem.getAgentLevelId(), orderItem.getBailAmount());
+        }
+    }
+
+    /**
+     * 修改小铺商品信息 原子操作
+     *
+     * @param shopUserId
+     * @param skuId
+     * @param agentLevelId
+     * @param bailAmount
+     */
+    private void updateSfShopSkuAtom(Long shopUserId, Integer skuId, Integer agentLevelId, BigDecimal bailAmount) {
+        log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + skuId);
+        List<SfShopSku> sfShopSkus = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, skuId);
+        for (SfShopSku sfShopSku : sfShopSkus) {
+            if (sfShopSku != null) {
+                log.info("修改前的小铺商品的代理等级---之前--" + agentLevelId);
+                sfShopSku.setAgentLevelId(agentLevelId);
+                log.info("修改前的小铺商品的代理等级---之后--" + agentLevelId);
+                log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
+                sfShopSku.setBail(bailAmount);
+                log.info("修改后的小铺保证金-----" + bailAmount);
+                int i = sfShopSkuService.update(sfShopSku);
+                if (i != 1) {
+                    log.info("修改小铺商品的sku等级和保证金失败");
+                    throw new BusinessException("修改小铺商品的sku等级和保证金失败");
                 }
             }
         }
     }
+
 
     /**
      * 修改通知单状态
@@ -688,5 +813,4 @@ public class BUpgradePayService {
             }
         }
     }
-
 }

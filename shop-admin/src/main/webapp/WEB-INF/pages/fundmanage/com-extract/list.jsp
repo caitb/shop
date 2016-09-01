@@ -511,8 +511,8 @@
                         title: '开户行',
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.depositBankName){
-                                return row.comUserExtractApply.depositBankName;
+                            if(row && row.deposit_bank_name){
+                                return row.deposit_bank_name;
                             }
                         }
                     },
@@ -521,8 +521,8 @@
                         title : '银行卡号',
                         align : 'center',
                         formatter : function(value, row, index) {
-                            if(row.comUserExtractApply && row.comUserExtractApply.bankCard){
-                                return row.comUserExtractApply.bankCard;
+                            if(row && row.bank_card){
+                                return row.bank_card;
                             }
                         }
                     },
@@ -530,8 +530,8 @@
                         title : '持卡人姓名',
                         align : 'center',
                         formatter : function(value, row, index) {
-                            if(row.comUserExtractApply && row.comUserExtractApply.cardOwnerName){
-                                return row.comUserExtractApply.cardOwnerName;
+                            if(row && row.card_owner_name){
+                                return row.card_owner_name;
                             }
                         }
                     },
@@ -558,10 +558,10 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var sArr = ['<a class="view" href="javascript:void(0);">查看</a>'];
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
+                            if(row && row.audit_type == 0) {
                                 sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
                             }
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
+                            if(row && row.audit_type == 2) {
                                 sArr.push('&nbsp;&nbsp;<a class="yes" href="javascript:void(0);">确认打款</a>');
                             }
 
@@ -592,25 +592,25 @@
                                 $('#modal-view').modal('show');
                             },
                             'click .audit': function(e, value, row, index){
-                                $('#applyId2').val(row.id);
-                                $('#applyTime2').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName2').html(row.real_name);
-                                $('#extractFee2').html(row.extract_fee);
-                                $('#extractableFee2').html(row.extractable_fee);
+                                $('#applyId').val(row.id);
+                                $('#applyTime').html(new Date(row.apply_time).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName').html(row.real_name);
+                                $('#extractFee').html(row.extract_fee);
+                                $('#extractableFee').html(row.extractable_fee);
                                 if(row.extract_way == 1){
-                                    $('#extractWay2').html('微信');
+                                    $('#extractWay').html('微信');
                                 }
                                 if(row.extract_way == 2){
-                                    $('#extractWay2').html('支付宝');
+                                    $('#extractWay').html('支付宝');
                                 }
                                 if(row.extract_way == 3){
-                                    $('#extractWay2').html('银行卡');
+                                    $('#extractWay').html('银行卡');
                                 }
-                                $('#bankCard2').html(row.bank_card);
-                                $('#bankName2').html(row.bank_name);
-                                $('#depositBankName2').html(row.deposit_bank_name);
-                                $('#cardOwnerName2').html(row.card_owner_name);
-                                $('#auditCause2').val(row.audit_cause);
+                                $('#bankCard').html(row.bank_card);
+                                $('#bankName').html(row.bank_name);
+                                $('#depositBankName').html(row.deposit_bank_name);
+                                $('#cardOwnerName').html(row.card_owner_name);
+                                $('#auditCause').val(row.audit_cause);
 
                                 $('#modal-audit').modal('show');
                             },
@@ -619,7 +619,7 @@
                                     if(result) {
                                         $.ajax({
                                             url: '<%=basePath%>fundmanage/com-extract/audit.do',
-                                            data: {id:row.comUserExtractApply.id, auditType: 3},
+                                            data: {id:row.id, auditType: 3},
                                             success: function(msg){
                                                 $('#table').bootstrapTable('refresh');
                                                 $.gritter.add({

@@ -119,6 +119,11 @@ public class ComSpu {
      */
     private Integer isOwnShip;
 
+    /**
+     * 主打商品flag
+     */
+    private Integer type;
+
     public Integer getId() {
         return id;
     }
@@ -333,6 +338,14 @@ public class ComSpu {
 
     public void setIsOwnShip(Integer isOwnShip) {
         this.isOwnShip = isOwnShip;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override

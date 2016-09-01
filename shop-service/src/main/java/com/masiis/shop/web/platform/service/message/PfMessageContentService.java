@@ -84,4 +84,21 @@ public class PfMessageContentService {
     public Integer queryNumsByUserIdAndType(Long fUserId, int mType) {
         return contentMapper.queryNumsByUserIdAndType(fUserId, mType);
     }
+
+    public PfMessageContent createMessageByAppType(Long userId, String message,
+                                                   Integer messageType, String remark,
+                                                   String url, Integer appType, String appParam) {
+        PfMessageContent content = new PfMessageContent();
+        content.setType(messageType);
+        content.setStatus(1);
+        content.setCreateTime(new Date());
+        content.setContent(message);
+        content.setContentUrl(url);
+        content.setUrlAppType(appType);
+        content.setUrlAppParam(appParam);
+        content.setRemark(remark);
+        content.setUpdateTime(new Date());
+        content.setUserId(userId);
+        return content;
+    }
 }

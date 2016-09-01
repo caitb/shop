@@ -1,6 +1,9 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.product.AgentSku;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
@@ -8,6 +11,10 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.web.common.service.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserBrandService;
+import com.masiis.shop.web.platform.service.user.PfUserRecommendRelationService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +59,16 @@ public class ProductService {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private PfUserBrandService pfUserBrandService;
+    @Resource
+    private PfUserRecommendRelationService pfUserRecommendRelationService;
+
+    private static Integer pageSize = 10;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -59,7 +76,8 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
-        product.setStock(product.getStock() - product.getFrozenStock());
+        Integer currentStock = product.getStock() - product.getFrozenStock();
+        product.setStock(currentStock < 0 ? 0 : currentStock);
         ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
         ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
         product.setLogoUrl(comBrand.getLogoUrl());
@@ -164,13 +182,87 @@ public class ProductService {
         return userProducts;
     }
 
+
+    public List<Product> productListByUserPage(Long userId,Integer pageNum) throws Exception {
+        PageHelper.startPage(pageNum, pageSize, false);
+        List<Product> userProducts = productMapper.getProductsByUser(userId);
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        if (userProducts != null) {
+            for (Product product : userProducts) {
+                int currentStock = product.getStock() - product.getFrozenStock();
+                if (currentStock >= 0) {
+                    product.setStock(currentStock);
+                    product.setNeedStockNum(0);
+                } else {
+                    product.setNeedStockNum(product.getFrozenStock() - product.getStock());
+                    product.setStock(0);
+                }
+                ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
+                product.setComSkuImage(comSkuImage);
+                product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
+                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(product.getId());
+                product.setIsQueue(pfSkuStock.getIsQueue());
+                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, product.getId());
+                product.setUserPid(pfUserSku.getUserPid());
+            }
+        }
+        return userProducts;
+    }
+    /**
+     * jjh
+     * 个人中心商品列表--仓库中
+     */
+    public List<AgentSku> productListByUserNotAgent(Long userId,Integer pageNum) throws Exception {
+        PageHelper.startPage(pageNum, pageSize, false);
+        List<ComSku> comSkus = comSkuMapper.getProductsByUserNotAgent(userId);//展示自己没代理过的所有的商品
+        List<AgentSku> agentSkus = new ArrayList<>();
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        if (comSkus != null) {
+            for (ComSku comSku : comSkus) {
+                AgentSku agentSku = new AgentSku();
+                ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(comSku.getId());
+                Map<String,Object> mainSkuMap = getPrimarySkuAgendlevel(userId, comSku.getId());
+                Integer primarySkuId = Integer.parseInt(mainSkuMap.get("mainSkuId").toString());
+                //获取推荐关系
+                PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId,primarySkuId);
+                if(pfUserRecommenRelation!=null && pfUserRecommenRelation.getUserPid()!=0){ //有推荐关系
+                    PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(pfUserRecommenRelation.getUserPid(),comSku.getId());//推荐人对该商品的代理状态
+                    if (pfUserSku==null){
+                        agentSku.setUpgradeIsAgent(0);
+                    }else {
+                        agentSku.setUpgradeIsAgent(1);
+                    }
+                }else { //没有推荐关系--查找上级的代理关系
+                    PfUserSku primaryPfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId,primarySkuId);//我对主商品的代理状态
+                    if(primaryPfUserSku!=null && primaryPfUserSku.getUserPid()==0){//boss
+                        agentSku.setIsBoss(1);
+                    }else {
+                        agentSku.setIsBoss(0);
+                        PfUserSku upperPfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(primaryPfUserSku.getUserPid(),comSku.getId());//我的上级对该商品的代理状态
+                        if (upperPfUserSku==null){
+                            agentSku.setUpperIsAgent(0);
+                        }else {
+                            agentSku.setUpperIsAgent(1);
+                        }
+                    }
+                }
+                agentSku.setSkuImgURl(productImgValue + comSkuImage.getImgUrl());
+                agentSku.setBrandName(comSku.getcName());
+                agentSku.setPrice(pfSkuAgentMapper.selectBySkuIdAndLevelId(comSku.getId(),Integer.parseInt(mainSkuMap.get("mainAgentLevelId").toString())).getUnitPrice());
+                agentSku.setSkuName(comSku.getName());
+                agentSku.setSkuId(comSku.getId());
+                agentSkus.add(agentSku);
+            }
+        }
+        return agentSkus;
+    }
     /**
      * @Author 贾晶豪
      * @Date 2016/3/16 0016 下午 7:38
      * 更新库存
      */
     public void updateStock(Integer selfStock, Integer skuId,Long userId) throws Exception {
-        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
         Map<String, Object> param = new HashMap<>();
         if (pfUserSkuStock != null) {
             param.put("selfStock", selfStock + pfUserSkuStock.getFrozenCustomStock());
@@ -230,5 +322,49 @@ public class ProductService {
         }
         param.put("priceDiscount", pfSkuAgent.getUnitPrice());
         return param;
+    }
+
+    /**
+     * jjh
+     * API 业务数据
+     * @param skuId
+     * @return
+     */
+    public Product getSkuHtml(Integer skuId){
+        Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        Integer currentStock = product.getStock() - product.getFrozenStock();
+        product.setStock(currentStock < 0 ? 0 : currentStock);
+       return product;
+    }
+    /**
+     * jjh
+     * 获取主打商品的合伙等级
+     */
+    public Map<String,Object> getPrimarySkuAgendlevel(Long userId,Integer skuId){
+        Map<String,Object> map = new HashMap<>();
+        Integer mainAgentLevelId = 0;// 获取主打商品的合伙等级
+        Integer mainSkuId = 0;
+        PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+        if (pfUserSku == null) {
+            //获取商品对象
+            ComSku comSku = skuService.getSkuById(skuId);
+            //获取SPU对象
+            ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+            List<ComSku> comSkuList = pfUserBrandService.getPrimarySkuByBrandId(comSpu.getBrandId());
+            for (ComSku cs : comSkuList) {
+                PfUserSku main_pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, cs.getId());
+                if (main_pfUserSku != null) {
+                    mainAgentLevelId = main_pfUserSku.getAgentLevelId();
+                    mainSkuId = main_pfUserSku.getSkuId();
+                    break;
+                }
+            }
+            if (mainAgentLevelId.equals(0)) {
+                throw new BusinessException("还未代理主打商品");
+            }
+        }
+        map.put("mainAgentLevelId",mainAgentLevelId);
+        map.put("mainSkuId",mainSkuId);
+        return map;
     }
 }

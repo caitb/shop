@@ -127,7 +127,7 @@ public class BOrderStatisticsService {
         statistics = new PfUserStatistics();
         statistics.setCreateTime(new Date());
         statistics.setUserId(order.getUserId());
-        statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+        statistics.setSkuId(pfBorderItem.getSkuId().intValue());
         statistics.setIncomeFee(new BigDecimal(0));
         statistics.setProfitFee(new BigDecimal(0));
         BigDecimal ordAmount = order.getOrderAmount();
@@ -225,7 +225,7 @@ public class BOrderStatisticsService {
         statistics = new PfUserStatistics();
         statistics.setCreateTime(new Date());
         statistics.setUserId(userPid);
-        statistics.setSkuId(pfBorderItem.getSkuId().longValue());
+        statistics.setSkuId(pfBorderItem.getSkuId().intValue());
         BigDecimal ordAmount = order.getOrderAmount();
         BigDecimal bailAmount = order.getBailAmount();
         BigDecimal recommenAmount = order.getRecommenAmount();

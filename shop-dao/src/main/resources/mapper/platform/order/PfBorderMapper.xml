@@ -8,6 +8,7 @@
         <result column="order_code" property="orderCode" jdbcType="VARCHAR"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
+        <result column="user_source" property="userSource" jdbcType="INTEGER" />
         <result column="user_message" property="userMessage" jdbcType="VARCHAR"/>
         <result column="supplier_id" property="supplierId" jdbcType="INTEGER"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
@@ -44,26 +45,28 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" useGeneratedKeys="true" keyProperty="id">
         insert into pf_border (id, create_time, create_man,
             order_code, user_id, user_pid,
-            user_message, supplier_id, modify_time,
-            modify_man, receivable_amount, order_amount,
-            bail_amount, product_amount, recommen_amount, ship_amount,
-            pay_amount, pay_time, ship_man_id,
-            ship_man_name, ship_type, ship_time,
+            user_source, user_message, supplier_id,
+            modify_time, modify_man, receivable_amount,
+            order_amount, bail_amount, product_amount,
+            recommen_amount, ship_amount, pay_amount,
+            pay_time, ship_man_id, ship_man_name,
+            ship_type, ship_time, ship_remark,
             send_type, order_type, order_status,
             ship_status, pay_status, is_counting,
             is_ship, is_receipt, receipt_time,
-            remark)
+            replace_order_id, remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
             #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
-            #{userMessage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP},
-            #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL},
-            #{bailAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, #{recommenAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL},
-            #{payAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER},
-            #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP},
+            #{userSource,jdbcType=INTEGER}, #{userMessage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER},
+            #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL},
+            #{orderAmount,jdbcType=DECIMAL}, #{bailAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL},
+            #{recommenAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
+            #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR},
+            #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR},
             #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER},
             #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{isCounting,jdbcType=INTEGER},
             #{isShip,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP},
-            #{remark,jdbcType=VARCHAR})
+            #{replaceOrderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorder">
@@ -84,6 +87,9 @@
             </if>
             <if test="userPid != null">
                 user_pid = #{userPid,jdbcType=BIGINT},
+            </if>
+            <if test="userSource != null">
+                user_source = #{userSource,jdbcType=INTEGER},
             </if>
             <if test="userMessage != null">
                 user_message = #{userMessage,jdbcType=VARCHAR},
@@ -169,21 +175,23 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         where
         <if test="userId != null">
@@ -198,11 +206,12 @@
         ORDER BY id DESC
     </select>
     <select id="selectByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         where
         <if test="userPId != null">
@@ -257,11 +266,12 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
     </select>
 
@@ -301,6 +311,9 @@
                 ,bi.unit_price        unitPrice
                 ,sku.name             name
                 ,sku.alias            alias
+                ,bf.ship_man_id       shipManId
+                ,bf.ship_man_name     shipManName
+                ,bf.freight           freight
         FROM
                 pf_border bo
         LEFT JOIN com_user                  pu  ON pu.id = bo.user_pid
@@ -311,6 +324,7 @@
         LEFT JOIN pf_border_consignee       bc  ON bc.pf_border_id = bo.id
         LEFT JOIN pf_border_item            bi  ON bi.pf_border_id = bo.id
         LEFT JOIN com_sku                   sku ON sku.id = bi.sku_id
+        LEFT JOIN pf_border_freight         bf  ON bf.pf_border_id = bo.id
         <where>
             <if test="orderCode != null">
                 AND bo.order_code = #{orderCode}
@@ -343,21 +357,23 @@
     </select>
 
     <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         where order_code = #{orderId,jdbcType=BIGINT}
     </select>
 
     <select id="selectUnCountingByUserAndDate" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         where receipt_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
               and receipt_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
@@ -366,16 +382,17 @@
               and is_counting = 0
     </select>
 
-    <select id="selectByStatusAndDate" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+    <select id="selectByStatusAndShipDate" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         from pf_border
         <where>
             <if test="expiraTime != null">
-                create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+                ship_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
             </if>
             <if test="orderStatus != null">
                 AND order_status = #{orderStatus,jdbcType=INTEGER}
@@ -462,11 +479,12 @@
     </select>
 
     <select id="selectPfBOrderBySkuIdAndUserId" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         FROM pf_border pb
         WHERE pb.user_id= #{userId}
         AND pb.order_status IN (0,9)
@@ -474,11 +492,12 @@
     </select>
 
     <select id="selectUnUpgradeByStatusAndDate" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         FROM pf_border
         where
         order_type <![CDATA[ <> ]]> #{notOrderType,jdbcType=INTEGER}
@@ -494,11 +513,12 @@
     </select>
 
     <select id="selectByStatusAndDateAndType" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_source, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
-        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
-        is_ship, is_receipt, receipt_time, remark
+        product_amount, recommen_amount, ship_amount, pay_amount, pay_time, ship_man_id,
+        ship_man_name, ship_type, ship_time, ship_remark, send_type, order_type, order_status,
+        ship_status, pay_status, is_counting, is_ship, is_receipt, receipt_time, replace_order_id,
+        remark
         FROM pf_border
         where 1=1
         <if test="orderType != null">
@@ -563,6 +583,42 @@
             </if>
             <if test="orderStatus != null and orderStatus == 0">
                 AND bo.order_status IN (0, 9)
+            </if>
+        </where>
+        ORDER BY bo.create_time DESC, skui.img_url DESC
+    </select>
+
+    <select id="getMyOrderListByUserAndStatue" resultMap="orderMap">
+        SELECT
+            bo.id,
+            bo.order_code,
+            bo.order_status,
+            bo.order_type,
+            bo.send_type,
+            bo.create_time,
+            bo.receivable_amount,
+            bo.order_amount,
+            bo.pay_amount,
+            bo.bail_amount,
+            bo.pay_time,
+            bo.ship_amount,
+            bi.sku_id,
+            bi.unit_price,
+            bi.quantity,
+            sku.`name`,
+            skui.img_url
+        FROM
+          pf_border bo
+        LEFT JOIN pf_border_item bi   ON bi.pf_border_id = bo.id
+        LEFT JOIN com_sku        sku  ON sku.id = bi.sku_id
+        LEFT JOIN com_sku_image  skui ON skui.sku_id = bi.sku_id and skui.is_default = 1
+        <where>
+            bo.user_id = #{userId}
+            <if test="orderStatuList != null and orderStatuList.size > 0">
+                AND bo.order_status in
+                <foreach collection="orderStatuList" item="orderStatus" index="index" open="(" separator="," close=")">
+                    #{orderStatus}
+                </foreach>
             </if>
         </where>
         ORDER BY bo.create_time DESC, skui.img_url DESC
@@ -693,7 +749,79 @@
             AND bp.pay_type_id = #{payTypeId}
         </if>
     </select>
-    
+
+    <select id="getRewordInfoByOrderId" resultType="map">
+        select u.wx_nk_name nkName, r.reward_total_price price
+        from pf_border_recommen_reward r
+        left join com_user u on r.recommen_user_id = u.id
+        where r.pf_border_id = #{id}
+    </select>
+
+    <select id="getLowerLevelOrderList" resultMap="orderMap">
+        SELECT
+            bo.id,
+            bo.order_code,
+            bo.order_status,
+            bo.order_type,
+            bo.send_type,
+            bo.create_time,
+            bo.receivable_amount,
+            bo.order_amount,
+            bo.pay_amount,
+            bo.bail_amount,
+            bo.pay_time,
+            bo.ship_amount,
+            bi.sku_id,
+            bi.unit_price,
+            bi.quantity,
+            bi.sku_name as 'name',
+            skui.img_url,
+            CASE
+            WHEN u.real_name is null THEN u.wx_nk_name
+            WHEN u.real_name = '' THEN u.wx_nk_name
+            ELSE u.real_name
+            END as 'real_name'
+        FROM
+          pf_border bo
+        inner join pf_border_item bi   ON bi.pf_border_id = bo.id
+        inner join com_sku_image  skui ON skui.sku_id = bi.sku_id and skui.is_default = 1
+        inner join com_user u on bo.user_id = u.id
+        <where>
+            bo.user_pid = #{userPid} and bo.order_type <![CDATA[ <> ]]> 2
+            <if test="lowerId != null">
+                AND bo.user_id = #{lowerId}
+            </if>
+            <if test="orderStatuList != null and orderStatuList.size > 0">
+                AND bo.order_status in
+                <foreach collection="orderStatuList" item="orderStatus" index="index" open="(" separator="," close=")">
+                    #{orderStatus}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY bo.create_time DESC, skui.img_url DESC
+    </select>
+
+    <select id="getAgentInfo" resultType="hashmap">
+        select bi.bail_amount bailAmount, al.name agentName, sa.total_price totalPrice
+        from pf_border_item bi
+        left join com_agent_level al on bi.agent_level_id = al.id
+        left join pf_sku_agent sa on bi.sku_id = sa.sku_id and bi.agent_level_id = sa.agent_level_id
+        where bi.pf_border_id = #{orderId}
+    </select>
+
+    <select id="getPfBorderPaymentsByOrderId" resultType="string">
+        select pay_type_name
+        from pf_border_payment
+        where is_enabled = 1 and pf_border_id = #{orderId}
+        order by create_time desc
+    </select>
+
+    <select id="getSkuDefaultImgUrlBySkuId" resultType="string">
+        select img_url
+        from com_sku_image
+        where is_default = 1 and sku_id = #{skuId}
+    </select>
+
     <resultMap id="orderMap" type="com.masiis.shop.dao.beans.order.BOrder">
         <result property="id" column="id" />
         <result property="orderStatus" column="order_status" />
@@ -701,11 +829,13 @@
         <result property="orderType" column="order_type" />
         <result property="sendType" column="send_type" />
         <result property="createTime" column="create_time" />
+        <result property="createMan" column="real_name" />
         <result property="receivableAmount" column="receivable_amount" />
         <result property="orderAmount" column="order_amount" />
         <result property="payAmount" column="pay_amount" />
         <result property="bailAmount" column="bail_amount" />
         <result property="payTime" column="pay_time" />
+        <result property="shipAmount" column="ship_amount" />
         <collection property="bItems" resultMap="orderItemMap" />
     </resultMap>
     

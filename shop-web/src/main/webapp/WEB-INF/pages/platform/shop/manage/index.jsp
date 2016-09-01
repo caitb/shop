@@ -37,6 +37,18 @@
         <%--<p id="copyShopUrl"><b>关闭</b></p>--%>
     <%--</div>--%>
     <div class="header">
+            <c:choose>
+                <c:when test="${comUser.auditStatus==2 || status ==0}">
+                    <div class="header" style="display:none">
+                        <h4>请3天内完成实名认证，逾期店铺不能访问 <a href="">点击认证</a></h4>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="header" style="display:block">
+                        <h4>请3天内完成实名认证，逾期店铺不能访问<a href="<%=path%>/identityAuth/toInentityAuthPage.html">点击认证</a></h4>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         <%--<div>
             <p>${sfShop.name}</p>
             <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
@@ -72,7 +84,7 @@
         </nav>
     </div>
     <nav>
-        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&isSale=1&currentPage=0');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&isSale=1&currentPage=0&deliverType=0');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/foot_icon%20(3).png" alt=""></span><span>店铺订单</span><%--<c:if test="${sfOrderSize!=0}"><b></b></c:if>--%></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/foot_icon%20(2).png" alt=""></span><span>店铺设置</span></p>
     </nav>
@@ -83,7 +95,8 @@
         </nav>
         <nav style="margin: 0;">
             <p onclick="javascript:window.location.replace('<%=basePath%>shopmessage/mycluster.shtml');"><span><img src="<%=basePath%>static/images/message.png" alt=""></span><span>群发消息</span></p>
-            <p onclick="clickShow()"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>运费设置</span></p>
+            <%--<p onclick="clickShow()"><span><img src="<%=basePath%>static/images/moban.png" alt=""></span><span>运费设置</span></p>--%>
+            <p style="background: #EEEEEE;border: none;"></p>
             <p style="background: #EEEEEE;border: none;"></p>
         </nav>
 </div>
@@ -181,7 +194,6 @@
             $(this).parent().hide();
         });
     });
-
     //店铺运费设置
      function shipSubmit(){
         var shipAmount;

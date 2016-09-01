@@ -138,7 +138,7 @@
             a.reward_unit_price as unitPrice,
             a.reward_total_price as totalPrice,
             c.id as buyUserId,
-            c.real_name as buyUserName,
+            IFNULL(c.real_name,c.wx_nk_name) AS buyUserName,
             a.sku_id as skuId,
             d.name as skuName,
             e.id as sendUserId,
@@ -147,9 +147,9 @@
         FROM
             pf_border_recommen_reward a
         INNER JOIN pf_border b ON a.pf_border_id = b.id AND b.pay_status = 1
-        LEFT JOIN com_user c ON b.user_id = c.id
-        LEFT JOIN com_sku d ON a.sku_id = d.id
-        LEFT JOIN com_user e ON b.user_pid = e.id
+        INNER JOIN com_user c ON b.user_id = c.id
+        INNER JOIN com_sku d ON a.sku_id = d.id
+        INNER JOIN com_user e ON b.user_pid = e.id
         WHERE a.recommen_user_id = #{userId} AND a.reward_total_price <![CDATA[ > ]]> 0
         ORDER BY a.create_time DESC
     </select>
@@ -163,7 +163,7 @@
             b.reward_unit_price as unitPrice,
             b.reward_total_price as totalPrice,
             c.id as buyUserId,
-            c.real_name as buyUserName,
+            IFNULL(c.real_name,c.wx_nk_name) AS buyUserName,
             e.id as skuId,
             e.name as skuName,
             d.id as receiveUserId,
@@ -172,9 +172,9 @@
         FROM
             pf_border a
         INNER JOIN pf_border_recommen_reward b ON a.id = b.pf_border_id AND a.pay_status = 1
-        LEFT JOIN com_user c ON a.user_id = c.id
-        LEFT JOIN com_user d ON b.recommen_user_id = d.id
-        LEFT JOIN com_sku e ON b.sku_id = e.id
+        INNER JOIN com_user c ON a.user_id = c.id
+        INNER JOIN com_user d ON b.recommen_user_id = d.id
+        INNER JOIN com_sku e ON b.sku_id = e.id
         WHERE a.user_pid = #{userId} AND b.reward_total_price <![CDATA[ > ]]> 0
         ORDER BY b.create_time DESC
     </select>

@@ -75,6 +75,13 @@
         where shop_id = #{shopId,jdbcType=BIGINT} and sku_id = #{skuId,jdbcType=BIGINT} AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
     </select>
 
+    <select id="selectByShopIdAndIsOwnShip" resultMap="BaseResultMap">
+        select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
+        bail, sale_num, share_num, qr_code,is_own_ship, remark
+        from sf_shop_sku
+        where shop_id = #{shopId,jdbcType=BIGINT} AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
+    </select>
+
     <select id="getSfShopSkuByShopUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
         bail, sale_num, share_num, qr_code, is_own_ship,remark

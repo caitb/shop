@@ -84,6 +84,7 @@ public class ProductService {
         //保存代理分润
         for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
             pfSkuAgent.setSkuId(comSku.getId());
+            pfSkuAgent.setFreemanUpperNum(50);
             pfSkuAgentMapper.insert(pfSkuAgent);
         }
 
@@ -210,5 +211,41 @@ public class ProductService {
         productInfo.setSfSkuDistributions(sfSkuDistributions);
 
         return productInfo;
+    }
+
+
+    public Map<String,Object> mainSkuList(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> map) {
+        String sort = "brand.cname desc";
+        if (sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
+        List<Map<String, Object>> skuMain = comSpuMapper.selectAll();
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(skuMain);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows",  skuMain);
+        return pageMap;
+    }
+
+    public List<Map<String, Object>> brandList() {
+        return  comSpuMapper.brandList();
+    }
+
+    public List<Map<String, Object>> spuList() {
+        return comSpuMapper.spuList();
+    }
+
+
+    public boolean updateSpuMain(Integer brandId, Integer spuId, Integer type) {
+        return comSpuMapper.updateSpuMaim(brandId, spuId, type);
+    }
+
+    public List<Map<String,Object>> selectByBrandId(Integer brandId) {
+        return comSpuMapper.selectByBrandId(brandId);
+    }
+
+    public void deleteMain(Integer spuId) {
+        comSpuMapper.deleteMain(spuId);
     }
 }

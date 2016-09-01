@@ -16,6 +16,34 @@ public class IndexShopRes extends BasePagingRes {
     private Integer orderCount;
     private Integer shopView;
     private String shopUrl;
+    private String saleAmount;//总销售额
+    private Integer fansNum;//粉丝数
+    private Integer unshippedOrderCount;//待发货订单数
+    private String shopPoster;
+
+    public Integer getUnshippedOrderCount() {
+        return unshippedOrderCount;
+    }
+
+    public void setUnshippedOrderCount(Integer unshippedOrderCount) {
+        this.unshippedOrderCount = unshippedOrderCount;
+    }
+
+    public Integer getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(Integer fansNum) {
+        this.fansNum = fansNum;
+    }
+
+    public String getSaleAmount() {
+        return saleAmount;
+    }
+
+    public void setSaleAmount(String saleAmount) {
+        this.saleAmount = saleAmount;
+    }
 
     public void setComUser(ComUser comUser) {
         this.comUser = comUser;
@@ -64,5 +92,13 @@ public class IndexShopRes extends BasePagingRes {
 
     public String getShopUrl() {
         return shopUrl;
+    }
+
+    public String getShopPoster() {
+        return shopPoster;
+    }
+
+    public void setShopPoster(String shopPoster) {
+        this.shopPoster = shopPoster;
     }
 }

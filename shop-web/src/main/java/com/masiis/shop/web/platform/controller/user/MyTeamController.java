@@ -39,7 +39,7 @@ public class MyTeamController extends BaseController {
     private ComUserAccountMapper comUserAccountMapper;
 
     @RequestMapping("/teamlist")
-    public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response) {
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
@@ -48,7 +48,7 @@ public class MyTeamController extends BaseController {
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
             Integer totalChild = 0;
             BigDecimal totalSales = new BigDecimal(0);
-            for(Map<String, Object> agentSkuMap : agentSkuMaps){
+            for (Map<String, Object> agentSkuMap : agentSkuMaps) {
                 totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
                 totalSales = totalSales.add((BigDecimal) agentSkuMap.get("countSales"));
             }
@@ -57,7 +57,7 @@ public class MyTeamController extends BaseController {
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("获取代理产品列表失败!");
             e.printStackTrace();
 
@@ -67,6 +67,7 @@ public class MyTeamController extends BaseController {
 
     /**
      * 团队列表
+     *
      * @param request
      * @param response
      * @param userSkuId
@@ -74,7 +75,7 @@ public class MyTeamController extends BaseController {
      */
     @RequestMapping("/teamdetail")
     public ModelAndView teamDetail(HttpServletRequest request, HttpServletResponse response,
-                             Integer userSkuId){
+                                   Integer userSkuId) {
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamDetail");
@@ -93,13 +94,14 @@ public class MyTeamController extends BaseController {
 
     /**
      * 团队成员详细信息
+     *
      * @param request
      * @param response
      * @return
      */
     @RequestMapping("/memberinfo")
     public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response,
-                                   String code){
+                                   String code) {
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/memberInfo");
@@ -118,72 +120,22 @@ public class MyTeamController extends BaseController {
 
     /**
      * 查看队员指定代理产品的升级记录
+     *
      * @param skuId
      * @return
      */
     @RequestMapping("/upgradeRecord")
-    public ModelAndView upgradeRecord(Long userId, Integer skuId){
+    public ModelAndView upgradeRecord(Long userId, Integer skuId) {
 
         ModelAndView mav = new ModelAndView("platform/user/upgradeRecord");
         try {
             List<Map<String, Object>> upgradeRecords = myTeamService.upgradeRecord(userId, skuId);
             mav.addObject("upgradeRecords", upgradeRecords);
         } catch (Exception e) {
-            log.error("查看队员升级记录失败![userId="+userId+"][skuId="+skuId+"]---:"+e);
+            log.error("查看队员升级记录失败![userId=" + userId + "][skuId=" + skuId + "]---:" + e);
             e.printStackTrace();
         }
 
         return mav;
-    }
-
-
-    @RequestMapping("/toaudit")
-    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response,
-                                Long comUserId,
-                                Integer skuId,
-                                Integer agentLevelId,
-                                Integer userSkuId){
-
-        try {
-            ModelAndView mav = new ModelAndView("platform/user/audit");
-
-            Map<String, Object> memberMap = null; //myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
-            mav.addObject("memberMap", memberMap);
-
-            return mav;
-        } catch (Exception e) {
-            log.error("获取被审核人信息失败!");
-            e.printStackTrace();
-
-            return null;
-        }
-    }
-
-    /**
-     * 证书审核
-     * @param request
-     * @param response
-     * @param userSkuId
-     * @param pfUserCertificateId
-     * @param status
-     * @param reason
-     * @return
-     */
-    @RequestMapping("/audit")
-    @ResponseBody
-    public Object audit(HttpServletRequest request, HttpServletResponse response,
-                        Integer userSkuId,
-                        Long pfUserCertificateId,
-                        Integer status,
-                        String reason){
-
-        try {
-            myTeamService.audit(userSkuId, pfUserCertificateId, status, reason, request.getServletContext().getRealPath("/"));
-            return "success";
-        } catch (Exception e) {
-            log.error("审核失败![userSkuId="+userSkuId+"][pfUserCertificateId="+pfUserCertificateId+"][status="+status+"][reason="+reason+"]");
-            e.printStackTrace();
-            return "error";
-        }
     }
 }

@@ -120,17 +120,6 @@ public class PfUserBillService {
             //
             // 修改account账户结算额和可提现额
             ComUserAccount account = accountMapper.findByUserId(user.getId());
-            ComUserAccountRecord record = createAccountRecord(account, bill, 1);
-            record.setUserAccountId(account.getId());
-            // 修改结算
-            log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
-
-            record.setPrevFee(account.getCountingFee());
-            account.setCountingFee(account.getCountingFee().subtract(countFee));
-            log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
-            record.setNextFee(account.getCountingFee());
-            record.setHandleFee(countFee);
-            recordMapper.insert(record);
             // 修改可提现
             ComUserAccountRecord recordEx = createAccountRecord(account, bill, 4);
             log.info("修改账户的可提现金额,之前可提现金额是:" + account.getExtractableFee());
@@ -260,20 +249,21 @@ public class PfUserBillService {
         log.info("firstDate = " + firstDate);
         log.info("lastDate = " + lastDate);
         log.info("flag = " + flag);
+        log.info("pageNum = " + page);
         BigDecimal totalIncom = SumPfIncomgetIncomRecord14(userId, firstDate, lastDate, flag);
         log.info("totalIncom = " + totalIncom);
         PfIncomRecordPo pfIncomRecordPo = new PfIncomRecordPo();
         Page pageHelp = PageHelper.startPage(page, pageSize);
         List<PfIncomRecord> pfIncomRecords = incomRecord14Mapper.selectPfIncomRecords(userId, firstDate, lastDate, flag, null);
-        Long totalCount = 0l;
-        switch (page.intValue()){
-            case 1 : {
-                totalCount = pageHelp.getTotal();
-                pfIncomRecordPo.setTotalCount(totalCount);
-                break;
+        if (pageHelp.getPages() > 0){
+            if (pageHelp.getPages() < page.intValue()){
+                throw new BusinessException("1");
             }
         }
+        pfIncomRecordPo.setTotalCount(pageHelp.getTotal());
         pfIncomRecordPo.setPageNum(pageHelp.getPageNum());
+        pfIncomRecordPo.setTotalPage(pageHelp.getPages());
+        pfIncomRecordPo.setPageSize(pageHelp.getPageSize());
         pfIncomRecordPo.setPfIncomRecords(pfIncomRecords);
         pfIncomRecordPo.setTotalIncom(totalIncom);
         return pfIncomRecordPo;
@@ -299,15 +289,15 @@ public class PfUserBillService {
         PfIncomRecordPo pfIncomRecordPo = new PfIncomRecordPo();
         Page pageHelp = PageHelper.startPage(page, pageSize);
         List<PfIncomRecord> pfIncomRecords = incomRecord14Mapper.selectPfIncomRecords(userId, firstDate, lastDate, flag, personUserId);
-        Long totalCount = 0l;
-        switch (page.intValue()){
-            case 1 : {
-                totalCount = pageHelp.getTotal();
-                pfIncomRecordPo.setTotalCount(totalCount);
-                break;
+        if (pageHelp.getPages() > 0){
+            if (pageHelp.getPages() < page.intValue()){
+                throw new BusinessException("1");
             }
         }
+        pfIncomRecordPo.setTotalCount(pageHelp.getTotal());
         pfIncomRecordPo.setPageNum(pageHelp.getPageNum());
+        pfIncomRecordPo.setTotalPage(pageHelp.getPages());
+        pfIncomRecordPo.setPageSize(pageHelp.getPageSize());
         pfIncomRecordPo.setPfIncomRecords(pfIncomRecords);
         pfIncomRecordPo.setTotalIncom(totalIncom);
         return pfIncomRecordPo;

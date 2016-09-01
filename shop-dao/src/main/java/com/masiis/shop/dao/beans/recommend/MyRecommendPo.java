@@ -19,6 +19,10 @@ public class MyRecommendPo {
      */
     private Integer recommenTeamCount;
     /**
+     * 帮我推荐的
+     */
+    private Integer helpMeRecommendCount;
+    /**
      * 总销售额
      */
     private BigDecimal totalSales;
@@ -46,6 +50,10 @@ public class MyRecommendPo {
      * 总数
      */
     private Long totalCount;
+    /**
+     * 总页数
+     */
+    private Integer totalPages;
     /**
      * 当前页码
      */
@@ -132,12 +140,28 @@ public class MyRecommendPo {
         this.totalCount = totalCount;
     }
 
+    public Integer getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
+    }
+
     public Integer getCurrentPage() {
         return currentPage;
     }
 
     public void setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public Integer getHelpMeRecommendCount() {
+        return helpMeRecommendCount;
+    }
+
+    public void setHelpMeRecommendCount(Integer helpMeRecommendCount) {
+        this.helpMeRecommendCount = helpMeRecommendCount;
     }
 
     public List<RecommenOrder> getRecommenOrders() {

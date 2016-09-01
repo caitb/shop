@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.shop;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -94,21 +96,32 @@ public class SfShopManageController extends BaseController {
      */
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("platform/shop/manage/index");
         ComUser comUser = null;
         SfShop sfShop = null;
         SfShopStatistics sfShopStatistics = null;
-
+        ModelAndView mav = new ModelAndView("platform/shop/manage/index");
         try {
             comUser = getComUser(request);
+            Date date = new Date();//获取当前时间
+            Date date1 = DateUtil.addInteger(comUser.getCreateTime(), 3);
+            int  status;
+            if (date.getTime() > date1.getTime()) {
+                status = 0;
+            } else{
+                status = 1;
+            }//验证是否需要点击认证
+            log.info("是否超过三天:" + status);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
             sfShopStatistics = sfShopStatisticsService.selectByShopUserId(comUser.getId());
-
-            if(sfShop == null) return mav;
-
+            if(sfShop == null){
+                return mav;
+            } else{
+                if (comUser.getAuditStatus()!=2 ){
+                     mav = new ModelAndView("platform/user/accessFail");
+                }
+            }//跳转超时未实名认证页面
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
-
 //            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
             //获取店铺粉丝
             Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false, comUser.getId());
@@ -121,7 +134,7 @@ public class SfShopManageController extends BaseController {
             mav.addObject("orderCount", sfShopStatistics.getOrderCount());
             mav.addObject("shopView", fansNum);
             mav.addObject("shopUrl", shopUrl);
-
+            mav.addObject("status",status);
             return mav;
         } catch (Exception e) {
             log.error("加载店铺首页数据失败![comUser="+comUser+"][sfShop="+sfShop+"]");
@@ -162,7 +175,6 @@ public class SfShopManageController extends BaseController {
      * 更新店铺
      * @param request
      * @param response
-     * @param sfShop
      * @return
      */
     @RequestMapping("/updateShop")

@@ -42,7 +42,7 @@ function listMessage(){
                         var ele = "<div id='" + data.data[i].fromUserId + "' class=\"sec1\">"
                                 + "<h1><img src=\"" + data.data[i].headUrl + "\">";
                                 if(data.data[i].isSeeNum > 0) {
-                                    ele += "<span>" + data.data[i].isSeeNum + "</span></h1>";
+                                    ele += "<span>" + data.data[i].notSeeNum + "</span></h1>";
                                 } else {
                                     ele += "</h1>";
                                 }

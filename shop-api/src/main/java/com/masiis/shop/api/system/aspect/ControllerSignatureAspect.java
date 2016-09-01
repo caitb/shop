@@ -55,7 +55,6 @@ public class ControllerSignatureAspect implements Ordered {
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
         Class returnType = method.getReturnType();
-        Object errRes = returnType.getDeclaredConstructor().newInstance();
         SignValid rl = method.getAnnotation(SignValid.class);
         if(rl == null){
             return "系统错误";
@@ -65,6 +64,13 @@ public class ControllerSignatureAspect implements Ordered {
         Object[] parames = point.getArgs();
         String tarName = point.getTarget().getClass().getSimpleName();
 
+        if(!rl.isSysApi()){
+            // 对外暴露接口不走统一参数解析
+            Object res = point.proceed(parames);
+            return res;
+        }
+
+        Object errRes = returnType.getDeclaredConstructor().newInstance();
         Object req = null;
         try {
             if(!rl.isPageReturn()) {
@@ -116,7 +122,10 @@ public class ControllerSignatureAspect implements Ordered {
         }
 
         if(!rl.isPageReturn()) {
-            setResUnknown((BaseRes) errRes);
+            BaseRes res1 = (BaseRes) errRes;
+            if (res1 == null || StringUtils.isBlank(res1.getResCode())) {
+                setResUnknown(res1);
+            }
         }
         return errRes;
     }
@@ -143,7 +152,9 @@ public class ControllerSignatureAspect implements Ordered {
             if (obj instanceof HttpServletRequest) {
                 HttpServletRequest request = (HttpServletRequest) obj;
                 String conType = request.getHeader("Content-Type");
-                if (StringUtils.isNotBlank(conType) && !conType.contains("application/x-www-form-urlencoded")) {
+                if (StringUtils.isNotBlank(conType)
+                        && !conType.contains("application/x-www-form-urlencoded")
+                        && !conType.contains("multipart/form-data")) {
                     String result = getRequestBody(request);
                     System.out.println("aspect:" + result);
                     try {
@@ -179,7 +190,9 @@ public class ControllerSignatureAspect implements Ordered {
             return null;
         }
 
+
         ComUser user = null;
+        String userKey = null;
         if(rl.hasToken()) {
             // 校验token
             Field toField = ReflectUtils.getFieldByNameAllInSuperClass(clazz, "token");
@@ -201,19 +214,21 @@ public class ControllerSignatureAspect implements Ordered {
                 return null;
             }
 
-            // 校验签名
-            String sign = SysSignUtils.toSignString(req, null);
-            // 获取请求对象中的签名字符串
-            String reqSign = getFieldValue(clazz, req);
-            /*if(!sign.equals(field.get(req))){
-                res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
-                res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
-                return null;
-            }*/
-            log.info("sign:" + reqSign);
-
+            userKey = keybox.getUserKey();
             user = userService.getUserById(keybox.getComUserId());
         }
+
+        // 校验签名
+        String sign = SysSignUtils.toSignString(req, userKey);
+        // 获取请求对象中的签名字符串
+        String reqSign = getFieldValue(clazz, req);
+//        if(!sign.equals(reqSign)){
+//            res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
+//            res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
+//            return null;
+//        }
+        log.info("sign:" + sign);
+        log.info("reqSign:" + reqSign);
 
         // 绑定参数
         for(int i = 0; i < parames.length; i++){

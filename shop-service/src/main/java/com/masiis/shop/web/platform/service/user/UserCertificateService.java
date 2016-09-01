@@ -1,15 +1,18 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.platform.user.PfUserOrganizationMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
@@ -49,12 +52,14 @@ public class UserCertificateService {
     private PfUserSkuMapper userSkuMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private ComBrandMapper comBrandMapper;
 
+    private static Integer pageSize = 10;
 
     public void addUserCertificate(PfUserCertificate pfUserCertificate) {
         pfUserCertificateMapper.insert(pfUserCertificate);
     }
-
     /**
      * @Author 贾晶豪
      * @Date 2016/3/17 0017 下午 4:30
@@ -82,6 +87,36 @@ public class UserCertificateService {
                 certificateInfo.setLevelName(comAgentLevel.getName());
                 ComSku comSku = comSkuMapper.selectByPrimaryKey(certificateInfo.getSkuId());
                 certificateInfo.setSkuIcon(ctValue + comSku.getIcon());
+            }
+        }
+        return certificateInfoList;
+    }
+
+    /**
+     * jjh
+     * for APP 授权书
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<CertificateInfo> CertificateByUserForApp(Long userId,Integer pageNum) throws Exception{
+        PageHelper.startPage(pageNum, pageSize, false);
+        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUserAPP(userId);
+        if (certificateInfoList != null) {
+            for (CertificateInfo certificateInfo : certificateInfoList) {
+                if (certificateInfo.getPid() != 0) {
+                    certificateInfo.setUpperName(comUserMapper.selectByPrimaryKey(certificateInfo.getUserPid()).getRealName());
+                }else{
+                    certificateInfo.setUpperName("平台");
+                }
+                PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
+                if (pfUserCertificate == null) {
+                    certificateInfo.setPfUserCertificateInfo(pfUserCertificate);
+                }
+                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(certificateInfo.getAgentLevelId());
+                certificateInfo.setLevelName(comAgentLevel.getName());
+                ComBrand comBrand = comBrandMapper.selectById(certificateInfo.getBrandId());
+                certificateInfo.setBrandIcon(comBrand.getLogoUrl());
             }
         }
         return certificateInfoList;
@@ -137,8 +172,13 @@ public class UserCertificateService {
     public String uploadCertificateToOss(MultipartFile idCardImg,ComUser comUser){
         try {
             String contentType = idCardImg.getContentType();
-            String imageType = contentType.substring(contentType.indexOf("/")+1);
-           return uploadCertificateToOss(idCardImg.getInputStream(),idCardImg.getSize(),imageType,comUser.getId());
+            String imageType= null;
+            if (contentType.contains(";")){
+                imageType = contentType.substring(contentType.indexOf("/")+1,contentType.indexOf(";"));
+            }else{
+                imageType = contentType.substring(contentType.indexOf("/")+1);
+            }
+            return uploadCertificateToOss(idCardImg.getInputStream(),idCardImg.getSize(),imageType,comUser.getId());
         }catch (Exception e){
             e.getMessage();
         }

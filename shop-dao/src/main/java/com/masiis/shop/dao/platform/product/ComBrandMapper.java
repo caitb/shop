@@ -44,4 +44,26 @@ public interface ComBrandMapper {
      */
     void deleteById(@Param("id")Long id);
 
+    List<ComBrand> selectAll();
+
+
+    /**
+     * jjh
+     * 查找品牌
+     */
+    ComBrand checkBrandBySkuId(Integer skuId);
+
+    List<ComBrand> selectAllForWorld();
+
+    List<ComBrand> selectAllForWorldPage();
+
+    List<ComBrand> selectAllForFamily(Long userId);
+
+    /**
+     * 根据skuId查品牌
+     *
+     * @param skuId
+     * @return
+     */
+    ComBrand selectBySkuId(@Param("skuId") Integer skuId);
 }

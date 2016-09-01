@@ -6,6 +6,7 @@ import com.masiis.shop.api.bean.system.GetPhoneValidCodeReq;
 import com.masiis.shop.api.bean.system.LoginByPhoneReq;
 import com.masiis.shop.api.bean.system.LoginByWxRes;
 import com.masiis.shop.api.bean.system.LoginWxReq;
+import com.masiis.shop.api.bean.user.BankAddReq;
 import com.masiis.shop.api.bean.user.PartnerIndexReq;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.constant.wx.WxConsPF;
@@ -81,7 +82,7 @@ public class SysSignUtils {
         }
         int size = list.size();
         String[] arrayToSort = list.toArray(new String[size]);
-        Arrays.sort(arrayToSort, String.CASE_INSENSITIVE_ORDER);
+        Arrays.sort(arrayToSort);
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < size; i ++) {
             sb.append(arrayToSort[i]);
@@ -135,9 +136,11 @@ public class SysSignUtils {
         byte[] aa = {40, 110,117,108,108,41,61,123,34,110,111,110,99,101,83,116,114,34,58,34,115,100,117,74,108};
         os.write(aa);
         System.out.println(new String(os.toByteArray(), "UTF-8"));*/
-        PartnerIndexReq req = new PartnerIndexReq();
-        req.setToken("6a0e7d3a2c884ff191d856ded239533c");
-        System.out.println(URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8"));
+        BankAddReq req = new BankAddReq();
+        req.setBankcard("aaaa");
+        req.setBankId(1);
+        req.setToken("aaaa");
+        System.out.println(toSignString(req, null));
 
     }
 }

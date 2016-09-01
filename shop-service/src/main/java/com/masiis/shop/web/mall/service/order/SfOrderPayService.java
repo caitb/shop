@@ -14,6 +14,7 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.mall.SysConstants;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -21,7 +22,6 @@ import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.common.service.ComUserAccountService;
 import com.masiis.shop.web.common.utils.wx.WxSFBeanUtils;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
@@ -720,10 +720,10 @@ public class SfOrderPayService {
             log.info("小铺发送微信----param参数-----"+param_shopuser.toString());
             if (isEnoughStock(order.getShopUserId(),orderItems)){
                 url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
-                WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+                SysNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
             }else {
                 url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/"+order.getShopUserId();
-                WxPFNoticeUtils.getInstance().newShopOrderNoticeNoStock(shopUser, param_shopuser, url);
+                SysNoticeUtils.getInstance().newShopOrderNoticeNoStock(shopUser, param_shopuser, url);
             }
         }
         log.info("小铺归属人微信提醒-------end");

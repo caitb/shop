@@ -52,4 +52,8 @@ public class BrandService {
     public void update(ComBrand comBrand){
         comBrandMapper.updateById(comBrand);
     }
+
+    public ComBrand getBySkuId(Integer skuId) {
+        return comBrandMapper.selectBySkuId(skuId);
+    }
 }

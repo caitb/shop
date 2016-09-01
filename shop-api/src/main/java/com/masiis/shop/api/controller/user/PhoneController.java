@@ -181,16 +181,19 @@ public class PhoneController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_PHONE_BINDED_MSG);
             }
             user.setMobile(phoneNum);
+            user.setIsBinding(1);
             userService.updateComUser(user);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if(StringUtils.isBlank(res.getResCode())){
                 res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
                 res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
             }
-            return res;
         }
-        return null;
+
+        return res;
     }
 
     @RequestMapping("/vcode")

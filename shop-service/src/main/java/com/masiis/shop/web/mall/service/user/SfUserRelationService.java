@@ -57,13 +57,13 @@ public class SfUserRelationService {
      * @return
      */
     public Integer getFansOrSpokesMansNum(Long shopId, boolean isSpoken, Long userId){
-        Integer num = 0;
+        Integer num;
         if (isSpoken){
             num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, 1, userId);
         }else {
             num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, null, userId);
         }
-        return num;
+        return num == null?0:num;
     }
 
     /**
@@ -333,7 +333,8 @@ public class SfUserRelationService {
         }
         //查询粉丝总数量
 //        Integer totalCount = this.getSpokesManNumByUserId(userId, shopId);  //获取总的代言人数量
-        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+//        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+        Integer totalCount = pageViewPo.getFirstCount();
         pageViewPo.setTotalCount(totalCount);
         logger.info("代言人总数量："+totalCount);
         //查询展示列表

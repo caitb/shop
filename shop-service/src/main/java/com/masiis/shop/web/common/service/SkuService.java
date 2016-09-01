@@ -72,9 +72,9 @@ public class SkuService {
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
-        if(shopUser!=null && shopUser.getSendType()==1){//平台
+        if (shopUser != null && shopUser.getSendType() == 1) {//平台
             n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
-        }else{
+        } else {
             n = pfUserSkuStock.getCustomStock();
         }
         return n - quantity;
@@ -118,10 +118,11 @@ public class SkuService {
 
     /**
      * 获取代理等级图标
+     *
      * @author muchaofeng
      * @date 2016/4/27 12:02
      */
-    public SfShopSku findSfSkuLevelImage(Long shopId,Integer skuId) throws Exception {
+    public SfShopSku findSfSkuLevelImage(Long shopId, Integer skuId) throws Exception {
         String ImgValue = PropertiesUtils.getStringValue("agent_level_product_icon_url");
         SfShopSku sfShopSku = sfShopSkuExtendMapper.selectShopviewByShopIdAndSkuId(shopId, skuId);
         if (sfShopSku != null) {
@@ -142,11 +143,23 @@ public class SkuService {
 
     /**
      * 获取小铺商品
+     *
      * @author muchaofeng
      * @date 2016/4/10 14:37
      */
     public List<SfShopSku> getSfShopSkuByShopId(Long shopId) throws Exception {
         return sfShopSkuMapper.selectByShopId(shopId);
+    }
+
+    /**
+     * 获取小铺的商品
+     * @param shopId     小铺id
+     * @param isOwnShip  是否自己发货
+     * @return
+     * @throws Exception
+     */
+    public List<SfShopSku> selectByShopIdAndIsOwnShip(Long shopId,Integer isOwnShip ) throws Exception {
+        return sfShopSkuMapper.selectByShopIdAndIsOwnShip(shopId,isOwnShip);
     }
 
 
@@ -171,7 +184,7 @@ public class SkuService {
      * sku 详细信息
      * jjh
      */
-    public SkuInfo getSkuInfoBySkuId(Long shopId, Integer skuId,Integer isOwnShip) throws Exception {
+    public SkuInfo getSkuInfoBySkuId(Long shopId, Integer skuId, Integer isOwnShip) throws Exception {
         SkuInfo skuInfo = new SkuInfo();
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (comSku != null) {
@@ -180,7 +193,7 @@ public class SkuService {
             skuInfo.setSlogan(comSpu.getSlogan());
             skuInfo.setContent(comSpu.getContent());
         }
-        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId,isOwnShip);
+        SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId, isOwnShip);
         if (sfShopSku != null) {
 //            skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
@@ -202,21 +215,21 @@ public class SkuService {
             if (isOwnShip == 0) {//平台代发
                 skuInfo.setShipAmount(sfShop.getShipAmount());
                 int currentStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
-                if(currentStock>=0){
+                if (currentStock >= 0) {
                     skuInfo.setStock(currentStock);
-                }else {
+                } else {
                     skuInfo.setStock(0);
                 }
             }
             if (isOwnShip == 1) {//自己发货
-                int currentCustomerStock = pfUserSkuStock.getCustomStock()-pfUserSkuStock.getFrozenCustomStock();
+                int currentCustomerStock = pfUserSkuStock.getCustomStock() - pfUserSkuStock.getFrozenCustomStock();
                 skuInfo.setStock(currentCustomerStock >= 0 ? currentCustomerStock : 0);
             }
         }
         return skuInfo;
     }
 
-	/**
+    /**
      * 检查库存状态
      *
      * @param skuId
@@ -276,6 +289,24 @@ public class SkuService {
 
     public List<ComSku> getAllSku() {
         return comSkuMapper.selectAll();
+    }
+
+    /**
+     * 根据品牌获取主打商品列表
+     * @param brandId
+     * @return
+     */
+    public List<ComSku> getAgentSkuByBrandId(Integer brandId) {
+        return comSkuMapper.getPrimarySkuByBrandId(brandId);
+    }
+
+    /**
+     * 根据品牌获取非主打商品
+     * @param brandId
+     * @return
+     */
+    public List<ComSku> getNoMainSkuByBrandId(Integer brandId){
+        return comSkuMapper.getSkuListByBrandId(brandId);
     }
 
 }

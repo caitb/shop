@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrder;
+import com.masiis.shop.dao.po.SfOrderItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -86,6 +87,10 @@ public interface SfOrderMapper {
      * @return
      */
     List<Map<String, Object>> selectDeliveryByCondition(Map<String, Object> conditionMap);
+
+    Integer selectUnshippedOrderCount(@Param("shopId")Long shopId, @Param("userId")Long userId, @Param("orderStatus")Integer orderStatus);
+
+    List<Map<String,Object>> getShopOrderList(@Param("shopUserId")Long shopUserId, @Param("orderStatus")Integer orderStatus, @Param("sendType")Integer sendType);
 
     List<SfOrder> selectByStatusAndShipTime(@Param("expiraTime") Date expiraTime,
                                             @Param("orderStatus") int orderStatus,

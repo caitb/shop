@@ -35,6 +35,17 @@ public class Element<T> {
         this.content = content;
     }
 
+    public Element(int x, int y, Font font, Color color, T content, int lineStyle) {
+        this.x = x;
+        this.y = y;
+        this.font = font;
+        this.color = color;
+        this.content = content;
+        this.lineStyle = lineStyle;
+    }
+
+
+
     public Element(int x, int y, int w, int h, T content) {
         this.x = x;
         this.y = y;

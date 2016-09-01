@@ -1,10 +1,12 @@
 package com.masiis.shop.api.utils.image;
 
 import com.masiis.shop.common.util.OSSObjectUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
@@ -14,9 +16,14 @@ import java.util.List;
  */
 public class DrawImageUtil {
 
-    public static void drawImage(int width, int height, List<Element> elements, String savePath) throws IOException {
+    public static BufferedImage drawImage(int width, int height, List<Element> elements, String savePath) throws IOException {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
+
+
+        g.setColor(new Color(225,225,225));
+        g.fillRect(0,0,width, height);
+        g.setColor(Color.BLACK);
 
         for(Element element : elements){
             if(element.getContent() instanceof String){
@@ -47,26 +54,56 @@ public class DrawImageUtil {
                         element.getH(),
                         null
                 );
+            } else if(element.getContent() == null) {
+                g.setColor(element.getColor());
+                g.drawRect(element.getX(), element.getY(), element.getW(), element.getH());
+                g.fillRoundRect(element.getX(), element.getY(), element.getW(), element.getH(), 5, 5);
+                g.setColor(Color.BLACK);
             }
         }
 
-        ByteArrayOutputStream bs = null;
-        ImageOutputStream imOut = null;
-        InputStream is = null;
-        try {
-            bs = new ByteArrayOutputStream();
-            imOut = ImageIO.createImageOutputStream(bs);
-            ImageIO.write(bufferedImage, "png", imOut);
-            is = new ByteArrayInputStream(bs.toByteArray());
+        if(StringUtils.isNotBlank(savePath)) {
+            ByteArrayOutputStream bs = null;
+            ImageOutputStream imOut = null;
+            InputStream is = null;
+            try {
+                bs = new ByteArrayOutputStream();
+                imOut = ImageIO.createImageOutputStream(bs);
+                ImageIO.write(bufferedImage, "png", imOut);
+                is = new ByteArrayInputStream(bs.toByteArray());
 
-            OSSObjectUtils.deleteBucketFile(savePath);
-            OSSObjectUtils.uploadFile(savePath, is);
-        } catch (Exception e) {
-            bs.close();
-            imOut.close();
-            is.close();
+                OSSObjectUtils.deleteBucketFile(savePath);
+                OSSObjectUtils.uploadFile(savePath, is);
 
-            e.printStackTrace();
+            } catch (Exception e) {
+                bs.close();
+                imOut.close();
+                is.close();
+
+                e.printStackTrace();
+            }
         }
+
+        return bufferedImage;
+    }
+
+    public static BufferedImage makeCircle(BufferedImage image) {
+
+        int w = image.getWidth();
+        int h = image.getHeight();
+        BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2 = output.createGraphics();
+
+        g2.setComposite(AlphaComposite.Src);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.WHITE);
+        g2.fill(new RoundRectangle2D.Float(0, 0, w, h, w, h));
+        g2.setComposite(AlphaComposite.SrcAtop);
+        g2.drawImage(image, 0, 0, null);
+
+        g2.dispose();
+
+        return output;
     }
 }

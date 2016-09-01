@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.system.PfSysMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSysMenu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="create_man" property="createMan" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+</resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_sys_menu
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSysMenu" >
+        insert into pf_sys_menu (id, create_time, type, 
+            value, sort, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, 
+            #{value,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSysMenu" >
+        update pf_sys_menu
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            type = #{type,jdbcType=INTEGER},
+            value = #{value,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, type, value, sort, remark
+        from pf_sys_menu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, type, value, sort, remark
+        from pf_sys_menu
+    </select>
+
+    <select id="bannerSortList" resultType="java.util.HashMap">
+        SELECT
+           sm.id, b.cname, sm.sort
+        FROM pf_sys_menu sm
+        LEFT JOIN com_brand b ON sm.`value` = b.id
+        WHERE sm.type = 1;
+    </select>
+
+    <update id="updateSort">
+        UPDATE  pf_sys_menu
+        SET sort = #{sort,jdbcType=INTEGER}
+        WHERE  id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="familySortList"  resultType="java.util.HashMap">
+        SELECT
+             sm.id , uo.`name`, sm.sort
+        FROM pf_sys_menu sm
+        LEFT JOIN pf_user_organization uo ON sm.`value` = uo.id
+        WHERE sm.type = 2 AND uo.agent_level_id = 3;
+    </select>
+
+    <select id="teamSortList" resultType="java.util.HashMap">
+        SELECT
+           sm.id, uo.`name`, sm.sort
+        FROM pf_sys_menu sm
+        LEFT JOIN pf_user_organization uo ON sm.`value` = uo.id
+        WHERE sm.type = 3 AND uo.agent_level_id = 4;
+    </select>
+
+    <select id="listBrand" resultType="java.util.HashMap">
+        SELECT
+          b.id, b.cname
+        FROM com_brand b
+        WHERE NOT EXISTS(
+        SELECT 0 FROM pf_sys_menu sm WHERE sm.type = 1 AND sm.`value` = b.id
+        );
+    </select>
+
+    <insert id="addBrand" parameterType="com.masiis.shop.dao.po.PfSysMenu">
+         insert into pf_sys_menu (create_time,create_man,sort, type,  value )
+        values (#{createTime},#{createMan},#{sort}, #{type},  #{value} )
+    </insert>
+
+    <delete id="deleteBrand">
+        DELETE  FROM pf_sys_menu WHERE id = #{id}
+    </delete>
+
+    <select id="listFamily" resultType="java.util.HashMap">
+        SELECT
+              *
+        FROM pf_user_organization uo
+        WHERE NOT EXISTS(
+        SELECT 0 FROM pf_sys_menu sm WHERE sm.type = 2 AND sm.`value` = uo.id
+        )
+        AND uo.agent_level_id = 3
+    </select>
+
+    <insert id="addFamily" parameterType="com.masiis.shop.dao.po.PfSysMenu">
+        insert into pf_sys_menu (create_time,create_man,sort, type,  value )
+        values (#{createTime},#{createMan},#{sort}, #{type},  #{value} )
+    </insert>
+
+    <select id="listTeam"  resultType="java.util.HashMap">
+        SELECT
+              *
+        FROM pf_user_organization uo
+        WHERE NOT EXISTS(
+        SELECT 0 FROM pf_sys_menu sm WHERE sm.type = 3 AND sm.`value` = uo.id
+        )
+        AND uo.agent_level_id = 4
+        ;
+    </select>
+
+    <insert id="addTeam" parameterType="com.masiis.shop.dao.po.PfSysMenu">
+        insert into pf_sys_menu (create_time,create_man,sort, type,  value )
+        values (#{createTime},#{createMan},#{sort}, #{type},  #{value} )
+    </insert>
+
+    <select id="selectMaxSort" resultMap="BaseResultMap">
+        SELECT id, type, value, max(sort) sort FROM  pf_sys_menu WHERE type = #{type}
+    </select>
+
+</mapper>

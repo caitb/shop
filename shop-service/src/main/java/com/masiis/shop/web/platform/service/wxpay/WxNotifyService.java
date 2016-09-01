@@ -9,6 +9,7 @@ import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -31,7 +32,8 @@ public class WxNotifyService {
      *
      * @param param
      */
-    public void handleWxPayNotify(CallBackNotifyReq param, String rootPath) {
+    @Transactional
+    public void handleWxPayNotify(CallBackNotifyReq param) {
         // 支付流水号
         String paySerialNum = param.getOut_trade_no();
         String orderType = String.valueOf(paySerialNum.charAt(0));
@@ -48,7 +50,7 @@ public class WxNotifyService {
                 }
                 log.info("处理订单开始,类型为B,支付流水号为:" + paySerialNum);
                 // 调用borderService的方法处理
-                payBOrderService.mainPayBOrder(payment, param.getTransaction_id(), rootPath);
+                payBOrderService.mainPayBOrder(payment, param.getTransaction_id());
             } catch (Exception e) {
                 // 判断异常类型
                 if(e instanceof BusinessException && "".equals(e.getMessage())){

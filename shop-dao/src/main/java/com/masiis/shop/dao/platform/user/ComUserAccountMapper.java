@@ -27,35 +27,10 @@ public interface ComUserAccountMapper {
 
     ComUserAccount findByUserId(Long comUserId);
 
-    /**
-     * 订单支付修改上级代理资产
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/21 11:33
-     */
-    int payBOrderToUpdateUserAccount(@Param("comUserId") Long comUserId,
-                                     @Param("orderPayAmount") BigDecimal orderPayAmount);
-
-    /**
-     * 根据用户id和金额来更新用户总收入和可提现金额
-     *
-     * @param billAmount
-     * @param id
-     * @return
-     */
-    int addIncomeByCounting(@Param("billAmount") BigDecimal billAmount,
-                            @Param("userid") Long id);
 
     int updateByPrimaryKey(ComUserAccount account);
 
     int updateByIdWithVersion(ComUserAccount account);
-
-    /**
-     * 统计销售额
-     * @param userIds "id1,id2,..."
-     * @return
-     */
-    Double sumIncomeFeeByUserIds(String userIds);
 
     /**
      * 统计销售额

@@ -134,4 +134,50 @@
         WHERE openid = #{openId,jdbcType=VARCHAR}
         AND appid = #{appId,jdbcType=VARCHAR}
     </select>
+
+    <!-- 注册用户量 -->
+    <select id="registerCountUser" resultType="java.util.HashMap">
+        SET @begin_date = #{beginTime};
+
+        SET @end_date = DATE_ADD(@begin_date, INTERVAL 1 DAY);
+
+        <!-- "注册用户量（人）（进入两个商城的用户数量）"	-->
+        SELECT
+            CASE appid
+        WHEN 'wxc1e40e02b2e88dad' THEN
+            '麦链商城'
+        ELSE
+            '麦链合伙人'
+        END 'registerCountUser',
+         COUNT(0) 'registerCount'
+        FROM
+            com_wx_user
+        WHERE
+            create_time &lt;=@end_date
+        GROUP BY
+            appid;
+    </select>
+
+    <!-- 新增注册用户量 -->
+    <select id="registerNewCountUser" resultType="java.util.HashMap">
+        SET @begin_date = #{beginTime};
+
+        SET @end_date = DATE_ADD(@begin_date, INTERVAL 1 DAY);
+
+        SELECT
+            CASE appid
+        WHEN 'wxc1e40e02b2e88dad' THEN
+            '麦链商城'
+        ELSE
+            '麦链合伙人'
+        END 'registerCountUser',
+         COUNT(0) registerCount
+        FROM
+            com_wx_user
+        WHERE
+            create_time &gt;=@begin_date
+        AND create_time &lt;=@end_date
+        GROUP BY
+            appid;
+    </select>
 </mapper>

@@ -394,7 +394,11 @@ public class BOrderPayAgentService {
             sfShop.setStatus(1);
             sfShop.setExplanation("主营各类化妆品、保健品");
             logger.info("wexHeadImag---------"+comUser.getWxHeadImg());
-            sfShop.setLogo(comUser.getWxHeadImg());
+            if (comUser.getWxHeadImg()==null){
+                sfShop.setLogo("http://wx.qlogo.cn/mmopen/U3WEAQpg2p6kauE3P0DN4k9LTgUql9CRVSjH3P6xNs9RC8lW3GpibiahGfGUiaJCFfmMViazrbvNdFVntLvgjY39ILUdSeDdTvEP/0");
+            }else{
+                sfShop.setLogo(comUser.getWxHeadImg());
+            }
             sfShop.setName(comUser.getRealName() + "的小店");
             sfShop.setPageviews(0l);
             sfShop.setQrCode("");

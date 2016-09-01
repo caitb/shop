@@ -640,7 +640,7 @@ public class SfOrderPurchaseService {
         if (sfUserRelation != null) {
             sfUserRelationList.add(sfUserRelation);
         }
-        if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 3) {
+        if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 2) {
             getSfUserRelation(shopId,sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
         }
         log.info("关系----start");

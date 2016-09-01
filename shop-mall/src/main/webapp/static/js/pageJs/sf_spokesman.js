@@ -1,7 +1,8 @@
 
 function querySpokesMan(condition){
     var shopId = $("#goods").val();
-    var spokeLevel = $("#level").val();
+    //var spokeLevel = $("#level").val();
+    var spokeLevel = 0;
     $.ajax({
         type:"POST",
         url : basepath+"/distribution/spokesMan.do",
@@ -40,7 +41,8 @@ function querySpokesMan(condition){
 
 function viewMore(){
     var shopId = $("#goods").val();
-    var fansLevel = $("#level").val();
+    //var fansLevel = $("#level").val();
+    var fansLevel = 0;
     var currentPage = $("#currentPage").val();
     $.ajax({
         type:"POST",

@@ -84,5 +84,6 @@
         item_sub_type, source_create_time, amount, is_count, remark
         from sf_user_bill_item
         WHERE source_id = #{sourceId,jdbcType=BIGINT}
+        ORDER BY amount DESC LIMIT 0,2
     </select>
 </mapper>

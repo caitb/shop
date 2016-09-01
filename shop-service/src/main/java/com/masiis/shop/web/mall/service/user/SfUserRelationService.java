@@ -224,7 +224,9 @@ public class SfUserRelationService {
         }
         //查询粉丝总数量
 //        Integer totalCount = this.getFansNumByUserId(userId, shopId);
-        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        //三级分销改成两级分销
+//        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount() + pageViewPo.getThirdCount();
+        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
         pageViewPo.setTotalCount(totalCount);
         logger.info("粉丝总数量："+totalCount);
         //查询展示列表
@@ -331,7 +333,8 @@ public class SfUserRelationService {
         }
         //查询粉丝总数量
 //        Integer totalCount = this.getSpokesManNumByUserId(userId, shopId);  //获取总的代言人数量
-        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+//        Integer totalCount = pageViewPo.getFirstCount() + pageViewPo.getSecondCount();
+        Integer totalCount = pageViewPo.getFirstCount();
         pageViewPo.setTotalCount(totalCount);
         logger.info("代言人总数量："+totalCount);
         //查询展示列表

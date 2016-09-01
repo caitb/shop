@@ -1010,8 +1010,21 @@ public class DateUtil {
         calendar.set(Calendar.DATE, day + 7);
         return Date2String(calendar.getTime(), DEFAULT_DATE_FMT_2);
     }
-
-
+    /**
+     * 指定日期增加几天
+     * @author wl
+     * @date 2016/8/23
+     */
+    public static Date addInteger(Date date,int amount){
+        Date myDate = null;
+        if(date != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, amount);
+            myDate = calendar.getTime();
+        }
+        return  myDate;
+    }
     public static void main(String[] args) {
         System.out.println(addDays(7));
         //System.out.println(getLastTimeInMonth(new Date()));

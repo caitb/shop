@@ -18,6 +18,18 @@
 </head>
 <body>
 <div class="wrap">
+    <c:choose>
+        <c:when test="${comUser.auditStatus==2 || status ==0}">
+            <div class="header" style="display:none">
+                <h4>请3天内完成实名认证，逾期店铺不能访问<a href="">点击认证</a></h4>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="header" style="display:block">
+                <h4>请3天内完成实名认证，逾期店铺不能访问<a href="<%=basePath%>identityAuth/toInentityAuthPage.html">点击认证</a></h4>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <div class="box">
         <div class="banner">
             <div class="swiper-container">
@@ -38,18 +50,19 @@
             <div class="floor">
             </div>
         </div>
-        <c:if test="${user.isAgent==0}">
-            <div class="index_Nlogin">
-                <span style="background: url('<%=path%>/static/images/index_login1.png') no-repeat;background-size: contain;"></span>
-                <img src="<%=path%>/static/images/index_login.png" alt="">
-                <p>您还不是合伙人，先去好货市场看看吧~</p>
-            </div>
-        </c:if>
+        <%--<c:if test="${user.isAgent==0}">--%>
+            <%--<div class="index_Nlogin">--%>
+                <%--<span style="background: url('<%=path%>/static/images/index_login1.png') no-repeat;background-size: contain;"></span>--%>
+                <%--<img src="<%=path%>/static/images/index_login.png" alt="">--%>
+                <%--<p>您还不是合伙人，先去好货市场看看吧~</p>--%>
+            <%--</div>--%>
+        <%--</c:if>--%>
         <nav>
             <ul>
                 <li>
-                    <a href="<%=path%>/marketGood/market">
-                        <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
+                    <%--<a href="<%=path%>/marketGood/market">--%>
+                    <a onclick="clickShow()">
+                    <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
                         <span>好货市场</span></a>
                 </li>
                 <li>
@@ -58,8 +71,9 @@
                         </h1>
                         <span>订单管理</span></a>
                 </li>
-                <li class="market">
-                    <a class="herf" href="<%=basePath%>product/user/${user.id}">
+                <li >
+                    <%--<a class="herf" href="<%=basePath%>product/user/${user.id}">--%>
+                        <a onclick="clickShow()">
                         <h1><img src="<%=path%>/static/images/1%20(2).png"></h1>
                         <span>库存</span></a>
                 </li>
@@ -67,14 +81,18 @@
         </nav>
         <nav>
             <ul>
-                <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
-                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
+                <li >
+                    <%--<a class="herf" href="<%=basePath%>myteam/teamlist">--%>
+                        <a onclick="clickShow()">
+                        <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
                         <%--<span>1</span>--%>
                     </h1>
-                    <span>我的团队</span></a>
+                    <span>我的家族</span></a>
                 </li>
-                <li class="market"><a class="herf" href="<%=basePath%>developing/ui">
-                    <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
+                <li >
+                    <%--<a class="herf" href="<%=basePath%>developing/ui">--%>
+                        <a onclick="clickShow()">
+                        <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
                     <span>发展合伙人</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
@@ -120,6 +138,17 @@
     <span class="close">×</span>
     <img src="${path}/static/images/b.png" alt="">
 </div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_a">
+        <img src="${path}/static/images/ku.png" alt=""/>
+        <p>此功能仅支持在麦链合伙人APP使用</p>
+        <h1>
+            <span onclick="clickHide()">取消</span>
+            <span onclick="download()">去下载</span>
+        </h1>
+    </div>
+</div>
 <div class="bottom">
     <footer>
         <div class="btm" style="background: #DA3600;">
@@ -147,11 +176,13 @@
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"></script>
+<script src="<%=path%>/static/js/download.js"></script>
 <script>
     $("body").on("swipeLeft", function () {
         location.href = '<%=path%>/shop/manage/index';
     })
 </script>
+
 <script>
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
@@ -201,6 +232,12 @@
         $(".back").hide()
         $(".back_f").hide()
     })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
 </script>
 <script>
     $(function () {

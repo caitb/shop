@@ -27,9 +27,6 @@
 <input type="hidden" id="month" name="month" value = "${month}"/>
 <div class="wrap">
     <div class="box">
-        <%--<header class="xq_header">
-            <p>我的账户</p>
-        </header>--%>
         <main>
             <div class="head_img">
                 <p><img src="${comUser.wxHeadImg}" alt=""></p>
@@ -58,7 +55,7 @@
                     <li><b> ${withdrawd}<br></b>已提现</li>
                 </ul>
             </nav>
-            <button class="btn" onclick="withdrawRequest()">
+            <button class="btn" onclick="clickShow()">
                 申请提现
             </button>
             <div class="floor2">
@@ -66,6 +63,17 @@
                 <p><a href="#" onclick="toExtract()">提现记录</a></p>
             </div>
         </main>
+    </div>
+</div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_a">
+        <img src="${path}/static/images/ku.png" alt=""/>
+        <p>此功能仅支持在麦链合伙人APP使用</p>
+        <h1>
+            <span onclick="clickHide()">取消</span>
+            <span>去下载</span>
+        </h1>
     </div>
 </div>
 <div class="back" id="detail">
@@ -211,6 +219,12 @@
             $(".floordown").hide();     //如果元素为显现,则将其隐藏
             $(".floor p img").attr("src","${path}/static/images/top.png")
         }
+    }
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
     }
 </script>
 </body>

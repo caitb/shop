@@ -3,12 +3,14 @@ package com.masiis.shop.web.platform.controller.system;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic;
 import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 
 import com.masiis.shop.web.platform.service.message.PfMessageSrRelationService;
@@ -28,9 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by muchaofeng on 2016/3/2.
@@ -70,6 +70,15 @@ public class ShopIndexController extends BaseController {
         for (PbBanner banner : pbBanner) {
             banner.setImgUrl(value + banner.getImgUrl());
         }
+        Date date = new Date();//获取当前时间
+        Date date1 = DateUtil.addInteger(user.getCreateTime(), 3);
+        int  status;
+        if (date.getTime() > date1.getTime()) {
+            status = 0;
+           } else{
+             status = 1;
+          }//验证是否超过三天
+        log.info("是否超过三天:" + status);
 //        List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
 //        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
 //        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
@@ -84,6 +93,7 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("pbBanner", pbBanner);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("status",status);
         String curUrl = req.getRequestURL().toString();
         log.info("===========================B-index[curUrl=" + curUrl + "]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);

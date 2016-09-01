@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
@@ -11,7 +12,6 @@ import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.common.utils.wx.WxSFNoticeUtils;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hzz on 2016/4/10.
@@ -256,6 +257,31 @@ public class SfOrderService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark("订单完成");
         logMapper.insert(sfOrderOperationLog);
+    }
+
+    /**
+     * 查询状态为“待发货”的订单总数
+     * @param shopId
+     * @param userId
+     */
+    public Integer getUnshippedOrderCount(Long shopId, Long userId) {
+        return sfOrderMapper.selectUnshippedOrderCount(shopId, userId, 7);
+    }
+
+    /**
+     * 店铺订单列表
+     * @param shopUserId 小铺归属人id
+     * @param orderStatus 订单状态 0待付款，7待发货，3已完成，8已发货
+     * @param sendType 发货方式 1平台发货，2店主发货
+     * @return
+     */
+    public List<Map<String,Object>> getShopOrderList(Long shopUserId, Integer orderStatus, Integer sendType, Integer currentPage, Integer pageSize) {
+        PageHelper.startPage(currentPage, pageSize, false);
+        return sfOrderMapper.getShopOrderList(shopUserId, orderStatus, sendType);
+    }
+
+    public List<SfOrderFreight> getFreightByOrderId(Long orderId) {
+        return sfOrderFreightMapper.selectByOrderId(orderId);
     }
 
     /**

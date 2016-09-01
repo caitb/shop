@@ -1,30 +1,30 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.masiis.shop.common.util.CCPRestSmsSDK;
-import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.common.util.OSSObjectUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.family.MyTeamListHomePo;
+import com.masiis.shop.dao.beans.family.TeamListPo;
+import com.masiis.shop.dao.beans.family.TeamListPoPaging;
+import com.masiis.shop.dao.beans.family.TeamMemberInfo;
+import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.*;
-import com.masiis.shop.dao.platform.user.*;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by cai_tb on 16/3/16.
@@ -51,12 +51,16 @@ public class MyTeamService {
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
-    private ComUserAccountMapper comUserAccountMapper;
-    @Resource
     private CountGroupService countGroupService;
     @Resource
     private PfUserUpgradeNoticeMapper pfUserUpgradeNoticeMapper;
+    @Resource
+    private BrandStatisticService brandStatisticService;
 
+
+    private static final Logger logger = Logger.getLogger(MyTeamService.class);
+
+    private static final Integer pageSize = 10;
 
     /**
      * 获取用户代理的所有产品
@@ -173,7 +177,8 @@ public class MyTeamService {
             userAgentMap.put("userName", comUser.getRealName());
             userAgentMap.put("agentLevelName", comAgentLevel.getName());
             userAgentMap.put("code", userSku.getCode());
-
+            userAgentMap.put("levelImgUrl", PropertiesUtils.getStringValue("agent_level_product_icon_url") + comAgentLevel.getImgUrl());
+            userAgentMap.put("imgUrl", comUser.getWxHeadImg());
             userAgentMaps.add(userAgentMap);
         }
 
@@ -181,6 +186,111 @@ public class MyTeamService {
 
 
         return teamMap;
+    }
+
+    /**
+     * 团队列表首页
+     *
+     * @param pfUserSkuId id
+     * @return
+     */
+    public MyTeamListHomePo teamListHome(Integer pfUserSkuId) throws Exception {
+        logger.info("团队成员列表首页");
+        logger.info("id = " + pfUserSkuId);
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSkuId);
+        if (pfUserSku == null) {
+            throw new BusinessException("代理信息不存在");
+        }
+        ComSku comSku = comSkuMapper.selectById(pfUserSku.getSkuId());
+        if (comSku == null) {
+            throw new BusinessException("商品信息不存在");
+        }
+        ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+        //查询不包含自己的代理商品团队人数
+        BrandStatistic brandStatistic = brandStatisticService.selectBrandStatisticByUserIdAndBrandId(pfUserSku.getUserId(), comSpu.getBrandId());
+        //直接下级人数
+        Integer downUserNum = brandStatisticService.selectDownUserNumByUserIdAndBrandId(pfUserSku.getUserId(), comSpu.getBrandId());
+        //获得间接下级人数
+        Integer indirectUserNum = brandStatistic.getUserNum() - downUserNum - 1;
+        MyTeamListHomePo myTeamListHomePo = new MyTeamListHomePo();
+        myTeamListHomePo.setSkuName(comSku.getName());
+        myTeamListHomePo.setSkuId(comSku.getId());
+        myTeamListHomePo.setDirectNum(downUserNum);
+        myTeamListHomePo.setIndirectNum(indirectUserNum);
+        myTeamListHomePo.setBrandStatistic(brandStatistic);
+        return myTeamListHomePo;
+    }
+
+    /**
+     * 团队列表查询
+     *
+     * @param isPaging    是否分页 true：分页  false：不分页
+     * @param pfUserSkuId id
+     * @param pageNum     查询页码
+     * @return
+     */
+    public TeamListPoPaging teamList(boolean isPaging, Integer pfUserSkuId, Integer pageNum) throws Exception {
+        logger.info("团队列表查询");
+        logger.info("id = " + pfUserSkuId);
+        logger.info("是否分页：" + isPaging);
+        logger.info("pageNum = " + pageNum);
+        TeamListPoPaging teamListPoPaging = new TeamListPoPaging();
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSkuId);
+        if (pfUserSku == null) {
+            throw new BusinessException("代理信息不存在");
+        }
+        List<Map<String, Object>> maps;
+        if (isPaging) {
+            if (pageNum.intValue() < 1 || pageNum == null) {
+                throw new BusinessException("页码不正确");
+            }
+            Page page = PageHelper.startPage(pageNum, pageSize, false);
+            maps = pfUserSkuMapper.selectDirectListByuserId(pfUserSku.getId());
+            teamListPoPaging.setPageNum(page.getPageNum());
+            teamListPoPaging.setPageSize(page.getPageSize());
+            teamListPoPaging.setTotalNum(page.getTotal());
+            teamListPoPaging.setTotalPages(page.getPages());
+        } else {
+            maps = pfUserSkuMapper.selectDirectListByuserId(pfUserSku.getId());
+        }
+        List<TeamListPo> teamListPos = new LinkedList<>();
+        TeamListPo teamListPo;
+        String url = PropertiesUtils.getStringValue("agent_level_product_icon_url");
+        for (Map<String, Object> map : maps) {
+            teamListPo = new TeamListPo();
+            teamListPo.setUserId(Long.valueOf(map.get("userId").toString()));
+            teamListPo.setUserName(map.get("userName").toString());
+            teamListPo.setWxId(map.get("wxId") == null ? "" : map.get("wxId").toString());
+            teamListPo.setCode(map.get("code") == null ? "" : map.get("code").toString());
+            teamListPo.setAgentLevel(Integer.valueOf(map.get("agentLevel").toString()));
+            teamListPo.setAgentLevelName(map.get("agentLevelName").toString());
+            teamListPo.setAgentLevelImg(url + map.get("agentLevelImg").toString());
+            teamListPo.setWxHeadImg(map.get("wxHeadImg").toString());
+            teamListPo.setSkuId(Integer.valueOf(map.get("skuId").toString()));
+            teamListPo.setUserSkuId(Integer.valueOf(map.get("userSkuId").toString()));
+            teamListPos.add(teamListPo);
+        }
+        teamListPoPaging.setTeamListPos(teamListPos);
+        return teamListPoPaging;
+    }
+
+    /**
+     * 查看队员信息
+     *
+     * @param userSkuId
+     * @return
+     */
+    public TeamMemberInfo getMemberInfo(Integer userSkuId) {
+        logger.info("pfUserSkuId = " + userSkuId);
+        TeamMemberInfo teamMemberInfo = pfUserSkuMapper.selectMemberInfo(userSkuId);
+        Map<String, Number> statisticsBuy = pfBorderMapper.statisticsBuy(teamMemberInfo.getUserId(), teamMemberInfo.getUserPid(), teamMemberInfo.getSkuId());
+        teamMemberInfo.setPurchaseTimes(statisticsBuy.get("stock").intValue());
+        teamMemberInfo.setPurchaseAmount(BigDecimal.valueOf(statisticsBuy.get("totalAmount").doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        teamMemberInfo.setCertImg(PropertiesUtils.getStringValue("index_user_certificate_url") + teamMemberInfo.getCertImg());
+        //查询不包含自己的代理商品团队人数
+        Integer totalNum = pfUserSkuMapper.selectTeamCountById(userSkuId, teamMemberInfo.getUserId());
+        teamMemberInfo.setLowPartner(totalNum);
+        return teamMemberInfo;
     }
 
     /**
@@ -198,7 +308,7 @@ public class MyTeamService {
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
         ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
-        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
+        Map<String, Number> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         //Map<String, String> curMap = countChild(pfUserSku.getId());
         //Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
@@ -206,8 +316,8 @@ public class MyTeamService {
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("userId", comUser.getId());
-        memberMap.put("stock", statisticsBuy.get("stock"));
-        memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
+        memberMap.put("stock", statisticsBuy.get("stock").intValue());
+        memberMap.put("totalAmount", statisticsBuy.get("totalAmount").doubleValue());
         memberMap.put("countChild", countGroup.getCount() - 1);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
@@ -242,128 +352,5 @@ public class MyTeamService {
     public List<Map<String, Object>> upgradeRecord(Long userId, Integer skuId) {
         List<Map<String, Object>> upgradeRecords = pfUserUpgradeNoticeMapper.selectUpgradeRecordByUserIdAndSkuId(userId, skuId);
         return upgradeRecords;
-    }
-
-    /**
-     * 证书审核
-     *
-     * @param userSkuId
-     * @param pfUserCertificateId
-     * @param status
-     * @param reason
-     * @param rootPath
-     */
-    public void audit(Integer userSkuId, Long pfUserCertificateId, Integer status, String reason, String rootPath) {
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByPrimaryKey(pfUserCertificateId);
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
-        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-
-        pfUserCertificate.setStatus(status);
-        pfUserCertificate.setReason(reason);
-
-        if (status == 1) {
-            pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
-            Date curDate = new Date();
-            pfUserCertificate.setBeginTime(curDate);
-            curDate.setYear(curDate.getYear() + 1);
-            pfUserCertificate.setEndTime(curDate);
-
-            String name = comUser.getRealName();
-            String value1 = "证件号：" + comUser.getIdCard() + "，手机：" + comUser.getMobile() + "，微信：" + comUser.getWxId();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-            String value2 = "授权期限：" + sdf.format(pfUserCertificate.getBeginTime()).toString() + "至" + sdf.format(pfUserCertificate.getEndTime()).toString() + "，证书编号" + pfUserCertificate.getCode();
-            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String picName = uploadFile(webappPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
-
-            pfUserCertificate.setImgUrl(picName + ".jpg");
-
-            CCPRestSmsSDK.sendSMS(comUser.getMobile(), "65446", new String[]{comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId()).getName()});
-        }
-
-
-        PfUserSku pfUserSku = new PfUserSku();
-        pfUserSku.setId(userSkuId);
-        pfUserSku.setIsCertificate(pfUserCertificate.getStatus());
-
-        pfUserCertificateMapper.updateById(pfUserCertificate);
-        pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
-
-    }
-
-    private String getCertificateCode(PfUserCertificate pfUserCertificate) {
-        String certificateCode = null;
-        int num = 10000;
-        StringBuffer Code = new StringBuffer("MASIIS");
-        String value = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy", null).substring(2);//时间
-        String value1 = pfUserCertificate.getAgentLevelId().toString();
-        String value2 = String.format("%04d", pfUserCertificate.getSkuId());
-        int value3 = num + pfUserCertificate.getId().intValue();
-        certificateCode = Code.append(value1).append(value2).append(value).append(String.valueOf(value3)).toString();
-        return certificateCode;
-    }
-
-    //给jpg添加文字并上传
-    public static String uploadFile(String filePath, String[] markContent) {
-        String pname = getRandomFileName();
-        ImageIcon imgIcon = new ImageIcon(filePath);
-        Image theImg = imgIcon.getImage();
-        int width = theImg.getWidth(null) == -1 ? 200 : theImg.getWidth(null);
-        int height = theImg.getHeight(null) == -1 ? 200 : theImg.getHeight(null);
-        BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = bimage.createGraphics();
-        g.setColor(Color.black);
-        g.setBackground(Color.red);
-        g.drawImage(theImg, 0, 0, null);
-        int fs = 40;
-        g.setFont(new Font("华文细黑", Font.BOLD, fs)); //字体、字型、字号
-        //画文字
-        if (markContent[0].length() == 3) {
-            g.drawString(markContent[0], width / 2 - fs * 3 / 2, height / 2 + 40);//740 625
-        } else {
-            g.drawString(markContent[0], width / 2 - fs, height / 2 + 40);
-        }
-        g.setColor(Color.gray);
-        g.setFont(new Font("华文细黑", Font.BOLD, 18)); //字体、字型、字号
-        g.drawString(markContent[1], 150, 490);
-        g.drawString(markContent[2], 180, 520);
-        g.dispose();
-        try {
-            ByteArrayOutputStream bs = new ByteArrayOutputStream();
-            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
-            ImageIO.write(bimage, "png", imOut);
-            InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
-//            FileOutputStream out = new FileOutputStream(outPath); //先用一个特定的输出文件名
-//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-//            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);
-//            param.setQuality(qualNum, true);
-//            encoder.encode(bimage, param);
-//            out.close();
-        } catch (Exception e) {
-            return "";
-        }
-        return pname;
-    }
-
-    /**
-     * 生成随机文件名：当前年月日时分秒+五位随机数
-     *
-     * @return
-     */
-    public static String getRandomFileName() {
-
-        SimpleDateFormat simpleDateFormat;
-
-        simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-
-        Date date = new Date();
-
-        String str = simpleDateFormat.format(date);
-
-        Random random = new Random();
-
-        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
-
-        return rannum + str;// 当前时间
     }
 }

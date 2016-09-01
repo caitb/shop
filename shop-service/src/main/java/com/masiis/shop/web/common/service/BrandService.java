@@ -18,4 +18,8 @@ public class BrandService {
     public ComBrand getById(Integer brandId){
         return comBrandMapper.selectById(brandId);
     }
+
+    public ComBrand getBySkuId(Integer skuId) {
+        return comBrandMapper.selectBySkuId(skuId);
+    }
 }

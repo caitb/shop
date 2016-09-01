@@ -41,6 +41,9 @@
     } else if(type.equals("upunpaySeven")){
         PfUpgradeTask upgradeTask = (PfUpgradeTask) ac.getBean("pfUpgradeTask");
         upgradeTask.upgradeNoticeSevenDayUnPay();
+    } else if(type.equals("queueorder")){
+        PfOrderTask pfOrderTask = (PfOrderTask) ac.getBean("pfOrderTask");
+        pfOrderTask.doSomethingWithDelay();
     } else if(type.equals("sfautoconfirm")){
         SfOrderTask sfOrderTask = (SfOrderTask) ac.getBean("sfOrderTask");
         sfOrderTask.orderReceivedConfirmJob();

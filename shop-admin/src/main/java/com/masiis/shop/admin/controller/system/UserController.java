@@ -134,7 +134,7 @@ public class UserController {
         pbOperationLog.setPbUserId(pbUsers.size()==0?0:pbUsers.get(0).getId());
         pbOperationLog.setPbUserName(pbUsers.size()==0?pbUser.getUserName():pbUsers.get(0).getUserName());
         pbOperationLog.setRemark(pbUsers.size()==0?"登录失败":"登录成功");
-        pbOperationLogService.add(pbOperationLog);
+        pbOperationLogService.insert(pbOperationLog);
 
         //用户名或密码不对
         if (pbUsers == null || pbUsers.size() <= 0) {

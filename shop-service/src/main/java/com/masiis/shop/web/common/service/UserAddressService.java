@@ -7,6 +7,7 @@ import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.common.constant.platform.SysConstants;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ import java.util.List;
 @Service
 @Transactional
 public class UserAddressService {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
@@ -487,13 +490,19 @@ public class UserAddressService {
         try {
             //取消之前的默认地址
             int ii = comUserAddressMapper.cancelDefaultAddress(userId);
-            //设置新的默认地址
-            int i = comUserAddressMapper.settingDefaultAddress(id);
-            if (i == 1) {
-                return true;
-            } else {
-                return false;
+            if (ii==1){
+                //设置新的默认地址
+                int i = comUserAddressMapper.settingDefaultAddress(id);
+                if (i == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }else{
+                throw new BusinessException("设置默认地址失败-----默认地址有多个");
+
             }
+
         } catch (Exception e) {
             throw new BusinessException("设置默认地址失败-----" + e);
         }

@@ -42,12 +42,11 @@ public class SkuStockController extends BaseController{
 
         try {
             Map<String, Object> pageMap = skuStockService.listByCondition(pageNumber, pageSize, new PfSkuStock());
-
             return pageMap;
         } catch (Exception e) {
             log.error("获取库存列表失败!");
+            e.printStackTrace();
         }
-
         return "error";
     }
 
@@ -55,16 +54,13 @@ public class SkuStockController extends BaseController{
     @ResponseBody
     public Object update(HttpServletRequest request, HttpServletResponse response,
                          PfSkuStock pfSkuStock){
-
         try {
             skuStockService.update(pfSkuStock,getPbUser(request));
-
             return "success";
         } catch (Exception e) {
             log.error("更新库存失败![pfSkuStock=" + pfSkuStock + "]");
             e.printStackTrace();
         }
-
         return "error";
     }
 }

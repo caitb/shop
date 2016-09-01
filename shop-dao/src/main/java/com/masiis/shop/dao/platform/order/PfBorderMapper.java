@@ -32,6 +32,8 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
+    List<PfBorder> getMyOrderListByUserAndStatue(@Param("userId")Long userId, @Param("orderStatuList")List<Integer> orderStatuList);
+
     List<Map<String, Object>> selectByCondition(Map<String, Object> conditionMap);
 
     /**
@@ -89,7 +91,7 @@ public interface PfBorderMapper {
      * @param userId
      * @return
      */
-    Map<String, Double> statisticsBuy(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("skuId")Integer skuId);
+    Map<String, Number> statisticsBuy(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("skuId")Integer skuId);
 
     Integer selectQueuingOrderCount(@Param("skuId") Integer skuId);
 
@@ -174,4 +176,14 @@ public interface PfBorderMapper {
     List<Map<String, Object>> selectByOffline(Map<String, Object> conditionMap);
 
     List<Map<String, Object>> selectDeliveryByCondition(Map<String, Object> conditionMap);
+
+    Map<String,Object> getRewordInfoByOrderId(Long id);
+
+    List<PfBorder> getLowerLevelOrderList(@Param("userPid")Long userPid, @Param("lowerId")Long lowerId, @Param("orderStatuList")List<Integer> orderStatuList);
+
+    Map<String,Object> getAgentInfo(@Param("userId")Long userId, @Param("orderId")Long orderId);
+
+    List<String> getPfBorderPaymentsByOrderId(Long orderId);
+
+    String getSkuDefaultImgUrlBySkuId(Integer skuId);
 }

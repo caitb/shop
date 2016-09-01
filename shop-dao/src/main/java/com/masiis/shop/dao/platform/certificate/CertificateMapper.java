@@ -27,4 +27,6 @@ public interface CertificateMapper {
     String findById(Integer id);
 
     List<CertificateInfo> getCertificatesByUser(Long userId);
+
+    List<CertificateInfo> getCertificatesByUserAPP(Long userId);
 }

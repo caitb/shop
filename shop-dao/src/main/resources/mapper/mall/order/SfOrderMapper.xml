@@ -415,4 +415,47 @@
         </if>
     </select>
 
+    <select id="selectUnshippedOrderCount" resultType="Integer">
+        select count(*)
+        from sf_order
+        where order_status = #{orderStatus}
+          and shop_id = #{shopId} and shop_user_id = #{userId}
+    </select>
+
+    <select id="getShopOrderList" resultType="java.util.HashMap">
+        SELECT
+            bo.id,
+            bo.order_code,
+            bo.order_status,
+            bo.order_type,
+            bo.send_type,
+            bo.create_time,
+            bo.receivable_amount,
+            bo.order_amount,
+            bo.pay_amount,
+            bo.pay_time,
+            bo.ship_amount,
+            bi.sku_id,
+            bi.unit_price,
+            bi.quantity,
+            sku.`name`,
+            skui.img_url
+        FROM
+            sf_order bo
+        LEFT JOIN sf_order_item bi   ON bi.sf_order_id = bo.id
+        LEFT JOIN com_sku        sku  ON sku.id = bi.sku_id
+        LEFT JOIN com_sku_image  skui ON skui.sku_id = bi.sku_id AND skui.is_default = 1
+        <where>
+            bo.shop_user_id = #{shopUserId}
+            <if test="orderStatus != null">
+                AND bo.order_status = #{orderStatus}
+            </if>
+            <if test="sendType != null">
+                AND bo.send_type = #{sendType}
+            </if>
+        </where>
+        ORDER BY bo.create_time DESC, skui.img_url DESC
+    </select>
+
+
 </mapper>

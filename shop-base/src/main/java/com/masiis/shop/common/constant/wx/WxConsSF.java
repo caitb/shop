@@ -112,6 +112,11 @@ public class WxConsSF {
      */
     public static final String PATH_CERT = PropertiesUtils.getStringValue("sf.payuser.cert.path");
 
+    /**
+     * 微信支付交易类型:公众号为JSAPI
+     */
+    public static final String WX_PAY_TRADE_TYPE = "JSAPI";
+
     /*==================================================================================================================*/
     /**
      * 小铺订单下单通知(通知麦链商城)

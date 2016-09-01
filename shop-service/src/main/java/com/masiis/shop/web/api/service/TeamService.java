@@ -195,14 +195,14 @@ public class TeamService {
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
         ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
-        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
+        Map<String, Number> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid(), pfUserSku.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         Map<String, String> curMap = countChild(pfUserSku.getId());
         Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString()) ? 0 : curMap.get("childIds").split(",").length;
 
         Map<String, Object> memberMap = new HashMap<>();
-        memberMap.put("stock", statisticsBuy.get("stock"));
-        memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
+        memberMap.put("stock", statisticsBuy.get("stock").intValue());
+        memberMap.put("totalAmount", statisticsBuy.get("totalAmount").doubleValue());
         memberMap.put("countChild", countChild);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
@@ -225,128 +225,5 @@ public class TeamService {
         memberMap.put("pid", pfUserSku.getPid());
 
         return memberMap;
-    }
-
-    /**
-     * 证书审核
-     *
-     * @param userSkuId
-     * @param pfUserCertificateId
-     * @param status
-     * @param reason
-     * @param rootPath
-     */
-    public void audit(Integer userSkuId, Long pfUserCertificateId, Integer status, String reason, String rootPath) {
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByPrimaryKey(pfUserCertificateId);
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
-        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-
-        pfUserCertificate.setStatus(status);
-        pfUserCertificate.setReason(reason);
-
-        if (status == 1) {
-            pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
-            Date curDate = new Date();
-            pfUserCertificate.setBeginTime(curDate);
-            curDate.setYear(curDate.getYear() + 1);
-            pfUserCertificate.setEndTime(curDate);
-
-            String name = comUser.getRealName();
-            String value1 = "证件号：" + comUser.getIdCard() + "，手机：" + comUser.getMobile() + "，微信：" + comUser.getWxId();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-            String value2 = "授权期限：" + sdf.format(pfUserCertificate.getBeginTime()).toString() + "至" + sdf.format(pfUserCertificate.getEndTime()).toString() + "，证书编号" + pfUserCertificate.getCode();
-            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String picName = uploadFile(webappPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
-
-            pfUserCertificate.setImgUrl(picName + ".jpg");
-
-            CCPRestSmsSDK.sendSMS(comUser.getMobile(), "65446", new String[]{comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId()).getName()});
-        }
-
-
-        PfUserSku pfUserSku = new PfUserSku();
-        pfUserSku.setId(userSkuId);
-        pfUserSku.setIsCertificate(pfUserCertificate.getStatus());
-
-        pfUserCertificateMapper.updateById(pfUserCertificate);
-        pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
-
-    }
-
-    private String getCertificateCode(PfUserCertificate pfUserCertificate) {
-        String certificateCode = null;
-        int num = 10000;
-        StringBuffer Code = new StringBuffer("MASIIS");
-        String value = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy", null).substring(2);//时间
-        String value1 = pfUserCertificate.getAgentLevelId().toString();
-        String value2 = String.format("%04d", pfUserCertificate.getSkuId());
-        int value3 = num + pfUserCertificate.getId().intValue();
-        certificateCode = Code.append(value1).append(value2).append(value).append(String.valueOf(value3)).toString();
-        return certificateCode;
-    }
-
-    //给jpg添加文字并上传
-    public static String uploadFile(String filePath, String[] markContent) {
-        String pname = getRandomFileName();
-        ImageIcon imgIcon = new ImageIcon(filePath);
-        Image theImg = imgIcon.getImage();
-        int width = theImg.getWidth(null) == -1 ? 200 : theImg.getWidth(null);
-        int height = theImg.getHeight(null) == -1 ? 200 : theImg.getHeight(null);
-        BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = bimage.createGraphics();
-        g.setColor(Color.black);
-        g.setBackground(Color.red);
-        g.drawImage(theImg, 0, 0, null);
-        int fs = 40;
-        g.setFont(new Font("华文细黑", Font.BOLD, fs)); //字体、字型、字号
-        //画文字
-        if (markContent[0].length() == 3) {
-            g.drawString(markContent[0], width / 2 - fs * 3 / 2, height / 2 + 40);//740 625
-        } else {
-            g.drawString(markContent[0], width / 2 - fs, height / 2 + 40);
-        }
-        g.setColor(Color.gray);
-        g.setFont(new Font("华文细黑", Font.BOLD, 18)); //字体、字型、字号
-        g.drawString(markContent[1], 150, 490);
-        g.drawString(markContent[2], 180, 520);
-        g.dispose();
-        try {
-            ByteArrayOutputStream bs = new ByteArrayOutputStream();
-            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
-            ImageIO.write(bimage, "png", imOut);
-            InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
-//            FileOutputStream out = new FileOutputStream(outPath); //先用一个特定的输出文件名
-//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-//            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);
-//            param.setQuality(qualNum, true);
-//            encoder.encode(bimage, param);
-//            out.close();
-        } catch (Exception e) {
-            return "";
-        }
-        return pname;
-    }
-
-    /**
-     * 生成随机文件名：当前年月日时分秒+五位随机数
-     *
-     * @return
-     */
-    public static String getRandomFileName() {
-
-        SimpleDateFormat simpleDateFormat;
-
-        simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-
-        Date date = new Date();
-
-        String str = simpleDateFormat.format(date);
-
-        Random random = new Random();
-
-        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
-
-        return rannum + str;// 当前时间
     }
 }

@@ -64,13 +64,9 @@ public class ComUserAccountService {
     public void createAccountByUser(ComUser user) {
         ComUserAccount account = new ComUserAccount();
         account.setComUserId(user.getId());
-        account.setCostFee(new BigDecimal(0));
-        account.setCountingFee(new BigDecimal(0));
         account.setExtractableFee(new BigDecimal(0));
         account.setBailFee(new BigDecimal(0));
         account.setCreatedTime(new Date());
-        account.setTotalIncomeFee(new BigDecimal(0));
-        account.setProfitFee(new BigDecimal(0));
         account.setAgentBillAmount(new BigDecimal(0));
         account.setDistributionBillAmount(new BigDecimal(0));
         account.setRecommenBillAmount(new BigDecimal(0));
@@ -113,18 +109,6 @@ public class ComUserAccountService {
                 log.info("账单子项创建成功,账单子项金额为:" + item.getOrderPayAmount());
 
                 ComUserAccount account = accountMapper.findByUserId(userPId);
-                log.info("增加上级结算中金额");
-                ComUserAccountRecord recordC = createAccountRecord(pUserCountAmount, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
-                recordC.setPrevFee(account.getCountingFee());
-                account.setCountingFee(account.getCountingFee().add(pUserCountAmount));
-                recordC.setNextFee(account.getCountingFee());
-                recordMapper.insert(recordC);
-                log.info("增加上级总销售额");
-                ComUserAccountRecord recordT = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddTotalIncomeFee);
-                recordT.setPrevFee(account.getTotalIncomeFee());
-                account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
-                recordT.setNextFee(account.getTotalIncomeFee());
-                recordMapper.insert(recordT);
                 log.info("增加上级总利润");
                 PfUserSku pUserSku = null;
                 PfSkuAgent pSkuAgent = null;
@@ -137,12 +121,6 @@ public class ComUserAccountService {
                 }
                 // 减去推荐奖励
                 sumProfitFee = sumProfitFee.subtract(order.getRecommenAmount());
-                log.info("开始修改利润");
-                ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, order.getId(), UserAccountRecordFeeType.AddProfitFee);
-                recordP.setPrevFee(account.getProfitFee());
-                account.setProfitFee(account.getProfitFee().add(sumProfitFee));
-                recordP.setNextFee(account.getProfitFee());
-                recordMapper.insert(recordP);
                 log.info("插入总销售额的变动流水!");
                 log.info("个人账户数据:" + account.toString());
                 int type = accountMapper.updateByIdWithVersion(account);
@@ -171,12 +149,6 @@ public class ComUserAccountService {
             log.info("开始给进货人增加成本");
 
             ComUserAccount accountS = accountMapper.findByUserId(userId);
-            log.info("增加本级总成本");
-            ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, order.getId(), UserAccountRecordFeeType.AddCostFee);
-            recordCostFee.setPrevFee(accountS.getCostFee());
-            accountS.setCostFee(accountS.getCostFee().add(orderPayment));
-            recordCostFee.setNextFee(accountS.getCostFee());
-            recordMapper.insert(recordCostFee);
             log.info("增加本级保证金");
             ComUserAccountRecord recordBailFee = createAccountRecord(order.getBailAmount(), accountS, order.getId(), UserAccountRecordFeeType.AddBailFee);
             recordBailFee.setPrevFee(accountS.getBailFee());

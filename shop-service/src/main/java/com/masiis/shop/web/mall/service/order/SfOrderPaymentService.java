@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by hzz on 2016/4/10.
@@ -19,4 +20,7 @@ public class SfOrderPaymentService {
        return sfOrderPaymentMapper.updateByPrimaryKey(orderPayment);
     }
 
+    public List<SfOrderPayment> selectBySfOrderId(Long orderId) {
+        return sfOrderPaymentMapper.selectBySfOrderId(orderId);
+    }
 }

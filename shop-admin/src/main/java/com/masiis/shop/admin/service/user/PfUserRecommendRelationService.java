@@ -59,7 +59,7 @@ public class PfUserRecommendRelationService {
     public List<UserRecommend> findGiveSum(Long userId, Integer skuId) {
         return pfUserRecopmmenRelationMapper.selectGiveSum(userId, skuId);
     }
-
+    
     /**
      * 帮我推荐的单人单品推荐人数
      *

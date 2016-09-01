@@ -162,7 +162,7 @@ public class SfShopManageController extends BaseController {
      * 更新店铺
      * @param request
      * @param response
-     * @param sfShop
+     * @param _sfShop
      * @return
      */
     @RequestMapping("/updateShop")

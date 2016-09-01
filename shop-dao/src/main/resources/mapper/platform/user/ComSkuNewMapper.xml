@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComSkuNewMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuNew" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from com_sku_new
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuNew" >
+        insert into com_sku_new (id, create_time, create_man, 
+            type, sku_id, status, 
+            sort, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{type,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSkuNew" >
+        update com_sku_new
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, create_man, type, sku_id, status, sort, remark
+        from com_sku_new
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        SELECT skuNew.id, skuNew.create_time, skuNew.create_man, skuNew.type, skuNew.sku_id, skuNew.status, skuNew.sort, skuNew.remark
+        FROM com_sku_new skuNew
+        INNER JOIN com_sku sku ON sku.id = skuNew.sku_id
+        INNER JOIN com_spu spu ON spu.id = sku.spu_id
+        WHERE skuNew.status = 1 AND skuNew.type =0 AND spu.is_delete=0 AND spu.is_sale=1 AND spu.type=0
+        ORDER BY skuNew.sort ASC
+    </select>
+
+    <select id="selectByCondition" parameterType="Map" resultType="java.util.HashMap">
+        select
+               sn.id
+               ,sn.create_time
+               ,sn.create_man
+               ,sn.type
+               ,sn.sku_id
+               ,sn.status
+               ,sn.sort
+               ,sn.remark
+               ,sku.name       skuName
+        from      com_sku_new sn
+        LEFT JOIN com_sku     sku ON sku.id = sn.sku_id
+    </select>
+
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        select
+               sn.id
+               ,sn.create_time
+               ,sn.create_man
+               ,sn.type
+               ,sn.sku_id
+               ,sn.status
+               ,sn.sort
+               ,sn.remark
+        from      com_sku_new sn
+        WHERE sn.sku_id = #{skuId}
+    </select>
+
+</mapper>

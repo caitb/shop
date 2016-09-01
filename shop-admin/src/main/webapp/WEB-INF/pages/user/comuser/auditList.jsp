@@ -414,6 +414,19 @@
                         }
                     },
                     {
+                        field: 'wx_nk_name',
+                        title: '微信',
+                        sortable: true,
+                        //editable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row && row.wxNkName){
+                                return row.wxNkName;
+                            }
+                        }
+                    },
+                    {
                         field: 'mobile',
                         title: '手机号码',
                         sortable: true,

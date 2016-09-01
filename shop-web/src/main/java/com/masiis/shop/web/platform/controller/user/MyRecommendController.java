@@ -107,7 +107,7 @@ public class MyRecommendController extends BaseController{
         }
         ModelAndView mv = new ModelAndView();
         try {
-            MyRecommendPo myRecommendPo = pfBorderRecommenRewardService.myRecommen(comUser.getId(),1);
+            MyRecommendPo myRecommendPo = pfUserRecommendRelationService.myRecommen(comUser.getId(),1);
             mv.addObject("myRecommendPo",myRecommendPo);
         }catch (Exception e){
             e.printStackTrace();
@@ -290,13 +290,13 @@ public class MyRecommendController extends BaseController{
             ComAgentLevel agentLevel = comAgentLevelService.selectByPrimaryKey(certificate.getAgentLevelId());
             //进货信息
             PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectByUserIdAndSkuId(userId, skuId);
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
-            CountGroup countGroup = countGroupService.countGroupInfo(pfUserSku.getTreeCode());
+//            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+//            CountGroup countGroup = countGroupService.countRecommendGroup(pfUserSku.getTreeCode());
             modelAndView.addObject("skuName",skuName.getName());
             modelAndView.addObject("userName",user.getRealName());
             modelAndView.addObject("agentLevelName",agentLevel.getName());
             modelAndView.addObject("pfUserStatistics",pfUserStatistics);
-            modelAndView.addObject("countGroup",countGroup);
+//            modelAndView.addObject("countGroup",countGroup);
             modelAndView.setViewName("platform/user/wotuijianderenxinxi");
             return modelAndView;
         }catch (Exception e){

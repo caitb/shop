@@ -49,6 +49,11 @@
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        img {
+            width: 5%;
+        }
+    </style>
 </head>
 
 <body class="no-skin">
@@ -92,8 +97,12 @@
                                                 <label for="categoryName">商品分类</label>
                                                 <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
                                             </div>
+                                            <button type="button" class="btn btn-default" id="addBrand">添加</button>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </form>
+                                    </div>
+                                    <div class="form-inline">
+                                        <button type="button" class="btn btn-default" id="addBtn">添加</button>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
@@ -379,12 +388,9 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="edit" href="javascript:void(0);">修改</a>&nbsp;&nbsp;<a class="add" href="javascript:void(0);">添加</a>';
+                            return '<a class="edit" href="javascript:void(0);">修改</a>';
                         },
                         events: {
-                            'click .add': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('brand-add', '添加品牌', '<%=basePath%>brand/add.shtml');
-                            },
                             'click .edit': function(e, value, row, index){
                                 parent.window.$('#myTabbable').add('brand-edit', '修改品牌', '<%=basePath%>brand/edit.shtml?brandId='+row.id);
                             }
@@ -548,8 +554,15 @@
         return undefined;
     }
 
-    $('#searchBtn').on('click', function(){
+    $('#addBrand').on('click', function(){
+        parent.window.$('#myTabbable').closeTab('brand-add');
+        parent.window.$('#myTabbable').add('brand-add', '添加品牌', '<%=basePath%>brand/add.shtml');
+        parent.window.$('#myTabbable').closeTab('brand-add');
+    });
 
+
+    $('#addBtn').on('click', function(){
+        parent.window.$('#myTabbable').add('brand-add', '添加品牌', '<%=basePath%>brand/add.shtml');
     });
 
 </script>

@@ -22,7 +22,7 @@ public class PfUserStatistics {
      */
     private Long userId;
 
-    private Long skuId;
+    private Integer skuId;
 
     /**
      * 总销售额
@@ -172,11 +172,11 @@ public class PfUserStatistics {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 

@@ -42,6 +42,8 @@ public class PfUserAgentApplication {
     private Integer status;
     private String remark;
 
+    private Integer agentLevelId;
+
     public Long getId() {
         return id;
     }
@@ -95,5 +97,13 @@ public class PfUserAgentApplication {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getAgentLevelId() {
+        return agentLevelId;
+    }
+
+    public void setAgentLevelId(Integer agentLevelId) {
+        this.agentLevelId = agentLevelId;
     }
 }

@@ -21,6 +21,25 @@ public class BOrder {
     private BigDecimal  payAmount;
     private BigDecimal  bailAmount;
     private Date        payTime;
+    private String      createMan;
+
+    private BigDecimal  shipAmount;
+
+    public BigDecimal getShipAmount() {
+        return shipAmount;
+    }
+
+    public void setShipAmount(BigDecimal shipAmount) {
+        this.shipAmount = shipAmount;
+    }
+
+    public String getCreateMan() {
+        return createMan;
+    }
+
+    public void setCreateMan(String createMan) {
+        this.createMan = createMan;
+    }
 
     private List<BItem> bItems;
 

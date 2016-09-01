@@ -285,6 +285,7 @@ public class ProductController extends BaseController {
             pfUserAgentApplication.setSkuId(skuId);
             pfUserAgentApplication.setStatus(0);
             pfUserAgentApplication.setRemark("");
+            pfUserAgentApplication.setAgentLevelId(0);
             pfUserAgentApplicationService.addApplicationUser(pfUserAgentApplication);
             object.put("isError", false);
         }catch (Exception ex){

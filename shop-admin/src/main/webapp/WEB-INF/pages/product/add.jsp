@@ -448,32 +448,32 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
+                                    <%--<div class="col-xs-12 col-sm-4">--%>
+                                        <%--<div class="widget-box">--%>
+                                            <%--<div class="widget-header">--%>
+                                            <%--</div>--%>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            倒数第三&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal3"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            <%--<div class="widget-body">--%>
+                                                <%--<div class="widget-main">--%>
+                                                    <%--<div>--%>
+                                                        <%--<label for="advanced">--%>
+                                                            <%--倒数第三&nbsp;--%>
+                                                        <%--</label>--%>
+                                                        <%--<div class="input-group">--%>
+                                                            <%--<input type="text" class="form-control" id="reciprocal3"--%>
+                                                                   <%--name="distributionDiscounts" placeholder="">--%>
+                                        <%--<span class="input-group-addon">--%>
+                                            <%--%--%>
+                                        <%--</span>--%>
+                                                        <%--</div>--%>
+                                                        <%--返利--%>
+                                                        <%--<small class="text-info ffenrun"></small>--%>
+                                                        <%--元--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
 
@@ -505,6 +505,19 @@
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
                                     <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="dropzoneSkuBackgroundImg">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 商品配图 -->
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div>
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="illustratingPictureImg">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -665,6 +678,9 @@
     var dropzoneSkuBackgroundImg = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品列表背景图</span> <br /> \
                                                  <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                                  <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+    var illustratingPictureImg   = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品配图</span> <br /> \
+                                                 <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                                 <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
     var dropzoneDevelopPoster    = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>发展合伙人海报</span> <br /> \
                                                  <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                                  <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
@@ -688,6 +704,11 @@
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="skuBackgroundImgUrl" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="skuBackgroundImgName" value="'+res.title+'" />');
+    });
+    initDropzone('#illustratingPictureImg', illustratingPictureImg, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="illustratingPictureImgUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="illustratingPictureImgName" value="'+res.title+'" />');
     });
     initDropzone('#dropzoneDevelopPoster', dropzoneDevelopPoster, function(file){
         var res = window.eval('(' + file.xhr.response + ')');

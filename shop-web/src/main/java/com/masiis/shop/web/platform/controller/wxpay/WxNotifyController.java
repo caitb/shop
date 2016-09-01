@@ -30,13 +30,13 @@ public class WxNotifyController extends BaseController {
     private WxNotifyService notifyService;
 
     @RequestMapping("/orderNtfy")
-    public void uniOrderNotify(HttpServletRequest request, HttpServletResponse response){
+    public void uniOrderNotify(HttpServletRequest request, HttpServletResponse response) {
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         xStream.ignoreUnknownElements();
         CallBackNotifyRes resObj = new CallBackNotifyRes();
         try {
             String requestBody = null;
-            try{
+            try {
                 // 获取请求参数
                 requestBody = getRequestBody(request);
                 log.info("uniOrderNotify:请求参数:" + requestBody);
@@ -47,7 +47,7 @@ public class WxNotifyController extends BaseController {
             }
 
             CallBackNotifyReq param = null;
-            try{
+            try {
                 xStream.processAnnotations(CallBackNotifyReq.class);
                 param = (CallBackNotifyReq) xStream.fromXML(requestBody);
                 log.info("uniOrderNotify:xml解析通过!");
@@ -58,10 +58,10 @@ public class WxNotifyController extends BaseController {
             }
 
             // 对param进行签名验证
-            try{
+            try {
                 String sign = WxPFBeanUtils.toSignString(param);
-                if(StringUtils.isBlank(sign)
-                        || !sign.equals(param.getSign())){
+                if (StringUtils.isBlank(sign)
+                        || !sign.equals(param.getSign())) {
                     throw new BusinessException("签名错误");
                 }
                 log.info("uniOrderNotify:签名检测通过!");
@@ -74,7 +74,7 @@ public class WxNotifyController extends BaseController {
             // 开始进行订单异步回调通知业务,要进行参数有效性校验
             synchronized (this) {
                 // 放到service中处理
-                notifyService.handleWxPayNotify(param, getWebRootPath(request));
+                notifyService.handleWxPayNotify(param);
             }
 
             resObj.setReturn_code("SUCCESS");
@@ -87,8 +87,8 @@ public class WxNotifyController extends BaseController {
         }
 
         xStream.processAnnotations(CallBackNotifyRes.class);
-        if(StringUtils.isNotBlank(resObj.getReturn_msg())
-                && resObj.getReturn_msg().length() > 128){
+        if (StringUtils.isNotBlank(resObj.getReturn_msg())
+                && resObj.getReturn_msg().length() > 128) {
             // 返回信息不超过128长度
             resObj.setReturn_msg(resObj.getReturn_msg().substring(0, 128));
         }

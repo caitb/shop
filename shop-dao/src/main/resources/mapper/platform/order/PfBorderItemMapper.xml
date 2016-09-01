@@ -9,7 +9,6 @@
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="sku_name" property="skuName" jdbcType="VARCHAR"/>
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
-        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
         <result column="original_price" property="originalPrice" jdbcType="DECIMAL"/>
         <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
@@ -41,7 +40,7 @@
 
 
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-       select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id, wx_id,
+       select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id,
         quantity, original_price, unit_price, total_price, bail_amount, is_comment,
         is_return, remark
         from
@@ -51,7 +50,7 @@
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderItem" resultMap="BaseResultMap">
-        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id, wx_id,
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id,
         quantity, original_price, unit_price, total_price, bail_amount, is_comment,
         is_return, remark
         from
@@ -64,7 +63,7 @@
     </select>
 
     <select id="selectAllByOrderId" resultMap="BaseResultMap">
-        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id, wx_id,
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id,
         quantity, original_price, unit_price, total_price, bail_amount, is_comment,
         is_return, remark
         from
@@ -73,7 +72,7 @@
                pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
     <select id="selectByOrderId" resultMap="BaseResultMap">
-        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id, wx_id,
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, agent_level_id,
         quantity, original_price, unit_price, total_price, bail_amount, is_comment,
         is_return, remark
         from
@@ -92,13 +91,13 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" useGeneratedKeys="true" keyProperty="id">
        insert into pf_border_item (id, create_time, pf_border_id,
             spu_id, sku_id, sku_name,
-            agent_level_id, wx_id, quantity,
+            agent_level_id, quantity,
             original_price, unit_price,
             total_price, bail_amount, is_comment,
             is_return, remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT},
             #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR},
-            #{agentLevelId,jdbcType=INTEGER}, #{wxId,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER},
+            #{agentLevelId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER},
             #{originalPrice,jdbcType=DECIMAL},  #{unitPrice,jdbcType=DECIMAL},
             #{totalPrice,jdbcType=DECIMAL}, #{bailAmount,jdbcType=DECIMAL}, #{isComment,jdbcType=INTEGER},
             #{isReturn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
@@ -125,9 +124,6 @@
             </if>
             <if test="agentLevelId != null">
                 agent_level_id= #{agentLevelId,jdbcType=INTEGER},
-            </if>
-            <if test="wxId != null">
-                wx_id= #{wxId,jdbcType=VARCHAR},
             </if>
             <if test="quantity != null">
                 quantity = #{quantity,jdbcType=INTEGER},

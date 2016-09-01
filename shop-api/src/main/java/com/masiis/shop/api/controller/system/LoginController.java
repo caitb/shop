@@ -6,6 +6,10 @@ import com.masiis.shop.api.bean.system.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.beans.wx.wxauth.AccessTokenRes;
+import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
+import com.masiis.shop.common.util.*;
+import com.masiis.shop.web.api.service.ComUserKeyboxService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.api.utils.SpringRedisUtil;
 import com.masiis.shop.api.utils.SysSignUtils;
@@ -14,10 +18,6 @@ import com.masiis.shop.api.utils.ValidCodeUtils;
 import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.enums.api.ValidCodeTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.common.util.MD5Utils;
-import com.masiis.shop.common.util.MobileMessageUtil;
-import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserKeybox;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +43,8 @@ public class LoginController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private ComUserKeyboxService keyboxService;
 
     @RequestMapping("/loginByWx")
     @ResponseBody
@@ -69,33 +71,34 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_WXLOGIN_APPID_NULL_MSG);
             }
 
+            AccessTokenRes qRes = createAccesTokenResByReq(req);
+            WxUserInfo userInfo = createWxUserInfoByReq(req);
             // 微信登录
-            /*ComUser user = userService.signWithCreateUserByWX(req);
-            ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
+            ComUser user = userService.signWithCreateUserByWX(qRes, userInfo, req.getAppid());
+            ComUserKeybox keybox = keyboxService.getKeyboxByUserId(user.getId());
             if(keybox == null){
-                keybox = userService.createKeyboxByUser(user);
-            }*/
+                keybox = keyboxService.createKeyboxByUser(user);
+            }
             // 创建token
             String token = TokenUtils.generateToken();
             // 创建userKey
-            /*String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
+            String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
             keybox.setAppToken(token);
             keybox.setComUserId(user.getId());
             keybox.setUserKey(userKey);
             keybox.setExTime(DateUtil.getDateNextdays(30));
             if(keybox.getId() == null ){
-                userService.insertKeybox(keybox);
+                keyboxService.insertKeybox(keybox);
             } else {
-                userService.updateKeybox(keybox);
-            }*/
+                keyboxService.updateKeybox(keybox);
+            }
 
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             res.setToken(token);
-            //res.setUserKey(userKey);
             res.setExpire(30);
             res.setExpireUnit("天");
-            //res.setIsBind(user.getIsBinding());
+            res.setUserKey(userKey);
             res.setSign(SysSignUtils.toSignString(res, null));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -137,7 +140,8 @@ public class LoginController extends BaseController {
             String phoneNum = req.getPhoneNum().trim();
             String validcode = req.getValidcode().trim();
             // 获取redis存在的验证码
-            if(!"6666".equals(validcode)) {
+            String environment_conf = PropertiesUtils.getStringValue("sys_run_enviroment_key");
+            if(!("6666".equals(validcode) && (StringUtils.isNotBlank(environment_conf) && "0".equals(environment_conf)))) {
                 String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), String.class);
                 if (codeRd == null) {
                     // 验证码不存在或已过期
@@ -157,17 +161,21 @@ public class LoginController extends BaseController {
             // 按照phoneNum来查询用户
             ComUser user = userService.getUserByMobile(phoneNum);
             if(user == null){
-                // 该手机号未注册,暂时不能登录
-                res.setResCode(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP);
-                res.setResMsg(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
-                throw new BusinessException(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
+                // 手机号注册
+                log.info("创建新comUser");
+                user = userService.createComUser(null);
+                user.setMobile(phoneNum);
+                user.setIsBinding(1);
+                user.setRealName(phoneNum);
+                user.setWxNkName(phoneNum);
+                userService.insertComUserWithAccount(user);
             }
             // 生成token
             String token = TokenUtils.generateToken();
             // 保存token
-            /*ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
+            ComUserKeybox keybox = keyboxService.getKeyboxByUserId(user.getId());
             if(keybox == null){
-                keybox = userService.createKeyboxByUser(user);
+                keybox = keyboxService.createKeyboxByUser(user);
             }
             // 创建userKey
             String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
@@ -176,15 +184,16 @@ public class LoginController extends BaseController {
             keybox.setUserKey(userKey);
             keybox.setExTime(DateUtil.getDateNextdays(30));
             if(keybox.getId() == null ){
-                userService.insertKeybox(keybox);
+                keyboxService.insertKeybox(keybox);
             } else {
-                userService.updateKeybox(keybox);
-            }*/
+                keyboxService.updateKeybox(keybox);
+            }
             // 返回数据
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             res.setToken(token);
             res.setExpire(30);
+            res.setUserKey(userKey);
             res.setExpireUnit("天");
             return res;
         } catch (Exception e) {
@@ -219,6 +228,14 @@ public class LoginController extends BaseController {
                 res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_INVALID);
                 res.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_INVALID_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_INVALID_MSG);
+            }
+            // 手机号登录,检查手机号是否绑定
+            ComUser phoneUser = userService.getUserByMobile(phoneNum);
+            if(phoneUser == null){
+                // 手机号未注册
+                res.setResCode(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP);
+                res.setResMsg(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
             }
             // 查询请求频率
             Date exTime = SpringRedisUtil.get(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), Date.class);
@@ -256,6 +273,33 @@ public class LoginController extends BaseController {
         // 返回结果
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        return res;
+    }
+
+
+    private WxUserInfo createWxUserInfoByReq(LoginWxReq req) {
+        WxUserInfo info = new WxUserInfo();
+
+        info.setCity(req.getCity());
+        info.setCountry(req.getCountry());
+        info.setHeadimgurl(req.getHeadImgUrl());
+        info.setNickname(req.getNickName());
+        info.setOpenid(req.getOpenId());
+        info.setPrivilege(req.getPrivilege());
+        info.setProvince(req.getProvince());
+        info.setSex(req.getSex() + "");
+        info.setUnionid(req.getUnionid());
+
+        return info;
+    }
+
+    private AccessTokenRes createAccesTokenResByReq(LoginWxReq req) {
+        AccessTokenRes res = new AccessTokenRes();
+
+        res.setUnionid(req.getUnionid());
+        res.setOpenid(req.getOpenId());
+        res.setAccess_token(req.getAccessToken());
+
         return res;
     }
 

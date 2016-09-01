@@ -29,16 +29,6 @@ public interface ComSkuMapper {
      */
     ComSku findBySkuId(@Param("skuId") Integer skuId);
 
-
-
-
-
-
-
-
-
-
-
     /**
      * 根据id查询一条记录
      * @param id
@@ -70,4 +60,15 @@ public interface ComSkuMapper {
      * @param id
      */
     void deleteById(@Param("id")Long id);
+
+    List<ComSku> getPrimarySkuByBrandId(Integer brandId);
+
+    List<ComSku> getSkuListByBrandId(Integer brandId);
+
+    List<ComSku> selectMainByBrandId(Integer brandId);
+
+    List<ComSku> getProductsByUserNotAgent(Long userId);
+
+    List<ComSku> getProductsByUserNotAgentForBoss(Long userId);
+
 }

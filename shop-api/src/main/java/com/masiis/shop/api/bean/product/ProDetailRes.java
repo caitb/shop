@@ -16,7 +16,13 @@ public class ProDetailRes extends BaseRes {
 
     private Integer orderStatus;// 订单状态
 
-    private List<Product> productList;//商品列表
+    private Integer isPrimarySku;//是否主打商品 0 :
+
+    private List<Product> ProductList;//商品列表
+
+    private Integer brandId;//品牌id
+
+    private Integer isBidding;
 
     public Product getProduct() {
         return product;
@@ -34,19 +40,43 @@ public class ProDetailRes extends BaseRes {
         this.orderStatus = orderStatus;
     }
 
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
     public Integer getHasAgent() {
         return hasAgent;
     }
 
     public void setHasAgent(Integer hasAgent) {
         this.hasAgent = hasAgent;
+    }
+
+    public Integer getIsPrimarySku() {
+        return isPrimarySku;
+    }
+
+    public void setIsPrimarySku(Integer isPrimarySku) {
+        this.isPrimarySku = isPrimarySku;
+    }
+
+    public List<Product> getProductList() {
+        return ProductList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        ProductList = productList;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
+
+    public Integer getIsBidding() {
+        return isBidding;
+    }
+
+    public void setIsBidding(Integer isBidding) {
+        this.isBidding = isBidding;
     }
 }

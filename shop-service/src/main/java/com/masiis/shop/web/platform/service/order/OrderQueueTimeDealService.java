@@ -7,10 +7,10 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,8 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class OrderQueueTimeDealService {
+public class
+OrderQueueTimeDealService {
 
     private static final Logger logger = Logger.getLogger(OrderQueueTimeDealService.class);
 
@@ -57,7 +58,7 @@ public class OrderQueueTimeDealService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new BusinessException(e);
+                throw new BusinessException(e.getMessage());
             }
         }
 
@@ -209,7 +210,7 @@ public class OrderQueueTimeDealService {
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
                     params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.Complete.getDesc();
-                    WxPFNoticeUtils.getInstance().dealWithOrderInQueueByPlatForm(comUser, params);
+                    SysNoticeUtils.getInstance().dealWithOrderInQueueByPlatForm(comUser,params);
                 }
             } else {//自己发货
                 String[] params;
@@ -220,7 +221,7 @@ public class OrderQueueTimeDealService {
                     params[2] = String.valueOf(pfBorderItem.getQuantity());
                     params[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
                     params[4] = BOrderStatus.WaitShip.getDesc();
-                    WxPFNoticeUtils.getInstance().dealWithOrderInQueueBySelf(comUser, params);
+                    SysNoticeUtils.getInstance().dealWithOrderInQueueBySelf(comUser,params);
                 }
             }
         } catch (Exception e) {

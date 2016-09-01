@@ -127,6 +127,7 @@ public class UserIdentityAuthController extends BaseController {
     public String sumbitAudit(HttpServletRequest request,
                                   @RequestParam(value = "name", required = true) String name,
                                   @RequestParam(value = "idCard", required = true) String idCard,
+                                  @RequestParam(value = "wxId", required = true) String wxId,
                                   @RequestParam(value = "idCardFrontName", required = true) String idCardFrontName,
                                   @RequestParam(value = "idCardBackName", required = true) String idCardBackName,
                                   @RequestParam(value = "type", required = false,defaultValue = "0") int type
@@ -143,6 +144,9 @@ public class UserIdentityAuthController extends BaseController {
             if (org.apache.commons.lang.StringUtils.isBlank(name)) {
                 throw new BusinessException("姓名不能为空");
             }
+            if (org.apache.commons.lang.StringUtils.isBlank(wxId)) {
+                throw new BusinessException("微信号不能为空");
+            }
             if (org.apache.commons.lang.StringUtils.isBlank(idCard)) {
                 throw new BusinessException("身份证不能为空");
             }
@@ -154,6 +158,7 @@ public class UserIdentityAuthController extends BaseController {
             }
             comUser.setRealName(name);
             comUser.setIdCard(idCard);
+            comUser.setWxId(wxId);
             int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontName,idCardBackName,type);
             if (i == 1){
                 object.put("isError", false);

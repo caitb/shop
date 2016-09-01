@@ -7,16 +7,23 @@ import com.masiis.shop.api.bean.system.ComBankRes;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
-import com.masiis.shop.web.platform.service.system.ComBankService;
-import com.masiis.shop.web.platform.service.system.ComDictionaryService;
-import com.masiis.shop.web.common.service.ComUserAccountService;
-import com.masiis.shop.web.platform.service.user.PfUserBillService;
-import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
-import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.CheckBankCardUtil;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
+import com.masiis.shop.dao.beans.user.PfIncomRecordPo;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.service.ComAgentLevelService;
+import com.masiis.shop.web.common.service.ComUserAccountService;
+import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.system.ComBankService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.user.PfUserBillService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
+import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
+import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +42,7 @@ import java.util.*;
  * Created by wangbingjian on 2016/5/5.
  */
 @Controller
-@RequestMapping(value = "/account")
+@RequestMapping(value = "/api/account")
 public class UserAccountController {
 
     private static final Logger logger = Logger.getLogger(UserAccountController.class);
@@ -53,6 +60,14 @@ public class UserAccountController {
     private ComBankService comBankService;
     @Autowired
     private UserExtractApplyService applyService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserExtractApplyService userExtractApplyService;
+    @Autowired
+    private ComAgentLevelService comAgentLevelService;
+    @Autowired
+    private SkuAgentService skuAgentService;
 
     /**
      * 每页显示条数
@@ -65,7 +80,7 @@ public class UserAccountController {
      * @param comUser
      * @return
      */
-    @RequestMapping(value = "/accountHome.do",method = RequestMethod.POST)
+/*    @RequestMapping(value = "/accountHome.do",method = RequestMethod.POST)
     @ResponseBody
     @SignValid(paramType = CommonReq.class)
     public AccountHomeRes accountHome(HttpServletRequest request, CommonReq req, ComUser comUser){
@@ -93,48 +108,229 @@ public class UserAccountController {
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
-    }
+    }*/
 
     /**
-     * 按月查询收入记录
+     * Created by wl on 2016/8/9
+     */
+    @RequestMapping(value = "/accountHome.do")
+    @ResponseBody
+    @SignValid(paramType = CommonReq.class)
+    public AccountHomeRei accountHome(HttpServletRequest request, CommonReq req, ComUser comUser){
+        logger.info("我的资产首页（需求修改）");
+        AccountHomeRei res = new AccountHomeRei();
+        logger.info("userId = " + comUser.getId());
+//        String currentDate = DateUtil.Date2String(new Date(),"yyyy-MM-dd");
+        //查询用户资产表，用于展示累计收入和可提现金额
+        ComUserAccount account = accountService.findAccountByUserid(comUser.getId());
+        String amount = new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+        if (account == null){
+            logger.info("无用户账户信息");
+            res.setTotalIncom(amount);
+            res.setExtractableFee(new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setCountingFee(new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP));
+        }else {
+            if (res.getAppliedFee() == null){
+                res.setAppliedFee(amount);
+            }
+        }
+        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
+        logger.info("查询b端结算中金额begin");
+        BigDecimal agentAmount = new BigDecimal(0);
+        List<Map<String, Object>> billAmountMaps = accountService.getPfCountindFee(comUser.getId());
+        if (billAmountMaps != null && billAmountMaps.size() > 0){
+            for (Map<String, Object> map : billAmountMaps){
+                if ("0".equals(map.get("orderSubType").toString())){
+                    agentAmount = agentAmount.add(new BigDecimal(map.get("amount").toString()));
+                }else {
+                    agentAmount = agentAmount.subtract(new BigDecimal(map.get("amount").toString()));
+                }
+            }
+        }
+        logger.info("查询b端结算中金额end");
+        logger.info("查询已提现金额begin");
+        Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
+        BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
+        logger.info("查询用户等级图标");
+        List<Map<String,String>> maps = skuAgentService.getBrandLevelIconByUserId(comUser.getId());
+        List<String> imgUrls = new LinkedList<>();
+        for (Map<String, String> imgMap : maps){
+           imgUrls.add(PropertiesUtils.getStringValue("agent_level_product_icon_url")+imgMap.get("icon"));
+        }
+        try {
+            logger.info("查询已提现金额end");
+            res.setImgUrl(imgUrls);
+            res.setCountingFee(account.getAgentBillAmount().add(account.getDistributionBillAmount()).add(account.getRecommenBillAmount()).setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setWxNkName(comUser.getWxNkName());
+            res.setWxHeadImg(comUser.getWxHeadImg());
+            res.setWithdrawd(rmbFormat.format(withdrawd));
+            res.setTotalIncom(rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getAgentBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP)).add(account.getDistributionBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP)).add(account.getRecommenBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP))));
+            res.setExtractableFee(account.getExtractableFee().subtract(account.getAppliedFee()).setScale(2,BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setAppliedFee(account.getViewAppliedFee());
+            res.setAgentBillAmount(account.getAgentBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setDistributionBillAmount(account.getDistributionBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setRecommenBillAmount(account.getRecommenBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP));
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info(e.getMessage());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(e.getMessage());
+        }
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
+        return res;
+    }
+
+//    /**
+//     * 按月查询收入记录
+//     * @param request
+//     * @param req
+//     * @param comUser
+//     * @return
+//     */
+//    @RequestMapping(value = "/userBillByDate.do",method = RequestMethod.POST)
+//    @ResponseBody
+//    @SignValid(paramType = AccountUserBillReq.class)
+//    public AccountUserBillRes getUserBillByDate(HttpServletRequest request, AccountUserBillReq req, ComUser comUser){
+//        logger.info("通过日期查询收入记录");
+//        AccountUserBillRes res = new AccountUserBillRes();
+//        String date = req.getDate();
+//        if (StringUtils.isBlank(date)){
+//            logger.info("日期为空");
+//            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+//            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG + "【日期为空】");
+//            return res;
+//        }
+//        try {
+//            logger.info("查询月份=" + date);
+//            List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),date,0,0);
+//            List<AccountUserBill> accountUserBills = new ArrayList<>();
+//            String amount = new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+//            AccountUserBill accountUserBill;
+//            for (PfUserBill pfUserBill : userBills){
+//                accountUserBill = new AccountUserBill();
+//                accountUserBill.setBalanceDate(pfUserBill.getBalanceDate());
+//                accountUserBill.setBillAmount(pfUserBill.getBillAmount() == null?amount:pfUserBill.getBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+//                accountUserBills.add(accountUserBill);
+//            }
+//            res.setUserBills(accountUserBills);
+//            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+//            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            logger.error(e.getMessage());
+//            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+//            res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+//        }
+//        logger.info("返回参数：" + JSONObject.toJSONString(res));
+//        return res;
+//    }
+
+
+    /**
+     * 查询收入记录
      * @param request
      * @param req
      * @param comUser
      * @return
+     * @throws Exception
      */
-    @RequestMapping(value = "/userBillByDate.do",method = RequestMethod.POST)
     @ResponseBody
-    @SignValid(paramType = AccountUserBillReq.class)
-    public AccountUserBillRes getUserBillByDate(HttpServletRequest request, AccountUserBillReq req, ComUser comUser){
-        logger.info("通过日期查询收入记录");
-        AccountUserBillRes res = new AccountUserBillRes();
-        String date = req.getDate();
-        if (StringUtils.isBlank(date)){
-            logger.info("日期为空");
-            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
-            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG + "【日期为空】");
-            return res;
-        }
+    @RequestMapping(value = "/getIncomRecord14.do",method = RequestMethod.POST)
+    @SignValid(paramType = AccountUserIncomeReq.class)
+    public AccountUserIncomeRes getIncomRecord14Ajax(HttpServletRequest request, AccountUserIncomeReq req, ComUser comUser) throws Exception{
+        logger.info("ajax查询收入记录");
+        logger.info("date = " + req.getDate());
+        logger.info("flag = " + req.getFlag());
+        logger.info("pageNum = " + req.getPageNum());
+        AccountUserIncomeRes res = new AccountUserIncomeRes();
         try {
-            logger.info("查询月份=" + date);
-            List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),date,0,0);
-            List<AccountUserBill> accountUserBills = new ArrayList<>();
-            String amount = new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
-            AccountUserBill accountUserBill;
-            for (PfUserBill pfUserBill : userBills){
-                accountUserBill = new AccountUserBill();
-                accountUserBill.setBalanceDate(pfUserBill.getBalanceDate());
-                accountUserBill.setBillAmount(pfUserBill.getBillAmount() == null?amount:pfUserBill.getBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-                accountUserBills.add(accountUserBill);
+            logger.info("userId = " + comUser.getId());
+            Date firstDate;
+            Date lastDate;
+            if (req.getDate() == null){
+                Date dt = new Date();
+                firstDate = DateUtil.getFirstTimeInMonth(dt);
+                lastDate = DateUtil.getLastTimeInMonth(dt);
+            }else {
+                Date dateTime = DateUtil.String2Date(req.getDate()+"-01");
+                firstDate = DateUtil.getFirstTimeInMonth(dateTime);
+                lastDate = DateUtil.getLastTimeInMonth(dateTime);
             }
-            res.setUserBills(accountUserBills);
+            Integer flag = req.getFlag()==null?null:req.getFlag().intValue()==0?null:req.getFlag();
+            Integer pageNum = req.getPageNum();
+            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14(comUser.getId(), firstDate, lastDate, flag, pageNum);
+            res.setPfIncomRecordPo(pfIncomRecordPo);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){
             e.printStackTrace();
-            logger.error(e.getMessage());
-            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+            if (e.getMessage().equals("1")){
+                res.setResCode(SysResCodeCons.RES_CODE_PAGE_LAST);
+                res.setResMsg(SysResCodeCons.RES_CODE_PAGE_LAST_MSG);
+            }else {
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg(e.getMessage());
+            }
+        }
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
+        return res;
+    }
+
+    /**
+     * ajax查询个人收入记录
+     * @param request
+     * @param req
+     * @param comUser
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getIncomRecord14Person.do",method = RequestMethod.POST)
+    @SignValid(paramType = AccountUserIncomePersonReq.class)
+    public AccountUserIncomeRes getIncomRecord14PersonAjax(HttpServletRequest request, AccountUserIncomePersonReq req, ComUser comUser) throws Exception{
+        logger.info("ajax查询收入记录");
+        logger.info("date = " + req.getDate());
+        logger.info("pageNum = " + req.getPageNum());
+        logger.info("userId = " + req.getUserId());
+        AccountUserIncomeRes res = new AccountUserIncomeRes();
+        try {
+            Date firstDate;
+            Date lastDate;
+            if (req.getDate() == null){
+                Date dt = new Date();
+                firstDate = DateUtil.getFirstTimeInMonth(dt);
+                lastDate = DateUtil.getLastTimeInMonth(dt);
+            }else {
+                Date dateTime = DateUtil.String2Date(req.getDate()+"-01");
+                firstDate = DateUtil.getFirstTimeInMonth(dateTime);
+                lastDate = DateUtil.getLastTimeInMonth(dateTime);
+            }
+            if (req.getUserId() == null){
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg("userId不能为空");
+                return res;
+            }
+            ComUser user = userService.getUserById(req.getUserId());
+            if (user == null){
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg("userId不正确");
+                return res;
+            }
+            PfIncomRecordPo pfIncomRecordPo = pfUserBillService.getIncomRecord14Person(comUser.getId(), firstDate, lastDate, null, req.getPageNum(), req.getUserId());
+            res.setPfIncomRecordPo(pfIncomRecordPo);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            e.printStackTrace();
+            if (e.getMessage().equals("1")){
+                res.setResCode(SysResCodeCons.RES_CODE_PAGE_LAST);
+                res.setResMsg(SysResCodeCons.RES_CODE_PAGE_LAST_MSG);
+            }else {
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg(e.getMessage());
+            }
         }
         logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
@@ -307,7 +503,9 @@ public class UserAccountController {
             return res;
         }
         try {
-            ComUserExtractwayInfo extractway = extractwayInfoService.findByBankcardAndCardownername(req.getBankcard(),req.getBankOwner());
+            //ComUserExtractwayInfo extractway = extractwayInfoService.findByBankcardAndCardownername(req.getBankcard(),req.getBankOwner());
+            // 同一个用户，可以绑定一个银行卡号一次；不同的用户，可以绑定同一个银行卡
+            ComUserExtractwayInfo extractway = extractwayInfoService.findByBankcardAndCardUserId(req.getBankcard(), userId);
             List<ComUserExtractwayInfo> infos = extractwayInfoService.findByUserId(user.getId());
             if (extractway == null){
                 extractway = new ComUserExtractwayInfo();
@@ -328,8 +526,13 @@ public class UserAccountController {
                 extractway.setCreatedTime(new Date());
                 extractway.setChangedTime(new Date());
                 extractwayInfoService.addComUserExtractwayInfo(extractway);
+
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             }else {
-                //询字典表数据
+                res.setResCode(SysResCodeCons.RES_CODE_BANK_BIND_REP);
+                res.setResMsg(SysResCodeCons.RES_CODE_BANK_BIND_REP_MSG);
+                /*//询字典表数据
                 ComDictionary comDictionary = dictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY",extractway.getExtractWay().intValue());
                 logger.info(String.valueOf(comDictionary.getKey()));
                 //存在数据并且为未启用状态
@@ -350,10 +553,10 @@ public class UserAccountController {
                     extractway.setChangedBy("edit");
                     extractway.setChangedTime(new Date());
                     extractwayInfoService.updataComUserExtractwayInfo(extractway);
-                }
+                }*/
             }
-            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
-            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            /*res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);*/
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());

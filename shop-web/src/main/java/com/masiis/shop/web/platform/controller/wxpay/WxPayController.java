@@ -68,7 +68,9 @@ public class WxPayController extends BaseController{
         String res = null;
         UnifiedOrderRes resObj = null;
         try {
-            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
+            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip,
+                    WxConsPF.WX_PAY_TRADE_TYPE, WxConsPF.APPID, WxConsPF.WX_PAY_MCHID,
+                    WxConsPF.WX_PAY_URL_UNIORDER_NOTIFY);
             uniOrder.setSign(WxPFBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
@@ -149,7 +151,9 @@ public class WxPayController extends BaseController{
         String res = null;
         UnifiedOrderRes resObj = null;
         try {
-            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
+            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip,
+                    WxConsPF.WX_PAY_TRADE_TYPE, WxConsPF.APPID, WxConsPF.WX_PAY_MCHID,
+                    WxConsPF.WX_PAY_URL_UNIORDER_NOTIFY);
             uniOrder.setSign(WxPFBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
@@ -238,7 +242,7 @@ public class WxPayController extends BaseController{
     private BrandWCPayReq createBrandWCPayReq(UnifiedOrderRes resObj) {
         BrandWCPayReq payReq = new BrandWCPayReq();
         payReq.setAppId(WxConsPF.APPID);
-        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
+        payReq.setTimeStamp(String.valueOf(new Date().getTime()).substring(0, 10));
         payReq.setNonceStr(WxPFBeanUtils.createGenerateStr());
         payReq.setSignType("MD5");
         payReq.setPackages("prepay_id=" + resObj.getPrepay_id());

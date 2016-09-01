@@ -118,6 +118,7 @@ public class ProductController {
                       @RequestParam("mainImgNames")String[] mainImgNames,
                       @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames,
                       @RequestParam("skuBackgroundImgName")String skuBackgroundImgName,
+                      @RequestParam("illustratingPictureImgName")String illustratingPictureImgName,
                       @RequestParam("developPosterName")String developPosterName,
                       @RequestParam("iconImgUrls")String[] iconImgUrls,
                       @RequestParam("iconImgNames")String[] iconImgNames) throws FileNotFoundException {
@@ -134,11 +135,11 @@ public class ProductController {
                 comSpu.setStatus(0);
                 comSpu.setIsSale(0);
                 comSpu.setIsDelete(0);
+                comSpu.setType(1);
 
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
                 comSku.setIcon(proIconName);
-                comSku.setRewardUnitPrice(new BigDecimal(0));
                 log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
 
                 //代理分润
@@ -194,6 +195,7 @@ public class ProductController {
                 ComSkuExtension comSkuExtension = new ComSkuExtension();
                 comSkuExtension.setSkuBackgroundImg(skuBackgroundImgName);
                 comSkuExtension.setPoster(developPosterName);
+                comSkuExtension.setIllustratingPicture(illustratingPictureImgName);
 
                 productService.save(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "success";
@@ -229,6 +231,7 @@ public class ProductController {
                          @RequestParam(value = "mainImgNames", required = false)String[] mainImgNames,
                          @RequestParam(value = "mainImgOriginalNames", required = false)String[] mainImgOriginalNames,
                          @RequestParam(value = "skuBackgroundImgName", required = false)String skuBackgroundImgName,
+                         @RequestParam(value = "illustratingPictureImgName", required = false)String illustratingPictureImgName,
                          @RequestParam(value = "developPosterName", required = false)String developPosterName,
                          @RequestParam(value = "iconImgUrls", required = false)String[] iconImgUrls,
                          @RequestParam(value = "iconImgNames", required = false)String[] iconImgNames
@@ -244,6 +247,7 @@ public class ProductController {
                 comSpu.setModifyTime(new Date());
                 comSpu.setModifyMan(pbUser.getId());
                 comSpu.setUnit(unitId);
+                comSpu.setType(1);
 
                 if(StringUtil.isEmpty(comSpu.getContent())) comSpu.setContent(null);
                 if(StringUtil.isEmpty(comSpu.getPolicy()))  comSpu.setPolicy(null);
@@ -311,10 +315,11 @@ public class ProductController {
                 }
 
                 ComSkuExtension comSkuExtension = null;
-                if(StringUtils.isNotBlank(skuBackgroundImgName) || StringUtils.isNotBlank(developPosterName)){
+                if(StringUtils.isNotBlank(skuBackgroundImgName) || StringUtils.isNotBlank(developPosterName) || StringUtils.isNotBlank(illustratingPictureImgName)){
                     comSkuExtension = new ComSkuExtension();
                     comSkuExtension.setId(skuExtensionId);
                     comSkuExtension.setSkuBackgroundImg(StringUtils.isNotBlank(skuBackgroundImgName)?skuBackgroundImgName:null);
+                    comSkuExtension.setIllustratingPicture(StringUtils.isNotBlank(illustratingPictureImgName)?illustratingPictureImgName:null);
                     comSkuExtension.setPoster(StringUtils.isNotBlank(developPosterName)?developPosterName:null);
                 }
 
@@ -347,6 +352,73 @@ public class ProductController {
         Map<String, Object> pageMap = productService.list(pageNumber, pageSize, comSku);
 
         return pageMap;
+    }
+
+    @RequestMapping("/mainSkuList.shtml")
+    public String mainSkuList(){
+        return "product/mainSkuList";
+    }
+
+    @RequestMapping("/mainSkuList.do")
+    @ResponseBody
+    public Object list(HttpServletRequest request, HttpServletResponse response,
+                       Integer pageNumber,
+                       Integer pageSize,
+                       String sortName,
+                       String sortOrder) {
+        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> pageMap = null;
+        try {
+            pageMap = productService.mainSkuList(pageNumber, pageSize, sortName, sortOrder, map);
+        } catch (Exception e) {
+            log.error("获取主打商品列表失败![conditionMap="+map+"]"+e);
+            e.printStackTrace();
+        }
+        return pageMap;
+
+    }
+
+    /**
+     * 删除主打商品
+     * @param spuId
+     */
+    @RequestMapping("/deleteMain.do")
+    @ResponseBody
+    public void deleteMain(Integer spuId){
+        productService.deleteMain(spuId);
+    }
+
+    @RequestMapping("/listBrand.do")
+    @ResponseBody
+    public Map<String,Object> listBrand(Integer brandId){
+        Map<String,Object> map = new HashMap<>();
+        List<Map<String, Object>> brandList = productService.brandList();
+        List<Map<String, Object>> spuList = productService.spuList();
+        map.put("brandList",brandList);
+        map.put("spuList",spuList);
+
+        return map;
+    }
+
+    @RequestMapping("listSpu.do")
+    @ResponseBody
+    public Object listSpu(Integer brandId){
+
+        List<Map<String, Object>> spus = productService.selectByBrandId(brandId);
+
+        return spus;
+    }
+
+    @RequestMapping("/addSpuMain.do")
+    @ResponseBody
+    public Object addSpuMain(Integer brandId, Integer spuId){
+        Map<String,Object> resultMap = new HashMap<>();
+        productService.updateSpuMain(brandId, null, 1);
+        boolean i = productService.updateSpuMain(brandId, spuId, 0);
+
+        resultMap.put("code", "success");
+        resultMap.put("msg", "设置主商品成功");
+        return resultMap;
     }
 
     public static void main(String[] args){

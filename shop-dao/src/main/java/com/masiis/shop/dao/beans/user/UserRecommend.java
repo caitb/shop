@@ -15,6 +15,7 @@ public class UserRecommend {
     private String wxHeadImg;
     private String skuName;
     private String agentName;
+    private String wxId;
 
     private CountGroup countGroup;//团队bean
 
@@ -88,6 +89,14 @@ public class UserRecommend {
 
     public void setSkuName(String skuName) {
         this.skuName = skuName;
+    }
+
+    public String getWxId() {
+        return wxId;
+    }
+
+    public void setWxId(String wxId) {
+        this.wxId = wxId;
     }
 
     public CountGroup getCountGroup() {

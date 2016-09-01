@@ -3,15 +3,20 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
+import com.masiis.shop.admin.service.product.SkuService;
+import com.masiis.shop.admin.service.shop.ShopService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.platform.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
-import com.masiis.shop.dao.platform.user.*;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.platform.user.PfUserRelationMapper;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,18 +36,21 @@ public class ComUserService {
     @Resource
     private ComUserAccountMapper comUserAccountMapper;
     @Resource
-    private ComUserAccountRecordMapper comUserAccountRecordMapper;
-    @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
-    @Resource
-    private ComSkuMapper comSkuMapper;
     @Resource
     private PfUserRelationMapper pfUserRelationMapper;
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
-
+    @Resource
+    private PfUserSkuService pfUserSkuService;
+    @Resource
+    private PfUserCertificateService pfUserCertificateService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private ShopService shopService;
 
     /**
      * 根据用户id获取用户
@@ -57,10 +65,11 @@ public class ComUserService {
 
     /**
      * 根据id查找合伙人
+     *
      * @param id
      * @return
      */
-    public ComUser findById(Long id){
+    public ComUser findById(Long id) {
         return comUserMapper.selectByPrimaryKey(id);
     }
 
@@ -72,14 +81,14 @@ public class ComUserService {
      * @param comUser    查询条件
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser){
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
 
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<ComUser> comUsers = comUserMapper.selectByCondition(comUser);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 
         List<User> users = new ArrayList<>(comUsers.size());
-        for(ComUser cu : comUsers){
+        for (ComUser cu : comUsers) {
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(cu.getId());
 
             User user = new User();
@@ -104,7 +113,7 @@ public class ComUserService {
      * @param comUser    查询条件
      * @return
      */
-    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser){
+    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
         PageHelper.startPage(pageNumber, pageSize);
         List<ComUser> comUsers = comUserMapper.auditList(comUser);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
@@ -118,24 +127,25 @@ public class ComUserService {
 
     /**
      * 会员详细信息
+     *
      * @param id
      * @return
      */
-    public User detail(Long id){
+    public User detail(Long id) {
         ComUser comUser = comUserMapper.selectByPrimaryKey(id);
         ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUser.getId());
         //List<ComUserAccountRecord> comUserAccountRecords = comUserAccountRecordMapper.selectByUserId(comUser.getId());
         List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByUserId(comUser.getId());
 
         Map<String, Object> wxAgentPro = new HashMap<>();
-        for(PfUserCertificate puc : pfUserCertificates){
-            ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
+        for (PfUserCertificate puc : pfUserCertificates) {
+            ComSku comSku = skuService.findById(puc.getSkuId());
             wxAgentPro.put(puc.getWxId(), comSku.getName());
         }
 
         String idCardImgUrl = PropertiesUtils.getStringValue("index_user_idCard_url");
-        comUser.setIdCardFrontUrl(idCardImgUrl+comUser.getIdCardFrontUrl());
-        comUser.setIdCardBackUrl(idCardImgUrl+comUser.getIdCardBackUrl());
+        comUser.setIdCardFrontUrl(idCardImgUrl + comUser.getIdCardFrontUrl());
+        comUser.setIdCardBackUrl(idCardImgUrl + comUser.getIdCardBackUrl());
 
         User user = new User();
         user.setComUser(comUser);
@@ -147,17 +157,18 @@ public class ComUserService {
 
     /**
      * 获取待审核人信息
+     *
      * @param id
      * @return
      */
-    public Map<String, Object> toAudit(Long id){
+    public Map<String, Object> toAudit(Long id) {
         Map<String, Object> auditMap = new HashMap<>();
 
         /* 被审核人信息 */
         ComUser comUser = comUserMapper.selectByPrimaryKey(id);
         String idCardImgUrl = PropertiesUtils.getStringValue("index_user_idCard_url");
-        comUser.setIdCardFrontUrl(idCardImgUrl+comUser.getIdCardFrontUrl());
-        comUser.setIdCardBackUrl(idCardImgUrl+comUser.getIdCardBackUrl());
+        comUser.setIdCardFrontUrl(idCardImgUrl + comUser.getIdCardFrontUrl());
+        comUser.setIdCardBackUrl(idCardImgUrl + comUser.getIdCardBackUrl());
 
         /* 上级人信息 */
         List<Map<String, Object>> pUserMaps = new ArrayList<>();
@@ -166,11 +177,11 @@ public class ComUserService {
         userRelationMap.put("userId", comUser.getId());
         userRelationMap.put("isEnable", 1);
         List<PfUserRelation> pfUserRelations = pfUserRelationMapper.selectByCondition(userRelationMap);
-        for(PfUserRelation pfUserRelation : pfUserRelations){
+        for (PfUserRelation pfUserRelation : pfUserRelations) {
             PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserIdAndSkuId(pfUserRelation.getUserPid(), pfUserRelation.getSkuId());
             ComUser pUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
             ComAgentLevel agentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-            ComSku sku = comSkuMapper.selectByPrimaryKey(pfUserCertificate.getSkuId());
+            ComSku sku = skuService.findById(pfUserCertificate.getSkuId());
 
             Map<String, Object> pUserMap = new HashMap<>();
             pUserMap.put("userName", pUser.getWxNkName());
@@ -189,22 +200,39 @@ public class ComUserService {
 
     /**
      * 审核会员信息
+     *
      * @param comUser
      */
-    public void audit(ComUser comUser,PbUser pbUser) throws Exception{
+    public void audit(ComUser comUser, PbUser pbUser) throws Exception {
         comUserMapper.updateByPrimaryKey(comUser);
-        if(comUser.getAuditStatus()==2 || comUser.getAuditStatus()==3){
-            MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
+        if (comUser.getAuditStatus() == 2 || comUser.getAuditStatus() == 3) {
+            MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus() == 2 ? true : false);
 
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
-            String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/index";
+            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/index";
             PfUserRelation pfUserRelation = pfUserRelationMapper.selectLastRecordByUserId(comUser.getId());
-            if(pfUserRelation != null){
-                url = PropertiesUtils.getStringValue("web.domain.name.address")+"/product/skuDetails.shtml?skuId="+pfUserRelation.getSkuId();
+            if (pfUserRelation != null) {
+                url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/skuDetails.shtml?skuId=" + pfUserRelation.getSkuId();
             }
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
-                                                                    comUser.getAuditStatus()==2?true:false,
-                                                                    comUser.getAuditStatus()==2?url:PropertiesUtils.getStringValue("web.domain.name.address")+"/identityAuth/toInentityAuthPage.html?defaultValue=3");
+                    comUser.getAuditStatus() == 2 ? true : false,
+                    comUser.getAuditStatus() == 2 ? url : PropertiesUtils.getStringValue("web.domain.name.address") + "/identityAuth/toInentityAuthPage.html?defaultValue=3");
+            List<PfUserSku> pfUserSkus = pfUserSkuService.findListByUserId(comUser.getId());
+            for (PfUserSku pfUserSku : pfUserSkus) {
+                if (StringUtils.isBlank(pfUserSku.getCode())) {
+                    ComSku comSku = skuService.findById(pfUserSku.getSkuId());
+                    pfUserCertificateService.addUserCertificate(comUser, comSku, pfUserSku);
+                }
+            }
+
+            //开店
+            SfShop sfShop = shopService.loadShopByUserId(comUser.getId());
+            if(sfShop != null && sfShop.getStatus().intValue() == 0){
+                sfShop.setStatus(1);
+                shopService.update(sfShop);
+            }
+
+
             PbOperationLog pbOperationLog = new PbOperationLog();
             pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
             pbOperationLog.setCreateTime(new Date());
@@ -214,7 +242,7 @@ public class ComUserService {
             pbOperationLog.setRemark("实名认证");
             pbOperationLog.setOperateContent(comUser.toString());
             int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
-            if(updateByPrimaryKey==0){
+            if (updateByPrimaryKey == 0) {
                 throw new Exception("日志新建实名认证失败!");
             }
         }

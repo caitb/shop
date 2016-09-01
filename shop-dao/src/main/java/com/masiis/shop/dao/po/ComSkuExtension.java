@@ -9,6 +9,7 @@ public class ComSkuExtension {
     private Integer skuId;
     private String poster;
     private String skuBackgroundImg;
+    private String illustratingPicture;
 
     public Integer getId() {
         return id;
@@ -40,5 +41,24 @@ public class ComSkuExtension {
 
     public void setSkuBackgroundImg(String skuBackgroundImg) {
         this.skuBackgroundImg = skuBackgroundImg;
+    }
+
+    public String getIllustratingPicture() {
+        return illustratingPicture;
+    }
+
+    public void setIllustratingPicture(String illustratingPicture) {
+        this.illustratingPicture = illustratingPicture;
+    }
+
+    @Override
+    public String toString() {
+        return "ComSkuExtension{" +
+                "id=" + id +
+                ", skuId=" + skuId +
+                ", poster='" + poster + '\'' +
+                ", skuBackgroundImg='" + skuBackgroundImg + '\'' +
+                ", illustratingPicture='" + illustratingPicture + '\'' +
+                '}';
     }
 }

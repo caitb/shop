@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * Created by hzz on 2016/4/10.
@@ -23,7 +24,7 @@ public class SfOrderConsigneeService {
     }
 
     /**
-     * 根据订单的id获得订单的收货地址
+     * 根据订单的id获得订单的收货人信息
      * @author hanzengzhi
      * @date 2016/4/10 14:07
      */
@@ -31,4 +32,5 @@ public class SfOrderConsigneeService {
     public SfOrderConsignee getOrdConByOrdId(Long orderId){
             return sfOrderConsigneeMapper.getOrdConByOrdId(orderId);
     }
+
 }

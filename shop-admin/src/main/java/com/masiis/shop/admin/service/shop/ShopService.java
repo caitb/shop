@@ -89,6 +89,14 @@ public class ShopService {
      * 更新店铺信息
      * @param sfShop
      */
+    public void update(SfShop sfShop){
+        sfShopMapper.updateByPrimaryKey(sfShop);
+    }
+
+    /**
+     * 更新店铺信息
+     * @param sfShop
+     */
     public void updateShop(SfShop sfShop){
         if(sfShop.getShipType().intValue() == 0){
             sfShop.setAgentShipAmount(new BigDecimal(0));
@@ -126,5 +134,14 @@ public class ShopService {
 
             sfShopMapper.updateByPrimaryKey(sfShop);
         }
+    }
+
+    /**
+     * 获取用户店铺
+     * @param userId
+     * @return
+     */
+    public SfShop loadShopByUserId(Long userId){
+        return sfShopMapper.selectByUserId(userId);
     }
 }

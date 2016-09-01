@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.message.SfSysMessageMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfSysMessage" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="content_url" property="contentUrl" jdbcType="VARCHAR" />
+        <result column="app_url_type" property="appUrlType" jdbcType="INTEGER" />
+        <result column="app_url_param" property="appUrlParam" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="m_type" property="mType" jdbcType="INTEGER" />
+        <result column="is_see" property="isSee" jdbcType="INTEGER" />
+        <result column="is_send" property="isSend" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="MessageGroupByToUser" type="com.masiis.shop.dao.beans.message.PfMessageCenterDetail">
+        <result column="notSeeNum" property="notSeeNum" jdbcType="INTEGER" />
+        <result column="headUrl" property="headUrl" jdbcType="VARCHAR" />
+        <result column="fromUserName" property="fromUserName" jdbcType="VARCHAR" />
+        <result column="fromUserId" property="fromUserId" jdbcType="VARCHAR" />
+        <result column="latestMessage" property="latestMessage" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="MessageDetail" type="com.masiis.shop.dao.po.SfMessageContent">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="m_type" property="type" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="content_url" property="contentUrl" jdbcType="VARCHAR" />
+        <result column="app_url_type" property="urlAppType" jdbcType="INTEGER" />
+        <result column="app_url_param" property="urlAppParam" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_sys_message
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfSysMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_sys_message (id, create_time, user_id, 
+            content, content_url, app_url_type, 
+            app_url_param, status, m_type, is_see, is_send,
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{content,jdbcType=VARCHAR}, #{contentUrl,jdbcType=VARCHAR}, #{appUrlType,jdbcType=INTEGER}, 
+            #{appUrlParam,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{mType,jdbcType=INTEGER}, 
+            #{isSee,jdbcType=INTEGER}, #{isSend,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfSysMessage" >
+        update sf_sys_message
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            content = #{content,jdbcType=VARCHAR},
+            content_url = #{contentUrl,jdbcType=VARCHAR},
+            app_url_type = #{appUrlType,jdbcType=INTEGER},
+            app_url_param = #{appUrlParam,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            m_type = #{mType,jdbcType=INTEGER},
+            is_see = #{isSee,jdbcType=INTEGER},
+            is_send = #{isSend,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, content, content_url, app_url_type, app_url_param, 
+        status, m_type, is_see, is_send, remark
+        from sf_sys_message
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, content, content_url, app_url_type, app_url_param, 
+        status, m_type, is_see, is_send, remark
+        from sf_sys_message
+    </select>
+
+    <select id="querySysGeneralInfo" resultMap="MessageGroupByToUser">
+        SELECT
+            count(0) AS notSeeNum,
+            (
+                SELECT
+                    content
+                FROM
+                    sf_sys_message
+                ORDER BY
+                    id DESC
+                LIMIT 1
+            ) AS latestMessage
+        FROM
+            sf_sys_message m
+        WHERE
+            m.user_id = #{userId,jdbcType=BIGINT}
+        AND m.is_see = 0;
+    </select>
+
+    <select id="selectNumsByUserIdAndType" resultType="java.lang.Integer">
+        SELECT
+          count(0)
+        FROM sf_sys_message
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        AND m_type = #{mType,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryByUserIdAndTypeWithPaging" resultMap="MessageDetail">
+        SELECT
+          *
+        FROM
+          sf_sys_message m1
+        WHERE
+          m1.id <![CDATA[ <= ]]> (
+                SELECT
+                  m.id
+                FROM
+                  sf_sys_message m
+                WHERE
+                  m.user_id = #{userId,jdbcType=BIGINT}
+                AND m.m_type = #{mType,jdbcType=INTEGER}
+                ORDER BY
+                  m.id DESC
+                LIMIT #{start,jdbcType=INTEGER}, 1
+                )
+        AND m1.user_id = #{userId,jdbcType=BIGINT}
+        AND m1.m_type = #{mType,jdbcType=INTEGER}
+        ORDER BY
+        m1.id DESC
+        LIMIT #{pageSize,jdbcType=INTEGER};
+    </select>
+
+</mapper>

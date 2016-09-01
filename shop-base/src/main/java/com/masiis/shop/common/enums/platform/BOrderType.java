@@ -9,7 +9,7 @@ package com.masiis.shop.common.enums.platform;
  */
 public enum BOrderType {
 
-    agent(0, "合伙订单"), Supplement(1, "补货订单"), Take(2, "拿货订单"), UPGRADE(3, "升级订单");
+    agent(0, "代理订单"), Supplement(1, "补货订单"), Take(2, "拿货订单"), UPGRADE(3, "升级订单");
 
     private Integer code;
     private String desc;

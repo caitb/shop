@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public interface ComUserExtractwayInfoMapper {
     int updateByPrimaryKey(ComUserExtractwayInfo record);
 
     ComUserExtractwayInfo selectByBankcardAndCardownername(ComUserExtractwayInfo record);
+
+    ComUserExtractwayInfo selectByBankcardAndCardUserId(@Param("bankCard")String bankCard, @Param("comUserId")Long comUserId);
 
     List<ComUserExtractwayInfo> selectByUserId(Long userId);
 

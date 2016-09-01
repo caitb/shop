@@ -8,6 +8,8 @@ import com.masiis.shop.api.bean.user.MarketProItem;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.dao.platform.product.ComBrandMapper;
+import com.masiis.shop.web.common.service.SpuService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -50,6 +52,12 @@ public class ProductController extends BaseController {
     private SkuService skuService;
     @Resource
     private UserSkuService userSkuService;
+    @Resource
+    private SpuService spuService;
+    @Resource
+    private ComBrandMapper comBrandMapper;
+
+
 
     @RequestMapping("/alist")
     @ResponseBody
@@ -108,7 +116,7 @@ public class ProductController extends BaseController {
     /**
       * @Author jjh
       * @Date 2016/5/19 0019 下午 2:46
-      *x
+      * 业务数据
       */
     @RequestMapping("/detail")
     @ResponseBody
@@ -122,7 +130,7 @@ public class ProductController extends BaseController {
             return proDetailRes;
         }
         try {
-            Product product = productService.getSkuDetails(req.getSkuId());
+            Product product = productService.getSkuHtml(req.getSkuId());
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getSkuId());
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(req.getSkuId(), user.getId());
             proDetailRes.setProduct(product);
@@ -136,6 +144,10 @@ public class ProductController extends BaseController {
             }else{
                 proDetailRes.setOrderStatus(-1);
             }
+            ComSpu comSpu = spuService.getById(comSku.getSpuId());
+            proDetailRes.setIsPrimarySku(comSpu.getType());
+            proDetailRes.setBrandId(comBrandMapper.selectById(comSpu.getBrandId()).getId());
+            proDetailRes.setIsBidding(user.getIsBinding());
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
@@ -150,15 +162,15 @@ public class ProductController extends BaseController {
     /**
       * @Author jjh
       * @Date 2016/5/21 0021 上午 10:20
-      *
+      * html 页面
       */
     @RequestMapping("/htmlView")
     @SignValid(paramType = ProDetailReq.class,isPageReturn = true)
     public ModelAndView getProHtml(HttpServletRequest request, ProDetailReq req){
         ModelAndView mav = new ModelAndView("product/product");
         try {
-//            Product product = productService.getSkuHtml(req.getSkuId());
-//            mav.addObject("productDetails", product);
+            Product product = productService.getSkuDetails(req.getSkuId());
+            mav.addObject("productDetails", product);
         } catch (Exception e){
             mav.addObject("message", e.getMessage());
         }

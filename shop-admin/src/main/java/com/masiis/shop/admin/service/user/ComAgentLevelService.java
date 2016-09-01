@@ -22,9 +22,6 @@ public class ComAgentLevelService {
         return comAgentLevelMapper.selectByPrimaryKey(id);
     }
 
-
-    public  List<ComAgentLevel> selectAll(){
-        return comAgentLevelMapper.selectAll();
-    }
+    public  List<ComAgentLevel> selectAll(){ return comAgentLevelMapper.selectAll(); }
 
 }

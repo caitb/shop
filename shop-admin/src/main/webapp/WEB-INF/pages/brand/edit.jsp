@@ -107,9 +107,31 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="dropzone2" class="col-sm-2 control-label">Logo</label>
+                                <label for="dropzoneLogo" class="col-sm-2 control-label">Logo</label>
                                 <div class="col-sm-9">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/brand/" class="dropzone" id="dropzone2">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/brand/" class="dropzone" id="dropzoneLogo">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="illustratingPicture" class="col-sm-2 control-label">品牌配图</label>
+                                <div class="col-sm-9">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/brand/" class="dropzone" id="illustratingPicture">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brandPoster" class="col-sm-2 control-label">品牌海报</label>
+                                <div class="col-sm-9">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/brand/" class="dropzone" id="brandPoster">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -187,8 +209,8 @@
 <script type="text/javascript">
 
     Dropzone.autoDiscover = false;
-    function initDropzone(selector,dictMessage, callback){
-        var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>品牌Logo</span> \
+    function initDropzone(selector,dictMessage, callback, title){
+        var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>'+title+'</span> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
         try {
@@ -235,11 +257,21 @@
         }
     }
 
-    initDropzone('#dropzone2', null, function(file){
+    initDropzone('#dropzoneLogo', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="logoUrl" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="logoName" value="'+res.title+'" />');
-    });
+    }, '品牌Logo');
+    initDropzone('#illustratingPicture', null, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="illustratingPictureUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="illustratingPictureName" value="'+res.title+'" />');
+    }, '品牌配图');
+    initDropzone('#brandPoster', null, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="brandPosterUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="brandPosterName" value="'+res.title+'" />');
+    }, '品牌海报');
 </script>
 <script>
 

@@ -111,7 +111,10 @@ public class WxConsPF {
      * 订单异步回调通知地址
      */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_URL_UNIORDER_NOTIFY"); //"http://weixin.masiis.com/wxntfy/orderNtfy";
-
+    /**
+     * 微信支付交易类型:公众号为JSAPI
+     */
+    public static final String WX_PAY_TRADE_TYPE = "JSAPI";
 
     /*===============================================================================================================*/
     /**

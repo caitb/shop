@@ -11,6 +11,7 @@
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -21,11 +22,12 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserAgentApplication" >
         insert into pf_user_agent_application (id, create_time, create_man, 
             sku_id, name, wx_id, 
-            mobile, status, remark
+            mobile, status, remark,agent_level_id
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
             #{skuId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, 
-            #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+            #{agentLevelId,jdbcType=INTEGER}
             )
     </insert>
 
@@ -56,28 +58,36 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
+            <if test="agentLevelId !=null">
+                #{agentLevelId,jdbcType=INTEGER}
+            </if>
         </set>
         where
               id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark
+        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark,agent_level_id
         from pf_user_agent_application
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark
+        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark,agent_level_id
         from pf_user_agent_application
+    </select>
+
+    <select id="selectByPhoneAndSkuId" resultMap="BaseResultMap">
+        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark,agent_level_id
+        from pf_user_agent_application
+        where mobile = #{mobile,jdbcType=VARCHAR} AND sku_id = #{skuId}
     </select>
 
     <select id="selectByPhone" resultMap="BaseResultMap">
-        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark
+        select id, create_time, create_man, sku_id, name, wx_id, mobile, status, remark,agent_level_id
         from pf_user_agent_application
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
-
     <select id="selectByCondition" parameterType="Map" resultType="Map">
         select
                uaa.id,

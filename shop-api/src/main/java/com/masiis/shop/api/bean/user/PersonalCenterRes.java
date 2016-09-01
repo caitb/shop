@@ -41,7 +41,15 @@ public class PersonalCenterRes extends BaseRes {
      * 等级图标和代理商品名称
      */
     private List<SkuAgentDetail> skuAgentDetails;
+    /**
+     * 微信号
 
+     */
+    private String wxId;
+
+    public String getWxId() { return wxId; }
+
+    public void setWxId(String wxId) { this.wxId = wxId; }
     public String getMobile() {
         return mobile;
     }

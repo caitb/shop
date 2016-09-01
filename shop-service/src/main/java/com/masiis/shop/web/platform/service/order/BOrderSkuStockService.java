@@ -77,7 +77,7 @@ public class BOrderSkuStockService {
     public void updateOrderStock(SfOrder sfOrder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         //拿货方式(0未选择1平台代发2自己发货)
-        if (sfOrder.getSendType().equals(1) && sfOrder.getSendMan().equals(0)) {
+        if (sfOrder.getSendType()==1 && sfOrder.getSendMan()==0L) {//if (sfOrder.getSendType().equals(1) && sfOrder.getSendMan().equals(0)) {
             for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
                 if (sfOrder.getShopUserId() == 0) {
                     throw new BusinessException("小铺PID不能为0");
@@ -90,7 +90,7 @@ public class BOrderSkuStockService {
                     }
                 }
             }
-        } else if (sfOrder.getSendType().equals(2) && sfOrder.getSendMan() > 0) {
+        } else if (sfOrder.getSendType()==2 && sfOrder.getSendMan()>0L) {//(sfOrder.getSendType().equals(2) && sfOrder.getSendMan() > 0) {
             for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
                 if (sfOrder.getShopUserId() == 0) {
                     throw new BusinessException("小铺PID不能为0");

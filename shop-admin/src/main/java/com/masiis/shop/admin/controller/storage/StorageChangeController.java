@@ -220,7 +220,7 @@ public class StorageChangeController {
             oLog.setPbUserName(pbUser.getUserName());
             oLog.setOperateContent(bill.toString());
             oLog.setRemark("创建库存入库变更单");
-            pbOperationLogService.add(oLog);
+            pbOperationLogService.insert(oLog);
 
             res.setResCode("success");
         } catch (Exception e) {

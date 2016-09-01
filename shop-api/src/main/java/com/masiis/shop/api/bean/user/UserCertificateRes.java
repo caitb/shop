@@ -36,6 +36,10 @@ public class UserCertificateRes extends BaseRes{
 
     private String sDate;//加入时间
 
+    private String upgradeUser;//推荐人信息
+
+    private String wxId;//微信号
+
     public String getRealName() {
         return realName;
     }
@@ -90,5 +94,21 @@ public class UserCertificateRes extends BaseRes{
 
     public void setsDate(String sDate) {
         this.sDate = sDate;
+    }
+
+    public String getUpgradeUser() {
+        return upgradeUser;
+    }
+
+    public void setUpgradeUser(String upgradeUser) {
+        this.upgradeUser = upgradeUser;
+    }
+
+    public String getWxId() {
+        return wxId;
+    }
+
+    public void setWxId(String wxId) {
+        this.wxId = wxId;
     }
 }

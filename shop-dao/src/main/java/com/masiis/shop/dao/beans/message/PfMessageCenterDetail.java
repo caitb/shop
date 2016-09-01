@@ -5,18 +5,18 @@ package com.masiis.shop.dao.beans.message;
  * @Author lzh
  */
 public class PfMessageCenterDetail {
-    private Integer isSeeNum;
+    private Integer notSeeNum;
     private String headUrl;
     private String fromUserName;
     private String fromUserId;
     private String latestMessage;
 
-    public Integer getIsSeeNum() {
-        return isSeeNum;
+    public Integer getNotSeeNum() {
+        return notSeeNum;
     }
 
-    public void setIsSeeNum(Integer isSeeNum) {
-        this.isSeeNum = isSeeNum;
+    public void setNotSeeNum(Integer notSeeNum) {
+        this.notSeeNum = notSeeNum;
     }
 
     public String getHeadUrl() {

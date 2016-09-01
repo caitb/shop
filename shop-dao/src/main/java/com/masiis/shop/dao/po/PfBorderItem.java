@@ -42,10 +42,6 @@ public class PfBorderItem extends PfBorderItemExtends {
      */
     private Integer agentLevelId;
     /**
-     * 微信号
-     */
-    private String wxId;
-    /**
      * 数量
      */
     private Integer quantity;
@@ -138,13 +134,6 @@ public class PfBorderItem extends PfBorderItemExtends {
 
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
-    }
-
-    public String getWxId() {
-        return wxId;
-    }
-    public void setWxId(String wxId) {
-        this.wxId = wxId == null ? null : wxId.trim();
     }
 
     public Integer getQuantity() {

@@ -29,4 +29,5 @@ public interface SfOrderPaymentMapper {
     SfOrderPayment selectBySerialNum(String paySerialNum);
 
     List<SfOrderPayment> selectByCondition(SfOrderPayment sfOrderPayment);
+
 }

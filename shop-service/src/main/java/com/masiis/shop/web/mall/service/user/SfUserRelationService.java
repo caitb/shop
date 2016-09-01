@@ -57,13 +57,13 @@ public class SfUserRelationService {
      * @return
      */
     public Integer getFansOrSpokesMansNum(Long shopId, boolean isSpoken, Long userId){
-        Integer num = 0;
+        Integer num;
         if (isSpoken){
             num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, 1, userId);
         }else {
             num = sfUserRelationMapper.selectAllSopkesManCountByShopId(shopId, null, userId);
         }
-        return num;
+        return num == null?0:num;
     }
 
     /**

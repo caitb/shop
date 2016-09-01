@@ -11,6 +11,15 @@ public class BorderDeliverReq extends BaseBusinessReq {
     private Long  orderId;
     private String freight;
     private String shipManId;
+    private Long shopId;
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
 
     public void setFreight(String freight) {
         this.freight = freight;

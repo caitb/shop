@@ -9,15 +9,13 @@
  import com.masiis.shop.api.constants.SysConstants;
  import com.masiis.shop.api.constants.SysResCodeCons;
  import com.masiis.shop.api.controller.base.BaseController;
- import com.masiis.shop.web.platform.service.order.COrderService;
- import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
  import com.masiis.shop.common.util.PropertiesUtils;
  import com.masiis.shop.dao.beans.product.Product;
+ import com.masiis.shop.dao.po.*;
+ import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
  import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
- import com.masiis.shop.dao.po.ComUser;
- import com.masiis.shop.dao.po.ComUserAddress;
- import com.masiis.shop.dao.po.PfCorder;
- import com.masiis.shop.dao.po.PfCorderConsignee;
+ import com.masiis.shop.web.common.service.UserAddressService;
+ import com.masiis.shop.web.platform.service.order.COrderService;
  import org.apache.log4j.Logger;
  import org.springframework.stereotype.Controller;
  import org.springframework.util.StringUtils;
@@ -45,7 +43,8 @@
      private COrderService cOrderService;
      @Resource
      PfCorderPaymentMapper pfCorderPaymentMapper;
-
+     @Resource
+     private UserAddressService userAddressService;
 
 
      @RequestMapping("/getOrderAddress.do")
@@ -54,18 +53,18 @@
     public ComUserAddressRes getOrderAddress(HttpServletRequest request, ComUserAddressReq addressReq,
                                              ComUser comUser ){
          ComUserAddressRes comUserAddressRes = new ComUserAddressRes();
-         /*if (addressReq == null|| comUser == null){
+         if (addressReq == null|| comUser == null){
              comUserAddressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
              comUserAddressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
              return comUserAddressRes;
          }else{
-             ComUserAddress _address = cOrderService.getOrderAddress(addressReq.getId(),comUser.getId());
+             ComUserAddress _address = userAddressService.getOrderAddress(addressReq.getId(),comUser.getId());
              List<ComUserAddress> comUserAddressList = new ArrayList<ComUserAddress>();
              comUserAddressList.add(_address);
              comUserAddressRes.setAddresses(comUserAddressList);
              comUserAddressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
              comUserAddressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
-         }*/
+         }
          return comUserAddressRes;
     }
      /**
@@ -109,7 +108,7 @@
      @SignValid(paramType = TrialApplyPayReq.class)
      public TrialApplyPayOrderDetailRes weChatCallBackSuccess(HttpServletRequest request,TrialApplyPayReq trialApplyPayReq){
          TrialApplyPayOrderDetailRes orderDetailRes = new TrialApplyPayOrderDetailRes();
-         /*try {
+         try {
              Map<String, Object> map = cOrderService.getOrderDetail(trialApplyPayReq.getPfCorderId());
              orderDetailRes.setCorder((PfCorder) map.get("pfCorder"));
              orderDetailRes.setCorderConsignee((PfCorderConsignee) map.get("corderConsignee"));
@@ -125,7 +124,7 @@
          } catch (Exception e) {
              orderDetailRes.setResCode(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL);
              orderDetailRes.setResMsg(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL_MSG);
-         }*/
+         }
          return orderDetailRes;
      }
 
@@ -144,4 +143,5 @@
          orderDetailRes.setResMsg(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL_MSG);
          return orderDetailRes;
      }
+
  }

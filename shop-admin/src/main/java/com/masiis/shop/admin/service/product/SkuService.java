@@ -64,4 +64,14 @@ public class SkuService {
         }
         return a - quantity;
     }
+
+
+    /**
+     * 根据品牌获取非主打商品
+     * @param brandId
+     * @return
+     */
+    public List<ComSku> getNoMainSkuByBrandId(Integer brandId){
+        return comSkuMapper.getSkuListByBrandId(brandId);
+    }
 }

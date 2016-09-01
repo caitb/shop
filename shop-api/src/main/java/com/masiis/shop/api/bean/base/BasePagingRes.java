@@ -27,6 +27,10 @@ public class BasePagingRes extends BaseBusinessRes {
      * 当前页; hasQueryData为1,此项有效; hasQueryData为0,此项无效
      */
     private Integer currentPage;
+    /**
+     * 是否是最后一页
+     */
+    private Integer isLast;
 
     public Integer getTotalCount() {
         return totalCount;
@@ -66,5 +70,13 @@ public class BasePagingRes extends BaseBusinessRes {
 
     public void setHasQueryData(Integer hasQueryData) {
         this.hasQueryData = hasQueryData;
+    }
+
+    public Integer getIsLast() {
+        return isLast;
+    }
+
+    public void setIsLast(Integer isLast) {
+        this.isLast = isLast;
     }
 }

@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.beans.recommend.MyRecommendPo;
 import com.masiis.shop.dao.beans.recommend.RecommenOrder;
@@ -100,53 +101,21 @@ public class PfBorderRecommenRewardService {
         return pfBorderRecommenRewardMapper.selectByPfBorderId(orderId);
     }
 
-    /**
-     * 我推荐的人首页service
-     * @param userId
-     * @return
-     */
-    public MyRecommendPo myRecommen(Long userId, Integer pageNum){
-        log.info("我推荐的人首页service");
-        MyRecommendPo myRecommendPo = new MyRecommendPo();
-        PfUserStatistics pfUserStatistics = pfUserStatisticsService.selectFee(userId);
-        //我推荐的人数
-        int myRecommen = pfUserRecommendRelationService.findNumByUserPid(userId);
-        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(userId);
-        //推荐团队总数
-        Integer recommenTeamCount = 0;
-        //总销售额
-        BigDecimal totalSales = new BigDecimal(0);
-        CountGroup countGroup;
-        //计算团队总数及总销售额
-        for (PfUserSku pfUserSku : pfUserSkus){
-            countGroup = countGroupMapper.countRecommendGroup(pfUserSku.getTreeCode());
-            recommenTeamCount += countGroup.getR_count();
-            totalSales = totalSales.add(countGroup.getR_groupMoney());
-        }
-        myRecommendPo.setMyRecommedPeople(myRecommen);
-        myRecommendPo.setRecommenTeamCount(recommenTeamCount);
-        myRecommendPo.setTotalSales(totalSales);
-        myRecommendPo.setIncomeRewards(pfUserStatistics.getRecommenGetFee());
-        myRecommendPo.setSendRewards(pfUserStatistics.getRecommenSendFee());
-        Page pageHelp = PageHelper.startPage(pageNum, pageSize);
-        List<RecommenOrder> recommenOrders = pfBorderRecommenRewardMapper.selectIncomeRecommenOrder(userId);
-        myRecommendPo.setCurrentPage(pageHelp.getPageNum());
-        myRecommendPo.setTotalCount(pageHelp.getTotal());
-        myRecommendPo.setRecommenOrders(recommenOrders);
-        return myRecommendPo;
-    }
 
     /**
      * 查询订单列表
      * @param userId        用户id
-     * @param currentPage   当前页码
+     * @param pageNum      当前页码
      * @param tab           查询tab  0：收入奖励订单  1：发出奖励订单
      * @return
      */
-    public MyRecommendPo getRecommenRewardOrder(Long userId, Integer currentPage, Integer tab){
+    public MyRecommendPo getRecommenRewardOrder(Long userId, Integer pageNum, Integer tab) throws Exception{
         log.info("查询订单列表....................");
+        log.info("pageNum = " + pageNum);
+        log.info("tab = " + tab);
+        log.info("userId = " + userId);
         MyRecommendPo myRecommendPo = new MyRecommendPo();
-        Page pageHelp = PageHelper.startPage(currentPage + 1, pageSize);
+        Page pageHelp = PageHelper.startPage(pageNum, pageSize);
         List<RecommenOrder> recommenOrders = null;
         switch (tab.intValue()){
             case 0 : {
@@ -160,7 +129,17 @@ public class PfBorderRecommenRewardService {
                 break;
             }
         }
+        log.info("总数量：" + pageHelp.getTotal());
+        log.info("总页数：" + pageHelp.getPages());
+        log.info("当前页：" + pageHelp.getPageNum());
+        log.info("每页展示条数：" + pageHelp.getPageSize());
+        if (pageHelp.getPages() > 0){
+            if (pageHelp.getPages() < pageNum.intValue()){
+                throw new BusinessException("1");
+            }
+        }
         myRecommendPo.setTotalCount(pageHelp.getTotal());
+        myRecommendPo.setTotalPages(pageHelp.getPages());
         myRecommendPo.setCurrentPage(pageHelp.getPageNum());
         myRecommendPo.setRecommenOrders(recommenOrders);
         return myRecommendPo;

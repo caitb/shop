@@ -73,6 +73,8 @@ public class PersonalCenterController extends BaseController {
         res.setIsBinding(user.getIsBinding());
         res.setAuditStatus(user.getAuditStatus());
         res.setAuditStatusName(AuditStatusEnum.getName(user.getAuditStatus()));
+        res.setWxId(user.getWxId());
+        logger.info("微信号：" + user.getWxId());
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
 

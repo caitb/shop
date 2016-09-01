@@ -37,8 +37,10 @@ public class LoginFilter implements Filter{
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
+
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession();
+
         if(uris == null){
             SysUriInit sys = (SysUriInit) ApplicationContextUtil.getBean("sysUriInit");
             uris = sys.getUriLists();
@@ -52,7 +54,7 @@ public class LoginFilter implements Filter{
             log.info("uri:" + uri);
             // 给开发组织一个默认的登录人
             UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
-            ComUser user = userService.getUserById(1847L);
+            ComUser user = userService.getUserById(1827L);
             request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
 
             chain.doFilter(request, response);

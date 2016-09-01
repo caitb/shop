@@ -1,11 +1,15 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
+import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
+import com.masiis.shop.dao.beans.user.upgrade.UpgradeManagePo;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
@@ -19,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +38,8 @@ public class UpgradeNoticeService {
     private static final Logger logger = Logger.getLogger(UpgradeNoticeService.class);
     @Resource
     private PfUserUpgradeNoticeMapper pfUserUpgradeNoticeMapper;
-
     @Resource
     private PfUserRebateMapper pfUserRebateMapper;
-
     @Resource
     private SkuService comSkuService;
     @Resource
@@ -46,6 +50,12 @@ public class UpgradeNoticeService {
     private SkuAgentService skuAgentService;
     @Resource
     private PfUserSkuService pfUserSkuService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private UpgradeNoticeService upgradeNoticeService;
+
+    private static final Integer pageSize = 10;
     /**
      * 根据订单id查询通知单
      * @param orderId
@@ -136,6 +146,89 @@ public class UpgradeNoticeService {
     public List<PfUserUpgradeNotice> getPfUserUpGradeInfoByParam(Long UserPId, Integer skuId, Integer upStatus) throws Exception {
         return pfUserUpgradeNoticeMapper.selectByParam(UserPId, skuId, upStatus);
     }
+
+    /**
+     * 申请单、一次性返利查询Service
+     * @param comUser       comUser
+     * @param pageNum       页码
+     * @param tab           tab 1：我的申请单  2：下级申请单  3：一次性返利
+     * @param skuId         商品id
+     * @param upStatus      申请状态
+     * @param rebateType    一次性返利   0：获得返利   1：支付返利
+     * @return
+     * @throws Exception
+     */
+    public UpgradeManagePo getPfUserUpGradeInfoPaging(ComUser comUser, Integer pageNum, int tab, Integer skuId, Integer upStatus, Integer rebateType) throws Exception{
+        logger.info("我的升级申请记录Service");
+        logger.info("传过来的页码：" + pageNum);
+        UpgradeManagePo upgradeManagePo = new UpgradeManagePo();
+        List<PfUserUpGradeInfo> pfUserUpGradeInfoList = new ArrayList<>();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Page pageHelp = null;
+        List<PfUserUpgradeNotice> pfUserUpgradeNoticeList = null;
+        switch (tab){
+            case 1 : {
+                pageHelp = PageHelper.startPage(pageNum.intValue(), pageSize);
+                pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectByUserId(comUser.getId());
+                break;
+            }
+            case 2 : {
+                pageHelp = PageHelper.startPage(pageNum.intValue(), pageSize);
+                pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectByParam(comUser.getId(), skuId, upStatus);
+                break;
+            }
+            case 3 : {
+                pageHelp = PageHelper.startPage(pageNum.intValue(), pageSize);
+                if (rebateType == null){
+                    pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateALLType(skuId, comUser.getId());
+                } else if (rebateType.intValue() == 0) {//获得返利
+                    pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, null, comUser.getId());
+                } else if (rebateType.intValue() == 1) { //支付返利
+                    pfUserUpgradeNoticeList = pfUserUpgradeNoticeMapper.selectBySkuIdAndRebateType(skuId, comUser.getId(), null);
+                }
+            }
+        }
+        logger.info("总数量：" + pageHelp.getTotal());
+        logger.info("总页数：" + pageHelp.getPages());
+        logger.info("当前页：" + pageHelp.getPageNum());
+        logger.info("每页展示条数：" + pageHelp.getPageSize());
+        if (pageHelp.getPages() > 0){
+            if (pageHelp.getPages() < pageNum.intValue()){
+                throw new BusinessException("1");
+            }
+        }
+        if (pfUserUpgradeNoticeList != null && pfUserUpgradeNoticeList.size() > 0) {
+            for (PfUserUpgradeNotice pfUserUpgradeNotice : pfUserUpgradeNoticeList) {
+                PfUserUpGradeInfo pfUserUpGradeInfo = new PfUserUpGradeInfo();
+                pfUserUpGradeInfo.setPfUserUpgradeNotice(pfUserUpgradeNotice);
+                ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
+                ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
+                pfUserUpGradeInfo.setSkuName(comSku.getName());
+                if (tab == 1){
+                    pfUserUpGradeInfo.setWxHeadImg(comUser.getWxHeadImg());
+                    pfUserUpGradeInfo.setRealName(comUser.getRealName());
+                }else {
+                    ComUser user = comUserService.getUserById(pfUserUpgradeNotice.getUserId());
+                    pfUserUpGradeInfo.setWxHeadImg(user.getWxHeadImg());
+                    pfUserUpGradeInfo.setRealName(user.getRealName());
+                }
+                pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
+                pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
+                String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
+                pfUserUpGradeInfo.setCreateDate(sDate);
+                pfUserUpGradeInfo.setStatusValue(upgradeNoticeService.coverCodeByLowerUpgrade(pfUserUpgradeNotice.getStatus()));
+                pfUserUpGradeInfoList.add(pfUserUpGradeInfo);
+            }
+        }
+        upgradeManagePo.setUpGradeInfos(pfUserUpGradeInfoList);
+        upgradeManagePo.setTotoalCount(pageHelp.getTotal());
+        upgradeManagePo.setTotalPage(pageHelp.getPages());
+        upgradeManagePo.setCurrentPage(pageHelp.getPageNum());
+        upgradeManagePo.setPageSize(pageHelp.getPageSize());
+        return upgradeManagePo;
+    }
+
 
     /**
      * jjh

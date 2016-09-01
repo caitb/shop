@@ -6,12 +6,12 @@ import org.apache.commons.lang.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
- *
- *
  * Created by lzh on 2016/3/15.
  */
 public class SysBeanUtils {
@@ -24,18 +24,18 @@ public class SysBeanUtils {
      * @param obj
      * @return
      */
-    public static boolean isAllPropertiesBlank(Object obj){
-        if(obj == null){
+    public static boolean isAllPropertiesBlank(Object obj) {
+        if (obj == null) {
             throw new BusinessException("param is null");
         }
         Class clazz = obj.getClass();
         Method[] ms = clazz.getMethods();
-        for(Method m : ms){
+        for (Method m : ms) {
             String name = m.getName();
             if (name.startsWith("get") && m.getParameterTypes().length == 0) {
                 try {
                     Object par = m.invoke(obj);
-                    if(par == null){
+                    if (par == null) {
                         return false;
                     }
                 } catch (IllegalAccessException e) {
@@ -49,19 +49,19 @@ public class SysBeanUtils {
         return true;
     }
 
-    public static String createPaySerialNumByOrderType(String orderType){
-        if(StringUtils.isBlank(orderType)){
+    public static String createPaySerialNumByOrderType(String orderType) {
+        if (StringUtils.isBlank(orderType)) {
             throw new BusinessException("orderType is null");
         }
-        if(orderType.length() != 1){
+        if (orderType.length() != 1) {
             throw new BusinessException("orderType is invalid");
         }
         StringBuilder res = new StringBuilder(orderType);
         // 流水号的次级开头字符串
         res.append("LSH");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 11; i++){
-            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        for (int i = 0; i < 11; i++) {
+            res.append(charArrs[(int) (Math.random() * charArrs.length)]);
         }
         return res.toString();
     }
@@ -72,22 +72,22 @@ public class SysBeanUtils {
      * @param str
      * @return
      */
-    public static boolean isNumeric(String str){
-        if((str.lastIndexOf("-") == 0 && str.lastIndexOf("+") < 0)
-                ||(str.lastIndexOf("-") <= 0 && str.lastIndexOf("+") == 0)){
+    public static boolean isNumeric(String str) {
+        if ((str.lastIndexOf("-") == 0 && str.lastIndexOf("+") < 0)
+                || (str.lastIndexOf("-") <= 0 && str.lastIndexOf("+") == 0)) {
             return isNumeric(str.substring(1, str.length()));
         }
-        if(str.charAt(0) == '.'){
+        if (str.charAt(0) == '.') {
             return false;
         }
-        if(str.charAt(str.length() - 1) == '.'){
+        if (str.charAt(str.length() - 1) == '.') {
             return false;
         }
         String[] strArr = str.split("\\.");
-        if(strArr.length > 2){
+        if (strArr.length > 2) {
             return false;
         }
-        if(strArr.length == 1){
+        if (strArr.length == 1) {
             return Pattern.compile("[0-9]*").matcher(str).matches();
         }
         return isNumeric(strArr[0]) && isNumeric(strArr[1]);
@@ -102,8 +102,8 @@ public class SysBeanUtils {
     public static String createAccountRecordSerialNum(int type) {
         StringBuilder res = new StringBuilder("LSHM");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 11; i++){
-            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        for (int i = 0; i < 11; i++) {
+            res.append(charArrs[(int) (Math.random() * charArrs.length)]);
         }
         return res.toString();
     }
@@ -113,11 +113,11 @@ public class SysBeanUtils {
      *
      * @return
      */
-    public static String createSfUserExtractPaySerialNum(){
+    public static String createSfUserExtractPaySerialNum() {
         StringBuilder res = new StringBuilder("LSHN");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 11; i++){
-            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        for (int i = 0; i < 11; i++) {
+            res.append(charArrs[(int) (Math.random() * charArrs.length)]);
         }
         return res.toString();
     }
@@ -129,8 +129,8 @@ public class SysBeanUtils {
     public static String createSfAccountRecordSerialNum() {
         StringBuilder res = new StringBuilder("LSHH");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 11; i++){
-            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        for (int i = 0; i < 11; i++) {
+            res.append(charArrs[(int) (Math.random() * charArrs.length)]);
         }
         return res.toString();
     }
@@ -138,9 +138,23 @@ public class SysBeanUtils {
     public static String createStorageBillCode() {
         StringBuilder res = new StringBuilder("SC");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
-        for(int i = 0; i < 7; i++){
-            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        for (int i = 0; i < 7; i++) {
+            res.append(charArrs[(int) (Math.random() * charArrs.length)]);
         }
         return res.toString();
+    }
+
+    /**
+     * 生成随机文件名：当前年月日时分秒+五位随机数
+     *
+     * @return
+     */
+    public static String getRandomFileName() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        String str = simpleDateFormat.format(date);
+        Random random = new Random();
+        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
+        return rannum + str;// 当前时间
     }
 }

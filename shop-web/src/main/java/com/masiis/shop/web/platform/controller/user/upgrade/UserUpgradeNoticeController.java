@@ -153,8 +153,9 @@ public class UserUpgradeNoticeController extends BaseController {
                         ComAgentLevel orglevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getOrgAgentLevelId());
                         ComAgentLevel wishLevel = comAgentLevelService.selectByPrimaryKey(pfUserUpgradeNotice.getWishAgentLevelId());
                         pfUserUpGradeInfo.setSkuName(comSku.getName());
-                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
+                        ComUser user = userService.getUserById(pfUserUpgradeNotice.getUserId());
+                        pfUserUpGradeInfo.setWxHeadImg(user.getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(user.getRealName());
                         pfUserUpGradeInfo.setOrgLevelName(orglevel.getName());
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserUpgradeNotice.getCreateTime());
@@ -180,8 +181,9 @@ public class UserUpgradeNoticeController extends BaseController {
                         pfUserUpGradeInfo.setWishLevelName(wishLevel.getName());
                         String sDate = sdf.format(pfUserRebate.getCreateTime());
                         pfUserUpGradeInfo.setCreateDate(sDate);
-                        pfUserUpGradeInfo.setWxHeadImg(userService.getUserById(pfUserUpgradeNotice.getUserId()).getWxHeadImg());
-                        pfUserUpGradeInfo.setRealName(userService.getUserById(pfUserUpgradeNotice.getUserId()).getRealName());
+                        ComUser user = userService.getUserById(pfUserUpgradeNotice.getUserId());
+                        pfUserUpGradeInfo.setWxHeadImg(user.getWxHeadImg());
+                        pfUserUpGradeInfo.setRealName(user.getRealName());
                         if(pfUserRebate.getUserId().equals(comUser.getId())){
                             pfUserUpGradeInfo.setStatusValue("获得返利");
                         }else{

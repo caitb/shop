@@ -7,8 +7,6 @@
  */
 package com.masiis.shop.dao.po;
 
-import com.masiis.shop.dao.po.ComUser;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +23,7 @@ public class PfBorder {
      */
     private Long createMan;
     /**
-     * 订单编码
+     * 订单号
      */
     private String orderCode;
     /**
@@ -36,6 +34,10 @@ public class PfBorder {
      * 上一级用户id，平台为0
      */
     private Long userPid;
+    /**
+     * 用户来源(1世界市场2手机号搜索3扫码)
+     */
+    private Integer userSource;
     /**
      * 买家留言
      */
@@ -101,11 +103,15 @@ public class PfBorder {
      */
     private Date shipTime;
     /**
+     * 配送备注，只工作日送货、都可送货
+     */
+    private String shipRemark;
+    /**
      * 拿货方式(0未选择1平台代发2自己发货)
      */
     private Integer sendType;
     /**
-     * 订单类型(0代理1补货2拿货)
+     * 订单类型(0代理1补货2拿货3升级)
      */
     private Integer orderType;
     /**
@@ -117,7 +123,7 @@ public class PfBorder {
      */
     private Integer shipStatus;
     /**
-     * 支付状态
+     * 支付状态: 0,未付款; 1,已付款
      */
     private Integer payStatus;
     /**
@@ -137,6 +143,10 @@ public class PfBorder {
      */
     private Date receiptTime;
     /**
+     * 换货订单号
+     */
+    private Long replaceOrderId;
+    /**
      * 备注
      */
     private String remark;
@@ -152,7 +162,7 @@ public class PfBorder {
     private String pidUserName;
     private String payTimes;//线下支付到期时间
     private String orderMoney;
-    private String  bailMoney;
+    private String bailMoney;
 
     private ComUser userName;
     private ComUser userPname;
@@ -168,110 +178,6 @@ public class PfBorder {
     private String orderStatusDes;//订单状态描述
 
     private String orderTypeDes;//订单类型描述
-
-    public ComUser getUserName() {
-        return userName;
-    }
-
-    public void setUserName(ComUser userName) {
-        this.userName = userName;
-    }
-
-    public ComUser getUserPname() {
-        return userPname;
-    }
-
-    public void setUserPname(ComUser userPname) {
-        this.userPname = userPname;
-    }
-
-    public String getBailMoney() {
-        return bailMoney;
-    }
-
-    public void setBailMoney(String bailMoney) {
-        this.bailMoney = bailMoney;
-    }
-
-    public void setOrderMoney(String orderMoney) {
-        this.orderMoney = orderMoney;
-    }
-
-    public String getOrderMoney() {
-        return orderMoney;
-    }
-
-    public void setPayTimes(String payTimes) {
-        this.payTimes = payTimes;
-    }
-
-    public String getPayTimes() {
-        return payTimes;
-    }
-
-    public void setPidUserName(String pidUserName) {
-        this.pidUserName = pidUserName;
-    }
-
-    public String getPidUserName() {
-        return pidUserName;
-    }
-
-    public BigDecimal getBailAmount() {
-        return bailAmount;
-    }
-
-    public void setBailAmount(BigDecimal bailAmount) {
-        this.bailAmount = bailAmount;
-    }
-
-    public void setSendType(Integer sendType) {
-        this.sendType = sendType;
-    }
-
-    public Integer getSendType() {
-        return sendType;
-    }
-
-    public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {
-        this.pfBorderConsignee = pfBorderConsignee;
-    }
-
-    public PfBorderConsignee getPfBorderConsignee() {
-        return pfBorderConsignee;
-    }
-
-    public void setTotalQuantity(Integer totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
-    public Integer getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setOrderSkuStatus(String orderSkuStatus) {
-        this.orderSkuStatus = orderSkuStatus;
-    }
-
-    public String getOrderSkuStatus() {
-        return orderSkuStatus;
-    }
-
-    public List<PfBorderItem> getPfBorderItems() {
-        return pfBorderItems;
-    }
-
-    public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
-        this.pfBorderItems = pfBorderItems;
-    }
 
     public Long getId() {
         return id;
@@ -302,7 +208,7 @@ public class PfBorder {
     }
 
     public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode == null ? null : orderCode.trim();
+        this.orderCode = orderCode;
     }
 
     public Long getUserId() {
@@ -321,12 +227,20 @@ public class PfBorder {
         this.userPid = userPid;
     }
 
+    public Integer getUserSource() {
+        return userSource;
+    }
+
+    public void setUserSource(Integer userSource) {
+        this.userSource = userSource;
+    }
+
     public String getUserMessage() {
         return userMessage;
     }
 
     public void setUserMessage(String userMessage) {
-        this.userMessage = userMessage == null ? null : userMessage.trim();
+        this.userMessage = userMessage;
     }
 
     public Integer getSupplierId() {
@@ -367,6 +281,14 @@ public class PfBorder {
 
     public void setOrderAmount(BigDecimal orderAmount) {
         this.orderAmount = orderAmount;
+    }
+
+    public BigDecimal getBailAmount() {
+        return bailAmount;
+    }
+
+    public void setBailAmount(BigDecimal bailAmount) {
+        this.bailAmount = bailAmount;
     }
 
     public BigDecimal getProductAmount() {
@@ -422,7 +344,7 @@ public class PfBorder {
     }
 
     public void setShipManName(String shipManName) {
-        this.shipManName = shipManName == null ? null : shipManName.trim();
+        this.shipManName = shipManName;
     }
 
     public Integer getShipType() {
@@ -439,6 +361,22 @@ public class PfBorder {
 
     public void setShipTime(Date shipTime) {
         this.shipTime = shipTime;
+    }
+
+    public String getShipRemark() {
+        return shipRemark;
+    }
+
+    public void setShipRemark(String shipRemark) {
+        this.shipRemark = shipRemark;
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
     }
 
     public Integer getOrderType() {
@@ -505,12 +443,108 @@ public class PfBorder {
         this.receiptTime = receiptTime;
     }
 
+    public Long getReplaceOrderId() {
+        return replaceOrderId;
+    }
+
+    public void setReplaceOrderId(Long replaceOrderId) {
+        this.replaceOrderId = replaceOrderId;
+    }
+
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    public String getOrderSkuStatus() {
+        return orderSkuStatus;
+    }
+
+    public void setOrderSkuStatus(String orderSkuStatus) {
+        this.orderSkuStatus = orderSkuStatus;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public String getPidUserName() {
+        return pidUserName;
+    }
+
+    public void setPidUserName(String pidUserName) {
+        this.pidUserName = pidUserName;
+    }
+
+    public String getPayTimes() {
+        return payTimes;
+    }
+
+    public void setPayTimes(String payTimes) {
+        this.payTimes = payTimes;
+    }
+
+    public String getOrderMoney() {
+        return orderMoney;
+    }
+
+    public void setOrderMoney(String orderMoney) {
+        this.orderMoney = orderMoney;
+    }
+
+    public String getBailMoney() {
+        return bailMoney;
+    }
+
+    public void setBailMoney(String bailMoney) {
+        this.bailMoney = bailMoney;
+    }
+
+    public ComUser getUserName() {
+        return userName;
+    }
+
+    public void setUserName(ComUser userName) {
+        this.userName = userName;
+    }
+
+    public ComUser getUserPname() {
+        return userPname;
+    }
+
+    public void setUserPname(ComUser userPname) {
+        this.userPname = userPname;
+    }
+
+    public List<PfBorderItem> getPfBorderItems() {
+        return pfBorderItems;
+    }
+
+    public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
+        this.pfBorderItems = pfBorderItems;
+    }
+
+    public PfBorderConsignee getPfBorderConsignee() {
+        return pfBorderConsignee;
+    }
+
+    public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {
+        this.pfBorderConsignee = pfBorderConsignee;
     }
 
     public String getBeginTime() {
@@ -532,6 +566,7 @@ public class PfBorder {
     public String getOrderStatusDes() {
         return orderStatusDes;
     }
+
     public void setOrderStatusDes(String orderStatusDes) {
         this.orderStatusDes = orderStatusDes;
     }
@@ -543,6 +578,7 @@ public class PfBorder {
     public void setOrderTypeDes(String orderTypeDes) {
         this.orderTypeDes = orderTypeDes;
     }
+
     @Override
     public String toString() {
         return "PfBorder{" +
@@ -552,6 +588,7 @@ public class PfBorder {
                 ", orderCode='" + orderCode + '\'' +
                 ", userId=" + userId +
                 ", userPid=" + userPid +
+                ", userSource=" + userSource +
                 ", userMessage='" + userMessage + '\'' +
                 ", supplierId=" + supplierId +
                 ", modifyTime=" + modifyTime +
@@ -560,6 +597,7 @@ public class PfBorder {
                 ", orderAmount=" + orderAmount +
                 ", bailAmount=" + bailAmount +
                 ", productAmount=" + productAmount +
+                ", recommenAmount=" + recommenAmount +
                 ", shipAmount=" + shipAmount +
                 ", payAmount=" + payAmount +
                 ", payTime=" + payTime +
@@ -567,6 +605,7 @@ public class PfBorder {
                 ", shipManName='" + shipManName + '\'' +
                 ", shipType=" + shipType +
                 ", shipTime=" + shipTime +
+                ", shipRemark='" + shipRemark + '\'' +
                 ", sendType=" + sendType +
                 ", orderType=" + orderType +
                 ", orderStatus=" + orderStatus +
@@ -576,14 +615,23 @@ public class PfBorder {
                 ", isShip=" + isShip +
                 ", isReceipt=" + isReceipt +
                 ", receiptTime=" + receiptTime +
+                ", replaceOrderId=" + replaceOrderId +
                 ", remark='" + remark + '\'' +
                 ", orderSkuStatus='" + orderSkuStatus + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", totalQuantity=" + totalQuantity +
                 ", pidUserName='" + pidUserName + '\'' +
                 ", payTimes='" + payTimes + '\'' +
+                ", orderMoney='" + orderMoney + '\'' +
+                ", bailMoney='" + bailMoney + '\'' +
+                ", userName=" + userName +
+                ", userPname=" + userPname +
                 ", pfBorderItems=" + pfBorderItems +
                 ", pfBorderConsignee=" + pfBorderConsignee +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", orderStatusDes='" + orderStatusDes + '\'' +
+                ", orderTypeDes='" + orderTypeDes + '\'' +
                 '}';
     }
 }

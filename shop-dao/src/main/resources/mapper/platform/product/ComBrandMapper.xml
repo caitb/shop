@@ -9,12 +9,14 @@
         <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
         <result column="content" property="content" jdbcType="LONGVARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="illustrating_picture_name" property="illustratingPictureName" jdbcType="VARCHAR" />
+        <result column="brand_poster_name" property="brandPosterName" jdbcType="VARCHAR" />
     </resultMap>
 
 
     <!-- 根据id查询一条记录 -->
     <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
-        select id, create_time, cname, ename, logo_url, content, remark
+        select id, create_time, cname, ename, logo_url, content, remark, illustrating_picture_name, brand_poster_name
         FROM
                com_brand
         WHERE
@@ -23,7 +25,7 @@
 
     <!-- 根据条件查询记录 -->
     <select id="selectByCondition" resultMap="BaseResultMap">
-        select id, create_time, cname, ename, logo_url, content, remark
+        select id, create_time, cname, ename, logo_url, content, remark, illustrating_picture_name, brand_poster_name
         FROM
                com_brand
         <where>
@@ -49,7 +51,9 @@
                     ename,
                     logo_url,
                     content,
-                    remark
+                    remark,
+                    illustrating_picture_name,
+                    brand_poster_name
                     )
         values
                     (
@@ -59,7 +63,9 @@
                     #{ename,jdbcType=VARCHAR},
                     #{logoUrl,jdbcType=VARCHAR},
                     #{content,jdbcType=LONGVARCHAR},
-                    #{remark,jdbcType=VARCHAR}
+                    #{remark,jdbcType=VARCHAR},
+                    #{illustratingPictureName},
+                    #{brandPosterName}
                     )
     </insert>
 
@@ -85,6 +91,12 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
+            <if test="illustratingPictureName != null">
+                illustrating_picture_name = #{illustratingPictureName},
+            </if>
+            <if test="brandPosterName != null">
+                brand_poster_name = #{brandPosterName}
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -94,5 +106,69 @@
         DELETE FROM com_brand WHERE id = #{id}
     </delete>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, create_time, cname, ename, logo_url, content, remark, illustrating_picture_name, brand_poster_name
+        FROM
+        com_brand
+    </select>
 
+    <select id="checkBrandBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        select brand.id, brand.create_time, brand.cname, brand.ename, brand.logo_url, brand.content, brand.remark, brand.illustrating_picture_name, brand.brand_poster_name
+         FROM com_sku_new skunew
+        LEFT JOIN com_sku sku ON sku.id = skunew.sku_id
+        LEFT JOIN com_spu spu ON spu.id = sku.spu_id
+        LEFT JOIN com_brand brand ON brand.id = spu.brand_id
+        WHERE skunew.sku_id = #{skuId}
+    </select>
+
+    <select id="selectAllForWorld" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.cname, b.ename, b.logo_url, b.content, b.remark, b.illustrating_picture_name, b.brand_poster_name
+        FROM
+        pf_sys_menu menu
+        INNER JOIN com_brand b ON b.id = menu.value
+        WHERE EXISTS(SELECT 0 FROM com_spu spu WHERE spu.is_sale=1 AND spu.is_delete=0 AND spu.TYPE=0 AND spu.brand_id = b.id) AND menu.type = 1
+        ORDER BY menu.sort ASC
+    </select>
+
+    <select id="selectAllForFamily" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+       SELECT f.id, f.create_time, f.cname, f.ename, f.logo_url, f.content, f.remark, f.illustrating_picture_name, f.brand_poster_name FROM pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code,'%') AND b.tree_level=1
+        INNER JOIN com_sku c ON b.sku_id=c.id
+        INNER JOIN com_spu d ON c.spu_id=d.id
+        INNER JOIN pf_user_brand e ON e.user_id = a.user_id
+        LEFT JOIN com_brand f ON f.id = e.brand_id
+        WHERE d.is_delete=0 AND d.is_sale=1 AND d.type=0 AND a.user_id=#{userId}
+    </select>
+
+    <select id="selectBrandByUserId" resultMap="BaseResultMap">
+        SELECT
+            c.*
+        FROM
+            pf_user_brand b
+        LEFT JOIN com_brand c ON c.id = b.brand_id
+        WHERE
+            b.user_id = #{userId,jdbcType=BIGINT};
+    </select>
+
+
+    <select id="selectAllForWorldPage" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.cname, b.ename, b.logo_url, b.content, b.remark, b.illustrating_picture_name, b.brand_poster_name
+        FROM
+        com_brand b
+        INNER JOIN pf_sys_menu s ON b.id = s.value
+        WHERE EXISTS(SELECT 0 FROM com_spu spu WHERE spu.is_sale=1 AND spu.is_delete=0 AND spu.TYPE=0 AND spu.brand_id = b.id)
+        AND s.type =1
+        ORDER BY s.sort ASC
+    </select>
+
+    <select id="selectBySkuId" resultMap="BaseResultMap">
+        SELECT
+        b.*
+        FROM
+        com_sku s
+        LEFT JOIN com_spu p ON p.id = s.spu_id
+        LEFT JOIN com_brand b ON b.id = p.brand_id
+        WHERE
+        s.id = #{skuId,jdbcType=INTEGER};
+    </select>
 </mapper>

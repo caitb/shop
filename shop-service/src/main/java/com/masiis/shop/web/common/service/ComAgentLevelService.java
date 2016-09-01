@@ -27,4 +27,5 @@ public class ComAgentLevelService {
         return comAgentLevelMapper.selectAll();
     }
 
+    public List<ComAgentLevel> selectImgUrlById(Long id){return comAgentLevelMapper.selectImgUrlById(id);}
 }

@@ -929,7 +929,7 @@
                 if(data.resCode == "success"){
                     $.gritter.add({
                         title: '操作提示',
-                        text: "处理库存成功",
+                        text: "审核库存成功",
                         class_name: 'gritter-success'
                     });
                     $('#table').bootstrapTable('refresh');
@@ -961,7 +961,7 @@
                 if(data.resCode == "success"){
                     $.gritter.add({
                         title: '操作提示',
-                        text: "审核成功",
+                        text: "处理成功",
                         class_name: 'gritter-success'
                     });
                     $('#table').bootstrapTable('refresh');

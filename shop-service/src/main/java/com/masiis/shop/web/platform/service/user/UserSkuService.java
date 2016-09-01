@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UserSkuService
@@ -44,29 +45,6 @@ public class UserSkuService {
     @Resource
     private UserService userService;
 
-
-    /**
-     *  获得推荐单价
-     * @param pUserId   border里新上级puserId
-     * @param skuId     商品的skuId
-     * @return
-     */
-    public BigDecimal getRewardUnitPrice(Long pUserId, Integer skuId){
-        BigDecimal rewardUnitPrice = null;
-        try {
-            PfUserSku userSku = getUserSkuByUserIdAndSkuId(pUserId,skuId);
-            if (userSku!=null){
-                rewardUnitPrice = userSku.getRewardUnitPrice();
-            }else {
-                log.info("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
-                throw new BusinessException("获得奖励单价出错----pfuserSku为null---userId--"+pUserId+"----skuId--"+skuId);
-            }
-        }catch (Exception e){
-            log.info("获得奖励单价出错----"+e.getMessage());
-            throw new BusinessException("获得奖励单价出错----"+e.getMessage());
-        }
-        return rewardUnitPrice;
-    }
 
 
     /**
@@ -101,25 +79,6 @@ public class UserSkuService {
      */
     public PfUserSku getUserSkuById(Integer id) {
         return pfUserSkuMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * @Author 贾晶豪
-     * @Date 2016/3/21 0021 下午 6:33
-     * 获取用户代理信息
-     */
-    public List<CertificateInfo> getUserSkuByUserId(Long userId) throws Exception {
-        return certificateMapper.getCertificatesByUser(userId);
-    }
-
-    /**
-     * 获取数据集
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/24 17:04
-     */
-    public List<PfUserSku> getAllByCondition(PfUserSku pfUserSku) {
-        return pfUserSkuMapper.selectByCondition(pfUserSku);
     }
 
     /**
@@ -199,4 +158,14 @@ public class UserSkuService {
         }
         return pfUserSku;
     }
+
+    /**
+     * 下级合伙人 (姓名 id) 列表
+     * @param userPid
+     * @return
+     */
+    public List<Map<String, Object>> getLowerLevelPartnerListByUserPid(Long userPid){
+        return pfUserSkuMapper.getLowerLevelPartnerListByUserPid(userPid);
+    }
+
 }

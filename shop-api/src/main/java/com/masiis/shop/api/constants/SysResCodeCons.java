@@ -14,6 +14,8 @@ public class SysResCodeCons {
     public static final String RES_CODE_ILLEGAL = "-2";
     public static final String RES_CODE_ILLEGAL_MSG = "非法请求";
 
+    public static final String RES_CODE_PAGE_LAST = "-3";
+    public static final String RES_CODE_PAGE_LAST_MSG = "暂无更多数据";
     /**
      * 请求参数校验
      */
@@ -186,6 +188,88 @@ public class SysResCodeCons {
     public static final String RES_CODE_TRIAL_APPLY_FAIL_MSG = "申请使用微信支付失败";
 
     /**
+     * 补货
+     */
+    public static final String RES_CODE_NO_SEND_TYPE = "101001";
+    public static final String RES_CODE_NO_SEND_TYPE_MSG = "您还没有确定拿货状态不能补货";
+
+    public static final String RES_CODE_SUPPLEMENT_ORDERID_ERROR = "101002";
+    public static final String RES_CODE_SUPPLEMENT_ORDERID_ERROR_MSG = "补货订单号错误";
+
+    public static final String RES_CODE_SUPPLEMENT_ORDERTYPE_ERROR = "101003";
+    public static final String RES_CODE_SUPPLEMENT_ORDERTYPE_ERROR_MSG = "订单类型不是补货类型";
+
+    /**
+     * 消息中心
+     */
+    public static final String RES_CODE_MESSAGE_PARAM_ERROR = "101201";
+    public static final String RES_CODE_MESSAGE_PARAM_ERROR_MSG = "消息请求参数不正确";
+
+    public static final String RES_CODE_MESSAGE_NOT_AGENT = "101202";
+    public static final String RES_CODE_MESSAGE_NOT_AGENT_MSG = "该用户还不是代理商";
+
+    public static final String RES_CODE_MESSAGE_PARAM_NOTENOUGH = "101203";
+    public static final String RES_CODE_MESSAGE_PARAM_NOTENOUGH_MSG = "请求参数不完整";
+
+    public static final String RES_CODE_MESSAGE_HAS_NO_CHILD = "101204";
+    public static final String RES_CODE_MESSAGE_HAS_NO_CHILD_MSG = "该合伙人暂无下级合伙人";
+
+    public static final String RES_CODE_MESSAGE_HAS_NO_DATA = "101205";
+    public static final String RES_CODE_MESSAGE_HAS_NO_DATA_MSG = "暂无更多数据";
+
+    public static final String RES_CODE_MESSAGE_FROM_USER_ERROR = "101206";
+    public static final String RES_CODE_MESSAGE_FROM_USER_ERROR_MSG = "消息来源用户不正确";
+
+    public static final String RES_CODE_MESSAGE_TO_USER_ERROR = "101207";
+    public static final String RES_CODE_MESSAGE_TO_USER_ERROR_MSG = "接收消息用户类型不正确";
+
+
+    /**
+     * 代理注册
+     */
+    public static final String RES_CODE_AGENT_NOT_PID = "101301";
+    public static final String RES_CODE_AGENT_NOT_PID_MSG = "上级用户id不正确";
+
+    public static final String RES_CODE_AGENT_SOURCE_ERROR = "101302";
+    public static final String RES_CODE_AGENT_SOURCE_ERROR_MSG = "用户注册来源不正确";
+
+    public static final String RES_CODE_AGENT_BRANDID_ERROR = "101303";
+    public static final String RES_CODE_AGENT_BRANDID_ERROR_MSG = "指定品牌主打商品id不正确";
+
+    public static final String RES_CODE_AGENT_AGENTLEVEL_ERROR = "101304";
+    public static final String RES_CODE_AGENT_AGENTLEVEL_ERROR_MSG = "指定合伙等级id不正确";
+
+    public static final String RES_CODE_AGENT_AGENT_SKU_ERROR = "101305";
+    public static final String RES_CODE_AGENT_AGENT_SKU_ERROR_MSG = "上级不是该商品的合伙人";
+
+    public static final String RES_CODE_AGENT_ALREADY_AGENT_SKU = "101306";
+    public static final String RES_CODE_AGENT_ALREADY_AGENT_SKU_MSG = "该用户已经是该sku的合伙人";
+
+    public static final String RES_CODE_AGENT_ALREADY_HAS_AGENTORDER = "101307";
+    public static final String RES_CODE_AGENT_ALREADY_HAS_AGENTORDER_MSG = "该用户已经有合伙人订单";
+
+    public static final String RES_CODE_AGENT_BORDER_ID_ERROR = "101308";
+    public static final String RES_CODE_AGENT_BORDER_ID_ERROR_MSG = "订单id不正确";
+
+    public static final String RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR = "101309";
+    public static final String RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR_MSG = "订单id不正确";
+
+    /**
+     * 升级
+     */
+    public static final String RES_CODE_UPGRADE_ORDER_ID_ERROR = "101401";
+    public static final String RES_CODE_UPGRADE_ORDER_ID_ERROR_MSG = "升级订单id不正确";
+
+    public static final String RES_CODE_UPGRADE_ORDER_NOT_EXISTS = "101402";
+    public static final String RES_CODE_UPGRADE_ORDER_NOT_EXISTS_MSG = "该升级订单不存在";
+
+    public static final String RES_CODE_UPGRADE_ORDER_TYPE_ERROR = "101403";
+    public static final String RES_CODE_UPGRADE_ORDER_TYPE_ERROR_MSG = "该订单类型不正确";
+
+    public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH = "101404";
+    public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH_MSG = "该订单不属于本人";
+
+    /**
      * 微信支付
      */
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";
@@ -197,9 +281,24 @@ public class SysResCodeCons {
     public static final String RES_CODE_WXPAY_PREORDER_FAIL = "900105";
     public static final String RES_CODE_WXPAY_PREORDER_FAIL_MSG = "微信预付单下单失败";
 
+    public static final String RES_CODE_WXPAY_ORDER_PAID = "900106";
+    public static final String RES_CODE_WXPAY_ORDER_PAID_MSG = "该订单已支付,无需再支付";
+
+    public static final String PHONE_DUPLICATE = "手机号重复";
+
+    public static final String PHONE_IILEAGAL = "手机号非法";
+
+    public static final String WXCODE_IILEAGAL = "微信号非法";
+
     /**
-     * 补货
+     * 店铺信息
      */
-    public static final String RES_CODE_NO_SEND_TYPE = "100901";
-    public static final String RES_CODE_NO_SEND_MSG = "您还没有确定拿货状态不能补货";
+    public static final String RES_CODE_SHOP_NULL = "110000";
+    public static final String RES_CODE_SHOP_NULL_MSG = "该用户没有自己的店铺";
+
+    /**
+     * 绑定银行卡
+     */
+    public static final String RES_CODE_BANK_BIND_REP = "120000";
+    public static final String RES_CODE_BANK_BIND_REP_MSG = "你已绑定该银行卡，不能再次绑定";
 }

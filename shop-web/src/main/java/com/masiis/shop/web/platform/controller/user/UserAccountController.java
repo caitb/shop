@@ -106,10 +106,7 @@ public class UserAccountController extends BaseController{
             log.info("无用户账户信息");
             BigDecimal fee = new BigDecimal(0.00);
             account = new ComUserAccount();
-            account.setTotalIncomeFee(fee);
             account.setExtractableFee(fee);
-            account.setCountingFee(fee);
-            account.setProfitFee(fee);
         }else {
             if (account.getAppliedFee() == null){
                 account.setAppliedFee(new BigDecimal(0.00));
@@ -136,8 +133,9 @@ public class UserAccountController extends BaseController{
         mv.addObject("comUser",comUser);
         mv.addObject("withdrawd",rmbFormat.format(withdrawd));
         mv.addObject("currentDate",currentDate);
-        account.setCountingFee(account.getAgentBillAmount().add(account.getDistributionBillAmount()).add(account.getRecommenBillAmount()));
         mv.addObject("totalIncom",rmbFormat.format(account.getExtractableFee().add(withdrawd).add(account.getAgentBillAmount()).add(account.getDistributionBillAmount()).add(account.getRecommenBillAmount())));
+        BigDecimal countingFee = account.getAgentBillAmount().add(account.getDistributionBillAmount()).add(account.getRecommenBillAmount());
+        account.setViewCountingFee(rmbFormat.format(countingFee));
         account.setExtractableFee(account.getExtractableFee().subtract(account.getAppliedFee()));
         mv.addObject("account",account);
         mv.setViewName("platform/user/account");

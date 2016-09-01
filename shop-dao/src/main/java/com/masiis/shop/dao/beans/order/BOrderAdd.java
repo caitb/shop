@@ -30,6 +30,10 @@ public class BOrderAdd {
      */
     private String userMessage = "";
     /**
+     * 用户来源(1扫码2手机号搜索3世界市场)
+     */
+    private Integer userSource = 0;
+    /**
      * 拿货方式(0未选择1平台代发2自己发货)
      */
     private Integer sendType = 0;
@@ -60,11 +64,9 @@ public class BOrderAdd {
     /**
      * 通知单id 用于增加通知订单用
      */
-    private Long upgradeNoticeId ;
+    private Long upgradeNoticeId;
 
     private Integer currentAgentLevel;//当前级别，升级订单时使用
-
-    private Integer applyAgentLevel; //申请级别,升级订单时使用
 
     public Integer getOrderType() {
         return orderType;
@@ -104,6 +106,14 @@ public class BOrderAdd {
 
     public void setUserMessage(String userMessage) {
         this.userMessage = userMessage;
+    }
+
+    public Integer getUserSource() {
+        return userSource;
+    }
+
+    public void setUserSource(Integer userSource) {
+        this.userSource = userSource;
     }
 
     public Integer getSendType() {
@@ -178,11 +188,4 @@ public class BOrderAdd {
         this.currentAgentLevel = currentAgentLevel;
     }
 
-    public Integer getApplyAgentLevel() {
-        return applyAgentLevel;
-    }
-
-    public void setApplyAgentLevel(Integer applyAgentLevel) {
-        this.applyAgentLevel = applyAgentLevel;
-    }
 }

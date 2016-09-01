@@ -9,9 +9,9 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.platform.service.order.PfBorderRecommenRewardService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +56,7 @@ public class UpgradeWechatNewsService {
         _param[2] = upgradeDetail.getQuantity() + "";
         _param[3] = BOrderType.UPGRADE.getDesc();
         _param[4] = BOrderStatus.MPS.getDesc();
-        WxPFNoticeUtils.getInstance().orderInQueue(comUser, _param);
+        SysNoticeUtils.getInstance().orderInQueue(comUser,_param);
         //2.2给上级发
         logger.info("升级订单给上级发--------pUserId----" + pfBorder.getUserPid());
         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/product/user/" + pfBorder.getUserPid();
@@ -66,7 +66,7 @@ public class UpgradeWechatNewsService {
         param[2] = upgradeDetail.getQuantity() + "";
         param[3] = BOrderType.UPGRADE.getDesc();
         param[4] = BOrderStatus.MPS.getDesc();
-        WxPFNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser, param, url);
+        SysNoticeUtils.getInstance().dealWithOrderInQueueByUp(pComUser,param,url);
         //3给下级申请的发推送
 
         return true;
@@ -91,9 +91,9 @@ public class UpgradeWechatNewsService {
         String[] param = new String[4];
         param[0] = "￥" + pfBorderPayment.getAmount().toString();
         param[1] = pfBorderPayment.getPayTypeName();
-        param[2] = "升级" + upgradeDetail.getApplyAgentLevelName();
-        param[3] = DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT);
-        WxPFNoticeUtils.getInstance().upgradePaySuccessNotice(comUser, param);
+        param[2] = "升级"+upgradeDetail.getApplyAgentLevelName();
+        param[3] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+        SysNoticeUtils.getInstance().upgradePaySuccessNotice(comUser,param);
         //给上级发送微信
         logger.info("发送微信通知---原上级-------" + upgradeDetail.getOldPUserId());
         logger.info("发送微信通知---新上级-------" + pfBorder.getUserPid());
@@ -102,38 +102,18 @@ public class UpgradeWechatNewsService {
             logger.info("发送微信通知-----------上级没变化");
             String[] _param = new String[3];
             _param[0] = comUser.getRealName();
-            _param[1] = upgradeDetail.getApplyAgentLevelName() + "";
-            _param[2] = DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT);
-            WxPFNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser, _param, oldPuserUrl);
-        } else {
+            _param[1] = upgradeDetail.getApplyAgentLevelName()+"";
+            _param[2] = DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT);
+            SysNoticeUtils.getInstance().upgradeResultNoticeUpLine(newComUser,_param,oldPuserUrl);
+        }else{
             //上级变化
             logger.info("发送微信通知-----------上级变化");
-            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItems.get(0).getId());
-            if (pfBorderRecommenReward == null || !pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
-                //给原上级发微信
-                String[] _param = new String[1];
-                _param[0] = comUser.getRealName();
-                WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser, _param, newPuserUrl, true);
-                //给新的上级发
-                WxPFNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser, comUser, DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT), newPuserUrl);
-            } else if (pfBorderRecommenReward.getRecommenUserId().equals(oldUser.getId())) {
-                ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
-                String[] _param = new String[4];
-                _param[0] = comUser.getRealName();
-                _param[1] = pfBorderItems.get(0).getSkuName();
-                _param[2] = upgradeDetail.getCurrentAgentLevelName();
-                _param[3] = comAgentLevel.getName();
-                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/myRecommend/myRecommen.shtml";
-                //给原上级发微信
-                WxPFNoticeUtils.getInstance().upgradeApplyGetOutNotice(oldUser, _param, url);
-                //给新的上级发
-                String[] _param1 = new String[3];
-                _param1[0] = oldUser.getRealName();
-                _param1[1] = DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT);
-                _param1[2] = pfBorderItems.get(0).getSkuName();
-                String url1 = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                WxPFNoticeUtils.getInstance().partnerJoinByUpgradeWithNoAwardNotice(newComUser, comUser, _param1, url1);
-            }
+            //给原上级发微信
+            String[] _param = new String[1];
+            _param[0] = comUser.getRealName();
+            SysNoticeUtils.getInstance().upgradeApplyResultNotice(oldUser,_param,newPuserUrl,true);
+            //给新的上级发
+            SysNoticeUtils.getInstance().partnerJoinByUpgradeNotice(newComUser,comUser,DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT),newPuserUrl);
         }
         return true;
     }
@@ -154,8 +134,8 @@ public class UpgradeWechatNewsService {
         param[3] = DateUtil.Date2String(new Date(), DateUtil.CHINESEALL_DATE_FMT);
         logger.info("跳转url============" + PropertiesUtils.getStringValue("web.domain.name.address") + url);
         try {
-            return WxPFNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
-        } catch (Exception e) {
+            return SysNoticeUtils.getInstance().upgradeApplySubmitNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
             e.printStackTrace();
             return false;
         }
@@ -182,8 +162,8 @@ public class UpgradeWechatNewsService {
         param[4] = DateUtil.Date2String(calendar.getTime(), DateUtil.CHINESEALL_DATE_FMT);
         logger.info("跳转url============" + PropertiesUtils.getStringValue("web.domain.name.address") + url);
         try {
-            return WxPFNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
-        } catch (Exception e) {
+            return SysNoticeUtils.getInstance().subLineUpgradeApplyNotice(comUser,param,PropertiesUtils.getStringValue("web.domain.name.address") + url);
+        }catch (Exception e){
             e.printStackTrace();
             return false;
         }
@@ -203,7 +183,7 @@ public class UpgradeWechatNewsService {
         param[0] = upGradeInfoPo.getApplyName();
         logger.info("跳转url============" + PropertiesUtils.getStringValue("web.domain.name.address") + url);
         try {
-            return WxPFNoticeUtils.getInstance().upgradeApplyResultNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url, false);
+            return SysNoticeUtils.getInstance().upgradeApplyResultNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url, false);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -231,7 +211,7 @@ public class UpgradeWechatNewsService {
         param[4] = DateUtil.Date2String(calendar.getTime(), DateUtil.CHINESEALL_DATE_FMT);
         logger.info("跳转url============" + PropertiesUtils.getStringValue("web.domain.name.address") + url);
         try {
-            return WxPFNoticeUtils.getInstance().upgradeApplyAuditPassNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
+            return SysNoticeUtils.getInstance().upgradeApplyAuditPassNotice(comUser, param, PropertiesUtils.getStringValue("web.domain.name.address") + url);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

@@ -18,6 +18,7 @@
         <result column="name" property="skuName" jdbcType="VARCHAR"/>
         <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT"/>
         <result column="bail" property="bail" jdbcType="DECIMAL"/>
+        <result column="brand_id" property="brandId" jdbcType="INTEGER"/>
 
         <association column="pf_user_sku_id" property="pfUserCertificateInfo"
                      javaType="com.masiis.shop.dao.po.PfUserCertificate">
@@ -135,5 +136,18 @@
         FROM pf_user_sku pfku
         LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
         WHERE pfku.user_id = #{userId} AND pfku.is_pay=1
+    </select>
+
+    <select id="getCertificatesByUserAPP" parameterType="Long" resultMap="CertificateResultMap">
+        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid,pfku.sku_id,pfku.user_id,
+        pfku.user_pid,pfku.bail,brand.brand_id
+            FROM pf_user_brand brand
+            INNER JOIN com_spu spu ON spu.brand_id = brand.brand_id
+            INNER JOIN com_sku sku ON sku.spu_id = spu.id
+            INNER JOIN pf_user_sku pfku ON pfku.sku_id = sku.id AND brand.user_id = pfku.user_id
+        WHERE brand.user_id = #{userId} AND pfku.is_pay=1
+        AND  spu.is_sale = 1
+        AND spu.is_delete = 0
+        AND spu.TYPE = 0
     </select>
 </mapper>

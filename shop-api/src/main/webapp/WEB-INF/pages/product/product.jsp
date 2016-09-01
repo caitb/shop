@@ -31,7 +31,7 @@
         <div class="price">
             <p style="padding-right:30px">${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
+            <p>￥<b>${productDetails.priceRetail}</b><span>
             </span><span style="color: #999999;float:right;margin:4px 10px 0 0;">代理人数：
                 <c:if test="${productDetails.agentNum >9999}">
                    超过9999</span>
@@ -52,10 +52,6 @@
                 <li>
                     <h1><img src="${path}/static/images/xq_nav2.png" alt=""></h1>
                     <span>合伙人优惠</span>
-                </li>
-                <li>
-                    <h1><img src="${path}/static/images/xq_nav3.png" alt=""></h1>
-                    <span>七天退换</span>
                 </li>
                 <li>
                     <h1><img src="${path}/static/images/xq_nav4.png" alt=""></h1>

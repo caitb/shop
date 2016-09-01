@@ -1,8 +1,6 @@
 package com.masiis.shop.api.bean.user;
 
-import com.github.pagehelper.StringUtil;
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 

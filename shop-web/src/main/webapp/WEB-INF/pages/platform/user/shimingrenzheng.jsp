@@ -58,6 +58,10 @@
                 身份证号：
                 <input type="text" id="idCard" name="idCard">
             </div>
+            <div class="sf">
+                微信号：
+                <input type="text" id="wxId" name="wxId">
+            </div>
             <div class="sf" style="border-bottom:none;">
                 身份证照片：
             </div>
@@ -146,6 +150,9 @@
             alert("身份证号不能为空!");
             return;
         }
+        if (weixinCheckFun($("#wxId")) == false) {
+            return;
+        }
         var fCardUrl = $("#idCardFront").attr("src");
         if (fCardUrl == "${path}/static/images/shenfen.png") {
             alert("请上传身份证正面!");
@@ -165,6 +172,7 @@
 
         var paraData = {};
         paraData.name = $("#name").val();
+        paraData.wxId = $("#wxId").val();
         paraData.idCard = legalIdCard;
         paraData.idCardFrontName = $("#idCardFrontName").val();
         paraData.idCardBackName = $("#idCardBackName").val();
@@ -185,6 +193,26 @@
             }
         });
     }
+
+    var weixinCheckFun = function (data) {
+        if ($(data).val() == "") {
+            alert("微信号不能为空");
+            return false;
+        }
+        if (!isNumber($(data).val())) {
+            alert("请输入6~20个字符，字母、数字、下划线或减号。");
+            return false;
+        }
+        return true;
+        function isNumber(s) {
+            var patrn = /^[a-zA-Z0-9_-]{6,20}$/;
+            if (!patrn.exec(s)) {
+                return false;
+            }
+            return true;
+        }
+    }
+
     function nameCheckFun(data) {
         if ($(data).val() == "") {
             alert("姓名不能为空");
@@ -209,5 +237,6 @@
         }
         return len;
     }
+
 </script>
 </html>

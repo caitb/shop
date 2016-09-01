@@ -26,6 +26,10 @@ public class PfUserAgentApplicationService {
        return pfUserAgentApplicationMapper.insert(pfUserAgentApplication);
     }
 
+    public PfUserAgentApplication getPfUserAgentApplicationByPhoneAndSkuId(String phone,Integer skuId){
+        return pfUserAgentApplicationMapper.selectByPhoneAndSkuId(phone,skuId);
+    }
+
     public List<PfUserAgentApplication> getPfUserAgentApplicationByPhone(String phone){
         return pfUserAgentApplicationMapper.selectByPhone(phone);
     }

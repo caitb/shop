@@ -9,6 +9,7 @@ import com.masiis.shop.api.bean.base.BaseRes;
 public class LoginByPhoneRes extends BaseRes {
     private String token;
     private Integer expire;
+    private String userKey;
     private String expireUnit;
 
     public String getToken() {
@@ -25,6 +26,14 @@ public class LoginByPhoneRes extends BaseRes {
 
     public void setExpire(Integer expire) {
         this.expire = expire;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
     }
 
     public String getExpireUnit() {

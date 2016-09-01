@@ -21,8 +21,8 @@ public class PbOperationLogService {
      * @author muchaofeng
      * @date 2016/5/30 14:10
      */
-    public void add(PbOperationLog pbOperationLog){
-        pbOperationLogMapper.insert(pbOperationLog);
+    public int insert(PbOperationLog pbOperationLog){
+       return pbOperationLogMapper.insert(pbOperationLog);
     }
 
     /**

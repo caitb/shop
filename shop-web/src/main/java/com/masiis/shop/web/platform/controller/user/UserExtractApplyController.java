@@ -7,13 +7,13 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.common.service.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.common.utils.wx.WxPFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -271,7 +271,7 @@ public class UserExtractApplyController extends BaseController {
         //提现申请成功发送微信
         String[] params = new String[]{"￥"+decimalFormat.format(money),dateFormat.format(new Date()),"审核中"};
         boolean mobile = MobileMessageUtil.getInitialization("B").withdrawRequestVerifyAgent(user.getMobile(), SMSConstants.WITHDRAW_DAYS);
-        boolean wechat = WxPFNoticeUtils.getInstance().pfExtractApply(user, params, true);
+        boolean wechat = SysNoticeUtils.getInstance().pfExtractApply(user, params, true);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mobile",mobile);
         jsonObject.put("wechat",wechat);

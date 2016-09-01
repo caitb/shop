@@ -18,4 +18,13 @@ public class SpuService {
     public ComSpu getById(Integer spuId){
         return comSpuMapper.selectById(spuId);
     }
+
+    /**
+     * 根据商品id获得所在的品牌信息
+     * @param skuId
+     * @return
+     */
+    public ComSpu selectBrandBySkuId(Integer skuId){
+        return comSpuMapper.selectBrandBySkuId(skuId);
+    }
 }

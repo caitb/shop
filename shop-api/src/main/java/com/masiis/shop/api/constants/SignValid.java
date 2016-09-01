@@ -36,4 +36,10 @@ public @interface SignValid {
      * @return
      */
     boolean hasData() default true;
+
+    /**
+     * 是否是系统接口,false是说明接口暴露给其他系统
+     * @return
+     */
+    boolean isSysApi() default true;
 }

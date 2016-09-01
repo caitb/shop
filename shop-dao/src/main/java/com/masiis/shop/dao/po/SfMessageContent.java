@@ -10,6 +10,7 @@ package com.masiis.shop.dao.po;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class SfMessageContent {
     /**
      * 创建时间
      */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
      * 店铺id
@@ -43,6 +45,14 @@ public class SfMessageContent {
      * 消息内容url
      */
     private String contentUrl;
+    /**
+     * app跳转类型
+     */
+    private Integer urlAppType;
+    /**
+     * app跳转参数（json格式）
+     */
+    private String urlAppParam;
     /**
      * 状态: 0,草稿; 1,启用; 2,不启用; 3,删除
      */
@@ -98,6 +108,23 @@ public class SfMessageContent {
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl == null ? null : contentUrl.trim();
     }
+
+    public Integer getUrlAppType() {
+        return urlAppType;
+    }
+
+    public void setUrlAppType(Integer urlAppType) {
+        this.urlAppType = urlAppType;
+    }
+
+    public String getUrlAppParam() {
+        return urlAppParam;
+    }
+
+    public void setUrlAppParam(String urlAppParam) {
+        this.urlAppParam = urlAppParam;
+    }
+
     public Integer getStatus() {
         return status;
     }

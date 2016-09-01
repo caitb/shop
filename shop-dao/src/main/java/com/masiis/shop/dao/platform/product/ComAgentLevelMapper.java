@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComAgentLevel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface ComAgentLevelMapper {
     int getMaxAgentLevel();
 
     List<ComAgentLevel> selectByIds(List<Integer> ids);
+
+    ComAgentLevel selectUseByPrimaryKey(Integer id);
+
+    List<ComAgentLevel> selectImgUrlById(@Param("userId") Long id);
 }

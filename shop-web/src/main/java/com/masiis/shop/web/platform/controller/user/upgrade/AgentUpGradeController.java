@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class AgentUpGradeController extends BaseController {
     private UpgradeWechatNewsService upgradeWechatNewsService;
     @Autowired
     private PfUserRebateService pfUserRebateService;
+    @Autowired
+    private SkuAgentService skuAgentService;
 
     /**
      * 初始化我要升级首页
@@ -179,6 +182,13 @@ public class AgentUpGradeController extends BaseController {
         if (pfUserSku == null){
             jsonObject.put("isTrue","false");
             jsonObject.put("message","上级代理数据有误");
+            logger.info(jsonObject.toJSONString());
+            return jsonObject.toJSONString();
+        }
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, upgradeLevel);
+        if (pfSkuAgent.getIsUpgrade().intValue() == 0){
+            jsonObject.put("isTrue","false");
+            jsonObject.put("message","该等级不支持升级");
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }

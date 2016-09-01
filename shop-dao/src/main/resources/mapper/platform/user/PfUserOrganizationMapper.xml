@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserOrganizationMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserOrganization" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="logo" property="logo" jdbcType="VARCHAR" />
+        <result column="back_img" property="backImg" jdbcType="VARCHAR" />
+        <result column="wx_qr_code" property="wxQrCode" jdbcType="VARCHAR" />
+        <result column="wx_id" property="wxId" jdbcType="VARCHAR" />
+        <result column="add_description" property="addDescription" jdbcType="VARCHAR" />
+        <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+        <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="freeman_num" property="freemanNum" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="NumsGroupByOrganization" type="com.masiis.shop.dao.beans.message.PfMessageToNewBean">
+        <result column="oName" property="oName" jdbcType="VARCHAR" />
+        <result column="oNrl" property="oUrl" jdbcType="VARCHAR" />
+        <result column="oNum" property="oNum" jdbcType="INTEGER" />
+        <result column="pfUserOrganizationId" property="pfUserOrganizationId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_user_organization
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserOrganization" >
+        insert into pf_user_organization (id, create_time, modify_time,
+            brand_id, agent_level_id, user_id,
+            name, logo, back_img,
+            wx_qr_code, wx_id, add_description,
+            slogan, introduction, status,
+            freeman_num, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP},
+            #{brandId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+            #{name,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{backImg,jdbcType=VARCHAR},
+            #{wxQrCode,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{addDescription,jdbcType=VARCHAR},
+            #{slogan,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+            #{freemanNum,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserOrganization" >
+        update pf_user_organization
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            brand_id = #{brandId,jdbcType=INTEGER},
+            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            name = #{name,jdbcType=VARCHAR},
+            logo = #{logo,jdbcType=VARCHAR},
+            back_img = #{backImg,jdbcType=VARCHAR},
+            wx_qr_code = #{wxQrCode,jdbcType=VARCHAR},
+            wx_id = #{wxId,jdbcType=VARCHAR},
+            add_description = #{addDescription,jdbcType=VARCHAR},
+            slogan = #{slogan,jdbcType=VARCHAR},
+            introduction = #{introduction,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            freeman_num = #{freemanNum,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, modify_time, brand_id, agent_level_id, user_id, name, logo,
+        back_img, wx_qr_code, wx_id, add_description, slogan, introduction, status, freeman_num,
+        remark
+        from pf_user_organization
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, modify_time, brand_id, agent_level_id, user_id, name, logo,
+        back_img, wx_qr_code, wx_id, add_description, slogan, introduction, status, freeman_num,
+        remark
+        from pf_user_organization
+    </select>
+
+
+    <select id="selectOrganizationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        SELECT d.id, d.modify_time, d.brand_id, d.agent_level_id, d.user_id, d.name, d.logo, d.back_img, d.slogan, d.introduction,
+        d.status, d.freeman_num,d.remark FROM pf_user_sku a
+        INNER JOIN pf_user_sku b ON a.tree_code LIKE CONCAT(b.tree_code,'%')
+        INNER JOIN com_agent_level cc ON b.agent_level_id=cc.id
+        INNER JOIN pf_user_organization d ON b.user_id=d.user_id AND b.agent_level_id=d.agent_level_id
+        WHERE cc.is_organization_show=1 AND d.status=1 AND a.user_id = #{userId,jdbcType=BIGINT}
+        ORDER BY d.agent_level_id
+    </select>
+
+    <select id="selectAllFamily" resultMap="BaseResultMap">
+        select b.id, b.create_time, b.modify_time, b.brand_id, b.agent_level_id, b.user_id, b.name, b.logo, b.back_img, b.slogan, b.introduction,
+        b.status, b.freeman_num,b.remark
+        FROM
+        pf_sys_menu menu
+        INNER JOIN pf_user_organization b ON b.id = menu.value
+        INNER JOIN com_spu c ON b.brand_id=c.brand_id AND c.type = 0
+        INNER JOIN com_sku d ON c.id=d.spu_id
+        INNER JOIN pf_sku_agent e ON b.agent_level_id=e.agent_level_id AND d.id=e.sku_id
+        WHERE menu.type = #{type} AND b.agent_level_id = #{agentLevelId,jdbcType=INTEGER} AND b.status = 1
+        AND b.freeman_num &lt; e.freeman_upper_num
+        ORDER BY menu.sort ASC
+    </select>
+
+    <select id="selectByMobile"  resultType="java.util.HashMap">
+ SELECT
+            a.id          userId,
+            a.wx_head_img wxHeadImg,
+            IFNULL(a.real_name,a.wx_nk_name)   realName,
+            COUNT(b.id)   countAgent
+        FROM
+            com_user a
+        INNER JOIN pf_user_brand b ON a.id = b.user_id
+        WHERE
+            a.mobile = #{mobile}
+        AND (
+		EXISTS(SELECT 0 FROM pf_user_organization
+			WHERE STATUS = 1 AND user_id = a.id)
+		OR EXISTS(SELECT 0 FROM pf_user_sku ia
+			INNER JOIN (SELECT sku_id,MAX(agent_level_id) agent_level_id FROM pf_sku_agent GROUP BY sku_id) ib ON ia.sku_id=ib.sku_id AND ia.agent_level_id=ib.agent_level_id
+			WHERE ia.user_id=a.id)
+		)
+        <if test="brandId != null">
+            AND b.brand_id = #{brandId}
+        </if>
+        GROUP BY
+            a.id,
+            a.wx_head_img,
+            a.real_name;
+    </select>
+
+    <select id="selectByBrandIdAndUserId" resultMap="BaseResultMap">
+        select id, create_time, modify_time, brand_id, agent_level_id, user_id, name, logo,
+        back_img, wx_qr_code, wx_id, add_description, slogan, introduction, status, freeman_num,
+        remark
+        from pf_user_organization
+        <where>
+            AND status = 1
+            <if test="brandId != null">
+                AND brand_id = #{brandId}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectAllFamilyByAgentLevelId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, modify_time, brand_id, agent_level_id, user_id, name, logo,
+        back_img, wx_qr_code, wx_id, add_description, slogan, introduction, status, freeman_num,
+        remark
+        from pf_user_organization
+        where agent_level_id = #{agentLevelId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAllFamilyByAgentLevelIdAndBrandId" resultMap="BaseResultMap">
+        select  b.id, b.create_time, b.modify_time, b.brand_id, b.agent_level_id, b.user_id, b.name, b.logo,
+        b.back_img, b.wx_qr_code, b.wx_id, b.add_description, b.slogan, b.introduction, b.status, b.freeman_num,
+        b.remark
+        from pf_user_organization b
+        INNER JOIN pf_sys_menu s ON b.id = s.value AND s.type &lt;&gt; 1
+        LEFT  JOIN com_spu spu ON spu.brand_id = b.brand_id
+        INNER JOIN com_sku d ON spu.id=d.spu_id
+        INNER JOIN pf_sku_agent e ON b.agent_level_id=e.agent_level_id AND d.id=e.sku_id
+        where b.agent_level_id = #{agentLevelId,jdbcType=INTEGER} AND b.brand_id =#{brandId}
+        AND b.freeman_num &lt; e.freeman_upper_num AND spu.is_sale = 1
+        AND spu.is_delete = 0
+        AND spu.TYPE = 0
+    </select>
+    
+    <select id="selectOrganization" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select * from pf_user_organization where user_id = #{userId}
+    </select>
+
+    <select id="selectOrganizationMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+        <foreach collection="brandMaps" index="key" item="brandMap" separator="union">
+            <foreach collection="brandMap" index="key" item="value" separator="union">
+                select * from pf_user_organization where user_id = #{key} and brand_id = #{value}
+            </foreach>
+        </foreach>
+    </select>
+
+    <select id="selectFromOrganization" resultType="java.util.HashMap">
+        SELECT
+        uo.id               organizationId
+        ,uo.`name`          organizationName
+        ,uo.logo            organizationLogo
+        ,uo.back_img        organizationBackImg
+        ,uo.wx_qr_code      organizationWxQrCode
+        ,uo.wx_id           organizationWxId
+        ,uo.add_description organizationAddDescription
+        ,uo.slogan          organizationSlogan
+        ,uo.introduction    organizationIntroduction
+        ,uo.freeman_num     organizationFreemanNum
+        ,brand.id           brandId
+        ,brand.cname        brandName
+        FROM pf_user_organization uo
+        LEFT JOIN com_brand       brand ON brand.id = uo.brand_id
+        WHERE
+        uo.user_id IN
+        <foreach collection="list" open="(" separator="," close=")" item="userId" index="index">
+            #{userId}
+        </foreach>
+    </select>
+
+
+    <select id="selectByUserId" resultType="java.util.HashMap">
+     SELECT     cb.id        brandId
+               ,cb.cname     brandName
+               ,cal.id       levelId
+               ,cal.name     levelName
+               ,uo.id        organizationId
+               ,uo.logo      organizationLogo
+               ,uo.name      organizationName
+               ,uo.slogan    organizationSlogan
+     FROM pf_user_organization uo
+     INNER JOIN com_brand cb ON uo.brand_id=cb.id
+     INNER JOIN com_agent_level cal ON uo.agent_level_id=cal.id
+     WHERE
+          uo.user_id = #{userId}
+          AND
+          uo.status = 1;
+    </select>
+
+    <!-- 统计团队人数和总销售额 -->
+    <select id="countByUserId" resultType="java.util.HashMap">
+        SELECT
+            COUNT(e.id) AS COUNT,
+            IFNULL(SUM(f.up_order_count), 0) AS orderNum,
+            IFNULL(SUM(f.cost_fee), 0) AS groupMoney
+        FROM
+            pf_user_organization a
+        INNER JOIN com_spu b ON a.brand_id = b.brand_id
+        INNER JOIN com_sku c ON b.id = c.spu_id
+        INNER JOIN pf_user_sku d ON a.user_id = d.user_id
+        AND c.id = d.sku_id
+        INNER JOIN pf_user_sku e ON e.tree_code LIKE CONCAT(d.tree_code, '%')
+        INNER JOIN pf_user_statistics f ON e.user_id = f.user_id
+        AND c.id = f.sku_id
+        WHERE
+            a.user_id = #{userId}
+        AND a. STATUS = 1
+        <if test="brandId != null">
+        AND a.brand_id = #{brandId}
+        </if>
+    </select>
+
+    <select id="selectCreateOrganization" resultType="java.util.HashMap">
+         SELECT     d.id                       userSkuId
+                   ,f.id                       brandId
+                   ,f.cname                    brandName
+                   ,e.id           		       levelId
+                   ,e.name                     levelName
+                   ,g.id                       organizationId
+                   ,a.user_id                  userId
+                   ,g.logo                     organizationLogo
+                   ,g.name                     organizationName
+                   ,g.slogan                   organizationSlogan
+         FROM pf_user_brand a
+         INNER JOIN com_spu b ON a.brand_id=b.brand_id AND TYPE=0
+         INNER JOIN com_sku c ON b.id=c.spu_id
+         INNER JOIN pf_user_sku d ON a.user_id=d.user_id AND c.id=d.sku_id
+         INNER JOIN com_agent_level e ON d.agent_level_id=e.id
+         INNER JOIN com_brand f ON a.brand_id=f.id
+         LEFT  JOIN pf_user_organization g ON g.brand_id = a.brand_id AND g.user_id = a.user_id AND g.status=1
+         WHERE e.is_organization=1
+         AND a.user_id = #{userId}
+    </select>
+
+    <select id="selectJoinOrganization" resultType="java.util.HashMap">
+        SELECT
+        e.id brandId,
+        e.cname brandName,
+        f.id levelId,
+        f.NAME levelName,
+        d.id organizationId,
+        d.logo organizationLogo,
+        d.NAME organizationName,
+        d.slogan organizationSlogan,
+        d.user_id userId
+        FROM pf_user_sku a
+        INNER JOIN com_sku b ON a.sku_id=b.id
+        INNER JOIN com_spu c ON b.spu_id=c.id AND c.type=0
+        INNER JOIN pf_user_organization d ON a.user_pid=d.user_id AND c.brand_id=d.brand_id
+        INNER JOIN com_brand e ON c.brand_id=e.id
+        INNER JOIN com_agent_level f ON a.agent_level_id=f.id
+        AND a.user_id = #{userId}
+        AND d.STATUS = 1
+    </select>
+
+    <select id="selectCreateAndJoinOrganization" resultType="java.util.HashMap" parameterType="Long">
+        (SELECT
+                cb.id brandId,
+                cb.cname brandName,
+                cal.id levelId,
+                cal.NAME levelName,
+                uo.id organizationId,
+                uo.logo organizationLogo,
+                uo.NAME organizationName,
+                uo.slogan organizationSlogan,
+                '创始人' as organizationRemark
+            FROM pf_user_organization uo
+            INNER JOIN com_brand cb ON uo.brand_id = cb.id
+            INNER JOIN com_agent_level cal ON uo.agent_level_id = cal.id
+            WHERE uo.user_id = #{userId}
+            AND uo. STATUS = 1)
+            UNION
+            (SELECT
+                e.id brandId,
+                e.cname brandName,
+                f.id levelId,
+                f.NAME levelName,
+                d.id organizationId,
+                d.logo organizationLogo,
+                d.NAME organizationName,
+                d.slogan organizationSlogan,
+                '成员' as organizationRemark
+            FROM pf_user_sku a
+            INNER JOIN com_sku b ON a.sku_id=b.id
+            INNER JOIN com_spu c ON b.spu_id=c.id AND c.type=0
+            INNER JOIN pf_user_organization d ON a.user_pid=d.user_id AND c.brand_id=d.brand_id
+            INNER JOIN com_brand e ON c.brand_id=e.id
+            INNER JOIN com_agent_level f ON a.agent_level_id=f.id
+            WHERE a.agent_level_id=5
+            AND a.user_id = #{userId}
+            AND d.STATUS = 1)
+    </select>
+    
+    <select id="listCreateAndJoinOrganization" resultType="java.util.HashMap" parameterType="Long">
+        (SELECT
+            brand.id    brandId,
+            brand.cname brandName,
+            level.id   levelId,
+            level.name levelName,
+            org.id      orgId,
+            org.name    orgName,
+            org.logo    orgLogo,
+            org.slogan  orgSlogan
+          FROM pf_user_sku user_sku
+          INNER JOIN com_sku sku ON user_sku.sku_id=sku.id
+          INNER JOIN com_spu spu ON sku.spu_id = spu.id AND spu.type=0
+          INNER JOIN com_brand brand ON spu.brand_id = brand.id
+          INNER JOIN com_agent_level level ON user_sku.agent_level_id = level.id
+          LEFT JOIN pf_user_organization org ON user_sku.user_id=org.user_id AND brand.id=org.brand_id
+          WHERE user_sku.user_id = #{userId}
+            AND user_sku.agent_level_id &lt; 5
+        )
+        UNION
+        (SELECT
+            brand.id    brandId,
+            brand.cname brandName,
+            level.id   levelId,
+            level.name levelName,
+            org.id      orgId,
+            org.name    orgName,
+            org.logo    orgLogo,
+            org.slogan  orgSlogan
+          FROM pf_user_sku user_sku
+          INNER JOIN com_sku sku ON user_sku.sku_id=sku.id
+          INNER JOIN com_spu spu ON sku.spu_id = spu.id AND spu.type=0
+          INNER JOIN com_brand brand ON spu.brand_id = brand.id
+          INNER JOIN com_agent_level level ON user_sku.agent_level_id = level.id
+          INNER JOIN pf_user_organization org ON user_sku.user_pid=org.user_id AND brand.id=org.brand_id
+          WHERE user_sku.user_id = #{userId}
+            AND user_sku.agent_level_id = 5
+        )
+    </select>
+
+    <select id="select"  resultMap="BaseResultMap">
+        select id, create_time, modify_time, brand_id, agent_level_id, user_id, name, logo,
+        back_img, wx_qr_code, wx_id, add_description, slogan, introduction, status, freeman_num,
+        remark
+        from pf_user_organization
+        <where>
+            <if test="organization.userId != null">
+                AND user_id = #{organization.userId}
+            </if>
+            <if test="organization.brandId != null">
+                AND brand_id = #{organization.brandId}
+            </if>
+            <if test="organization.agentLevelId != null">
+                AND agent_level_id = #{organization.agentLevelId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectParentByUserIdAndLevelId"  resultMap="BaseResultMap">
+        SELECT org.id, org.modify_time, org.brand_id, org.agent_level_id, org.user_id, org.name, org.logo, org.back_img, org.slogan, org.introduction,
+        org.status, org.freeman_num,org.remark
+        FROM pf_user_sku child
+        INNER JOIN pf_user_sku parent ON child.user_pid = parent.id
+        INNER JOIN com_sku sku ON sku.id = parent.sku_id
+        INNER JOIN com_spu spu ON spu.id = sku.spu_id
+        INNER JOIN pf_user_organization org ON org.user_id=parent.user_id AND org.agent_level_id=parent.agent_level_id AND org.brand_id=spu.brand_id
+        WHERE org.status=1 AND child.user_id = #{userId,jdbcType=BIGINT} AND child.agent_level_id=#{levelId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectNumsGroupByOrganization" resultMap="NumsGroupByOrganization">
+        SELECT
+            CONCAT(o.`name`, l.organization_suffix) AS oName,
+            o.logo AS oUrl,
+            o.id AS pfUserOrganizationId,
+            count(s.user_id) AS oNum
+        FROM
+            pf_user_organization o
+        INNER JOIN pf_user_sku s ON o.user_id = s.user_pid
+        INNER JOIN com_sku cs ON cs.id = s.sku_id
+        INNER JOIN com_spu sp ON cs.spu_id = sp.id
+        INNER JOIN com_brand cb ON cb.id = sp.brand_id and o.brand_id=cb.id
+        INNER JOIN com_agent_level l ON l.id=o.agent_level_id
+        WHERE
+            o.user_id = #{userId,jdbcType=BIGINT}
+        GROUP BY
+            o.id;
+    </select>
+
+</mapper>

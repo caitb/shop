@@ -1,29 +1,26 @@
 package com.masiis.shop.api.controller.user;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by hzz on 2016/3/30.
@@ -34,14 +31,41 @@ import java.io.InputStream;
 @RequestMapping(value = "identityAuth")
 public class UserIdentityAuthController extends BaseController {
 
+    private final static Log log = LogFactory.getLog(UserIdentityAuthController.class);
+
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
+    @Resource
+    private UserCertificateService userCertificateService;
+
+    @ResponseBody
+    @RequestMapping(value = "isAudit.do")
+    @SignValid(paramType = IdentityAuthReq.class)
+    public IdentityAuthRes isAudit(HttpServletRequest request, ComUser comUser){
+        IdentityAuthRes identityAuthRes = new IdentityAuthRes();
+
+        try {
+            ComUser user = userIdentityAuthService.getUser(comUser.getId());
+            identityAuthRes.setAudit(user.getAuditStatus().intValue()==2?true:false);
+            identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e){
+            identityAuthRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
+            identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR_MSG);
+
+            log.error("获取审核状态失败![comUser="+comUser+"]"+e);
+            e.printStackTrace();
+        }
+
+        return identityAuthRes;
+    }
 
     /**
      * 获得身份证信息
      * @author hanzengzhi
      * @date 2016/3/31 15:25
      */
+    @ResponseBody
     @RequestMapping(value = "getIdentityAuthInfo.do")
     @SignValid(paramType = IdentityAuthReq.class)
     public IdentityAuthRes getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
@@ -54,10 +78,14 @@ public class UserIdentityAuthController extends BaseController {
                 identityAuthRes.setIdCardBackName(comUser.getIdCardBackUrl());
                 identityAuthRes.setIdCardFrontUrl(basePath+ comUser.getIdCardFrontUrl());
                 identityAuthRes.setIdCardBackUrl(basePath + comUser.getIdCardBackUrl());
+                identityAuthRes.setAuditReason(comUser.getAuditReason());
                 break;
             default:
                 break;
         }
+        identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        identityAuthRes.setWxId(comUser.getWxId());
         identityAuthRes.setName(comUser.getRealName());
         identityAuthRes.setIdCard(comUser.getIdCard());
         return identityAuthRes;
@@ -94,6 +122,7 @@ public class UserIdentityAuthController extends BaseController {
             if (bl){
                 comUser.setRealName(identityAuthReq.getName());
                 comUser.setIdCard(identityAuthReq.getIdCard());
+                comUser.setWxId(identityAuthReq.getWxId());
                 int i = userIdentityAuthService.sumbitAudit(request,comUser,identityAuthReq.getIdCardFrontName(),identityAuthReq.getIdCardBackName(), null);
                 if (i == 1){
                     identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
@@ -123,14 +152,15 @@ public class UserIdentityAuthController extends BaseController {
     @RequestMapping("/idCardImgUpload.do")
     @SignValid(paramType = UploadIdentityReq.class)
     public UploadIdentityRes imgUpload(HttpServletRequest request, HttpServletResponse response,
+                                       UploadIdentityReq req,
                             ComUser comUser,
-                            UploadIdentityReq uploadIdentityReq) {
+                            MultipartFile imgInputStream) {
         UploadIdentityRes uploadIdentityRes = new UploadIdentityRes();
         try {
-            isUploadParam(uploadIdentityReq,comUser);
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            /*String fileName = userIdentityAuthService.uploadCertificateToOss(new ByteArrayInputStream(uploadIdentityReq.getBytes()),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
+            String fileName = userCertificateService.uploadCertificateToOss(imgInputStream,comUser);
             if (StringUtils.isBlank(fileName)) {
+                log.info("-----------身份证名字为null-----------");
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
                 uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
             } else {
@@ -138,43 +168,37 @@ public class UserIdentityAuthController extends BaseController {
                 uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
                 uploadIdentityRes.setImageName(fileName);
                 uploadIdentityRes.setImagePath(savepath + fileName);
-            }*/
+            }
         } catch (Exception e) {
             uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
             uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
         }
         return uploadIdentityRes;
     }
-    private Boolean isUploadParam(UploadIdentityReq uploadIdentityReq,ComUser comUser){
-        if (uploadIdentityReq == null||comUser == null||comUser.getId()==null){
-            return  false;
-        }
-        if (uploadIdentityReq.getBytes() == null){
-            return false;
-        }
-        if (uploadIdentityReq.getImageType() == null){
-            return false;
-        }
-        if (uploadIdentityReq.getSize() == null){
-            return false;
-        }
-        return true;
-    }
 
     private Boolean isParamCorrect( IdentityAuthReq identityAuthReq,ComUser comUser){
         if (comUser == null||comUser.getId()==null) {
+            log.info("comUser------为null");
             return false;
         }
         if (StringUtils.isBlank(identityAuthReq.getName())) {
+            log.info("identityAuthReq.getName()------为null");
             return false;
         }
         if (StringUtils.isBlank(identityAuthReq.getIdCard())) {
+            log.info("identityAuthReq.getIdCard()------为null");
             return false;
         }
         if (StringUtils.isBlank(identityAuthReq.getIdCardFrontName())) {
+            log.info("identityAuthReq.getIdCardFrontName()------为null");
             return false;
         }
         if (StringUtils.isBlank(identityAuthReq.getIdCardBackName())) {
+            log.info("identityAuthReq.getIdCardBackName()------为null");
+            return false;
+        }
+        if (StringUtils.isBlank(identityAuthReq.getWxId())){
+            log.info("identityAuthReq.getWxId()------为null");
             return false;
         }
         return true;

@@ -8,6 +8,7 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComBrand;
 import com.masiis.shop.dao.po.PbUser;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,8 +59,10 @@ public class BrandController {
     @ResponseBody
     public String add(HttpServletRequest request, HttpServletResponse response,
                       ComBrand comBrand,
-                      @RequestParam("logoUrl")String logoUrl,
-                      @RequestParam("logoName")String logoName) throws FileNotFoundException{
+                      @RequestParam("logoName")String logoName,
+                      @RequestParam("illustratingPictureName")String illustratingPictureName,
+                      @RequestParam("brandPosterName")String brandPosterName
+                      ) throws FileNotFoundException{
 
         String realPath = request.getServletContext().getRealPath("/");
         realPath = realPath.substring(0, realPath.lastIndexOf("/"));
@@ -70,6 +73,8 @@ public class BrandController {
                 log.info("保存品牌-开始准备comBrand数据");
                 comBrand.setCreateTime(new Date());
                 comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
+                comBrand.setIllustratingPictureName(illustratingPictureName);
+                comBrand.setBrandPosterName(brandPosterName);
                 log.info("保存品牌-comBrand数据[comBrand=" + comBrand + "]");
             }
 
@@ -88,19 +93,27 @@ public class BrandController {
     @ResponseBody
     public String update(HttpServletRequest request, HttpServletResponse response,
                       ComBrand comBrand,
-                      @RequestParam(value = "logoUrl", required = false)String logoUrl,
-                      @RequestParam(value = "logoName", required = false)String logoName) throws FileNotFoundException{
+                      @RequestParam(value = "logoName", required = false)String logoName,
+                      @RequestParam(value = "illustratingPictureName", required = false)String illustratingPictureName,
+                      @RequestParam(value = "brandPosterName", required = false)String brandPosterName
+    ) throws FileNotFoundException{
 
         String realPath = request.getServletContext().getRealPath("/");
         realPath = realPath.substring(0, realPath.lastIndexOf("/"));
 
         try {
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
-            if(pbUser != null && logoUrl != null) {
-                log.info("保存品牌-开始准备comBrand数据");
+            log.info("保存品牌-开始准备comBrand数据");
+            if(pbUser != null && StringUtils.isNotBlank(logoName)) {
                 comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
-                log.info("保存品牌-comBrand数据[comBrand=" + comBrand + "]");
             }
+            if(pbUser != null && StringUtils.isNotBlank(illustratingPictureName)) {
+                comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+illustratingPictureName);
+            }
+            if(pbUser != null && StringUtils.isNotBlank(brandPosterName)) {
+                comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+brandPosterName);
+            }
+            log.info("保存品牌-comBrand数据[comBrand=" + comBrand + "]");
 
 
             if(StringUtil.isEmpty(comBrand.getContent())) comBrand.setContent(null);

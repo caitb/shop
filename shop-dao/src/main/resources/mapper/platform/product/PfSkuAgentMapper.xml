@@ -15,11 +15,27 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER" />
         <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
+        <result column="freeman_upper_num" property="freemanUpperNum" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="UpgradePackageInfoMap" type="com.masiis.shop.dao.beans.user.upgrade.UpgradePackageInfo">
+        <result column="totalPrice" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="unitPrice" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="lowProfit" property="lowProfit" jdbcType="DECIMAL" />
+        <result column="highProfit" property="highProfit" jdbcType="DECIMAL" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="bailAmount" property="bailAmount" jdbcType="DECIMAL" />
+        <result column="priceRetail" property="priceRetail" jdbcType="DECIMAL" />
+        <result column="levelCount" property="levelCount" jdbcType="INTEGER" />
+        <result column="isOrganization" property="isOrganization" jdbcType="INTEGER" />
+        <result column="organizationSuffix" property="organizationSuffix" jdbcType="VARCHAR" />
+        <result column="agentLevel" property="agentLevel" jdbcType="INTEGER" />
+        <result column="agentName" property="agentName" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
         FROM
                pf_sku_agent
         WHERE
@@ -31,44 +47,75 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent" >
         insert into pf_sku_agent (id, sku_id, agent_level_id,
             icon, unit_price, quantity,
             total_price, bail, back_img,
-            is_show, remark, is_upgrade, reward_unit_price)
+            is_show, remark, is_upgrade,
+            reward_unit_price, freeman_upper_num)
         values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
             #{icon,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
             #{totalPrice,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{backImg,jdbcType=VARCHAR},
-            #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isUpgrade,jdbcType=INTEGER}, #{rewardUnitPrice,jdbcType=DECIMAL})
+            #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isUpgrade,jdbcType=INTEGER},
+            #{rewardUnitPrice,jdbcType=DECIMAL}, #{freemanUpperNum,jdbcType=INTEGER})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent" >
         update pf_sku_agent
-        set sku_id = #{skuId,jdbcType=INTEGER},
-            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
-            icon = #{icon,jdbcType=VARCHAR},
-            unit_price = #{unitPrice,jdbcType=DECIMAL},
-            quantity = #{quantity,jdbcType=INTEGER},
-            total_price = #{totalPrice,jdbcType=DECIMAL},
-            bail = #{bail,jdbcType=DECIMAL},
-            back_img = #{backImg,jdbcType=VARCHAR},
-            is_show = #{isShow,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR},
-            is_upgrade = #{isUpgrade,jdbcType=INTEGER},
-            reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
+        <set>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="agentLevelId != null">
+                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bail != null">
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="backImg != null">
+                back_img = #{backImg,jdbcType=VARCHAR},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="isUpgrade != null">
+                is_upgrade = #{isUpgrade,jdbcType=INTEGER},
+            </if>
+            <if test="rewardUnitPrice != null">
+                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="freemanUpperNum != null">
+                freeman_upper_num = #{freemanUpperNum,jdbcType=INTEGER}
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price
+        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap" >
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price
+        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num
         from pf_sku_agent
     </select>
 
@@ -86,14 +133,14 @@
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -136,6 +183,9 @@
             <if test="rewardUnitPrice != null">
                 reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
             </if>
+            <if test="freemanUpperNum != null">
+                freeman_upper_num = #{freemanUpperNum,jdbcType=DECIMAL}
+            </if>
         </set>
         where
         id = #{id,jdbcType=INTEGER}
@@ -151,6 +201,20 @@
         AND p2.agent_level_id = p1.agent_level_id
     </select>
     <!--获取用户商品等级标志 end-->
+
+    <select id="selectBrandLevelIconByUserId" parameterType="java.lang.Long" resultType="java.util.HashMap">
+        SELECT
+            b.icon as icon
+        FROM
+            pf_user_sku a
+        INNER JOIN pf_sku_agent b ON a.sku_id = b.sku_id
+        AND a.agent_level_id = b.agent_level_id
+        INNER JOIN com_sku c ON b.sku_id = c.id
+        INNER JOIN com_spu d ON c.spu_id = d.id
+        WHERE
+            a.user_id = #{userId}
+        and d.type = 0;
+    </select>
 
     <select id="countSkuAgentLevel" parameterType="Integer" resultType="Integer">
         SELECT count(1) FROM pf_sku_agent WHERE sku_id = #{skuId}
@@ -172,15 +236,78 @@
         b.name AS remark
         FROM
         pf_sku_agent a
-        LEFT JOIN com_agent_level b ON a.agent_level_id = b.id
+        INNER JOIN com_agent_level b ON a.agent_level_id = b.id
+        INNER JOIN com_sku c ON a.sku_id = c.id
+        INNER JOIN com_spu d on c.spu_id = d.id
         WHERE
         a.sku_id = #{skuId}
         AND <![CDATA[ agent_level_id < #{agentLevelId} ]]>
         AND <![CDATA[agent_level_id >= #{pLevelId} ]]>
-        AND a.is_upgrade = 1;
+        AND a.is_upgrade = 1
+        AND d.type = 0;
+    </select>
+
+    <select id="selectUpgradePackage" resultMap="UpgradePackageInfoMap" parameterType="java.lang.Integer">
+        SELECT
+            a.agent_level_id as agentLevel,
+            b.name as agentName,
+            a.unit_price as unitPrice,
+            a.quantity as quantity,
+            a.total_price as totalPrice,
+            a.bail as bailAmount,
+            b.is_organization as isOrganization,
+            b.organization_suffix as organizationSuffix,
+            c.price_retail as priceRetail
+        FROM
+            pf_sku_agent a
+        INNER JOIN com_agent_level b ON a.agent_level_id = b.id
+        INNER JOIN com_sku c ON a.sku_id = c.id
+        INNER JOIN com_spu d on c.spu_id = d.id
+        WHERE
+        a.sku_id = #{skuId}
+        AND <![CDATA[ agent_level_id < #{agentLevelId} ]]>
+        AND <![CDATA[agent_level_id >= #{pLevelId} ]]>
+        AND a.is_upgrade = 1
+        AND d.type = 0;
     </select>
 
     <select id="selectLevelIdsBySkuIdAndIsShow" resultType="Integer">
         SELECT agent_level_id FROM pf_sku_agent WHERE sku_id = #{skuId} AND is_show = #{isShow}
+    </select>
+
+    <select id="selectLessLevelByLevelIdAndSkuId" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            pf_sku_agent a
+        WHERE
+            a.agent_level_id >= #{agentLevelId,jdbcType=INTEGER}
+        AND a.sku_id = #{skuId,jdbcType=INTEGER}
+        AND a.is_show = 1;
+    </select>
+
+    <select id="selectByCondition" resultType="java.util.HashMap">
+        select
+               sa.id,
+               sa.sku_id,
+               sa.agent_level_id,
+               sa.icon,
+               sa.unit_price,
+               sa.quantity,
+               sa.total_price,
+               sa.bail,
+               sa.back_img,
+               sa.is_show,
+               sa.remark,
+               sa.is_upgrade,
+               sa.reward_unit_price,
+               sa.freeman_upper_num,
+               s.name skuName,
+               al.name levelName
+        from
+               pf_sku_agent       sa
+        LEFT JOIN com_sku         s   ON s.id  = sa.sku_id
+        LEFT JOIN com_agent_level al  ON al.id = sa.agent_level_id
+
     </select>
 </mapper>

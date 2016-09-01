@@ -73,10 +73,6 @@ public class PfUserSku {
      * 树结构等级(方便查询)
      */
     private Integer treeLevel;
-    /**
-     * 推荐人奖励单价
-     */
-    private BigDecimal rewardUnitPrice;
 
     public Integer getId() {
         return id;
@@ -206,14 +202,6 @@ public class PfUserSku {
         this.treeLevel = treeLevel;
     }
 
-    public BigDecimal getRewardUnitPrice() {
-        return rewardUnitPrice;
-    }
-
-    public void setRewardUnitPrice(BigDecimal rewardUnitPrice) {
-        this.rewardUnitPrice = rewardUnitPrice;
-    }
-
     @Override
     public String toString() {
         return "PfUserSku{" +
@@ -233,7 +221,6 @@ public class PfUserSku {
                 ", remark='" + remark + '\'' +
                 ", treeCode='" + treeCode + '\'' +
                 ", treeLevel=" + treeLevel +
-                ", rewardUnitPrice=" + rewardUnitPrice +
                 '}';
     }
 }

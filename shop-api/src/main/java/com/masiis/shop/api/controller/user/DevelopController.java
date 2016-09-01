@@ -208,6 +208,7 @@ public class DevelopController {
     }
 
     @RequestMapping("/poster")
+    @ResponseBody
     @SignValid(paramType = DevelopPosterReq.class)
     public BaseBusinessRes poster(HttpServletRequest request,
                      HttpServletResponse response,

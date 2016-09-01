@@ -2,7 +2,6 @@ package com.masiis.shop.api.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
-import com.masiis.shop.api.bean.base.BaseBusinessRes;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.upgrade.*;
 import com.masiis.shop.api.constants.SignValid;
@@ -12,7 +11,6 @@ import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.system.ComSkuSimple;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
@@ -23,7 +21,6 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -68,8 +65,6 @@ public class UpgradeController {
     private BOrderService bOrderService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
-    @Resource
-    private BOrderAddService bOrderAddService;
 
     /**
      * 升级管理我的申请单（列表）
@@ -528,39 +523,12 @@ public class UpgradeController {
         logger.info("查询用户上级代理等级id end");
         PfUserUpgradeNotice upgradeNotice;
         try {
-            upgradeNotice = upgradeNoticeService.dealAgentUpGrade(comUser.getId(), userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
-            //添加升级订单
-            BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNotice.getId());
-            if(upgradeNotice.getPfBorderId() == null){
-                //插入订单表
-                PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
-                BOrderAdd orderAdd = new BOrderAdd();
-                orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
-                logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
-                orderAdd.setOrderType(3);
-                orderAdd.setUserId(comUser.getId());
-                orderAdd.setpUserId(upgradeDetail.getNewPUserId());//设置新的上级
-                logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
-                orderAdd.setSendType(1);//拿货方式
-                orderAdd.setSkuId(upgradeDetail.getSkuId());
-                orderAdd.setQuantity(newSkuAgent.getQuantity());
-                logger.info("订单数量---------" + newSkuAgent.getQuantity());
-                orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
-                orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
-                logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
-                logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
-                orderAdd.setUserSource(0);
-                Long orderId = bOrderAddService.addBOrder(orderAdd);
-                logger.info("添加的升级订单id = " + orderId);
-                //升级申请表添加orderId
-                upgradeNotice.setPfBorderId(orderId);
-                upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
-            }
+            upgradeNotice = upgradeNoticeService.dealAgentUpGradeApi(comUser.getId(), userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
         }catch (Exception e){
-            logger.info(e.getMessage());
+            logger.error(e.getMessage(), e);
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(e.getMessage());
-            logger.info(JSONObject.toJSONString(res));
+            logger.error(JSONObject.toJSONString(res),e);
             return res;
         }
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

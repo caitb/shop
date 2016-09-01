@@ -143,4 +143,16 @@ public class PfUserSkuService {
         pfUserSku.setUserId(userId);
         return pfUserSkuMapper.selectByCondition(pfUserSku);
     }
+
+    /**
+     * 通过userId查询代理商品关系
+     *
+     * @param userId
+     * @return
+     */
+    public List<PfUserSku> getPfUserSkuByUserId(Long userId) {
+        PfUserSku pfUserSku = new PfUserSku();
+        pfUserSku.setUserId(userId);
+        return pfUserSkuMapper.selectByCondition(pfUserSku);
+    }
 }

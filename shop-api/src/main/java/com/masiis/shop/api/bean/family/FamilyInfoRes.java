@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by jiajinghao on 2016/8/6.
+ * Created by jiajinghao on 2016/9/1.
  */
-public class familyInfosRes extends BasePagingRes {
+public class FamilyInfoRes extends BasePagingRes {
 
     private List<FamilyList> familyLists;
 

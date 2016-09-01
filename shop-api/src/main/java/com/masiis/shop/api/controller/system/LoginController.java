@@ -230,13 +230,13 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_INVALID_MSG);
             }
             // 手机号登录,检查手机号是否绑定
-            ComUser phoneUser = userService.getUserByMobile(phoneNum);
+            /*ComUser phoneUser = userService.getUserByMobile(phoneNum);
             if(phoneUser == null){
                 // 手机号未注册
                 res.setResCode(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP);
                 res.setResMsg(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_USER_ISNOT_SIGNUP_MSG);
-            }
+            }*/
             // 查询请求频率
             Date exTime = SpringRedisUtil.get(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), Date.class);
             if(exTime != null && exTime.compareTo(new Date()) > 0){

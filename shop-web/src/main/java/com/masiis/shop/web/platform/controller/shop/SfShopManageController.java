@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -104,7 +103,7 @@ public class SfShopManageController extends BaseController {
             comUser = getComUser(request);
             Date date = new Date();//获取当前时间
             Date date1 = DateUtil.addInteger(comUser.getCreateTime(), 3);
-            int  status;
+            int status;
             if (date.getTime() > date1.getTime()) {
                 status = 0;
             } else{
@@ -117,8 +116,8 @@ public class SfShopManageController extends BaseController {
             if(sfShop == null){
                 return mav;
             } else{
-                if (comUser.getAuditStatus()!=2 ){
-                     mav = new ModelAndView("platform/user/accessFail");
+                if (comUser.getAuditStatus() != 2 && status == 0) {
+                    mav = new ModelAndView("platform/user/accessFail");
                 }
             }//跳转超时未实名认证页面
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数

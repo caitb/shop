@@ -143,6 +143,7 @@ public class FamilyController extends BaseController {
     public familyInfosRes worldOFFamilyInfoPage(HttpServletRequest request, FamilyInfoReq req, ComUser user) {
         familyInfosRes res = new familyInfosRes();
         try {
+
             List<FamilyList> familyLists = pfUserBrandService.allFamilyPaging(agentLevelId_family, req.getPageNum(), pageSize);
             res.setFamilyLists(familyLists);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

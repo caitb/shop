@@ -240,6 +240,10 @@ public class BUpgradePayService {
     private void updatePfUserRecommenRelationAtom(Long userId, Integer skuId, Long pfBorderId) {
         log.info("更新推荐关系原子操作----参数----userId----" + userId + "----skuId----" + skuId + "----pfBorderId-----" + pfBorderId);
         PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, skuId);
+        if (pfUserRecommenRelation==null){
+            log.info("-------------推荐人不存在--------------");
+            return;
+        }
         PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfUserRecommenRelation.getUserPid(), skuId);
         if (pfUserRecommenRelation == null) {
             log.info("-------推荐关系不存在插入--------");

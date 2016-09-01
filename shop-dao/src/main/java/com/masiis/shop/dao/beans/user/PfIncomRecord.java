@@ -234,6 +234,7 @@ public class PfIncomRecord {
             case 2 : {
                 setOrderTypeView("店铺订单");
                 setOrderDetail("sfOrderController/sfOrderDetal.html?id=");
+                break;
             }
         }
     }

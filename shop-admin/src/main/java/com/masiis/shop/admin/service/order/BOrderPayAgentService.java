@@ -5,6 +5,7 @@ import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.shop.SfShopStatisticsService;
 import com.masiis.shop.admin.service.user.*;
+import com.masiis.shop.admin.utils.AsyncUploadCertUtil;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderUserSource;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -292,7 +293,11 @@ public class BOrderPayAgentService {
                 throw new BusinessException("treeCode修改失败");
             }
             //添加合伙证书 回写证书编号
-            pfUserCertificateService.addUserCertificate(comUser, comSku, thisUS);
+            try {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
+            } catch (InterruptedException e) {
+                logger.error("阻塞住了");
+            }
         }
     }
 
@@ -381,13 +386,19 @@ public class BOrderPayAgentService {
      */
     private void addShopAndShopStatistics(ComUser comUser) {
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
+        logger.info("------用户id---------"+comUser.getId());
         if (sfShop == null) {
             sfShop = new SfShop();
             sfShop.setCreateTime(new Date());
             sfShop.setUserId(comUser.getId());
             sfShop.setStatus(1);
             sfShop.setExplanation("主营各类化妆品、保健品");
-            sfShop.setLogo(comUser.getWxHeadImg());
+            logger.info("wexHeadImag---------"+comUser.getWxHeadImg());
+            if (comUser.getWxHeadImg()==null){
+                sfShop.setLogo("http://wx.qlogo.cn/mmopen/U3WEAQpg2p6kauE3P0DN4k9LTgUql9CRVSjH3P6xNs9RC8lW3GpibiahGfGUiaJCFfmMViazrbvNdFVntLvgjY39ILUdSeDdTvEP/0");
+            }else{
+                sfShop.setLogo(comUser.getWxHeadImg());
+            }
             sfShop.setName(comUser.getRealName() + "的小店");
             sfShop.setPageviews(0l);
             sfShop.setQrCode("");

@@ -271,4 +271,11 @@ public interface PfUserSkuMapper {
      * @return
      */
     List<Long> selectChildsByUserIdAndBrandId(@Param("userId")Long userId, @Param("brandId") Integer brandId);
+
+    /**
+     * 查询代理最早的一款产品
+     * @param userId    userId
+     * @return
+     */
+    PfUserSku selectFirstPfUserSku(@Param("userId") Long userId);
 }

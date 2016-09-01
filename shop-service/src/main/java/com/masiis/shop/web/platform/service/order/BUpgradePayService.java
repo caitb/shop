@@ -169,12 +169,17 @@ public class BUpgradePayService {
                 log.info("品牌id-----------" + comSpu.getBrandId());
                 List<ComSku> comSkus = skuService.getNoMainSkuByBrandId(comSpu.getBrandId());
                 for (ComSku comSku : comSkus) {
-                    log.info("主打商品的品牌下有非主打商品----skuId----" + comSku.getId());
-                    PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
-                    if (pfSkuAgent != null) {
-                        BigDecimal bailAmount = pfSkuAgent.getBail();
-                        log.info("保证金-----" + bailAmount.toString());
-                        noMainBrandSkuUpgrade(userId, userPid, comSku.getId(), bailAmount, agentLevelId, comSpu.getId());
+                    log.info("主打商品的品牌下有非主打商品----skuId----" + comSku.getId()+"-----用户id------"+userId);
+                    PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, comSku.getId());
+                    if (pfUserSku!=null){
+                        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
+                        if (pfSkuAgent != null) {
+                            BigDecimal bailAmount = pfSkuAgent.getBail();
+                            log.info("保证金-----" + bailAmount.toString());
+                            noMainBrandSkuUpgrade(userId, userPid, comSku.getId(), bailAmount, agentLevelId, comSpu.getId());
+                        }
+                    }else{
+                        log.info("-----不是用户的副商品----------");
                     }
                 }
             } else {

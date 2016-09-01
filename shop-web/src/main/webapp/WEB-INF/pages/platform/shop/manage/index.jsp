@@ -37,18 +37,11 @@
         <%--<p id="copyShopUrl"><b>关闭</b></p>--%>
     <%--</div>--%>
     <div class="header">
-            <c:choose>
-                <c:when test="${comUser.auditStatus==2 || status ==0}">
-                    <div class="header" style="display:none">
-                        <h4>请3天内完成实名认证，逾期店铺不能访问 <a href="">点击认证</a></h4>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="header" style="display:block">
-                        <h4>请3天内完成实名认证，逾期店铺不能访问<a href="<%=path%>/identityAuth/toInentityAuthPage.html">点击认证</a></h4>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+        <c:if test="${comUser.auditStatus != 2 && status == 1}">
+            <div class="header" style="display:block">
+                <h4>请3天内完成实名认证，逾期店铺不能访问<a href="<%=basePath%>identityAuth/toInentityAuthPage.html">点击认证</a></h4>
+            </div>
+        </c:if>
         <%--<div>
             <p>${sfShop.name}</p>
             <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>

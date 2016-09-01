@@ -23,6 +23,7 @@ import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
 import com.masiis.shop.web.platform.service.user.ComPosterService;
+import com.masiis.shop.web.platform.service.user.PfUserSkuService;
 import com.masiis.shop.web.platform.service.user.SfUserShareParamService;
 import com.masiis.shop.web.platform.utils.image.DrawImageUtil;
 import com.masiis.shop.web.platform.utils.image.Element;
@@ -86,6 +87,8 @@ public class SfShopManageController extends BaseController {
     private SfUserShareParamService sfUserShareParamService;
     @Resource
     private ComPosterService comPosterService;
+    @Resource
+    private PfUserSkuService pfUserSkuService;
 
     /**
      * 店铺管理首页
@@ -100,23 +103,32 @@ public class SfShopManageController extends BaseController {
         SfShopStatistics sfShopStatistics = null;
         ModelAndView mav = new ModelAndView("platform/shop/manage/index");
         try {
+            int status = 1;
             comUser = getComUser(request);
-            Date date = new Date();//获取当前时间
-            Date date1 = DateUtil.addInteger(comUser.getCreateTime(), 3);
-            int status;
-            if (date.getTime() > date1.getTime()) {
-                status = 0;
-            } else{
-                status = 1;
-            }//验证是否需要点击认证
-            log.info("是否超过三天:" + status);
+            if (comUser.getAuditStatus().intValue() != 2){
+                PfUserSku pfUserSku = pfUserSkuService.getFirstPfUserSku(comUser.getId());
+                if (pfUserSku == null){
+                    status = 0;
+                }else {
+                    if (comUser.getAuditStatus().intValue() != 2){
+                        Date date = new Date();//获取当前时间
+                        Date date1 = DateUtil.addInteger(pfUserSku.getCreateTime(), 3);
+                        if (date.getTime() > date1.getTime()) {
+                            status = 0;
+                        } else {
+                            status = 1;
+                        }//验证是否超过三天
+                    }
+                }
+                log.info("是否超过三天:" + status);
+            }
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
             sfShopStatistics = sfShopStatisticsService.selectByShopUserId(comUser.getId());
             if(sfShop == null){
                 return mav;
             } else{
-                if (comUser.getAuditStatus() != 2 && status == 0) {
+                if (status == 0) {
                     mav = new ModelAndView("platform/user/accessFail");
                 }
             }//跳转超时未实名认证页面

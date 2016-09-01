@@ -557,7 +557,7 @@ public class UpgradeController {
                 upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
             }
         }catch (Exception e){
-            logger.info(e.getMessage());
+            logger.error(e.getMessage(), e);
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(e.getMessage());
             logger.info(JSONObject.toJSONString(res));

@@ -82,10 +82,10 @@
         <nav>
             <ul>
                 <li >
-                    <%--<a class="herf" href="<%=basePath%>myteam/teamlist">--%>
-                        <a onclick="clickShow()">
+                    <a class="herf" href="<%=basePath%>myteam/teamlist">
+                        <%--<a onclick="clickShow()">--%>
                         <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
-                        <%--<span>1</span>--%>
+                        <span></span>
                     </h1>
                     <span>我的家族</span></a>
                 </li>

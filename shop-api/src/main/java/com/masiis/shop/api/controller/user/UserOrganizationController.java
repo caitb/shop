@@ -129,6 +129,9 @@ public class UserOrganizationController extends BaseController {
             PfUserOrganization pfUserOrganization = userOrganizationService.loadByBrandIdAndUserId(userOrganizationReq.getBrandId(), comUser.getId());
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
 
+            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
+            pfUserOrganization.setName(name);
+
             userOrganizationRes.getDataMap().put("pfUserOrganization", pfUserOrganization);
             userOrganizationRes.getDataMap().put("organizationSuffix", comAgentLevel.getOrganizationSuffix());
             userOrganizationRes.getDataMap().put("agentLevelId", userOrganizationReq.getAgentLevelId());
@@ -163,6 +166,8 @@ public class UserOrganizationController extends BaseController {
         try {
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
             String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
+            name += comAgentLevel.getOrganizationSuffix();
+
             PfUserOrganization pfUserOrganization = new PfUserOrganization();
             pfUserOrganization.setId(userOrganizationReq.getOrganizationId());
             pfUserOrganization.setCreateTime(new Date());
@@ -205,7 +210,7 @@ public class UserOrganizationController extends BaseController {
             m = p.matcher(sb);
         }
 
-        sb.append(suffix);
+        //sb.append(suffix);
 
         return sb.toString();
     }

@@ -129,8 +129,10 @@ public class UserOrganizationController extends BaseController {
             PfUserOrganization pfUserOrganization = userOrganizationService.loadByBrandIdAndUserId(userOrganizationReq.getBrandId(), comUser.getId());
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
 
-            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
-            pfUserOrganization.setName(name);
+            if(pfUserOrganization != null){
+                String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
+                pfUserOrganization.setName(name);
+            }
 
             userOrganizationRes.getDataMap().put("pfUserOrganization", pfUserOrganization);
             userOrganizationRes.getDataMap().put("organizationSuffix", comAgentLevel.getOrganizationSuffix());

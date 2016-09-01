@@ -386,12 +386,14 @@ public class BOrderPayAgentService {
      */
     private void addShopAndShopStatistics(ComUser comUser) {
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
+        logger.info("------用户id---------"+comUser.getId());
         if (sfShop == null) {
             sfShop = new SfShop();
             sfShop.setCreateTime(new Date());
             sfShop.setUserId(comUser.getId());
             sfShop.setStatus(1);
             sfShop.setExplanation("主营各类化妆品、保健品");
+            logger.info("wexHeadImag---------"+comUser.getWxHeadImg());
             sfShop.setLogo(comUser.getWxHeadImg());
             sfShop.setName(comUser.getRealName() + "的小店");
             sfShop.setPageviews(0l);

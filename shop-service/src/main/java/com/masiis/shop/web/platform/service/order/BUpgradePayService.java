@@ -180,12 +180,12 @@ public class BUpgradePayService {
                             log.info("----商品的代理信息不存在---------skuId----"+noMainUserSku.getSkuId()+"------agentLevelId----"+agentLevelId);
                         }
                     }
-                    log.info("-------组织团队升级-------start");
-                    upgradeOrganization(userId,comSpu.getBrandId(),agentLevelId);
-                    log.info("-------组织团队升级-------end");
                 }else{
                     log.info("----用户没有副商品-------------");
                 }
+                log.info("-------组织团队升级-------start");
+                upgradeOrganization(userId,comSpu.getBrandId(),agentLevelId);
+                log.info("-------组织团队升级-------end");
             } else {
                 log.info("主打商品的品牌下无非主打商品----主打商品skuId----" + pfBorderItem.getSkuId());
             }
@@ -428,7 +428,7 @@ public class BUpgradePayService {
         if (i == 1) {
             log.info("插入商品历史表成功----修改商品关系---start");
             int _i = updatePfUserSku(userPid, borderId, pfUserSku, skuId, agentLevelId);
-            if (_i == 1) {
+            if (_i <= 0) {
                 log.info("插入商品历史表成功----修改商品关系---end");
             } else {
                 log.info("插入商品历史表成功----修改商品关系---失败");

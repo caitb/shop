@@ -185,7 +185,7 @@ public class SysSignUtils {
                 sb.append(arrayToSort[i]);
         }
         if(StringUtils.isNotBlank(signName) && StringUtils.isNotBlank(signValue)){
-            sb.append(signName + "=" + signValue);
+            sb.append(signName + "=" + signValue + "&");
         }
         String result = sb.toString();
         result = result.substring(0, result.length() - 1);
@@ -194,6 +194,6 @@ public class SysSignUtils {
     }
 
     public static void main(String... args) throws IOException {
-        System.out.println(URLEncoder.encode("=", "UTF-8"));
+        System.out.println(URLEncoder.encode(" ", "UTF-8"));
     }
 }

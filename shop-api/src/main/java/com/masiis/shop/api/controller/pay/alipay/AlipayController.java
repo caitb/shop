@@ -74,7 +74,19 @@ public class AlipayController extends BaseController {
             alipayBaseReq.setBiz_content(JSONObject.toJSONString(pay));
             alipayBaseReq.setSign(SysSignUtils.toSignString(alipayBaseReq, null));
 
+            String signContent = SysSignUtils.getSignContent(alipayBaseReq);
 
+            String sign = AlipaySignature.rsaSign(signContent,
+                    AlipayPropertiesUtils.getStringValue("alipay.conf.APP_PRIVATE_KEY_PKCS8"),
+                    AlipayPropertiesUtils.getStringValue("alipay.conf.CHARSET"));
+
+            alipayBaseReq.setSign(sign);
+
+            String orderStr = SysSignUtils.getEncodeContent(alipayBaseReq);
+
+            res.setOrderStr(orderStr);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if(StringUtils.isBlank(res.getResCode())){

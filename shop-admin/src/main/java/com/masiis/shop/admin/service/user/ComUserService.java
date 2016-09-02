@@ -203,11 +203,12 @@ public class ComUserService {
      * @param comUser
      */
     public void audit(ComUser comUser, PbUser pbUser) throws Exception {
+        comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+        comUser.setAuditStatus(2);
+        comUser.setAuditDate(new Date());
         comUserMapper.updateByPrimaryKey(comUser);
         if (comUser.getAuditStatus() == 2 || comUser.getAuditStatus() == 3) {
             MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus() == 2 ? true : false);
-
-            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/index";
             PfUserRelation pfUserRelation = pfUserRelationMapper.selectLastRecordByUserId(comUser.getId());
             if (pfUserRelation != null) {

@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -82,6 +83,10 @@ public class ComUser implements Serializable {
      * 审核通过或不通过原因
      */
     private String auditReason;
+    /**
+     * 审核日期
+     */
+    private Date auditDate;
     /**
      * 微信unionid,微信用户唯一标识
      */
@@ -235,6 +240,14 @@ public class ComUser implements Serializable {
 
     public void setAuditStatus(Integer auditStatus) {
         this.auditStatus = auditStatus;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
     }
 
     public String getAuditReason() {

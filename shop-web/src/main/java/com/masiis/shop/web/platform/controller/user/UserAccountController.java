@@ -104,12 +104,16 @@ public class UserAccountController extends BaseController{
         ComUserAccount account = accountService.findAccountByUserid(comUser.getId());
         if (account == null){
             log.info("无用户账户信息");
-            BigDecimal fee = new BigDecimal(0.00);
+            BigDecimal fee = BigDecimal.ZERO;
             account = new ComUserAccount();
             account.setExtractableFee(fee);
+            account.setAgentBillAmount(fee);
+            account.setDistributionBillAmount(fee);
+            account.setRecommenBillAmount(fee);
+            account.setAppliedFee(fee);
         }else {
             if (account.getAppliedFee() == null){
-                account.setAppliedFee(new BigDecimal(0.00));
+                account.setAppliedFee(BigDecimal.ZERO);
             }
         }
         NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);

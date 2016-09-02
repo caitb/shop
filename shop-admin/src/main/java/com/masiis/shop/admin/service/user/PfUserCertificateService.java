@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.admin.service.product.BrandService;
 import com.masiis.shop.admin.service.product.SkuService;
+import com.masiis.shop.admin.utils.AsyncUploadCertUtil;
 import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -12,6 +13,7 @@ import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +37,7 @@ import java.util.List;
 @Service
 @Transactional
 public class PfUserCertificateService {
-
+    private static Logger logger = Logger.getLogger(AsyncUploadCertUtil.class);
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
@@ -95,6 +97,7 @@ public class PfUserCertificateService {
     private void addUserCertificate(ComUser comUser, ComSku comSku, PfUserSku pfUserSku) {
         String rootPath = RootPathUtils.getRootPath();
         PfUserCertificate pfUserCertificate = selectByUserSkuId(pfUserSku.getId());
+        logger.info("用户的审核状态:" + comUser.getAuditStatus());
         if (pfUserCertificate == null && comUser.getAuditStatus() == 2) {
             pfUserCertificate = new PfUserCertificate();
             pfUserCertificate.setCreateTime(new Date());
@@ -127,6 +130,7 @@ public class PfUserCertificateService {
             pfUserCertificateMapper.insert(pfUserCertificate);
             pfUserSku.setCode(pfUserCertificate.getCode());
             pfUserSkuService.update(pfUserSku);
+            logger.info("执行完毕" + pfUserCertificate.getId());
         }
     }
 
@@ -248,14 +252,14 @@ public class PfUserCertificateService {
     /**
      * 异步上传证书
      *
-     * @param userId
+     * @param comUser
      */
-    public void asyncUploadUserCertificate(Long userId) {
-        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(userId);
+    public void asyncUploadUserCertificate(ComUser comUser) {
+        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(comUser.getId());
         for (PfUserSku pfUserSku : pfUserSkus) {
+            logger.info("处理pfUserSku，id：" + pfUserSku.getId());
             if (StringUtils.isBlank(pfUserSku.getCode())) {
                 ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
-                ComUser comUser = comUserService.getUserById(userId);
                 addUserCertificate(comUser, comSku, pfUserSku);
             }
         }

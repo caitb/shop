@@ -106,10 +106,10 @@ public class BaseController {
      */
     protected ComUser getComUser(HttpServletRequest request) {
         ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
-/*        if (user == null) {
+        if (user == null) {
             return null;
-        }*/
-        user = userService.getUserById(1837L);
+        }
+        user = userService.getUserById(user.getId());
         return user;
     }
 

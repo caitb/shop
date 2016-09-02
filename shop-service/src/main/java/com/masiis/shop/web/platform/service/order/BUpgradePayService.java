@@ -268,80 +268,124 @@ public class BUpgradePayService {
      */
     private void updatePfUserRecommenRelation(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
-            updatePfUserRecommenRelationAtom(pfBorder.getUserId(), pfBorderItem.getSkuId(), pfBorder.getId());
+            PfBorderRecommenReward pfBorderRecommenReward = pfBorderRecommenRewardService.getByPfBorderItemId(pfBorderItem.getId());
+            PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if (pfBorderRecommenReward != null) {
+                PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfBorderRecommenReward.getRecommenUserId(), pfBorderItem.getSkuId());
+                if (pfUserRecommenRelation == null) {
+                    pfUserRecommenRelation = new PfUserRecommenRelation();
+                    pfUserRecommenRelation.setCreateTime(new Date());
+                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+                    pfUserRecommenRelation.setUserId(pfBorder.getUserId());
+                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+                    pfUserRecommenRelation.setSkuId(pfBorderItem.getSkuId());
+                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
+                    pfUserRecommenRelation.setTreeCode("");
+                    pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
+                    pfUserRecommenRelation.setRemark("绑定合伙人推荐关系");
+                    pfUserRecommendRelationService.insert(pfUserRecommenRelation);
+                    String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
+                    if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+                        throw new BusinessException("treeCode修改失败");
+                    }
+                } else {
+                    pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+                    pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+                    pfUserRecommenRelation.setPfBorderId(pfBorder.getId());
+                    pfUserRecommenRelation.setRemark("修改合伙人推荐关系");
+                    int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
+                    if (i <= 0) {
+                        throw new BusinessException("推荐关系树结构修改失败");
+                    }
+                    Integer id = pfUserRecommenRelation.getId();
+                    String treeCode = "," + pfUserRecommenRelation.getTreeCode();
+                    String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
+                    Integer id_index = treeCode.indexOf("," + id + ",") + 1;
+                    Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
+                    log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
+                    log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
+                    log.info("id_index-----" + id_index);
+                    log.info("treeLevel-----" + treeLevel);
+                    i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
+                    if (i <= 0) {
+                        log.info("推荐关系树结构修改失败");
+                        throw new BusinessException("推荐关系树结构修改失败");
+                    }
+                }
+            }
         }
     }
 
-    /**
-     * 更新推荐关系原子操作
-     *
-     * @param userId
-     * @param skuId
-     * @param pfBorderId
-     */
-    private void updatePfUserRecommenRelationAtom(Long userId, Integer skuId, Long pfBorderId) {
-        log.info("更新推荐关系原子操作----参数----userId----" + userId + "----skuId----" + skuId + "----pfBorderId-----" + pfBorderId);
-        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, skuId);
-        if (pfUserRecommenRelation==null){
-            log.info("-------------推荐人不存在--------------");
-            return;
-        }
-        PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfUserRecommenRelation.getUserPid(), skuId);
-        if (pfUserRecommenRelation == null) {
-            log.info("-------推荐关系不存在插入--------");
-            pfUserRecommenRelation = new PfUserRecommenRelation();
-            pfUserRecommenRelation.setCreateTime(new Date());
-            pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
-            pfUserRecommenRelation.setUserId(userId);
-            pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
-            pfUserRecommenRelation.setSkuId(skuId);
-            pfUserRecommenRelation.setPfBorderId(pfBorderId);
-            pfUserRecommenRelation.setTreeCode("");
-            pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
-            if (pfBorderId != null) {
-                pfUserRecommenRelation.setRemark("主打商品绑定合伙人推荐关系");
-            } else {
-                pfUserRecommenRelation.setRemark("不是主打商品绑定合伙人推荐关系");
-            }
-            pfUserRecommendRelationService.insert(pfUserRecommenRelation);
-            String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
-            if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
-                throw new BusinessException("主打商品----treeCode修改失败");
-            }
-        } else {
-            log.info("-------推荐关系存在更新--------");
-            if (parentPfUserRecommenRelation!=null){
-                pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
-                pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
-                pfUserRecommenRelation.setPfBorderId(pfBorderId);
-                if (pfBorderId != null) {
-                    pfUserRecommenRelation.setRemark("主打商品修改合伙人推荐关系");
-                } else {
-                    pfUserRecommenRelation.setRemark("不是主打商品修改合伙人推荐关系");
-                }
-                int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
-                if (i <= 0) {
-                    throw new BusinessException("推荐关系树结构修改失败");
-                }
-                Integer id = pfUserRecommenRelation.getId();
-                String treeCode = "," + pfUserRecommenRelation.getTreeCode();
-                String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
-                Integer id_index = treeCode.indexOf("," + id + ",") + 1;
-                Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
-                log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
-                log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
-                log.info("id_index-----" + id_index);
-                log.info("treeLevel-----" + treeLevel);
-                i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
-                if (i <= 0) {
-                    log.info("推荐关系树结构修改失败");
-                    throw new BusinessException("推荐关系树结构修改失败");
-                }
-            }else {
-                log.info("-----更新推荐关系，上级为平台，不做任何操作--------");
-            }
-        }
-    }
+//    /**
+//     * 更新推荐关系原子操作
+//     *
+//     * @param userId
+//     * @param skuId
+//     * @param pfBorderId
+//     */
+//    private void updatePfUserRecommenRelationAtom(Long userId, Integer skuId, Long pfBorderId) {
+//        log.info("更新推荐关系原子操作----参数----userId----" + userId + "----skuId----" + skuId + "----pfBorderId-----" + pfBorderId);
+//        PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, skuId);
+//        if (pfUserRecommenRelation==null){
+//            log.info("-------------推荐人不存在--------------");
+//            return;
+//        }
+//        PfUserRecommenRelation parentPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(pfUserRecommenRelation.getUserPid(), skuId);
+//        if (pfUserRecommenRelation == null) {
+//            log.info("-------推荐关系不存在插入--------");
+//            pfUserRecommenRelation = new PfUserRecommenRelation();
+//            pfUserRecommenRelation.setCreateTime(new Date());
+//            pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+//            pfUserRecommenRelation.setUserId(userId);
+//            pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+//            pfUserRecommenRelation.setSkuId(skuId);
+//            pfUserRecommenRelation.setPfBorderId(pfBorderId);
+//            pfUserRecommenRelation.setTreeCode("");
+//            pfUserRecommenRelation.setTreeLevel(parentPfUserRecommenRelation.getTreeLevel() + 1);
+//            if (pfBorderId != null) {
+//                pfUserRecommenRelation.setRemark("主打商品绑定合伙人推荐关系");
+//            } else {
+//                pfUserRecommenRelation.setRemark("不是主打商品绑定合伙人推荐关系");
+//            }
+//            pfUserRecommendRelationService.insert(pfUserRecommenRelation);
+//            String treeCode = parentPfUserRecommenRelation.getTreeCode() + pfUserRecommenRelation.getId() + ",";
+//            if (pfUserRecommendRelationService.updateTreeCodeById(pfUserRecommenRelation.getId(), treeCode) != 1) {
+//                throw new BusinessException("主打商品----treeCode修改失败");
+//            }
+//        } else {
+//            log.info("-------推荐关系存在更新--------");
+//            if (parentPfUserRecommenRelation!=null){
+//                pfUserRecommenRelation.setPid(parentPfUserRecommenRelation.getId());
+//                pfUserRecommenRelation.setUserPid(parentPfUserRecommenRelation.getUserId());
+//                pfUserRecommenRelation.setPfBorderId(pfBorderId);
+//                if (pfBorderId != null) {
+//                    pfUserRecommenRelation.setRemark("主打商品修改合伙人推荐关系");
+//                } else {
+//                    pfUserRecommenRelation.setRemark("不是主打商品修改合伙人推荐关系");
+//                }
+//                int i = pfUserRecommendRelationService.update(pfUserRecommenRelation);
+//                if (i <= 0) {
+//                    throw new BusinessException("推荐关系树结构修改失败");
+//                }
+//                Integer id = pfUserRecommenRelation.getId();
+//                String treeCode = "," + pfUserRecommenRelation.getTreeCode();
+//                String parentTreeCode = parentPfUserRecommenRelation.getTreeCode();
+//                Integer id_index = treeCode.indexOf("," + id + ",") + 1;
+//                Integer treeLevel = pfUserRecommenRelation.getTreeLevel() - parentPfUserRecommenRelation.getTreeLevel() - 1;
+//                log.info("之前的pfUserRecommenRelation----的---treeCode-----" + treeCode);
+//                log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
+//                log.info("id_index-----" + id_index);
+//                log.info("treeLevel-----" + treeLevel);
+//                i = pfUserRecommendRelationService.updateTreeCodes(pfUserRecommenRelation.getTreeCode(), parentTreeCode, id_index, treeLevel);
+//                if (i <= 0) {
+//                    log.info("推荐关系树结构修改失败");
+//                    throw new BusinessException("推荐关系树结构修改失败");
+//                }
+//            }else {
+//                log.info("-----更新推荐关系，上级为平台，不做任何操作--------");
+//            }
+//        }
+//    }
 
 
     /**

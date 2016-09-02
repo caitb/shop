@@ -76,12 +76,7 @@ public class ShopIndexController extends BaseController {
             banner.setImgUrl(value + banner.getImgUrl());
         }
         int status = 0;
-        PfUserSku pfUserSku = null;
-        try {
-            pfUserSku = pfUserSkuService.getFirstPfUserSku(user.getId());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        PfUserSku pfUserSku = pfUserSkuService.getFirstPfUserSku(user.getId());
         if (pfUserSku == null){
             status = 0;
         }else {

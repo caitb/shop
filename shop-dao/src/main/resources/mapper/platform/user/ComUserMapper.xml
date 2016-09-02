@@ -2,30 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.user.ComUserMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUser">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-        <result column="user_mail" property="userMail" jdbcType="VARCHAR"/>
-        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR"/>
-        <result column="wx_nk_name" property="wxNkName" jdbcType="VARCHAR"/>
-        <result column="sex" property="sex" jdbcType="INTEGER"/>
-        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
-        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
-        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
-        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
-        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
-        <result column="is_binding" property="isBinding" jdbcType="INTEGER"/>
-        <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
-        <result column="send_type" property="sendType" jdbcType="INTEGER"/>
-        <result column="audit_status" property="auditStatus" jdbcType="INTEGER"/>
-        <result column="audit_reason" property="auditReason" jdbcType="VARCHAR"/>
-        <result column="wx_unionid" property="wxUnionid" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="pwd_salt" property="pwdSalt" jdbcType="VARCHAR"/>
-        <result column="register_source" property="registerSource" jdbcType="INTEGER"/>
-        <result column="app_token" property="appToken" jdbcType="VARCHAR"/>
-        <result column="app_token_expire" property="appTokenExpire" jdbcType="TIMESTAMP"/>
-        <result column="is_buy" property="isBuy" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_mail" property="userMail" jdbcType="VARCHAR" />
+        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR" />
+        <result column="wx_nk_name" property="wxNkName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR" />
+        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR" />
+        <result column="wx_id" property="wxId" jdbcType="VARCHAR" />
+        <result column="send_type" property="sendType" jdbcType="INTEGER" />
+        <result column="audit_reason" property="auditReason" jdbcType="VARCHAR" />
+        <result column="audit_status" property="auditStatus" jdbcType="INTEGER" />
+        <result column="audit_date" property="auditDate" jdbcType="TIMESTAMP" />
+        <result column="wx_unionid" property="wxUnionid" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="pwd_salt" property="pwdSalt" jdbcType="VARCHAR" />
+        <result column="register_source" property="registerSource" jdbcType="INTEGER" />
+        <result column="app_token" property="appToken" jdbcType="VARCHAR" />
+        <result column="app_token_expire" property="appTokenExpire" jdbcType="TIMESTAMP" />
+        <result column="user_key" property="userKey" jdbcType="VARCHAR" />
+        <result column="is_binding" property="isBinding" jdbcType="INTEGER" />
+        <result column="is_agent" property="isAgent" jdbcType="INTEGER" />
+        <result column="is_buy" property="isBuy" jdbcType="INTEGER" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -35,19 +37,23 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUser" useGeneratedKeys="true" keyProperty="id">
         insert into com_user (id, create_time, mobile,
-            user_mail, wx_head_img, wx_nk_name, sex,
-            real_name, id_card, id_card_front_url,
-            id_card_back_url, wx_id, is_binding, is_agent,
-            send_type, audit_status, audit_reason,
-            wx_unionid, password, pwd_salt,
-            register_source, app_token, app_token_expire, is_buy)
+            user_mail, wx_head_img, wx_nk_name,
+            sex, real_name, id_card,
+            id_card_front_url, id_card_back_url, wx_id,
+            send_type, audit_reason, audit_status,
+            audit_date, wx_unionid, password,
+            pwd_salt, register_source, app_token,
+            app_token_expire, user_key, is_binding,
+            is_agent, is_buy)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR},
-            #{userMail,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR}, #{wxNkName,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
-            #{realName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR},
-            #{idCardBackUrl,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{isBinding,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER},
-            #{sendType,jdbcType=INTEGER}, #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR},
-            #{wxUnionid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{pwdSalt,jdbcType=VARCHAR},
-            #{registerSource,jdbcType=INTEGER}, #{appToken, jdbcType=VARCHAR}, #{appTokenExpire, jdbcType=TIMESTAMP}, #{isBuy,jdbcType=INTEGER})
+            #{userMail,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR}, #{wxNkName,jdbcType=VARCHAR},
+            #{sex,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR},
+            #{idCardFrontUrl,jdbcType=VARCHAR}, #{idCardBackUrl,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR},
+            #{sendType,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}, #{auditStatus,jdbcType=INTEGER},
+            #{auditDate,jdbcType=TIMESTAMP}, #{wxUnionid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+            #{pwdSalt,jdbcType=VARCHAR}, #{registerSource,jdbcType=INTEGER}, #{appToken,jdbcType=VARCHAR},
+            #{appTokenExpire,jdbcType=TIMESTAMP}, #{userKey,jdbcType=VARCHAR}, #{isBinding,jdbcType=INTEGER},
+            #{isAgent,jdbcType=INTEGER}, #{isBuy,jdbcType=INTEGER})
     </insert>
 
     <update id="updatePhone" parameterType="com.masiis.shop.dao.po.ComUser">
@@ -106,6 +112,9 @@
             <if test="auditStatus != null">
                 audit_status = #{auditStatus,jdbcType=INTEGER},
             </if>
+            <if test="auditDate != null">
+                audit_date = #{auditDate,jdbcType=TIMESTAMP},
+            </if>
             <if test="auditReason != null">
                 audit_reason = #{auditReason,jdbcType=VARCHAR},
             </if>
@@ -136,18 +145,20 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
 
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from com_user
     </select>
     <select id="findByPid" resultType="string">
@@ -157,9 +168,10 @@
     </select>
 
     <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from com_user
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
@@ -174,10 +186,10 @@
     </select>-->
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComUser" resultMap="BaseResultMap">
-        select
-        id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
         com_user
         <where>
@@ -212,10 +224,10 @@
     </select>
 
     <select id="auditList" parameterType="com.masiis.shop.dao.po.ComUser" resultMap="BaseResultMap">
-        select
-        id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding,is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
         com_user
         <where>
@@ -245,10 +257,10 @@
     </select>
 
     <select id="selectByIds" parameterType="List" resultMap="BaseResultMap">
-        select
-        id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
         com_user
         WHERE
@@ -259,10 +271,10 @@
     </select>
 
     <select id="selectByUnionid" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-            id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-            id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-            password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
             com_user
         WHERE
@@ -270,9 +282,10 @@
     </select>
 
     <select id="selectAllAgentUser" resultMap="BaseResultMap">
-        SELECT id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-            id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-            password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         FROM
             com_user
         WHERE
@@ -281,10 +294,10 @@
 
     <!-- 条件查询(模糊查询) -->
     <select id="queryByCondition" parameterType="Map" resultMap="BaseResultMap">
-        select
-        id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
         com_user
         <where>
@@ -298,10 +311,10 @@
     </select>
 
     <select id="selectByConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
-        select
-        id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
-        id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source, app_token, app_token_expire, is_buy
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
         from
         com_user
         where is_agent = 1

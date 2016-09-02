@@ -7,9 +7,10 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ComUser {
+public class ComUser implements Serializable{
     private static final long serialVersionUID = -2543606660018018096L;
     /**
      * 主键id

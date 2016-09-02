@@ -284,6 +284,14 @@ public class SysResCodeCons {
     public static final String RES_CODE_WXPAY_ORDER_PAID = "900106";
     public static final String RES_CODE_WXPAY_ORDER_PAID_MSG = "该订单已支付,无需再支付";
 
+    /**
+     * 支付宝支付
+     */
+    public static final String RES_CODE_ALIPAY_ORDERCODE_NULL = "900201";
+    public static final String RES_CODE_ALIPAY_ORDERCODE_NULL_MSG = "orderCode为空";
+
+
+
     public static final String PHONE_DUPLICATE = "手机号重复";
 
     public static final String PHONE_IILEAGAL = "手机号非法";

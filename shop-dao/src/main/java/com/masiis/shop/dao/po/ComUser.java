@@ -10,7 +10,7 @@ package com.masiis.shop.dao.po;
 import java.util.Date;
 
 public class ComUser {
-
+    private static final long serialVersionUID = -2543606660018018096L;
     /**
      * 主键id
      */

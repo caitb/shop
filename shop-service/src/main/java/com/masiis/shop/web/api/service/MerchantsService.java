@@ -2,18 +2,14 @@ package com.masiis.shop.web.api.service;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserOrganizationMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.common.service.UserService;
-import com.masiis.shop.web.platform.service.user.CountGroupService;
-import com.masiis.shop.web.platform.service.user.UserOrganizationService;
+import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +31,7 @@ public class MerchantsService {
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
-    private UserOrganizationService userOrganizationService;
+    private PfUserOrganizationService pfUserOrganizationService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
@@ -55,10 +51,10 @@ public class MerchantsService {
         log.info("招商展示---------brandId----" + brandId + "------userId-----" + userPid);
 
 
-        Map<String, Object> agentBrand = userOrganizationService.loadAgentBrand(userPid, brandId);
+        Map<String, Object> agentBrand = pfUserOrganizationService.loadAgentBrand(userPid, brandId);
         //如果userPid没有家族,向上一级查找
         if(agentBrand == null){
-            agentBrand = userOrganizationService.loadPAgentBrand(userPid, brandId);
+            agentBrand = pfUserOrganizationService.loadPAgentBrand(userPid, brandId);
         }
 
         agentBrand.put("illustratingPictureName", PropertiesUtils.getStringValue("brand_poster_url") + agentBrand.get("illustratingPictureName"));
@@ -74,7 +70,7 @@ public class MerchantsService {
 
 
         PfUserOrganization pfUserOrganization = pfUserOrganizationMapper.selectByBrandIdAndUserId(brandId, (Long)agentBrand.get("userId"));
-        Map<String, Object> countGroup = userOrganizationService.countGroupByBrandId((Long)agentBrand.get("userId"), brandId);
+        Map<String, Object> countGroup = pfUserOrganizationService.countGroupByBrandId((Long)agentBrand.get("userId"), brandId);
 
         //当前用户是否代理了该产品
         PfUserSku us = pfUserSkuMapper.selectByUserIdAndSkuId(userId, (Integer) agentBrand.get("skuId"));

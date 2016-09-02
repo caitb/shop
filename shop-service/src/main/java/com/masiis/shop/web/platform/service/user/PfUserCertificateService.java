@@ -251,14 +251,13 @@ public class PfUserCertificateService {
     /**
      * 异步上传证书
      *
-     * @param userId
+     * @param comUser
      */
-    public void asyncUploadUserCertificate(Long userId) {
-        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(userId);
+    public void asyncUploadUserCertificate(ComUser comUser) {
+        List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(comUser.getId());
         for (PfUserSku pfUserSku : pfUserSkus) {
             if (StringUtils.isBlank(pfUserSku.getCode())) {
                 ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
-                ComUser comUser = userService.getUserById(userId);
                 addUserCertificate(comUser, comSku, pfUserSku);
             }
         }

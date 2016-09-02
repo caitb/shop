@@ -10,7 +10,6 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
-import com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComUser;
@@ -20,7 +19,7 @@ import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.user.PfUserBrandService;
-import com.masiis.shop.web.platform.service.user.UserOrganizationService;
+import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +29,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 用户组织
@@ -44,7 +41,7 @@ public class UserOrganizationController extends BaseController {
     private final static Log log = LogFactory.getLog(UserOrganizationController.class);
 
     @Resource
-    private UserOrganizationService userOrganizationService;
+    private PfUserOrganizationService pfUserOrganizationService;
     @Resource
     private UserService userService;
     @Resource
@@ -75,7 +72,7 @@ public class UserOrganizationController extends BaseController {
             Integer agentBrandNum = pfUserBrandService.getMyBrandNum(comUser.getId());
             Integer totalUserNum = 0;
             BigDecimal totalSaleAmount = BigDecimal.ZERO;
-            List<Map<String, Object>> organizations = userOrganizationService.listCreateOrganization(comUser.getId());
+            List<Map<String, Object>> organizations = pfUserOrganizationService.listCreateOrganization(comUser.getId());
             List<PfUserBrand> pfUserBrands = pfUserBrandMapper.selectByUserId(user.getId());
             for (PfUserBrand pfUserBrand : pfUserBrands) {
                 BrandStatistic brandStatistic = brandStatisticService.selectBrandStatisticByUserIdAndBrandId(pfUserBrand.getUserId(), pfUserBrand.getBrandId());
@@ -87,7 +84,7 @@ public class UserOrganizationController extends BaseController {
                 totalUserNum += brandStatistic.getUserNum();
                 totalSaleAmount = totalSaleAmount.add(brandStatistic.getSellAmount());
             }
-            List<Map<String, Object>> joinOrganizations = userOrganizationService.listJoinOrganization(comUser.getId());
+            List<Map<String, Object>> joinOrganizations = pfUserOrganizationService.listJoinOrganization(comUser.getId());
             for (Map<String, Object> joinOrganization : joinOrganizations) {
                 BrandStatistic brandStatistic = brandStatisticService.selectBrandStatisticByUserIdAndBrandId((Long) joinOrganization.get("userId"), (Integer) joinOrganization.get("brandId"));
                 joinOrganization.put("brandStatistic", brandStatistic);
@@ -126,11 +123,11 @@ public class UserOrganizationController extends BaseController {
         UserOrganizationRes userOrganizationRes = new UserOrganizationRes();
 
         try {
-            PfUserOrganization pfUserOrganization = userOrganizationService.loadByBrandIdAndUserId(userOrganizationReq.getBrandId(), comUser.getId());
+            PfUserOrganization pfUserOrganization = pfUserOrganizationService.loadByBrandIdAndUserId(userOrganizationReq.getBrandId(), comUser.getId());
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
 
             if(pfUserOrganization != null){
-                String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
+                String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : pfUserOrganizationService.handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
                 pfUserOrganization.setName(name);
             }
 
@@ -167,7 +164,7 @@ public class UserOrganizationController extends BaseController {
 
         try {
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
-            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
+            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : pfUserOrganizationService.handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
             name += comAgentLevel.getOrganizationSuffix();
 
             PfUserOrganization pfUserOrganization = new PfUserOrganization();
@@ -187,9 +184,9 @@ public class UserOrganizationController extends BaseController {
             pfUserOrganization.setWxQrCode(userOrganizationReq.getWxQrCode());
             pfUserOrganization.setFreemanNum(0);
             if (pfUserOrganization.getId() == null) {
-                userOrganizationService.save(pfUserOrganization);
+                pfUserOrganizationService.save(pfUserOrganization);
             } else {
-                userOrganizationService.update(pfUserOrganization);
+                pfUserOrganizationService.update(pfUserOrganization);
             }
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -203,19 +200,7 @@ public class UserOrganizationController extends BaseController {
         return userOrganizationRes;
     }
 
-    public String handlerName(String name, String suffix){
-        StringBuilder sb = new StringBuilder(name);
-        Pattern p = Pattern.compile(suffix);
-        Matcher m = p.matcher(sb);
-        while (m.find()){
-            sb.delete(m.start(), m.start()+suffix.length());
-            m = p.matcher(sb);
-        }
 
-        //sb.append(suffix);
-
-        return sb.toString();
-    }
 
     /**
      * 验证是否有家族(包括加入的)
@@ -230,7 +215,7 @@ public class UserOrganizationController extends BaseController {
         UserOrganizationRes userOrganizationRes = new UserOrganizationRes();
 
         try {
-            Boolean hasOrganization = userOrganizationService.hasOrganization(comUser.getId());
+            Boolean hasOrganization = pfUserOrganizationService.hasOrganization(comUser.getId());
             userOrganizationRes.getDataMap().put("hasOrganization", hasOrganization);
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

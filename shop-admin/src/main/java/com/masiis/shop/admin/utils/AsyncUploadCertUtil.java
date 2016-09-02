@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.utils;
 
 import com.masiis.shop.admin.service.user.PfUserCertificateService;
+import com.masiis.shop.dao.po.ComUser;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,35 +18,39 @@ public class AsyncUploadCertUtil {
     private static class Holder {
         private static final AsyncUploadCertUtil INSTANCE = new AsyncUploadCertUtil();
     }
+
     private AsyncUploadCertUtil() {
     }
+
     // 单例懒加载
     public static final AsyncUploadCertUtil getInstance() {
         return Holder.INSTANCE;
     }
 
-    private LinkedBlockingQueue<Long> uploadOSSQueue = null;
+    private LinkedBlockingQueue<ComUser> uploadOSSQueue = null;
     private Thread queueThread = new Thread(new Runnable() {
         @Override
         public void run() {
             while (true) {
-                Long param = null;
+                ComUser comUser = null;
                 try {
-                    param = uploadOSSQueue.take();
-                    pfUserCertificateService.asyncUploadUserCertificate(param);
+                    comUser = uploadOSSQueue.take();
+                    log.info(comUser.toString());
+                    pfUserCertificateService.asyncUploadUserCertificate(comUser);
                 } catch (Exception e) {
-                    log.error("失败的userId为:" + param);
+                    log.error("失败的comUser为:" + comUser.toString());
                     log.error(e.getMessage(), e);
                 }
             }
         }
     });
+
     {
         uploadOSSQueue = new LinkedBlockingQueue<>();
         queueThread.start();
     }
 
-    public LinkedBlockingQueue<Long> getUploadOSSQueue(){
+    public LinkedBlockingQueue<ComUser> getUploadOSSQueue() {
         return uploadOSSQueue;
     }
 }

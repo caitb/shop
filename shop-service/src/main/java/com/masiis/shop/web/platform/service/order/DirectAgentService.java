@@ -56,7 +56,7 @@ public class DirectAgentService {
     @Resource
     private PfUserStatisticsService userStatisticsService;
 
-    public void directAgent(ComUser comUser, Integer skuId) throws Exception{
+    public void directAgent(ComUser comUser, Integer skuId) throws Exception {
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
         if (pfUserSku == null) {
             //获取商品对象
@@ -84,8 +84,8 @@ public class DirectAgentService {
             addShopSku(comUser, comSku, mainAgentLevelId);
             logger.info("<2>处理合伙推荐关系");
             addUserRecommenRelation(comUser, comSku, mainSkuId);
-            logger.info("<3>处理用户合伙关系和证书数据");
-            addUserSkuAndUserCertificate(comUser, comSku, mainUserPid, mainAgentLevelId);
+            logger.info("<3>处理用户合伙关系");
+            addUserSku(comUser, comSku, mainUserPid, mainAgentLevelId);
             logger.info("<4>初始化品牌合伙关系");
             addUserBrand(comUser, comSpu);
             logger.info("<5>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
@@ -94,6 +94,12 @@ public class DirectAgentService {
             addUserSkuStock(comUser, comSku, comSpu);
             logger.info("<7>初始化用户统计表信息");
             insertStatisticsUserInfo(comUser, comSku);
+            //添加合伙证书 回写证书编号
+            try {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
+            } catch (InterruptedException e) {
+                logger.error("阻塞住了");
+            }
         }
     }
 
@@ -159,7 +165,7 @@ public class DirectAgentService {
      * @param mainUserPid      主商品上级用户id
      * @param mainAgentLevelId 主商品代理等级
      */
-    private void addUserSkuAndUserCertificate(ComUser comUser, ComSku comSku, Long mainUserPid, Integer mainAgentLevelId) {
+    private void addUserSku(ComUser comUser, ComSku comSku, Long mainUserPid, Integer mainAgentLevelId) {
         PfUserSku thisUS = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
         if (thisUS == null) {
             thisUS = new PfUserSku();
@@ -199,12 +205,6 @@ public class DirectAgentService {
             }
             if (pfUserSkuService.updateTreeCodeById(thisUS.getId(), treeCode) != 1) {
                 throw new BusinessException("treeCode修改失败");
-            }
-            //添加合伙证书 回写证书编号
-            try {
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
-            } catch (InterruptedException e) {
-                logger.error("阻塞住了");
             }
         }
     }

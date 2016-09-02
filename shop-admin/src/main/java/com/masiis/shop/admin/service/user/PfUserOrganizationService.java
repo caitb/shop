@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jiajinghao on 2016/8/4.
@@ -25,6 +27,19 @@ public class PfUserOrganizationService {
 
     public int update(PfUserOrganization pfUserOrganization) {
         return pfUserOrganizationMapper.updateByPrimaryKey(pfUserOrganization);
+    }
+    public String handlerName(String name, String suffix){
+        StringBuilder sb = new StringBuilder(name);
+        Pattern p = Pattern.compile(suffix);
+        Matcher m = p.matcher(sb);
+        while (m.find()){
+            sb.delete(m.start(), m.start()+suffix.length());
+            m = p.matcher(sb);
+        }
+
+        //sb.append(suffix);
+
+        return sb.toString();
     }
 
 }

@@ -219,7 +219,7 @@ public class ComUserService {
                     comUser.getAuditStatus() == 2 ? url : PropertiesUtils.getStringValue("web.domain.name.address") + "/identityAuth/toInentityAuthPage.html?defaultValue=3");
             //添加合伙证书 回写证书编号
             try {
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
             } catch (InterruptedException e) {
                 logger.error("阻塞住了");
             }

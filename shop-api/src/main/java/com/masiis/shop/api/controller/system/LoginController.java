@@ -166,7 +166,7 @@ public class LoginController extends BaseController {
                 user = userService.createComUser(null);
                 user.setMobile(phoneNum);
                 user.setIsBinding(1);
-                user.setWxHeadImg("http://wx.qlogo.cn/mmopen/VuvrS0Pwnh9TibS49HGrsysQIUMEGCSA7zMc2ekGQD81PD678g5EvUobwtfTobpRxoBBMNsa4uJQsgnlUibLjCYcLicRInn8sS7/0");
+                user.setWxHeadImg(PropertiesUtils.getStringValue("phone_sign_in_default_headimg"));
                 user.setRealName(phoneNum);
                 user.setWxNkName(phoneNum);
                 userService.insertComUserWithAccount(user);

@@ -99,48 +99,101 @@ public class SysSignUtils {
         return result;
     }
 
+
+    public static String getSignContent(Object obj){
+        if(obj == null){
+            throw new BusinessException("parameter obj is null");
+        }
+        Class clazz = obj.getClass();
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<String> list = new ArrayList<String>();
+        try {
+            do{
+                for(Field f:clazz.getDeclaredFields()) {
+                    String key = f.getName();
+                    f.setAccessible(true);
+                    JSONField aJF = f.getAnnotation(JSONField.class);
+                    if (aJF != null) {
+                        key = aJF.name();
+                    }
+                    SignField sf = f.getAnnotation(SignField.class);
+                    if (sf != null) {
+                        continue;
+                    }
+                    String value = f.get(obj) == null ? null : f.get(obj).toString();
+                    if (StringUtils.isNotBlank(value)) {
+                        list.add(key + "=" + f.get(obj) + "&");
+                    }
+                }
+            } while ((clazz = clazz.getSuperclass()) != null);
+        } catch (IllegalAccessException e) {
+            log.info(e.getMessage());
+        }
+        int size = list.size();
+        String[] arrayToSort = list.toArray(new String[size]);
+        Arrays.sort(arrayToSort);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < size; i ++) {
+            sb.append(arrayToSort[i]);
+        }
+        String result = sb.toString();
+        result = result.substring(0, result.length() - 1);
+
+        return result;
+    }
+
+    public static String getEncodeContent(Object obj){
+        if(obj == null){
+            throw new BusinessException("parameter obj is null");
+        }
+        Class clazz = obj.getClass();
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<String> list = new ArrayList<String>();
+        String signName = null;
+        String signValue = null;
+        try {
+            do{
+                for(Field f:clazz.getDeclaredFields()) {
+                    String key = f.getName();
+                    f.setAccessible(true);
+                    JSONField aJF = f.getAnnotation(JSONField.class);
+                    if (aJF != null) {
+                        key = aJF.name();
+                    }
+                    SignField sf = f.getAnnotation(SignField.class);
+                    if (sf != null) {
+                        signName = key;
+                        signValue = URLEncoder.encode(f.get(obj) + "", "UTF-8");
+                        continue;
+                    }
+                    String value = f.get(obj) == null ? null : f.get(obj).toString();
+                    if (StringUtils.isNotBlank(value)) {
+                        list.add(key + "=" + URLEncoder.encode(f.get(obj) + "", "UTF-8") + "&");
+                    }
+                }
+            } while ((clazz = clazz.getSuperclass()) != null);
+        } catch (IllegalAccessException e) {
+            log.info(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        int size = list.size();
+        String[] arrayToSort = list.toArray(new String[size]);
+        Arrays.sort(arrayToSort);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < size; i ++) {
+                sb.append(arrayToSort[i]);
+        }
+        if(StringUtils.isNotBlank(signName) && StringUtils.isNotBlank(signValue)){
+            sb.append(signName + "=" + signValue);
+        }
+        String result = sb.toString();
+        result = result.substring(0, result.length() - 1);
+
+        return result;
+    }
+
     public static void main(String... args) throws IOException {
-        /*LoginWxReq req = new LoginWxReq();
-        req.setAppid("sssddsdaajsdkfjdfkjsdfjksskj");
-        req.setNickName("测试");
-        req.setOpenId("sldkfjIjhsjd_0438skjdhfdskjghgasdkjfh");
-        req.setUnionid("sdkjfhd2s7-sldkhHGsldkhjU");
-        req.setCity("北京");
-        req.setCountry("中国");
-        req.setSign(toSignString(req, null));
-        String result = HttpClientUtils.httpPost("http://localhost:8083/sys/loginByWx", JSONObject.toJSONString(req));
-        System.out.println(result);
-        LoginByWxRes res = JSONObject.parseObject(result, LoginByWxRes.class);
-        if(StringUtils.isNotBlank(res.getSign()) && res.getSign().equals(toSignString(res, null))){
-            System.out.println(true);
-        } else {
-            System.out.println(false);
-        }*/
-        /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
-        req.setPhoneNum("13671324096");
-        req.setSign(toSignString(req, null));
-        System.out.println(req);*/
-
-        /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
-        req.setPhoneNum("186121");
-        req.setSign("skjdfKJHKJH-_LKJSLK");
-        String data = JSONObject.toJSONString(req);
-        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/getPhoneValidCode", data);
-        System.out.println(result);*/
-
-        /*String aaa = "%7B%22nonceStr%22%3A%22sduJlKLHSksudj_-sklsdkfklds%22%2C%22sign%22%3A%22HDMSKGDFKAHGDKLAJFDKHKAJHSJK%22%2C%22phoneNum%22%3A%2218811346397%22%7D";
-        String bbb = "{\"nonceStr\":\"sduJlKLHSksudj_-sklsdkfklds\",\"sign\":\"HDMSKGDFKAHGDKLAJFDKHKAJHSJK\",\"phoneNum\":\"18811346397\"}";
-        System.out.println(URLDecoder.decode(bbb, "UTF-8"));*/
-
-        /*ByteArrayOutputStream os = new ByteArrayOutputStream();
-        byte[] aa = {40, 110,117,108,108,41,61,123,34,110,111,110,99,101,83,116,114,34,58,34,115,100,117,74,108};
-        os.write(aa);
-        System.out.println(new String(os.toByteArray(), "UTF-8"));*/
-        BankAddReq req = new BankAddReq();
-        req.setBankcard("aaaa");
-        req.setBankId(1);
-        req.setToken("aaaa");
-        System.out.println(toSignString(req, null));
-
+        System.out.println(URLEncoder.encode("=", "UTF-8"));
     }
 }

@@ -290,6 +290,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_ALIPAY_ORDERCODE_NULL = "900201";
     public static final String RES_CODE_ALIPAY_ORDERCODE_NULL_MSG = "orderCode为空";
 
+    public static final String RES_CODE_ALIPAY_ORDERCODE_ERROR = "900202";
+    public static final String RES_CODE_ALIPAY_ORDERCODE_ERROR_MSG = "orderCode错误";
+
 
 
     public static final String PHONE_DUPLICATE = "手机号重复";

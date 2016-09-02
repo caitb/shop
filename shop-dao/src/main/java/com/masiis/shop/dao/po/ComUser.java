@@ -113,6 +113,10 @@ public class ComUser {
      */
     private Integer isBuy;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public Long getId() {
         return id;
     }

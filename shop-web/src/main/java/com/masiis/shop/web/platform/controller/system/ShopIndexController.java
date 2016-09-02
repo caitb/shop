@@ -68,13 +68,20 @@ public class ShopIndexController extends BaseController {
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         ComUser user = getComUser(req);
+        log.info("B端首页");
+        log.info("userId = " + user.getId());
         String value = PropertiesUtils.getStringValue("index_banner_url");//获取图片地址常量
         List<PbBanner> pbBanner = indexShowService.findPbBanner();//获取轮播图片
         for (PbBanner banner : pbBanner) {
             banner.setImgUrl(value + banner.getImgUrl());
         }
         int status = 0;
-        PfUserSku pfUserSku = pfUserSkuService.getFirstPfUserSku(user.getId());
+        PfUserSku pfUserSku = null;
+        try {
+            pfUserSku = pfUserSkuService.getFirstPfUserSku(user.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (pfUserSku == null){
             status = 0;
         }else {

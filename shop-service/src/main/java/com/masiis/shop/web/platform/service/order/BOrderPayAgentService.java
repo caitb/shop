@@ -12,11 +12,11 @@ import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.user.*;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopStatisticsService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.platform.service.user.*;
 import com.masiis.shop.web.platform.utils.AsyncUploadCertUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -119,8 +119,8 @@ public class BOrderPayAgentService {
             addShopSku(comUser, pfBorderItem);
             logger.info("<6>处理合伙推荐关系");
             addUserRecommenRelation(comUser, pfBorder, pfBorderItem);
-            logger.info("<7>处理用户合伙关系和证书数据");
-            addUserSkuAndUserCertificate(comUser, comSku, pfBorder, pfBorderItem);
+            logger.info("<7>处理用户合伙关系");
+            addUserSku(comUser, comSku, pfBorder, pfBorderItem);
             logger.info("<8>初始化品牌合伙关系");
             addUserBrand(comUser, comSpu);
             logger.info("<9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
@@ -144,6 +144,12 @@ public class BOrderPayAgentService {
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus().equals(BOrderStatus.WaitShip.getCode())) {
             //处理平台发货类型订单
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
+        }
+        //异步上传授权书
+        try {
+            AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
+        } catch (InterruptedException e) {
+            logger.error("阻塞住了");
         }
     }
 
@@ -255,7 +261,7 @@ public class BOrderPayAgentService {
      * @param pfBorder     订单对象
      * @param pfBorderItem 订单商品表对象
      */
-    private void addUserSkuAndUserCertificate(ComUser comUser, ComSku comSku, PfBorder pfBorder, PfBorderItem pfBorderItem) {
+    private void addUserSku(ComUser comUser, ComSku comSku, PfBorder pfBorder, PfBorderItem pfBorderItem) {
         PfUserSku thisUS = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
         if (thisUS == null) {
             thisUS = new PfUserSku();
@@ -291,12 +297,6 @@ public class BOrderPayAgentService {
             }
             if (pfUserSkuService.updateTreeCodeById(thisUS.getId(), treeCode) != 1) {
                 throw new BusinessException("treeCode修改失败");
-            }
-            //添加合伙证书 回写证书编号
-            try {
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
-            } catch (InterruptedException e) {
-                logger.error("阻塞住了");
             }
         }
     }
@@ -386,13 +386,19 @@ public class BOrderPayAgentService {
      */
     private void addShopAndShopStatistics(ComUser comUser) {
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
+        logger.info("------用户id---------"+comUser.getId());
         if (sfShop == null) {
             sfShop = new SfShop();
             sfShop.setCreateTime(new Date());
             sfShop.setUserId(comUser.getId());
             sfShop.setStatus(1);
             sfShop.setExplanation("主营各类化妆品、保健品");
-            sfShop.setLogo(comUser.getWxHeadImg());
+            logger.info("wexHeadImag---------"+comUser.getWxHeadImg());
+            if (comUser.getWxHeadImg()==null){
+                sfShop.setLogo("http://wx.qlogo.cn/mmopen/U3WEAQpg2p6kauE3P0DN4k9LTgUql9CRVSjH3P6xNs9RC8lW3GpibiahGfGUiaJCFfmMViazrbvNdFVntLvgjY39ILUdSeDdTvEP/0");
+            }else{
+                sfShop.setLogo(comUser.getWxHeadImg());
+            }
             sfShop.setName(comUser.getRealName() + "的小店");
             sfShop.setPageviews(0l);
             sfShop.setQrCode("");

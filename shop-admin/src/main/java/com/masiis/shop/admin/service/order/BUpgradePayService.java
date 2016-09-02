@@ -165,16 +165,22 @@ public class BUpgradePayService {
             log.info("升级后的等级-------------" + agentLevelId);
             ComSpu comSpu = spuService.selectBrandBySkuId(pfBorderItem.getSkuId());
             if (comSpu != null) {
-                log.info("品牌id-----------" + comSpu.getBrandId());
-                List<ComSku> comSkus = skuService.getNoMainSkuByBrandId(comSpu.getBrandId());
-                for (ComSku comSku : comSkus) {
-                    log.info("主打商品的品牌下有非主打商品----skuId----" + comSku.getId());
-                    PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(comSku.getId(), agentLevelId);
-                    if (pfSkuAgent != null) {
-                        BigDecimal bailAmount = pfSkuAgent.getBail();
-                        log.info("保证金-----" + bailAmount.toString());
-                        noMainBrandSkuUpgrade(userId, userPid, comSku.getId(), bailAmount, agentLevelId, comSpu.getId());
+                log.info("品牌id-----------" + comSpu.getBrandId()+"------userId-----"+userId);
+                List<PfUserSku> noMainUserSkus = pfUserSkuService.getNoMainUserSkuByUserIdAndBrandId(userId,comSpu.getBrandId());
+                if (noMainUserSkus!=null&&noMainUserSkus.size()>0){
+                    for (PfUserSku noMainUserSku: noMainUserSkus){
+                        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(noMainUserSku.getSkuId(), agentLevelId);
+                        if (pfSkuAgent != null) {
+                            BigDecimal bailAmount = pfSkuAgent.getBail();
+                            log.info("保证金-----" + bailAmount.toString());
+                            noMainBrandSkuUpgrade(userId, userPid, noMainUserSku.getSkuId(), bailAmount, agentLevelId, comSpu.getId());
+                        }else {
+                            log.info("----商品的代理信息不存在---------skuId----"+noMainUserSku.getSkuId()+"------agentLevelId----"+agentLevelId);
+                        }
                     }
+
+                }else{
+                    log.info("----用户没有副商品-------------");
                 }
             } else {
                 log.info("主打商品的品牌下无非主打商品----主打商品skuId----" + pfBorderItem.getSkuId());
@@ -527,6 +533,7 @@ public class BUpgradePayService {
      */
     private void inserHistoryAndUpdatePfUserCertificate(Long userId, List<PfBorderItem> orderItems, Integer spuId, String rootPath) {
         for (PfBorderItem orderItem : orderItems) {
+            ComSpu comSpu = spuService.selectBrandBySkuId(orderItem.getSkuId());
             inserHistoryAndUpdatePfUserCertificateAutom(userId, orderItem.getSkuId(), orderItem.getAgentLevelId(), spuId, rootPath);
         }
     }
@@ -572,8 +579,8 @@ public class BUpgradePayService {
                 throw new BusinessException("修改证书插入历史失败-----");
             }
         } else {
-            log.info("修改证书失败，之前的证书为null");
-            throw new BusinessException("修改证书失败，之前的证书为null");
+            log.info("-----没有证书，之前的证书为null------");
+           // throw new BusinessException("修改证书失败，之前的证书为null");
         }
     }
 

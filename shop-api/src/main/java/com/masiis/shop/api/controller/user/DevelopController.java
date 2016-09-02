@@ -208,57 +208,72 @@ public class DevelopController {
     }
 
     @RequestMapping("/poster")
+    @ResponseBody
     @SignValid(paramType = DevelopPosterReq.class)
     public BaseBusinessRes poster(HttpServletRequest request,
                      HttpServletResponse response,
                      DevelopPosterReq req,
                      ComUser comUser) throws Exception {
 
-        List<Map<String,Object>> orgMaps = pfUserOrganizationMapper.listCreateAndJoinOrganization(comUser.getId());
+        BaseBusinessRes bbr = new BaseBusinessRes();
 
-        if(orgMaps==null || orgMaps.size()==0) {
-            new RuntimeException("没有代理任何品牌");
-        }
+        try{
+            List<Map<String,Object>> orgMaps = pfUserOrganizationMapper.listCreateAndJoinOrganization(comUser.getId());
 
-        // 如果没有传 brandId, 则随机选一个
-        Integer orgId = null;
-        PfUserOrganization org = null;
-
-        if(req.getBrandId() == null) {
-            for(Map<String,Object> map : orgMaps) {
-                orgId = (Integer) map.get("orgId");
-                if(orgId != null) {
-                    break;
-                }
+            if(orgMaps==null || orgMaps.size()==0) {
+                new RuntimeException("没有代理任何品牌");
             }
-        } else {
-            for(Map<String,Object> map : orgMaps) {
-                if(req.getBrandId().equals(map.get("brandId"))) {
+
+            // 如果没有传 brandId, 则随机选一个
+            Integer orgId = null;
+            PfUserOrganization org = null;
+
+            if(req.getBrandId() == null) {
+                for(Map<String,Object> map : orgMaps) {
                     orgId = (Integer) map.get("orgId");
+                    if(orgId != null) {
+                        break;
+                    }
+                }
+            } else {
+                for(Map<String,Object> map : orgMaps) {
+                    if(req.getBrandId().equals(map.get("brandId"))) {
+                        orgId = (Integer) map.get("orgId");
+                    }
                 }
             }
+
+            org = pfUserOrganizationMapper.selectByPrimaryKey(orgId);
+
+            BufferedImage bufferedImage = null;
+            if(org == null) {
+                bufferedImage = NetFileUtils.getBufferedImage(developPosterDefault);        // 如果还没有设置组织（家族，团队），则返回默认图片
+            } else  {
+                bufferedImage = developService.createDevelopPoster(org, comUser, request);  // 生成海报图片
+            }
+
+            ByteArrayOutputStream drawByteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", drawByteArrayOutputStream);
+            byte[] bytes = drawByteArrayOutputStream.toByteArray();
+
+            response.setContentType("image/gif"); //设置返回的文件类型
+            OutputStream os = response.getOutputStream();
+            os.write(bytes);
+
+            os.flush();
+            os.close();
+
+            bbr.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            bbr.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e){
+            bbr.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            bbr.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+
+            log.error("获取海报出错了[req="+req+"]");
+            e.printStackTrace();
         }
 
-        org = pfUserOrganizationMapper.selectByPrimaryKey(orgId);
-
-        BufferedImage bufferedImage = null;
-        if(org == null) {
-            bufferedImage = NetFileUtils.getBufferedImage(developPosterDefault);        // 如果还没有设置组织（家族，团队），则返回默认图片
-        } else  {
-            bufferedImage = developService.createDevelopPoster(org, comUser, request);  // 生成海报图片
-        }
-
-        ByteArrayOutputStream drawByteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", drawByteArrayOutputStream);
-        byte[] bytes = drawByteArrayOutputStream.toByteArray();
-
-        response.setContentType("image/gif"); //设置返回的文件类型
-        OutputStream os = response.getOutputStream();
-        os.write(bytes);
-
-        os.flush();
-        os.close();
-        return null;
+        return bbr;
     }
 
 

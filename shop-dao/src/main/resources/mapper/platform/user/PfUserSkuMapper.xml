@@ -878,6 +878,18 @@
     <select id="selectFirstPfUserSku" resultMap="BaseResultMap">
         select * from pf_user_sku where user_id = #{userId} and id =(select MAX(id) from pf_user_sku where user_id = #{userId});
     </select>
+
+
+    <select id="getNoMainUserSkuByUserIdAndBrandId" resultMap="BaseResultMap">
+        SELECT userSku.*
+        FROM com_sku sku
+        INNER JOIN com_spu spu ON spu.id = sku.spu_id
+	    INNER JOIN pf_user_sku userSku on sku.id = userSku.sku_id
+        where EXISTS (SELECT 0 from com_brand b WHERE b.id = spu.brand_id AND b.id = #{brandId,jdbcType=INTEGER})
+        AND spu.is_delete=0 AND spu.is_sale=1 and spu.type =1
+	    and userSku.user_id =  #{userId,jdbcType=BIGINT};
+    </select>
+
 </mapper>
 
 

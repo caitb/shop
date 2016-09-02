@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
@@ -90,6 +89,8 @@ public class BUpgradePayService {
     private SpuService spuService;
     @Resource
     private BOrderShipService bOrderShipService;
+    @Resource
+    private PfUserOrganizationService userOrganizationService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
@@ -179,7 +180,9 @@ public class BUpgradePayService {
                             log.info("----商品的代理信息不存在---------skuId----"+noMainUserSku.getSkuId()+"------agentLevelId----"+agentLevelId);
                         }
                     }
-
+                    log.info("-------组织团队升级-------start");
+                    upgradeOrganization(userId,comSpu.getBrandId(),agentLevelId);
+                    log.info("-------组织团队升级-------end");
                 }else{
                     log.info("----用户没有副商品-------------");
                 }
@@ -188,6 +191,39 @@ public class BUpgradePayService {
             }
         }
     }
+
+    /**
+     * 团队升级
+     * @param userId
+     * @param brandId
+     * @param agentLevelId
+     */
+    private void upgradeOrganization(Long userId,Integer brandId,Integer agentLevelId){
+        log.info("团队升级---入口参数----userId-----"+userId+"-----brandId-----"+brandId+"-------agentLevelId-------"+agentLevelId);
+        PfUserOrganization pfUserOrganization = userOrganizationService.getByUserIdAndBrandId(userId,brandId);
+        if (pfUserOrganization!=null){
+            log.info("-----升级之前的等级---------"+pfUserOrganization.getAgentLevelId());
+            ComAgentLevel oldComAgentLevel =  comAgentLevelService.selectByPrimaryKey(pfUserOrganization.getAgentLevelId());
+            pfUserOrganization.setAgentLevelId(agentLevelId);
+            ComAgentLevel newComAgentLevel =  comAgentLevelService.selectByPrimaryKey(agentLevelId);
+            String newName = null;
+            if (newComAgentLevel!=null&&oldComAgentLevel!=null){
+                newName = userOrganizationService.handlerName(pfUserOrganization.getName(),oldComAgentLevel.getOrganizationSuffix());
+                log.info("--------去掉之前等级名字后的原始名字---------"+newName);
+                newName += newComAgentLevel.getOrganizationSuffix();
+            }else {
+                throw new BusinessException("根据等级查询等级信息失败");
+            }
+            pfUserOrganization.setName(newName);
+            int i = userOrganizationService.update(pfUserOrganization);
+            if (i!=1){
+                throw new BusinessException("-----------更新团队失败------------");
+            }
+        }else {
+            throw new BusinessException("团队升级--------根据用户id和品牌id查询团队信息为null----");
+        }
+    }
+
 
     /**
      * 非主打商品的升级

@@ -1,19 +1,16 @@
 /*
- * ComUserNew.java
+ * ComUser.java
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-04-08 Created
+ * 2016-09-01 Created
  */
 package com.masiis.shop.dao.po;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class ComUser implements Serializable {
-
+public class ComUser {
     private static final long serialVersionUID = -2543606660018018096L;
-
     /**
      * 主键id
      */
@@ -63,25 +60,21 @@ public class ComUser implements Serializable {
      */
     private String wxId;
     /**
-     * 是否绑定（0否1是）
-     */
-    private Integer isBinding;
-    /**
-     * 是否合伙人(0否1是)
-     */
-    private Integer isAgent;
-    /**
      * 拿货方式: 0,未选择; 1,平台代发; 2,自己发货
      */
     private Integer sendType;
+    /**
+     * 审核通过或不通过原因
+     */
+    private String auditReason;
     /**
      * 审核状态(0未审核1已提交审核(审核中)2审核通过3审核不通过)
      */
     private Integer auditStatus;
     /**
-     * 审核通过或不通过原因
+     * 审核时间
      */
-    private String auditReason;
+    private Date auditDate;
     /**
      * 微信unionid,微信用户唯一标识
      */
@@ -96,18 +89,29 @@ public class ComUser implements Serializable {
      */
     private Integer registerSource;
     /**
-     * app身份令牌
+     * 移动端的身份令牌
      */
     private String appToken;
     /**
-     * appToken过期时间
+     * apitoken过期时间
      */
     private Date appTokenExpire;
+    /**
+     * 用户对外唯一标识
+     */
+    private String userKey;
+    /**
+     * 是否绑定(0:未绑定,1:已绑定)
+     */
+    private Integer isBinding;
+    /**
+     * 是否合伙人(0否1是)
+     */
+    private Integer isAgent;
+    /**
+     * 是否C端购买成功(0否1是)
+     */
     private Integer isBuy;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Long getId() {
         return id;
@@ -130,7 +134,7 @@ public class ComUser implements Serializable {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile;
+        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     public String getUserMail() {
@@ -138,7 +142,7 @@ public class ComUser implements Serializable {
     }
 
     public void setUserMail(String userMail) {
-        this.userMail = userMail;
+        this.userMail = userMail == null ? null : userMail.trim();
     }
 
     public String getWxHeadImg() {
@@ -146,7 +150,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxHeadImg(String wxHeadImg) {
-        this.wxHeadImg = wxHeadImg;
+        this.wxHeadImg = wxHeadImg == null ? null : wxHeadImg.trim();
     }
 
     public String getWxNkName() {
@@ -154,7 +158,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxNkName(String wxNkName) {
-        this.wxNkName = wxNkName;
+        this.wxNkName = wxNkName == null ? null : wxNkName.trim();
     }
 
     public Integer getSex() {
@@ -170,7 +174,7 @@ public class ComUser implements Serializable {
     }
 
     public void setRealName(String realName) {
-        this.realName = realName;
+        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getIdCard() {
@@ -178,7 +182,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCard(String idCard) {
-        this.idCard = idCard;
+        this.idCard = idCard == null ? null : idCard.trim();
     }
 
     public String getIdCardFrontUrl() {
@@ -186,7 +190,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardFrontUrl(String idCardFrontUrl) {
-        this.idCardFrontUrl = idCardFrontUrl;
+        this.idCardFrontUrl = idCardFrontUrl == null ? null : idCardFrontUrl.trim();
     }
 
     public String getIdCardBackUrl() {
@@ -194,7 +198,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardBackUrl(String idCardBackUrl) {
-        this.idCardBackUrl = idCardBackUrl;
+        this.idCardBackUrl = idCardBackUrl == null ? null : idCardBackUrl.trim();
     }
 
     public String getWxId() {
@@ -202,7 +206,95 @@ public class ComUser implements Serializable {
     }
 
     public void setWxId(String wxId) {
-        this.wxId = wxId;
+        this.wxId = wxId == null ? null : wxId.trim();
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
+    }
+
+    public String getAuditReason() {
+        return auditReason;
+    }
+
+    public void setAuditReason(String auditReason) {
+        this.auditReason = auditReason == null ? null : auditReason.trim();
+    }
+
+    public Integer getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Integer auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public Date getAuditDate() {
+        return auditDate;
+    }
+
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
+
+    public String getWxUnionid() {
+        return wxUnionid;
+    }
+
+    public void setWxUnionid(String wxUnionid) {
+        this.wxUnionid = wxUnionid == null ? null : wxUnionid.trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    public String getPwdSalt() {
+        return pwdSalt;
+    }
+
+    public void setPwdSalt(String pwdSalt) {
+        this.pwdSalt = pwdSalt == null ? null : pwdSalt.trim();
+    }
+
+    public Integer getRegisterSource() {
+        return registerSource;
+    }
+
+    public void setRegisterSource(Integer registerSource) {
+        this.registerSource = registerSource;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public void setAppToken(String appToken) {
+        this.appToken = appToken == null ? null : appToken.trim();
+    }
+
+    public Date getAppTokenExpire() {
+        return appTokenExpire;
+    }
+
+    public void setAppTokenExpire(Date appTokenExpire) {
+        this.appTokenExpire = appTokenExpire;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey == null ? null : userKey.trim();
     }
 
     public Integer getIsBinding() {
@@ -219,78 +311,6 @@ public class ComUser implements Serializable {
 
     public void setIsAgent(Integer isAgent) {
         this.isAgent = isAgent;
-    }
-
-    public Integer getSendType() {
-        return sendType;
-    }
-
-    public void setSendType(Integer sendType) {
-        this.sendType = sendType;
-    }
-
-    public Integer getAuditStatus() {
-        return auditStatus;
-    }
-
-    public void setAuditStatus(Integer auditStatus) {
-        this.auditStatus = auditStatus;
-    }
-
-    public String getAuditReason() {
-        return auditReason;
-    }
-
-    public void setAuditReason(String auditReason) {
-        this.auditReason = auditReason;
-    }
-
-    public String getWxUnionid() {
-        return wxUnionid;
-    }
-
-    public void setWxUnionid(String wxUnionid) {
-        this.wxUnionid = wxUnionid;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPwdSalt() {
-        return pwdSalt;
-    }
-
-    public void setPwdSalt(String pwdSalt) {
-        this.pwdSalt = pwdSalt;
-    }
-
-    public Integer getRegisterSource() {
-        return registerSource;
-    }
-
-    public void setRegisterSource(Integer registerSource) {
-        this.registerSource = registerSource;
-    }
-
-    public String getAppToken() {
-        return appToken;
-    }
-
-    public void setAppToken(String appToken) {
-        this.appToken = appToken;
-    }
-
-    public Date getAppTokenExpire() {
-        return appTokenExpire;
-    }
-
-    public void setAppTokenExpire(Date appTokenExpire) {
-        this.appTokenExpire = appTokenExpire;
     }
 
     public Integer getIsBuy() {
@@ -316,17 +336,19 @@ public class ComUser implements Serializable {
                 ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
                 ", idCardBackUrl='" + idCardBackUrl + '\'' +
                 ", wxId='" + wxId + '\'' +
-                ", isBinding=" + isBinding +
-                ", isAgent=" + isAgent +
                 ", sendType=" + sendType +
-                ", auditStatus=" + auditStatus +
                 ", auditReason='" + auditReason + '\'' +
+                ", auditStatus=" + auditStatus +
+                ", auditDate=" + auditDate +
                 ", wxUnionid='" + wxUnionid + '\'' +
                 ", password='" + password + '\'' +
                 ", pwdSalt='" + pwdSalt + '\'' +
                 ", registerSource=" + registerSource +
                 ", appToken='" + appToken + '\'' +
                 ", appTokenExpire=" + appTokenExpire +
+                ", userKey='" + userKey + '\'' +
+                ", isBinding=" + isBinding +
+                ", isAgent=" + isAgent +
                 ", isBuy=" + isBuy +
                 '}';
     }

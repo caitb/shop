@@ -265,7 +265,7 @@ public class MyTeamService {
             teamListPo.setAgentLevel(Integer.valueOf(map.get("agentLevel").toString()));
             teamListPo.setAgentLevelName(map.get("agentLevelName").toString());
             teamListPo.setAgentLevelImg(url + map.get("agentLevelImg").toString());
-            teamListPo.setWxHeadImg(map.get("wxHeadImg").toString());
+            teamListPo.setWxHeadImg(map.get("wxHeadImg") == null ? "" : map.get("wxHeadImg").toString());
             teamListPo.setSkuId(Integer.valueOf(map.get("skuId").toString()));
             teamListPo.setUserSkuId(Integer.valueOf(map.get("userSkuId").toString()));
             teamListPos.add(teamListPo);

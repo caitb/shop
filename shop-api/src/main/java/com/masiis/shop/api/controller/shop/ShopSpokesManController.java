@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.shop.SpokesMapRei;
 import com.masiis.shop.api.bean.shop.SpokesMapReq;
 import com.masiis.shop.api.bean.shop.SpokesMapRes;
@@ -72,8 +73,8 @@ public class ShopSpokesManController extends BaseController {
                     res.setHasQueryData(1);
                     Integer pageNums = fansNum%pageSize == 0 ? fansNum/pageSize : fansNum/pageSize + 1;
                 //  cur+1修改为cur最后一页不显示
-                    if(cur  > pageNums){
-                        throw new BusinessException("下一页码不正确");
+                    if (cur > pageNums) {
+                        throw new BusinessException("暂无更多");
                     }
                     res.setTotalPage(pageNums);
                     res.setTotalFansNum(fansNum);
@@ -95,6 +96,7 @@ public class ShopSpokesManController extends BaseController {
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(e.getMessage());
         }
+        log.info(JSONObject.toJSON(res));
         return res;
     }
     /**

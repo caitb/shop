@@ -130,7 +130,7 @@ public class UserOrganizationController extends BaseController {
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
 
             if(pfUserOrganization != null){
-                String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
+                String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : userOrganizationService.handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
                 pfUserOrganization.setName(name);
             }
 
@@ -167,7 +167,7 @@ public class UserOrganizationController extends BaseController {
 
         try {
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
-            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
+            String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : userOrganizationService.handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
             name += comAgentLevel.getOrganizationSuffix();
 
             PfUserOrganization pfUserOrganization = new PfUserOrganization();
@@ -203,19 +203,7 @@ public class UserOrganizationController extends BaseController {
         return userOrganizationRes;
     }
 
-    public String handlerName(String name, String suffix){
-        StringBuilder sb = new StringBuilder(name);
-        Pattern p = Pattern.compile(suffix);
-        Matcher m = p.matcher(sb);
-        while (m.find()){
-            sb.delete(m.start(), m.start()+suffix.length());
-            m = p.matcher(sb);
-        }
 
-        //sb.append(suffix);
-
-        return sb.toString();
-    }
 
     /**
      * 验证是否有家族(包括加入的)

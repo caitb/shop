@@ -56,7 +56,7 @@ public class DirectAgentService {
     @Resource
     private PfUserStatisticsService userStatisticsService;
 
-    public void directAgent(ComUser comUser, Integer skuId) throws Exception{
+    public void directAgent(ComUser comUser, Integer skuId) throws Exception {
         PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
         if (pfUserSku == null) {
             //获取商品对象
@@ -202,7 +202,7 @@ public class DirectAgentService {
             }
             //添加合伙证书 回写证书编号
             try {
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser.getId());
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
             } catch (InterruptedException e) {
                 logger.error("阻塞住了");
             }

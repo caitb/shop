@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 用户组织
@@ -166,6 +168,20 @@ public class UserOrganizationService {
         }
 
         return true;
+    }
+
+    public String handlerName(String name, String suffix){
+        StringBuilder sb = new StringBuilder(name);
+        Pattern p = Pattern.compile(suffix);
+        Matcher m = p.matcher(sb);
+        while (m.find()){
+            sb.delete(m.start(), m.start()+suffix.length());
+            m = p.matcher(sb);
+        }
+
+        //sb.append(suffix);
+
+        return sb.toString();
     }
 
 

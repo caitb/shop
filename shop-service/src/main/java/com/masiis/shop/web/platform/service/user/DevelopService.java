@@ -11,6 +11,8 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.web.common.utils.NetFileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.*;
+
 
 /**
  * 发展合伙人
@@ -30,11 +32,14 @@ import java.util.*;
 @Service
 public class DevelopService {
 
-    private static Font font30 = null;
-    private static Font font25 = null;
     private static Font font20 = null;
+    private static Font font25 = null;
+    private static Font font30 = null;
+    private static Font font35 = null;
     private static Font font40 = null;
     private static Font fontCloud30 = null;
+
+    private static final Log log = LogFactory.getLog(DevelopService.class);
 
     static {
         //宋体
@@ -44,19 +49,20 @@ public class DevelopService {
         // 空心
         Font cloud_font = null;
         try {
-            simsun_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+"/static/font/simsun.ttc"));
-            msyh_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+"/static/font/msyh.ttc"));
-            cloud_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+"/static/font/miniCloud.TTF"));
+            System.out.println(RootPathUtils.getRootPath());
+            simsun_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+File.separator+"static"+File.separator+"font"+File.separator+"simsun.ttc"));
+            msyh_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+File.separator+"static"+File.separator+"font"+File.separator+"msyh.ttc"));
         } catch (Exception e) {
+            log.error("**************  font_file_path : "+RootPathUtils.getRootPath()+"/static/font/simsun.ttc");
+            log.error("**************  font_file_path2: "+RootPathUtils.getRootPath()+File.separator+"static"+File.separator+"font"+File.separator+"simsun.ttc");
             throw new BusinessException("创建字体异常");
         }
 
         font20 = msyh_font.deriveFont(Font.PLAIN, 20);
         font25 = msyh_font.deriveFont(Font.PLAIN, 25);
         font30 = msyh_font.deriveFont(Font.PLAIN, 30);
+        font35 = msyh_font.deriveFont(Font.PLAIN, 35);
         font40 = msyh_font.deriveFont(Font.PLAIN, 40);
-
-        fontCloud30 = cloud_font.deriveFont(Font.PLAIN, 30);
     }
 
 
@@ -97,7 +103,7 @@ public class DevelopService {
             g.drawImage(brandPosterImage, 0,0,751,434, null);   // 品牌背景图
             g.drawImage(bg, 0,0,751,434, null);     // 蒙板
             g.drawImage(organizationLogoImage, 321, 199, 108, 108, null);   // 组织 logo
-            DrawUtil.drawString(g, org.getName(), font30.deriveFont(Font.PLAIN, 40), Color.WHITE, 375-org.getName().length()*20, 350);  // 组织名
+            DrawUtil.drawString(g, org.getName(), font35, Color.WHITE, 375-org.getName().length()*20, 350);  // 组织名
 
             // 组织介绍区
             g.setColor(new Color(239, 239, 239));

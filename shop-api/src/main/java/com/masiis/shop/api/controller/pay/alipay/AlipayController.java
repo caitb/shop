@@ -194,7 +194,6 @@ public class AlipayController extends BaseController {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap,
                     AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET);
             if(!signVerified){
-                // TODO 验签失败则记录异常日志，并在response中返回failure.
                 throw new BusinessException("支付异步回调签名错误");
             }
 

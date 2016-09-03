@@ -78,4 +78,6 @@ public interface ComUserMapper {
     List<ComUser> queryByCondition(Map<String, Object> conditionMap);
 
     List<ComUser> selectByConditions(Map<String, Object> conditionMap);
+
+    int deleteByPrimaryKey(Long userId);
 }

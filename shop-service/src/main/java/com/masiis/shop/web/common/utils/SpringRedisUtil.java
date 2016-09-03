@@ -61,4 +61,8 @@ public class SpringRedisUtil {
             }
         });
     }
+
+    public static void del(final String key){
+        redisTemplate.delete(key);
+    }
 }

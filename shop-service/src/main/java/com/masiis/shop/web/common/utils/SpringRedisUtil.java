@@ -1,7 +1,5 @@
 package com.masiis.shop.web.common.utils;
 
-import com.masiis.shop.web.common.utils.ApplicationContextUtil;
-import com.masiis.shop.web.common.utils.SerializeUtil;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -62,5 +60,9 @@ public class SpringRedisUtil {
                 return null;
             }
         });
+    }
+
+    public static void del(final String key){
+        redisTemplate.delete(key);
     }
 }

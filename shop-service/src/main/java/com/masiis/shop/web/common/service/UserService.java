@@ -1,17 +1,19 @@
 package com.masiis.shop.web.common.service;
 
+import com.masiis.shop.common.beans.wx.wxauth.AccessTokenRes;
+import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
-import com.masiis.shop.dao.platform.user.*;
+import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.ComWxUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.common.beans.wx.wxauth.AccessTokenRes;
-import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
-import com.masiis.shop.common.constant.wx.WxConsPF;
-import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
+import com.masiis.shop.web.platform.service.user.PfUserStatisticsService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -159,6 +161,10 @@ public class UserService {
      */
     public ComUser getUserByMobile(String mobile) {
         return comUserMapper.selectByMobile(mobile);
+    }
+
+    public ComUser getByMobileAndUnionidIsNotNull(String mobile){
+        return comUserMapper.selectByMobileAndUnionidIsNotNull(mobile);
     }
 
     /**
@@ -310,9 +316,9 @@ public class UserService {
             log.info("创建新comUser");
             user = createComUser(userRes);
             insertComUser(user);
-            accountService.createAccountByUser(user);
-            sfAccountService.createSfAccountByUser(user);
-            sfUserStatisticsService.initSfUserStatistics(user);
+//            accountService.createAccountByUser(user);
+//            sfAccountService.createSfAccountByUser(user);
+//            sfUserStatisticsService.initSfUserStatistics(user);
         }
 
         if(wxUser == null) {
@@ -456,5 +462,9 @@ public class UserService {
         accountService.createAccountByUser(user);
         sfAccountService.createSfAccountByUser(user);
         sfUserStatisticsService.initSfUserStatistics(user);
+    }
+    @Transactional
+    public int delComUser(ComUser user){
+        return comUserMapper.deleteByPrimaryKey(user.getId());
     }
 }

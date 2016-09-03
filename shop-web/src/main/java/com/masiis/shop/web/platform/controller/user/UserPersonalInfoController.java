@@ -42,6 +42,8 @@ public class UserPersonalInfoController extends BaseController {
     @RequestMapping(value = "personalHomePageInfo.html")
     public String getPersonalHomePageInfo(HttpServletRequest request, HttpServletResponse response, Model model) {
         ComUser comUser = getComUser(request);
+        log.info("获取个人信息的首页信息");
+        log.info("userId = " + comUser.getId());
         Map<String, Object> map = null;
         if (comUser != null) {
             map = userPersonalInfoService.getPersonalHomePageInfo(comUser);

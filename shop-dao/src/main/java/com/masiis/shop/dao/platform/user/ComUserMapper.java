@@ -57,6 +57,8 @@ public interface ComUserMapper {
      */
     ComUser selectByMobile(String mobile);
 
+    ComUser selectByMobileAndUnionidIsNotNull(String mobile);
+
     String findByPid(Integer pid);
 
     List<ComUser> selectByCondition(ComUser comUser);
@@ -78,4 +80,6 @@ public interface ComUserMapper {
     List<ComUser> queryByCondition(Map<String, Object> conditionMap);
 
     List<ComUser> selectByConditions(Map<String, Object> conditionMap);
+
+    int deleteByPrimaryKey(Long userId);
 }

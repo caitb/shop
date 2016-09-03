@@ -17,6 +17,7 @@ public class IdentityAuthRes extends BaseRes {
     private String wxId; //微信号
     private String auditReason;//审核不通过原因
     private Boolean isAudit;//是否审核通过
+    private Integer auditStatus;//审核状态
 
     public String getName() {
         return name;
@@ -88,5 +89,29 @@ public class IdentityAuthRes extends BaseRes {
 
     public void setAudit(Boolean audit) {
         isAudit = audit;
+    }
+
+    public Integer getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Integer auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "IdentityAuthRes{" +
+                "name='" + name + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", idCardFrontName='" + idCardFrontName + '\'' +
+                ", idCardBackName='" + idCardBackName + '\'' +
+                ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
+                ", idCardBackUrl='" + idCardBackUrl + '\'' +
+                ", wxId='" + wxId + '\'' +
+                ", auditReason='" + auditReason + '\'' +
+                ", isAudit=" + isAudit +
+                ", auditStatus=" + auditStatus +
+                '}';
     }
 }

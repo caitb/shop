@@ -173,7 +173,7 @@
         audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
         user_key, is_binding, is_agent, is_buy
         from com_user
-        where mobile = #{mobile,jdbcType=VARCHAR}
+        where mobile = #{mobile,jdbcType=VARCHAR} AND wx_unionid is not null
     </select>
 
     <!--<select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">

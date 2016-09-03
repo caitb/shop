@@ -47,6 +47,7 @@ public class UserIdentityAuthController extends BaseController {
         try {
             ComUser user = userIdentityAuthService.getUser(comUser.getId());
             identityAuthRes.setAudit(user.getAuditStatus().intValue()==2?true:false);
+            identityAuthRes.setAuditStatus(user.getAuditStatus());
             identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e){

@@ -129,6 +129,12 @@ public class UserMergeService {
                     mobileUser.setIdCardFrontUrl(wechatUser.getIdCardFrontUrl());
                     mobileUser.setWxId(wechatUser.getWxId());
                 }
+                if (mobileUser.getIsAgent().intValue() != wechatUser.getIsAgent().intValue() && mobileUser.getIsAgent().intValue() == 0){
+                    mobileUser.setIsAgent(mobileUser.getIsAgent());
+                }
+                if (mobileUser.getIsBuy().intValue() != wechatUser.getIsBuy().intValue() && mobileUser.getIsBuy().intValue() == 0){
+                    mobileUser.setIsBuy(mobileUser.getIsBuy());
+                }
                 mobileUser.setWxNkName(wechatUser.getWxNkName());
                 mobileUser.setWxUnionid(wechatUser.getWxUnionid());
                 break;

@@ -293,6 +293,21 @@ public class SysResCodeCons {
     public static final String RES_CODE_ALIPAY_ORDERCODE_ERROR = "900202";
     public static final String RES_CODE_ALIPAY_ORDERCODE_ERROR_MSG = "orderCode错误";
 
+    public static final String RES_CODE_ALIPAY_PAYCHECK_PARAMERROR = "900203";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG = "支付宝支付同步结果校验参数不正确";
+
+    public static final String RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL = "900204";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL_MSG = "支付宝支付同步结果校验支付失败";
+
+    public static final String RES_CODE_ALIPAY_PAYCHECK_SIGNERROR = "900205";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_SIGNERROR_MSG = "支付宝支付同步结果校验签名失败";
+
+    public static final String RES_CODE_ALIPAY_PAYCHECK_SIGNINFOERROR = "900206";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_SIGNINFOERROR_MSG = "支付宝支付同步结果校验签名信息错误";
+
+    public static final String RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR = "900207";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR_MSG = "支付宝支付同步结果校验支付信息不正确";
+
 
 
     public static final String PHONE_DUPLICATE = "手机号重复";
@@ -312,4 +327,5 @@ public class SysResCodeCons {
      */
     public static final String RES_CODE_BANK_BIND_REP = "120000";
     public static final String RES_CODE_BANK_BIND_REP_MSG = "你已绑定该银行卡，不能再次绑定";
+
 }

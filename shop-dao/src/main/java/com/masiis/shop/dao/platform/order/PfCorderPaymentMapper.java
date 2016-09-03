@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfCorderPayment;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * @author muchaofeng
  * @date $date$ $time$
  */
-
+@Repository
 public interface PfCorderPaymentMapper {
 
     PfCorderPayment selectById(Long id);

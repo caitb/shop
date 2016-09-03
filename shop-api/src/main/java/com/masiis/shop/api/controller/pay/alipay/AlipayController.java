@@ -3,7 +3,8 @@ package com.masiis.shop.api.controller.pay.alipay;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.masiis.shop.api.bean.base.BaseReq;
-import com.masiis.shop.api.bean.base.BaseRes;
+import com.masiis.shop.api.bean.pay.AlipayPayResultCheckReq;
+import com.masiis.shop.api.bean.pay.AlipayPayResultCheckRes;
 import com.masiis.shop.api.bean.pay.GetAlipayOrderStrReq;
 import com.masiis.shop.api.bean.pay.GetAlipayOrderStrRes;
 import com.masiis.shop.api.constants.SignValid;
@@ -12,12 +13,12 @@ import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.common.beans.tb.alipay.AlipayBaseReq;
 import com.masiis.shop.common.beans.tb.alipay.AlipayBizContentPay;
-import com.masiis.shop.common.enums.platform.BOrderType;
+import com.masiis.shop.common.beans.tb.alipay.AlipayTradeAppPayRes;
+import com.masiis.shop.common.beans.tb.alipay.AlipayTradeAppPayResponse;
+import com.masiis.shop.common.constant.tb.AlipayConsAPP;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.AlipayPropertiesUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.web.api.service.AlipayService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -27,8 +28,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Date 2016/5/19
@@ -64,21 +68,20 @@ public class AlipayController extends BaseController {
             }
 
             AlipayBaseReq alipayBaseReq = new AlipayBaseReq();
-            alipayBaseReq.setApp_id(AlipayPropertiesUtils.getStringValue("alipay.conf.APP_ID"));
+            alipayBaseReq.setApp_id(AlipayConsAPP.APP_ID);
             alipayBaseReq.setMethod("alipay.trade.app.pay");
-            alipayBaseReq.setCharset(AlipayPropertiesUtils.getStringValue("alipay.conf.CHARSET"));
-            alipayBaseReq.setSign_type(AlipayPropertiesUtils.getStringValue("alipay.conf.SIGN_TYPE"));
+            alipayBaseReq.setCharset(AlipayConsAPP.CHARSET);
+            alipayBaseReq.setSign_type(AlipayConsAPP.SIGN_TYPE);
             alipayBaseReq.setTimestamp(DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            alipayBaseReq.setVersion(AlipayPropertiesUtils.getStringValue("alipay.conf.PAY_VERSION"));
-            alipayBaseReq.setNotify_url(AlipayPropertiesUtils.getStringValue("alipay.conf.PAY_NOTIFY_URL"));
+            alipayBaseReq.setVersion(AlipayConsAPP.PAY_VERSION);
+            alipayBaseReq.setNotify_url(AlipayConsAPP.PAY_NOTIFY_URL);
             alipayBaseReq.setBiz_content(JSONObject.toJSONString(pay));
             alipayBaseReq.setSign(SysSignUtils.toSignString(alipayBaseReq, null));
 
             String signContent = SysSignUtils.getSignContent(alipayBaseReq);
 
-            String sign = AlipaySignature.rsaSign(signContent,
-                    AlipayPropertiesUtils.getStringValue("alipay.conf.APP_PRIVATE_KEY_PKCS8"),
-                    AlipayPropertiesUtils.getStringValue("alipay.conf.CHARSET"));
+            String sign = AlipaySignature.rsaSign(signContent, AlipayConsAPP.APP_PRIVATE_KEY_PKCS8,
+                    AlipayConsAPP.CHARSET);
 
             alipayBaseReq.setSign(sign);
 
@@ -98,37 +101,130 @@ public class AlipayController extends BaseController {
         return res;
     }
 
-    public static void main(String... args) {
-        AlipayBaseReq alipayBaseReq = new AlipayBaseReq();
-        AlipayBizContentPay pay = new AlipayBizContentPay();
-        pay.setSubject("麦链合伙人");
-        pay.setOut_trade_no("BLSH2016908oisdofksdjoiwjk");
-        pay.setTotal_amount(new BigDecimal("10.80").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        pay.setProduct_code(AlipayPropertiesUtils.getStringValue("alipay.conf.PAY_PRODUCT_CODE"));
-        alipayBaseReq.setApp_id(AlipayPropertiesUtils.getStringValue("alipay.conf.APP_ID"));
-        alipayBaseReq.setMethod("alipay.trade.app.pay");
-        alipayBaseReq.setCharset(AlipayPropertiesUtils.getStringValue("alipay.conf.CHARSET"));
-        alipayBaseReq.setSign_type(AlipayPropertiesUtils.getStringValue("alipay.conf.SIGN_TYPE"));
-        alipayBaseReq.setTimestamp(DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        alipayBaseReq.setVersion(AlipayPropertiesUtils.getStringValue("alipay.conf.PAY_VERSION"));
-        alipayBaseReq.setNotify_url(AlipayPropertiesUtils.getStringValue("alipay.conf.PAY_NOTIFY_URL"));
-        alipayBaseReq.setBiz_content(JSONObject.toJSONString(pay));
 
-        String signContent = SysSignUtils.getSignContent(alipayBaseReq);
-        System.out.println(signContent);
-
-        String sign = null;
+    @RequestMapping("/paycheck")
+    @ResponseBody
+    @SignValid(paramType = AlipayPayResultCheckReq.class)
+    public AlipayPayResultCheckRes checkAlipaySyncResultInfo(HttpServletRequest request,
+                                                             AlipayPayResultCheckReq req, ComUser user){
+        AlipayPayResultCheckRes res = new AlipayPayResultCheckRes();
         try {
-            sign = AlipaySignature.rsaSign(signContent,
-                    AlipayPropertiesUtils.getStringValue("alipay.conf.APP_PRIVATE_KEY_PKCS8"),
-                    AlipayPropertiesUtils.getStringValue("alipay.conf.CHARSET"));
+            // 支付结果校验
+            if(StringUtils.isBlank(req.getResultStatus())){
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
+            }
+            if(!AlipayConsAPP.PAY_RESULT_STATUS_SUCCESS.equals(req.getResultStatus())){
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL_MSG);
+            }
+            AlipayTradeAppPayRes alipayTradeAppPayRes = null;
+            AlipayTradeAppPayResponse alipayTradeAppPayResponse = null;
+            try{
+                // 结果json解析
+                alipayTradeAppPayRes = JSONObject.parseObject(req.getResult(), AlipayTradeAppPayRes.class);
+                alipayTradeAppPayResponse = JSONObject.parseObject(alipayTradeAppPayRes.getAlipay_trade_app_pay_response(),
+                        AlipayTradeAppPayResponse.class);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
+            }
+
+            // 签名信息简单校验
+            if(StringUtils.isBlank(alipayTradeAppPayRes.getSign())
+                    || StringUtils.isBlank(alipayTradeAppPayRes.getSign_type())
+                    || !AlipayConsAPP.SIGN_TYPE.equals(alipayTradeAppPayRes.getSign_type())){
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNINFOERROR);
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNINFOERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNINFOERROR_MSG);
+            }
+
+            // 签名加密校验
+            boolean signCheck = AlipaySignature.rsaCheck(alipayTradeAppPayRes.getAlipay_trade_app_pay_response(),
+                    alipayTradeAppPayRes.getSign(),
+                    AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET, alipayTradeAppPayRes.getSign_type());
+            if(!signCheck){
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNERROR_MSG);
+            }
+
+            // 支付结果数据校验
+            try{
+                alipayService.checkPayInfo(alipayTradeAppPayResponse);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR_MSG);
+            }
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            if(StringUtils.isBlank(res.getResCode())){
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+            }
         }
 
-        System.out.println(sign);
-        alipayBaseReq.setSign(sign);
+        return res;
+    }
 
-        System.out.println(SysSignUtils.getEncodeContent(alipayBaseReq));
+
+    @RequestMapping("/notify")
+    @SignValid(paramType = BaseReq.class, isSysApi = false)
+    public void alipayAsyncNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, String[]> reqMap = request.getParameterMap();
+        Map<String, String> paramsMap = new HashMap<>();
+        String res = "failure";
+        try{
+            for(Map.Entry<String, String[]> entry:reqMap.entrySet()){
+                paramsMap.put(entry.getKey(), entry.getValue()[0]);
+            }
+
+            log.info("支付宝支付异步通知:" + paramsMap);
+
+            // 校验签名
+            boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap,
+                    AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET);
+            if(!signVerified){
+                // TODO 验签失败则记录异常日志，并在response中返回failure.
+                throw new BusinessException("支付异步回调签名错误");
+            }
+
+            log.info("校验签名成功");
+
+            //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
+            try{
+                synchronized (this) {
+                    // 放到service中处理
+                    alipayService.handleAlipayNotify(paramsMap);
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                throw new BusinessException(e);
+            }
+
+            // 处理完成
+            res = "success";
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            res = "failure";
+        }
+
+        response.getOutputStream().write(res.getBytes("UTF-8"));
+    }
+
+    public static void main(String... args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("aa", 1);
+        map.put("bb", 2);
+        System.out.println(map);
     }
 }

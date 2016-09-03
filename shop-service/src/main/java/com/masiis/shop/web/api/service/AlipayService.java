@@ -161,7 +161,7 @@ public class AlipayService {
             if(!AlipayConsAPP.APP_ID.equals(params.get("app_id"))){
                 throw new BusinessException("app_id不正确");
             }
-            if(!AlipayConsAPP.PAY_SELLER_ID.equals(params.get(""))){
+            if(!AlipayConsAPP.PAY_SELLER_ID.equals(params.get("seller_id"))){
                 throw new BusinessException("seller_id不正确");
             }
             String orderType = String.valueOf(paySerialNum.charAt(0));

@@ -173,6 +173,15 @@
         audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
         user_key, is_binding, is_agent, is_buy
         from com_user
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByMobileAndUnionidIsNotNull" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
+        id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
+        audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
+        user_key, is_binding, is_agent, is_buy
+        from com_user
         where mobile = #{mobile,jdbcType=VARCHAR} AND wx_unionid is not null
     </select>
 

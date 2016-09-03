@@ -68,7 +68,8 @@ public class UserController extends BaseController {
                                 @RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
         try {
-            ComUser comUser = userService.getUserByMobile(phone);
+//            ComUser comUser = userService.getUserByMobile(phone);
+            ComUser comUser = userService.getByMobileAndUnionidIsNotNull(phone);
             if (comUser != null) {
                 obj.put("isError", true);
                 obj.put("msg", "手机号已经被绑定请更换手机号");

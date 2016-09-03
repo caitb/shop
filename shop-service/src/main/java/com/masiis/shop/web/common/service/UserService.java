@@ -163,6 +163,10 @@ public class UserService {
         return comUserMapper.selectByMobile(mobile);
     }
 
+    public ComUser getByMobileAndUnionidIsNotNull(String mobile){
+        return comUserMapper.selectByMobileAndUnionidIsNotNull(mobile);
+    }
+
     /**
      * 添加用户
      *

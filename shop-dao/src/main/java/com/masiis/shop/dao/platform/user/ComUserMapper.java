@@ -57,6 +57,8 @@ public interface ComUserMapper {
      */
     ComUser selectByMobile(String mobile);
 
+    ComUser selectByMobileAndUnionidIsNotNull(String mobile);
+
     String findByPid(Integer pid);
 
     List<ComUser> selectByCondition(ComUser comUser);

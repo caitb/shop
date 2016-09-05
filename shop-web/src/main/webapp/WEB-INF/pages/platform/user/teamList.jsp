@@ -12,14 +12,14 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/xiajihehuo.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/css/xiajihehuo.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
         <a href="<%=basePath%>index"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-        <p>我的团队</p>
+        <p>我的家族</p>
     </header>
     <main>
         <div class="nav">
@@ -36,21 +36,32 @@
                 <span>总销售额</span>
             </p>
         </div>
-        <p>产品团队列表</p>
-        <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-        <div class="sec1">
-            <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
-            <div>
-                <p>${agentSkuMap.skuName}<em>团队</em></p>
-                <p>
-                    <span>团队人数：<b>${agentSkuMap.countChild}</b></span>
-                    <span>销售额：<b>￥${agentSkuMap.countSales}</b></span>
-                </p>
-            </div>
-            <c:if test="${agentSkuMap.isLastLevel == 'no'}"><h1 class="set" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');">管理团队</h1></c:if>
-            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><h1 class="team">您没有团队管理功能<img class="once" src="${path}/static/images/icon_70.png"/></h1></c:if>
+        <ul>
+            <li class="active"><span>我创建的</span></li>
+            <li onclick="clickShow()"><span>我加入的</span></li>
+        </ul>
+        <div class="listBox">
+            <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
+                <div class="floor">
+                    <div class="sec1">
+                    <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
+                    <div>
+                        <p><b>${agentSkuMap.skuName}</b></p>
+                        <p>
+                            <span>团队人数：<b>${agentSkuMap.countChild}</b></span>
+                            <span>销售额：<b>￥${agentSkuMap.countSales}</b></span>
+                        </p>
+                    </div>
+                </div>
+                        <%--<c:if test="${agentSkuMap.isLastLevel == 'no'}"><h1 class="set" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');">管理团队</h1></c:if>--%>
+                        <%--<c:if test="${agentSkuMap.isLastLevel == 'yes'}"><h1 class="team">您没有团队管理功能<img class="once" src="${path}/static/images/icon_70.png"/></h1></c:if>--%>
+                    <h1>
+                        <span onclick="clickShow()">设置<i></i></span>
+                        <span><a href="<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}">管理团队</a></span>
+                    </h1>
+                </div>
+            </c:forEach>
         </div>
-        </c:forEach>
     </main>
     <div class="paidanqi">
         <div class="back_q">
@@ -61,9 +72,21 @@
         <div class="Modal"></div>
     </div>
 </div>
+<div class="black">
+    <div class="backb"></div>
+    <div class="back_a">
+        <img src="${path}/static/images/ku.png" alt=""/>
+        <p>此功能仅支持在麦链合伙人APP使用</p>
+        <h1>
+            <span onclick="clickHide()">取消</span>
+            <span onclick="download()">去下载</span>
+        </h1>
+    </div>
+</div>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=basePath%>static/js/hideWXShare.js"></script>
+<script src="<%=path%>/static/js/download.js"></script>
 <script>
     $(".once").on("click", function () {
         $(".paidanqi").show();
@@ -71,6 +94,17 @@
     $(".kNow").on("click", function () {
         $(".paidanqi").hide();
     });
+//    var index=0;
+//    $("ul li").on("click", function () {
+//        index=$(this).index();
+//        $("ul li").eq(index).addClass("active").siblings().removeClass("active");
+//    })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
 </script>
 </body>
 </html>

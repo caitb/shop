@@ -25,6 +25,16 @@ public class BOrder {
 
     private BigDecimal  shipAmount;
 
+    private String userMessage;
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
+    }
+
     public BigDecimal getShipAmount() {
         return shipAmount;
     }

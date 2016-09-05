@@ -21,43 +21,43 @@ public class StatisticUserService {
     private StatisticOrderMapper statisticOrderMapper;
 
 
-    public List<StatisticUser> userList(String beginTime, String appid) {
-        return  staticUserMapper.userList(beginTime,appid);
+    public List<StatisticUser> userList(String beginTime, String endTime, String appid) {
+        return  staticUserMapper.userList(beginTime, endTime, appid);
     }
 
-    public List<StatisticUser> newUserList(String beginTime, String appid) {
-        return staticUserMapper.newUserList(beginTime,appid);
+    public List<StatisticUser> newUserList(String beginTime, String endTime, String appid) {
+        return staticUserMapper.newUserList(beginTime, endTime, appid);
     }
 
-    public List<StatisticUser> useList(String beginTime, String appid) {
-        return staticUserMapper.useList(beginTime,appid);
+    public List<StatisticUser> useList(String beginTime, String endTime, String appid) {
+        return staticUserMapper.useList(beginTime, endTime, appid);
     }
 
-    public List<StatisticUser> newUseList(String beginTime, String appid) {
-        return staticUserMapper.newUseList(beginTime,appid);
+    public List<StatisticUser> newUseList(String beginTime, String endTime, String appid) {
+        return staticUserMapper.newUseList(beginTime, endTime, appid);
     }
 
-    public List<StatisticUser> cityNum(String beginTime, String appid) {
-        return staticUserMapper.cityNum(beginTime,appid);
+    public List<StatisticUser> cityNum(String beginTime, String endTime, String appid) {
+        return staticUserMapper.cityNum(beginTime, endTime, appid);
     }
 
-    public List<StatisticUser> newCityNum(String beginTime, String appid) {
-        return staticUserMapper.newCityNum(beginTime,appid);
+    public List<StatisticUser> newCityNum(String beginTime, String endTime, String appid) {
+        return staticUserMapper.newCityNum(beginTime, endTime, appid);
     }
 
-    public List<StatisticOrder> selectOrder(String beginTime, String appid) {
-        return statisticOrderMapper.selectOrder(beginTime,appid);
+    public List<StatisticOrder> selectOrder(String beginTime, String endTime, String appid) {
+        return statisticOrderMapper.selectOrder(beginTime, endTime, appid);
     }
 
-    public List<StatisticOrder> newSelectOrder(String beginTime, String appid) {
-        return statisticOrderMapper.newSelectOrder(beginTime,appid);
+    public List<StatisticOrder> newSelectOrder(String beginTime, String endTime, String appid) {
+        return statisticOrderMapper.newSelectOrder(beginTime, endTime, appid);
     }
 
-    public List<StatisticOrder> cityOrder(String beginTime, String appid) {
-        return statisticOrderMapper.cityOrder(beginTime,appid);
+    public List<StatisticOrder> cityOrder(String beginTime, String endTime, String appid) {
+        return statisticOrderMapper.cityOrder(beginTime, endTime, appid);
     }
 
-    public List<StatisticOrder> newCityOrder(String beginTime, String appid) {
-        return statisticOrderMapper.newCityOrder(beginTime,appid);
+    public List<StatisticOrder> newCityOrder(String beginTime, String endTime, String appid) {
+        return statisticOrderMapper.newCityOrder(beginTime, endTime, appid);
     }
 }

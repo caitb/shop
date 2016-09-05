@@ -11,14 +11,14 @@ import java.util.List;
 public interface StatisticOrderMapper {
 
     //麦链合伙人成交订单量,成交金额
-    List<StatisticOrder> selectOrder(@Param("beginTime")String beginTime, @Param("appid") String appid);
+    List<StatisticOrder> selectOrder(@Param("beginTime")String beginTime, @Param("endTime")String endTime, @Param("appid") String appid);
 
     //麦链合伙人新增成交订单量,新增成交金额
-    List<StatisticOrder> newSelectOrder(@Param("beginTime")String beginTime, @Param("appid") String appid);
+    List<StatisticOrder> newSelectOrder(@Param("beginTime")String beginTime, @Param("endTime")String endTime, @Param("appid") String appid);
 
     //麦链商城成交订单量,成交金额
-    List<StatisticOrder> cityOrder(@Param("beginTime")String beginTime, @Param("appid") String appid);
+    List<StatisticOrder> cityOrder(@Param("beginTime")String beginTime, @Param("endTime")String endTime, @Param("appid") String appid);
 
     //麦链商城新增成交订单量,新增成交金额
-    List<StatisticOrder> newCityOrder(@Param("beginTime")String beginTime, @Param("appid") String appid);
+    List<StatisticOrder> newCityOrder(@Param("beginTime")String beginTime, @Param("endTime")String endTime, @Param("appid") String appid);
 }

@@ -83,7 +83,7 @@
                                     <div id="toolbar">
                                         <div class="form-inline">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd">
                                             </div>
 
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -426,7 +426,7 @@
                             if(row && row.newOrderSale){
                                 return row.newOrderSale;
                             }
-                            return 0.00;
+                            return "0.00";
                         }
                     },
                     {
@@ -439,6 +439,8 @@
                             if(row && row.orderSale){
                                 return row.orderSale;
                             }
+
+                            return "0.00";
                         }
                     },
                     {
@@ -451,7 +453,7 @@
                             if(row && row.newUseCount){
                                 return row.newUseCount;
                             }
-                            return 0.00;
+                            return 0;
                         }
                     },
                     {

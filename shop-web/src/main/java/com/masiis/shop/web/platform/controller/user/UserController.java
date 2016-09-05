@@ -100,7 +100,7 @@ public class UserController extends BaseController {
         log.info("userId = " + user.getId());
         try {
 //            ComUser comUser = userService.bindPhone(getComUser(request), phone);
-            ComUser comUser = userMergeService.bindUser(getComUser(request), phone);
+            ComUser comUser = userMergeService.bindUser(user, phone);
             log.info("return userId = " + comUser.getId());
             if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
                 setComUser(request, comUser);

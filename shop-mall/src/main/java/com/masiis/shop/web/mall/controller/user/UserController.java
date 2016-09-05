@@ -1,10 +1,10 @@
 package com.masiis.shop.web.mall.controller.user;
 
-import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.common.service.UserMergeService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.mall.controller.base.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -30,6 +30,8 @@ public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private UserMergeService userMergeService;
 
     @RequestMapping(value = "/login", produces = "text/json;charset=UTF-8")
     @ResponseBody
@@ -67,7 +69,7 @@ public class UserController extends BaseController {
                                 @RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
         try {
-            ComUser comUser = userService.getUserByMobile(phone);
+            ComUser comUser = userService.getByMobileAndUnionidIsNotNull(phone);
             if (comUser != null) {
                 obj.put("isError", true);
                 obj.put("msg", "手机号已经被绑定请更换手机号");
@@ -94,9 +96,14 @@ public class UserController extends BaseController {
     public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
+        ComUser user = getComUser(request);
+        log.info("userId = " + user.getId());
         try {
-            ComUser comUser = userService.bindPhone(getComUser(request), phone);
+//            ComUser comUser = userService.bindPhone(getComUser(request), phone);
+            ComUser comUser = userMergeService.bindUser(user, phone);
+            log.info("return userId = " + comUser.getId());
             if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
+                setComUser(request, comUser);
                 obj.put("isError", false);
             } else {
                 obj.put("isError", true);

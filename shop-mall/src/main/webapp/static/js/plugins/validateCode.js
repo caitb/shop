@@ -18,7 +18,7 @@
             })
             $(".close").on("click",function () {
                 $(this).parent().hide();
-                $(".back").hide()
+                $(".back").hide();
             })
         },
         applyTrial: function (skipPageValue) {
@@ -44,6 +44,9 @@
                                 break;
                             case "withdrawRequest":
                                 window.location.href = "/withdraw/withdrawRequest.shtml";
+                                break;
+                            case "getPoster":
+                                window.location.href = "shop/getPoster?shopId=" + $("#shopId").val();
                                 break;
                             default:
                                 break;

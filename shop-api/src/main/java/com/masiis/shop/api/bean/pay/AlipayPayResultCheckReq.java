@@ -1,7 +1,6 @@
 package com.masiis.shop.api.bean.pay;
 
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
-import com.masiis.shop.common.beans.tb.alipay.AlipayTradeAppPayRes;
 
 /**
  * @Date 2016/9/2

@@ -88,7 +88,7 @@ public class AlipayService {
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号
         payment.setPaySerialNum(paySerialNum);
-        payment.setPayTypeId(1);
+        payment.setPayTypeId(2);
         payment.setPayTypeName("支付宝支付");
 
         return payment;
@@ -102,7 +102,7 @@ public class AlipayService {
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号
         payment.setPaySerialNum(paySerialNum);
-        payment.setPayTypeId(1);
+        payment.setPayTypeId(2);
         payment.setPayTypeName("支付宝支付");
 
         return payment;

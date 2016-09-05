@@ -207,11 +207,13 @@
             var path;
             switch (validateCodeJS.skipPageId) {
                 case "buy":
-                    $(".back_j").hide();
+                    $(this).parent().hide();
                     $(".back").hide();
                     alert("绑定成功，请在当前页面继续购买");
                     break;
                 case "share":
+                    $(this).parent().hide();
+                    $(".back").hide();
                     alert("绑定成功，请点击继续分享");
                     break;
                 case "trial":
@@ -225,6 +227,10 @@
                 case "mallPersonalInfo":
                     window.location.reload();
                     break;
+                case "getPoster":
+                    $(this).parent().hide();
+                    $(".back").hide();
+                    alert("绑定成功，请点继续获取海报");
                 default:
                     window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                     break;

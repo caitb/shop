@@ -1,6 +1,7 @@
 package com.masiis.shop.api.controller.pay.alipay;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.masiis.shop.api.bean.base.BaseReq;
 import com.masiis.shop.api.bean.pay.AlipayPayResultCheckReq;
@@ -144,9 +145,12 @@ public class AlipayController extends BaseController {
             }
 
             // 签名加密校验
-            boolean signCheck = AlipaySignature.rsaCheck(alipayTradeAppPayRes.getAlipay_trade_app_pay_response(),
+            boolean signCheck = AlipaySignature.rsaCheck(
+                    getJSONStructStringByKey(req.getResult(), "alipay_trade_app_pay_response"),
                     alipayTradeAppPayRes.getSign(),
-                    AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET, alipayTradeAppPayRes.getSign_type());
+                    AlipayConsAPP.ALIPAY_PUBLIC_KEY,
+                    AlipayConsAPP.CHARSET,
+                    alipayTradeAppPayRes.getSign_type());
             if(!signCheck){
                 res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNERROR);
                 res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_SIGNERROR_MSG);
@@ -220,10 +224,50 @@ public class AlipayController extends BaseController {
         response.getOutputStream().write(res.getBytes("UTF-8"));
     }
 
-    public static void main(String... args) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("aa", 1);
-        map.put("bb", 2);
-        System.out.println(map);
+    private static String getJSONStructStringByKey(String jsonStr, String point){
+        String[] str1Arr = jsonStr.split(point);
+        if(str1Arr.length < 2){
+            throw new BusinessException("parse pointed key error");
+        }
+        String str1 = str1Arr[1];
+        Integer indexStart = 0;
+        Integer indexEnd = 0;
+        int z = 0;
+        boolean flag = false;
+        boolean isError = false;
+        for(int i = 0; i < str1.length(); i++){
+            if("{".equals(str1.charAt(i) + "") && !flag){
+                flag = true;
+                indexStart = i;
+                z++;
+            }
+            if("}".equals(str1.charAt(i) + "")){
+                z--;
+            }
+            if(z == 0 && flag){
+                indexEnd = i;
+                break;
+            }
+            if(i == str1.length() - 1){
+                isError = true;
+            }
+        }
+        if(isError){
+            throw new BusinessException("parse pointed key error");
+        }
+
+        String res = str1.substring(indexStart, indexEnd + 1);
+
+        return res;
+    }
+
+    public static void main(String... args) throws Exception {
+        String str = "{\"alipay_trade_app_pay_response\":{\"code\":\"10000\",\"msg\":\"Success\",\"app_id\":\"2016042701341751\",\"auth_app_id\":\"2016042701341751\",\"charset\":\"UTF-8\",\"timestamp\":\"2016-09-05 14:54:46\",\"total_amount\":\"0.01\",\"trade_no\":\"2016090521001004950221095048\",\"seller_id\":\"2088221617968217\",\"out_trade_no\":\"BLSH20160905145439370A3N40OBJP7X\"},\"sign\":\"wagBRTUcxgZ1pRgHF7Nf/SMhSiyfVTz0/wkkxQjFeThok7Jmiel0bfCWb62d6N7zOaBaiWbxjFNimKbDPTB7GvDmiXsmro4xBKZZzBCGKf1PtJRzAUSo6Kei7I8rabL+h0Le7VJIMxDP4qNYEZZfXgcfiYgW127lSJcumQ3kuwk=\",\"sign_type\":\"RSA\"}";
+        AlipayTradeAppPayRes alipayTradeAppPayRes = JSONObject.parseObject(str, AlipayTradeAppPayRes.class);
+
+        boolean result = AlipaySignature.rsaCheck(getJSONStructStringByKey(str, "alipay_trade_app_pay_response"),
+                alipayTradeAppPayRes.getSign(),
+                AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET, "RSA");
+        System.out.println(result);
     }
 }

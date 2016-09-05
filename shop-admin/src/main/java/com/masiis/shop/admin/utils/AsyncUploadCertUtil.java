@@ -35,6 +35,7 @@ public class AsyncUploadCertUtil {
                 ComUser comUser = null;
                 try {
                     comUser = uploadOSSQueue.take();
+                    log.info(comUser.toString());
                     pfUserCertificateService.asyncUploadUserCertificate(comUser);
                 } catch (Exception e) {
                     log.error("失败的comUser为:" + comUser.toString());

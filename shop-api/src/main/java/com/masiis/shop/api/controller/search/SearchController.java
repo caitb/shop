@@ -9,16 +9,12 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
-import com.masiis.shop.dao.beans.statistic.RecommendBrandStatistic;
-import com.masiis.shop.dao.beans.user.CountGroup;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserBrand;
-import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
-import com.masiis.shop.web.platform.service.user.PfUserBrandService;
-import com.masiis.shop.web.platform.service.user.UserOrganizationService;
+import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +37,7 @@ public class SearchController extends BaseController {
     private final static Log log = LogFactory.getLog(SearchController.class);
 
     @Resource
-    private UserOrganizationService userOrganizationService;
+    private PfUserOrganizationService userOrganizationService;
     @Resource
     private UserService userService;
     @Resource

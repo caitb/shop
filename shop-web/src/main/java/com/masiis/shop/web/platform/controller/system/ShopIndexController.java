@@ -68,6 +68,8 @@ public class ShopIndexController extends BaseController {
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         ComUser user = getComUser(req);
+        log.info("B端首页");
+        log.info("userId = " + user.getId());
         String value = PropertiesUtils.getStringValue("index_banner_url");//获取图片地址常量
         List<PbBanner> pbBanner = indexShowService.findPbBanner();//获取轮播图片
         for (PbBanner banner : pbBanner) {

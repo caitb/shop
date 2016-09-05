@@ -12,7 +12,6 @@ import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.platform.user.PfUserOrganizationMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;

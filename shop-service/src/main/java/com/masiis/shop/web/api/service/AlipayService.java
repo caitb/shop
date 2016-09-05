@@ -171,7 +171,7 @@ public class AlipayService {
                 }
                 if(payment.getIsEnabled().intValue() == 1){
                     log.info("该订单已经支付,支付流水号:" + paySerialNum);
-                    throw new BusinessException("该支付单已支付");
+                    return;
                 }
                 if(!new BigDecimal(params.get("total_amount")).equals(payment.getAmount())){
                     log.info("金额校验不正确,支付流水号:" + paySerialNum + "||金额:" + payment.getAmount());
@@ -188,7 +188,7 @@ public class AlipayService {
                 }
                 if(payment.getIsEnabled().intValue() == 1){
                     log.info("该订单已经支付,支付流水号:" + paySerialNum);
-                    throw new BusinessException("该支付单已支付");
+                    return;
                 }
                 if(!new BigDecimal(params.get("total_amount")).equals(payment.getAmount())){
                     log.info("金额校验不正确,支付流水号:" + paySerialNum + "||金额:" + payment.getAmount());

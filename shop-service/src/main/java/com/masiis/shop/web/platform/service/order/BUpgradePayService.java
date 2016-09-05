@@ -228,7 +228,7 @@ public class BUpgradePayService {
                 throw new BusinessException("-----------更新团队失败------------");
             }
             log.info("----删除sysMenu表团队数据------start");
-            int ii = sysMenuService.delete(pfUserOrganization.getId());
+            int ii = sysMenuService.deleteByValue(pfUserOrganization.getId());
             log.info("-----删除的数据条数------"+ii);
             log.info("----删除sysMenu表团队数据------end");
         }else {

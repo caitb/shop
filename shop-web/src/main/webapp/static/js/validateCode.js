@@ -219,13 +219,15 @@
                         window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                     case "agent":
+                        $(this).parent().hide();
+                        $(".back").hide();
                         alert("绑定成功");
                         window.location.reload();
                         break;
                     case "personalInfo":
-                        alert("绑定成功");
                         $(this).parent().hide();
-                        $(".back").hide()
+                        $(".back").hide();
+                        alert("绑定成功");
                         window.location.reload();
                         break;
                     default:

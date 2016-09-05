@@ -17,6 +17,7 @@ import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UpgradeManagePo;
 import com.masiis.shop.dao.beans.user.upgrade.UpgradePackageInfo;
 import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -65,6 +66,8 @@ public class UpgradeController {
     private BOrderService bOrderService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
 
     /**
      * 升级管理我的申请单（列表）
@@ -130,7 +133,8 @@ public class UpgradeController {
         }
         try {
             //初始化商品查询列表
-            List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+//            List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectPrimarySkuByUserId(comUser.getId());//显示代理的主打商品
             if(pfUserSkus==null){
                 res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
                 res.setResMsg("代理商品异常，初始化商品列表失败");

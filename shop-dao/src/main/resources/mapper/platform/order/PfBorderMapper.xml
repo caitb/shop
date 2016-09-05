@@ -602,6 +602,7 @@
             bo.bail_amount,
             bo.pay_time,
             bo.ship_amount,
+            bo.user_message,
             bi.sku_id,
             bi.unit_price,
             bi.quantity,
@@ -836,6 +837,7 @@
         <result property="bailAmount" column="bail_amount" />
         <result property="payTime" column="pay_time" />
         <result property="shipAmount" column="ship_amount" />
+        <result property="userMessage" column="user_message" />
         <collection property="bItems" resultMap="orderItemMap" />
     </resultMap>
     

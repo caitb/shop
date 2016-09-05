@@ -17,4 +17,8 @@ public class PfSysMenuService {
     public int delete(Integer id){
         return pfSysMenuMapper.deleteByPrimaryKey(id);
     }
+
+    public int deleteByValue(Integer value){
+        return pfSysMenuMapper.deleteByValue(value);
+    }
 }

@@ -16,6 +16,11 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
+    <delete id="deleteByValue" parameterType="java.lang.Integer" >
+        delete from pf_sys_menu
+        where value = #{value,jdbcType=INTEGER}
+    </delete>
+
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSysMenu" >
         insert into pf_sys_menu (id, create_time, type, 
             value, sort, remark

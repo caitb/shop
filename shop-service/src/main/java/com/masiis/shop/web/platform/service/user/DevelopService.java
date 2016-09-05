@@ -35,7 +35,7 @@ public class DevelopService {
     private static Font font20 = null;
     private static Font font25 = null;
     private static Font font30 = null;
-    private static Font font35 = null;
+    private static Font font36 = null;
     private static Font font40 = null;
     private static Font fontCloud30 = null;
 
@@ -61,7 +61,7 @@ public class DevelopService {
         font20 = msyh_font.deriveFont(Font.PLAIN, 20);
         font25 = msyh_font.deriveFont(Font.PLAIN, 25);
         font30 = msyh_font.deriveFont(Font.PLAIN, 30);
-        font35 = msyh_font.deriveFont(Font.PLAIN, 35);
+        font36 = msyh_font.deriveFont(Font.PLAIN, 36);
         font40 = msyh_font.deriveFont(Font.PLAIN, 40);
     }
 
@@ -103,7 +103,7 @@ public class DevelopService {
             g.drawImage(brandPosterImage, 0,0,751,434, null);   // 品牌背景图
             g.drawImage(bg, 0,0,751,434, null);     // 蒙板
             g.drawImage(organizationLogoImage, 321, 199, 108, 108, null);   // 组织 logo
-            DrawUtil.drawString(g, org.getName(), font35, Color.WHITE, 375-org.getName().length()*20, 350);  // 组织名
+            DrawUtil.drawString(g, org.getName(), font36, Color.WHITE, 375-org.getName().length()*18, 370);  // 组织名
 
             // 组织介绍区
             g.setColor(new Color(239, 239, 239));

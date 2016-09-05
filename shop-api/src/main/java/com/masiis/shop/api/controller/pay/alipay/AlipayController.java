@@ -248,6 +248,9 @@ public class AlipayController extends BaseController {
                 indexEnd = i;
                 break;
             }
+            if(i == str1.length() - 1){
+                isError = true;
+            }
         }
         if(isError){
             throw new BusinessException("parse pointed key error");

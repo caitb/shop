@@ -10,37 +10,29 @@
     </resultMap>
 
     <select id="selectOrder" resultMap="StatisticOrder">
-        SET @begin_date=#{beginTime};
-        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
         SELECT COUNT(0) 'orderTotal',SUM(a.pay_amount) 'sale' FROM pf_border a
         INNER JOIN pf_border_item b ON a.id=b.pf_border_id
         WHERE a.pay_status=1
-        AND a.order_type IN (0,1,3) AND a.pay_time &lt;= @end_date;
+        AND a.order_type IN (0,1,3) AND a.pay_time &lt;= #{endTime};
     </select>
 
     <select id="newSelectOrder" resultMap="StatisticOrder">
-        SET @begin_date=#{beginTime};
-        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
         SELECT COUNT(0) 'newOrderTotal',SUM(a.pay_amount) 'newSale' FROM pf_border a
         INNER JOIN pf_border_item b ON a.id=b.pf_border_id
         WHERE a.pay_status=1
-        AND a.order_type IN (0,1,3) AND a.pay_time &gt; @begin_date AND a.pay_time &lt;= @end_date;
+        AND a.order_type IN (0,1,3) AND a.pay_time &gt;= #{beginTime} AND a.pay_time &lt;= #{endTime};
     </select>
 
     <select id="cityOrder" resultMap="StatisticOrder">
-        SET @begin_date=#{beginTime};
-        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
         SELECT COUNT(0) 'orderTotal',SUM(a.pay_amount) 'sale' FROM sf_order a
         INNER JOIN sf_order_item b ON a.id=b.sf_order_id
-        WHERE a.pay_status=1 AND a.pay_time &lt;= @end_date;
+        WHERE a.pay_status=1 AND a.pay_time &lt;= #{endTime};
     </select>
 
     <select id="newCityOrder"  resultMap="StatisticOrder">
-        SET @begin_date=#{beginTime};
-        SET @end_date=DATE_ADD(@begin_date,INTERVAL 1 DAY);
         SELECT COUNT(0) 'newOrderTotal',SUM(a.pay_amount) 'newSale' FROM sf_order a
         INNER JOIN sf_order_item b ON a.id=b.sf_order_id
-        WHERE a.pay_status=1 AND a.pay_time &gt; @begin_date AND a.pay_time &lt;= @end_date;
+        WHERE a.pay_status=1 AND a.pay_time &gt;= #{beginTime} AND a.pay_time &lt;= #{endTime};
     </select>
 
 </mapper>

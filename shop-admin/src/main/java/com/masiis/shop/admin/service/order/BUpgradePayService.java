@@ -5,6 +5,7 @@ import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.promotion.SfUserTurnTableService;
 import com.masiis.shop.admin.service.shop.SfShopSkuService;
+import com.masiis.shop.admin.service.system.PfSysMenuService;
 import com.masiis.shop.admin.service.user.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
@@ -88,6 +89,8 @@ public class BUpgradePayService {
     private BOrderShipService bOrderShipService;
     @Resource
     private PfUserOrganizationService userOrganizationService;
+    @Resource
+    private PfSysMenuService sysMenuService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
@@ -224,8 +227,11 @@ public class BUpgradePayService {
             if (i!=1){
                 throw new BusinessException("-----------更新团队失败------------");
             }
+            log.info("----删除sysMenu表团队数据------start");
+            int ii = sysMenuService.deleteByValue(pfUserOrganization.getId());
+            log.info("-----删除的数据条数------"+ii);
+            log.info("----删除sysMenu表团队数据------end");
         }else {
-            //throw new BusinessException("团队升级--------根据用户id和品牌id查询团队信息为null----");
             log.info("团队升级--------根据用户id和品牌id查询团队信息为null----");
         }
     }

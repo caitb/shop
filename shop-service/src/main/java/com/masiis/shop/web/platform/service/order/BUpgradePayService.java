@@ -17,6 +17,7 @@ import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.system.PfSysMenuService;
 import com.masiis.shop.web.platform.service.user.*;
 import com.masiis.shop.web.promotion.cpromotion.service.guser.SfUserTurnTableService;
 import org.apache.log4j.Logger;
@@ -91,6 +92,8 @@ public class BUpgradePayService {
     private BOrderShipService bOrderShipService;
     @Resource
     private PfUserOrganizationService userOrganizationService;
+    @Resource
+    private PfSysMenuService sysMenuService;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
@@ -224,6 +227,10 @@ public class BUpgradePayService {
             if (i!=1){
                 throw new BusinessException("-----------更新团队失败------------");
             }
+            log.info("----删除sysMenu表团队数据------start");
+            int ii = sysMenuService.deleteByValue(pfUserOrganization.getId());
+            log.info("-----删除的数据条数------"+ii);
+            log.info("----删除sysMenu表团队数据------end");
         }else {
             log.info("团队升级--------根据用户id和品牌id查询团队信息为null----");
         }

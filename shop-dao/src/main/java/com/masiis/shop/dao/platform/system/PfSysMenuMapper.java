@@ -16,6 +16,8 @@ import java.util.Map;
 public interface PfSysMenuMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByValue(Integer value);
+
     int insert(PfSysMenu record);
 
     PfSysMenu selectByPrimaryKey(Integer id);

@@ -1,8 +1,5 @@
 package com.masiis.shop.common.beans.tb.alipay;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.response.*;
-
 /**
  * @Date 2016/9/2
  * @Author lzh

@@ -249,7 +249,7 @@ public class DevelopController extends BaseController{
             ImageIO.write(bufferedImage, "png", drawByteArrayOutputStream);
             byte[] bytes = drawByteArrayOutputStream.toByteArray();
 
-            response.setContentType("image/gif"); //设置返回的文件类型
+            response.setContentType("image/png"); //设置返回的文件类型
 
             sendResponseBody(response, bytes);
 

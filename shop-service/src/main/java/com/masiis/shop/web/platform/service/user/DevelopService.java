@@ -1,21 +1,17 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.QRCodeUtil;
-import com.masiis.shop.common.util.RootPathUtils;
+import com.masiis.shop.common.util.*;
 import com.masiis.shop.common.util.image.DrawImageUtil;
 import com.masiis.shop.common.util.image.DrawUtil;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.po.ComBrand;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserOrganization;
-import com.masiis.shop.web.common.utils.NetFileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
-
-import com.masiis.shop.common.util.PropertiesUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -23,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 
 
 /**
@@ -31,6 +28,9 @@ import java.io.File;
 
 @Service
 public class DevelopService {
+
+    private static final String developPosterFolder = PropertiesUtils.getStringValue("develop_poster_folder");
+    private static final String ossBaseUrl = PropertiesUtils.getStringValue("oss.BASE_URL");
 
     private static Font font20 = null;
     private static Font font25 = null;
@@ -68,7 +68,7 @@ public class DevelopService {
 
 
     private static final String organizationLogoUrlRoot = PropertiesUtils.getStringValue("organization_img_url");
-    private static final String brandLogoUrlRoot = PropertiesUtils.getStringValue("brand_poster_url");
+    private static final String brandPosterUrlRoot = PropertiesUtils.getStringValue("brand_poster_url");
 
     @Resource
     private ComBrandMapper comBrandMapper;
@@ -84,9 +84,10 @@ public class DevelopService {
         try {
             ComBrand brand = comBrandMapper.selectById(org.getBrandId());
 
-            BufferedImage brandPosterImage = NetFileUtils.getBufferedImage(brandLogoUrlRoot + brand.getBrandPosterName());
+
+            BufferedImage brandPosterImage = getBrandPosterBufferedImage(brand.getBrandPosterName());
             BufferedImage bg = ImageIO.read(new File(RootPathUtils.getRootPath()+"/static/images/developPosterBg.png"));
-            BufferedImage organizationLogoImage = NetFileUtils.getBufferedImage(organizationLogoUrlRoot+org.getLogo());
+            BufferedImage organizationLogoImage = ImageIO.read(new URL(organizationLogoUrlRoot+org.getLogo()));
             organizationLogoImage = DrawImageUtil.makeCircle(organizationLogoImage);
             BufferedImage qrImage = QRCodeUtil.createImage(host+"/static/html/downloadApp.html?userId="+comUser.getId(), null, true);
 
@@ -100,6 +101,7 @@ public class DevelopService {
             g.setColor(new Color(225,225,225));
             g.fillRect(0,0,width, height);
 
+            brandPosterImage = compress(brandPosterImage, 200, 110);
             g.drawImage(brandPosterImage, 0,0,751,434, null);   // 品牌背景图
             g.drawImage(bg, 0,0,751,434, null);     // 蒙板
             g.drawImage(organizationLogoImage, 321, 199, 108, 108, null);   // 组织 logo
@@ -130,4 +132,36 @@ public class DevelopService {
         return bufferedImage;
     }
 
+    private static BufferedImage getBrandPosterBufferedImage(String posterName) {
+        try {
+            File file = new File(RootPathUtils.getRootPath()+"/static/images/brandPoster/"+posterName);
+            if(!file.exists()) {
+                downlaodBrandPoster(posterName);
+            }
+
+            return ImageIO.read(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static void downlaodBrandPoster(String posterName) {
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new URL(brandPosterUrlRoot + posterName));
+            File file = new File(RootPathUtils.getRootPath()+"/static/images/brandPoster/"+posterName);
+            ImageIO.write(bufferedImage, "jpg", file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static BufferedImage compress(BufferedImage bf, int w, int h) {
+        BufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        bufferedImage.getGraphics().drawImage(bf, 0, 0, w, h, null);
+        return bufferedImage;
+    }
+
 }
+

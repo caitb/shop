@@ -1,9 +1,12 @@
 package com.masiis.shop.admin.utils;
 
+import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserCertificateService;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.log4j.Logger;
 
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -14,7 +17,8 @@ public class AsyncUploadCertUtil {
     private static Logger log = Logger.getLogger(AsyncUploadCertUtil.class);
     PfUserCertificateService pfUserCertificateService =
             (PfUserCertificateService) ApplicationContextUtil.getBean("pfUserCertificateService");
-
+    ComUserService comUserService =
+            (ComUserService) ApplicationContextUtil.getBean("comUserService");
     private static class Holder {
         private static final AsyncUploadCertUtil INSTANCE = new AsyncUploadCertUtil();
     }
@@ -27,21 +31,22 @@ public class AsyncUploadCertUtil {
         return Holder.INSTANCE;
     }
 
-    private LinkedBlockingQueue<ComUser> uploadOSSQueue = null;
+    private LinkedBlockingQueue<Object> uploadOSSQueue = null;
     private Thread queueThread = new Thread(new Runnable() {
         @Override
         public void run() {
             while (true) {
-                ComUser comUser = null;
                 try {
-                    log.info("进入异步证书生成");
-                    queueThread.sleep(2000);
-                    log.error("已经过了两秒");
-                    comUser = uploadOSSQueue.take();
-                    log.info(comUser.toString());
-                    pfUserCertificateService.asyncUploadUserCertificate(comUser);
+                    Object object = uploadOSSQueue.take();
+                    if(object instanceof ComUser){
+                        ComUser comUser = (ComUser) object;
+                        pfUserCertificateService.asyncUploadUserCertificate(comUser);
+                    } else if (object instanceof PfUserSku) {
+                        PfUserSku pfUserSku = (PfUserSku) object;
+                        ComUser comUser=comUserService.getUserById(pfUserSku.getUserId());
+                        pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku,comUser);
+                    }
                 } catch (Exception e) {
-                    log.error("失败的comUser为:" + comUser.toString());
                     log.error(e.getMessage(), e);
                 }
             }
@@ -53,7 +58,7 @@ public class AsyncUploadCertUtil {
         queueThread.start();
     }
 
-    public LinkedBlockingQueue<ComUser> getUploadOSSQueue() {
+    public LinkedBlockingQueue<Object> getUploadOSSQueue() {
         return uploadOSSQueue;
     }
 }

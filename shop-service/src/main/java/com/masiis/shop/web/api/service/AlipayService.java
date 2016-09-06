@@ -124,9 +124,6 @@ public class AlipayService {
                 if(payment == null){
                     throw new BusinessException("找不到支付单信息");
                 }
-                if(payment.getIsEnabled().intValue() == 1){
-                    throw new BusinessException("该支付单已支付");
-                }
                 if(!new BigDecimal(alipayTradeAppPayResponse.getTotal_amount()).equals(payment.getAmount())){
                     throw new BusinessException("支付单金额不正确");
                 }
@@ -134,9 +131,6 @@ public class AlipayService {
                 PfCorderPayment payment = pfCorderPaymentMapper.selectBySerialNum(paySerialNum);
                 if(payment == null){
                     throw new BusinessException("找不到支付单信息");
-                }
-                if(payment.getIsEnabled().intValue() == 1){
-                    throw new BusinessException("该支付单已支付");
                 }
                 if(!new BigDecimal(alipayTradeAppPayResponse.getTotal_amount()).equals(payment.getAmount())){
                     throw new BusinessException("支付单金额不正确");

@@ -295,7 +295,7 @@ public class AlipayController extends BaseController {
 
         String res = str1.substring(indexStart, indexEnd);
         res = res.replaceAll("\\\\\"", "");
-        res = res.replaceAll("\\\"", "").replaceAll("\"", "");
+        res = res.replaceAll("\\\"", "").replaceAll("\"", "").replaceAll(" ", "+");
 
         return res;
     }

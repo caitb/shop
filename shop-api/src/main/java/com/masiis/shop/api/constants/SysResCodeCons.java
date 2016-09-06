@@ -278,7 +278,7 @@ public class SysResCodeCons {
      * 搜索手机号
      */
     public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST = "101501";
-    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG = "无此手机号用户";
+    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG = "查无此手机号用户";
 
     /**
      * 微信支付

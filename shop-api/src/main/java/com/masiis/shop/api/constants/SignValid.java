@@ -38,6 +38,12 @@ public @interface SignValid {
     boolean hasData() default true;
 
     /**
+     * 是否是流返回
+     * @return
+     */
+    boolean isStreamRes() default false;
+
+    /**
      * 是否是系统接口,false是说明接口暴露给其他系统
      * @return
      */

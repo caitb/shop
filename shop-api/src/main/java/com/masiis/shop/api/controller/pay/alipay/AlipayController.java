@@ -147,7 +147,7 @@ public class AlipayController extends BaseController {
             // 签名加密校验
             boolean signCheck = AlipaySignature.rsaCheck(
                     getJSONStructStringByKey(req.getResult(), "alipay_trade_app_pay_response"),
-                    alipayTradeAppPayRes.getSign(),
+                    getStringValueByKey(req.getResult(), "sign"),
                     AlipayConsAPP.ALIPAY_PUBLIC_KEY,
                     AlipayConsAPP.CHARSET,
                     alipayTradeAppPayRes.getSign_type());
@@ -295,13 +295,13 @@ public class AlipayController extends BaseController {
 
         String res = str1.substring(indexStart, indexEnd);
         res = res.replaceAll("\\\\\"", "");
-        res = res.replaceAll("\\\"", "");
+        res = res.replaceAll("\\\"", "").replaceAll("\"", "");
 
         return res;
     }
 
     public static void main(String... args) throws Exception {
-        String str = "{\"alipay_trade_app_pay_response\":{\"code\":\"10000\",\"msg\":\"Success\",\"app_id\":\"2016042701341751\",\"auth_app_id\":\"2016042701341751\",\"charset\":\"UTF-8\",\"timestamp\":\"2016-09-06 09:41:27\",\"total_amount\":\"0.01\",\"trade_no\":\"2016090621001004950224940237\",\"seller_id\":\"2088221617968217\",\"out_trade_no\":\"BLSH201609060941207222JA25KW9ZLJ\"},\"sign\":\"XsPAickdlL\\/eOn4Wxo5qrVKV5T27Zfy+ZcOCzIPDzc2PAVNYcDUtRqTeQxoRDQt6zvkBbg2gw9w8iipVpfVerrDsUAEKMZgN\\/rLZ2tbQ+Z73\\/Uj2WX5kIDLK2OobHZ4ztMuW0xKL4S+GcRgTym9+bm1yCBqg\\/RJIhcSvEMrlb+o=\",\"sign_type\":\"RSA\"}";
+        String str = "{\\\"alipay_trade_app_pay_response\\\":{\\\"code\\\":\\\"10000\\\",\\\"msg\\\":\\\"Success\\\",\\\"app_id\\\":\\\"2016042701341751\\\",\\\"auth_app_id\\\":\\\"2016042701341751\\\",\\\"charset\\\":\\\"UTF-8\\\",\\\"timestamp\\\":\\\"2016-09-06 09:51:45\\\",\\\"total_amount\\\":\\\"0.01\\\",\\\"trade_no\\\":\\\"2016090621001004950222498354\\\",\\\"seller_id\\\":\\\"2088221617968217\\\",\\\"out_trade_no\\\":\\\"BLSH20160906095139127ZW01KYNCK7G\\\"},\\\"sign\\\":\\\"obHOhd3d2Fc31X+nr7bW\\/r2updbILj3OkLnDpc4vrb2jOoky05bhfiGIPoYdKEu1iWxlnOmdXstv3MDlKx2cQwDzxoqTTg3lKNs3Ga9w6hdwLNWDNVuMq4jNWKKZvrp0u\\/3meR2HF7LcgvRZH3WFLBg5+Ekcp3C\\/G5LjUcYGGpc=\\\",\\\"sign_type\\\":\\\"RSA\\\"}";
         String content = getJSONStructStringByKey(str, "alipay_trade_app_pay_response");
         //AlipayTradeAppPayRes alipayTradeAppPayRes = JSONObject.parseObject(str.replaceAll("\\\"", "\""), AlipayTradeAppPayRes.class);
         String sign = getStringValueByKey(str, "sign");

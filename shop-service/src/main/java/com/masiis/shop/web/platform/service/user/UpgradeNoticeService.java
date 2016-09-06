@@ -333,34 +333,34 @@ public class UpgradeNoticeService {
      */
     public PfUserUpgradeNotice dealAgentUpGradeApi(Long userId, Long userPid, Integer curAgentLevel, Integer upgradeLevel, Integer pAgentLevel, Integer skuId)throws Exception{
         PfUserUpgradeNotice upgradeNotice = dealAgentUpGrade(userId, userPid, curAgentLevel, upgradeLevel, pAgentLevel, skuId);
-        //添加升级订单
-        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNotice.getId());
-        if(upgradeNotice.getPfBorderId() == null){
-            //插入订单表
-            PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
-            BOrderAdd orderAdd = new BOrderAdd();
-            orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
-            logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
-            orderAdd.setOrderType(3);
-            orderAdd.setUserId(userId);
-            orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
-            orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
-            logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
-            orderAdd.setSendType(1);//拿货方式
-            orderAdd.setSkuId(upgradeDetail.getSkuId());
-            orderAdd.setQuantity(newSkuAgent.getQuantity());
-            logger.info("订单数量---------" + newSkuAgent.getQuantity());
-            orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
-            orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
-            logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
-            logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
-            orderAdd.setUserSource(0);
-            Long orderId = bOrderAddService.addBOrder(orderAdd);
-            logger.info("添加的升级订单id = " + orderId);
-            //升级申请表添加orderId
-            upgradeNotice.setPfBorderId(orderId);
-            upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
-        }
+//        //添加升级订单
+//        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNotice.getId());
+//        if(upgradeNotice.getPfBorderId() == null){
+//            //插入订单表
+//            PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
+//            BOrderAdd orderAdd = new BOrderAdd();
+//            orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
+//            logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
+//            orderAdd.setOrderType(3);
+//            orderAdd.setUserId(userId);
+//            orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
+//            orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
+//            logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
+//            orderAdd.setSendType(1);//拿货方式
+//            orderAdd.setSkuId(upgradeDetail.getSkuId());
+//            orderAdd.setQuantity(newSkuAgent.getQuantity());
+//            logger.info("订单数量---------" + newSkuAgent.getQuantity());
+//            orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+//            orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+//            logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
+//            logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
+//            orderAdd.setUserSource(0);
+//            Long orderId = bOrderAddService.addBOrder(orderAdd);
+//            logger.info("添加的升级订单id = " + orderId);
+//            //升级申请表添加orderId
+//            upgradeNotice.setPfBorderId(orderId);
+//            upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
+//        }
         return upgradeNotice;
     }
 
@@ -555,14 +555,45 @@ public class UpgradeNoticeService {
      * 订单界面获得升级通知信息
      * @param id   通知单id
      */
-    public BOrderUpgradeDetail getUpgradeNoticeInfo(Long id){
+    public BOrderUpgradeDetail getUpgradeNoticeInfo(Long id) throws Exception{
         //升级订单通知信息
         if (id==null){
             throw new BusinessException("升级通知信息id为null");
         }
         logger.info("获取升级通知信息------start");
         logger.info("获取升级通知信息------id----"+id);
+
         PfUserUpgradeNotice upgradeNotice = pfUserUpgradeNoticeMapper.selectByPrimaryKey(id);
+        ComUser user = userService.getUserById(upgradeNotice.getUserId());
+        //添加升级订单
+        BOrderUpgradeDetail detail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNotice.getId());
+        Long orderId = null;
+        if(upgradeNotice.getPfBorderId() == null){
+            //插入订单表
+            PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(detail.getSkuId(), detail.getApplyAgentLevel());
+            BOrderAdd orderAdd = new BOrderAdd();
+            orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
+            logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
+            orderAdd.setOrderType(3);
+            orderAdd.setUserId(user.getId());
+            orderAdd.setOldPUserId(detail.getOldPUserId());
+            orderAdd.setpUserId(detail.getNewPUserId() == null?0:detail.getNewPUserId());//设置新的上级
+            logger.info("新上级id----------" + detail.getNewPUserId());
+            orderAdd.setSendType(1);//拿货方式
+            orderAdd.setSkuId(detail.getSkuId());
+            orderAdd.setQuantity(newSkuAgent.getQuantity());
+            logger.info("订单数量---------" + newSkuAgent.getQuantity());
+            orderAdd.setCurrentAgentLevel(detail.getCurrentAgentLevel());
+            orderAdd.setAgentLevelId(detail.getApplyAgentLevel());
+            logger.info("原始等级--------" + detail.getCurrentAgentLevel());
+            logger.info("期望等级--------" + detail.getApplyAgentLevel());
+            orderAdd.setUserSource(0);
+            orderId = bOrderAddService.addBOrder(orderAdd);
+            logger.info("添加的升级订单id = " + orderId);
+            //升级申请表添加orderId
+            upgradeNotice.setPfBorderId(orderId);
+            upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
+        }
         BOrderUpgradeDetail upgradeDetail = null;
         if (upgradeNotice!=null){
             //验证条件是否可以进入
@@ -570,7 +601,7 @@ public class UpgradeNoticeService {
                 upgradeDetail = new BOrderUpgradeDetail();
                 upgradeDetail.setUpgradeNoticeId(id);
                 upgradeDetail.setUpgradeOrderCode(upgradeNotice.getCode());
-                upgradeDetail.setPfBorderId(upgradeNotice.getPfBorderId());
+                upgradeDetail.setPfBorderId(orderId);
                 logger.info("订单id-------"+upgradeDetail.getPfBorderId());
                 upgradeDetail.setUpgradeStatus(upgradeNotice.getStatus());
                 logger.info("上级状态--------"+upgradeDetail.getUpStatus());

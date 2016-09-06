@@ -246,13 +246,13 @@ public class ControllerSignatureAspect implements Ordered {
         String sign = SysSignUtils.toSignString(req, userKey);
         // 获取请求对象中的签名字符串
         String reqSign = getFieldValue(clazz, req);
-/*        if(!sign.equals(reqSign)){
+        if(!sign.equals(reqSign)){
             res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
             res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
             return null;
         }
         log.info("sign:" + sign);
-        log.info("reqSign:" + reqSign);*/
+        log.info("reqSign:" + reqSign);
 
         // 绑定参数
         for(int i = 0; i < parames.length; i++){

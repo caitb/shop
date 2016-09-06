@@ -116,23 +116,22 @@ public class SfShopManageController extends BaseController {
             if(sfShop == null){
                 res.setResCode(SysResCodeCons.RES_CODE_SHOP_NULL);
                 res.setResMsg(SysResCodeCons.RES_CODE_SHOP_NULL_MSG);
-                throw new BusinessException("该用户没有自己的店铺！");
+                log.info("该用户没有自己的店铺");
+                return res;
             }
             SfShopStatistics sfShopStatistics = sfShopStatisticsService.selectByShopUserId(comUser.getId());
             Integer fansNum = sfUserRelationService.getFansOrSpokesMansNum(sfShop.getId(), false, comUser.getId());
             Integer unshippedOrderCount = sfOrderService.getUnshippedOrderCount(sfShop.getId(), comUser.getId());
-
             res.setComUser(comUser);
             res.setSfShop(sfShop);
             res.setSaleAmount(NumberFormat.getCurrencyInstance(Locale.CHINA).format(sfShopStatistics.getIncomeFee()));//总销售额
             res.setOrderCount(sfShopStatistics.getOrderCount());//总订单数
             res.setFansNum(fansNum);//粉丝数
             res.setUnshippedOrderCount(unshippedOrderCount);//待发货订单数
-
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            log.error("加载店铺首页数据失败![comUser="+comUser+"][sfShop="+sfShop+"]");
+            log.info("加载店铺首页数据失败![comUser=" + comUser + "][sfShop=" + sfShop+"]");
         }
         return res;
     }

@@ -15,7 +15,9 @@ import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.common.utils.DrawPicUtil;
+import com.masiis.shop.web.platform.utils.AsyncUploadCertUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ import java.util.List;
 @Service
 @Transactional
 public class PfUserCertificateService {
-
+    private static Logger logger = Logger.getLogger(AsyncUploadCertUtil.class);
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
@@ -256,11 +258,22 @@ public class PfUserCertificateService {
     public void asyncUploadUserCertificate(ComUser comUser) {
         List<PfUserSku> pfUserSkus = pfUserSkuService.getPfUserSkuByUserId(comUser.getId());
         for (PfUserSku pfUserSku : pfUserSkus) {
+            logger.info("处理pfUserSku，id：" + pfUserSku.getId());
             if (StringUtils.isBlank(pfUserSku.getCode())) {
-                ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
-                addUserCertificate(comUser, comSku, pfUserSku);
+                asyncUploadUserCertificateItem(pfUserSku, comUser);
             }
         }
+    }
+
+    /**
+     * 异步上传证书
+     *
+     * @param pfUserSku
+     * @param comUser
+     */
+    public void asyncUploadUserCertificateItem(PfUserSku pfUserSku, ComUser comUser) {
+        ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+        addUserCertificate(comUser, comSku, pfUserSku);
     }
 }
 

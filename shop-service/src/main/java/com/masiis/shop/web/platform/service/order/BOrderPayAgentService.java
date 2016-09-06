@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
+
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderUserSource;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -120,7 +121,7 @@ public class BOrderPayAgentService {
             logger.info("<6>处理合伙推荐关系");
             addUserRecommenRelation(comUser, pfBorder, pfBorderItem);
             logger.info("<7>处理用户合伙关系");
-            addUserSku(comUser, comSku, pfBorder, pfBorderItem);
+            addUserSku(comUser, pfBorder, pfBorderItem);
             logger.info("<8>初始化品牌合伙关系");
             addUserBrand(comUser, comSpu);
             logger.info("<9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
@@ -135,6 +136,13 @@ public class BOrderPayAgentService {
             }
             logger.info("<12>修改上级小白合伙人数");
             modifyUserOrganization(pfBorder, comSpu);
+            //异步上传授权书
+            try {
+                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+            } catch (InterruptedException e) {
+                logger.error("阻塞住了");
+            }
         }
         logger.info("<13>实时统计数据显示");
         orderStatisticsService.statisticsOrder(pfBorder.getId());
@@ -144,12 +152,6 @@ public class BOrderPayAgentService {
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus().equals(BOrderStatus.WaitShip.getCode())) {
             //处理平台发货类型订单
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
-        }
-        //异步上传授权书
-        try {
-            AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
-        } catch (InterruptedException e) {
-            logger.error("阻塞住了");
         }
     }
 
@@ -257,11 +259,10 @@ public class BOrderPayAgentService {
      * 处理用户合伙关系和证书数据
      *
      * @param comUser      用户对象
-     * @param comSku       SKU对象
      * @param pfBorder     订单对象
      * @param pfBorderItem 订单商品表对象
      */
-    private void addUserSku(ComUser comUser, ComSku comSku, PfBorder pfBorder, PfBorderItem pfBorderItem) {
+    private void addUserSku(ComUser comUser, PfBorder pfBorder, PfBorderItem pfBorderItem) {
         PfUserSku thisUS = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
         if (thisUS == null) {
             thisUS = new PfUserSku();
@@ -386,17 +387,17 @@ public class BOrderPayAgentService {
      */
     private void addShopAndShopStatistics(ComUser comUser) {
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
-        logger.info("------用户id---------"+comUser.getId());
+        logger.info("------用户id---------" + comUser.getId());
         if (sfShop == null) {
             sfShop = new SfShop();
             sfShop.setCreateTime(new Date());
             sfShop.setUserId(comUser.getId());
             sfShop.setStatus(1);
             sfShop.setExplanation("主营各类化妆品、保健品");
-            logger.info("wexHeadImag---------"+comUser.getWxHeadImg());
-            if (comUser.getWxHeadImg()==null){
+            logger.info("wexHeadImag---------" + comUser.getWxHeadImg());
+            if (comUser.getWxHeadImg() == null) {
                 sfShop.setLogo("http://wx.qlogo.cn/mmopen/U3WEAQpg2p6kauE3P0DN4k9LTgUql9CRVSjH3P6xNs9RC8lW3GpibiahGfGUiaJCFfmMViazrbvNdFVntLvgjY39ILUdSeDdTvEP/0");
-            }else{
+            } else {
                 sfShop.setLogo(comUser.getWxHeadImg());
             }
             sfShop.setName(comUser.getRealName() + "的小店");

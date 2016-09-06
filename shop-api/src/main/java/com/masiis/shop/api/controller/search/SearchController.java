@@ -64,9 +64,9 @@ public class SearchController extends BaseController {
 
             if(userBlackService.isBlackByMobile(searchReq.getMobile())) {
                 // 黑名单用户不能登录
-                searchRes.setResCode(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST);
-                searchRes.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
-                throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
+                searchRes.setResCode(SysResCodeCons.RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST);
+                searchRes.setResMsg(SysResCodeCons.RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG);
             }
 
             Map<String, Object> dataMap = userOrganizationService.searchByMobile(searchReq.getMobile(), searchReq.getBrandId());
@@ -75,11 +75,12 @@ public class SearchController extends BaseController {
             searchRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             searchRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
-            searchRes.setResMsg("手机号查询失败!");
+            if(StringUtils.isBlank(searchRes.getResCode())){
+                searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
+                searchRes.setResMsg("手机号查询失败!");
+            }
 
-            log.error("手机号查询异常!" + e);
-            e.printStackTrace();
+            log.error("手机号查询异常:" + e.getMessage(), e);
         }
         return searchRes;
     }

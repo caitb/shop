@@ -122,6 +122,7 @@ public class SysResCodeCons {
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL = "100603";
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MSG = "查询所有的区失败";
 
+
     /**
      * 合伙人申请
      */
@@ -272,6 +273,12 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH = "101404";
     public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH_MSG = "该订单不属于本人";
+
+    /**
+     * 搜索手机号
+     */
+    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST = "101501";
+    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG = "无此手机号用户";
 
     /**
      * 微信支付

@@ -15,4 +15,14 @@ public class UserBlackService {
     public ComUserBlacklist loadByMobile(String mobile){
         return comUserBlacklistMapper.selectByMobile(mobile);
     }
+
+    /**
+     * 是否是黑名单
+     * @param mobile
+     * @return
+     */
+    public Boolean isBlackByMobile(String mobile){
+        ComUserBlacklist comUserBlacklist = comUserBlacklistMapper.selectByMobile(mobile);
+        return comUserBlacklist==null?false:true;
+    }
 }

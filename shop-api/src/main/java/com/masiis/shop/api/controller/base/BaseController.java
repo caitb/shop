@@ -121,9 +121,9 @@ public class BaseController {
             os.flush();
             os.close();
         } catch (UnsupportedEncodingException e) {
-
+            e.printStackTrace();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 

@@ -12,7 +12,9 @@ import java.util.List;
 import com.masiis.shop.dao.po.ComBrand;
 import com.masiis.shop.dao.po.PfUserBrand;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PfUserBrandMapper {
     int deleteByPrimaryKey(Integer id);
 

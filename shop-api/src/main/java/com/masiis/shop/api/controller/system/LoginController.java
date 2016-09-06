@@ -20,6 +20,7 @@ import com.masiis.shop.common.enums.api.ValidCodeTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserKeybox;
+import com.masiis.shop.web.platform.service.user.UserBlackService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
@@ -45,6 +46,8 @@ public class LoginController extends BaseController {
     private UserService userService;
     @Resource
     private ComUserKeyboxService keyboxService;
+    @Resource
+    private UserBlackService userBlackService;
 
     @RequestMapping("/loginByWx")
     @ResponseBody
@@ -158,6 +161,15 @@ public class LoginController extends BaseController {
                 // 移除redis验证码
                 SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), "aa", 1);
             }
+
+            // 检查是否处于黑名单
+            if(userBlackService.isBlackByMobile(phoneNum)) {
+                // 黑名单用户不能登录
+                res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST);
+                res.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
+            }
+
             // 按照phoneNum来查询用户
             ComUser user = userService.getUserByMobile(phoneNum);
             if(user == null){

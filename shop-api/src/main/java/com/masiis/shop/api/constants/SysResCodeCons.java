@@ -79,6 +79,10 @@ public class SysResCodeCons {
     public static final String RES_CODE_USER_ISNOT_SIGNUP = "100204";
     public static final String RES_CODE_USER_ISNOT_SIGNUP_MSG = "该手机号未绑定用户";
 
+    public static final String RES_CODE_PHONENUM_ISIN_BLACKLIST = "100205";
+    public static final String RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG = "该手机号无法使用，请使用其他手机号注册，或联系客服400961616了解详情。";
+
+
     /**
      * 微信登录
      */

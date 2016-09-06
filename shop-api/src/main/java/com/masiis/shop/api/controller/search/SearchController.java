@@ -8,6 +8,7 @@ import com.masiis.shop.api.bean.search.SearchRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -15,6 +16,7 @@ import com.masiis.shop.dao.po.PfUserBrand;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
+import com.masiis.shop.web.platform.service.user.UserBlackService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,8 @@ public class SearchController extends BaseController {
     private PfUserBrandMapper pfUserBrandMapper;
     @Resource
     private BrandStatisticService brandStatisticService;
+    @Resource
+    private UserBlackService userBlackService;
 
     @RequestMapping("/searchByMobile")
     @ResponseBody
@@ -56,6 +60,13 @@ public class SearchController extends BaseController {
                 searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
                 searchRes.setResMsg("手机号为空");
                 return searchRes;
+            }
+
+            if(userBlackService.isBlackByMobile(searchReq.getMobile())) {
+                // 黑名单用户不能登录
+                searchRes.setResCode(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST);
+                searchRes.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG);
             }
 
             Map<String, Object> dataMap = userOrganizationService.searchByMobile(searchReq.getMobile(), searchReq.getBrandId());

@@ -9,6 +9,7 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
@@ -55,6 +56,8 @@ public class SfOrderService {
     private ComUserMapper comUserMapper;
     @Resource
     private SfUserAccountService sfUserAccountService;
+    @Resource
+    private ComSkuImageMapper comSkuImageMapper;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public int insert(SfOrder sfOrder) {
@@ -300,5 +303,14 @@ public class SfOrderService {
         if(resList == null || resList.size() == 0)
             return null;
         return resList;
+    }
+
+    /**
+     * 获取sku默认图片url
+     * @param skuId
+     * @return
+     */
+    public String getSkuDefaultImgUrlBySkuId(Integer skuId) {
+        return comSkuImageMapper.selectDefaultImgBySkuId(skuId).getImgUrl();
     }
 }

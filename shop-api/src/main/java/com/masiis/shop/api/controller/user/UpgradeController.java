@@ -544,6 +544,7 @@ public class UpgradeController {
             upgradeNoticeService.upgradeApplySubmitNotice(upgradeLevel, pAgentLevel, upgradeNotice.getId(), comUser);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("判断是否可以升级，生成申请单id="+upgradeNotice.getId());
@@ -626,6 +627,7 @@ public class UpgradeController {
             upgradeNoticeService.notUpgradeMessage(upgradeId);
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         logger.info(JSONObject.toJSONString(res));
         return res;

@@ -419,7 +419,7 @@ public class BOrderAddController extends BaseController {
                     log.info("升级订单对应的通知单id--------" + upgradeNoticeId);
                     orderAdd.setOrderType(3);
                     orderAdd.setUserId(comUser.getId());
-                    orderAdd.setpUserId(upgradeDetail.getNewPUserId());//设置新的上级
+                    orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
                     log.info("新上级id----------" + upgradeDetail.getNewPUserId());
                     orderAdd.setSendType(1);//拿货方式
                     orderAdd.setSkuId(upgradeDetail.getSkuId());

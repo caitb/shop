@@ -70,14 +70,14 @@ public class ControllerSignatureAspect implements Ordered {
             return res;
         }
 
-        Object errRes = returnType.getDeclaredConstructor().newInstance();
+        Object errRes = null;
         Object req = null;
         try {
             if(rl.isStreamRes()){
                 req = getReqBean(parames, clazz, errRes, rl);
 
                 if(req == null && rl.hasData()){
-                    return "fail";
+                    return errRes;
                 }
                 log.info("进入" + tarName + "......");
                 long before = System.currentTimeMillis();
@@ -90,6 +90,8 @@ public class ControllerSignatureAspect implements Ordered {
                 log.info("离开" + tarName + "......");
                 return res;
             }
+
+            errRes = returnType.getDeclaredConstructor().newInstance();
 
             if(!rl.isPageReturn()) {
                 // 对请求参数进行解析，并获取参数对象引用
@@ -137,6 +139,10 @@ public class ControllerSignatureAspect implements Ordered {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        }
+
+        if(rl.isStreamRes()){
+            return errRes;
         }
 
         if(!rl.isPageReturn()) {
@@ -247,16 +253,6 @@ public class ControllerSignatureAspect implements Ordered {
         }
         log.info("sign:" + sign);
         log.info("reqSign:" + reqSign);
-//        String sign = SysSignUtils.toSignString(req, userKey);
-//        // 获取请求对象中的签名字符串
-//        String reqSign = getFieldValue(clazz, req);
-//        if(!sign.equals(reqSign)){
-//            res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
-//            res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
-//            return null;
-//        }
-//        log.info("sign:" + sign);
-//        log.info("reqSign:" + reqSign);
 
         // 绑定参数
         for(int i = 0; i < parames.length; i++){

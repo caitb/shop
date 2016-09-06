@@ -79,6 +79,10 @@ public class SysResCodeCons {
     public static final String RES_CODE_USER_ISNOT_SIGNUP = "100204";
     public static final String RES_CODE_USER_ISNOT_SIGNUP_MSG = "该手机号未绑定用户";
 
+    public static final String RES_CODE_PHONENUM_ISIN_BLACKLIST = "100205";
+    public static final String RES_CODE_PHONENUM_ISIN_BLACKLIST_MSG = "该手机号无法使用，请使用其他手机号注册，或联系客服400961616了解详情。";
+
+
     /**
      * 微信登录
      */
@@ -117,6 +121,7 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL = "100603";
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MSG = "查询所有的区失败";
+
 
     /**
      * 合伙人申请
@@ -268,6 +273,12 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH = "101404";
     public static final String RES_CODE_UPGRADE_ORDER_USER_NOTMATCH_MSG = "该订单不属于本人";
+
+    /**
+     * 搜索手机号
+     */
+    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST = "101501";
+    public static final String RES_CODE_PHONESEARCH_PHONENUM_ISIN_BLACKLIST_MSG = "查无此手机号用户";
 
     /**
      * 微信支付

@@ -1287,7 +1287,7 @@ public class WxPFNoticeUtils {
                 throw new BusinessException("wxUser为空");
             }
         } catch (Exception e){
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             return null;
         }
         return wxUser.getOpenid();

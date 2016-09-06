@@ -77,7 +77,7 @@ public class ControllerSignatureAspect implements Ordered {
                 req = getReqBean(parames, clazz, errRes, rl);
 
                 if(req == null && rl.hasData()){
-                    return "fail";
+                    return errRes;
                 }
                 log.info("进入" + tarName + "......");
                 long before = System.currentTimeMillis();

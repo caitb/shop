@@ -2,7 +2,10 @@ package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.ComUserBlacklistMapper;
 import com.masiis.shop.dao.po.ComUserBlacklist;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Created by cai_tb on 16/9/6.
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserBlackService {
 
+    @Resource
     private ComUserBlacklistMapper comUserBlacklistMapper;
 
     public ComUserBlacklist loadByMobile(String mobile){

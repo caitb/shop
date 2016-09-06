@@ -46,7 +46,7 @@
                                 window.location.href = "/withdraw/withdrawRequest.shtml";
                                 break;
                             case "getPoster":
-                                window.location.href = "shop/getPoster?shopId=" + $("#shopId").val();
+                                window.location.href = "/shop/getPoster?shopId=" + $("#shopId").val();
                                 break;
                             default:
                                 break;
@@ -231,6 +231,7 @@
                     $(this).parent().hide();
                     $(".back").hide();
                     alert("绑定成功，请点继续获取海报");
+                    break;
                 default:
                     window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                     break;

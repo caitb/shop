@@ -528,32 +528,7 @@ public class AgentUpGradeController extends BaseController {
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-        if (upAgentLevel.intValue() == upgradeLevel.intValue()){
-            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-            logger.info("申请人原上级商品代理信息");
-            logger.info("upGradeInfoPo.getApplyPid() = "+upGradeInfoPo.getApplyPid());
-            PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            logger.info("查询申请人原上级的上级代理信息");
-            PfUserSku pfPPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfPUserSku.getUserPid(), upGradeInfoPo.getSkuId());
-            logger.info("原上级代理等级："+pfPPUserSku.getAgentLevelId());
-            logger.info("原上级代理的上级代理等级："+pfPPUserSku.getAgentLevelId());
-            List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(upGradeInfoPo.getSkuId(), pfPUserSku.getAgentLevelId(), pfPPUserSku.getAgentLevelId());
-            if (pfSkuAgents == null || pfSkuAgents.size() == 0){
-                logger.info("-----------------------------上级不可以升级---------------------------------");
-                boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-                jsonObject.put("applyBoolean",applyBoolean);
-            }else {
-                logger.info("-----------------------------上级可以升级---------------------------------");
-                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
-                boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=1");
-                jsonObject.put("upBoolean",upBoolean);
-                boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-                jsonObject.put("applyBoolean",applyBoolean);
-            }
-        }
-        jsonObject.put("isTrue","true");
-        logger.info(jsonObject.toJSONString());
-        return jsonObject.toJSONString();
+        return upgradeNoticeService.upgradeApplySubmitNotice(upgradeLevel, upAgentLevel, upgradeId, comUser);
     }
 
     /**
@@ -573,18 +548,6 @@ public class AgentUpGradeController extends BaseController {
             logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
-        UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
-        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(upgradeId);
-        ComUser applyUser = userService.getUserById(upgradeNotice.getUserId());
-        ComUser oldUpUser = userService.getUserById(upgradeNotice.getUserPid());
-        logger.info("代理暂不升级发送消息");
-        boolean oldBoolean = upgradeWechatNewsService.upgradeApplyResultNotice(oldUpUser, upGradeInfoPo, "/upgrade/upgradeInfo.shtml?upgradeId="+upgradeId);
-        logger.info("代理暂不升级给下级发送微信消息");
-        boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(applyUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
-        jsonObject.put("isTrue","true");
-        jsonObject.put("oldBoolean",oldBoolean);
-        jsonObject.put("applyBoolean",applyBoolean);
-        logger.info(jsonObject.toJSONString());
-        return jsonObject.toJSONString();
+        return upgradeNoticeService.notUpgradeMessage(upgradeId);
     }
 }

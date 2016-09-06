@@ -149,7 +149,7 @@ public class PfUserRecommendRelationService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         for (Long id : giveList) {
             recommedPo = new HelpRecommedPo();
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userId, skuId);
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(id, skuId);
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(pfUserSku.getAgentLevelId());
             ComUser user = userService.getUserById(id);
             recommedPo.setLevelName(comAgentLevel.getName());

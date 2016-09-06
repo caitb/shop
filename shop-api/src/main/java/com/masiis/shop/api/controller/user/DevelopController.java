@@ -203,13 +203,11 @@ public class DevelopController {
 
     @RequestMapping("/poster")
     @ResponseBody
-    @SignValid(paramType = DevelopPosterReq.class)
-    public BaseBusinessRes poster(HttpServletRequest request,
+    @SignValid(paramType = DevelopPosterReq.class, isStreamRes = true)
+    public void poster(HttpServletRequest request,
                      HttpServletResponse response,
                      DevelopPosterReq req,
                      ComUser comUser) throws Exception {
-
-        BaseBusinessRes bbr = new BaseBusinessRes();
 
         try{
             List<Map<String,Object>> orgMaps = pfUserOrganizationMapper.listCreateAndJoinOrganization(comUser.getId());
@@ -257,17 +255,11 @@ public class DevelopController {
             os.flush();
             os.close();
 
-            bbr.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
-            bbr.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e){
-            bbr.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            bbr.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
-
             log.error("获取海报出错了[req="+req+"]");
             e.printStackTrace();
         }
 
-        return bbr;
     }
 
 

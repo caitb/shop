@@ -6,6 +6,7 @@ import com.masiis.shop.api.bean.family.DevelopOrganizationRes;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
+import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.platform.user.PfUserOrganizationMapper;
 import com.masiis.shop.web.common.utils.NetFileUtils;
@@ -40,7 +41,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/develop")
-public class DevelopController {
+public class DevelopController extends BaseController{
 
     private final static Log log = LogFactory.getLog(DevelopController.class);
 
@@ -249,11 +250,8 @@ public class DevelopController {
             byte[] bytes = drawByteArrayOutputStream.toByteArray();
 
             response.setContentType("image/gif"); //设置返回的文件类型
-            OutputStream os = response.getOutputStream();
-            os.write(bytes);
 
-            os.flush();
-            os.close();
+            sendResponseBody(response, bytes);
 
         } catch (Exception e){
             log.error("获取海报出错了[req="+req+"]");

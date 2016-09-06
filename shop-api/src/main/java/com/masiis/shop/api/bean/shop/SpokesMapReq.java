@@ -1,5 +1,6 @@
 package com.masiis.shop.api.bean.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.api.bean.base.BasePagingReq;
 
@@ -8,14 +9,20 @@ import com.masiis.shop.api.bean.base.BasePagingReq;
  */
 public class SpokesMapReq extends BasePagingReq {
     @JSONField(name = "ID")
-    private String ID;
+    private String iD;
 
     public String getID() {
-        return ID;
+        return iD;
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+        this.iD = ID;
+    }
+
+    public static void main(String... args) {
+        SpokesMapReq req = new SpokesMapReq();
+        req.setID("aaa");
+        System.out.println(JSONObject.toJSONString(req));
     }
 
 }

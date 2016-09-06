@@ -116,6 +116,7 @@ public class SfShopManageController extends BaseController {
             if(sfShop == null){
                 res.setResCode(SysResCodeCons.RES_CODE_SHOP_NULL);
                 res.setResMsg(SysResCodeCons.RES_CODE_SHOP_NULL_MSG);
+                log.info("该用户没有自己的店铺");
                 return res;
             }
             SfShopStatistics sfShopStatistics = sfShopStatisticsService.selectByShopUserId(comUser.getId());
@@ -130,7 +131,7 @@ public class SfShopManageController extends BaseController {
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            log.info("加载店铺首页数据失败![comUser="+comUser+"][sfShop="+sfShop+"]");
+            log.info("加载店铺首页数据失败![comUser=" + comUser + "][sfShop=" + sfShop+"]");
         }
         return res;
     }

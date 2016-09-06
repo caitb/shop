@@ -256,17 +256,59 @@ public class AlipayController extends BaseController {
             throw new BusinessException("parse pointed key error");
         }
 
-        String res = str1.substring(indexStart, indexEnd + 1);
+        String res = str1.substring(indexStart, indexEnd + 1).replaceAll("\\\\\"", "\"");
+
+        return res;
+    }
+
+    private static String getStringValueByKey(String jsonStr, String point){
+        String[] str1Arr = jsonStr.split(point);
+        if(str1Arr.length < 2){
+            throw new BusinessException("parse pointed key error");
+        }
+        String str1 = str1Arr[1];
+        Integer indexStart = 0;
+        Integer indexEnd = 0;
+        int z = 0;
+        boolean flag = false;
+        boolean isError = false;
+        for(int i = 0; i < str1.length(); i++){
+            if(":".equals(str1.charAt(i) + "") && !flag){
+                flag = true;
+                indexStart = i + 1;
+                z++;
+            }
+            if(",".equals(str1.charAt(i) + "")){
+                z--;
+            }
+            if(z == 0 && flag){
+                indexEnd = i;
+                break;
+            }
+            if(i == str1.length() - 1){
+                isError = true;
+            }
+        }
+        if(isError){
+            throw new BusinessException("parse pointed key error");
+        }
+
+        String res = str1.substring(indexStart, indexEnd);
+        res = res.replaceAll("\\\\\"", "");
+        res = res.replaceAll("\\\"", "");
 
         return res;
     }
 
     public static void main(String... args) throws Exception {
-        String str = "{\"alipay_trade_app_pay_response\":{\"code\":\"10000\",\"msg\":\"Success\",\"app_id\":\"2016042701341751\",\"auth_app_id\":\"2016042701341751\",\"charset\":\"UTF-8\",\"timestamp\":\"2016-09-05 14:54:46\",\"total_amount\":\"0.01\",\"trade_no\":\"2016090521001004950221095048\",\"seller_id\":\"2088221617968217\",\"out_trade_no\":\"BLSH20160905145439370A3N40OBJP7X\"},\"sign\":\"wagBRTUcxgZ1pRgHF7Nf/SMhSiyfVTz0/wkkxQjFeThok7Jmiel0bfCWb62d6N7zOaBaiWbxjFNimKbDPTB7GvDmiXsmro4xBKZZzBCGKf1PtJRzAUSo6Kei7I8rabL+h0Le7VJIMxDP4qNYEZZfXgcfiYgW127lSJcumQ3kuwk=\",\"sign_type\":\"RSA\"}";
-        AlipayTradeAppPayRes alipayTradeAppPayRes = JSONObject.parseObject(str, AlipayTradeAppPayRes.class);
-
-        boolean result = AlipaySignature.rsaCheck(getJSONStructStringByKey(str, "alipay_trade_app_pay_response"),
-                alipayTradeAppPayRes.getSign(),
+        String str = "{\"alipay_trade_app_pay_response\":{\"code\":\"10000\",\"msg\":\"Success\",\"app_id\":\"2016042701341751\",\"auth_app_id\":\"2016042701341751\",\"charset\":\"UTF-8\",\"timestamp\":\"2016-09-06 09:41:27\",\"total_amount\":\"0.01\",\"trade_no\":\"2016090621001004950224940237\",\"seller_id\":\"2088221617968217\",\"out_trade_no\":\"BLSH201609060941207222JA25KW9ZLJ\"},\"sign\":\"XsPAickdlL\\/eOn4Wxo5qrVKV5T27Zfy+ZcOCzIPDzc2PAVNYcDUtRqTeQxoRDQt6zvkBbg2gw9w8iipVpfVerrDsUAEKMZgN\\/rLZ2tbQ+Z73\\/Uj2WX5kIDLK2OobHZ4ztMuW0xKL4S+GcRgTym9+bm1yCBqg\\/RJIhcSvEMrlb+o=\",\"sign_type\":\"RSA\"}";
+        String content = getJSONStructStringByKey(str, "alipay_trade_app_pay_response");
+        //AlipayTradeAppPayRes alipayTradeAppPayRes = JSONObject.parseObject(str.replaceAll("\\\"", "\""), AlipayTradeAppPayRes.class);
+        String sign = getStringValueByKey(str, "sign");
+        System.out.println(content);
+        System.out.println(sign);
+        boolean result = AlipaySignature.rsaCheck(content,
+                sign,
                 AlipayConsAPP.ALIPAY_PUBLIC_KEY, AlipayConsAPP.CHARSET, "RSA");
         System.out.println(result);
     }

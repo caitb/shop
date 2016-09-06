@@ -649,16 +649,22 @@ public class UpgradeController {
         if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
             logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
-            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
-            if (upGradeInfoPo.getWishAgentId().intValue() == pfUserSku.getAgentLevelId().intValue()){
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyId(), upGradeInfoPo.getSkuId());
+            if (pfUserSku.getUserPid().longValue() == upGradeInfoPo.getApplyPid().longValue()){
+                PfUserSku pPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), upGradeInfoPo.getSkuId());
+                if (upGradeInfoPo.getWishAgentId().intValue() >= pPfUserSku.getAgentLevelId().intValue()){
+                    ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
+                    returnMsg = comUser.getRealName();
+                }else {
+                    returnMsg = upGradeInfoPo.getApplyPName();
+                }
+            }else {
                 if (pfUserSku.getUserPid().longValue() == 0){
                     returnMsg = "平台";
                 }else {
                     ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
                     returnMsg = comUser.getRealName();
                 }
-            }else {
-                returnMsg = upGradeInfoPo.getApplyPName();
             }
         }
         logger.info("根据处理获取升级后的上级信息 end");

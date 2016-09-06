@@ -46,7 +46,7 @@
                                 window.location.href = "/withdraw/withdrawRequest.shtml";
                                 break;
                             case "getPoster":
-                                window.location.href = "shop/getPoster?shopId=" + $("#shopId").val();
+                                window.location.href = "/shop/getPoster?shopId=" + $("#shopId").val();
                                 break;
                             default:
                                 break;

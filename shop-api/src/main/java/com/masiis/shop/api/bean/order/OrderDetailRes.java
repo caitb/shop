@@ -17,6 +17,15 @@ public class OrderDetailRes extends BaseBusinessRes {
     private List<SfOrderFreight> orderFreights;//快递公司信息
     private List<SfOrderPayment> payments;//支付方式
     private List<SfOrderItemDistribution> distribution;//三级分佣
+    private String skuImgUrl;//商品图片
+
+    public String getSkuImgUrl() {
+        return skuImgUrl;
+    }
+
+    public void setSkuImgUrl(String skuImgUrl) {
+        this.skuImgUrl = skuImgUrl;
+    }
 
     public List<SfOrderItemDistribution> getDistribution() {
         return distribution;

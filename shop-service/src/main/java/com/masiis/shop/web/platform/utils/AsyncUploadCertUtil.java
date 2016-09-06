@@ -36,6 +36,9 @@ public class AsyncUploadCertUtil {
             while (true) {
                 ComUser comUser = null;
                 try {
+                    log.info("进入异步证书生成");
+                    queueThread.sleep(2000);
+                    log.error("已经过了两秒");
                     comUser = uploadOSSQueue.take();
                     pfUserCertificateService.asyncUploadUserCertificate(comUser);
                 } catch (Exception e) {

@@ -273,8 +273,8 @@ public class AppPfNoticeUtils {
      */
     public Boolean newOrderNotice(ComUser user, String[] params, String orderUrl, boolean hasInventory) {
         String messageContent = "您有新的合伙人订单,请到订单管理中查看\n"
-                + "订单编号:" + params[1] + "\n"
-                + "时间:" + params[2] + "\n";
+                + "订单编号:" + params[0] + "\n"
+                + "时间:" + params[1] + "\n";
         if(!hasInventory) {
             messageContent += "目前您的库存不足，为了不影响下级销售，请及时补货。";
         }

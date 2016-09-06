@@ -73,6 +73,24 @@ public class ControllerSignatureAspect implements Ordered {
         Object errRes = returnType.getDeclaredConstructor().newInstance();
         Object req = null;
         try {
+            if(rl.isStreamRes()){
+                req = getReqBean(parames, clazz, errRes, rl);
+
+                if(req == null && rl.hasData()){
+                    return "fail";
+                }
+                log.info("进入" + tarName + "......");
+                long before = System.currentTimeMillis();
+                log.info("之前:" + (before - start));
+
+                Object res = point.proceed(parames);
+
+                log.info("过程:" + (System.currentTimeMillis() - before));
+                log.info("总:" + (System.currentTimeMillis() - start));
+                log.info("离开" + tarName + "......");
+                return res;
+            }
+
             if(!rl.isPageReturn()) {
                 // 对请求参数进行解析，并获取参数对象引用
                 req = getReqBean(parames, clazz, errRes, rl);

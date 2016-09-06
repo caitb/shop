@@ -113,7 +113,7 @@ public class ComUserService {
      * @return
      */
     public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
-        PageHelper.startPage(pageNumber, pageSize);
+        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<ComUser> comUsers = comUserMapper.auditList(comUser);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 

@@ -657,6 +657,7 @@ public class BOrderManagementController extends BaseController {
     public OrderDetailRes shopOrderDetail(HttpServletRequest request, OrderDetailReq req, ComUser user){
         OrderDetailRes res = new OrderDetailRes();
         try{
+            String imgUrlPrefix = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             SfOrder sfOrder = sfOrderService.getOrderById(req.getOrderId());
             ComDictionary comDictionary = comDictionaryService.findComDictionary(sfOrder.getOrderStatus());
             sfOrder.setOrderSkuStatus(comDictionary.getValue());
@@ -666,6 +667,7 @@ public class BOrderManagementController extends BaseController {
             List<SfOrderPayment> orderPayments = sfOrderPaymentService.selectBySfOrderId(req.getOrderId());
             List<SfOrderItemDistribution> distribution = sfOrderItemDistributionService.selectBySfOrderId(req.getOrderId());
             ComUser buyerUser = userService.getUserById(sfOrder.getUserId());
+            String skuImgUrl = sfOrderService.getSkuDefaultImgUrlBySkuId(orderItems.get(0).getSkuId());
 
             res.setSfOrder(sfOrder);//订单
             res.setConsignee(conignee);//收货人信息
@@ -674,6 +676,7 @@ public class BOrderManagementController extends BaseController {
             res.setOrderFreights(orderFreights);//快递公司信息
             res.setPayments(orderPayments);//支付方式
             res.setDistribution(distribution);//三级分佣
+            res.setSkuImgUrl(imgUrlPrefix + skuImgUrl);//商品图片
 
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

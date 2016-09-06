@@ -106,6 +106,27 @@ public class BaseController {
         }
     }
 
+    protected void sendResponseBody(HttpServletResponse response, byte[] res) {
+        try {
+            OutputStream os = response.getOutputStream();
+            ByteArrayInputStream is = new ByteArrayInputStream(res);
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            if (is != null) {
+                is.close();
+            }
+            os.flush();
+            os.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 错误日志记录
      *

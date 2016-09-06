@@ -539,6 +539,12 @@ public class UpgradeController {
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         res.setKeyProperty(upgradeNotice.getId());
         logger.info("判断申请代理等级与上级代理等级（申请代理等级："+upgradeLevel+"，上级代理等级："+pAgentLevel+"）");
+        //发送消息
+        try {
+            upgradeNoticeService.upgradeApplySubmitNotice(upgradeLevel, pAgentLevel, upgradeNotice.getId(), comUser);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("判断是否可以升级，生成申请单id="+upgradeNotice.getId());
             if (upgradeNotice.getStatus().intValue() == 2){
@@ -614,6 +620,12 @@ public class UpgradeController {
         }catch (Exception e){
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(e.getMessage());
+        }
+        //发送消息
+        try {
+            upgradeNoticeService.notUpgradeMessage(upgradeId);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         logger.info(JSONObject.toJSONString(res));
         return res;

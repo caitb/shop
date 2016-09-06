@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
@@ -15,10 +16,10 @@ import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
+import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.common.service.SkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,10 @@ public class UpgradeNoticeService {
     private UpgradeNoticeService upgradeNoticeService;
     @Resource
     private BOrderAddService bOrderAddService;
+    @Resource
+    private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private UserService userService;
 
     private static final Integer pageSize = 10;
     /**
@@ -75,7 +80,7 @@ public class UpgradeNoticeService {
      * @return
      * @throws Exception
      */
-    public PfUserUpgradeNotice getUpgradeNoticeById(Long id) throws Exception{
+    public PfUserUpgradeNotice getUpgradeNoticeById(Long id){
         return pfUserUpgradeNoticeMapper.selectByPrimaryKey(id);
     }
     /**
@@ -771,5 +776,64 @@ public class UpgradeNoticeService {
             upgrade.setRemark("上级用户撤销申请，将申请人处理状态与上级处理状态设置为【未处理】");
             updateUpgradeNotice(upgrade);
         }
+    }
+
+    /**
+     * 申請升級成功之後發送微信消息
+     * @param upgradeLevel  申請代理等級
+     * @param upAgentLevel  上級代理等級
+     * @param upgradeId     通知单id
+     */
+    public String upgradeApplySubmitNotice(Integer upgradeLevel, Integer upAgentLevel, Long upgradeId, ComUser comUser){
+        JSONObject jsonObject = new JSONObject();
+        if (upAgentLevel.intValue() == upgradeLevel.intValue()){
+            UpGradeInfoPo upGradeInfoPo = upgradeNoticeService.getUpGradeInfo(upgradeId);
+            logger.info("申请人原上级商品代理信息");
+            logger.info("upGradeInfoPo.getApplyPid() = "+upGradeInfoPo.getApplyPid());
+            PfUserSku pfPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyPid(), upGradeInfoPo.getSkuId());
+            logger.info("查询申请人原上级的上级代理信息");
+            PfUserSku pfPPUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfPUserSku.getUserPid(), upGradeInfoPo.getSkuId());
+            logger.info("原上级代理等级："+pfPPUserSku.getAgentLevelId());
+            logger.info("原上级代理的上级代理等级："+pfPPUserSku.getAgentLevelId());
+            List<PfSkuAgent> pfSkuAgents = pfUserSkuService.getUpgradeAgents(upGradeInfoPo.getSkuId(), pfPUserSku.getAgentLevelId(), pfPPUserSku.getAgentLevelId());
+            if (pfSkuAgents == null || pfSkuAgents.size() == 0){
+                logger.info("-----------------------------上级不可以升级---------------------------------");
+                boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                jsonObject.put("applyBoolean",applyBoolean);
+            }else {
+                logger.info("-----------------------------上级可以升级---------------------------------");
+                ComUser pUser = userService.getUserById(upGradeInfoPo.getApplyPid());
+                boolean upBoolean = upgradeWechatNewsService.subLineUpgradeApplyNotice(pUser, upGradeInfoPo, "/upgradeInfo/lower?tabId=1");
+                jsonObject.put("upBoolean",upBoolean);
+                boolean applyBoolean = upgradeWechatNewsService.upgradeApplySubmitNotice(comUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+                jsonObject.put("applyBoolean",applyBoolean);
+            }
+        }
+        jsonObject.put("isTrue","true");
+        logger.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
+    }
+
+    /**
+     * 代理暂不升级发送微信消息
+     * @param upgradeId 升级申请单id
+     * @return          String
+     */
+    public String notUpgradeMessage(Long upgradeId){
+        JSONObject jsonObject = new JSONObject();
+        UpGradeInfoPo upGradeInfoPo = getUpGradeInfo(upgradeId);
+        PfUserUpgradeNotice upgradeNotice = getUpgradeNoticeById(upgradeId);
+        ComUser applyUser = userService.getUserById(upgradeNotice.getUserId());
+        ComUser oldUpUser = userService.getUserById(upgradeNotice.getUserPid());
+        logger.info("代理暂不升级发送消息");
+        boolean oldBoolean = upgradeWechatNewsService.upgradeApplyResultNotice(oldUpUser, upGradeInfoPo, "/upgrade/upgradeInfo.shtml?upgradeId="+upgradeId);
+        logger.info("代理暂不升级给下级发送微信消息");
+        boolean applyBoolean = upgradeWechatNewsService.upgradeApplyAuditPassNotice(applyUser, upGradeInfoPo, "/upgrade/myApplyUpgrade.shtml?upgradeId="+upgradeId);
+        jsonObject.put("isTrue","true");
+        jsonObject.put("oldBoolean",oldBoolean);
+        jsonObject.put("applyBoolean",applyBoolean);
+        logger.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
+
     }
 }

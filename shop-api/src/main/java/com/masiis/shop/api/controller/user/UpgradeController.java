@@ -11,6 +11,7 @@ import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.system.ComSkuSimple;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
@@ -22,6 +23,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -68,6 +70,8 @@ public class UpgradeController {
     private ComAgentLevelService comAgentLevelService;
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private BOrderAddService bOrderAddService;
 
     /**
      * 升级管理我的申请单（列表）
@@ -633,8 +637,6 @@ public class UpgradeController {
         return res;
     }
 
-
-
     /**
      * 升级成功后获得界面信息
      * @param request
@@ -668,6 +670,81 @@ public class UpgradeController {
         return res;
     }
 
+    /**
+     * 创建升级订单
+     * @param request
+     * @param req
+     * @param comUser
+     * @return
+     */
+    @RequestMapping(value = "/upgradeAddOrder.do")
+    @ResponseBody
+    @SignValid(paramType = BOrderUpgradeDetailReq.class)
+    public UpgradeAddOrderRes addUpgradeOrder(HttpServletRequest request, CommonReq req, ComUser comUser){
+        logger.info("创建升级订单");
+        UpgradeAddOrderRes res = new UpgradeAddOrderRes();
+        Long upgradeId = req.getId();
+        logger.info("upgradeId = " + upgradeId);
+        if (upgradeId == null){
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG);
+            return res;
+        }
+        PfUserUpgradeNotice upgradeNotice = upgradeNoticeService.getUpgradeNoticeById(upgradeId);
+        if (upgradeNotice == null){
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+            res.setResMsg("申请单id无效");
+            return res;
+        }
+        if (upgradeNotice.getPfBorderId() != null){
+            res.setOrderId(upgradeNotice.getPfBorderId());
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            return res;
+        }
+        if (comUser.getId().longValue() != upgradeNotice.getUserId().longValue()){
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+            res.setResMsg("升级单申请人与登录人不一致");
+            return res;
+        }
+        //插入订单表
+        BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeId);
+        PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
+        BOrderAdd orderAdd = new BOrderAdd();
+        orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
+        logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
+        orderAdd.setOrderType(3);
+        orderAdd.setUserId(comUser.getId());
+        orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
+        orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
+        logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
+        orderAdd.setSendType(1);//拿货方式
+        orderAdd.setSkuId(upgradeDetail.getSkuId());
+        orderAdd.setQuantity(newSkuAgent.getQuantity());
+        logger.info("订单数量---------" + newSkuAgent.getQuantity());
+        orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+        orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+        logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
+        logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
+        orderAdd.setUserSource(0);
+        try {
+            Long orderId = bOrderAddService.addBOrder(orderAdd);
+            logger.info("添加的升级订单id = " + orderId);
+            //升级申请表添加orderId
+            upgradeNotice.setPfBorderId(orderId);
+            upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
+            res.setOrderId(orderId);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            return res;
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage(),e);
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg("创建升级订单失败");
+            return res;
+        }
+    }
 
     @RequestMapping("/paySuccessInfo.do")
     @ResponseBody

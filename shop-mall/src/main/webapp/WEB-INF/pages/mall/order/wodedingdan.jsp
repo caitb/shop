@@ -48,7 +48,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -77,7 +77,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -106,7 +106,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -135,7 +135,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -164,7 +164,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -193,7 +193,7 @@
                                         </a>
                                     </p>
                                     <div>
-                                        <h2>${pbi.skuName}<span>零售价：￥${pbi.unitPrice}</span></h2>
+                                        <h2><i>${pbi.skuName}</i><span>零售价：￥${pbi.unitPrice}</span></h2>
                                         <p class="defult"><span style="float:none;color:#666666;">x${pbi.quantity}</span><b>合计：￥${pb.orderAmount}</b></p>
                                     </div>
                                 </div></c:forEach>
@@ -269,7 +269,7 @@
                                    trHtml+="<p class=\"photo\">";
                                    trHtml+="<a><img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div>";
-                                   trHtml+="<h2>"+sfOrderItem.skuName+"<span>零售价：￥"+sfOrderItem.unitPrice+"</span></h2>";
+                                   trHtml+="<h2><i>"+sfOrderItem.skuName+"</i><span>零售价：￥"+sfOrderItem.unitPrice+"</span></h2>";
                                    trHtml+="<p class=\"defult\"><span style=\"float:none;color:#666666;\">x"+sfOrderItem.quantity+"</span><b>合计：￥"+sfOrder.orderAmount+"</b></p>";
                                    trHtml+="</div></div>";
                                })

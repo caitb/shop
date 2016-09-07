@@ -29,6 +29,8 @@ public interface SfUserRelationMapper {
 
     List<SfUserRelation> getSfUserRelationByUserId(Long userId);
 
+    List<SfUserRelation> getSfUserRelationByUserPid(@Param("userPid") Long userId);
+
     SfUserRelation selectSfUserRelationByUserIdAndShopId(@Param("userId") Long userId,
                                                          @Param("shopId") Long shopId);
 

@@ -3,10 +3,12 @@ package com.masiis.shop.web.common.service;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.AESUtils;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.user.ComUserBakMapper;
 import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
+import com.masiis.shop.dao.po.SfUserRelation;
 import com.masiis.shop.web.common.utils.SpringRedisUtil;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserStatisticsService;
@@ -38,6 +40,8 @@ public class UserMergeService {
     private ComWxUserMapper comWxUserMapper;
     @Autowired
     private ComUserBakMapper comUserBakMapper;
+    @Autowired
+    private SfUserRelationMapper sfUserRelationMapper;
 
     /**
      * 手机号绑定
@@ -161,6 +165,23 @@ public class UserMergeService {
         //更新手机号账户
         if (userService.updateComUser(mobileUser) == 0){
             throw new BusinessException("更新ComUser失败");
+        }
+        //通过wxUserId查询小铺分销关系
+        //userId = wxUserId
+        List<SfUserRelation> sfUserRelations_userId = sfUserRelationMapper.getSfUserRelationByUserId(comUserBak.getId());
+        //userPid = wxUserId
+        List<SfUserRelation> sfUserRelations_userPid = sfUserRelationMapper.getSfUserRelationByUserPid(comUserBak.getId());
+        for (SfUserRelation userRelation : sfUserRelations_userId){
+            userRelation.setUserId(mobileUser.getId());
+            if (sfUserRelationMapper.updateByPrimaryKey(userRelation) == 0){
+                throw new BusinessException("更新分销关系失败");
+            }
+        }
+        for (SfUserRelation userRelation : sfUserRelations_userPid){
+            userRelation.setUserId(mobileUser.getId());
+            if (sfUserRelationMapper.updateByPrimaryKey(userRelation) == 0){
+                throw new BusinessException("更新分销关系失败");
+            }
         }
         //删除redis中的数据
         delRedisWx(comUserBak);

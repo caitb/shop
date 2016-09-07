@@ -32,22 +32,19 @@ public class DevelopService {
     private static final String developPosterFolder = PropertiesUtils.getStringValue("develop_poster_folder");
     private static final String ossBaseUrl = PropertiesUtils.getStringValue("oss.BASE_URL");
 
+    //宋体
+    private static Font simsun_font = null;
+    //微软雅黑
+    private static Font msyh_font = null;
+
     private static Font font20 = null;
     private static Font font25 = null;
-    private static Font font30 = null;
     private static Font font36 = null;
-    private static Font font40 = null;
-    private static Font fontCloud30 = null;
 
     private static final Log log = LogFactory.getLog(DevelopService.class);
 
     static {
-        //宋体
-        Font simsun_font = null;
-        //微软雅黑
-        Font msyh_font = null;
-        // 空心
-        Font cloud_font = null;
+
         try {
             System.out.println(RootPathUtils.getRootPath());
             simsun_font = Font.createFont(Font.TRUETYPE_FONT, new File(RootPathUtils.getRootPath()+File.separator+"static"+File.separator+"font"+File.separator+"simsun.ttc"));
@@ -60,9 +57,7 @@ public class DevelopService {
 
         font20 = msyh_font.deriveFont(Font.PLAIN, 20);
         font25 = msyh_font.deriveFont(Font.PLAIN, 25);
-        font30 = msyh_font.deriveFont(Font.PLAIN, 30);
         font36 = msyh_font.deriveFont(Font.PLAIN, 36);
-        font40 = msyh_font.deriveFont(Font.PLAIN, 40);
     }
 
 
@@ -96,6 +91,8 @@ public class DevelopService {
 
             bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = bufferedImage.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // 消除锯齿
+
 
             // 设置整体背景色
             g.setColor(new Color(225,225,225));
@@ -120,11 +117,11 @@ public class DevelopService {
                 DrawUtil.drawString(g, subString, font20, Color.GRAY, 58,483+(40*i) );
             }
 
-            g.drawImage(qrImage, 277, 647, 193, 193, null);     // 二维码
-            DrawUtil.drawString(g, "手机号："+comUser.getMobile(), font25, Color.GRAY, 251, 880);
-            DrawUtil.drawString(g, "下载麦链合伙人APP", font25, Color.GRAY, 260, 920);
-            DrawUtil.drawString(g,"扫描二维码或在麦链合伙人APP内搜索手机号即可", font20, Color.GRAY, 150, 980);
-
+            g.drawImage(qrImage, 247, 635, 260, 260, null); // 二维码
+            String orgLevelName = org.getAgentLevelId()==2 ? "团队" : "家族";
+            DrawUtil.drawString(g, orgLevelName+"手机号："+comUser.getMobile(), font25, new Color(33, 33, 33), 220, 930);
+            DrawUtil.drawString(g, "使用麦链合伙人APP搜索手机号或扫描二维码",  msyh_font.deriveFont(Font.PLAIN, 20), Color.GRAY, 180, 970);
+            DrawUtil.drawString(g, "加入"+org.getName()+"，开启您的创业之路吧！",  msyh_font.deriveFont(Font.PLAIN, 20), Color.GRAY, 200, 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }

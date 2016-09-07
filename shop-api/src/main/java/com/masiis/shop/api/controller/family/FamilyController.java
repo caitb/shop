@@ -169,13 +169,18 @@ public class FamilyController extends BaseController {
         FamilyInfoRes res = new FamilyInfoRes();
         try {
             List<FamilyList> familyLists = pfUserBrandService.familyListForWorldPaging(req.getAgentLevelId(), req.getPageNum(), pageSize, req.getReorder(), req.getBrandId());
-            res.setLimitMoney(getLimitMoneyBySkuId(comSkuMapper.getPrimarySkuByBrandId(req.getBrandId()).get(0).getId(), req.getAgentLevelId() + 1));
-            res.setCreateLimitMoney(getLimitMoneyBySkuId(comSkuMapper.getPrimarySkuByBrandId(req.getBrandId()).get(0).getId(), agentLevelId_family));
+            List<ComSku> comSkus =  comSkuMapper.getPrimarySkuByBrandId(req.getBrandId());
+            if(comSkus.size()<=0){
+                log.info("当前品牌的主打商品不存在");
+            }else {
+                res.setLimitMoney(getLimitMoneyBySkuId(comSkus.get(0).getId(), req.getAgentLevelId() + 1));
+                res.setCreateLimitMoney(getLimitMoneyBySkuId(comSkus.get(0).getId(), agentLevelId_family));
+            }
             res.setFamilyLists(familyLists);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage(), e);
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
         }

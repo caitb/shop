@@ -610,7 +610,8 @@ public class BOrderManagementController extends BaseController {
         try{
             SfOrderConsignee conignee = sfOrderConsigneeService.getOrdConByOrdId(req.getOrderId());
             res.setConsignee(conignee);//收货人信息
-            res.setWxNkName(user.getWxNkName());//购买人
+            String buyerName = sfOrderService.getBuyerNameByOrderId(req.getOrderId());
+            res.setWxNkName(buyerName);//购买人 订单所属人
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){

@@ -95,4 +95,6 @@ public interface SfOrderMapper {
     List<SfOrder> selectByStatusAndShipTime(@Param("expiraTime") Date expiraTime,
                                             @Param("orderStatus") int orderStatus,
                                             @Param("payStatus") int payStatus);
+
+    String getBuyerNameByOrderId(Long orderId);
 }

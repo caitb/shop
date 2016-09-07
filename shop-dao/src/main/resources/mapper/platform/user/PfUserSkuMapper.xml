@@ -663,7 +663,7 @@
         INNER JOIN com_spu c ON b.spu_id=c.id AND c.type=0
         INNER JOIN pf_user_organization d ON a.user_pid=d.user_id AND c.brand_id=d.brand_id
         INNER JOIN com_brand e ON c.brand_id=e.id
-        INNER JOIN pf_sku_agent f ON a.sku_id=f.sku_id AND a.agent_level_id=f.agent_level_id
+        INNER JOIN pf_sku_agent f ON a.sku_id=f.sku_id AND d.agent_level_id=f.agent_level_id
         WHERE a.user_id = #{userId}
         AND d.STATUS = 1
         <if test="brandId != null">

@@ -457,5 +457,11 @@
         ORDER BY bo.create_time DESC, skui.img_url DESC
     </select>
 
+    <select id="getBuyerNameByOrderId" resultType="string">
+        select u.real_name
+        from com_user u
+        left join sf_order o on o.user_id = u.id
+        where o.id = #{orderId}
+    </select>
 
 </mapper>

@@ -313,4 +313,8 @@ public class SfOrderService {
     public String getSkuDefaultImgUrlBySkuId(Integer skuId) {
         return comSkuImageMapper.selectDefaultImgBySkuId(skuId).getImgUrl();
     }
+
+    public String getBuyerNameByOrderId(Long orderId) {
+        return sfOrderMapper.getBuyerNameByOrderId(orderId);
+    }
 }

@@ -10,47 +10,47 @@
     background: white;
     border-bottom: 1px solid #E8E8E8;
 }
-.wrap .box nav ul {
+nav ul {
     display: -webkit-box;
     overflow-x: auto;
     padding: 5px 0;
 }
-.wrap .box nav ul li {
+nav ul li {
     width: 1px;
     -webkit-box-flex: 1;
     display: -webkit-box;
     -webkit-box-pack: center;
     border-right: 1px solid #F6F6F6;
 }
-.wrap .box nav ul li a {
+nav ul li a {
     padding: 0 2px 4px 2px;
     font-size: 12px;
     color: #5E5E5E;
 }
-.wrap .box nav ul li.active a {
+nav ul li.active a {
     border-bottom: 2px solid #C7A467;
     color: #C7A467;
 }
-.wrap .box main {
+main {
     width: 100%;
     height: 100%;
     display: -webkit-box;
     overflow-x: hidden;
 }
-.wrap .box main div {
+main div {
     width: 100%;
 }
-.wrap .box main .all:nth-child(1) {
+main .all:nth-child(1) {
     display: block;
 }
-.wrap .box main .all {
+main .all {
     display: none;
 }
-.wrap .box main .all .sec1 {
+main .all .sec1 {
     background: white;
     margin-top: 10px;
 }
-.wrap .box main .all .sec1 > p {
+main .all .sec1 > p {
     width: 100%;
     line-height: 25px;
     font-size: 12px;
@@ -59,33 +59,33 @@
     text-indent: 10px;
     padding-top: 8px;
 }
-.wrap .box main .all .sec1 > p span {
+main .all .sec1 > p span {
     font-size: 12px;
 }
-.wrap .box main .all .sec1 > h1 {
+main .all .sec1 > h1 {
     padding: 5px 10px;
     text-align: right;
     font-size: 12px;
     color: #666;
 }
-.wrap .box main .all .sec1 > h2 {
+main .all .sec1 > h2 {
     font-size: 12px;
     padding:8px 10px;
     border-bottom: 1px solid #E8E8E8;
 }
-.wrap .box main .all .sec1 > h2 span {
+main .all .sec1 > h2 span {
     color: #4E4E4E;
     font-size: 12px;
     background:url("/static/images/nn.png") no-repeat;
     background-size:20px;
     padding-left:28px;
 }
-.wrap .box main .all .sec1 > h2 b {
+main .all .sec1 > h2 b {
     float: right;
     color: #F7523C;
     font-size: 13px;
 }
-.wrap .box main .all .sec1 .shangpin {
+main .all .sec1 .shangpin {
     width: 100%;
     height: 78px;
     background: white;
@@ -95,17 +95,17 @@
     -moz-box-align: center;
     border-bottom: 1px solid #F8F8F8;
 }
-.wrap .box main .all .sec1 .shangpin .photo {
+.all .sec1 .shangpin .photo {
     width: 62px;
     margin-left: 10px;
 }
-.wrap .box main .all .sec1 .shangpin .photo img {
+.all .sec1 .shangpin .photo img {
     display: block;
     width: 62px;
     height: 62px;
     border: 1px solid #ddd;
 }
-.wrap .box main .all .sec1 .shangpin div {
+.all .sec1 .shangpin div {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     display: -webkit-box;
@@ -113,44 +113,52 @@
     -webkit-box-orient: vertical;
     margin-left: 12px;
 }
-.wrap .box main .all .sec1 .shangpin div h2 {
+.all .sec1 .shangpin div h2 {
     color: #333333;
     font-size: 14px;
     margin-bottom: 12px;
 }
-.wrap .box main .all .sec1 .shangpin div h2 span {
+.shangpin div h2 i{
+    display:block;
+    width:80%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.sec1 .shangpin div h2 span {
     display:block;
     font-size:12px;
 }
-.wrap .box main .all .sec1 .shangpin div .defult {
+.sec1 .shangpin div .defult {
     padding-bottom: 5px;
     margin-right: 10px;
 }
-.wrap .box main .all .sec1 .shangpin div .defult b {
+.sec1 .shangpin div .defult b {
     font-size: 12px;
     color: #333333;
     float: right;
 }
-.wrap .box main .all .sec1 .shangpin div .defult b em {
+.sec1 .shangpin div .defult b em {
     font-size: 12px;
     color: #333;
 }
-.wrap .box main .all .sec1 .shangpin div p {
+.sec1 .shangpin div p {
     margin: 0 10px 0 0;
     height: 15px;
     font-size: 10px;
     color: #A5A5A5;
 }
-.wrap .box main .all .sec1 .shangpin div p span {
+.sec1 .shangpin div p span {
     display: inline-block;
     font-size: 10px;
 }
-.wrap .box main .all .sec1 .shangpin div p b {
+.sec1 .shangpin div p b {
     float: left;
     font-size: 12px;
     color: #585858;
 }
-.wrap .box main .all .sec1 .ding {
+.sec1 .ding {
     display: -webkit-box;
     font-size: 12px;
     line-height: 30px;
@@ -159,7 +167,7 @@
     -webkit-box-pack: justify;
     padding: 4px 0;
 }
-.wrap .box main .all .sec1 .ding p {
+.sec1 .ding p {
     text-indent: 10px;
     font-size: 12px;
     background-size: 12px;
@@ -167,19 +175,19 @@
     margin-right: 10px;
     color:#999;
 }
-.wrap .box main .all .sec1 .ding p span{
+.sec1 .ding p span{
     font-size:12px;
 }
-.wrap .box main .all .sec1 .ding p a{
+.sec1 .ding p a{
     color: #333;
     font-size: 12px;
 }
-.wrap .box main .all .sec1 .ding p:nth-child(2) {
+.sec1 .ding p:nth-child(2) {
     background: none;
     padding: 0;
     position: relative;
 }
-.wrap .box main .all .sec1 .ding button {
+.sec1 .ding button {
     position: absolute;
     right: 0;
     top: 4px;
@@ -190,13 +198,13 @@
     color: #C7A467;
     padding: 2px 0;
 }
-.wrap .box main .all .sec1 .ding .jixu,
-.wrap .box main .all .sec1 .ding .quxiao {
+.sec1 .ding .jixu,
+.sec1 .ding .quxiao {
     right: 100px;
     border: 1px solid #999999;
     color: #999999;
 }
-.wrap .box main .all .sec1 .ding .quxiao {
+.sec1 .ding .quxiao {
     right: 10px;
 }
 .back_que {

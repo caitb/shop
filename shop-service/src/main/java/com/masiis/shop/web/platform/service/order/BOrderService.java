@@ -533,4 +533,6 @@ public class BOrderService {
     public String getSkuDefaultImgUrlBySkuId(Integer skuId) {
         return pfBorderMapper.getSkuDefaultImgUrlBySkuId(skuId);
     }
+
+
 }

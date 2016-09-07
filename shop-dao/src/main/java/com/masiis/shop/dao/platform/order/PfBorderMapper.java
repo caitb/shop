@@ -186,4 +186,5 @@ public interface PfBorderMapper {
     List<String> getPfBorderPaymentsByOrderId(Long orderId);
 
     String getSkuDefaultImgUrlBySkuId(Integer skuId);
+
 }

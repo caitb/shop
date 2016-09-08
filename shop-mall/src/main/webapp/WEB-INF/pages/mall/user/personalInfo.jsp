@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/gerenxinxi.css">
     <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
     <script src="<%=path%>/static/js/plugins/validateCode.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
@@ -46,8 +45,8 @@
         <p>地址管理</p>
         <p><img src="${path}/static/images/next.png" alt=""></p>
     </div>
-    <p>Copyright2015-2016  麦链合伙人  iimai.com<br/>
-        北京麦士网络科技有限公司</p>
+    <p>Copyright ©2015-2016 iimai.com . All Rights Reserved<br/>
+        北京麦链网络科技有限公司</p>
 </div>
 <div class="back_j" style="display: none">
     <span class="close">×</span>

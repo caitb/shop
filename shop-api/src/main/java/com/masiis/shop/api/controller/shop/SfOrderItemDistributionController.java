@@ -58,6 +58,7 @@ public class SfOrderItemDistributionController extends BaseController {
     @SignValid(paramType = CommonReq.class)
     public ItemDistributionRes itemDistributionHome(HttpServletRequest request, CommonReq req, ComUser user){
         logger.info("分销记录首页");
+        logger.info("userId = " + user.getId());
         ItemDistributionRes res = new ItemDistributionRes();
         try {
             SfDistributionRecord sfCount = sfOrderItemDistributionService.findCountSfDistributionRecord(user.getId());
@@ -68,7 +69,7 @@ public class SfOrderItemDistributionController extends BaseController {
                 res.setSumLevel(0);
                 res.setSaleAmount(sfShop == null?numberFormat.format(0):numberFormat.format(sfShop.getSaleAmount()));
             }else {
-                res.setDistributionAmount(numberFormat.format(sfCount.getDistributionAmount()));
+                res.setDistributionAmount(numberFormat.format(sfCount.getDistributionAmount() == null?0:sfCount.getDistributionAmount()));
                 res.setSaleAmount(sfShop == null?numberFormat.format(0):numberFormat.format(sfShop.getSaleAmount()));
                 res.setSumLevel(sfCount.getSumLevel());
             }

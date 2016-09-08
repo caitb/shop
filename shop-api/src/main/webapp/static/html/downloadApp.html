@@ -143,8 +143,8 @@
 
     document.getElementById("download").onclick = function() {
 
-        if(!browser.versions.mobile || browser.versions.isWeixin ) {
-            alert("请用手机浏览器，或手机QQ 扫描！");
+        if(browser.versions.isWeixin) {
+            alert("点击右上角，用浏览器打开此页。");
             return;
         }
 

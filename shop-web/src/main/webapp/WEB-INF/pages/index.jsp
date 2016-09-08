@@ -65,8 +65,8 @@
                         <span>订单管理</span></a>
                 </li>
                 <li >
-                    <%--<a class="herf" href="<%=basePath%>product/user/${user.id}">--%>
-                        <a onclick="clickShow()">
+                    <a class="herf" href="<%=basePath%>product/user/${user.id}">
+                        <%--<a onclick="clickShow()">--%>
                         <h1><img src="<%=path%>/static/images/1%20(2).png"></h1>
                         <span>库存</span></a>
                 </li>

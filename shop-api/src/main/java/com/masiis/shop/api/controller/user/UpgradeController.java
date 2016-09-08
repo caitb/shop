@@ -679,7 +679,7 @@ public class UpgradeController {
      */
     @RequestMapping(value = "/upgradeAddOrder.do")
     @ResponseBody
-    @SignValid(paramType = BOrderUpgradeDetailReq.class)
+    @SignValid(paramType = CommonReq.class)
     public UpgradeAddOrderRes addUpgradeOrder(HttpServletRequest request, CommonReq req, ComUser comUser){
         logger.info("创建升级订单");
         UpgradeAddOrderRes res = new UpgradeAddOrderRes();

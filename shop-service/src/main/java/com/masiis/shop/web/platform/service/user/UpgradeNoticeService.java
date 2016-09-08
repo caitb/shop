@@ -820,7 +820,7 @@ public class UpgradeNoticeService {
                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Revocation.getCode().intValue()){
             returnMsg = upGradeInfoPo.getApplyPName();
         }
-        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()
+        if ((upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()&&upGradeInfoPo.getUpStatus().intValue() != UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode())
                 || upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_Complete.getCode().intValue()){
             logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyId(), upGradeInfoPo.getSkuId());
@@ -840,6 +840,11 @@ public class UpgradeNoticeService {
                     returnMsg = comUser.getRealName();
                 }
             }
+        }
+        if (upGradeInfoPo.getApplyStatus().intValue() == UpGradeStatus.STATUS_NoPayment.getCode().intValue()&&upGradeInfoPo.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode()){
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyId(), upGradeInfoPo.getSkuId());
+            ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
+            returnMsg = comUser.getRealName();
         }
         logger.info("根据处理获取升级后的上级信息 end");
         return returnMsg;

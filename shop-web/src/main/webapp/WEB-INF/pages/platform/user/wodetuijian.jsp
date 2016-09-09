@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="tap">
-            <p class="on" onclick="changeTab(0)">获得奖励：${myRecommendPo.incomeRewardsView}</p>
+            <p class="on" id="target" onclick="changeTab(0)">获得奖励：${myRecommendPo.incomeRewardsView}</p>
             <p onclick="changeTab(1)">发出奖励：${myRecommendPo.sendRewardsView}</p>
         </div>
         <main id="rewardOrder">
@@ -144,6 +144,9 @@
         function toOrderDetail(orderId){
             fullShow();
             window.location.href = basePath + "borderManage/deliveryBorderDetils.html?id=" + orderId;
+        }
+        window.onload = function load() {
+            document.getElementById("target").onclick();
         }
     </script>
 </body>

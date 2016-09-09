@@ -10,9 +10,9 @@ import java.security.PublicKey;
 import java.security.Signature;
 
 /**
- * @Date 2016/9/6
- * @Author lzh
- */
+* @Date 2016/9/6
+* @Author lzh
+*/
 public class AlipaySignatureUtils extends AlipaySignature {
 
     public static boolean rsaCheckContent(String content, String sign, String publicKey, String charset) throws AlipayApiException {

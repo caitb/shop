@@ -56,7 +56,7 @@ public class UpGradeInfoPo {
      */
     private Integer applyStatus;
     /**
-     * 升级处理状态码
+     * 上级处理状态码
      */
     private Integer upStatus;
     /**

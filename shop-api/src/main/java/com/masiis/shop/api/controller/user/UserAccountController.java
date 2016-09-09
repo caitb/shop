@@ -399,8 +399,8 @@ public class UserAccountController {
                 res.setOpenedBankName(extractwayInfo.getDepositBankName());
             }
             res.setWithdrawWay(extractWay);
-            res.setExtractFee(extractMoney.toString());
-            res.setAppliedFee(appliedFee.toString());
+            res.setExtractFee(extractMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            res.setAppliedFee(appliedFee.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){
@@ -884,6 +884,6 @@ public class UserAccountController {
 
     public static void main(String[] args){
         NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
-        System.out.println(new BigDecimal(numberFormat.format(new BigDecimal("2000.00")).replace("￥", "").replaceAll(",", "")));
+        System.out.println(new BigDecimal(2000.11).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
     }
 }

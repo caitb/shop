@@ -138,7 +138,8 @@
         <p>此功能仅支持在麦链合伙人APP使用</p>
         <h1>
             <span onclick="clickHide()">取消</span>
-            <span><a href="${path}/download">去下载</a></span>
+            <%--<span><a href="${path}/download">去下载</a></span>--%>
+            <span><a href="<%=path%>/static/html/all.html">去下载</a></span>
         </h1>
     </div>
 </div>

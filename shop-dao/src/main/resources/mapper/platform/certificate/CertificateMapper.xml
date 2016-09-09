@@ -146,8 +146,6 @@
             INNER JOIN com_sku sku ON sku.spu_id = spu.id
             INNER JOIN pf_user_sku pfku ON pfku.sku_id = sku.id AND brand.user_id = pfku.user_id
         WHERE brand.user_id = #{userId} AND pfku.is_pay=1
-        AND  spu.is_sale = 1
-        AND spu.is_delete = 0
         AND spu.TYPE = 0
     </select>
 </mapper>

@@ -403,16 +403,16 @@
                     if (sku.isOwnShip == 0) {
                         fahuoHtml += "<h1><img src=\"<%=path%>/static/images/commodity.png\" alt=\"\"><b>平台发货</b></h1>";
                         if(sku.flagSelf==null || sku.flagSelf==""){
-                            /*zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
+                            zijiHtml += "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";
                             zijiHtml += "</li>";
-                            if(sku.wxqrCode==null || sku.wxqrCode==""){
-                                zijiHtml += "<li class=\"right myself\" onclick=\"applyWXCode()\">";
-                            }else{
-                                zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";
-                            }
-                            zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";
-                            zijiHtml += "</li>";*/
+                            <%--if(sku.wxqrCode==null || sku.wxqrCode==""){--%>
+                                <%--zijiHtml += "<li class=\"right myself\" onclick=\"applyWXCode()\">";--%>
+                            <%--}else{--%>
+                                <%--zijiHtml += "<li class=\"right myself\" onclick=\"selfclick("+sku.shopSkuId+")\">";--%>
+                            <%--}--%>
+                            <%--zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity4.png\" alt=\"\">我要自己发货</b>";--%>
+                            <%--zijiHtml += "</li>";*/--%>
                         }else{
                             zijiHtml = "<li onclick=\"shangjia("+sku.shopSkuId+")\">";
                             zijiHtml += "<b><img src=\"<%=path%>/static/images/commodity3.png\" alt=\"\">上架</b>";

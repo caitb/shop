@@ -55,7 +55,7 @@
                     <li><b> ${withdrawd}<br></b>已提现</li>
                 </ul>
             </nav>
-            <button class="btn" onclick="clickShow()">
+            <button class="btn" onclick="withdrawRequest()">
                 申请提现
             </button>
             <div class="floor2">
@@ -65,17 +65,17 @@
         </main>
     </div>
 </div>
-<div class="black">
-    <div class="backb"></div>
-    <div class="back_a">
-        <img src="${path}/static/images/ku.png" alt=""/>
-        <p>此功能仅支持在麦链合伙人APP使用</p>
-        <h1>
-            <span onclick="clickHide()">取消</span>
-            <span><a href="http://api.qc.iimai.com/static/html/wechatDownload.html" style="color:#fff;">去下载</a></span>
-        </h1>
-    </div>
-</div>
+<%--<div class="black">--%>
+    <%--<div class="backb"></div>--%>
+    <%--<div class="back_a">--%>
+        <%--<img src="${path}/static/images/ku.png" alt=""/>--%>
+        <%--<p>此功能仅支持在麦链合伙人APP使用</p>--%>
+        <%--<h1>--%>
+            <%--<span onclick="clickHide()">取消</span>--%>
+            <%--<span><a href="http://api.qc.iimai.com/static/html/wechatDownload.html" style="color:#fff;">去下载</a></span>--%>
+        <%--</h1>--%>
+    <%--</div>--%>
+<%--</div>--%>
 <div class="back" id="detail">
     <div class="back_j">
         <h1>什么是结算中？</h1>
@@ -220,12 +220,12 @@
             $(".floor p img").attr("src","${path}/static/images/top.png")
         }
     }
-    function clickShow(){
-        $(".black").show();
-    }
-    function clickHide(){
-        $(".black").hide();
-    }
+//    function clickShow(){
+//        $(".black").show();
+//    }
+//    function clickHide(){
+//        $(".black").hide();
+//    }
 </script>
 </body>
 </html>

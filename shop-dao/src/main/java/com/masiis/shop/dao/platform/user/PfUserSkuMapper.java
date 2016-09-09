@@ -16,6 +16,7 @@ import com.masiis.shop.dao.beans.user.upgrade.UserSkuAgent;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -286,4 +287,11 @@ public interface PfUserSkuMapper {
      * @return
      */
     List<PfUserSku> getNoMainUserSkuByUserIdAndBrandId(@Param("userId")Long userId, @Param("brandId") Integer brandId);
+
+    /**
+     * 查找时间之前的没有生成证书的记录
+     *
+     * @return
+     */
+    List<PfUserSku> selectWithNoCode(@Param("time") Date time);
 }

@@ -1,5 +1,7 @@
 package com.masiis.shop.web.common.utils;
 
+import org.apache.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -17,6 +19,8 @@ import java.util.List;
  * @date 2016/5/9
  */
 public class DrawPicUtil {
+    private static Logger log = Logger.getLogger(DrawPicUtil.class);
+
     private Font font = new Font("", Font.PLAIN, 20);// 添加字体的属性设置
 
     private Graphics2D g = null;
@@ -189,7 +193,7 @@ public class DrawPicUtil {
             }
             g.dispose();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage(), e);
         }
 
         return img;

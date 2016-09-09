@@ -890,6 +890,24 @@
 	    and userSku.user_id =  #{userId,jdbcType=BIGINT};
     </select>
 
+    <select id="selectWithNoCode" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            pf_user_sku s
+        WHERE
+            s.`code` = ''
+        AND  s.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+        UNION ALL
+        SELECT
+            *
+        FROM
+            pf_user_sku s
+        WHERE
+         s.`code` IS NULL
+         AND  s.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP};
+    </select>
+
 </mapper>
 
 

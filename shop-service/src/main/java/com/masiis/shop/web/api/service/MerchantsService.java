@@ -96,7 +96,7 @@ public class MerchantsService {
         dataMap.put("isAgent", us == null ? false : true);
         dataMap.put("isBinding", userService.getUserById(userId).getIsBinding());
         dataMap.put("agentUpper", agentBrand.get("organizationFreemanUpperNum"));
-        dataMap.put("imgUrlPrefix", "http://file.qc.masiis.com/static/user/organization/");
+        dataMap.put("imgUrlPrefix", PropertiesUtils.getStringValue("organization_url"));
         dataMap.put("organizationName", organizationName);
 
         log.info("招商展示-----------------------end");

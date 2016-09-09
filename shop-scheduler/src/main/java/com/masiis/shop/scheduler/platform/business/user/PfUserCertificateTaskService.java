@@ -34,28 +34,25 @@ public class PfUserCertificateTaskService {
     private UserService userService;
 
     public void autoCreateCertificate() {
+        log.info("自动创建证书开始==================");
         Date time = getNewtimeByMilis(new Date(), -10 * 60 * 1000);
         log.info("检测的时间为:" + DateUtil.Date2String(time, "yyyy-MM-dd HH:mm:ss"));
         List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuWithNoCode(time);
         if(pfUserSkuList == null || pfUserSkuList.size() <= 0){
-            throw new BusinessException("暂无需要生成证书的数据");
+            log.info("暂无需要生成证书的数据");
         }
-        CurrentThreadUtils.parallelJob(new IParallelThread() {
-            public Boolean doMyJob(Object obj) throws Exception {
-                PfUserSku pa = (PfUserSku) obj;
-                try {
-                    log.info("创建证书开始,PfUserSkuId:" + pa.getId());
-                    // 创建结算日的日账单
-                    ComUser comUser = userService.getUserById(pa.getUserId());
-                    pfUserCertificateService.asyncUploadUserCertificateItem(pa, comUser);
-                    log.info("创建证书结束,PfUserSkuId:" + pa.getId());
-                    return true;
-                } catch (Exception e) {
-                    log.error("创建证书失败," + e.getMessage());
-                    return false;
-                }
+        for(PfUserSku pfUserSku:pfUserSkuList){
+            try {
+                log.info("创建证书开始,PfUserSkuId:" + pfUserSku.getId());
+                // 创建结算日的日账单
+                ComUser comUser = userService.getUserById(pfUserSku.getUserId());
+                pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku, comUser);
+                log.info("创建证书结束,PfUserSkuId:" + pfUserSku.getId());
+            } catch (Exception e) {
+                log.error("创建证书失败," + e.getMessage(), e);
             }
-        }, new LinkedBlockingDeque<Object>(pfUserSkuList), 0);
+        }
+        log.info("自动创建证书结束==================");
     }
 
     private static Date getNewtimeByMilis(Date date, long milis){

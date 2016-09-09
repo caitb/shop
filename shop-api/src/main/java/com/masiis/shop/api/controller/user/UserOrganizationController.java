@@ -9,6 +9,7 @@ import com.masiis.shop.api.bean.user.UserOrganizationRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
@@ -96,7 +97,7 @@ public class UserOrganizationController extends BaseController {
             userOrganizationRes.getDataMap().put("agentBrandNum", agentBrandNum);
             userOrganizationRes.getDataMap().put("totalUserNum", totalUserNum);
             userOrganizationRes.getDataMap().put("totalSaleAmount", totalSaleAmount);
-            userOrganizationRes.getDataMap().put("imgUrlPrefix", "http://file.qc.masiis.com/static/user/organization/");
+            userOrganizationRes.getDataMap().put("imgUrlPrefix", PropertiesUtils.getStringValue("organization_url"));
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
@@ -135,7 +136,7 @@ public class UserOrganizationController extends BaseController {
             userOrganizationRes.getDataMap().put("organizationSuffix", comAgentLevel.getOrganizationSuffix());
             userOrganizationRes.getDataMap().put("agentLevelId", userOrganizationReq.getAgentLevelId());
             userOrganizationRes.getDataMap().put("brandId", userOrganizationReq.getBrandId());
-            userOrganizationRes.getDataMap().put("imgUrlPrefix", "http://file.qc.masiis.com/static/user/organization/");
+            userOrganizationRes.getDataMap().put("imgUrlPrefix", PropertiesUtils.getStringValue("organization_url"));
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

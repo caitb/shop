@@ -376,12 +376,20 @@ public class UserAccountController {
             }
 
             NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
-            String appliedFee = account == null?numberFormat.format(0):account.getAppliedFee() == null?numberFormat.format(0):numberFormat.format(account.getAppliedFee());
-            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee.replace("￥",""))));
+//            String appliedFee = account == null?numberFormat.format(0):account.getAppliedFee() == null?numberFormat.format(0):numberFormat.format(account.getAppliedFee());
+//            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee.replace("￥",""))));
 //        if (extractwayInfo != null){
 //            String cardCode = extractwayInfo.getBankCard();
 //            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
 //        }
+            String appliedFee,extractMoney;
+            if(account == null){
+                appliedFee = "￥0";
+                extractMoney = "￥0";
+            } else {
+                appliedFee = account.getAppliedFee().setScale(2, BigDecimal.ROUND_DOWN).toString();
+                extractMoney = account.getExtractableFee().subtract(account.getAppliedFee()).setScale(2, BigDecimal.ROUND_DOWN).toString();
+            }
             res.setHasCard(hasCard);
             if (hasCard){
                 res.setId(extractwayInfo.getId());
@@ -876,6 +884,6 @@ public class UserAccountController {
 
     public static void main(String[] args){
         NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
-        System.out.println(numberFormat.format(new BigDecimal(100)));
+        System.out.println(new BigDecimal(numberFormat.format(new BigDecimal("2000.00")).replace("￥", "").replaceAll(",", "")));
     }
 }

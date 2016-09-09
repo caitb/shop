@@ -301,7 +301,7 @@ nav ul li span {
 .back_a{
     position: absolute;
     left: 50%;
-    margin-left: -128px;
+    margin-left: -144px;
     top: 50%;
     margin-top: -73px;
     width: 80%;
@@ -330,6 +330,9 @@ nav ul li span {
     border-radius: 5px;
     color: #fff;
     text-align: center;
+}
+.back_a h1 span a{
+    color:#fff;
 }
 .back_a h1 span:nth-child(1){
     background:#E8E8E8 ;

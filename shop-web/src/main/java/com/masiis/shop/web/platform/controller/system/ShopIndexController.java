@@ -142,4 +142,19 @@ public class ShopIndexController extends BaseController {
         }
         return object.toJSONString();
     }
+
+
+    /**
+     * 跳转app下载页面
+     * wl
+     * 16/09/08
+     * @param req
+     * @return
+     */
+    @RequestMapping("/download")
+    public ModelAndView shopIndexload(HttpServletRequest req) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("common/all");
+        return modelAndView;
+    }
 }

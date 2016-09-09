@@ -203,8 +203,9 @@ public class ComUserService {
      * @param comUser
      */
     public void audit(ComUser comUser, PbUser pbUser) throws Exception {
+        int auditStatus = comUser.getAuditStatus();
         comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
-        comUser.setAuditStatus(2);
+        comUser.setAuditStatus(auditStatus);
         comUser.setAuditDate(new Date());
         comUserMapper.updateByPrimaryKey(comUser);
         if (comUser.getAuditStatus() == 2 || comUser.getAuditStatus() == 3) {

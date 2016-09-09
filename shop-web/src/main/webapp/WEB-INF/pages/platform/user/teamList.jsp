@@ -79,7 +79,7 @@
         <p>此功能仅支持在麦链合伙人APP使用</p>
         <h1>
             <span onclick="clickHide()">取消</span>
-            <span><a href="http://api.qc.iimai.com/static/html/all.html" style="color:#fff;">去下载</a></span>
+            <span><a href="http://api.qc.iimai.com/static/html/wechatDownload.html" style="color:#fff;">去下载</a></span>
         </h1>
     </div>
 </div>

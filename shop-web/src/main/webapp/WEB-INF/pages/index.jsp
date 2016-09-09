@@ -139,7 +139,7 @@
         <h1>
             <span onclick="clickHide()">取消</span>
             <%--<span><a href="${path}/download/loadapp">去下载</a></span>--%>
-            <span><a href="http://api.qc.iimai.com/static/html/all.html">去下载</a></span>
+            <span><a href="http://api.qc.iimai.com/static/html/wechatDownload.html">去下载</a></span>
         </h1>
     </div>
 </div>

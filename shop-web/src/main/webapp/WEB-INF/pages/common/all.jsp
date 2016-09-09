@@ -151,7 +151,7 @@ is_weixin();
 document.getElementById("download").onclick = function() {
 
     if(!browser.versions.mobile || browser.versions.isWeixin ) {
-        alert("请用手机浏览器，或手机QQ 扫描！");
+        alert("请用手机浏览器打开!");
         return;
     }
 

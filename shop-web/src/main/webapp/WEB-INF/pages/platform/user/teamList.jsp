@@ -79,7 +79,7 @@
         <p>此功能仅支持在麦链合伙人APP使用</p>
         <h1>
             <span onclick="clickHide()">取消</span>
-            <span onclick="download()">去下载</span>
+            <span><a href="${path}/download" style="color:#fff;">去下载</a></span>
         </h1>
     </div>
 </div>

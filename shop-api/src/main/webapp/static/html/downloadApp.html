@@ -18,27 +18,26 @@
             display: block;
         }
         main{
+            display: -webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-box-align: center;
             -webkit-box-flex:1;
-            position: relative;
-            background: url("backg.png") no-repeat;
+            background: url("${path}/static/images/backg.png") no-repeat;
             background-size: 100% 100%;
         }
         .logo{
-            position: absolute;
-            left: 50%;
             width: 70px;
             height: 70px;
-            top: 16%;
-            margin-left: -35px;
+            display: block;
+            margin:0 auto;
+            margin-top: 30%;
         }
         h1{
-            position: absolute;
-            top: 32.5%;
-            left: 50%;
-            margin-left: -35px;
             text-align: center;
             font-size: 14px;
             color: #333;
+            position: relative;
+            margin-top: 5%;
         }
         h1:after{
             content: "" ;
@@ -49,31 +48,24 @@
             bottom: -18px;
         }
         h2{
-            position: absolute;
-            left: 0;
-            top: 46%;
-            padding: 0 15px;
+            width: 100%;
             text-align: center;
             color:#666;
+            margin:15% 0 10% 0;
         }
         button{
-            position: absolute;
+            display: block;
             width: 40%;
             padding: 8px 0;
             border:1px solid #E7A22B;
             font-size: 16px;
             color: #333;
-            top: 58%;
-            left: 50%;
-            margin-left: -20%;
             background: #F6F6F6;
             border-radius: 3px;
         }
         p{
             text-align: center;
             color:#666;
-            position: absolute;
-            top: 66%;
             width: 100%;
         }
     </style>

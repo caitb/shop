@@ -78,6 +78,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 <img src="${path}/static/images/headerimg.png" alt="" id="himg" style="display:none">
+
 <main>
     <img src="${path}/static/images/ic_launcher(5).png" alt="" class="logo">
     <h1>麦链合伙人</h1>

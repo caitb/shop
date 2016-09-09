@@ -151,10 +151,10 @@ public class ShopIndexController extends BaseController {
      * @param req
      * @return
      */
-//    @RequestMapping("/download")
-//    public ModelAndView shopIndexload(HttpServletRequest req) throws Exception {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("common/all");
-//        return modelAndView;
-//    }
+    @RequestMapping("/download/loadapp")
+    public ModelAndView shopIndexload(HttpServletRequest req) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("common/all");
+        return modelAndView;
+    }
 }

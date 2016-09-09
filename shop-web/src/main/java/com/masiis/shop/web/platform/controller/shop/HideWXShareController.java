@@ -39,7 +39,7 @@ public class HideWXShareController {
             log.info("-----------------------------开始获取隐藏分享功能的数据----------------------------");
             log.info("hideUrl = " + hideUrl);
             Map<String, String> shareMap = null;
-            if (hideUrl.indexOf("all.html") == -1){
+            if (hideUrl.indexOf("all.jsp") == -1){
                shareMap = jssdkService.requestJSSDKData(hideUrl);
             }
             log.info("-----------------------------隐藏分享功能的数据[shareMap="+shareMap+"]---------------------------");

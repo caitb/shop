@@ -1,3 +1,9 @@
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title></title>
-    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="${path}/static/css/reset.css">
     <style>
         body,html{
             width: 100%;
@@ -22,7 +28,7 @@
             -webkit-box-orient:vertical;
             -webkit-box-align: center;
             -webkit-box-flex:1;
-            background: url("/static/images/backg.png") no-repeat;
+            background: url("${path}/static/images/backg.png") no-repeat;
             background-size: 100% 100%;
         }
         .logo{
@@ -71,9 +77,9 @@
     </style>
 </head>
 <body>
-<img src="/static/images/headerimg.png" alt="" id="himg" style="display:none">
+<img src="${path}/static/images/headerimg.png" alt="" id="himg" style="display:none">
 <main>
-    <img src="/static/images/ic_launcher(5).png" alt="" class="logo">
+    <img src="${path}/static/images/ic_launcher(5).png" alt="" class="logo">
     <h1>麦链合伙人</h1>
     <h2>下载麦链合伙人APP，加入好的创业团队，轻松赚钱。</h2>
     <button id="download">

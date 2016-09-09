@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -253,5 +254,9 @@ public class PfUserSkuService {
      */
     public List<PfUserSku> getNoMainUserSkuByUserIdAndBrandId(Long userId,Integer brandId){
         return pfUserSkuMapper.getNoMainUserSkuByUserIdAndBrandId(userId,brandId);
+    }
+
+    public List<PfUserSku> getPfUserSkuWithNoCode(Date time) {
+        return pfUserSkuMapper.selectWithNoCode(time);
     }
 }

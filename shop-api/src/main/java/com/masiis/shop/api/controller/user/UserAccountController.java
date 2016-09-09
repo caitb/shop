@@ -399,8 +399,8 @@ public class UserAccountController {
                 res.setOpenedBankName(extractwayInfo.getDepositBankName());
             }
             res.setWithdrawWay(extractWay);
-            res.setExtractFee(numberFormat.format(extractMoney));
-            res.setAppliedFee(numberFormat.format(appliedFee));
+            res.setExtractFee(extractMoney.toString());
+            res.setAppliedFee(appliedFee.toString());
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){

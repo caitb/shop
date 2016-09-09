@@ -6,6 +6,7 @@
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfShopTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.platform.PfUpgradeTask" %>
+<%@ page import="com.masiis.shop.scheduler.task.platform.PfCertificateTask" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -47,6 +48,9 @@
     } else if(type.equals("sfautoconfirm")){
         SfOrderTask sfOrderTask = (SfOrderTask) ac.getBean("sfOrderTask");
         sfOrderTask.orderReceivedConfirmJob();
+    } else if(type.equals("pfcert")){
+        PfCertificateTask task = (PfCertificateTask) ac.getBean("pfCertificateTask");
+        task.autoCreateCertificateJob();
     }
 %>
 </body>

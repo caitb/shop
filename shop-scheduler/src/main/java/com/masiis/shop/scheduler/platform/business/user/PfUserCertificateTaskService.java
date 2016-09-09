@@ -34,11 +34,12 @@ public class PfUserCertificateTaskService {
     private UserService userService;
 
     public void autoCreateCertificate() {
+        log.info("自动创建证书开始==================");
         Date time = getNewtimeByMilis(new Date(), -10 * 60 * 1000);
         log.info("检测的时间为:" + DateUtil.Date2String(time, "yyyy-MM-dd HH:mm:ss"));
         List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuWithNoCode(time);
         if(pfUserSkuList == null || pfUserSkuList.size() <= 0){
-            throw new BusinessException("暂无需要生成证书的数据");
+            log.info("暂无需要生成证书的数据");
         }
         for(PfUserSku pfUserSku:pfUserSkuList){
             try {
@@ -51,6 +52,7 @@ public class PfUserCertificateTaskService {
                 log.error("创建证书失败," + e.getMessage(), e);
             }
         }
+        log.info("自动创建证书结束==================");
     }
 
     private static Date getNewtimeByMilis(Date date, long milis){

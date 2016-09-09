@@ -382,13 +382,13 @@ public class UserAccountController {
 //            String cardCode = extractwayInfo.getBankCard();
 //            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
 //        }
-            String appliedFee,extractMoney;
+            BigDecimal appliedFee,extractMoney;
             if(account == null){
-                appliedFee = "￥0";
-                extractMoney = "￥0";
+                appliedFee = new BigDecimal(0);
+                extractMoney = new BigDecimal(0);
             } else {
-                appliedFee = account.getAppliedFee().setScale(2, BigDecimal.ROUND_DOWN).toString();
-                extractMoney = account.getExtractableFee().subtract(account.getAppliedFee()).setScale(2, BigDecimal.ROUND_DOWN).toString();
+                appliedFee = account.getAppliedFee();
+                extractMoney = account.getExtractableFee().subtract(account.getAppliedFee());
             }
             res.setHasCard(hasCard);
             if (hasCard){
@@ -399,8 +399,8 @@ public class UserAccountController {
                 res.setOpenedBankName(extractwayInfo.getDepositBankName());
             }
             res.setWithdrawWay(extractWay);
-            res.setExtractFee(extractMoney);
-            res.setAppliedFee(appliedFee);
+            res.setExtractFee(numberFormat.format(extractMoney));
+            res.setAppliedFee(numberFormat.format(appliedFee));
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){

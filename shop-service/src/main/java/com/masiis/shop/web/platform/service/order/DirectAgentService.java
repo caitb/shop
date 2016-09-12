@@ -312,7 +312,7 @@ public class DirectAgentService {
         pfUserStatistics.setIncomeFee(new BigDecimal(0));
         pfUserStatistics.setProfitFee(new BigDecimal(0));
         pfUserStatistics.setCostFee(BigDecimal.ZERO);
-        pfUserStatistics.setUpOrderCount(1);
+        pfUserStatistics.setUpOrderCount(0);
         pfUserStatistics.setUpProductCount(0);
         pfUserStatistics.setDownOrderCount(0);
         pfUserStatistics.setDownProductCount(0);

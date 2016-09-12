@@ -107,9 +107,11 @@ public class BOrderAddService {
             logger.info("旧代理保证金-------" + pfUserSku.getBail());
             bailPrice = pfSkuAgent.getBail().subtract(pfUserSku.getBail());
             //如果之前缴纳的保证金比现在的保证金标准高，那么不需要再次缴纳保证金
+            logger.info("bailPrice-----before---"+bailPrice.toString());
             if (bailPrice.compareTo(BigDecimal.ZERO) < 0) {
                 bailPrice = BigDecimal.ZERO;
             }
+            logger.info("bailPrice-----after---"+bailPrice.toString());
             quantity = pfSkuAgent.getQuantity();
             orderRemark = "新增" + BOrderType.UPGRADE.getDesc();
         } else {
@@ -127,6 +129,7 @@ public class BOrderAddService {
         }
         //v1.2 End 如果合伙人和上级的合伙等级相同，那么合伙人的上级将是上级的上级
         //v1.4.2 Begin 如果下级合伙人升级，上级合伙人无法升级并且下级合伙人没有推荐人，那么上级合伙人和下级合伙人解除合伙关系，上级合伙人成为下级合伙人的推荐人
+        logger.info("获得推荐人-----userId-----"+bOrderAdd.getUserId()+"-------skuId----"+bOrderAdd.getSkuId());
         PfUserRecommenRelation pfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(bOrderAdd.getUserId(), bOrderAdd.getSkuId());
         if (bOrderAdd.getOrderType().equals(BOrderType.UPGRADE.getCode())) {
             if (pfUserRecommenRelation == null || pfUserRecommenRelation.getPid() == 0) {

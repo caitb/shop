@@ -7,6 +7,7 @@
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
         <result column="hyperlink_url" property="hyperlinkUrl" jdbcType="VARCHAR" />
+        <result column="app_hyperlink_url" property="appHyperlinkUrl" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
     </resultMap>
@@ -18,10 +19,10 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PbBanner" >
         insert into pb_banner (id, create_time, name, 
-            img_url, hyperlink_url, remark, sort
+            img_url, hyperlink_url,app_hyperlink_url, remark, sort
             )
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
-            #{imgUrl,jdbcType=VARCHAR}, #{hyperlinkUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, (#{sort,jdbcType=INTEGER}
+            #{imgUrl,jdbcType=VARCHAR}, #{hyperlinkUrl,jdbcType=VARCHAR}, #{appHyperlinkUrl,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR}, (#{sort,jdbcType=INTEGER}
             )
     </insert>
 
@@ -31,20 +32,21 @@
             name = #{name,jdbcType=VARCHAR},
             img_url = #{imgUrl,jdbcType=VARCHAR},
             hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
+            app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
             remark = #{remark,jdbcType=VARCHAR},
             sort = #{sort,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, create_time, name, img_url, hyperlink_url, remark, sort
+        select id, create_time, name, img_url, hyperlink_url,app_hyperlink_url, remark, sort
         from pb_banner
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, name, img_url, hyperlink_url, remark, sort
-        from pb_banner
+        select id, create_time, name, img_url, hyperlink_url, app_hyperlink_url,remark, sort
+        from pb_banner ORDER BY create_time DESC
     </select>
 
     <select id="bannerList" resultType="java.util.HashMap">
@@ -53,6 +55,7 @@
           banner.`name`,
           banner.img_url,
           banner.hyperlink_url,
+          banner.app_hyperlink_url,
           banner.remark,
           banner.sort
         from pb_banner banner
@@ -60,10 +63,10 @@
 
     <insert id="addBanner">
         insert into pb_banner ( create_time,name,
-            img_url, hyperlink_url, remark, sort
+            img_url, hyperlink_url,app_hyperlink_url, remark, sort
             )
         values ( #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},
-         #{hyperlinkUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}
+         #{hyperlinkUrl,jdbcType=VARCHAR},#{appHyperlinkUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}
             )
     </insert>
 
@@ -78,6 +81,7 @@
           banner.`name`,
           banner.img_url,
           banner.hyperlink_url,
+          banner.app_hyperlink_url,
           banner.remark,
           banner.sort
         from pb_banner banner
@@ -89,6 +93,7 @@
         set name = #{name,jdbcType=VARCHAR},
             img_url = #{imgUrl,jdbcType=VARCHAR},
             hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
+            app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
             remark = #{remark,jdbcType=VARCHAR},
             sort = #{sort,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}

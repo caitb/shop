@@ -249,7 +249,7 @@ public class BUpgradePayService {
      * @param agentLevelId           升级新等级
      * @param spuId                  品牌id
      */
-    private void noMainBrandSkuUpgrade(Long userId,
+    public void noMainBrandSkuUpgrade(Long userId,
                                        Long userPid,
                                        Long mainSkuRecommendUserId,
                                        Integer noMainSkuId,

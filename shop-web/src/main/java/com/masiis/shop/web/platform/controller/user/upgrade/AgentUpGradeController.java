@@ -59,14 +59,12 @@ public class AgentUpGradeController extends BaseController {
 
     @RequestMapping(value = "/upGradeAtom.do")
     @ResponseBody
-    public String upGradeAtom(@RequestParam(value = "skuId", required = true) Integer skuId,
-                              @RequestParam(value = "userPid", required = true) Long userPid,
+    public String upGradeAtom(@RequestParam(value = "userPid", required = true) Long userPid,
                               @RequestParam(value = "userId", required = true) Long userId,
                               @RequestParam(value = "mainSkuRecommendUserId", required = true) Long mainSkuRecommendUserId,
                               @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
                               @RequestParam(value = "spuId", required = true) Integer spuId,
                               @RequestParam(value = "noMainSkuId", required = true) Integer noMainSkuId,
-                              @RequestParam(value = "bailAmount", required = true) BigDecimal bailAmount,
                                     HttpServletRequest request) throws Exception{
 /*        PfBorderItem pfBorderItem = new PfBorderItem();
         pfBorderItem.setSkuId(skuId);
@@ -74,7 +72,7 @@ public class AgentUpGradeController extends BaseController {
         List<PfBorderItem> pfBorderItems = new ArrayList<PfBorderItem>();
         pfBorderItems.add(pfBorderItem);
         bUpgradePayService.skipNoBrandSkuUpgrade(userId,userPid,pfBorderItems);*/
-
+        BigDecimal bailAmount = new BigDecimal(0);
         bUpgradePayService.noMainBrandSkuUpgrade(userId, userPid, mainSkuRecommendUserId, noMainSkuId, bailAmount, agentLevelId, spuId);
         System.out.println("升级成功-----------------");
         return null;

@@ -9,6 +9,7 @@ package com.masiis.shop.dao.platform.user;
 
 
 import com.masiis.shop.dao.po.PfUserSearchLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface PfUserSearchLogMapper {
      * @param content
      * @param userId
      */
-    void deleteContent(String content, Long userId);
+    void deleteContent(@Param("content")String content, @Param("userId")Long userId);
 
     /**
      * 清空查询记录

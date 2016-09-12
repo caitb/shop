@@ -132,7 +132,7 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="levelNameUl">
-                                                                        <c:forEach items="${agentLevels}" var="level">
+                                                                        <c:forEach items="${agentLevels2}" var="level">
                                                                             <li>${level.name}</li>
                                                                         </c:forEach>
                                                                     </ul>
@@ -951,7 +951,7 @@
         changeRecommendSetup();
     });
 
-    if(isSetup){
+    if(!isSetup){
         changePartnerSetup();
         changeRecommendSetup();
     }

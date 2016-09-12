@@ -76,9 +76,13 @@ public class PfSkuStockService {
 
         switch (handleType) {
             case downAgent:
+            case registerGiveSku:
                 afterStock -= change;
                 afterFrozeStock -= change;
                 break;
+            case recoveryGiveSku:
+                afterStock += change;
+                afterFrozeStock += change;
             default:
                 throw new BusinessException("该操作类型不支持");
         }

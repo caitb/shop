@@ -359,7 +359,7 @@ public class PfBorderPromotionService {
                             PfBorderPromotionGiveStockChangeEnum.agent);
                 }
                 //更新平台库存
-                //updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
+                updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
             }else{
                 throw new BusinessException("----------用户库存商品不存在----------");
             }

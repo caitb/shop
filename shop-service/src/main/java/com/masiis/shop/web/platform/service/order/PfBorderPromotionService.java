@@ -61,7 +61,6 @@ public class PfBorderPromotionService {
         return pfBorderPromotionMapper.updateByPrimaryKey(pfBorderPromotion);
     }
 
-
     /**
      * 下单时增加平台冻结库存 并插入到 pf_border_promotion 表中
      * @param spuId
@@ -241,8 +240,8 @@ public class PfBorderPromotionService {
         log.info("changeGiveStockType----"+changeGiveStockType.getCode());
         switch (changeGiveStockType){
             case agent:
-                if (skuId!=null&&spuId!=null){
-                    pfBorderPromotion = getBorderPromotionsByBorderIdAndIsTake(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
+                if (skuId==null&&spuId==null){
+                    pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
                 }
                 if (pfBorderPromotion!=null){
                     registAgentSuccessUpdateStockAndIsSend(pfBorderId,pfBorderPromotion,pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId(),userId,agentLevelId);
@@ -389,6 +388,9 @@ public class PfBorderPromotionService {
             userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
         }
         Integer registerGiveSkuStock = userSkuStock.getRegisterGiveSkuStock();
+        if (registerGiveSkuStock==null){
+            registerGiveSkuStock = 0;
+        }
         Integer stock = userSkuStock.getStock();
         log.info("registerGiveSkuStock------"+registerGiveSkuStock+"-------changeQuantity----"+changeQuantity);
         switch (changeGiveStockType){
@@ -451,7 +453,7 @@ public class PfBorderPromotionService {
         PfUserSkuStock parentUserSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userPid,skuId,spuId);
         if (userPid!=null&&userPid!=0&&parentUserSkuStock!=null){
             Integer registerGiveSkuStock = parentUserSkuStock.getRegisterGiveSkuStock();
-            if (registerGiveSkuStock>0){
+            if (registerGiveSkuStock!=null&&registerGiveSkuStock>0){
                 log.info("-----上级平台赠送的剩余库存------"+registerGiveSkuStock);
                 switch (changeGiveStockType){
                     case agent:
@@ -465,6 +467,9 @@ public class PfBorderPromotionService {
                     default:
                         break;
                 }
+            }
+            if (registerGiveSkuStock==null){
+                registerGiveSkuStock=0;
             }
             parentUserSkuStock.setRegisterGiveSkuStock(registerGiveSkuStock);
             if (userSkuStockService.updateByIdAndVersions(parentUserSkuStock)!=1){
@@ -497,21 +502,21 @@ public class PfBorderPromotionService {
     /**
      * 回收到期的平台送的商品
      */
-    private void recoverySkuStock(){
-        try{
+    private void recoverySkuStock() {
+        try {
             log.info("回收平台赠送的到期的商品-----start");
             Date _beforTime = DateUtil.getLastDays(0);
-            Date startTime = DateUtil.getMinTimeofDay(_beforTime) ;
-            Date endTime  = DateUtil.getMaxTimeofDay(_beforTime) ;
-            log.info("startTime------"+startTime+"-----endTime----"+endTime);
+            Date startTime = DateUtil.getMinTimeofDay(_beforTime);
+            Date endTime = DateUtil.getMaxTimeofDay(_beforTime);
+            log.info("startTime------" + startTime + "-----endTime----" + endTime);
             List<PfBorderPromotion> borderPromotions = pfBorderPromotionMapper.getExpirePromotionsByIsSendAndQuantityAndTime(
                     PfBorderPromotionIsSendEnum.GiVED.getCode(),
                     0,
                     startTime,
                     endTime);
-            for (PfBorderPromotion pfBorderPromotion: borderPromotions){
-                PfUserSkuStock  userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(pfBorderPromotion.getUserId(),pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId());
-                if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
+            for (PfBorderPromotion pfBorderPromotion : borderPromotions) {
+                PfUserSkuStock userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(pfBorderPromotion.getUserId(), pfBorderPromotion.getSkuId(), pfBorderPromotion.getSpuId());
+                if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
                     //更新自己的库存
                     log.info("-----更新自己的库存----start");
                     updateOwnStock(null,
@@ -534,9 +539,8 @@ public class PfBorderPromotionService {
             }
 
             log.info("回收平台赠送的到期的商品-----end");
-        }catch (Exception e){
-            throw new BusinessException("回收平台赠送的到期的商品失败----"+e.getMessage());
+        } catch (Exception e) {
+            throw new BusinessException("回收平台赠送的到期的商品失败----" + e.getMessage());
         }
-
     }
 }

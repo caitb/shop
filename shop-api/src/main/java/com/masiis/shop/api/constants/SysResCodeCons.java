@@ -319,6 +319,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR = "900207";
     public static final String RES_CODE_ALIPAY_PAYCHECK_PAYINFOERROR_MSG = "支付宝支付同步结果校验支付信息不正确";
 
+    public static final String RES_CODE_ALIPAY_PAYCHECK_USERCANCEL = "900208";
+    public static final String RES_CODE_ALIPAY_PAYCHECK_USERCANCEL_MSG = "用户取消支付";
+
 
 
     public static final String PHONE_DUPLICATE = "手机号重复";

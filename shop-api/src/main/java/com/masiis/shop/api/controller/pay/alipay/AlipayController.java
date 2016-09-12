@@ -116,6 +116,13 @@ public class AlipayController extends BaseController {
                 res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_PARAMERROR_MSG);
             }
+            // 用户取消
+            if(AlipayConsAPP.PAY_RESULT_STATUS_SUCCESS.equals(req.getResultStatus())){
+                res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_USERCANCEL);
+                res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_USERCANCEL_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_USERCANCEL_MSG);
+            }
+
             if(!AlipayConsAPP.PAY_RESULT_STATUS_SUCCESS.equals(req.getResultStatus())){
                 res.setResCode(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL);
                 res.setResMsg(SysResCodeCons.RES_CODE_ALIPAY_PAYCHECK_RESULT_FAIL_MSG);

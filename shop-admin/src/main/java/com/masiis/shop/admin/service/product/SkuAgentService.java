@@ -100,15 +100,17 @@ public class SkuAgentService {
 
     /**
      * 保存
-     * @param pfSkuAgent
+     * @param pfSkuAgents
      */
-    public void save(PfSkuAgent pfSkuAgent){
-        if(pfSkuAgent == null) return;
-
-        if(pfSkuAgent.getId() != null){
-            pfSkuAgentMapper.updateByPrimaryKey(pfSkuAgent);
-        }else{
-            pfSkuAgentMapper.insert(pfSkuAgent);
+    public void save(List<PfSkuAgent> pfSkuAgents){
+        if(pfSkuAgents != null){
+            for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+                if(pfSkuAgent.getId() == null){
+                    pfSkuAgentMapper.insert(pfSkuAgent);
+                }else{
+                    pfSkuAgentMapper.updateByPrimaryKey(pfSkuAgent);
+                }
+            }
         }
     }
 

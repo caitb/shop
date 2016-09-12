@@ -102,17 +102,10 @@ public class SkuAgentController {
 
         try {
 
-//            PfSkuAgent oldSkuAgent = skuAgentService.findBySkuIdAndLevelId(pfSkuAgent.getSkuId(), pfSkuAgent.getAgentLevelId());
-//            if(oldSkuAgent != null && pfSkuAgent.getId() == null){
-//                resultMap.put("code", "error");
-//                resultMap.put("msg", "此等级已设置了!");
-//                return resultMap;
-//            }
-//
-//            skuAgentService.save(pfSkuAgent);
-//
-//            resultMap.put("code", "success");
-//            resultMap.put("msg", "设置成功!");
+            skuAgentService.save(skuAgentModel.getPfSkuAgents());
+
+            resultMap.put("code", "success");
+            resultMap.put("msg", "设置成功!");
         } catch (Exception e) {
             resultMap.put("code", "error");
             resultMap.put("msg", "商品代理等级设置失败!");

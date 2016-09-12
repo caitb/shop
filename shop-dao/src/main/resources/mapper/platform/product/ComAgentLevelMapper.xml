@@ -45,6 +45,16 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+
+    <select id="getMaxIdByIsOrganizationShow" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT * FROM com_agent_level c WHERE c.is_organization_show IN (
+            select MAX (id)
+            from c
+            where is_organization_show = #{isOrganizationShow,jdbcType=INTEGER}
+        )
+
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, name, img_url, is_organization, organization_suffix, is_organization_show,
         remark

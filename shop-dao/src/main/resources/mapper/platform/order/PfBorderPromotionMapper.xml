@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderPromotionMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderPromotion" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_pid" property="userId" jdbcType="BIGINT" />
+        <result column="pf_promotion_id" property="pfPromotionId" jdbcType="INTEGER" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="is_send" property="isSend" jdbcType="INTEGER" />
+        <result column="is_take" property="isTake" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_border_promotion
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderPromotion" >
+        insert into pf_border_promotion (id, create_time, pf_border_id, 
+            user_id,user_pid, pf_promotion_id, spu_id,
+            sku_id, sku_name, quantity, 
+            unit_price, total_price, is_send, 
+            is_take, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},#{pfPromotionId,jdbcType=INTEGER}, #{spuId,jdbcType=INTEGER},
+            #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+            #{unitPrice,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{isSend,jdbcType=INTEGER}, 
+            #{isTake,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorderPromotion" >
+        update pf_border_promotion
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            pf_promotion_id = #{pfPromotionId,jdbcType=INTEGER},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            sku_name = #{skuName,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            unit_price = #{unitPrice,jdbcType=DECIMAL},
+            total_price = #{totalPrice,jdbcType=DECIMAL},
+            is_send = #{isSend,jdbcType=INTEGER},
+            is_take = #{isTake,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_border_id, user_id,user_pid, pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getBorderPromotionsByBorderIdAndIsTake" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_border_id, user_id,user_pid, pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+        where pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+        AND is_take = #{isTake,jdbcType=INTEGER}
+    </select>
+
+    <select id="getBorderPromotionsByBorderIdAndIsSend" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_border_id, user_id, user_pid,pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+        where pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+        AND is_send = #{isSend,jdbcType=INTEGER}
+    </select>
+
+    <select id="getExpirePromotionsByIsSendAndQuantityAndTime" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, user_id,user_pid, pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+        where  is_send = #{isSend,jdbcType=INTEGER}
+        AND  quantity &gt; #{quantity,jdbcType=INTEGER}
+        AND  create_time  &gt; #{startTime,jdbcType=TIMESTAMP}
+        AND  create_time  &lt; #{endTime,jdbcType=TIMESTAMP}
+    </select>
+
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, user_id, user_pid,pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+    </select>
+
+</mapper>

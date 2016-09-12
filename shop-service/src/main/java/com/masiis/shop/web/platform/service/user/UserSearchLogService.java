@@ -1,9 +1,11 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.PfUserSearchLogMapper;
+import com.masiis.shop.dao.po.PfUserSearchLog;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +32,21 @@ public class UserSearchLogService {
     }
 
     public void clearContent(Long userId){
+        pfUserSearchLogMapper.clearContent(userId);
+    }
 
+    /**
+     * 保存搜索日志
+     * @param content
+     * @param userId
+     */
+    public void save(String content, Long userId){
+        PfUserSearchLog pfUserSearchLog = new PfUserSearchLog();
+        pfUserSearchLog.setCreateTime(new Date());
+        pfUserSearchLog.setContent(content);
+        pfUserSearchLog.setDeleted(0);
+        pfUserSearchLog.setUserId(userId);
+
+        pfUserSearchLogMapper.insert(pfUserSearchLog);
     }
 }

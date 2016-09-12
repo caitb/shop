@@ -97,10 +97,11 @@ public class PfUserSkuStockService {
     private void getAfterStockByType(Integer change, PfUserSkuStock before, UserSkuStockLogType handleType) {
         Integer afterStock = before.getStock();
         Integer fronzeStock = before.getFrozenStock();
-
+        Integer registerGiveSkuStock = before.getRegisterGiveSkuStock();
         switch (handleType) {
             case agent:
                 afterStock += change;
+                registerGiveSkuStock = 0;
                 break;
             case downAgent:
                 afterStock -= change;
@@ -119,12 +120,16 @@ public class PfUserSkuStockService {
 
         before.setStock(afterStock);
         before.setFrozenStock(fronzeStock);
+        before.setRegisterGiveSkuStock(registerGiveSkuStock);
 
         if (before.getStock().intValue() < 0) {
             throw new BusinessException("库存变动后小于0,错误");
         }
         if (before.getFrozenStock().intValue() < 0) {
             throw new BusinessException("冻结库存变动后小于0,错误");
+        }
+        if (before.getRegisterGiveSkuStock()<0){
+            throw new BusinessException("赠送商品库存变动小于0，错误");
         }
     }
 
@@ -137,6 +142,10 @@ public class PfUserSkuStockService {
      */
     public PfUserSkuStock selectByUserIdAndSkuId(Long userId, Integer skuId) {
         return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
+    }
+
+    public PfUserSkuStock selectByUserIdAndSkuIdAndSpuId(Long userId, Integer skuId,Integer spuId) {
+        return pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId,spuId);
     }
 
     /**

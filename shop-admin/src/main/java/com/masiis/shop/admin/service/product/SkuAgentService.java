@@ -120,4 +120,13 @@ public class SkuAgentService {
         return pfSkuAgentMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据
+     * @param skuId
+     * @return
+     */
+    public List<PfSkuAgent> listBySkuId(Integer skuId){
+        return pfSkuAgentMapper.selectBySkuId(skuId);
+    }
+
 }

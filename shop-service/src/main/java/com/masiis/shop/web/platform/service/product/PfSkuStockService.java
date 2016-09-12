@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2016/5/13
@@ -74,9 +76,13 @@ public class PfSkuStockService {
 
         switch (handleType) {
             case downAgent:
+            case registerGiveSku:
                 afterStock -= change;
                 afterFrozeStock -= change;
                 break;
+            case recoveryGiveSku:
+                afterStock += change;
+                afterFrozeStock += change;
             default:
                 throw new BusinessException("该操作类型不支持");
         }
@@ -91,6 +97,44 @@ public class PfSkuStockService {
             throw new BusinessException("冻结库存变动后小于0,错误");
         }
     }
+
+    /**
+     * 判断平台商品是否有足够的库存
+     * @param skuQuantity
+     * @param spuId
+     * @param skuId
+     * @return
+     */
+    public Map<String,Object> isEnoughPlatformSku(Integer skuQuantity, Integer spuId, Integer skuId){
+        //查询平台库存
+        PfSkuStock pfSkuStock = skuStockMapper.selectBySkuId(skuId);
+        Map<String,Object> map = new LinkedHashMap<>();
+        if (pfSkuStock!=null){
+            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < skuQuantity) {
+                map.put("isEnoughPlatformSku",false);
+            }
+        }else{
+            log.info("------没有查到此商品的库存-------");
+            map.put("isEnoughPlatformSku",false);
+        }
+        map.put("pfSkuStock",pfSkuStock);
+        map.put("isEnoughPlatformSku",true);
+        return map;
+    }
+
+    public void updateFrozenStock(Integer changeQuantity,Integer skuId,String remark){
+        PfSkuStock pfSkuStock =  selectBySkuId(skuId);
+        if (pfSkuStock!=null){
+            //增加平台冻结库存
+            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
+            if (updateByIdAndVersions(pfSkuStock) != 1) {
+                throw new BusinessException(remark);
+            }
+        }else{
+            throw new BusinessException("----更新平台库存失败-----");
+        }
+    }
+
 
     public PfSkuStock selectById(Integer id) {
         return skuStockMapper.selectById(id);

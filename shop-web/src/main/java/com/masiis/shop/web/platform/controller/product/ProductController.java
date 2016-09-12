@@ -134,7 +134,9 @@ public class ProductController extends BaseController {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSkuStock product = productService.getStockByUser(id);
-            Integer currentStock = product.getStock()-product.getFrozenStock();
+            //v1.5.6 减去平台赠送小白的库存
+            //Integer currentStock = product.getStock()-product.getFrozenStock();
+            Integer currentStock = product.getStock()-product.getFrozenStock()-product.getRegisterGiveSkuStock();
             if (currentStock - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
@@ -171,7 +173,9 @@ public class ProductController extends BaseController {
         if (currentStock < 0) {
             product.setStock(0);
         } else {
-            product.setStock(product.getStock() - product.getFrozenStock());
+            //v1.5.6 减去平台赠送小白的库存
+            //product.setStock(product.getStock() - product.getFrozenStock());
+            product.setStock(product.getStock() - product.getFrozenStock()-product.getRegisterGiveSkuStock());
         }
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());

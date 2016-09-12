@@ -195,7 +195,7 @@ public class SfShopService {
      * 创建海报
      * @param userId    用户id
      * @param basePath  项目所在系统盘路径
-     * @return
+     * @return          海报url
      */
     public String createShopPoster(Long userId, String basePath){
         try {

@@ -27,6 +27,14 @@ public interface PfUserSearchLogMapper {
     List<String> selectSearchContent(Long userId);
 
     /**
+     * 查询记录是否存在
+     * @param content
+     * @param userId
+     * @return
+     */
+    PfUserSearchLog selectByContent(String content, Long userId);
+
+    /**
      * 清空指定查询记录
      * @param content
      * @param userId

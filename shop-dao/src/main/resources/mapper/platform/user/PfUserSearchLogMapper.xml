@@ -46,11 +46,11 @@
     </select>
 
     <select id="deleteContent">
-        UPDATE pf_user_search_log SET deleted = 1 WHERE content = #{content} AND userId = #{userId}
+        UPDATE pf_user_search_log SET deleted = 1 WHERE content = #{content} AND user_id = #{userId}
     </select>
 
     <select id="clearContent">
-        UPDATE pf_user_search_log SET deleted = 1 WHERE userId = #{userId}
+        UPDATE pf_user_search_log SET deleted = 1 WHERE user_id = #{userId}
     </select>
 
 </mapper>

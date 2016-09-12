@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -271,6 +272,7 @@ public class PfUserRecommendRelationService {
 //        List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(userId);
         //只显示代理的主商品
         List<PfUserSku> pfUserSkuList = pfUserSkuMapper.selectPrimarySkuByUserId(userId);
+        List<Integer> list = new ArrayList<>();
         if (pfUserSkuList == null) {
             throw new BusinessException("代理商品异常，初始化商品列表失败");
         } else {
@@ -279,6 +281,7 @@ public class PfUserRecommendRelationService {
                 ComSkuSimple skuSimple;
                 for (PfUserSku pfUserSku : pfUserSkuList) {
                     ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+                    list.add(pfUserSku.getAgentLevelId());
                     skuSimple = new ComSkuSimple();
                     skuSimple.setSkuId(comSku.getId());
                     skuSimple.setSkuName(comSku.getName());
@@ -292,8 +295,9 @@ public class PfUserRecommendRelationService {
             }
         }
         if (pageNum.intValue() == 1) {
+            Collections.sort(list);
             //等级信息
-            List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
+            List<ComAgentLevel> agentLevels = comAgentLevelService.selectLastAll(list.get(0));
             ComAgentLevel agentLevel = new ComAgentLevel();
             agentLevel.setId(-1);
             agentLevel.setName("全部");

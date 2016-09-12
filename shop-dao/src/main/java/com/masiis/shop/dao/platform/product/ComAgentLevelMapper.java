@@ -22,6 +22,8 @@ public interface ComAgentLevelMapper {
 
     List<ComAgentLevel> selectAll();
 
+    List<ComAgentLevel> selectLastAll(@Param("id") Integer id);
+
     int updateByPrimaryKey(ComAgentLevel record);
 
     int getMaxAgentLevel();

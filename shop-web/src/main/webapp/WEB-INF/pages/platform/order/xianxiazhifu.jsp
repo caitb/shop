@@ -35,7 +35,7 @@
     <div class="sec1">
         <h3>支付信息</h3>
         <h1><span></span>支付宝转账</h1>
-        <h2><span>名称：</span><span>北京麦士网络科技有限公司</span></h2>
+        <h2><span>名称：</span><span>北京麦链网络科技有限公司</span></h2>
         <h2 style="border: none"><span>支付宝账号：</span><span>mailian@iimai.com</span></h2>
         <h1><span></span>银行转帐</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>

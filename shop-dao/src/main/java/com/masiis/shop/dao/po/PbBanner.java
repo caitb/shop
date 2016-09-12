@@ -42,6 +42,11 @@ public class PbBanner {
 
     private Integer sort;
 
+    /**
+     * app 链接地址
+     */
+    private String appHyperlinkUrl;
+
     public Integer getId() {
         return id;
     }
@@ -98,6 +103,14 @@ public class PbBanner {
         this.sort = sort;
     }
 
+    public String getAppHyperlinkUrl() {
+        return appHyperlinkUrl;
+    }
+
+    public void setAppHyperlinkUrl(String appHyperlinkUrl) {
+        this.appHyperlinkUrl = appHyperlinkUrl;
+    }
+
     @Override
     public String toString() {
         return "PbBanner{" +
@@ -106,6 +119,7 @@ public class PbBanner {
                 ", name='" + name + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", hyperlinkUrl='" + hyperlinkUrl + '\'' +
+                ", appHyperlinkUrl='" + appHyperlinkUrl + '\'' +
                 ", remark='" + remark + '\'' +
                 ", sort=" + sort +
                 '}';

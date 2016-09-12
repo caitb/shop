@@ -376,20 +376,8 @@ public class UserAccountController {
             }
 
             NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
-//            String appliedFee = account == null?numberFormat.format(0):account.getAppliedFee() == null?numberFormat.format(0):numberFormat.format(account.getAppliedFee());
-//            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee.replace("￥",""))));
-//        if (extractwayInfo != null){
-//            String cardCode = extractwayInfo.getBankCard();
-//            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
-//        }
-            BigDecimal appliedFee,extractMoney;
-            if(account == null){
-                appliedFee = new BigDecimal(0);
-                extractMoney = new BigDecimal(0);
-            } else {
-                appliedFee = account.getAppliedFee();
-                extractMoney = account.getExtractableFee().subtract(account.getAppliedFee());
-            }
+            BigDecimal appliedFee = account == null?BigDecimal.ZERO:account.getAppliedFee() == null?BigDecimal.ZERO:account.getAppliedFee();
+            BigDecimal extractMoney = account == null?BigDecimal.ZERO:account.getExtractableFee() == null?BigDecimal.ZERO:account.getExtractableFee().subtract(appliedFee);
             res.setHasCard(hasCard);
             if (hasCard){
                 res.setId(extractwayInfo.getId());

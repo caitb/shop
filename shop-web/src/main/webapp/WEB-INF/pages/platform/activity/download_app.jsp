@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
+<%@ page import="com.masiis.shop.common.util.PropertiesUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
@@ -28,10 +29,13 @@
             width:80%;
             padding:8px 0;
         }
+        button a{
+            color:#9D814F;
+        }
     </style>
 </head>
 <body>
     <img src="<%=path%>/static/images/activity/app_promotion/store.jpg" alt="" />
-    <button>立 即 下 载</button>
+    <button><a href="<%=(PropertiesUtils.getStringValue("api.domain.name.address") + "/static/html/wechatDownload.html")%>">立 即 下 载</a></button>
 </body>
 </html>

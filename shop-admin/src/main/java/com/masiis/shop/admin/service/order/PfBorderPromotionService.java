@@ -241,8 +241,8 @@ public class PfBorderPromotionService {
         log.info("changeGiveStockType----"+changeGiveStockType.getCode());
         switch (changeGiveStockType){
             case agent:
-                if (skuId!=null&&spuId!=null){
-                    pfBorderPromotion = getBorderPromotionsByBorderIdAndIsTake(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
+                if (skuId==null&&spuId==null){
+                    pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
                 }
                 if (pfBorderPromotion!=null){
                     registAgentSuccessUpdateStockAndIsSend(pfBorderId,pfBorderPromotion,pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId(),userId,agentLevelId);
@@ -359,7 +359,7 @@ public class PfBorderPromotionService {
                             PfBorderPromotionGiveStockChangeEnum.agent);
                 }
                 //更新平台库存
-                updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
+                //updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
             }else{
                 throw new BusinessException("----------用户库存商品不存在----------");
             }
@@ -389,6 +389,9 @@ public class PfBorderPromotionService {
             userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
         }
         Integer registerGiveSkuStock = userSkuStock.getRegisterGiveSkuStock();
+        if (registerGiveSkuStock==null){
+            registerGiveSkuStock = 0;
+        }
         Integer stock = userSkuStock.getStock();
         log.info("registerGiveSkuStock------"+registerGiveSkuStock+"-------changeQuantity----"+changeQuantity);
         switch (changeGiveStockType){
@@ -451,7 +454,7 @@ public class PfBorderPromotionService {
         PfUserSkuStock parentUserSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userPid,skuId,spuId);
         if (userPid!=null&&userPid!=0&&parentUserSkuStock!=null){
             Integer registerGiveSkuStock = parentUserSkuStock.getRegisterGiveSkuStock();
-            if (registerGiveSkuStock>0){
+            if (registerGiveSkuStock!=null&&registerGiveSkuStock>0){
                 log.info("-----上级平台赠送的剩余库存------"+registerGiveSkuStock);
                 switch (changeGiveStockType){
                     case agent:
@@ -465,6 +468,9 @@ public class PfBorderPromotionService {
                     default:
                         break;
                 }
+            }
+            if (registerGiveSkuStock==null){
+                registerGiveSkuStock=0;
             }
             parentUserSkuStock.setRegisterGiveSkuStock(registerGiveSkuStock);
             if (userSkuStockService.updateByIdAndVersions(parentUserSkuStock)!=1){

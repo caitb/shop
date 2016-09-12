@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,14 +62,20 @@ public class AgentUpGradeController extends BaseController {
     public String upGradeAtom(@RequestParam(value = "skuId", required = true) Integer skuId,
                               @RequestParam(value = "userPid", required = true) Long userPid,
                               @RequestParam(value = "userId", required = true) Long userId,
+                              @RequestParam(value = "mainSkuRecommendUserId", required = true) Long mainSkuRecommendUserId,
                               @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
+                              @RequestParam(value = "spuId", required = true) Integer spuId,
+                              @RequestParam(value = "noMainSkuId", required = true) Integer noMainSkuId,
+                              @RequestParam(value = "bailAmount", required = true) BigDecimal bailAmount,
                                     HttpServletRequest request) throws Exception{
-        PfBorderItem pfBorderItem = new PfBorderItem();
+/*        PfBorderItem pfBorderItem = new PfBorderItem();
         pfBorderItem.setSkuId(skuId);
         pfBorderItem.setAgentLevelId(agentLevelId);
         List<PfBorderItem> pfBorderItems = new ArrayList<PfBorderItem>();
         pfBorderItems.add(pfBorderItem);
-        bUpgradePayService.skipNoBrandSkuUpgrade(userId,userPid,pfBorderItems);
+        bUpgradePayService.skipNoBrandSkuUpgrade(userId,userPid,pfBorderItems);*/
+
+        bUpgradePayService.noMainBrandSkuUpgrade(userId, userPid, mainSkuRecommendUserId, noMainSkuId, bailAmount, agentLevelId, spuId);
         System.out.println("升级成功-----------------");
         return null;
     }

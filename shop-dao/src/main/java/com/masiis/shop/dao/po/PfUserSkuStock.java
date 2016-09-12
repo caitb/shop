@@ -52,6 +52,10 @@ public class PfUserSkuStock {
      * 自发货冻结库存
      */
     private Integer frozenCustomStock;
+    /**
+     * 小白注册，平台赠送商品库存
+     */
+    private Integer registerGiveSkuStock;
 
     public Long getId() {
         return id;
@@ -139,5 +143,13 @@ public class PfUserSkuStock {
 
     public void setFrozenCustomStock(Integer frozenCustomStock) {
         this.frozenCustomStock = frozenCustomStock;
+    }
+
+    public Integer getRegisterGiveSkuStock() {
+        return registerGiveSkuStock;
+    }
+
+    public void setRegisterGiveSkuStock(Integer registerGiveSkuStock) {
+        this.registerGiveSkuStock = registerGiveSkuStock;
     }
 }

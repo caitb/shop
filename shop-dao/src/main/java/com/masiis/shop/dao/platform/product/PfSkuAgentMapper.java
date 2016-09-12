@@ -34,6 +34,8 @@ public interface PfSkuAgentMapper {
 
     PfSkuAgent selectBySkuIdAndLevelId(@Param("skuId") Integer skuId, @Param("levelId") Integer levelId);
 
+    PfSkuAgent selectBySkuIdAndLevelIdAndIsShow(@Param("skuId") Integer skuId, @Param("levelId") Integer levelId,@Param("isShow") Integer isShow);
+
     List<PfSkuAgent> selectBySkuId(Integer skuId);
 
     void updateById(PfSkuAgent pfSkuAgent);

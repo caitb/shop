@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.service.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.product.ProductInfo;
@@ -15,6 +17,8 @@ import java.util.*;
  */
 @Service
 public class ProductService {
+
+    private final static Log log = LogFactory.getLog(ProductService.class);
 
     @Resource
     private ComSpuMapper comSpuMapper;
@@ -38,61 +42,78 @@ public class ProductService {
      *
      * @param comSpu
      * @param comSku
-     * @param pfSkuAgents
-     * @param sfSkuDistributions
      */
-    public void save(ComSpu comSpu, ComSku comSku, ComSkuExtension comSkuExtension, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
+    public void save(ComSpu comSpu, ComSku comSku, ComSkuExtension comSkuExtension, List<ComSkuImage> comSkuImages) {
 
+        log.info("保存商品start..........................");
         //保存spu
-        comSpuMapper.insert(comSpu);
+        if(comSpu.getId() == null){
+            log.info("保存[comSpu="+comSpu+"]..........................");
+            comSpuMapper.insert(comSpu);
+        }else{
+            log.info("更改[comSpu="+comSpu+"]..........................");
+            comSpuMapper.updateById(comSpu);
+        }
 
         //保存sku
-        comSku.setSpuId(comSpu.getId());
-        comSkuMapper.insert(comSku);
+        if(comSku.getId() == null){
+            comSku.setSpuId(comSpu.getId());
+
+            log.info("保存[comSku="+comSku+"]..........................");
+            comSkuMapper.insert(comSku);
+
+
+            //sku统计表
+            PfSkuStatistic pfSkuStatistic = new PfSkuStatistic();
+            pfSkuStatistic.setSkuId(comSku.getId());
+            pfSkuStatistic.setAgentNum(0);
+            pfSkuStatistic.setTrialNum(0);
+
+            log.info("保存[pfSkuStatistic="+pfSkuStatistic+"]..........................");
+            pfSkuStatisticMapper.insert(pfSkuStatistic);
+
+            //库存量
+            PfSkuStock pfSkuStock = new PfSkuStock();
+            pfSkuStock.setCreateTime(new Date());
+            pfSkuStock.setSkuId(comSku.getId());
+            pfSkuStock.setSpuId(comSpu.getId());
+            pfSkuStock.setStock(10);
+            pfSkuStock.setFrozenStock(0);
+            pfSkuStock.setVersion(0);
+
+            log.info("保存[pfSkuStock="+pfSkuStock+"]..........................");
+            pfSkuStockService.insert(pfSkuStock);
+        }else{
+            log.info("更改[comSku="+comSku+"]..........................");
+            comSkuMapper.updateById(comSku);
+        }
+
 
         //保存sku扩展表
-        comSkuExtension.setSkuId(comSku.getId());
-        comSkuExtensionMapper.insert(comSkuExtension);
+        if(comSkuExtension.getId() == null){
+            comSkuExtension.setSkuId(comSku.getId());
 
-        //sku统计表
-        PfSkuStatistic pfSkuStatistic = new PfSkuStatistic();
-        pfSkuStatistic.setSkuId(comSku.getId());
-        pfSkuStatistic.setAgentNum(0);
-        pfSkuStatistic.setTrialNum(0);
-        pfSkuStatisticMapper.insert(pfSkuStatistic);
-
-        //库存量
-        PfSkuStock pfSkuStock = new PfSkuStock();
-        pfSkuStock.setCreateTime(new Date());
-        pfSkuStock.setSkuId(comSku.getId());
-        pfSkuStock.setSpuId(comSpu.getId());
-        pfSkuStock.setStock(10);
-        pfSkuStock.setFrozenStock(0);
-        pfSkuStock.setVersion(0);
-        pfSkuStockService.insert(pfSkuStock);
+            log.info("保存[comSkuExtension="+comSkuExtension+"]..........................");
+            comSkuExtensionMapper.insert(comSkuExtension);
+        }else{
+            log.info("更改[comSkuExtension="+comSkuExtension+"]..........................");
+            comSkuExtensionMapper.updateById(comSkuExtension);
+        }
 
         //保存sku图片
-        int i = 0;
-        for (ComSkuImage comSkuImage : comSkuImages) {
-            comSkuImage.setSpuId(comSpu.getId());
-            comSkuImage.setSkuId(comSku.getId());
-            comSkuImage.setSort(i++);
+        if (comSkuImages != null && comSkuImages.size() > 0) {
+            //删除原有的sku图片
+            comSkuImageMapper.deleteBySkuId(comSku.getId());
+            for (ComSkuImage comSkuImage : comSkuImages) {
+                comSkuImage.setSpuId(comSpu.getId());
+                comSkuImage.setSkuId(comSku.getId());
 
-            comSkuImageMapper.insert(comSkuImage);
+                log.info("保存[comSkuImage="+comSkuImage+"]..........................");
+                comSkuImageMapper.insert(comSkuImage);
+            }
         }
+        log.info("保存商品end..........................");
 
-        //保存代理分润
-        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-            pfSkuAgent.setSkuId(comSku.getId());
-            pfSkuAgent.setFreemanUpperNum(50);
-            pfSkuAgentMapper.insert(pfSkuAgent);
-        }
-
-        //保存分销分润
-        for (SfSkuDistribution sfSkuDistribution : sfSkuDistributions) {
-            sfSkuDistribution.setSkuId(comSku.getId());
-            sfSkuDistributionMapper.insert(sfSkuDistribution);
-        }
     }
 
     /**

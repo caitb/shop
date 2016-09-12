@@ -73,7 +73,7 @@ public class ProductController {
     @RequestMapping("/edit.shtml")
     public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, Integer skuId) throws JsonProcessingException {
 
-        ModelAndView mav = new ModelAndView("product/edit");
+        ModelAndView mav = new ModelAndView("product/add");
 
         List<ComBrand> comBrands = brandService.list(new ComBrand());
         List<ComUnitMeasure> comUnitMeasures = unitMeasureService.listAll();
@@ -104,24 +104,15 @@ public class ProductController {
     @RequestMapping("/add.do")
     @ResponseBody
     public Object add(HttpServletRequest request, HttpServletResponse response,
+                      Integer spuId,
+                      Integer skuId,
+                      Integer skuExtensionId,
                       ComSpu comSpu,
                       ComSku comSku,
-                      @RequestParam(value = "unitPrices")String[] unitPrices,
-                      @RequestParam(value = "totalPrices")String[] totalPrices,
-                      @RequestParam("quantitys")Integer[] quantitys,
-                      @RequestParam("bails")String[] bails,
-                      @RequestParam("rewardUnitPrices")String[] rewardUnitPrices,
-                      @RequestParam("distributionDiscounts")String[] distributionDiscounts,
-                      String proIconUrl,
-                      String proIconName,
-                      @RequestParam("mainImgUrls")String[] mainImgUrls,
-                      @RequestParam("mainImgNames")String[] mainImgNames,
-                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames,
-                      @RequestParam("skuBackgroundImgName")String skuBackgroundImgName,
-                      @RequestParam("illustratingPictureImgName")String illustratingPictureImgName,
-                      @RequestParam("developPosterName")String developPosterName,
-                      @RequestParam("iconImgUrls")String[] iconImgUrls,
-                      @RequestParam("iconImgNames")String[] iconImgNames) throws FileNotFoundException {
+                      ComSkuExtension comSkuExtension,
+                      @RequestParam(value = "imgUrls", required = false)String[] imgUrls,
+                      @RequestParam(value = "imgNames", required = false)String[] imgNames
+    ) throws FileNotFoundException {
 
         String realPath = request.getServletContext().getRealPath("/");
         realPath = realPath.substring(0, realPath.lastIndexOf("/"));
@@ -129,75 +120,46 @@ public class ProductController {
         try{
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
             if(pbUser != null){
-                log.info("保存商品-开始准备comSpu数据");
+                log.info("准备comSpu数据..........................");
+                comSpu.setId(spuId);
                 comSpu.setCreateTime(new Date());
                 comSpu.setCreateMan(pbUser.getId());
-                comSpu.setStatus(0);
+                comSpu.setStatus(1);
                 comSpu.setIsSale(0);
                 comSpu.setIsDelete(0);
                 comSpu.setType(1);
+                if(StringUtils.isBlank(comSpu.getCategoryName())) comSpu.setCategoryName(null);
+                if(StringUtils.isBlank(comSpu.getContent())) comSpu.setContent(null);
+                log.info("准备comSpu数据..........................[comSpu="+comSpu+"]");
 
+                log.info("准备comSku数据..........................");
+                comSku.setId(skuId);
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
-                comSku.setIcon(proIconName);
-                log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
+                log.info("准备comSku数据..........................[comSku="+comSku+"]");
 
-                //代理分润
-                log.info("保存商品-开始准备pfSkuAgents数据");
-                List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
-                for(int i=0; i<unitPrices.length; i++){
-                    PfSkuAgent pfSkuAgent = new PfSkuAgent();
-                    pfSkuAgent.setAgentLevelId(new Integer(i + 1));
-                    pfSkuAgent.setQuantity(quantitys[i]);
-                    pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
-                    pfSkuAgent.setBail(new BigDecimal(bails[i]));
-                    pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
-                    pfSkuAgent.setIsShow(1);
-                    pfSkuAgent.setIcon(iconImgNames[i]);
-                    pfSkuAgent.setIsUpgrade(1);
-                    pfSkuAgent.setRewardUnitPrice(new BigDecimal(rewardUnitPrices[i]));
+                comSkuExtension.setId(skuExtensionId);
 
-                    pfSkuAgents.add(pfSkuAgent);
-                }
-                log.info("保存商品-comSpu数据[pfSkuAgents="+pfSkuAgents+"]");
-
-                //分销分润
-                log.info("保存商品-开始准备sfSkuDistributions数据");
-                List<SfSkuDistribution> sfSkuDistributions = new ArrayList<>();
-                for(int i=0; i<distributionDiscounts.length; i++){
-                    SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
-                    sfSkuDistribution.setDiscount(new BigDecimal(Double.parseDouble(distributionDiscounts[i])*0.01));
-                    sfSkuDistribution.setSort(i+1);
-
-                    sfSkuDistributions.add(sfSkuDistribution);
-                }
-                log.info("保存商品-comSpu数据[sfSkuDistributions="+sfSkuDistributions+"]");
-
-                log.info("保存商品-开始准备comSkuImages数据");
+                log.info("准备comSkuImages数据..........................");
                 List<ComSkuImage> comSkuImages = new ArrayList<>();
-                int[] imgPxs = {220, 308, 800};
-                for(int i=0; i<mainImgUrls.length; i++){
-                    ComSkuImage comSkuImage = new ComSkuImage();
-                    comSkuImage.setCreateTime(new Date());
-                    comSkuImage.setCreateMan(pbUser.getId());
-                    comSkuImage.setImgUrl(mainImgNames[i]);
-                    comSkuImage.setImgName(mainImgOriginalNames[i]);
-                    comSkuImage.setIsDefault(i==0?1:0);
+                if(imgNames != null && imgNames.length > 0){
+                    for(int ki=0; ki<imgNames.length; ki++){
+                        ComSkuImage comSkuImage = new ComSkuImage();
+                        comSkuImage.setCreateMan(pbUser.getId());
+                        comSkuImage.setCreateTime(new Date());
+                        comSkuImage.setSort(ki);
+                        comSkuImage.setImgUrl(imgUrls[ki]);
+                        comSkuImage.setImgName(imgNames[ki]);
+                        comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_prototype_url"));
+                        comSkuImage.setIsDefault(ki);
 
-                    for(int px=0; px<imgPxs.length; px++){
-                        comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
+                        comSkuImages.add(comSkuImage);
                     }
-
-                    comSkuImages.add(comSkuImage);
                 }
-                log.info("保存商品-comSpu数据[comSkuImages="+comSkuImages+"]");
+                log.info("准备comSkuImages数据..........................[comSkuImages="+comSkuImages+"]");
 
-                ComSkuExtension comSkuExtension = new ComSkuExtension();
-                comSkuExtension.setSkuBackgroundImg(skuBackgroundImgName);
-                comSkuExtension.setPoster(developPosterName);
-                comSkuExtension.setIllustratingPicture(illustratingPictureImgName);
+                productService.save(comSpu, comSku, comSkuExtension, comSkuImages);
 
-                productService.save(comSpu, comSku, comSkuExtension, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "success";
             }
         } catch(Exception e) {

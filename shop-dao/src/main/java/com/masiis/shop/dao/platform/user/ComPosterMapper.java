@@ -11,6 +11,7 @@ package com.masiis.shop.dao.platform.user;
 import com.masiis.shop.dao.po.ComPoster;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ComPosterMapper {
 
@@ -25,4 +26,8 @@ public interface ComPosterMapper {
     int updateByPrimaryKey(ComPoster record);
 
     ComPoster selectByCondition(ComPoster comPoster);
+
+    void delete(Integer id);
+
+    List<Map<String,Object>> posterList(Map<String, Object> map);
 }

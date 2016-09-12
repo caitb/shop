@@ -146,6 +146,15 @@
         and agent_level_id =#{levelId}
     </select>
 
+    <select id="selectBySkuIdAndLevelIdAndIsShow" resultMap="BaseResultMap">
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
+        from pf_sku_agent
+        where sku_id = #{skuId}
+        and agent_level_id =#{levelId}
+        and is_show =#{isShow}
+    </select>
+
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
         update
         pf_sku_agent

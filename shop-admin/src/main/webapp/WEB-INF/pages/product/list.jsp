@@ -933,6 +933,9 @@
                             },
                             'click .edit': function(e, value, row, index) {
                                 parent.window.$('#myTabbable').add('product-edit-'+row.comSku.id, '修改商品', '<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id);
+                            },
+                            'click .agent-setup': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('product-agent-setup'+row.comSku.id, '修改商品', '<%=basePath%>skuAgent/add.shtml?skuId='+ row.comSku.id);
                             }
                         }
                     }
@@ -1006,6 +1009,7 @@
         }else if(row.comSpu && row.comSpu.isSale == 1){
             arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">下架</a>');
         }
+        arr.push('&nbsp;<a class="agent-setup" href="javascript:void(0);" title="Edit">代理设置</a>');
 
         return arr.join(' ');
     }

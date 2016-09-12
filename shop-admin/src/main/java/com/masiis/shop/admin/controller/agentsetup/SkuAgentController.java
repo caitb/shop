@@ -2,6 +2,9 @@ package com.masiis.shop.admin.controller.agentsetup;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.admin.beans.product.SkuAgentModel;
 import com.masiis.shop.admin.service.product.AgentLevelService;
 import com.masiis.shop.admin.service.product.SkuAgentService;
 import com.masiis.shop.admin.service.product.SkuService;
@@ -11,6 +14,7 @@ import com.masiis.shop.dao.po.PfSkuAgent;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -28,6 +32,8 @@ public class SkuAgentController {
 
     private final static Log log = LogFactory.getLog(SkuAgentController.class);
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -41,19 +47,22 @@ public class SkuAgentController {
     }
 
     @RequestMapping("/add.shtml")
-    public String add(Model model){
-        List<ComSku> skus = skuService.listByCondition(null);
+    public String add(Model model, Integer skuId) throws JsonProcessingException {
+        ComSku comSku = skuService.findById(skuId);
+        List<PfSkuAgent> pfSkuAgents = skuAgentService.listBySkuId(skuId);
         List<ComAgentLevel> agentLevels = agentLevelService.listAll();
 
-        model.addAttribute("skus", skus);
-        model.addAttribute("agentLevels", agentLevels);
+        model.addAttribute("comSku", comSku);
+        model.addAttribute("pfSkuAgents", pfSkuAgents);
+        model.addAttribute("isSetup", pfSkuAgents!=null&&pfSkuAgents.size()>0 ? true : false);
+        model.addAttribute("agentLevels", objectMapper.writeValueAsString(agentLevels));
         return "agentsetup/add";
     }
 
     @RequestMapping("edit.shtml")
-    public String edit(Model model, Integer id){
+    public String edit(Model model, Integer skuId){
 
-        PfSkuAgent skuAgent = skuAgentService.loadById(id);
+        PfSkuAgent skuAgent = skuAgentService.loadById(skuId);
         List<ComSku> skus = skuService.listByCondition(null);
         List<ComAgentLevel> agentLevels = agentLevelService.listAll();
 
@@ -87,26 +96,26 @@ public class SkuAgentController {
 
     @RequestMapping("/add.do")
     @ResponseBody
-    public Object add(PfSkuAgent pfSkuAgent) {
+    public Object add(SkuAgentModel skuAgentModel) {
         Map<String, Object> resultMap = new HashMap<>();
 
         try {
 
-            PfSkuAgent oldSkuAgent = skuAgentService.findBySkuIdAndLevelId(pfSkuAgent.getSkuId(), pfSkuAgent.getAgentLevelId());
-            if(oldSkuAgent != null && pfSkuAgent.getId() == null){
-                resultMap.put("code", "error");
-                resultMap.put("msg", "此等级已设置了!");
-                return resultMap;
-            }
-
-            skuAgentService.save(pfSkuAgent);
-
-            resultMap.put("code", "success");
-            resultMap.put("msg", "设置成功!");
+//            PfSkuAgent oldSkuAgent = skuAgentService.findBySkuIdAndLevelId(pfSkuAgent.getSkuId(), pfSkuAgent.getAgentLevelId());
+//            if(oldSkuAgent != null && pfSkuAgent.getId() == null){
+//                resultMap.put("code", "error");
+//                resultMap.put("msg", "此等级已设置了!");
+//                return resultMap;
+//            }
+//
+//            skuAgentService.save(pfSkuAgent);
+//
+//            resultMap.put("code", "success");
+//            resultMap.put("msg", "设置成功!");
         } catch (Exception e) {
             resultMap.put("code", "error");
             resultMap.put("msg", "商品代理等级设置失败!");
-            log.error("商品代理等级设置失败![pfSkuAgent="+pfSkuAgent+"]");
+            log.error("商品代理等级设置失败![skuAgentModel="+skuAgentModel+"]");
             e.printStackTrace();
         }
 

@@ -387,6 +387,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">
@@ -409,6 +410,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-xs-12 col-sm-3">
                                         <div class="widget-box">
                                             <div class="widget-header">

@@ -25,6 +25,10 @@ public class ComPoster {
      */
     private Long userId;
     /**
+     * 创建海报人的名称
+     */
+    private String realName;
+    /**
      * 海报二维码参数
      */
     private Long shareParamId;
@@ -81,6 +85,14 @@ public class ComPoster {
         this.posterName = posterName;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     @Override
     public String toString() {
         return "ComPoster{" +
@@ -88,6 +100,7 @@ public class ComPoster {
                 ", createTime=" + createTime +
                 ", type=" + type +
                 ", userId=" + userId +
+                ", realName='" + realName + '\'' +
                 ", shareParamId=" + shareParamId +
                 ", posterName='" + posterName + '\'' +
                 '}';

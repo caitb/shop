@@ -8,6 +8,7 @@
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="share_param_id" property="shareParamId" jdbcType="BIGINT" />
         <result column="poster_name" property="posterName" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -67,5 +68,29 @@
             </if>
         </where>
     </select>
+
+    <select id="posterList" resultType="java.util.HashMap" resultMap="BaseResultMap">
+        SELECT
+        cp.id,
+        cp.create_time,
+        cp.type,
+        share_param_id,
+        cp.user_id,
+        cu.real_name,
+        cp.poster_name
+        FROM com_poster cp
+        LEFT JOIN
+        com_user cu
+        ON cp.user_id = cu.id
+        <where>
+            <if test="realName != null">
+                AND  cu.real_name = #{realName}
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM com_poster WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
 
 </mapper>

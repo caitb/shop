@@ -1,15 +1,9 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.masiis.shop.common.enums.platform.BOrderShipStatus;
-import com.masiis.shop.common.enums.platform.BOrderStatus;
-import com.masiis.shop.common.enums.platform.SkuStockLogType;
-import com.masiis.shop.common.enums.platform.UserSkuStockLogType;
+import com.masiis.shop.common.enums.platform.*;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderItem;
-import com.masiis.shop.dao.po.PfSkuStock;
-import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.ComUserAccountService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
@@ -42,6 +36,9 @@ public class BOrderShipService {
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private ComUserAccountService comUserAccountService;
+    @Resource
+    private PfBorderPromotionService pfBorderPromotionService;
+
 
     /**
      * 合伙订单发货和收货
@@ -51,6 +48,15 @@ public class BOrderShipService {
     public void shipAndReceiptBOrder(PfBorder pfBorder) {
         shipBOrder(pfBorder);
         receiptBOrder(pfBorder);
+        //v1.5.6 更新平台赠送给小白的商品库存
+        pfBorderPromotionService.updateGivePlatformStock(pfBorder.getId(),
+                pfBorder.getUserId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                pfBorder.getOrderType());
     }
 
     /**

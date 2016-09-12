@@ -90,6 +90,17 @@
                AND sku_id = #{[1],jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserIdAndSkuIdAndSpuId" resultMap="BaseResultMap">
+        select id, create_time, user_id, spu_id, sku_id, frozen_stock, stock, frozen_custom_stock,
+        custom_stock, remark, version
+        from
+        pf_user_sku_stock
+        where
+        user_id = #{[0],jdbcType=BIGINT}
+        AND sku_id = #{[1],jdbcType=BIGINT}
+        AND spu_id = #{[2],jdbcType=BIGINT}
+    </select>
+
     <select id="selectReplenishStock" resultType="java.util.HashMap">
         SELECT
             sku.name as name,

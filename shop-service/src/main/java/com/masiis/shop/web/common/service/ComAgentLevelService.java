@@ -22,6 +22,15 @@ public class ComAgentLevelService {
         return comAgentLevelMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 查询前端显示的最低等级
+     * @param isOrganizationShow
+     * @return
+     */
+    public  ComAgentLevel getMinLevelByIsOrganizationShow(Integer isOrganizationShow){
+        return comAgentLevelMapper.getMaxIdByIsOrganizationShow(isOrganizationShow);
+    }
+
 
     public  List<ComAgentLevel> selectAll(){
         return comAgentLevelMapper.selectAll();

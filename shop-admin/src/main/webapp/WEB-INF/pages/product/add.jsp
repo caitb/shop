@@ -1,5 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -8,62 +10,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta charset="utf-8"/>
-    <title>Tables - Masiis</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>UI Elements - Ace Admin</title>
 
-    <meta name="description" content="Static &amp; Dynamic Tables"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="description" content="Common UI Features &amp; Elements" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css" />
 
     <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery-ui.custom.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace.min.css" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
+    <![endif]-->
+
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/dropzone.css"/>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/my-dropzone.css"/>
 
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
 
-    <!-- text fonts -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css"/>
-
-    <!-- ace styles -->
-    <%--<link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />--%>
-
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css"/>
-    <![endif]-->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css"/>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css"/>
-
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css"/>
-    <![endif]-->
-
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.all.js"></script>
-    <script type="text/javascript" charset="utf-8"
-            src="<%=basePath%>static/class/upload-plugin/core/zyFile.js"></script>
-    <script type="text/javascript" charset="utf-8"
-            src="<%=basePath%>static/class/upload-plugin/control/js/zyUpload.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/jq22.js"></script>
-    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/lang/zh-cn/zh-cn.js"></script>
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+        .dropdown-preview  > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+    </style>
 
     <!-- ace settings handler -->
     <script src="<%=basePath%>static/ace2/js/uncompressed/ace-extra.js"></script>
 
-
-    <script type="text/javascript" charset="utf-8"
-            src="<%=basePath%>static/class/bootstrap-validator/js/bootstrapValidator.js"></script>
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
     <!--[if lte IE 8]>
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.all.js"></script>
 </head>
 
 <body class="no-skin">
@@ -71,10 +85,7 @@
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try {
-            ace.settings.check('main-container', 'fixed')
-        } catch (e) {
-        }
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
 
     <!-- /section:basics/sidebar -->
@@ -87,534 +98,752 @@
             <div class="page-content-area">
 
                 <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <!-- PAGE CONTENT BEGINS -->
+                    <div class="col-xs-12 col-sm-12">
+
                         <form class="form-horizontal" role="form" id="skuForm">
-                            <!-- #section:elements.form -->
-                            <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">商品名称</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
+                        <input type="hidden" name="spuId" value="${productInfo.comSpu.id}" />
+                        <input type="hidden" name="skuId" value="${productInfo.comSku.id}" />
+                        <input type="hidden" name="skuExtensionId" value="${productInfo.comSkuExtension.id}" />
+                        <div class="profile-user-info profile-user-info-striped">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">
+                                    基本信息
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="alias" class="col-sm-2 control-label">商品别名</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="alias" name="alias" placeholder="商品别名">
-                                </div>
-                            </div>
+                                <div class="profile-info-value">
+                                    <span class="editable editable-click" id="username">
 
-                            <div class="form-group">
-                                <label for="eName" class="col-sm-2 control-label">商品英文名</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="eName" name="eName" placeholder="商品别名">
-                                </div>
-                            </div>
+                                            <div class="form-group">
+                                                <label for="skuC1" class="col-sm-2 control-label">商品分类</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" id="skuC1" name="skuC1">
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control" id="skuC2" name="skuC2">
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="hidden" id="categoryName" name="categoryName" value="">
+                                                    <select class="form-control" id="skuC3" name="categoryId">
+                                                    </select>
+                                                </div>
+                                                <script>
+                                                    var categories = window.eval('(' + '${categories}' + ')');
+                                                    var c1 = {};//一级类别
+                                                    var c2 = {};//二级类别
+                                                    var c3 = {};//三级类别
 
-                            <div class="form-group">
-                                <label for="brandId" class="col-sm-2 control-label">商品标志</label>
-                                <div class="col-sm-9">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/product_icon/" class="dropzone" id="dropzone2">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                                    c1['sub'+0] = [];
+                                                    for(var i in categories){
+                                                        if(categories[i].level == 1){
 
-                            <div class="form-group">
-                                <label for="artNo" class="col-sm-2 control-label">商品货号</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="artNo" name="artNo" placeholder="商品货号">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="barCode" class="col-sm-2 control-label">商品条码</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="barCode" name="barCode"
-                                           placeholder="商品条码">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="skuC1" class="col-sm-2 control-label">商品分类</label>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="skuC1" name="skuC1">
-                                    </select>
-                                </div>
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="skuC2" name="skuC2">
-                                    </select>
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="hidden" id="categoryName" name="categoryName" value="">
-                                    <select class="form-control" id="skuC3" name="categoryId">
-                                    </select>
-                                </div>
-                                <script>
-                                    var categories = window.eval('(' + '${categories}' + ')');
-                                    var c1 = {};//一级类别
-                                    var c2 = {};//二级类别
-                                    var c3 = {};//三级类别
+                                                            c1['sub'+0].push(categories[i]);
 
-                                    c1['sub' + 0] = [];
-                                    for (var i in categories) {
-                                        if (categories[i].level == 1) {
+                                                            c2['sub'+categories[i].id] = [];
+                                                            for(var sub in categories){
+                                                                if(categories[sub].pid == categories[i].id) c2['sub'+categories[i].id].push(categories[sub]);
+                                                            }
 
-                                            c1['sub' + 0].push(categories[i]);
+                                                            for(var sub in c2['sub'+categories[i].id]){
+                                                                c3['sub'+c2['sub'+categories[i].id][sub].id] = [];
+                                                                for(var ss in categories){
+                                                                    if(categories[ss].pid == c2['sub'+categories[i].id][sub].id) c3['sub'+c2['sub'+categories[i].id][sub].id].push(categories[ss]);
+                                                                }
+                                                            }
 
-                                            c2['sub' + categories[i].id] = [];
-                                            for (var sub in categories) {
-                                                if (categories[sub].pid == categories[i].id) c2['sub' + categories[i].id].push(categories[sub]);
-                                            }
-
-                                            for (var sub in c2['sub' + categories[i].id]) {
-                                                c3['sub' + c2['sub' + categories[i].id][sub].id] = [];
-                                                for (var ss in categories) {
-                                                    if (categories[ss].pid == c2['sub' + categories[i].id][sub].id) c3['sub' + c2['sub' + categories[i].id][sub].id].push(categories[ss]);
-                                                }
-                                            }
-
-                                        }
-                                    }
+                                                        }
+                                                    }
 
 
-                                    var $skuC1 = $('#skuC1');
-                                    var $skuC2 = $('#skuC2');
-                                    var $skuC3 = $('#skuC3');
+                                                    var $skuC1 = $('#skuC1');
+                                                    var $skuC2 = $('#skuC2');
+                                                    var $skuC3 = $('#skuC3');
+                                                    var c1id = '${c1id}';
+                                                    var c2id = '${c2id}';
+                                                    var c3id = '${c3id}';
 
-                                    $skuC1.html('<option value="-1">请选择</option>');
-                                    for (var sub in c1['sub' + 0]) {
-                                        $skuC1.append('<option value="' + c1['sub' + 0][sub].id + '">' + c1['sub' + 0][sub].name + '</option>');
-                                    }
+                                                    $skuC1.html('<option value="-1">请选择</option>');
+                                                    for(var sub in c1['sub'+0]){
+                                                        if(c1['sub'+0][sub].id == c1id){
+                                                            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '" selected>' + c1['sub'+0][sub].name + '</option>');
+                                                        }else{
+                                                            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+                                                        }
+                                                    }
 
-                                    $skuC1.change(function () {
-                                        $skuC2.empty().html('<option value="-1">请选择</option>');
-                                        $skuC3.empty().html('<option value="-1">请选择</option>');
+                                                    for(var sub in c2['sub'+c1id]){
+                                                        if(c2['sub'+c1id][sub].id == c2id){
+                                                            $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'" selected>'+ c2['sub'+c1id][sub].name+'</option>');
+                                                        }else{
+                                                            $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'">'+ c2['sub'+c1id][sub].name+'</option>');
+                                                        }
+                                                    }
 
-                                        for (var sub in c2['sub' + $(this).val()]) {
-                                            $skuC2.append('<option value="' + c2['sub' + $(this).val()][sub].id + '">' + c2['sub' + $(this).val()][sub].name + '</option>');
-                                        }
-                                    });
+                                                    for(var sub in c3['sub'+c2id]){
+                                                        if(c3['sub'+c2id][sub].id == c3id){
+                                                            $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'" selected>'+ c3['sub'+c2id][sub].name+'</option>');
+                                                        }else{
+                                                            $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'">'+ c3['sub'+c2id][sub].name+'</option>');
+                                                        }
+                                                    }
 
-                                    $skuC2.change(function () {
-                                        $skuC3.empty().html('<option value="-1">请选择</option>');
 
-                                        for (var sub in c3['sub' + $(this).val()]) {
-                                            $skuC3.append('<option value="' + c3['sub' + $(this).val()][sub].id + '">' + c3['sub' + $(this).val()][sub].name + '</option>');
-                                        }
-                                    });
+                                                    $skuC1.change(function(){
+                                                        $skuC2.empty().html('<option value="-1">请选择</option>');
+                                                        $skuC3.empty().html('<option value="-1">请选择</option>');
 
-                                    $skuC3.change(function () {
-                                        $('#categoryName').val($(this).find('option[value="' + $(this).val() + '"]').html());
-                                    });
-                                </script>
-                            </div>
-                            <div class="form-group">
-                                <label for="brandId" class="col-sm-2 control-label">商品品牌</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="brandId" name="brandId">
-                                        <c:forEach items="${brands}" var="brand">
-                                            <option value="${brand.id}">${brand.cname}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
+                                                        for(var sub in c2['sub'+$(this).val()]){
+                                                            $skuC2.append('<option value="'+ c2['sub'+$(this).val()][sub].id +'">'+ c2['sub'+$(this).val()][sub].name+'</option>');
+                                                        }
+                                                    });
 
-                            <div class="form-group">
-                                <label for="brandId" class="col-sm-2 control-label">计量单位</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="unitId" name="unit">
-                                        <c:forEach items="${unitMeasures}" var="unit">
-                                            <option value="${unit.id}">${unit.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
+                                                    $skuC2.change(function(){
+                                                        $skuC3.empty().html('<option value="-1">请选择</option>');
 
-                            <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="alert alert-success" role="alert">
-                                        <strong>价格设置</strong>
-                                    </div>
-                                </div>
-                            </div>
+                                                        for(var sub in c3['sub'+$(this).val()]){
+                                                            $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
+                                                        }
+                                                    });
 
-                            <div class="form-group">
-                                <label for="priceCost" class="col-sm-2 control-label">成本价</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceCost" name="priceCost" placeholder="成本价">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="priceMarket" class="col-sm-2 control-label">市场零售价</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceMarket" name="priceMarket"
-                                           placeholder="市场零售价">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="priceRetail" class="col-sm-2 control-label">微信零售价</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceRetail" name="priceRetail"
-                                           placeholder="微信零售价">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">是否允许试用</label>
-                                <div class="col-sm-9">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="isTrial" id="isTrial1" value="1" checked>
-                                            是
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="isTrial" id="isTrial2" value="0">
-                                            否
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">是否代理商发货</label>
-                                <div class="col-sm-9">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="isOwnShip" id="isOwnShip1" value="1" checked>
-                                            是
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="isOwnShip" id="isOwnShip2" value="0">
-                                            否
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="shipAmount" class="col-sm-2 control-label">运费设置</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="shipAmount" name="shipAmount"
-                                           placeholder="运费设置">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="alert alert-success" role="alert">
-                                        <strong>合伙人设置</strong>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="brandId" class="col-sm-2 control-label">代理等级数</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="levelCount" name="levelCount">
-                                        <option value="">请选择商品可代理的等级数</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="brandId" class="col-sm-2 control-label">代理等级图标</label>
-                                <div class="col-sm-9" id="levelIcon">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/agent_icon/" class="dropzone" id="dropzone1">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-3">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
+                                                    $skuC3.change(function(){
+                                                        $('#categoryName').val($(this).find('option[value="'+$(this).val()+'"]').html());
+                                                    });
+                                                </script>
                                             </div>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main" id="unitPrices">
-
+                                            <div class="form-group">
+                                                <label for="brandId" class="col-sm-2 control-label">商品品牌</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="brandId" name="brandId">
+                                                        <option>请选择</option>
+                                                        <c:forEach items="${brands}" var="brand">
+                                                            <option value="${brand.id}" <c:if test="${productInfo.comSpu.brandId == brand.id}">selected</c:if> >${brand.cname}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main" id="quantitys">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
-
-                                            <div class="widget-body">
-                                                <div class="widget-main" id="bails">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
-
-                                            <div class="widget-body">
-                                                <div class="widget-main" id="rewardUnitPrice">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="alert alert-success" role="alert">
-                                        <strong>分销设置</strong>
-                                    </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">
+                                    商品信息
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-4 text-success">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
+                                <div class="profile-info-value">
+                                            <div class="form-group">
+                                                <label for="name" class="col-sm-2 control-label">商品名称</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="name" name="name" value="${productInfo.comSku.name}" placeholder="商品名称">
+                                                </div>
                                             </div>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main">
+                                            <div class="form-group">
+                                                <label for="alias" class="col-sm-2 control-label">商品别名</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="alias" name="alias" value="${productInfo.comSku.alias}" placeholder="商品别名">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="eName" class="col-sm-2 control-label">商品英文名</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="eName" name="eName" value="${productInfo.comSku.eName}" placeholder="英文名">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="artNo" class="col-sm-2 control-label">商品货号</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="artNo" name="artNo" value="${productInfo.comSpu.artNo}" placeholder="商品货号">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="barCode" class="col-sm-2 control-label">商品条码</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="barCode" name="barCode" value="${productInfo.comSku.barCode}" placeholder="商品条码">
+                                                </div>
+                                            </div>
+
+                                            <!-- 商品标志 -->
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1">
                                                     <div>
-                                                        <label for="advanced">
-                                                            倒数第一&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal1"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
+                                                        <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="productIcon">
+                                                            <div class="fallback">
+                                                                <input name="file" type="file" multiple=""/>
+                                                            </div>
                                                         </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4 text-warning">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main">
+                                            <!-- 商品列表背景图 -->
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1">
                                                     <div>
-                                                        <label for="advanced">
-                                                            倒数第二&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal2"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
+                                                        <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="dropzoneSkuBackgroundImg">
+                                                            <div class="fallback">
+                                                                <input name="file" type="file" multiple=""/>
+                                                            </div>
                                                         </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- 商品配图 -->
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1">
+                                                    <div>
+                                                        <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="illustratingPictureImg">
+                                                            <div class="fallback">
+                                                                <input name="file" type="file" multiple=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 商品海报图(发展合伙人) -->
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1">
+                                                    <div>
+                                                        <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/user/background_poster/" class="dropzone" id="dropzoneDevelopPoster">
+                                                            <div class="fallback">
+                                                                <input name="file" type="file" multiple=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 商品主图 -->
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1">
+                                                    <div>
+                                                        <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
+                                                            <div class="fallback">
+                                                                <input name="file" type="file" multiple=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">
+                                    价格设置
+                                </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable editable-click" id="age">
+
+                                            <div class="form-group">
+                                                <label for="priceCost" class="col-sm-2 control-label">成本价</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="priceCost" name="priceCost" value="${productInfo.comSku.priceCost}" placeholder="成本价">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="priceMarket" class="col-sm-2 control-label">市场零售价</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="priceMarket" name="priceMarket" value="${productInfo.comSku.priceMarket}" placeholder="市场零售价">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="priceRetail" class="col-sm-2 control-label">微信零售价</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="priceRetail" name="priceRetail" value="${productInfo.comSku.priceRetail}" placeholder="微信零售价">
+                                                </div>
+                                            </div>
+
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 其他 </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable editable-click" id="signup">
+
+                                        <div class="form-group">
+                                            <label for="brandId" class="col-sm-2 control-label">计量单位</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="unitId" name="unitId">
+                                                    <c:forEach items="${comUnitMeasures}" var="comUnitMeasure">
+                                                        <option value="${comUnitMeasure.id}" <c:if test="${productInfo.comSpu.unit == comUnitMeasure.id}">selected</c:if> >${comUnitMeasure.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <%--<div class="col-xs-12 col-sm-4">--%>
-                                        <%--<div class="widget-box">--%>
-                                            <%--<div class="widget-header">--%>
-                                            <%--</div>--%>
 
-                                            <%--<div class="widget-body">--%>
-                                                <%--<div class="widget-main">--%>
-                                                    <%--<div>--%>
-                                                        <%--<label for="advanced">--%>
-                                                            <%--倒数第三&nbsp;--%>
-                                                        <%--</label>--%>
-                                                        <%--<div class="input-group">--%>
-                                                            <%--<input type="text" class="form-control" id="reciprocal3"--%>
-                                                                   <%--name="distributionDiscounts" placeholder="">--%>
-                                        <%--<span class="input-group-addon">--%>
-                                            <%--%--%>
-                                        <%--</span>--%>
-                                                        <%--</div>--%>
-                                                        <%--返利--%>
-                                                        <%--<small class="text-info ffenrun"></small>--%>
-                                                        <%--元--%>
-                                                    <%--</div>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">是否允许试用</label>
+                                            <div class="col-sm-9">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="isTrial" id="isTrial1" value="1" <c:if test="${productInfo.comSpu.isTrial == 1}">checked</c:if> >
+                                                        是
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="isTrial" id="isTrial2" value="0" <c:if test="${productInfo.comSpu.isTrial == 0}">checked</c:if> >
+                                                        否
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">是否代理商发货</label>
+                                            <div class="col-sm-9">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="isOwnShip" id="isOwnShip1" value="1" <c:if test="${productInfo.comSpu.isOwnShip == 1}">checked</c:if> >
+                                                        是
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="isOwnShip" id="isOwnShip2" value="0" <c:if test="${productInfo.comSpu.isOwnShip == 0}">checked</c:if> >
+                                                        否
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="shipAmount" class="col-sm-2 control-label">运费设置</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="shipAmount" name="shipAmount" value="${productInfo.comSpu.shipAmount}" placeholder="运费设置">
+                                            </div>
+                                        </div>
+
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="inShort" class="col-sm-2 control-label">一句话介绍</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inShort" name="slogan" placeholder="一句话介绍">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> 商品详情 </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable editable-click" id="login">
+
+                                        <div class="form-group">
+                                            <label for="inShort" class="col-sm-2 control-label">一句话介绍</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="inShort" name="slogan" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
+                                            </div>
+                                        </div>
+                                        <textarea rows="500" cols="300" id="policy" name="policy" style="display: none;"></textarea>
+                                        <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
+
+                                        <!-- 商业政策 -->
+                                        <div class="form-group">
+                                            <div class="col-sm-10 col-sm-offset-1">
+                                                <div class="alert alert-success" id="businessBar" role="alert" style="margin:20px 0 0 0;">
+                                                    <strong>商业政策</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-10 col-xs-offset-1">
+                                                <div>
+                                                    <script id="policyUEditor" type="text/plain" style="height: 500px"></script>
+                                                    <script type="text/javascript">
+                                                        $('#policyUEditor').width($('#businessBar').width()+32);
+                                                        //实例化编辑器
+                                                        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+                                                        var policyUEditor = UE.getEditor('policyUEditor');
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 商品详情 -->
+                                        <div class="form-group">
+                                            <div class="col-sm-10 col-sm-offset-1">
+                                                <div class="alert alert-success" role="alert" style="margin:20px 0 0 0;">
+                                                    <strong>商品详情</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-10 col-xs-offset-1">
+                                                <div>
+                                                    <script id="contentUEditor" type="text/plain" style="height: 500px"></script>
+                                                    <script type="text/javascript">
+                                                        $('#contentUEditor').width($('#businessBar').width()+32);
+                                                        //实例化编辑器
+                                                        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+                                                        var contentUEditor = UE.getEditor('contentUEditor');
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </span>
                                 </div>
                             </div>
-                            <textarea rows="500" cols="300" id="policy" name="policy" style="display: none;"></textarea>
-                            <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
+
+                        </div>
                         </form>
-
-                        <!-- 商品主图 -->
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 商品列表背景图 -->
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="dropzoneSkuBackgroundImg">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 商品配图 -->
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/" class="dropzone" id="illustratingPictureImg">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 商品海报图(发展合伙人) -->
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/user/background_poster/" class="dropzone" id="dropzoneDevelopPoster">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple=""/>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-10 col-sm-offset-1">
-                                <div class="alert alert-success" role="alert" style="margin:20px 0 0 0;">
-                                    <strong>商业政策</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <script id="policyUEditor" type="text/plain" style="height: 500px"></script>
-                                    <script type="text/javascript">
-                                        //实例化编辑器
-                                        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-                                        var policyUEditor = UE.getEditor('policyUEditor');
-                                    </script>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-10 col-sm-offset-1">
-                                <div class="alert alert-success" role="alert" style="margin:20px 0 0 0;">
-                                    <strong>商品详情</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div>
-                                    <script id="contentUEditor" type="text/plain" style="height: 500px"></script>
-                                    <script type="text/javascript">
-                                        //实例化编辑器
-                                        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-                                        var contentUEditor = UE.getEditor('contentUEditor');
-                                    </script>
-                                </div>
-                            </div>
-                        </div>
-
-                        <row>
-                            <label class="col-sm-5"></label>
-                            <div class="col-sm-6">
-                                <button type="reset" class="btn btn-lg btn-default">重置</button>
-                                <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
-                            </div>
-                        </row>
-                        <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
+
                 </div><!-- /.row -->
+
+                <row>
+                    <label class="col-sm-5"></label>
+                    <div class="col-sm-6">
+                        <button type="reset" class="btn btn-lg btn-default">重置</button>
+                        <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
+                    </div>
+                </row>
+
             </div><!-- /.page-content-area -->
         </div><!-- /.page-content -->
     </div><!-- /.main-content -->
 
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
 </div><!-- /.main-container -->
 
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>static/js/jquery-2.2.0.min.js'>" + "<" + "/script>");
+    window.jQuery || document.write("<script src='<%=basePath%>static/ace2/js/jquery.min.js'>"+"<"+"/script>");
 </script>
 
 <!-- <![endif]-->
 
 <!--[if IE]>
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>static/js/jquery-2.2.0.min.js'>" + "<" + "/script>");
+    window.jQuery || document.write("<script src='<%=basePath%>static/ace2/js/jquery1x.min.js'>"+"<"+"/script>");
 </script>
 <![endif]-->
 <script type="text/javascript">
-    if ('ontouchstart' in document.documentElement) document.write("<script src='<%=basePath%>static/ace2/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    if('ontouchstart' in document.documentElement) document.write("<script src='<%=basePath%>static/ace2/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
 <script src="<%=basePath%>static/ace2/js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="../assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="<%=basePath%>static/ace2/js/jquery-ui.custom.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/bootstrap-validator/js/bootstrapValidator.js"></script>
+<script src="<%=basePath%>static/ace2/js/bootbox.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.easypiechart.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/spin.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function($) {
+        /**
+         $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				  console.log(e.target.getAttribute("href"));
+				})
+
+         $('#accordion').on('shown.bs.collapse', function (e) {
+					console.log($(e.target).is('#collapseTwo'))
+				});
+         */
+
+        $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if($(e.target).attr('href') == "#home") drawChartNow();
+        })
+
+
+        /**
+         //go to next tab, without user clicking
+         $('#myTab > .active').next().find('> a').trigger('click');
+         */
+
+
+        $('#accordion-style').on('click', function(ev){
+            var target = $('input', ev.target);
+            var which = parseInt(target.val());
+            if(which == 2) $('#accordion').addClass('accordion-style2');
+            else $('#accordion').removeClass('accordion-style2');
+        });
+
+        //$('[href="#collapseTwo"]').trigger('click');
+
+
+        var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+        $('.easy-pie-chart.percentage').each(function(){
+            $(this).easyPieChart({
+                barColor: $(this).data('color'),
+                trackColor: '#EEEEEE',
+                scaleColor: false,
+                lineCap: 'butt',
+                lineWidth: 8,
+                animate: oldie ? false : 1000,
+                size:75
+            }).css('color', $(this).data('color'));
+        });
+
+        $('[data-rel=tooltip]').tooltip();
+        $('[data-rel=popover]').popover({html:true});
+
+
+        $('#gritter-regular').on(ace.click_event, function(){
+            $.gritter.add({
+                title: 'This is a regular notice!',
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="blue">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: $path_assets+'/avatars/avatar1.png',
+                sticky: false,
+                time: '',
+                class_name: (!$('#gritter-light').get(0).checked ? 'gritter-light' : '')
+            });
+
+            return false;
+        });
+
+        $('#gritter-sticky').on(ace.click_event, function(){
+            var unique_id = $.gritter.add({
+                title: 'This is a sticky notice!',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="red">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: $path_assets+'/avatars/avatar.png',
+                sticky: true,
+                time: '',
+                class_name: 'gritter-info' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-without-image').on(ace.click_event, function(){
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: 'This is a notice without an image!',
+                // (string | mandatory) the text inside the notification
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="orange">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-max3').on(ace.click_event, function(){
+            $.gritter.add({
+                title: 'This is a notice with a max of 3 on screen at one time!',
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="green">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: $path_assets+'/avatars/avatar3.png',
+                sticky: false,
+                before_open: function(){
+                    if($('.gritter-item-wrapper').length >= 3)
+                    {
+                        return false;
+                    }
+                },
+                class_name: 'gritter-warning' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-center').on(ace.click_event, function(){
+            $.gritter.add({
+                title: 'This is a centered notification',
+                text: 'Just add a "gritter-center" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
+                class_name: 'gritter-info gritter-center' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+        $('#gritter-error').on(ace.click_event, function(){
+            $.gritter.add({
+                title: 'This is a warning notification',
+                text: 'Just add a "gritter-light" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $("#gritter-remove").on(ace.click_event, function(){
+            $.gritter.removeAll();
+            return false;
+        });
+
+
+        ///////
+
+
+        $("#bootbox-regular").on(ace.click_event, function() {
+            bootbox.prompt("What is your name?", function(result) {
+                if (result === null) {
+
+                } else {
+
+                }
+            });
+        });
+
+        $("#bootbox-confirm").on(ace.click_event, function() {
+            bootbox.confirm("Are you sure?", function(result) {
+                if(result) {
+                    //
+                }
+            });
+        });
+
+        /**
+         $("#bootbox-confirm").on(ace.click_event, function() {
+					bootbox.confirm({
+						message: "Are you sure?",
+						buttons: {
+						  confirm: {
+							 label: "OK",
+							 className: "btn-primary btn-sm",
+						  },
+						  cancel: {
+							 label: "Cancel",
+							 className: "btn-sm",
+						  }
+						},
+						callback: function(result) {
+							if(result) alert(1)
+						}
+					  }
+					);
+				});
+         **/
+
+        $("#bootbox-options").on(ace.click_event, function() {
+            bootbox.dialog({
+                message: "<span class='bigger-110'>I am a custom dialog with smaller buttons</span>",
+                buttons:
+                {
+                    "success" :
+                    {
+                        "label" : "<i class='ace-icon fa fa-check'></i> Success!",
+                        "className" : "btn-sm btn-success",
+                        "callback": function() {
+                            //Example.show("great success");
+                        }
+                    },
+                    "danger" :
+                    {
+                        "label" : "Danger!",
+                        "className" : "btn-sm btn-danger",
+                        "callback": function() {
+                            //Example.show("uh oh, look out!");
+                        }
+                    },
+                    "click" :
+                    {
+                        "label" : "Click ME!",
+                        "className" : "btn-sm btn-primary",
+                        "callback": function() {
+                            //Example.show("Primary button");
+                        }
+                    },
+                    "button" :
+                    {
+                        "label" : "Just a button...",
+                        "className" : "btn-sm"
+                    }
+                }
+            });
+        });
+
+
+
+        $('#spinner-opts small').css({display:'inline-block', width:'60px'})
+
+        var slide_styles = ['', 'green','red','purple','orange', 'dark'];
+        var ii = 0;
+        $("#spinner-opts input[type=text]").each(function() {
+            var $this = $(this);
+            $this.hide().after('<span />');
+            $this.next().addClass('ui-slider-small').
+            addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
+            css({'width':'125px'}).slider({
+                value:parseInt($this.val()),
+                range: "min",
+                animate:true,
+                min: parseInt($this.data('min')),
+                max: parseInt($this.data('max')),
+                step: parseFloat($this.data('step')),
+                slide: function( event, ui ) {
+                    $this.val(ui.value);
+                    spinner_update();
+                }
+            });
+        });
+
+
+
+
+
+        $.fn.spin = function(opts) {
+            this.each(function() {
+                var $this = $(this),
+                        data = $this.data();
+
+                if (data.spinner) {
+                    data.spinner.stop();
+                    delete data.spinner;
+                }
+                if (opts !== false) {
+                    data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+                }
+            });
+            return this;
+        };
+
+        function spinner_update() {
+            var opts = {};
+            $('#spinner-opts input[type=text]').each(function() {
+                opts[this.name] = parseFloat(this.value);
+            });
+            $('#spinner-preview').spin(opts);
+        }
+
+
+
+        $('#id-pills-stacked').removeAttr('checked').on('click', function(){
+            $('.nav-pills').toggleClass('nav-stacked');
+        });
+
+
+    });
+</script>
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace.onpage-help.css" />
+<link rel="stylesheet" href="<%=basePath%>static/ace2/docs/assets/js/themes/sunburst.css" />
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="<%=basePath%>static/ace2/js/elements.onpage-help.js"></script>
+<script src="<%=basePath%>static/ace2/js/ace.onpage-help.js"></script>
+<script src="<%=basePath%>static/ace2/docs/assets/js/rainbow.js"></script>
+<%--<script src="<%=basePath%>static/ace2/docs/assets/js/language/generic.js"></script>--%>
+<%--<script src="<%=basePath%>static/ace2/docs/assets/js/language/html.js"></script>--%>
+<%--<script src="<%=basePath%>static/ace2/docs/assets/js/language/css.js"></script>--%>
+<%--<script src="<%=basePath%>static/ace2/docs/assets/js/language/javascript.js"></script>--%>
 <script src="<%=basePath%>static/ace2/js/dropzone.min.js"></script>
 
 <script type="text/javascript">
@@ -664,6 +893,7 @@
 
             return myDropzone;
         } catch (e) {
+            console.log('e: ' + e);
             alert('Dropzone.js does not support older browsers!');
         }
     }
@@ -672,7 +902,7 @@
                                      <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
-    var dictMessage2 = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品标志</span> <br /> \
+    var productIcon  = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品标志</span> <br /> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
     var dropzoneSkuBackgroundImg = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品列表背景图</span> <br /> \
@@ -684,112 +914,33 @@
     var dropzoneDevelopPoster    = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>发展合伙人海报</span> <br /> \
                                                  <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                                  <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
-    initDropzone('#dropzone', null, function(file){
+
+    initDropzone('#productIcon', productIcon, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="mainImgUrls" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="mainImgNames" value="'+res.title+'" />');
-        $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
-    });
-    initDropzone('#dropzone1', dictMessage1, function(file){
-        var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="iconImgUrls" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="iconImgNames" value="'+res.title+'" />');
-    });
-    initDropzone('#dropzone2', dictMessage2, function(file){
-        var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="proIconUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="proIconName" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="iconUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="icon" value="'+res.title+'" />');
     });
     initDropzone('#dropzoneSkuBackgroundImg', dropzoneSkuBackgroundImg, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="skuBackgroundImgUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="skuBackgroundImgName" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="skuBackgroundImg" value="'+res.title+'" />');
     });
     initDropzone('#illustratingPictureImg', illustratingPictureImg, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="illustratingPictureImgUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="illustratingPictureImgName" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="illustratingPictureUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="illustratingPicture" value="'+res.title+'" />');
     });
     initDropzone('#dropzoneDevelopPoster', dropzoneDevelopPoster, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
-        $('#skuForm').append('<input type="hidden" name="developPosterUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="developPosterName" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="posterUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="poster" value="'+res.title+'" />');
     });
-</script>
-<script>
-
-    var agentLevels = window.eval('(${agentLevels})');
-    for(var i=0; i<agentLevels.length; i++){
-        var levelCount = i + 1;
-        $('#levelCount').append('<option value="'+i+'">'+levelCount+'</option>');
-    }
-
-    $('#levelCount').change(function(){
-        $('#unitPrices').empty();
-        $('#quantitys').empty();
-        $('#bails').empty();
-        appendLevelInput($(this).val());
+    initDropzone('#dropzone', null, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="imgUrls" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="imgNames" value="'+res.original+'" />');
     });
 
-    function appendLevelInput(levelCount){
-        var unitPrices = '';
-        var quantitys = '';
-        var bails     = '';
-        var totalPrices = '';
-        var rewardUnitPrice = '';
-        for(var i=0; i<agentLevels.length; i++){
-            if(i>levelCount){
-                break;
-            }
-            unitPrices +=           '<div> \
-                                        <label for="advanced">';
-            unitPrices +=     agentLevels[i].name;
-            unitPrices +=           '</label> \
-                                        <div class="input-group-"> \
-                                            <input type="text" class="form-control" id="advanced" name="unitPrices" placeholder=""> \
-                                        </div> \
-                                        每件商品<small class="text-info dfenrun"></small>元 \
-                                    </div>';
-
-            quantitys +=           '<div> \
-                                        <label for="advancedCount"> \
-                                            拿货数量&nbsp; \
-                                        </label> \
-                                        <div> \
-                                            <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder=""> \
-                                        </div> \
-                                        金额门槛<small class="text-info threshold"></small>元 \
-                                    </div>';
-
-            bails    +=            '<div> \
-                                        <label for="advancedBail"> \
-                                            保证金 \
-                                        </label> \
-                                        <div> \
-                                            <input type="text" class="form-control" id="advancedBail" name="bails" placeholder=""> \
-                                        </div> \
-                                        &nbsp; \
-                                    </div>';
-
-            totalPrices += '<input type="hidden" name="totalPrices" value="" />';
-
-            rewardUnitPrice    +=   '<div> \
-                                        <label for="rewardUnitPrice"> \
-                                            推荐人奖励单价 \
-                                        </label> \
-                                        <div> \
-                                            <input type="text" class="form-control" id="rewardUnitPrice" name="rewardUnitPrices" placeholder="推荐人奖励单价"> \
-                                        </div> \
-                                        &nbsp; \
-                                    </div>';
-        }
-
-        $('#unitPrices').append(unitPrices);
-        $('#unitPrices').append(totalPrices);
-        $('#quantitys').append(quantitys);
-        $('#bails').append(bails);
-        $('#rewardUnitPrice').append(rewardUnitPrice);
-    }
 
 
 
@@ -798,20 +949,6 @@
     });
 
     $(document).ready(function() {
-        $('body').on('keyup', '#priceRetail, input[name="unitPrices"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
-            var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
-            $('input[name="quantitys"]').each(function(i,o){
-                var unitPrices = $($('input[name="unitPrices"]').get(i)).val();
-                unitPrices = unitPrices==null||unitPrices=='undefined' ? 0.00 : unitPrices;
-                var quantity = $(o).val() ? $(o).val() : 0;
-                var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
-                distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
-                $($('.dfenrun').get(i)).html(unitPrices);
-                $($('.threshold').get(i)).html(unitPrices*quantity);
-                $($('input[name="totalPrices"]').get(i)).val(unitPrices*quantity);
-                $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
-            });
-        });
 
         $('#skuForm').bootstrapValidator({
                     message: '必须填写',

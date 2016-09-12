@@ -71,6 +71,8 @@ public class BOrderAddService {
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource
     private UserService userService;
+    @Resource
+    private PfBorderPromotionService pfBorderPromotionService;
 
     /**
      * 添加订单
@@ -205,6 +207,17 @@ public class BOrderAddService {
                 pfBorder.setRecommenAmount(pfBorderRecommenReward.getRewardTotalPrice());
                 pfBorderMapper.updateById(pfBorder);
             }
+        }
+        //v1.5.6 小白注册平台赠送商品
+        if (pfBorder.getOrderType().equals(BOrderType.agent.getCode())){
+            pfBorderPromotionService.registerGiveSkuInitStock(pfBorder.getId(),
+                    pfBorder.getUserId(),
+                    pfBorder.getUserPid(),
+                    pfBorderItem.getSpuId(),
+                    pfBorderItem.getSkuId(),
+                    pfBorderItem.getSkuName(),
+                    pfBorder.getOrderType(),
+                    pfBorderItem.getAgentLevelId());
         }
         //v1.2 End处理订单推荐奖励表
         //拿货方式(0未选择1平台代发2自己发货)

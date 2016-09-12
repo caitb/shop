@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.common.enums.platform.PfBorderPromotionGiveStockChangeEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleStatusEnum;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.enums.promotion.SfUserTurnTableTimesTypeEnum;
@@ -16,6 +17,7 @@ import com.masiis.shop.common.beans.wx.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.mall.SysConstants;
 import com.masiis.shop.web.common.utils.notice.SysNoticeUtils;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.platform.service.order.PfBorderPromotionService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
@@ -91,6 +93,8 @@ public class SfOrderPayService {
     private SfTurnTableRuleService turnTableRuleService;
     @Resource
     private SfUserTurnTableService userTurnTableService;
+    @Resource
+    private PfBorderPromotionService pfBorderPromotionService;
 
     /**
      * 获得需要支付的订单的信息
@@ -512,6 +516,21 @@ public class SfOrderPayService {
                 log.info("更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "失败");
                 throw new BusinessException("更新冻结库存失败");
             }
+            log.info("----更新平台赠送的小白的货-----start");
+            if (skuStock.getRegisterGiveSkuStock()!=null&&skuStock.getRegisterGiveSkuStock()>0){
+                log.info("----平台赠送小白的还有货-------");
+                pfBorderPromotionService.updateGivePlatformStock(
+                        null,
+                        order.getUserId(),
+                        orderItem.getSkuId(),
+                        orderItem.getSpuId(),
+                        null,
+                        orderItem.getQuantity(),
+                        PfBorderPromotionGiveStockChangeEnum.sell,
+                        null
+                );
+            }
+            log.info("----更新平台赠送的小白的货-----end");
         }
     }
 

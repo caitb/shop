@@ -30,6 +30,9 @@ public interface ComAgentLevelMapper {
 
     List<ComAgentLevel> selectByIds(List<Integer> ids);
 
+
+    ComAgentLevel getMaxIdByIsOrganizationShow(Integer isOrganizationShow);
+
     ComAgentLevel selectUseByPrimaryKey(Integer id);
 
     List<ComAgentLevel> selectImgUrlById(@Param("userId") Long id);

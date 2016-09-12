@@ -32,7 +32,7 @@ public interface PfUserSearchLogMapper {
      * @param userId
      * @return
      */
-    PfUserSearchLog selectByContent(String content, Long userId);
+    PfUserSearchLog selectByContent(@Param("content")String content, @Param("userId")Long userId);
 
     /**
      * 清空指定查询记录

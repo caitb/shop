@@ -1,8 +1,6 @@
 package com.masiis.shop.api.controller.message;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.base.BaseReq;
-import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.message.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -21,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -264,7 +261,7 @@ public class ShopMessageController {
             }
 
             SfMessageContent content = sfMessageContentService.createMessageByShopAndAppType(shop,
-                    EmojiUtils.removeNonBmpUnicode(message), messageType, remark, url, urlType,
+                    EmojiUtils.encodeEmojiStr(message), messageType, remark, url, urlType,
                     req.getUrlAppParam());
             sfMessageContentService.insert(content);
 

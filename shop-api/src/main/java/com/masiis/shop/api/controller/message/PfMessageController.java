@@ -1,8 +1,5 @@
 package com.masiis.shop.api.controller.message;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.base.BaseReq;
 import com.masiis.shop.api.bean.message.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -24,13 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -386,7 +381,7 @@ public class PfMessageController {
             }
 
             PfMessageContent content = pfMessageContentService.createMessageByAppType(user.getId(),
-                    EmojiUtils.removeNonBmpUnicode(req.getMessage()), messageType, remark, url,
+                    EmojiUtils.encodeEmojiStr(req.getMessage()), messageType, remark, url,
                     req.getUrlAppType(), req.getUrlAppParam());
             pfMessageContentService.insert(content);
 

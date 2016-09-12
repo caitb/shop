@@ -112,7 +112,7 @@ public class ComWxUser {
         return nkName;
     }
     public void setNkName(String nkName) {
-        this.nkName = nkName == null ? null : EmojiUtils.removeNonBmpUnicode(nkName.trim());
+        this.nkName = nkName == null ? null : EmojiUtils.encodeEmojiStr(nkName.trim());
     }
     public Integer getSex() {
         return sex;

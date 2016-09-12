@@ -68,7 +68,7 @@ public class PersonalCenterController extends BaseController {
             }
         }
         res.setMobile(user.getMobile()==null?"":user.getMobile());
-        res.setWxNkName(EmojiUtils.removeNonBmpUnicode(user.getWxNkName()));
+        res.setWxNkName(EmojiUtils.encodeEmojiStr(user.getWxNkName()));
         res.setWxHeadImg(user.getWxHeadImg());
         res.setIsBinding(user.getIsBinding());
         res.setAuditStatus(user.getAuditStatus());

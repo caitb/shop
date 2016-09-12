@@ -351,7 +351,7 @@ public class UserService {
         ComUser user = new ComUser();
 
         if(userRes != null) {
-            user.setWxNkName(EmojiUtils.removeNonBmpUnicode(userRes.getNickname()));
+            user.setWxNkName(EmojiUtils.encodeEmojiStr(userRes.getNickname()));
             user.setRealName(user.getWxNkName());
             user.setWxHeadImg(userRes.getHeadimgurl());
             user.setSex(StringUtils.isBlank(userRes.getSex()) ? 0 : Integer.valueOf(userRes.getSex()));
@@ -390,7 +390,7 @@ public class UserService {
         wxUser.setCity(userInfo.getCity());
         wxUser.setCountry(userInfo.getCountry());
         wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(userInfo.getNickname()));
+        wxUser.setNkName(EmojiUtils.encodeEmojiStr(userInfo.getNickname()));
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
@@ -417,7 +417,7 @@ public class UserService {
         wxUser.setCity(userInfo.getCity());
         wxUser.setCountry(userInfo.getCountry());
         wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(userInfo.getNickname()));
+        wxUser.setNkName(EmojiUtils.encodeEmojiStr(userInfo.getNickname()));
         wxUser.setOpenid(userInfo.getOpenid());
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());

@@ -51,16 +51,27 @@
                             </div>
                         </section>
                         <section class="sec3">
-                                <p class="jianku"
-                                   onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
-                                    <b>申请拿货</b></p>
+                                <%--<p class="jianku"--%>
+                                   <%--onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">--%>
+                                    <%--<b>申请拿货</b></p>--%>
+                                    <p class="jianku" onclick="clickShow()"><b>申请拿货</b></p>
                                 <p class="buhuo"
-                                   onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
-                                    <b>补货</b></p>
+                                   onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')"><b>补货</b></p>
                         </section>
                     </c:forEach>
                 </div>
             </div>
+        </div>
+        <div class="black">
+            <div class="backb"></div>
+                <div class="back_a">
+                     <img src="${path}/static/images/ku.png" alt=""/>
+                    <p>此功能仅支持在麦链合伙人APP使用</p>
+                    <h1>
+                        <span onclick="clickHide()">取消</span>
+                        <span><a href="http://api.qc.iimai.com/static/html/wechatDownload.html" style="color:#fff;">去下载</a></span>
+                    </h1>
+                </div>
         </div>
         <div class="back">
         </div>
@@ -131,6 +142,12 @@
         $(".back").css("display", "none");
         $(".back_b").hide();
     })
+    function clickShow(){
+        $(".black").show();
+    }
+    function clickHide(){
+        $(".black").hide();
+    }
 //    function checkIsAddStock(){
 //            $(".back_applyInfo").show();
 //            $(".back").show();

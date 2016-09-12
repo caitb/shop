@@ -361,7 +361,7 @@ public class VerifyController extends BaseController {
         CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
                 openidkey, 3600 * 24 * 7, true);
         // 保存redis
-        SpringRedisUtil.save(openidkey, openId);
+        SpringRedisUtil.save(openidkey, unionId);
         SpringRedisUtil.save(unionId + openId + "_token", acToken);
         SpringRedisUtil.save(unionId + openId + "_rftoken", rfToken);
     }

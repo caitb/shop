@@ -79,8 +79,6 @@
                 AND pbrr.sku_id = #{skuId}
             </if>
                 AND pb.pay_status=1
-                AND spu.is_sale = 1
-                AND spu.is_delete = 0
                 AND spu.TYPE = 0
         </where>
         GROUP BY sku.name,com.real_name,com.wx_head_img,sku.id,com.id
@@ -148,8 +146,6 @@
         <if test="agentLevelId != null">
             AND agent.id = #{agentLevelId}
         </if>
-        AND spu.is_sale = 1
-        AND spu.is_delete = 0
         AND spu.TYPE = 0
     </select>
 

@@ -466,13 +466,13 @@ public class BUpgradePayService {
         if (pfUserSku != null) {
             log.info("---修改商品的代理关系-----用户新上级-----userId----" + userPid + "-----skuId----" + skuId);
             PfUserSku parentPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid, pfUserSku.getSkuId());
-            log.info("期望等级----" + agentLevelId + "-----原上级等级------" + parentPfUserSku.getAgentLevelId());
-            if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())) {
+            if (!agentLevelId.equals(parentPfUserSku.getAgentLevelId())||(parentPfUserSku==null&&agentLevelId==0)) {
                 Integer parent_id = 0;
                 Long parent_userPid = 0l;
                 String parent_treeCode = pfUserSku.getSkuId() + ",";
                 Integer parent_treeLevel = 0;
                 if (null != parentPfUserSku) {
+                    log.info("期望等级----" + agentLevelId + "-----原上级等级------" + parentPfUserSku.getAgentLevelId());
                     parent_id = parentPfUserSku.getId();
                     parent_userPid = parentPfUserSku.getUserId();
                     parent_treeCode = parentPfUserSku.getTreeCode();

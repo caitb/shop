@@ -15,6 +15,13 @@ public class EmojiUtils {
         return str;
     }
 
+    public static String parseEmojiToUnicode(String str){
+        if (str == null) {
+            return null;
+        }
+        return EmojiParser.parseToUnicode(str);
+    }
+
     public static void main(String... args) {
         String str = "An \uD83D\uDE00awesome \uD83D\uDE03string with a few \uD83D\uDE09emojis!";
         String res = removeNonBmpUnicode(str);

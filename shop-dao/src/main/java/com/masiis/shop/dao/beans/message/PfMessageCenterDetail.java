@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.beans.message;
 
+import com.masiis.shop.common.util.EmojiUtils;
+
 /**
  * @Date 2016/7/12
  * @Author lzh
@@ -48,6 +50,6 @@ public class PfMessageCenterDetail {
     }
 
     public void setLatestMessage(String latestMessage) {
-        this.latestMessage = latestMessage;
+        this.latestMessage = EmojiUtils.parseEmojiToUnicode(latestMessage);
     }
 }

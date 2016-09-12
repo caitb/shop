@@ -256,14 +256,6 @@
 <script src="<%=basePath%>static/js/laydate.js"></script>
 <script src="<%=basePath%>static/js/date-util.js"></script>
 <script>
-    laydate({
-        elem: '#beginTime'
-    });
-    laydate({
-        elem: '#endTime'
-    });
-</script>
-<script>
     var $table = $('#table'),
             $remove = $('#remove'),
             selections = [];

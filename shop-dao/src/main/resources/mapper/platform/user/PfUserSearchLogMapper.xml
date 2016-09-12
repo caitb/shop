@@ -42,15 +42,19 @@
     </select>
 
     <select id="selectSearchContent" parameterType="Long" resultType="String">
-        SELECT content FROM pf_user_search_log WHERE user_id = #{userId} ORDER BY create_time DESC limit 0,5
+        SELECT content FROM pf_user_search_log WHERE user_id = #{userId} AND deleted = 0 ORDER BY create_time DESC limit 0,5
+    </select>
+
+    <select id="selectByContent" parameterType="Long" resultMap="BaseResultMap">
+        SELECT id, create_time, user_id, content, deleted FROM pf_user_search_log WHERE content = #{content} AND user_id = #{userId}
     </select>
 
     <select id="deleteContent">
-        UPDATE pf_user_search_log SET deleted = 1 WHERE content = #{content} AND userId = #{userId}
+        UPDATE pf_user_search_log SET deleted = 1 WHERE content = #{content} AND user_id = #{userId}
     </select>
 
     <select id="clearContent">
-        UPDATE pf_user_search_log SET deleted = 1 WHERE userId = #{userId}
+        UPDATE pf_user_search_log SET deleted = 1 WHERE user_id = #{userId}
     </select>
 
 </mapper>

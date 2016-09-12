@@ -41,6 +41,16 @@ public class UserSearchLogService {
      * @param userId
      */
     public void save(String content, Long userId){
+        PfUserSearchLog oldPfUserSearchLog = pfUserSearchLogMapper.selectByContent(content, userId);
+        if(oldPfUserSearchLog != null && oldPfUserSearchLog.getDeleted().intValue() ==1){
+            oldPfUserSearchLog.setCreateTime(new Date());
+            oldPfUserSearchLog.setDeleted(0);
+            pfUserSearchLogMapper.updateByPrimaryKey(oldPfUserSearchLog);
+        }
+        if(oldPfUserSearchLog != null){
+            return;
+        }
+
         PfUserSearchLog pfUserSearchLog = new PfUserSearchLog();
         pfUserSearchLog.setCreateTime(new Date());
         pfUserSearchLog.setContent(content);

@@ -36,4 +36,8 @@ public class AlipayConsAPP {
      * 订单支付成功
      */
     public static final String PAY_RESULT_STATUS_SUCCESS = "9000";
+    /**
+     * 用户中途取消
+     */
+    public static final String PAY_RESULT_STATUS_CANCEL = "6001";
 }

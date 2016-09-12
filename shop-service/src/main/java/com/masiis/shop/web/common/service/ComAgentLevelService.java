@@ -28,4 +28,8 @@ public class ComAgentLevelService {
     }
 
     public List<ComAgentLevel> selectImgUrlById(Long id){return comAgentLevelMapper.selectImgUrlById(id);}
+
+    public List<ComAgentLevel> selectLastAll(Integer id){
+        return comAgentLevelMapper.selectLastAll(id);
+    }
 }

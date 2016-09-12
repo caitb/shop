@@ -3,6 +3,7 @@ package com.masiis.shop.api.controller.search;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.api.bean.base.BaseBusinessReq;
 import com.masiis.shop.api.bean.search.SearchReq;
 import com.masiis.shop.api.bean.search.SearchRes;
 import com.masiis.shop.api.constants.SignValid;
@@ -17,6 +18,7 @@ import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
 import com.masiis.shop.web.platform.service.user.UserBlackService;
+import com.masiis.shop.web.platform.service.user.UserSearchLogService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +50,38 @@ public class SearchController extends BaseController {
     private BrandStatisticService brandStatisticService;
     @Resource
     private UserBlackService userBlackService;
+    @Resource
+    private UserSearchLogService userSearchLogService;
+
+    @RequestMapping("/searchLog")
+    @ResponseBody
+    @SignValid(paramType = SearchReq.class)
+    public SearchRes searchLog(HttpServletRequest request, SearchReq searchReq, ComUser comUser) {
+        SearchRes searchRes = new SearchRes();
+
+        try {
+            if(StringUtils.isNotBlank(searchReq.getDeleteContent())){
+                userSearchLogService.deleteContent(searchReq.getDeleteContent(), comUser.getId());
+            }else if(searchReq.getClearAll()){
+                userSearchLogService.clearContent(comUser.getId());
+            }
+
+            List<String> searchContents = userSearchLogService.listSearchContent(comUser.getId());
+            searchRes.getDataMap().put("searchContents", searchContents);
+            searchRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            searchRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
+            searchRes.setResMsg("获取搜索日志记录失败!");
+
+            log.error("获取搜索日志记录失败!"+e);
+            e.printStackTrace();
+        }
+
+        return searchRes;
+    }
+
+
 
     @RequestMapping("/searchByMobile")
     @ResponseBody

@@ -9,6 +9,7 @@ package com.masiis.shop.dao.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.masiis.shop.common.util.EmojiUtils;
 
 import java.util.Date;
 
@@ -95,7 +96,7 @@ public class PfMessageContent {
         return contentUrl;
     }
     public void setContentUrl(String contentUrl) {
-        this.contentUrl = contentUrl == null ? null : contentUrl.trim();
+        this.contentUrl = contentUrl == null ? null : EmojiUtils.parseEmojiToUnicode(contentUrl.trim());
     }
 
     public Integer getUrlAppType() {

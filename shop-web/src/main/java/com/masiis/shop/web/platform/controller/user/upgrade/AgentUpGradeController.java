@@ -56,7 +56,7 @@ public class AgentUpGradeController extends BaseController {
     @Resource
     private BUpgradePayService bUpgradePayService;
 
-    @RequestMapping(value = "/upGradeAtom.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/upGradeAtom.do")
     @ResponseBody
     public String upGradeAtom(@RequestParam(value = "skuId", required = true) Integer skuId,
                               @RequestParam(value = "userPid", required = true) Long userPid,

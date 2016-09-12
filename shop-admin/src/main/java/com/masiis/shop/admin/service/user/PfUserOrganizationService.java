@@ -29,17 +29,8 @@ public class PfUserOrganizationService {
         return pfUserOrganizationMapper.updateByPrimaryKey(pfUserOrganization);
     }
     public String handlerName(String name, String suffix){
-        StringBuilder sb = new StringBuilder(name);
-        Pattern p = Pattern.compile(suffix);
-        Matcher m = p.matcher(sb);
-        while (m.find()){
-            sb.delete(m.start(), m.start()+suffix.length());
-            m = p.matcher(sb);
-        }
-
-        //sb.append(suffix);
-
-        return sb.toString();
+        int index = name.lastIndexOf(suffix);
+        return name.substring(0, index);
     }
 
 }

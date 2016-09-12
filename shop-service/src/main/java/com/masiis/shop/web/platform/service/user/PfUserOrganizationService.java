@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.alibaba.druid.sql.visitor.functions.Substring;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -15,9 +16,11 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
+import org.apache.log4j.chainsaw.Main;
 import org.springframework.oxm.support.SaxResourceUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.org.mozilla.javascript.internal.regexp.SubString;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -36,7 +39,7 @@ import java.util.regex.Pattern;
 @Transactional
 public class PfUserOrganizationService {
 
-private static final Logger logger = Logger.getLogger(PfUserOrganizationService.class);
+    private static final Logger logger = Logger.getLogger(PfUserOrganizationService.class);
     @Resource
     private PfUserOrganizationMapper pfUserOrganizationMapper;
     @Resource
@@ -71,10 +74,10 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
     public List<PfUserOrganization> getOrganizationInfoByUserId(Long userId) {
         List<PfUserOrganization> pfUserOrganizationList = pfUserOrganizationMapper.selectOrganizationByUserId(userId);
         for (PfUserOrganization pfUserOrganization : pfUserOrganizationList) {
-            if (pfUserOrganization.getBackImg() != null && !pfUserOrganization.getBackImg().equals("")){
+            if (pfUserOrganization.getBackImg() != null && !pfUserOrganization.getBackImg().equals("")) {
                 pfUserOrganization.setBackImg(backImg + pfUserOrganization.getBackImg());
             }
-            if (pfUserOrganization.getLogo() != null && !pfUserOrganization.getLogo().equals("")){
+            if (pfUserOrganization.getLogo() != null && !pfUserOrganization.getLogo().equals("")) {
                 pfUserOrganization.setLogo(logoUrl + pfUserOrganization.getLogo());
             }
         }
@@ -95,6 +98,7 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
 
     /**
      * 通过userId获取家族首页 我创建的列表
+     *
      * @return
      */
 //    public FamilyHomeListPo getMyFamilyHomeList(Long userId, Integer pageNum) throws Exception{
@@ -180,11 +184,10 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
 //        family.setTotalPage(pageHelp.getPages());
 //        return family;
 //    }
-
     public void fillLogoUrl(List<PfUserOrganization> orgs) {
-        if(orgs != null) {
-            for(PfUserOrganization org : orgs) {
-                org.setLogo(logoImgUrl+org.getLogo());
+        if (orgs != null) {
+            for (PfUserOrganization org : orgs) {
+                org.setLogo(logoImgUrl + org.getLogo());
             }
         }
     }
@@ -200,63 +203,68 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
         return pfUserOrganizationMapper.selectParentByUserIdAndLevelId(userId, agentLevelId);
     }
 
-    public List<PfMessageToNewBean> getNumsGroupByOrganizationAndUserId(Long userId){
+    public List<PfMessageToNewBean> getNumsGroupByOrganizationAndUserId(Long userId) {
         return pfUserOrganizationMapper.selectNumsGroupByOrganization(userId);
     }
 
-    public PfUserOrganization loadByBrandIdAndUserId(Integer brandId, Long userId){
+    public PfUserOrganization loadByBrandIdAndUserId(Integer brandId, Long userId) {
         return pfUserOrganizationMapper.selectByBrandIdAndUserId(brandId, userId);
     }
 
-    public void save(PfUserOrganization pfUserOrganization){
+    public void save(PfUserOrganization pfUserOrganization) {
         pfUserOrganizationMapper.insert(pfUserOrganization);
     }
 
 
-    public Map<String, Object> searchByMobile(String mobile,Integer brandId){
-        return pfUserOrganizationMapper.selectByMobile(mobile,brandId);
+    public Map<String, Object> searchByMobile(String mobile, Integer brandId) {
+        return pfUserOrganizationMapper.selectByMobile(mobile, brandId);
     }
 
     /**
      * 获取代理品牌
+     *
      * @param userId
      * @return
      */
-    public List<Map<String, Object>> listAgentBrand(Long userId){
+    public List<Map<String, Object>> listAgentBrand(Long userId) {
         return pfUserSkuMapper.selectAgentBrand(userId, null);
     }
 
     /**
      * 获取代理品牌
+     *
      * @param userId
      * @return
      */
-    public Map<String, Object> loadAgentBrand(Long userId, Integer brandId){
+    public Map<String, Object> loadAgentBrand(Long userId, Integer brandId) {
         List<Map<String, Object>> agentBrands = pfUserSkuMapper.selectAgentBrand(userId, brandId);
-        return agentBrands.size()==0 ? null : agentBrands.get(0);
+        return agentBrands.size() == 0 ? null : agentBrands.get(0);
     }
 
     /**
      * 获取 上 级代理品牌
+     *
      * @param userId
      * @return
      */
-    public Map<String, Object> loadPAgentBrand(Long userId, Integer brandId){
+    public Map<String, Object> loadPAgentBrand(Long userId, Integer brandId) {
         List<Map<String, Object>> agentBrands = pfUserSkuMapper.selectPAgentBrand(userId, brandId);
-        return agentBrands.size()==0 ? null : agentBrands.get(0);
+        return agentBrands.size() == 0 ? null : agentBrands.get(0);
     }
 
     /**
      * 查找加入的家族
+     *
      * @param userIds
      * @return
      */
-    public List<Map<String, Object>> listFromOrganization(List<Long> userIds){
+    public List<Map<String, Object>> listFromOrganization(List<Long> userIds) {
         return pfUserOrganizationMapper.selectFromOrganization(userIds);
     }
 
     /**
      * 获取家族或团队
+     *
      * @param userId
      * @return
      */
@@ -266,6 +274,7 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
 
     /**
      * 查询我创建的团队
+     *
      * @param userId
      * @return
      */
@@ -275,33 +284,37 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
 
     /**
      * 我加入的家族或团队
+     *
      * @param userId
      * @return
      */
-    public List<Map<String, Object>> listJoinOrganization(Long userId){
+    public List<Map<String, Object>> listJoinOrganization(Long userId) {
         return pfUserOrganizationMapper.selectJoinOrganization(userId);
     }
 
     /**
      * 查询我创建的和(我最低等级时)直接上级的家族
+     *
      * @param userId
      * @return
      */
-    public List<Map<String, Object>> listCreateAndJoinOrganization(Long userId){
+    public List<Map<String, Object>> listCreateAndJoinOrganization(Long userId) {
         return pfUserOrganizationMapper.selectCreateAndJoinOrganization(userId);
     }
 
     /**
      * 统计团队人数和总销售额
+     *
      * @param userId
      * @return
      */
-    public Map<String, Object> countByUserIdAndBrandId(Long userId, Integer brandId){
+    public Map<String, Object> countByUserIdAndBrandId(Long userId, Integer brandId) {
         return pfUserOrganizationMapper.countByUserId(userId, null);
     }
 
     /**
      * 统计所有品牌的总人数和总销售额
+     *
      * @param userId
      * @return
      */
@@ -311,44 +324,37 @@ private static final Logger logger = Logger.getLogger(PfUserOrganizationService.
 
     /**
      * 根据brandId统计团队人数和总销售额
+     *
      * @param userId
      * @param brandId
      * @return
      */
-    public Map<String, Object> countGroupByBrandId(Long userId, Integer brandId){
+    public Map<String, Object> countGroupByBrandId(Long userId, Integer brandId) {
         return countGroupMapper.countGroupByBrandId(userId, brandId);
     }
 
     /**
      * 是否有家族(创建的或加入的)
+     *
      * @param userId
      * @return
      */
-    public Boolean hasOrganization(Long userId){
+    public Boolean hasOrganization(Long userId) {
         ComUser comUser = userService.getUserById(userId);
-        if(comUser != null && comUser.getIsAgent().intValue() == 0){
+        if (comUser != null && comUser.getIsAgent().intValue() == 0) {
             return false;
         }
 
         List<Map<String, Object>> organizations = listCreateAndJoinOrganization(userId);
-        if(organizations == null || organizations.size() == 0){
+        if (organizations == null || organizations.size() == 0) {
             return false;
         }
 
         return true;
     }
 
-    public String handlerName(String name, String suffix){
-        StringBuilder sb = new StringBuilder(name);
-        Pattern p = Pattern.compile(suffix);
-        Matcher m = p.matcher(sb);
-        while (m.find()){
-            sb.delete(m.start(), m.start()+suffix.length());
-            m = p.matcher(sb);
-        }
-
-        //sb.append(suffix);
-
-        return sb.toString();
+    public String handlerName(String name, String suffix) {
+        int index = name.lastIndexOf(suffix);
+        return name.substring(0, index);
     }
 }

@@ -332,7 +332,7 @@
         <p>*请在汇款单的附言处注明绑定的订单号”（<span>非常重要！</span>）</p>
         <h3>支付信息</h3>
         <h1><span></span>支付宝转账</h1>
-        <h2><span>名称：</span><span>北京麦士网络科技有限公司</span></h2>
+        <h2><span>名称：</span><span>北京麦链网络科技有限公司</span></h2>
         <h2><span>支付宝账号：</span><span>mailian@iimai.com</span></h2>
         <%--<h1><span></span>银行转账</h1>--%>
         <%--<h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>--%>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -81,7 +80,7 @@ public class SfOrderPurchaseController extends BaseController {
             }*/
             log.info("message------"+message);
             if(StringUtils.isNotBlank(message)){
-                message = EmojiUtils.removeNonBmpUnicode(message);
+                message = EmojiUtils.encodeEmojiStr(message);
             }
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
             if (orderId != null && orderId >0 ){

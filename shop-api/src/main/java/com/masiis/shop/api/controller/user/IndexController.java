@@ -14,9 +14,6 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.statistics.RecommentBrandStatisticService;
-import com.masiis.shop.web.platform.service.system.IndexShowService;
-import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -85,7 +82,7 @@ public class IndexController extends BaseController {
             res.setbOrderNums(borderNum);
             res.setIsPartner(user.getIsAgent());
             res.setIsBind(user.getIsBinding());
-            res.setNkName(EmojiUtils.removeNonBmpUnicode(user.getWxNkName()));
+            res.setNkName(EmojiUtils.encodeEmojiStr(user.getWxNkName()));
             res.setUserHeadImg(user.getWxHeadImg());
             res.setCountMsg(countMsg);
 //            res.setPfUserOrganizations(pfUserOrganizations);

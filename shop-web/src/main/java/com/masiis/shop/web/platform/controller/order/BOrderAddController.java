@@ -213,7 +213,7 @@ public class BOrderAddController extends BaseController {
                 userMessage = "";
             }
             // 过滤表情留言
-            userMessage = EmojiUtils.removeNonBmpUnicode(userMessage);
+            userMessage = EmojiUtils.encodeEmojiStr(userMessage);
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }
@@ -350,7 +350,7 @@ public class BOrderAddController extends BaseController {
             if (StringUtils.isBlank(userMessage)) {
                 userMessage = "";
             }
-            userMessage = EmojiUtils.removeNonBmpUnicode(userMessage);
+            userMessage = EmojiUtils.encodeEmojiStr(userMessage);
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }

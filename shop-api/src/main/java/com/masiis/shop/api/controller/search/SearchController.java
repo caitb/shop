@@ -86,7 +86,7 @@ public class SearchController extends BaseController {
     @RequestMapping("/searchByMobile")
     @ResponseBody
     @SignValid(paramType = SearchReq.class)
-    public SearchRes searchByMobile(HttpServletRequest request, SearchReq searchReq) {
+    public SearchRes searchByMobile(HttpServletRequest request, SearchReq searchReq, ComUser comUser) {
         SearchRes searchRes = new SearchRes();
 
         try {
@@ -104,6 +104,8 @@ public class SearchController extends BaseController {
             }
 
             Map<String, Object> dataMap = userOrganizationService.searchByMobile(searchReq.getMobile(), searchReq.getBrandId());
+            //保存搜索日志
+            userSearchLogService.save(searchReq.getMobile(), comUser.getId());
 
             searchRes.setDataMap(dataMap);
             searchRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

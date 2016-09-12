@@ -11,6 +11,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.masiis.shop.common.util.EmojiUtils;
 
 import java.util.Date;
 
@@ -100,7 +101,7 @@ public class SfMessageContent {
         return content;
     }
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content == null ? null : EmojiUtils.parseEmojiToUnicode(content.trim());
     }
     public String getContentUrl() {
         return contentUrl;

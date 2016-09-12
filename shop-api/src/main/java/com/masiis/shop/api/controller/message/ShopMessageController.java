@@ -7,6 +7,7 @@ import com.masiis.shop.api.bean.message.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.po.*;
@@ -66,7 +67,7 @@ public class ShopMessageController {
             if(StringUtils.isNotBlank(detailSys.getLatestMessage())){
                 detailSys.setFromUserId(0 + "");
                 detailSys.setFromUserName("系统消息");
-                detailSys.setHeadUrl(user.getWxHeadImg());
+                detailSys.setHeadUrl(PropertiesUtils.getStringValue("api.domain.name.address") + "/static/images/sys_notice_img.jpg");
                 resData.add(detailSys);
             };
 
@@ -262,8 +263,9 @@ public class ShopMessageController {
                 relations = sfUserRelationService.findAllSpokeManRelationByShopId(shop.getId(), user.getId());
             }
 
-            SfMessageContent content = sfMessageContentService
-                    .createMessageByShopAndAppType(shop, message, messageType, remark, url, urlType, req.getUrlAppParam());
+            SfMessageContent content = sfMessageContentService.createMessageByShopAndAppType(shop,
+                    EmojiUtils.removeNonBmpUnicode(message), messageType, remark, url, urlType,
+                    req.getUrlAppParam());
             sfMessageContentService.insert(content);
 
             for(SfUserRelation relation:relations){

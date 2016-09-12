@@ -7,6 +7,7 @@ import com.masiis.shop.api.bean.message.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.message.PfMessageCenterDetail;
 import com.masiis.shop.dao.beans.message.PfMessageToNewBean;
@@ -90,7 +91,7 @@ public class PfMessageController {
                 if(StringUtils.isNotBlank(detailSys.getLatestMessage())){
                     detailSys.setFromUserId(0 + "");
                     detailSys.setFromUserName("系统消息");
-                    detailSys.setHeadUrl(user.getWxHeadImg());
+                    detailSys.setHeadUrl(PropertiesUtils.getStringValue("api.domain.name.address") + "/static/images/sys_notice_img.jpg");
                     resData.add(detailSys);
                     tcount++;
                 }
@@ -385,7 +386,8 @@ public class PfMessageController {
             }
 
             PfMessageContent content = pfMessageContentService.createMessageByAppType(user.getId(),
-                    req.getMessage(), messageType, remark, url, req.getUrlAppType(), req.getUrlAppParam());
+                    EmojiUtils.removeNonBmpUnicode(req.getMessage()), messageType, remark, url,
+                    req.getUrlAppType(), req.getUrlAppParam());
             pfMessageContentService.insert(content);
 
             for(Long toUser:relations){

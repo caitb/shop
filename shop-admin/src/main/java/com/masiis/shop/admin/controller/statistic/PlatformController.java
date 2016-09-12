@@ -79,9 +79,9 @@ public class PlatformController {
           Map<String, Object> user = new HashMap<>();
           user.put("registerCountUser", userList.get(0).getRegisterCountUser());
           user.put("registerCount", userList.get(0).getTotal());
-          if(newUserList != null && newUserList.size() == 1 && "麦链合伙人".equals(newUserList.get(0).getRegisterCountUser())){
+          if(newUserList != null && newUserList.size() >= 1 && "麦链合伙人".equals(newUserList.get(0).getRegisterCountUser())){
               user.put("newRegisterCount", newUserList.get(0).getTotal());
-          }else if(newUserList != null && newUserList.size() == 2 && "麦链合伙人".equals(newUserList.get(1).getRegisterCountUser())){
+          }else if(newUserList != null && newUserList.size() >= 2 && "麦链合伙人".equals(newUserList.get(1).getRegisterCountUser())){
               user.put("newRegisterCount", userList.get(1).getTotal());
           }
 
@@ -127,9 +127,9 @@ public class PlatformController {
           Map<String, Object> city = new HashMap<>();
           city.put("registerCountUser", userList.get(1).getRegisterCountUser());
           city.put("registerCount", userList.get(1).getTotal());
-          if(newUserList != null && newUserList.size() == 1 && "麦链商城".equals(newUserList.get(0).getRegisterCountUser())){
+          if(newUserList != null && newUserList.size() >= 1 && "麦链商城".equals(newUserList.get(0).getRegisterCountUser())){
               city.put("newRegisterCount", newUserList.get(0).getTotal());
-          }else if(newUserList != null && newUserList.size() == 2 && "麦链商城".equals(newUserList.get(1).getRegisterCountUser())){
+          }else if(newUserList != null && newUserList.size() >= 2 && "麦链商城".equals(newUserList.get(1).getRegisterCountUser())){
               city.put("newRegisterCount", newUserList.get(1).getTotal());
           }
 

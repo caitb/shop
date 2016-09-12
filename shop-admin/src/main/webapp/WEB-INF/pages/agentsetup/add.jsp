@@ -101,7 +101,6 @@
                     <div class="col-xs-12 col-sm-12">
 
                         <form class="form-horizontal" role="form" id="skuForm">
-                            <input type="hidden" name="skuId" value="${comSku.id}" >
 
                             <div class="profile-user-info profile-user-info-striped">
                                 <div class="profile-info-row">
@@ -114,7 +113,10 @@
                                         <div class="form-group">
                                             <label for="agentLevelCount" class="col-sm-0 control-label">个代理等级</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control" id="agentLevelCount">
+                                                <select class="form-control" id="agentLevelCount" <c:if test="${pfSkuAgents != null && pfSkuAgents.size() > 0}">disabled</c:if> >
+                                                    <c:forEach items="${agentLevels2}" var="level">
+                                                        <option value="${level.id}" <c:if test="${pfSkuAgents.size() == level.id}">selected</c:if> >${level.id}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </div>
                                         </div>
@@ -132,12 +134,16 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="levelNameUl">
-                                                                        <c:forEach items="${agentLevels2}" var="level">
-                                                                            <li>${level.name}</li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].id" value="${skuAgent.id}">
+                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].skuId" value="${skuAgent.skuId}">
+                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].agentLevelId" value="${skuAgent.agentLevelId}">
+                                                                            <c:forEach items="${agentLevels2}" var="level">
+                                                                                <c:if test="${skuAgent.agentLevelId == level.id}"><li>${level.name}</li></c:if>
+                                                                            </c:forEach>
                                                                         </c:forEach>
                                                                     </ul>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -151,11 +157,10 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="unitPriceUl" >
-                                                                        <li> <input type="text" name="unitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="unitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="unitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="unitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="unitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -171,11 +176,10 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="quantityUl">
-                                                                        <li> <input type="text" name="quantity" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="quantity" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="quantity" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="quantity" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="quantity" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -191,11 +195,10 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="bailUl">
-                                                                        <li> <input type="text" name="bail" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="bail" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="bail" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="bail" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="bail" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -211,11 +214,9 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="totalPriceUl">
-                                                                        <li> Unlimited </li>
-                                                                        <li> Unlimited </li>
-                                                                        <li> Unlimited </li>
-                                                                        <li> Unlimited </li>
-                                                                        <li> $100 </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <li> ${skuAgent.getUnitPrice().multiply(skuAgent.getQuantity()).add(skuAgent.getBail())} </li>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -231,36 +232,14 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="isUpgradeUl">
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <li>
+                                                                                <input type="radio" name="pfSkuAgents[${status.index}].isUpgrade" value="1" <c:if test="${skuAgent.isUpgrade == 1}">checked</c:if> >
+                                                                                是
+                                                                                <input type="radio" name="pfSkuAgents[${status.index}].isUpgrade" value="0" <c:if test="${skuAgent.isUpgrade == 0}">checked</c:if> >
+                                                                                否
+                                                                            </li>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -276,36 +255,14 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="isShowUl">
-                                                                        <li>
-                                                                            <input type="radio" name="isShow" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isShow" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isShow" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isShow" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isShow" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isShow" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isShow" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isShow" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isShow" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isShow" value="0" >
-                                                                            否
-                                                                        </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <li>
+                                                                                <input type="radio" name="pfSkuAgents[${status.index}].isShow" value="1" <c:if test="${skuAgent.isShow == 1}">checked</c:if> >
+                                                                                是
+                                                                                <input type="radio" name="pfSkuAgents[${status.index}].isShow" value="0" <c:if test="${skuAgent.isShow == 0}">checked</c:if> >
+                                                                                否
+                                                                            </li>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -321,11 +278,10 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="freemanUpperNumUl">
-                                                                        <li> <input type="text" name="freemanUpperNum" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="freemanUpperNum" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="freemanUpperNum" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="freemanUpperNum" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="freemanUpperNum" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].freemanUpperNum" value="${skuAgent.freemanUpperNum}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].freemanUpperNum" value="${skuAgent.freemanUpperNum}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -382,11 +338,11 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="recommendLevelNameUl">
-                                                                        <li> BOSS </li>
-                                                                        <li> 联合创始人 </li>
-                                                                        <li> 副总裁 </li>
-                                                                        <li> 执行董事 </li>
-                                                                        <li> 合伙人 </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent">
+                                                                            <c:forEach items="${agentLevels2}" var="level">
+                                                                                <c:if test="${skuAgent.agentLevelId == level.id}"><li>${level.name}</li></c:if>
+                                                                            </c:forEach>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
 
@@ -403,36 +359,14 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="isRecommendUl">
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
-                                                                        <li>
-                                                                            <input type="radio" name="isUpgrade" value="1" >
-                                                                            是
-                                                                            <input type="radio" name="isUpgrade" value="0" >
-                                                                            否
-                                                                        </li>
+                                                                        <%--<c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">--%>
+                                                                            <%--<li>--%>
+                                                                                <%--<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="1" <c:if test="${skuAgent.lateral == 1}">checked</c:if> >--%>
+                                                                                <%--是--%>
+                                                                                <%--<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="0" <c:if test="${skuAgent.lateral == 0}">checked</c:if> >--%>
+                                                                                <%--否--%>
+                                                                            <%--</li>--%>
+                                                                        <%--</c:forEach>--%>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -448,11 +382,10 @@
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="rewardUnitPriceUl">
-                                                                        <li> <input type="text" name="rewardUnitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="rewardUnitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="rewardUnitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="rewardUnitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                        <li> <input type="text" name="rewardUnitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].rewardUnitPrice" value="${skuAgent.rewardUnitPrice}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].rewardUnitPrice" value="${skuAgent.rewardUnitPrice}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -941,10 +874,6 @@
     var isSetup = window.eval('(${isSetup})');
     var agentLevels = window.eval('(${agentLevels})');
     var agentLevelOptions = '';
-    for(var i in agentLevels){
-        agentLevelOptions += '<option value="'+agentLevels[i].id+'">'+agentLevels[i].id+'</option>';
-    }
-    $('#agentLevelCount').html(agentLevelOptions);
 
     $('#agentLevelCount').change(function(){
         changePartnerSetup();
@@ -952,6 +881,11 @@
     });
 
     if(!isSetup){
+        for(var i in agentLevels){
+            agentLevelOptions += '<option value="'+agentLevels[i].id+'">'+agentLevels[i].id+'</option>';
+        }
+        $('#agentLevelCount').html(agentLevelOptions);
+
         changePartnerSetup();
         changeRecommendSetup();
     }

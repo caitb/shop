@@ -226,7 +226,8 @@ public class ComUserService {
             }
             //开店
             SfShop sfShop = shopService.loadShopByUserId(comUser.getId());
-            if (sfShop != null && sfShop.getStatus().intValue() == 0) {
+            if (sfShop != null) {
+                sfShop.setName(comUser.getRealName()+"的店铺");
                 sfShop.setStatus(1);
                 shopService.update(sfShop);
             }

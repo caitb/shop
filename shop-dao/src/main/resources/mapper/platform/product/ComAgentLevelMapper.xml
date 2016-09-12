@@ -50,6 +50,14 @@
         remark
         from com_agent_level
     </select>
+
+    <select id="selectLastAll" resultMap="BaseResultMap">
+        select id, create_time, name, img_url, is_organization, organization_suffix, is_organization_show,
+        remark
+        from com_agent_level
+        where id <![CDATA[ >= ]]> #{id}
+    </select>
+
     <select id="getMaxAgentLevel" resultType="int">
         select MAX(id)
         from com_agent_level

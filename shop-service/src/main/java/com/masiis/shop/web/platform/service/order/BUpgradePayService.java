@@ -164,7 +164,7 @@ public class BUpgradePayService {
         log.info("非主打商品的品牌下的商品升级---------end");
     }
 
-    private void skipNoBrandSkuUpgrade(Long userId, Long userPid, List<PfBorderItem> pfBorderItems) {
+    public void skipNoBrandSkuUpgrade(Long userId, Long userPid, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             Integer agentLevelId = pfBorderItem.getAgentLevelId();
             log.info("升级后的等级-------------" + agentLevelId+"-----主打商品id------"+pfBorderItem.getSkuId());

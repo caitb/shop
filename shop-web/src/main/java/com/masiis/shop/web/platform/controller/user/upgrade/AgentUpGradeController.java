@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BUpgradePayService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.user.*;
 import org.apache.log4j.Logger;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +53,26 @@ public class AgentUpGradeController extends BaseController {
     private PfUserRebateService pfUserRebateService;
     @Autowired
     private SkuAgentService skuAgentService;
+    @Resource
+    private BUpgradePayService bUpgradePayService;
+
+    @RequestMapping(value = "/upGradeAtom.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String upGradeAtom(@RequestParam(value = "skuId", required = true) Integer skuId,
+                              @RequestParam(value = "userPid", required = true) Long userPid,
+                              @RequestParam(value = "userId", required = true) Long userId,
+                              @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
+                                    HttpServletRequest request) throws Exception{
+        PfBorderItem pfBorderItem = new PfBorderItem();
+        pfBorderItem.setSkuId(skuId);
+        pfBorderItem.setAgentLevelId(agentLevelId);
+        List<PfBorderItem> pfBorderItems = new ArrayList<PfBorderItem>();
+        pfBorderItems.add(pfBorderItem);
+        bUpgradePayService.skipNoBrandSkuUpgrade(userId,userPid,pfBorderItems);
+        System.out.println("升级成功-----------------");
+        return null;
+    }
+
 
     /**
      * 初始化我要升级首页

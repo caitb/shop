@@ -147,6 +147,11 @@ public class PfUserSkuStockService {
         return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
+    public PfUserSkuStock selectByUserIdAndSkuIdAndSpuId(Long userId, Integer skuId,Integer spuId) {
+        return pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId,spuId);
+    }
+
+
     /**
      * 更新库存 带乐观锁
      *

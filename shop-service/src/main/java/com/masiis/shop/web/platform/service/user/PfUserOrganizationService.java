@@ -1,12 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.alibaba.druid.sql.visitor.functions.Substring;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.family.FamilyHomeListPo;
-import com.masiis.shop.dao.beans.family.PfUserOrganizationExtend;
 import com.masiis.shop.dao.beans.message.PfMessageToNewBean;
 import com.masiis.shop.dao.platform.user.CountGroupMapper;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
@@ -16,20 +10,12 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.web.common.service.UserService;
 import org.apache.log4j.Logger;
-import org.apache.log4j.chainsaw.Main;
-import org.springframework.oxm.support.SaxResourceUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.org.mozilla.javascript.internal.regexp.SubString;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.StreamHandler;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by jiajinghao on 2016/8/4.

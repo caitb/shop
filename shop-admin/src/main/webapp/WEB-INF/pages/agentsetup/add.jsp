@@ -161,8 +161,8 @@
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="unitPriceUl" >
                                                                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
-                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;" > </li></c:if>
-                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].unitPrice" value="${skuAgent.unitPrice}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
                                                                         </c:forEach>
                                                                     </ul>
                                                                 </div>
@@ -180,8 +180,8 @@
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="quantityUl">
                                                                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
-                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;" > </li></c:if>
-                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].quantity" value="${skuAgent.quantity}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
                                                                         </c:forEach>
                                                                     </ul>
                                                                 </div>
@@ -199,8 +199,8 @@
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="bailUl">
                                                                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
-                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;" > </li></c:if>
-                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input row="${status.index}" type="text" name="pfSkuAgents[${status.index}].bail" value="${skuAgent.bail}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
                                                                         </c:forEach>
                                                                     </ul>
                                                                 </div>
@@ -218,7 +218,7 @@
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="totalPriceUl">
                                                                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
-                                                                            <li> ${skuAgent.getUnitPrice().multiply(skuAgent.getQuantity()).add(skuAgent.getBail())} </li>
+                                                                            <li row="${status.index}"> ${skuAgent.getUnitPrice().multiply(skuAgent.getQuantity()).add(skuAgent.getBail())} </li>
                                                                         </c:forEach>
                                                                     </ul>
                                                                 </div>
@@ -934,24 +934,24 @@
 
             //单价
             if(i%2 == 0)
-                unitPriceLi += '<li> <input type="text" name="pfSkuAgents['+i+'].unitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>';
+                unitPriceLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].unitPrice" value="" style="width:100px;height:13px;border:0px;" > </li>';
             else
-                unitPriceLi += '<li> <input type="text" name="pfSkuAgents['+i+'].unitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
+                unitPriceLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].unitPrice" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
 
             //拿货数量
             if(i%2 == 0)
-                quantityLi += '<li> <input type="text" name="pfSkuAgents['+i+'].quantity" value="" style="width:100px;height:13px;border:0px;" > </li>';
+                quantityLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].quantity" value="" style="width:100px;height:13px;border:0px;" > </li>';
             else
-                quantityLi += '<li> <input type="text" name="pfSkuAgents['+i+'].quantity" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
+                quantityLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].quantity" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
 
             //保证金
             if(i%2 == 0)
-                bailLi += '<li> <input type="text" name="pfSkuAgents['+i+'].bail" value="" style="width:100px;height:13px;border:0px;" > </li>';
+                bailLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].bail" value="" style="width:100px;height:13px;border:0px;" > </li>';
             else
-                bailLi += '<li> <input type="text" name="pfSkuAgents['+i+'].bail" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
+                bailLi += '<li> <input row="'+i+'" type="text" name="pfSkuAgents['+i+'].bail" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
 
             //门槛
-            totalPriceLi += '<li>'+agentLevels[i].name+'</li>';
+            totalPriceLi += '<li row="'+i+'">'+agentLevels[i].name+'</li>';
 
             //是否允许升级
             isUpgradeLi += '<li>'
@@ -1011,6 +1011,22 @@
         $('#isRecommendUl').html(isRecommendLi);
         $('#rewardUnitPriceUl').html(rewardUnitPriceLi);
     }
+
+
+    $('body').on('keyup', '#unitPriceUl input, #quantityUl input, #bailUl input', function(){
+        var row = $(this).attr('row');
+        var unitPrice = parseFloat($('input[row="'+row+'"]:eq(0)').val());
+            unitPrice = unitPrice ? unitPrice : 0;
+        var quantity  = parseFloat($('input[row="'+row+'"]:eq(1)').val());
+            quantity  = quantity ? quantity : 0;
+        var bail      = parseFloat($('input[row="'+row+'"]:eq(2)').val());
+            bail      = bail ? bail : 0;
+        console.log('unitPrice: ' + unitPrice);
+        console.log('quantity: ' + quantity);
+        console.log('bail: ' + bail);
+        console.log('totalPrice: ' + (unitPrice*quantity+bail));
+        $('#totalPriceUl li:eq('+row+')').html(unitPrice*quantity+bail)
+    });
 
 
 

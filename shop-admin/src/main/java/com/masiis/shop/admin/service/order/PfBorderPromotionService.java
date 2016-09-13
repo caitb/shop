@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +47,39 @@ public class PfBorderPromotionService {
         return pfBorderPromotionMapper.updateByPrimaryKey(pfBorderPromotion);
     }
 
+    private String promotionStartDateString = "2000-10-10";
+    private String promotionStartEndString  = "2010-10-10";
+    private Integer giveSkuAgentLevel = 4;
+
+    /**
+     * 判断活动是否开启
+     * @return
+     */
+    private Boolean isOpenPromotion(){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.YYYYMMDDFMT);
+            Date startDate = sdf.parse(promotionStartDateString);
+            Date endDate = sdf.parse(promotionStartEndString);
+            Date currentDate = new Date();
+            //如果时间1等于时间2，返回0，如果时间1小于时间2，返回负值，如果时间1大于时间2，返回正值
+            if (DateUtil.compare(currentDate,startDate)>0){
+                if (DateUtil.compare(currentDate,endDate)<0){
+                    return true;
+                }
+            }
+            return false;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     /**
      * 代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口
      * @param pfBorderId            B端订单(C端为null)
      * @param userId
      * @param skuId                 C端购买使用(B端可以为null)
      * @param spuId                 C端购买使用(B端可以为null)
-     * @param agentLevelId          哪个等级送货(C端传null)
      * @param mallSellQuantity      C端购买的量
      * @param changeGiveStockType   类型(B端传null)
      * @param orderType             B端订单类型(C端传null)
@@ -61,14 +88,12 @@ public class PfBorderPromotionService {
                                         Long userId,
                                         Integer skuId,
                                         Integer spuId,
-                                        Integer agentLevelId,
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
-        Boolean bl =false;
-        if (bl){
+        if (isOpenPromotion()){
             log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
-            log.info("入口参数------pfBorderId---"+pfBorderId+"---userId---"+userId+"---skuId----"+skuId+"----spuId---"+spuId+"---agentLevelId---"+agentLevelId);
+            log.info("入口参数------pfBorderId---"+pfBorderId+"---userId---"+userId+"---skuId----"+skuId+"----spuId---"+spuId);
             log.info("mallSellQuantity-----"+mallSellQuantity+"------orderType----"+orderType+"-----changeGiveStockType----"+changeGiveStockType);
             PfBorderPromotion pfBorderPromotion = null;
             PfUserSkuStock userSkuStock =  null;
@@ -97,7 +122,7 @@ public class PfBorderPromotionService {
                         pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
                     }
                     if (pfBorderPromotion!=null){
-                        registAgentSuccessUpdateStockAndIsSend(pfBorderId,pfBorderPromotion,pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId(),userId,agentLevelId);
+                        registAgentSuccessUpdateStockAndIsSend(pfBorderId,pfBorderPromotion,pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId(),userId);
                     }
                     break;
                 case Supplement:
@@ -107,7 +132,7 @@ public class PfBorderPromotionService {
                 case UPGRADE:
                     PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
                     if (pfUserUpgradeNotice!=null){
-                        if (pfUserUpgradeNotice.getOrgAgentLevelId().equals(agentLevelId)){
+                        if (pfUserUpgradeNotice.getOrgAgentLevelId().equals(giveSkuAgentLevel)){
                             log.info("原始等级是之前平台赠送商品的等级，需要修改赠送的商品库存");
                             ComSpu comSpu =  spuService.selectBrandBySkuId(pfUserUpgradeNotice.getSkuId());
                             if(comSpu!=null){
@@ -152,10 +177,9 @@ public class PfBorderPromotionService {
      * @param skuId
      * @param spuId
      * @param userId
-     * @param agentLevelId
      */
-    private void registAgentSuccessUpdateStockAndIsSend(Long pfBorderId,PfBorderPromotion pfBorderPromotion,Integer skuId,Integer spuId,Long userId,Integer agentLevelId){
-        log.info("支付成功或发货后更新用户和平台库存以及订单是否发货的状态----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId+"----agentLevelId---"+agentLevelId);
+    private void registAgentSuccessUpdateStockAndIsSend(Long pfBorderId,PfBorderPromotion pfBorderPromotion,Integer skuId,Integer spuId,Long userId){
+        log.info("支付成功或发货后更新用户和平台库存以及订单是否发货的状态----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId);
         log.info("-----pfBorderItem中quantity数量为0------");
         log.info("-----pfbodrerId-------"+pfBorderId);
         if (pfBorderPromotion==null){
@@ -165,7 +189,7 @@ public class PfBorderPromotionService {
         updateIsSend(pfBorderId,pfBorderPromotion);
         log.info("更新订单促销活动赠品表中是否已发放商品----end");
         log.info("支付成功发货后更新小白库存和平台库存----start");
-        registAgentUpdateStock(pfBorderId,skuId,spuId,userId,pfBorderPromotion.getUserPid(),agentLevelId,pfBorderPromotion.getQuantity());
+        registAgentUpdateStock(pfBorderId,skuId,spuId,userId,pfBorderPromotion.getUserPid(),pfBorderPromotion.getQuantity());
         log.info("支付成功发货后更新小白库存和平台库存----end");
     }
 
@@ -191,8 +215,8 @@ public class PfBorderPromotionService {
      * @param spuId
      * @param userId
      */
-    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer agentLevelId,Integer changeQuantity){
-        log.info("更新小白库存和平台库存----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId+"----agentLevelId---"+agentLevelId);
+    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer changeQuantity){
+        log.info("更新小白库存和平台库存----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId);
         try{
             PfUserSkuStock userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
             if (userSkuStock!=null){

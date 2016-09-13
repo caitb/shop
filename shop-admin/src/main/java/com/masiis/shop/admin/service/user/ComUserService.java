@@ -80,10 +80,32 @@ public class ComUserService {
      * @param comUser    查询条件
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
-
-        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
-        List<ComUser> comUsers = comUserMapper.selectByCondition(comUser);
+//    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
+//
+//        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+//        List<ComUser> comUsers = comUserMapper.selectByCondition(comUser);
+//        PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
+//
+//        List<User> users = new ArrayList<>(comUsers.size());
+//        for (ComUser cu : comUsers) {
+//            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(cu.getId());
+//
+//            User user = new User();
+//            user.setComUser(cu);
+//            user.setComUserAccount(comUserAccount);
+//
+//            users.add(user);
+//        }
+//
+//        Map<String, Object> pageMap = new HashMap<>();
+//        pageMap.put("total", pageInfo.getTotal());
+//        pageMap.put("rows", users);
+//
+//        return pageMap;
+//    }
+    public Map<String,Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
+        PageHelper.startPage(pageNumber, pageSize, "audit_date desc");
+        List<ComUser> comUsers = comUserMapper.selectByConditionWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 
         List<User> users = new ArrayList<>(comUsers.size());
@@ -112,9 +134,20 @@ public class ComUserService {
      * @param comUser    查询条件
      * @return
      */
-    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
+//    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser) {
+//        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+//        List<ComUser> comUsers = comUserMapper.auditList(comUser);
+//        PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
+//
+//        Map<String, Object> pageMap = new HashMap<>();
+//        pageMap.put("total", pageInfo.getTotal());
+//        pageMap.put("rows", comUsers);
+//
+//        return pageMap;
+//    }
+    public Map<String,Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
-        List<ComUser> comUsers = comUserMapper.auditList(comUser);
+        List<ComUser> comUsers = comUserMapper.auditListWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 
         Map<String, Object> pageMap = new HashMap<>();
@@ -259,4 +292,7 @@ public class ComUserService {
     public List<ComUser> queryByConditions(Map<String, Object> params) {
         return comUserMapper.selectByConditions(params);
     }
+
+
+
 }

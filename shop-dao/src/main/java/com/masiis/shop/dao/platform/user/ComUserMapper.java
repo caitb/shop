@@ -62,8 +62,11 @@ public interface ComUserMapper {
     String findByPid(Integer pid);
 
     List<ComUser> selectByCondition(ComUser comUser);
+    List<ComUser> selectByConditionWithMap(Map<String, Object> conMap);
 
     List<ComUser> auditList(ComUser comUser);
+    List<ComUser> auditListWithMap(Map<String, Object> conMap);
+
 
     List<ComUser> selectByIds(List<Long> ids);
 
@@ -82,4 +85,7 @@ public interface ComUserMapper {
     List<ComUser> selectByConditions(Map<String, Object> conditionMap);
 
     int deleteByPrimaryKey(Long userId);
+
+
+
 }

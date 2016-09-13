@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.user;
 
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -37,7 +38,7 @@ public class SfUserIsBuyService {
         SfOrder sfOrder;
         //遍历处理未购买成功用户
         for (ComUser user : users){
-            sfOrder = sfOrderMapper.selectNotIsBuyByUserId(user.getId(), BOrderStatus.Complete.getCode());
+            sfOrder = sfOrderMapper.selectNotIsBuyByUserId(user.getId(), SfOrderStatusEnum.ORDER_COMPLETE.getCode());
             logger.info("订单是否为空：" + sfOrder + "  用户userId = " + user.getId());
             if (sfOrder != null){
                 user.setIsBuy(1);

@@ -101,6 +101,7 @@
                     <div class="col-xs-12 col-sm-12">
 
                         <form class="form-horizontal" role="form" id="skuForm">
+                        <div id="skuIdInput"></div>
                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
                             <input type="hidden" name="pfSkuAgents[${status.index}].id" value="${skuAgent.id}">
                             <input type="hidden" name="pfSkuAgents[${status.index}].skuId" value="${skuAgent.skuId}">
@@ -893,6 +894,7 @@
     });
 
 
+    var skuId = parseInt('${skuId}');
     var isSetup = window.eval('(${isSetup})');
     var agentLevels = window.eval('(${agentLevels})');
     var agentLevelOptions = '';
@@ -913,6 +915,7 @@
     }
 
     function changePartnerSetup(){
+        var skuIdInput   = '';
         var levelNameLi  = '';
         var unitPriceLi  = '';
         var quantityLi   = '';
@@ -924,6 +927,8 @@
         var levelCount = $('#agentLevelCount').val();
 
         for(var i=0; i<levelCount; i++){
+            //skuId表单
+            skuIdInput += '<input type="hidden" name="pfSkuAgents['+i+'].skuId" value="'+skuId+'" />';
             //等级
             levelNameLi += '<li><input type="hidden" name="pfSkuAgents['+i+'].agentLevelId" value="'+agentLevels[i].id+'" /> '+agentLevels[i].name+'</li>';
 
@@ -968,6 +973,7 @@
         }
 
 
+        $('#skuIdInput').html(skuIdInput);
         $('#levelNameUl').html(levelNameLi);
         $('#unitPriceUl').html(unitPriceLi);
         $('#quantityUl').html(quantityLi);

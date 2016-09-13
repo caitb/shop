@@ -63,6 +63,7 @@ public class SkuAgentController {
         model.addAttribute("isSetup", pfSkuAgents!=null&&pfSkuAgents.size()>0 ? true : false);
         model.addAttribute("agentLevels", objectMapper.writeValueAsString(agentLevels));
         model.addAttribute("agentLevels2", agentLevels);
+        model.addAttribute("skuId", comSku.getId());
         return "agentsetup/add";
     }
 

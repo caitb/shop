@@ -109,6 +109,7 @@ public class SkuAgentService {
     public void save(List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions){
         if(pfSkuAgents != null){
             for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+                pfSkuAgent.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(new BigDecimal(pfSkuAgent.getQuantity())).add(pfSkuAgent.getBail()));
                 if(pfSkuAgent.getId() == null){
                     pfSkuAgentMapper.insert(pfSkuAgent);
                 }else{

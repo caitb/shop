@@ -126,7 +126,11 @@ public class PfSkuStockService {
         PfSkuStock pfSkuStock =  selectBySkuId(skuId);
         if (pfSkuStock!=null){
             //增加平台冻结库存
-            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
+            if (pfSkuStock.getFrozenStock()==null){
+                pfSkuStock.setFrozenStock(changeQuantity);
+            }else{
+                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
+            }
             if (updateByIdAndVersions(pfSkuStock) != 1) {
                 throw new BusinessException(remark);
             }

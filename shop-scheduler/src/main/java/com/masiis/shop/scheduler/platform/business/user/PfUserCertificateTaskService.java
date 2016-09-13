@@ -1,8 +1,5 @@
 package com.masiis.shop.scheduler.platform.business.user;
 
-import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.interfaces.IParallelThread;
-import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
@@ -16,7 +13,6 @@ import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @Date 2016/9/9

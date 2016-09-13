@@ -105,7 +105,7 @@ public class ComUserService {
 //    }
     public Map<String,Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
         PageHelper.startPage(pageNumber, pageSize, "audit_date desc");
-        List<ComUser> comUsers = comUserMapper.selectByCondition(conMap);
+        List<ComUser> comUsers = comUserMapper.selectByConditionWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 
         List<User> users = new ArrayList<>(comUsers.size());
@@ -147,7 +147,7 @@ public class ComUserService {
 //    }
     public Map<String,Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
-        List<ComUser> comUsers = comUserMapper.auditList(conMap);
+        List<ComUser> comUsers = comUserMapper.auditListWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 
         Map<String, Object> pageMap = new HashMap<>();

@@ -101,6 +101,11 @@
                     <div class="col-xs-12 col-sm-12">
 
                         <form class="form-horizontal" role="form" id="skuForm">
+                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                            <input type="hidden" name="pfSkuAgents[${status.index}].id" value="${skuAgent.id}">
+                            <input type="hidden" name="pfSkuAgents[${status.index}].skuId" value="${skuAgent.skuId}">
+                            <input type="hidden" name="pfSkuAgents[${status.index}].agentLevelId" value="${skuAgent.agentLevelId}">
+                        </c:forEach>
 
                             <div class="profile-user-info profile-user-info-striped">
                                 <div class="profile-info-row">
@@ -135,9 +140,6 @@
                                                                 <div class="widget-main no-padding">
                                                                     <ul class="list-unstyled list-striped pricing-table" id="levelNameUl">
                                                                         <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
-                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].id" value="${skuAgent.id}">
-                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].skuId" value="${skuAgent.skuId}">
-                                                                            <input type="hidden" name="pfSkuAgents[${status.index}].agentLevelId" value="${skuAgent.agentLevelId}">
                                                                             <c:forEach items="${agentLevels2}" var="level">
                                                                                 <c:if test="${skuAgent.agentLevelId == level.id}"><li>${level.name}</li></c:if>
                                                                             </c:forEach>
@@ -350,28 +352,28 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="pricing-span">
-                                                        <div class="widget-box pricing-box-small widget-color-orange">
-                                                            <div class="widget-header">
-                                                                <h5 class="widget-title bigger lighter">允许平级推荐</h5>
-                                                            </div>
+                                                    <%--<div class="pricing-span">--%>
+                                                        <%--<div class="widget-box pricing-box-small widget-color-orange">--%>
+                                                            <%--<div class="widget-header">--%>
+                                                                <%--<h5 class="widget-title bigger lighter">允许平级推荐</h5>--%>
+                                                            <%--</div>--%>
 
-                                                            <div class="widget-body">
-                                                                <div class="widget-main no-padding">
-                                                                    <ul class="list-unstyled list-striped pricing-table" id="isRecommendUl">
-                                                                        <%--<c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">--%>
-                                                                            <%--<li>--%>
-                                                                                <%--<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="1" <c:if test="${skuAgent.lateral == 1}">checked</c:if> >--%>
-                                                                                <%--是--%>
-                                                                                <%--<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="0" <c:if test="${skuAgent.lateral == 0}">checked</c:if> >--%>
-                                                                                <%--否--%>
-                                                                            <%--</li>--%>
-                                                                        <%--</c:forEach>--%>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                            <%--<div class="widget-body">--%>
+                                                                <%--<div class="widget-main no-padding">--%>
+                                                                    <%--<ul class="list-unstyled list-striped pricing-table" id="isRecommendUl">--%>
+                                                                        <%--&lt;%&ndash;<c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">&ndash;%&gt;--%>
+                                                                            <%--&lt;%&ndash;<li>&ndash;%&gt;--%>
+                                                                                <%--&lt;%&ndash;<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="1" <c:if test="${skuAgent.lateral == 1}">checked</c:if> >&ndash;%&gt;--%>
+                                                                                <%--&lt;%&ndash;是&ndash;%&gt;--%>
+                                                                                <%--&lt;%&ndash;<input type="radio" name="pfSkuAgents[${status.index}].lateral" value="0" <c:if test="${skuAgent.lateral == 0}">checked</c:if> >&ndash;%&gt;--%>
+                                                                                <%--&lt;%&ndash;否&ndash;%&gt;--%>
+                                                                            <%--&lt;%&ndash;</li>&ndash;%&gt;--%>
+                                                                        <%--&lt;%&ndash;</c:forEach>&ndash;%&gt;--%>
+                                                                    <%--</ul>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
 
                                                     <div class="pricing-span">
                                                         <div class="widget-box pricing-box-small widget-color-blue">
@@ -434,10 +436,30 @@
 
                                                             <div class="widget-body">
                                                                 <div class="widget-main no-padding">
-                                                                    <ul class="list-unstyled list-striped pricing-table">
-                                                                        <li> <input type="text" name="unitPrices" value="" style="width:100px;height:13px;border:0px;" > </li>
-                                                                        <li> <input type="text" name="unitPrices" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
-                                                                    </ul>
+                                                                    <c:if test="${sfSkuDistributions != null && sfSkuDistributions.size() > 0}">
+                                                                        <c:forEach items="${sfSkuDistributions}" var="sd" varStatus="status">
+                                                                            <input type="hidden" name="sfSkuDistributions[${status.index}].id" value="${sd.id}" >
+                                                                            <input type="hidden" name="sfSkuDistributions[${status.index}].skuId" value="${sd.skuId}" >
+                                                                            <input type="hidden" name="sfSkuDistributions[${status.index}].sort" value="${sd.sort}" >
+                                                                        </c:forEach>
+                                                                        <ul class="list-unstyled list-striped pricing-table">
+                                                                            <c:forEach items="${sfSkuDistributions}" var="sd" varStatus="status">
+                                                                                <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="sfSkuDistributions[${status.index}].discount" value="${sd.discount}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                                <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="sfSkuDistributions[${status.index}].discount" value="${sd.discount}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                            </c:forEach>
+                                                                        </ul>
+                                                                    </c:if>
+
+                                                                    <c:if test="${sfSkuDistributions == null || sfSkuDistributions.size() == 0}">
+                                                                        <input type="hidden" name="sfSkuDistributions[0].skuId" value="${comSku.id}" >
+                                                                        <input type="hidden" name="sfSkuDistributions[1].skuId" value="${comSku.id}" >
+                                                                        <input type="hidden" name="sfSkuDistributions[0].sort" value="0" >
+                                                                        <input type="hidden" name="sfSkuDistributions[1].sort" value="1" >
+                                                                        <ul class="list-unstyled list-striped pricing-table">
+                                                                            <li> <input type="text" name="sfSkuDistributions[0].discount" value="" style="width:100px;height:13px;border:0px;" > </li>
+                                                                            <li> <input type="text" name="sfSkuDistributions[1].discount" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>
+                                                                        </ul>
+                                                                    </c:if>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1085,11 +1107,13 @@
                         url: '<%=basePath%>skuAgent/add.do',
                         type: 'post',
                         data: $('#skuForm').serialize(),
-                        success: function(msg){
-                            if(msg == 'success'){
-                                parent.window.$('#myTabbable').closeTab('tab2-2');
-                                parent.window.$('#myTabbable').add('tab2-2', '商品列表', '<%=basePath%>product/list.shtml');
+                        success: function(result){
+                            result = window.eval('('+result+')');
+
+                            if(result.result_code == 'success'){
                                 parent.window.$('#myTabbable').closeTab('tab2-1');
+                                parent.window.$('#myTabbable').add('tab2-1', '商品列表', '<%=basePath%>product/list.shtml');
+                                parent.window.$('#myTabbable').closeTab('product-agent-setup');
                             }else{
                                 alert('添加商品失败');
                             }

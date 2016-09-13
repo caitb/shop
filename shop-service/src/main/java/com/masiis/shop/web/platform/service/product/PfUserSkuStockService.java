@@ -98,6 +98,9 @@ public class PfUserSkuStockService {
         Integer afterStock = before.getStock();
         Integer fronzeStock = before.getFrozenStock();
         Integer registerGiveSkuStock = before.getRegisterGiveSkuStock();
+        if (registerGiveSkuStock==null){
+            registerGiveSkuStock = 0;
+        }
         switch (handleType) {
             case agent:
                 afterStock += change;

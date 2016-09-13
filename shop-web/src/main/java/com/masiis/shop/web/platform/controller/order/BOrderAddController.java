@@ -272,10 +272,10 @@ public class BOrderAddController extends BaseController {
         Integer agentLevelId = 0;
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
         agentLevelId = pfUserSku.getAgentLevelId();
-        PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+//        PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
-        bOrderConfirm.setWeiXinId(pfUserCertificate.getWxId());
+//        bOrderConfirm.setWeiXinId(pfUserCertificate.getWxId());
         //拿货方式
         bOrderConfirm.setSendType(sendType);
         //获得地址
@@ -355,7 +355,7 @@ public class BOrderAddController extends BaseController {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+//            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
             BOrderAdd bOrderAdd = new BOrderAdd();
             bOrderAdd.setOrderType(BOrderType.Supplement.getCode());
             bOrderAdd.setpUserId(pfUserSku.getUserPid());
@@ -363,7 +363,7 @@ public class BOrderAddController extends BaseController {
             bOrderAdd.setSendType(sendType);
             bOrderAdd.setSkuId(skuId);
             bOrderAdd.setAgentLevelId(pfUserSku.getAgentLevelId());
-            bOrderAdd.setWeiXinId(pfUserCertificate.getWxId());
+            bOrderAdd.setWeiXinId(comUser.getWxId());
             bOrderAdd.setUserMessage(userMessage);
             bOrderAdd.setUserAddressId(userAddressId);
             bOrderAdd.setQuantity(quantity);

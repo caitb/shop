@@ -169,10 +169,24 @@
                                         </div>
 
                                         <div class="profile-info-row">
-                                            <div class="profile-info-name"> 结算中资金 </div>
+                                            <div class="profile-info-name"> 代理结算中 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="countingFee">${user.comUserAccount.countingFee}</span>
+                                                <span class="" id="agentBillAmount">${user.comUserAccount.agentBillAmount}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 推荐奖励结算中 </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="" id="recommenBillAmount">${user.comUserAccount.recommenBillAmount}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> 分销结算中 </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="" id="distributionBillAmount">${user.comUserAccount.distributionBillAmount}</span>
                                             </div>
                                         </div>
 

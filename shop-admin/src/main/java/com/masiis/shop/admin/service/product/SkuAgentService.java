@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
+import com.masiis.shop.dao.platform.product.SfSkuDistributionMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.PfSkuAgent;
+import com.masiis.shop.dao.po.SfSkuDistribution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,8 @@ public class SkuAgentService {
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
+    @Resource
+    private SfSkuDistributionMapper sfSkuDistributionMapper;
 
     /**
      * 获取SKU代理数据
@@ -102,13 +106,24 @@ public class SkuAgentService {
      * 保存
      * @param pfSkuAgents
      */
-    public void save(List<PfSkuAgent> pfSkuAgents){
+    public void save(List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions){
         if(pfSkuAgents != null){
             for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+                pfSkuAgent.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(new BigDecimal(pfSkuAgent.getQuantity())).add(pfSkuAgent.getBail()));
                 if(pfSkuAgent.getId() == null){
                     pfSkuAgentMapper.insert(pfSkuAgent);
                 }else{
                     pfSkuAgentMapper.updateByPrimaryKey(pfSkuAgent);
+                }
+            }
+        }
+
+        if(sfSkuDistributions != null){
+            for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
+                if(sfSkuDistribution.getId() == null){
+                    sfSkuDistributionMapper.insert(sfSkuDistribution);
+                }else{
+                    sfSkuDistributionMapper.updateById(sfSkuDistribution);
                 }
             }
         }

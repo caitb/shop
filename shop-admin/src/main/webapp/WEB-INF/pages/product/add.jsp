@@ -379,7 +379,7 @@
                                             <label for="brandId" class="col-sm-2 control-label">计量单位</label>
                                             <div class="col-sm-9">
                                                 <select class="form-control" id="unitId" name="unitId">
-                                                    <c:forEach items="${comUnitMeasures}" var="comUnitMeasure">
+                                                    <c:forEach items="${unitMeasures}" var="comUnitMeasure">
                                                         <option value="${comUnitMeasure.id}" <c:if test="${productInfo.comSpu.unit == comUnitMeasure.id}">selected</c:if> >${comUnitMeasure.name}</option>
                                                     </c:forEach>
                                                 </select>

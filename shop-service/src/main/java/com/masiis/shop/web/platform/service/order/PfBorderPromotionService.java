@@ -5,7 +5,6 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderPromotionMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SpuService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +38,6 @@ public class PfBorderPromotionService {
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
-    private ComAgentLevelService comAgentLevelService;
-    @Resource
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource
     private SpuService spuService;
@@ -48,6 +46,8 @@ public class PfBorderPromotionService {
     private Integer giveSkuQuantity = null;//赠送的商品数量
     private BigDecimal unitPrice = null;
     private BigDecimal totalPrice = null;
+    private String promotionStartDateString = "2000-10-10";
+    private String promotionStartEndString  = "2010-10-10";
 
 
     public PfBorderPromotion getBorderPromotionsByBorderIdAndIsTake(Long pfBorderId,Integer isTake){
@@ -107,7 +107,7 @@ public class PfBorderPromotionService {
      */
     private Boolean registerGiveSkuCondition(Integer spuId, Integer skuId,Integer orderType,Integer agentLevelId){
         //活动是否开启
-        if (true){
+        if (isOpenPromotion()){
             //是否是合伙订单
             if (orderType.equals(BOrderType.agent.getCode())){
                 //是否是合伙的是最低等级
@@ -146,6 +146,30 @@ public class PfBorderPromotionService {
         }
         return true;
     }
+
+    /**
+     * 判断活动是否开启
+     * @return
+     */
+    private Boolean isOpenPromotion(){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.YYYYMMDDFMT);
+            Date startDate = sdf.parse(promotionStartDateString);
+            Date endDate = sdf.parse(promotionStartEndString);
+            Date currentDate = new Date();
+            //如果时间1等于时间2，返回0，如果时间1小于时间2，返回负值，如果时间1大于时间2，返回正值
+            if (DateUtil.compare(currentDate,startDate)>0){
+                if (DateUtil.compare(currentDate,endDate)<0){
+                    return true;
+                }
+            }
+            return false;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
 
     /**
      *  插入订单促销活动赠品表
@@ -318,7 +342,6 @@ public class PfBorderPromotionService {
         log.info("支付成功发货后更新小白库存和平台库存----end");
     }
 
-
     /**
      *  更新订单促销活动赠品表中是否已发放商品
      * @param pfBorderId
@@ -340,13 +363,13 @@ public class PfBorderPromotionService {
      * @param spuId
      * @param userId
      */
-    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer agentLevelId,Integer giveSkuQuantity){
+    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer agentLevelId,Integer changeQuantity){
         log.info("更新小白库存和平台库存----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId+"----agentLevelId---"+agentLevelId);
         try{
             PfUserSkuStock userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
             if (userSkuStock!=null){
                 //更新自己的库存
-                updateOwnStock(giveSkuQuantity,
+                updateOwnStock(changeQuantity,
                         pfBorderId,
                         userSkuStock,
                         userId,
@@ -358,11 +381,11 @@ public class PfBorderPromotionService {
                     updateUserPidStock(userPid,
                             skuId,
                             spuId,
-                            giveSkuQuantity,
+                            changeQuantity,
                             PfBorderPromotionGiveStockChangeEnum.agent);
                 }
                 //更新平台库存
-                updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
+                updatePlatformStock(changeQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
             }else{
                 throw new BusinessException("----------用户库存商品不存在----------");
             }
@@ -499,7 +522,7 @@ public class PfBorderPromotionService {
         if (pfSkuStock==null){
             throw new BusinessException("用户注册赠送商品-----平台库存不足----逻辑错误--");
         }
-        pfSkuStockService.updateSkuStockWithLog(giveSkuQuantity,pfSkuStock,pfBorderId, handleType);
+        pfSkuStockService.updateSkuStockWithLog(changeQuantity,pfSkuStock,pfBorderId, handleType);
         log.info("用户注册赠送商品-----更新平台库存----end");
     }
 

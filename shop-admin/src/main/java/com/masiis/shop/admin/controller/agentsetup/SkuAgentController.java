@@ -7,10 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.admin.beans.product.SkuAgentModel;
 import com.masiis.shop.admin.service.product.AgentLevelService;
 import com.masiis.shop.admin.service.product.SkuAgentService;
+import com.masiis.shop.admin.service.product.SkuDistributionService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.PfSkuAgent;
+import com.masiis.shop.dao.po.SfSkuDistribution;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,8 @@ public class SkuAgentController {
     private SkuService skuService;
     @Resource
     private AgentLevelService agentLevelService;
+    @Resource
+    private SkuDistributionService skuDistributionService;
 
     @RequestMapping("/list.shtml")
     public String list(){
@@ -50,13 +54,16 @@ public class SkuAgentController {
     public String add(Model model, Integer skuId) throws JsonProcessingException {
         ComSku comSku = skuService.findById(skuId);
         List<PfSkuAgent> pfSkuAgents = skuAgentService.listBySkuId(skuId);
+        List<SfSkuDistribution> sfSkuDistributions = skuDistributionService.listBySkuId(skuId);
         List<ComAgentLevel> agentLevels = agentLevelService.listAll();
 
         model.addAttribute("comSku", comSku);
         model.addAttribute("pfSkuAgents", pfSkuAgents);
+        model.addAttribute("sfSkuDistributions", sfSkuDistributions);
         model.addAttribute("isSetup", pfSkuAgents!=null&&pfSkuAgents.size()>0 ? true : false);
         model.addAttribute("agentLevels", objectMapper.writeValueAsString(agentLevels));
         model.addAttribute("agentLevels2", agentLevels);
+        model.addAttribute("skuId", comSku.getId());
         return "agentsetup/add";
     }
 
@@ -102,13 +109,13 @@ public class SkuAgentController {
 
         try {
 
-            skuAgentService.save(skuAgentModel.getPfSkuAgents());
+            skuAgentService.save(skuAgentModel.getPfSkuAgents(), skuAgentModel.getSfSkuDistributions());
 
-            resultMap.put("code", "success");
-            resultMap.put("msg", "设置成功!");
+            resultMap.put("result_code", "success");
+            resultMap.put("result_msg", "设置成功!");
         } catch (Exception e) {
-            resultMap.put("code", "error");
-            resultMap.put("msg", "商品代理等级设置失败!");
+            resultMap.put("result_code", "error");
+            resultMap.put("result_msg", "商品代理等级设置失败!");
             log.error("商品代理等级设置失败![skuAgentModel="+skuAgentModel+"]");
             e.printStackTrace();
         }

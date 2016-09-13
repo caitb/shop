@@ -28,7 +28,7 @@
         INNER JOIN pf_user_sku c ON b.user_id=c.user_id AND b.sku_id=c.sku_id
         INNER JOIN pf_user_sku d ON d.tree_code LIKE CONCAT(c.tree_code,'%')
         INNER JOIN pf_user_statistics e ON d.user_id=e.user_id AND d.sku_id=e.sku_id
-        WHERE a.tree_code = #{treeCode};
+        WHERE a.tree_code LIKE CONCAT(#{treeCode},'%');
     </select>
 
     <!-- 统计团队人数和总销售额 -->

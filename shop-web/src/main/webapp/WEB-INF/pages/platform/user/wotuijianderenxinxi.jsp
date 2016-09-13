@@ -33,7 +33,7 @@
                <span>进货总额</span>
            </p>
            <p>
-               <span>${countGroup.count}</span>
+               <span>${countGroup}</span>
                <span>ta的团队</span>
            </p>
        </nav>

@@ -50,6 +50,6 @@ public class PfMessageCenterDetail {
     }
 
     public void setLatestMessage(String latestMessage) {
-        this.latestMessage = EmojiUtils.parseEmojiToUnicode(latestMessage);
+        //this.latestMessage = EmojiUtils.parseEmojiToUnicode(latestMessage);
     }
 }

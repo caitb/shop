@@ -241,7 +241,7 @@ public class PfBorderPromotionService {
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
-        Boolean bl =true;
+        Boolean bl =false;
         if (bl){
             log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
             log.info("入口参数------pfBorderId---"+pfBorderId+"---userId---"+userId+"---skuId----"+skuId+"----spuId---"+spuId+"---agentLevelId---"+agentLevelId);
@@ -344,7 +344,6 @@ public class PfBorderPromotionService {
         registAgentUpdateStock(pfBorderId,skuId,spuId,userId,pfBorderPromotion.getUserPid(),agentLevelId,pfBorderPromotion.getQuantity());
         log.info("支付成功发货后更新小白库存和平台库存----end");
     }
-
 
     /**
      *  更新订单促销活动赠品表中是否已发放商品

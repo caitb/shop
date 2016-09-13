@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.product.SpuService;
 import com.masiis.shop.common.enums.platform.*;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -34,7 +35,7 @@ public class PfBorderPromotionService {
     @Resource
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource
-    private SpuService spuService;
+    private SkuService skuService;
 
     public PfBorderPromotion getBorderPromotionsByBorderIdAndIsTake(Long pfBorderId,Integer isTake){
         return pfBorderPromotionMapper.getBorderPromotionsByBorderIdAndIsTake(pfBorderId,isTake);
@@ -48,7 +49,7 @@ public class PfBorderPromotionService {
     }
 
     private String promotionStartDateString = "2000-10-10";
-    private String promotionStartEndString  = "2010-10-10";
+    private String promotionStartEndString  = "2020-10-10";
     private Integer giveSkuAgentLevel = 4;
 
     /**
@@ -134,14 +135,14 @@ public class PfBorderPromotionService {
                     if (pfUserUpgradeNotice!=null){
                         if (pfUserUpgradeNotice.getOrgAgentLevelId().equals(giveSkuAgentLevel)){
                             log.info("原始等级是之前平台赠送商品的等级，需要修改赠送的商品库存");
-                            ComSpu comSpu =  spuService.selectBrandBySkuId(pfUserUpgradeNotice.getSkuId());
-                            if(comSpu!=null){
+                            ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                            if(comSku!=null){
                                 updateOwnStock(null,
                                         pfBorderId,
                                         null,
                                         userId,
                                         pfUserUpgradeNotice.getSkuId(),
-                                        comSpu.getId(),
+                                        comSku.getSpuId(),
                                         PfBorderPromotionGiveStockChangeEnum.UPGRADE);
                             }
                         }

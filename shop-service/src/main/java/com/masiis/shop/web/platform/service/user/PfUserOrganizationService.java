@@ -341,6 +341,9 @@ public class PfUserOrganizationService {
 
     public String handlerName(String name, String suffix) {
         int index = name.lastIndexOf(suffix);
-        return name.substring(0, index);
+        if(index > 0){
+            name = name.substring(0, index);
+        }
+        return name;
     }
 }

@@ -61,10 +61,10 @@ public interface ComUserMapper {
 
     String findByPid(Integer pid);
 
-//    List<ComUser> selectByCondition(ComUser comUser);
+    List<ComUser> selectByCondition(ComUser comUser);
     List<ComUser> selectByCondition(Map<String, Object> conMap);
 
-//    List<ComUser> auditList(ComUser comUser);
+    List<ComUser> auditList(ComUser comUser);
     List<ComUser> auditList(Map<String, Object> conMap);
 
 

@@ -215,7 +215,7 @@ public class PfBorderPromotionService {
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
-        Boolean bl =false;
+        Boolean bl =true;
         if (bl){
             log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
             log.info("入口参数------pfBorderId---"+pfBorderId+"---userId---"+userId+"---skuId----"+skuId+"----spuId---"+spuId+"---agentLevelId---"+agentLevelId);
@@ -341,13 +341,13 @@ public class PfBorderPromotionService {
      * @param spuId
      * @param userId
      */
-    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer agentLevelId,Integer giveSkuQuantity){
+    private void registAgentUpdateStock(Long pfBorderId,Integer skuId,Integer spuId,Long userId,Long userPid,Integer agentLevelId,Integer changeQuantity){
         log.info("更新小白库存和平台库存----入口参数----pfBorderId---"+pfBorderId+"----skuId---"+skuId+"----spuId----"+spuId+"----userId----"+userId+"----agentLevelId---"+agentLevelId);
         try{
             PfUserSkuStock userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
             if (userSkuStock!=null){
                 //更新自己的库存
-                updateOwnStock(giveSkuQuantity,
+                updateOwnStock(changeQuantity,
                         pfBorderId,
                         userSkuStock,
                         userId,
@@ -359,11 +359,11 @@ public class PfBorderPromotionService {
                     updateUserPidStock(userPid,
                             skuId,
                             spuId,
-                            giveSkuQuantity,
+                            changeQuantity,
                             PfBorderPromotionGiveStockChangeEnum.agent);
                 }
                 //更新平台库存
-                updatePlatformStock(giveSkuQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
+                updatePlatformStock(changeQuantity,spuId,skuId,pfBorderId,SkuStockLogType.registerGiveSku);
             }else{
                 throw new BusinessException("----------用户库存商品不存在----------");
             }
@@ -500,7 +500,7 @@ public class PfBorderPromotionService {
         if (pfSkuStock==null){
             throw new BusinessException("用户注册赠送商品-----平台库存不足----逻辑错误--");
         }
-        pfSkuStockService.updateSkuStockWithLog(giveSkuQuantity,pfSkuStock,pfBorderId, handleType);
+        pfSkuStockService.updateSkuStockWithLog(changeQuantity,pfSkuStock,pfBorderId, handleType);
         log.info("用户注册赠送商品-----更新平台库存----end");
     }
 

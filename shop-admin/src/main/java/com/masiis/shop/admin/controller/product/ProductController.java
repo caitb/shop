@@ -88,7 +88,7 @@ public class ProductController {
         mav.addObject("c1id", comCategory.getPid());
 
         mav.addObject("brands", comBrands);
-        mav.addObject("comUnitMeasures", comUnitMeasures);
+        mav.addObject("unitMeasures", comUnitMeasures);
         mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
         mav.addObject("agentLevels", comAgentLevels);
         mav.addObject("productInfo", productInfo);

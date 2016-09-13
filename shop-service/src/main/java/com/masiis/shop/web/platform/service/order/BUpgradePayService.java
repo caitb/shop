@@ -180,7 +180,7 @@ public class BUpgradePayService {
                             log.info("保证金-----" + bailAmount.toString());
                             PfUserRecommenRelation mainPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
                             if (mainPfUserRecommenRelation != null) {
-                                noMainBrandSkuUpgrade(userId, userPid, mainPfUserRecommenRelation.getUserPid(), noMainUserSku.getSkuId(), bailAmount, agentLevelId, comSpu.getId());
+                                noMainBrandSkuUpgrade(userId, userPid, mainPfUserRecommenRelation.getUserPid(), noMainUserSku.getSkuId(), agentLevelId, comSpu.getId());
                             } else {
                                 throw new BusinessException("------主打商品推荐人不存在---------userId-----" + userId + "------主打商品id-----" + pfBorderItem.getSkuId());
                             }
@@ -245,7 +245,6 @@ public class BUpgradePayService {
      * @param userPid                上级id
      * @param mainSkuRecommendUserId 主商品推荐人的id
      * @param noMainSkuId            副商品id
-     * @param bailAmount             升级新等级的保证金
      * @param agentLevelId           升级新等级
      * @param spuId                  品牌id
      */
@@ -253,12 +252,11 @@ public class BUpgradePayService {
                                        Long userPid,
                                        Long mainSkuRecommendUserId,
                                        Integer noMainSkuId,
-                                       BigDecimal bailAmount,
                                        Integer agentLevelId,
                                        Integer spuId) {
         log.info("---------副商品升级入口参数------userId--------" + userId + "------userPid-----" + userPid);
         log.info("------mainSkuRecommendUserId--------" + mainSkuRecommendUserId + "------noMainSkuId-----" + noMainSkuId);
-        log.info("------bailAmount--------" + bailAmount.toString() + "------agentLevelId-----" + agentLevelId);
+        log.info( "agentLevelId-----" + agentLevelId);
         log.info("------spuId--------" + spuId);
         String rootPath = RootPathUtils.getRootPath();
         //修改推荐关系
@@ -284,7 +282,7 @@ public class BUpgradePayService {
         log.info("修改上下级绑定关系和插入历史表-----end");
         //修改小铺商品信息
         log.info("修改小铺商品信息-------start");
-        updateSfShopSkuAtom(userId, noMainSkuId, agentLevelId, bailAmount);
+        updateSfShopSkuAtom(userId, noMainSkuId, agentLevelId);
         log.info("修改小铺商品信息-------end");
     }
 
@@ -764,7 +762,7 @@ public class BUpgradePayService {
      */
     private void updateSfShopSku(Long shopUserId, List<PfBorderItem> orderItems) {
         for (PfBorderItem orderItem : orderItems) {
-            updateSfShopSkuAtom(shopUserId, orderItem.getSkuId(), orderItem.getAgentLevelId(), orderItem.getBailAmount());
+            updateSfShopSkuAtom(shopUserId, orderItem.getSkuId(), orderItem.getAgentLevelId());
         }
     }
 
@@ -774,9 +772,8 @@ public class BUpgradePayService {
      * @param shopUserId
      * @param skuId
      * @param agentLevelId
-     * @param bailAmount
      */
-    private void updateSfShopSkuAtom(Long shopUserId, Integer skuId, Integer agentLevelId, BigDecimal bailAmount) {
+    private void updateSfShopSkuAtom(Long shopUserId, Integer skuId, Integer agentLevelId) {
         log.info("修改小铺商品的sku等级和保证金-----小铺userId---" + shopUserId + "----skuId----" + skuId);
         List<SfShopSku> sfShopSkus = sfShopSkuService.getSfShopSkuByUserIdAndSkuId(shopUserId, skuId);
         for (SfShopSku sfShopSku : sfShopSkus) {
@@ -784,9 +781,6 @@ public class BUpgradePayService {
                 log.info("修改前的小铺商品的代理等级---之前--" + agentLevelId);
                 sfShopSku.setAgentLevelId(agentLevelId);
                 log.info("修改前的小铺商品的代理等级---之后--" + agentLevelId);
-                log.info("修改前的小铺保证金-----" + sfShopSku.getBail());
-                sfShopSku.setBail(bailAmount);
-                log.info("修改后的小铺保证金-----" + bailAmount);
                 int i = sfShopSkuService.update(sfShopSku);
                 if (i != 1) {
                     log.info("修改小铺商品的sku等级和保证金失败");

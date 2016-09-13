@@ -935,7 +935,7 @@
                                 parent.window.$('#myTabbable').add('product-edit-'+row.comSku.id, '修改商品', '<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id);
                             },
                             'click .agent-setup': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('product-agent-setup', '修改商品', '<%=basePath%>skuAgent/add.shtml?skuId='+ row.comSku.id);
+                                parent.window.$('#myTabbable').add('product-agent-setup', '商品代理设置', '<%=basePath%>skuAgent/add.shtml?skuId='+ row.comSku.id);
                             }
                         }
                     }

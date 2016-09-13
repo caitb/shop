@@ -5,7 +5,6 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderPromotionMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SpuService;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
@@ -38,8 +37,6 @@ public class PfBorderPromotionService {
     private PfSkuStockService pfSkuStockService;
     @Resource
     private SkuAgentService skuAgentService;
-    @Resource
-    private ComAgentLevelService comAgentLevelService;
     @Resource
     private PfUserUpgradeNoticeService userUpgradeNoticeService;
     @Resource

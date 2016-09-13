@@ -55,7 +55,6 @@ public class BOrderShipService {
                 null,
                 null,
                 null,
-                null,
                 pfBorder.getOrderType());
     }
 

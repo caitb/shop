@@ -524,7 +524,6 @@ public class SfOrderPayService {
                         order.getUserId(),
                         orderItem.getSkuId(),
                         orderItem.getSpuId(),
-                        null,
                         orderItem.getQuantity(),
                         PfBorderPromotionGiveStockChangeEnum.sell,
                         null

@@ -368,6 +368,7 @@ public class ManageProController extends BaseController {
         RetailProRes res = new RetailProRes();
         int pageSize = 20;
         try {
+            req.setDeliverType(0);
             List<SkuInfo> skuInfoList = manageShopProductService.getShopProductsList(req.getShopId(), req.getIsSale(), comUser.getId(), req.getDeliverType(), req.getPageNum() + 1, pageSize);
             res.setSkuInfoList(skuInfoList);
 

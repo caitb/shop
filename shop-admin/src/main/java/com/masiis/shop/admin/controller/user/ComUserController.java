@@ -6,6 +6,7 @@ import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,10 +50,13 @@ public class ComUserController extends BaseController{
                        Integer pageSize,
                        String sortOrder,
                        ComUser comUser){
-
+        Map<String,Object> conMap = new HashMap<>();
         try {
             comUser.setAuditStatus(2);
-            Map<String, Object> pageMap = comUserService.listByCondition(pageNumber, pageSize, comUser);
+            if(StringUtils.isNotBlank(request.getParameter("realName")))  conMap.put("realName", request.getParameter("realName"));
+            if(StringUtils.isNotBlank(request.getParameter("mobile1")))    conMap.put("mobile", request.getParameter("mobile1"));
+            if(StringUtils.isNotBlank(request.getParameter("idCard"))) conMap.put("idCard", request.getParameter("idCard"));
+            Map<String, Object> pageMap = comUserService.listByCondition(pageNumber, pageSize, comUser,conMap);
 
             return pageMap;
         } catch (Exception e) {
@@ -70,8 +75,13 @@ public class ComUserController extends BaseController{
                             String sortOrder,
                             ComUser comUser){
 
+        Map<String,Object> conMap = new HashMap<>();
         try {
-            Map<String, Object> pageMap = comUserService.auditListByCondition(pageNumber, pageSize, comUser);
+
+            if(StringUtils.isNotBlank(request.getParameter("realName")))  conMap.put("realName", request.getParameter("realName"));
+            if(StringUtils.isNotBlank(request.getParameter("mobile1")))    conMap.put("mobile", request.getParameter("mobile1"));
+            if(StringUtils.isNotBlank(request.getParameter("idCard"))) conMap.put("idCard", request.getParameter("idCard"));
+            Map<String, Object> pageMap = comUserService.auditListByCondition(pageNumber, pageSize, comUser,conMap);
 
             return pageMap;
         } catch (Exception e) {

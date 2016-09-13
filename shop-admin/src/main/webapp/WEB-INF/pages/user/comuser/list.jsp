@@ -76,32 +76,30 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar" style="display: none;">
-                                        <form class="form-inline">
-                                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
-                                            <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
-                                            <%--</button>--%>
-                                            <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
-                                            <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
-                                            <%--</a>--%>
+                                    <div id="toolbar">
+                                        <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="skuName">商品名称</label>
-                                                <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">
+                                                <label for="realName">姓名</label>
+                                                <input type="text" class="form-control" id="realName_" name="realName" placeholder="">
                                             </div>
                                             <div class="form-group">
-                                                <label for="categoryName">商品分类</label>
-                                                <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
+                                                <label for="mobile1">手机号</label>
+                                                <input type="text" class="form-control" id="mobile1" name="mobile1" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="idCard">身份证号</label>
+                                                <input type="text" class="form-control" id="idCard" name="idCard" placeholder="">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
-                                        </form>
+                                        </div>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
-                                           data-show-refresh="true"
+                                           <%--data-search="true"--%>
+                                           <%--data-show-refresh="true"--%>
                                            data-show-toggle="true"
                                     <%--data-show-columns="true"--%>
-                                           data-show-export="true"
+                                           <%--data-show-export="true"--%>
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
@@ -469,6 +467,12 @@
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
+            queryParams: function(params){
+                if($('#realName_').val()) params.realName = $('#realName_').val();
+                if($('#mobile1').val())    params.mobile1   = $('#mobile1').val();
+                if($('#idCard').val())    params.idCard   = $('#idCard').val();
+                return params;
+            },
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -609,19 +613,15 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            //return '<a class="view" href="javascript:void(0);">查看</a>';
+                            return [
+                                '<a class="personal-info" href="javascript:void(0);">个人信息</a>',
+                            ].join('');
                         },
                         events: {
-                            'click .view': function (e, value, row, index) {
-                                //window.parent.TabControlAppend('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
-                                $.ajax({
-                                    url: '<%=basePath%>comuser/toaudit.do',
-                                    data: {id: row.comUser.id},
-                                    success: function(data){
-                                        $('#modal-audit').replaceWith(data);
-                                        $('#modal-audit').modal('show');
-                                    }
-                                });
+                            'click .personal-info': function (e, value, row, index) {
+                                parent.window.$('#myTabbable').add('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
+                            },
+                            'click .update-superior': function(e, value, row, index) {
                             }
                         }
                     }
@@ -649,6 +649,9 @@
         });
         $table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
+        });
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
         });
         $remove.click(function () {
             var ids = getIdSelections();

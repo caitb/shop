@@ -128,6 +128,8 @@ public class VerifyController extends BaseController {
         HttpSession session = request.getSession();
         RedirectParam rp = null;
 
+        log.info("wxcheck,basepath:" + basepath);
+
         if(StringUtils.isBlank(state)) {
             log.error("state为空,调用异常,跳转错误页面!");
             return "common/500";
@@ -263,6 +265,9 @@ public class VerifyController extends BaseController {
     @RequestMapping("/bactk")
     public String baseAuth(HttpServletRequest request, HttpServletResponse response,
                            String code, String state) throws UnsupportedEncodingException {
+        log.info("bactk,code:" + code);
+        log.info("bactk,state:" + state);
+
         if(StringUtils.isBlank(code)
                 || StringUtils.isBlank(state)){
             log.error("请求参数不合法!");

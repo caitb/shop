@@ -3,7 +3,6 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
-import com.masiis.shop.admin.service.product.SpuService;
 import com.masiis.shop.common.enums.platform.*;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -11,8 +10,10 @@ import com.masiis.shop.dao.platform.order.PfBorderPromotionMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Map;
  * Created by hzz on 2016/9/6.
  */
 @Service
+@Transactional
 public class PfBorderPromotionService {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -48,9 +50,13 @@ public class PfBorderPromotionService {
         return pfBorderPromotionMapper.updateByPrimaryKey(pfBorderPromotion);
     }
 
+    private BigDecimal unitPrice = null;
+    private BigDecimal totalPrice = null;
     private String promotionStartDateString = "2000-10-10";
     private String promotionStartEndString  = "2020-10-10";
-    private Integer giveSkuAgentLevel = 4;
+    private Integer giveSkuAgentLevel = 5; //赠送商品的等级
+    private Integer giveSkuQuantity = 5;//赠送的商品数量
+    private static final  Integer giveSkuId = 16;
 
     /**
      * 判断活动是否开启
@@ -92,83 +98,84 @@ public class PfBorderPromotionService {
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
-        if (isOpenPromotion()){
-            log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
-            log.info("入口参数------pfBorderId---"+pfBorderId+"---userId---"+userId+"---skuId----"+skuId+"----spuId---"+spuId);
-            log.info("mallSellQuantity-----"+mallSellQuantity+"------orderType----"+orderType+"-----changeGiveStockType----"+changeGiveStockType);
-            PfBorderPromotion pfBorderPromotion = null;
-            PfUserSkuStock userSkuStock =  null;
-            if (orderType!=null){
-                switch (orderType){
-                    case 0:
-                        changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.agent;
+            if (isOpenPromotion()) {
+                log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
+                log.info("入口参数------pfBorderId---" + pfBorderId + "---userId---" + userId + "---skuId----" + skuId + "----spuId---" + spuId);
+                log.info("mallSellQuantity-----" + mallSellQuantity + "------orderType----" + orderType + "-----changeGiveStockType----" + changeGiveStockType);
+                PfBorderPromotion pfBorderPromotion = null;
+                PfUserSkuStock userSkuStock = null;
+                if (orderType != null) {
+                    switch (orderType) {
+                        case 0:
+                            changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.agent;
+                            break;
+                        case 1:
+                            changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.Supplement;
+                            break;
+                        case 2:
+                            changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.Take;
+                            break;
+                        case 3:
+                            changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.UPGRADE;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                log.info("changeGiveStockType----" + changeGiveStockType.getCode());
+                switch (changeGiveStockType) {
+                    case agent:
+                        if (skuId == null && spuId == null) {
+                            pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
+                        }
+                        if (pfBorderPromotion != null) {
+                            registAgentSuccessUpdateStockAndIsSend(pfBorderId, pfBorderPromotion, pfBorderPromotion.getSkuId(), pfBorderPromotion.getSpuId(), userId);
+                        }
                         break;
-                    case 1:
-                        changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.Supplement;
+                    case Supplement:
                         break;
-                    case 2:
-                        changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.Take;
+                    case Take:
                         break;
-                    case 3:
-                        changeGiveStockType = PfBorderPromotionGiveStockChangeEnum.UPGRADE;
+                    case UPGRADE:
+                        PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
+                        if (pfUserUpgradeNotice != null) {
+                            if (pfUserUpgradeNotice.getOrgAgentLevelId().equals(giveSkuAgentLevel)) {
+                                log.info("原始等级是之前平台赠送商品的等级，需要修改赠送的商品库存");
+                                ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
+                                if (comSku != null) {
+                                    updateOwnStock(null,
+                                            pfBorderId,
+                                            null,
+                                            userId,
+                                            pfUserUpgradeNotice.getSkuId(),
+                                            comSku.getSpuId(),
+                                            PfBorderPromotionGiveStockChangeEnum.UPGRADE);
+                                }
+                            }
+                        }
+                        break;
+                    case sell:
+                        if (skuId.equals(giveSkuId)){
+                            userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId, skuId, spuId);
+                            if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
+                                updateOwnStock(mallSellQuantity,
+                                        null,
+                                        userSkuStock,
+                                        userId,
+                                        skuId,
+                                        spuId,
+                                        PfBorderPromotionGiveStockChangeEnum.sell);
+                            }
+                        }
+                        break;
+                    case recovery:
+                        recoverySkuStock();
                         break;
                     default:
                         break;
                 }
+                log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---end");
             }
-            log.info("changeGiveStockType----"+changeGiveStockType.getCode());
-            switch (changeGiveStockType){
-                case agent:
-                    if (skuId==null&&spuId==null){
-                        pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
-                    }
-                    if (pfBorderPromotion!=null){
-                        registAgentSuccessUpdateStockAndIsSend(pfBorderId,pfBorderPromotion,pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId(),userId);
-                    }
-                    break;
-                case Supplement:
-                    break;
-                case Take:
-                    break;
-                case UPGRADE:
-                    PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorderId);
-                    if (pfUserUpgradeNotice!=null){
-                        if (pfUserUpgradeNotice.getOrgAgentLevelId().equals(giveSkuAgentLevel)){
-                            log.info("原始等级是之前平台赠送商品的等级，需要修改赠送的商品库存");
-                            ComSku comSku = skuService.getSkuById(pfUserUpgradeNotice.getSkuId());
-                            if(comSku!=null){
-                                updateOwnStock(null,
-                                        pfBorderId,
-                                        null,
-                                        userId,
-                                        pfUserUpgradeNotice.getSkuId(),
-                                        comSku.getSpuId(),
-                                        PfBorderPromotionGiveStockChangeEnum.UPGRADE);
-                            }
-                        }
-                    }
-                    break;
-                case sell:
-                    userSkuStock =  userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId,skuId,spuId);
-                    if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
-                        updateOwnStock(mallSellQuantity,
-                                null,
-                                userSkuStock,
-                                userId,
-                                skuId,
-                                spuId,
-                                PfBorderPromotionGiveStockChangeEnum.sell);
-                    }
-                    break;
-                case recovery:
-                    recoverySkuStock();
-                    break;
-                default:
-                    break;
-            }
-            log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---end");
-        }
-
     }
 
     /**

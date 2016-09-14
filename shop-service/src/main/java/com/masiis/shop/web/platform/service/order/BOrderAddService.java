@@ -213,9 +213,6 @@ public class BOrderAddService {
             pfBorderPromotionService.registerGiveSkuInitStock(pfBorder.getId(),
                     pfBorder.getUserId(),
                     pfBorder.getUserPid(),
-                    pfBorderItem.getSpuId(),
-                    pfBorderItem.getSkuId(),
-                    pfBorderItem.getSkuName(),
                     pfBorder.getOrderType(),
                     pfBorderItem.getAgentLevelId());
         }

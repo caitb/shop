@@ -23,6 +23,7 @@ import com.masiis.shop.web.platform.service.shop.JSSDKPFService;
 import com.masiis.shop.web.platform.service.shop.SfShopManQrCodeService;
 import com.masiis.shop.web.platform.service.user.ComPosterService;
 import com.masiis.shop.web.platform.service.user.SfUserShareParamService;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -285,8 +287,8 @@ public class SfShopManageController extends BaseController {
      */
     @RequestMapping("/getPoster")
     @ResponseBody
-    @SignValid(paramType=IndexShopReq.class)
-    public IndexShopRes getPoster(HttpServletRequest request, IndexShopReq indexShopReq, ComUser comUser){
+    @SignValid(paramType=IndexShopReq.class, isStreamRes = true)
+    public void getPoster(HttpServletRequest request, HttpServletResponse response, IndexShopReq indexShopReq, ComUser comUser){
         IndexShopRes indexShopRes = new IndexShopRes();
 
         try {
@@ -432,10 +434,21 @@ public class SfShopManageController extends BaseController {
 //
 //            indexShopRes.setShopPoster(PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
 
-            String posterUrl = sfShopService.createShopPoster(comUser.getId());
-            indexShopRes.setShopPoster(posterUrl);
-            indexShopRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
-            indexShopRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            BufferedImage bufferedImage = sfShopService.createShopPoster(comUser.getId());
+
+
+
+            ByteArrayOutputStream drawByteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", drawByteArrayOutputStream);
+            byte[] bytes = drawByteArrayOutputStream.toByteArray();
+
+            response.setContentType("image/png"); //设置返回的文件类型
+
+            sendResponseBody(response, bytes);
+
+//            indexShopRes.setShopPoster(posterUrl);
+//            indexShopRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+//            indexShopRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             indexShopRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             indexShopRes.setResMsg(e.getMessage());
@@ -444,7 +457,7 @@ public class SfShopManageController extends BaseController {
             e.printStackTrace();
         }
 
-        return indexShopRes;
+        //return indexShopRes;
     }
 
 }

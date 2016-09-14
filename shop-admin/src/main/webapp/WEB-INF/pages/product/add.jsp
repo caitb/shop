@@ -1046,7 +1046,9 @@
                         url: '<%=basePath%>product/add.do',
                         type: 'post',
                         data: $('#skuForm').serialize(),
-                        success: function(msg){
+                        success: function(result){
+                            result = window.eval('('+result+')');
+
                             if(result.result_code == 'success'){
                                 parent.window.$('#myTabbable').closeTab('tab2-1');
                                 parent.window.$('#myTabbable').add('tab2-1', '商品列表', '<%=basePath%>product/list.shtml');

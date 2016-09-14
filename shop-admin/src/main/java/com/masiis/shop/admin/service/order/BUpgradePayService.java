@@ -107,6 +107,7 @@ public class BUpgradePayService {
         //修改订单
         log.info("修改订单------start");
         PfBorder pfBorder = updatePfBorder(pfBorderPayment.getPfBorderId(), pfBorderPayment);
+        log.info("pfborderId--------"+pfBorder.getId());
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
         PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
         orgAgentLevelId = pfUserUpgradeNotice.getOrgAgentLevelId();
@@ -525,10 +526,6 @@ public class BUpgradePayService {
                 String parentTreeCode = parent_treeCode;
                 Integer id_index = treeCode.indexOf("," + id + ",") + 1;
                 Integer treeLevel = pfUserSku.getTreeLevel() - parent_treeLevel - 1;
-                if (treeLevel < 0) {
-                    log.info("树结构更换只能挂在高于自己的树枝");
-                    throw new BusinessException("树结构更换只能挂在高于自己的树枝");
-                }
                 log.info("之前的pfUserSku----的---treeCode-----" + treeCode);
                 log.info("要更变后的treeCode------parentTreeCode-----" + parentTreeCode);
                 log.info("id_index-----" + id_index);

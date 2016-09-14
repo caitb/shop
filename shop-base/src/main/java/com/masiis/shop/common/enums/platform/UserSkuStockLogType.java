@@ -63,6 +63,14 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "活动减少库存";
         }
+    }, TAKE{
+        public Integer getCode() {
+            return 7;
+        }
+
+        public String getDesc() {
+            return "拿货订单减少库存";
+        }
     };
 
     public abstract Integer getCode();

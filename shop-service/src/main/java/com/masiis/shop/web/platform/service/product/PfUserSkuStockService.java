@@ -126,6 +126,10 @@ public class PfUserSkuStockService {
                 afterStock -= change;
                 registerGiveSkuStock -= change;
                 break;
+            case TAKE:
+                afterStock -= change;
+                fronzeStock -= change;
+                break;
             default:
                 throw new BusinessException("没有这种出入库类型!");
         }

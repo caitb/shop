@@ -51,12 +51,13 @@
                             </div>
                         </section>
                         <section class="sec3">
-                                <%--<p class="jianku"--%>
-                                   <%--onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">--%>
-                                    <%--<b>申请拿货</b></p>--%>
-                                    <p class="jianku" onclick="clickShow()"><b>申请拿货</b></p>
-                                <p class="buhuo"
-                                   onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')"><b>补货</b></p>
+                                <p class="jianku"
+                                   onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
+                                    <b>申请拿货</b></p>
+                                    <%--<p class="jianku" onclick="clickShow()"><b>申请拿货</b></p>--%>
+                                <%--<p class="buhuo"--%>
+                                   <%--onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')"><b>补货</b></p>--%>
+                                 <p class="buhuo" onclick="clickShow()"><b>补货</b></p>
                         </section>
                     </c:forEach>
                 </div>

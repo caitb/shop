@@ -360,15 +360,19 @@ public class UpgradeNoticeService {
         upgradeNotice.setUpdateTime(date);
         if (upgradeLevel.intValue() == pAgentLevel.intValue()){
             logger.info("代理用户申请代理等级等于上级代理等级");
+            logger.info("-----------------------upgradeLevel = " + upgradeLevel + "--------------------------");
+            logger.info("-----------------------pAgentLevel = " + pAgentLevel + "--------------------------");
             logger.info("查询是否已经有类似的申请单begin");
+            //查询有相同上级的代理是否有升级申请单
             PfUserUpgradeNotice pUserUpgrade = pfUserUpgradeNoticeMapper.selectLastUpgrade(userPid, skuId, upgradeLevel);
             logger.info("查询是否已经有类似的申请单end");
             if (pUserUpgrade == null){
-                logger.info("上级没有申请单：设置状态为未处理状态");
+                logger.info("没有类似申请单：设置状态为未处理状态");
                 upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
                 upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
             }else {
-                logger.info("上级有申请单：根据上级申请单的status处理");
+                logger.info("有类似申请单：根据申请单的UpStatus处理");
+                logger.info("upStatus = " + pUserUpgrade.getUpStatus());
                 if (pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_NotUpgrade.getCode() || pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Untreated.getCode().intValue()){
                     upgradeNotice.setStatus(UpGradeStatus.STATUS_Untreated.getCode());
                     upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Untreated.getCode());
@@ -380,7 +384,7 @@ public class UpgradeNoticeService {
                 if (pUserUpgrade.getUpStatus().intValue() == UpGradeUpStatus.UP_STATUS_Complete.getCode().intValue()){
                     logger.info("查询上级当前等级");
                     PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userPid,skuId);
-                    if (pfUserSku.getAgentLevelId().intValue() > pUserUpgrade.getUpStatus().intValue()){
+                    if (pfUserSku.getAgentLevelId().intValue() > upgradeLevel.intValue()){
                         upgradeNotice.setStatus(UpGradeStatus.STATUS_NoPayment.getCode());
                         upgradeNotice.setUpStatus(UpGradeUpStatus.UP_STATUS_Complete.getCode());
                     }

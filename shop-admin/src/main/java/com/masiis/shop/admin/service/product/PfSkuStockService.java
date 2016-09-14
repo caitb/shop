@@ -42,8 +42,12 @@ public class PfSkuStockService {
         Integer afterStock = stock.getStock();
 
         log.info("变动之前库存为:" + afterStock);
-
-        if (updateByIdAndVersions(stock) != 1) {
+        System.out.println("----"+stock.getId()+"-----"+stock.getFrozenStock()+"------"+stock.getRemark());
+        System.out.println("----"+stock.getCreateTime()+"-----"+stock.getIsQueue()+"------"+stock.getSkuId());
+        System.out.println("----"+stock.getSpuId()+"-----"+stock.getStock()+"------"+stock.getSupplierId());
+        Integer i = updateByIdAndVersions(stock);
+        System.out.println("更新平台库存的条数-----"+i);
+        if (i!= 1) {
             throw new BusinessException("修改平台库存失败");
         }
 
@@ -83,6 +87,7 @@ public class PfSkuStockService {
             case recoveryGiveSku:
                 afterStock += change;
                 afterFrozeStock += change;
+                break;
             default:
                 throw new BusinessException("该操作类型不支持");
         }
@@ -155,14 +160,14 @@ public class PfSkuStockService {
         return map;
     }
 
-    public void updateFrozenStock(Integer changeQuantity,Integer skuId,String remark){
-        PfSkuStock pfSkuStock =  selectBySkuId(skuId);
+    public PfSkuStock updateFrozenStock(Integer changeQuantity,String remark,PfSkuStock pfSkuStock){
         if (pfSkuStock!=null){
             //增加平台冻结库存
             pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
             if (updateByIdAndVersions(pfSkuStock) != 1) {
                 throw new BusinessException(remark);
             }
+            return pfSkuStock;
         }else{
             throw new BusinessException("----更新平台库存失败-----");
         }

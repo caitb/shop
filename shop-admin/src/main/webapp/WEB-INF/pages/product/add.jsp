@@ -1047,10 +1047,10 @@
                         type: 'post',
                         data: $('#skuForm').serialize(),
                         success: function(msg){
-                            if(msg == 'success'){
-                                parent.window.$('#myTabbable').closeTab('tab2-2');
-                                parent.window.$('#myTabbable').add('tab2-2', '商品列表', '<%=basePath%>product/list.shtml');
+                            if(result.result_code == 'success'){
                                 parent.window.$('#myTabbable').closeTab('tab2-1');
+                                parent.window.$('#myTabbable').add('tab2-1', '商品列表', '<%=basePath%>product/list.shtml');
+                                parent.window.$('#myTabbable').closeTab('tab2-0');
                             }else{
                                 alert('添加商品失败');
                             }

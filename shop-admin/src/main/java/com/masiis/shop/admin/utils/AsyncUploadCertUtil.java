@@ -19,6 +19,7 @@ public class AsyncUploadCertUtil {
             (PfUserCertificateService) ApplicationContextUtil.getBean("pfUserCertificateService");
     ComUserService comUserService =
             (ComUserService) ApplicationContextUtil.getBean("comUserService");
+
     private static class Holder {
         private static final AsyncUploadCertUtil INSTANCE = new AsyncUploadCertUtil();
     }
@@ -38,12 +39,13 @@ public class AsyncUploadCertUtil {
             while (true) {
                 try {
                     Object object = uploadOSSQueue.take();
-                    if(object instanceof ComUser){
+                    if (object instanceof ComUser) {
                         ComUser comUser = (ComUser) object;
                         pfUserCertificateService.asyncUploadUserCertificate(comUser);
                     } else if (object instanceof PfUserSku) {
                         PfUserSku pfUserSku = (PfUserSku) object;
-                        pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku);
+                        ComUser comUser = comUserService.getUserById(pfUserSku.getUserId());
+                        pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku, comUser);
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);

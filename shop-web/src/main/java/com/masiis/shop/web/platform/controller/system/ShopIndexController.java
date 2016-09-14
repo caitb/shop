@@ -84,7 +84,7 @@ public class ShopIndexController extends BaseController {
                 Date date = new Date();//获取当前时间
                 Date date1 = DateUtil.addInteger(pfUserSku.getCreateTime(), 3);
                 if (date.getTime() > date1.getTime()) {
-                    status = 0;
+                    status = 0;//超过3天
                 } else {
                     status = 1;
                 }//验证是否超过三天

@@ -116,7 +116,7 @@ public class SkuAgentController {
         } catch (Exception e) {
             resultMap.put("result_code", "error");
             resultMap.put("result_msg", "商品代理等级设置失败!");
-            log.error("商品代理等级设置失败![skuAgentModel="+skuAgentModel+"]");
+            log.error("商品代理等级设置失败![skuAgentModel="+skuAgentModel+"]"+e);
             e.printStackTrace();
         }
 

@@ -48,15 +48,15 @@ public class PfBorderPromotionService {
             for (PfBorderPromotion pfBorderPromotion : pfBorderPromotions) {
                 if (pfBorderPromotion.getQuantity() > 0 && pfBorderPromotion.getIsSend().intValue() == 0) {
                     log.info("---------------------减少平台库存--------------------");
-                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
                     //增加平台冻结库存
-                    pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), pfBorderPromotion.getSkuId(), "小白注册赠送商品，下单时增加平台冻结库存");
+                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
                     if (pfSkuStock.getStock() < pfBorderPromotion.getQuantity()) {
                         throw new BusinessException("库存不足，操作失败");
                     }
                     if (pfSkuStock.getFrozenStock() < pfBorderPromotion.getQuantity()) {
                         throw new BusinessException("库存冻结不足，操作失败");
                     }
+                    pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), pfBorderPromotion.getSkuId(), "小白注册赠送商品，下单时增加平台冻结库存");
                     //减少平台库存
                     pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
                     log.info("---------------------增加代理用户库存--------------------");

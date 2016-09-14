@@ -98,6 +98,7 @@ public class BUpgradePayService {
 
     private Integer giveSkuAgentLevel = 5; //赠送商品的等级
     private static final Integer giveSkuId = 16;
+    private Integer orgAgentLevelId = null;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
@@ -265,6 +266,8 @@ public class BUpgradePayService {
         log.info( "agentLevelId-----" + agentLevelId);
         log.info("------spuId--------" + spuId);
         String rootPath = RootPathUtils.getRootPath();
+        //清空赠送商品
+        clearRegisterGiveSkuStockAtom(noMainSkuId,userId);
         //修改推荐关系
         log.info("修改推荐关系-----start");
         PfUserRecommenRelation noMainPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, noMainSkuId);
@@ -677,17 +680,16 @@ public class BUpgradePayService {
      */
     private void clearRegisterGiveSkuStock(Long userId, List<PfBorderItem> pfBorderItems) {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
-            clearRegisterGiveSkuStockAtom(pfBorderItem.getSkuId(),pfBorderItem.getAgentLevelId(),userId);
+            clearRegisterGiveSkuStockAtom(pfBorderItem.getSkuId(),userId);
         }
     }
     /**
      * 清空赠送商品原子
      * @param skuId
-     * @param agentLevelId
      * @param userId
      */
-    private void clearRegisterGiveSkuStockAtom(Integer skuId,Integer agentLevelId,Long userId){
-        if (skuId.equals(giveSkuId)&&agentLevelId.equals(giveSkuAgentLevel)) {
+    private void clearRegisterGiveSkuStockAtom(Integer skuId,Long userId){
+        if (skuId.equals(giveSkuId)&&orgAgentLevelId.equals(giveSkuAgentLevel)) {
             PfUserSkuStock userSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
             if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
                 userSkuStock.setRegisterGiveSkuStock(0);

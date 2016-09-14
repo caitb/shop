@@ -153,7 +153,8 @@ public class PfUserSkuStockService {
     }
 
     public PfUserSkuStock selectByUserIdAndSkuIdAndSpuId(Long userId, Integer skuId,Integer spuId) {
-        return pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId,spuId);
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId,spuId);
+        return pfUserSkuStock;
     }
 
 

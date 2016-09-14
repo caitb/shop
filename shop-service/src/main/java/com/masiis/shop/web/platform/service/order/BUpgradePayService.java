@@ -111,6 +111,7 @@ public class BUpgradePayService {
         PfBorder pfBorder = updatePfBorder(pfBorderPayment.getPfBorderId(), pfBorderPayment);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
         PfUserUpgradeNotice pfUserUpgradeNotice = userUpgradeNoticeService.selectByPfBorderId(pfBorder.getId());
+        orgAgentLevelId = pfUserUpgradeNotice.getOrgAgentLevelId();
         log.info("修改订单------end");
         //添加订单操作日志
         log.info("插入订单操作日志------start");

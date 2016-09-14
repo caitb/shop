@@ -133,7 +133,7 @@ public class PfUserSkuStockService {
                 registerGiveSkuStock -= change;
                 break;
             default:
-                throw new BusinessException();
+                throw new BusinessException("没有这种出入库类型!");
         }
         //如果锁定库存不够减，那么改为0不能为负数
         if (registerGiveSkuStock < 0) {

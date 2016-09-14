@@ -9,10 +9,12 @@ package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderPromotion;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface PfBorderPromotionMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -20,13 +22,15 @@ public interface PfBorderPromotionMapper {
 
     PfBorderPromotion selectByPrimaryKey(Long id);
 
-    PfBorderPromotion getBorderPromotionsByBorderIdAndIsTake(@Param("pfBorderId")Long pfBorderId, @Param("isTake")Integer isTake);
+    PfBorderPromotion getBorderPromotionsByBorderIdAndIsTake(@Param("pfBorderId") Long pfBorderId, @Param("isTake") Integer isTake);
 
-    PfBorderPromotion getBorderPromotionsByBorderIdAndIsSend(@Param("pfBorderId")Long pfBorderId, @Param("isSend")Integer isSend);
+    PfBorderPromotion getBorderPromotionsByBorderIdAndIsSend(@Param("pfBorderId") Long pfBorderId, @Param("isSend") Integer isSend);
 
-    List<PfBorderPromotion> getExpirePromotionsByIsSendAndQuantityAndTime(@Param("isSend")Integer isSend, @Param("quantity")Integer quantity, @Param("startTime")Date startTime, @Param("endTime")Date endTime);
+    List<PfBorderPromotion> getExpirePromotionsByIsSendAndQuantityAndTime(@Param("isSend") Integer isSend, @Param("quantity") Integer quantity, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<PfBorderPromotion> selectAll();
 
     int updateByPrimaryKey(PfBorderPromotion record);
+
+    List<PfBorderPromotion> selectByPfBorderId(@Param("pfBorderId") Long pfBorderId);
 }

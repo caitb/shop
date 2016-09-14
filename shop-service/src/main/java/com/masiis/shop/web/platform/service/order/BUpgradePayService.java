@@ -95,6 +95,10 @@ public class BUpgradePayService {
     @Resource
     private PfSysMenuService sysMenuService;
 
+
+    private Integer giveSkuAgentLevel = 5; //赠送商品的等级
+    private static final Integer giveSkuId = 16;
+
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
         //修改订单支付
@@ -122,6 +126,8 @@ public class BUpgradePayService {
         log.info("修改上下级关系插入历史-------start"); //已改
         inserHistoryAndUpdatePfUserSku(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorder.getId(), pfBorderItems);
         log.info("修改上下级关系插入历史-------end");
+        //清空赠送商品
+        clearRegisterGiveSkuStock(pfBorder.getUserId(),pfBorderItems);
         //修改冻结库存
         log.info("修改冻结库存----start");
         updateFrozenStock(pfBorder, pfBorderItems);
@@ -664,6 +670,33 @@ public class BUpgradePayService {
         return i;
     }
 
+    /**
+     * 清空赠送商品
+     * @param userId
+     * @param pfBorderItems
+     */
+    private void clearRegisterGiveSkuStock(Long userId, List<PfBorderItem> pfBorderItems) {
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            clearRegisterGiveSkuStockAtom(pfBorderItem.getSkuId(),pfBorderItem.getAgentLevelId(),userId);
+        }
+    }
+    /**
+     * 清空赠送商品原子
+     * @param skuId
+     * @param agentLevelId
+     * @param userId
+     */
+    private void clearRegisterGiveSkuStockAtom(Integer skuId,Integer agentLevelId,Long userId){
+        if (skuId.equals(giveSkuId)&&agentLevelId.equals(giveSkuAgentLevel)) {
+            PfUserSkuStock userSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
+            if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
+                userSkuStock.setRegisterGiveSkuStock(0);
+                if (pfUserSkuStockService.updateByIdAndVersions(userSkuStock) != 1) {
+                    throw new BusinessException("升级清空赠送商品出错");
+                }
+            }
+        }
+    }
 
     /**
      * 冻结库存

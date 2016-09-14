@@ -50,7 +50,7 @@ public class PfBorderPromotionService {
     private String promotionStartEndString  = "2020-10-10";
     private Integer giveSkuAgentLevel = 5; //赠送商品的等级
     private Integer giveSkuQuantity = 5;//赠送的商品数量
-    private Integer giveSkuId = 16;
+    private static final  Integer giveSkuId = 16;
 
 
     public PfBorderPromotion getBorderPromotionsByBorderIdAndIsTake(Long pfBorderId,Integer isTake){
@@ -235,6 +235,7 @@ public class PfBorderPromotionService {
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
+        log.info("skuId-------"+skuId+"----giveSkuId----"+giveSkuId);
         if (skuId.equals(giveSkuId)) {
             if (isOpenPromotion()) {
                 log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");

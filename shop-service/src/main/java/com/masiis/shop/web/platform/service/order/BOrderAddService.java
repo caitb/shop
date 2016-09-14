@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
@@ -487,4 +488,5 @@ public class BOrderAddService {
         pfBorderConsignee.setZip(comUserAddress.getZip());
         pfBorderConsigneeMapper.insert(pfBorderConsignee);
     }
+
 }

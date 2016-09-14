@@ -3,10 +3,12 @@ package com.masiis.shop.web.platform.service.order;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.beans.order.BOrder;
 import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.platform.order.*;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -534,5 +537,38 @@ public class BOrderService {
         return pfBorderMapper.getSkuDefaultImgUrlBySkuId(skuId);
     }
 
+
+    /**
+     * 创建0元免支付订单的支付信息
+     * @param orderCode
+     */
+    public PfBorderPayment createPfBorderPaymentByOrderCode(String orderCode) throws Exception {
+        String orderType = String.valueOf(orderCode.charAt(0));
+        if ("B".equals(orderType)) {
+            // B类型订单
+            PfBorder order = findByOrderCode(orderCode);
+            if(order == null){
+                throw new BusinessException("订单号不存在!");
+            }
+            PfBorderPayment payment = createBorderPayment(order, SysBeanUtils.createPaySerialNumByOrderType("B"));
+            payment.setPfBorderId(order.getId());
+            addBOrderPayment(payment);
+            return payment;
+        }else {
+            throw new BusinessException("订单类型不正确!");
+        }
+    }
+
+    private PfBorderPayment createBorderPayment(PfBorder order, String paySerialNum) {
+        PfBorderPayment payment = new PfBorderPayment();
+        payment.setAmount(order.getReceivableAmount());
+        payment.setCreateTime(new Date());
+        payment.setIsEnabled(0);
+        //-给外部支付使用支付流水号
+        payment.setPaySerialNum(paySerialNum);
+        payment.setPayTypeId(3);
+        payment.setPayTypeName("0元免支付");
+        return payment;
+    }
 
 }

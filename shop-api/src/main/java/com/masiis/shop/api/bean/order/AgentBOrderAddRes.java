@@ -8,6 +8,15 @@ import com.masiis.shop.api.bean.base.BaseBusinessRes;
  */
 public class AgentBOrderAddRes extends BaseBusinessRes {
     private Long orderId;
+    private Integer payType;//0 0元免支付, 1 需要正常支付
+
+    public Integer getPayType() {
+        return payType;
+    }
+
+    public void setPayType(Integer payType) {
+        this.payType = payType;
+    }
 
     public Long getOrderId() {
         return orderId;

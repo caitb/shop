@@ -259,6 +259,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR = "101309";
     public static final String RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR_MSG = "订单id不正确";
 
+    public static final String RES_CODE_AGENT_BORDER_ZERO_PAY_ERROR = "101310";
+    public static final String RES_CODE_AGENT_BORDER_ZERO_PAY_ERROR_MSG = "不是0元订单";
+
     /**
      * 升级
      */

@@ -9,6 +9,7 @@ import com.masiis.shop.api.bean.order.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.enums.mall.OrderPayTypeEnum;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
 import com.masiis.shop.common.enums.platform.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -21,6 +22,7 @@ import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
+import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
@@ -35,6 +37,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +70,8 @@ public class AgentBOrderController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private ComAgentLevelService comAgentLevelService;
+    @Resource
+    private BOrderPayService payBOrderService;
 
     /**
      * 合伙人注册选择等级页面
@@ -408,6 +413,13 @@ public class AgentBOrderController extends BaseController {
 
             log.info("创建代理订单成功,订单id:" + borderId);
 
+            //0元免支付订单，不需要去收银台支付，直接注册成功
+            pfBorder = bOrderService.getPfBorderById(borderId);
+            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                res.setPayType(0);
+            }
+            res.setPayType(1);
+
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             res.setOrderId(borderId);
@@ -419,6 +431,60 @@ public class AgentBOrderController extends BaseController {
             }
         }
 
+        return res;
+    }
+
+    /**
+     * 0元免支付订单回调接口
+     * @param request
+     * @param req
+     * @param user
+     * @return
+     */
+    @RequestMapping("/agentBOrderZeroPay.do")
+    @ResponseBody
+    @SignValid(paramType = AgentBOrderZeroPayReq.class)
+    public AgentBOrderZeroPayRes agentBOrderZeroPay(HttpServletRequest request, AgentBOrderZeroPayReq req, ComUser user){
+        AgentBOrderZeroPayRes res = new AgentBOrderZeroPayRes();
+        try{
+            Long borderId = req.getOrderId();
+            if(borderId == null || borderId.longValue() <= 0l){
+                // 订单id不正确
+                res.setResCode(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR_MSG);
+            }
+            PfBorder pfBorder = bOrderService.getPfBorderById(borderId);
+            if(pfBorder == null){
+                // 订单id不正确
+                res.setResCode(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_AGENT_BORDER_ID_ERROR_MSG);
+            }
+            if(pfBorder.getOrderType().intValue() != 0){
+                // 订单非代理订单
+                res.setResCode(SysResCodeCons.RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_AGENT_BORDER_ORDERTYPE_ERROR_MSG);
+            }
+            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) != 0){
+                //不是0元订单
+                res.setResCode(SysResCodeCons.RES_CODE_AGENT_BORDER_ZERO_PAY_ERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_AGENT_BORDER_ZERO_PAY_ERROR_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_AGENT_BORDER_ZERO_PAY_ERROR_MSG);
+            }
+            log.info("0元免支付代理订单生成支付信息,订单id:" + borderId);
+            PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+            log.info("处理订单开始,类型为B,支付流水号为:" + payment.getPaySerialNum());
+            payBOrderService.mainPayBOrder(payment, "ZERO_PAY");
+
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+        }
         return res;
     }
 

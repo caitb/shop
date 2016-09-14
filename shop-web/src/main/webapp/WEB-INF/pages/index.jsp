@@ -75,8 +75,8 @@
         <nav>
             <ul>
                 <li >
-                    <a class="herf" href="<%=basePath%>myteam/teamlist">
-                        <%--<a onclick="clickShow()">--%>
+                    <%--<a class="herf" href="<%=basePath%>myteam/teamlist">--%>
+                        <a onclick="clickShow()">
                         <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
                         <span></span>
                     </h1>

@@ -44,8 +44,7 @@ public class AsyncUploadCertUtil {
                         pfUserCertificateService.asyncUploadUserCertificate(comUser);
                     } else if (object instanceof PfUserSku) {
                         PfUserSku pfUserSku = (PfUserSku) object;
-                        ComUser comUser = userService.getUserById(pfUserSku.getUserId());
-                        pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku, comUser);
+                        pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku);
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);

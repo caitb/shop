@@ -259,18 +259,19 @@ public class PfUserCertificateService {
         for (PfUserSku pfUserSku : pfUserSkus) {
             logger.info("处理pfUserSku，id：" + pfUserSku.getId());
             if (StringUtils.isBlank(pfUserSku.getCode())) {
-                asyncUploadUserCertificateItem(pfUserSku,comUser);
+                asyncUploadUserCertificateItem(pfUserSku);
             }
         }
     }
 
     /**
      * 异步上传证书
+     *
      * @param pfUserSku
-     * @param comUser
      */
-    public void asyncUploadUserCertificateItem(PfUserSku pfUserSku,ComUser comUser){
+    public void asyncUploadUserCertificateItem(PfUserSku pfUserSku) {
         ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+        ComUser comUser = comUserService.getUserById(pfUserSku.getUserId());
         addUserCertificate(comUser, comSku, pfUserSku);
     }
 }

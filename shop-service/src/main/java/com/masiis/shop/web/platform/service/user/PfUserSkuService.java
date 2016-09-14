@@ -144,6 +144,15 @@ public class PfUserSkuService {
     }
 
     /**
+     * 通过userId查询主商品
+     * @param userId
+     * @return
+     */
+    public List<PfUserSku> selectPrimarySkuByUserId(Long userId){
+        return pfUserSkuMapper.selectPrimarySkuByUserId(userId);
+    }
+
+    /**
      * 查询这个人的boss的团队的所有成员
      *
      * @param treeCode

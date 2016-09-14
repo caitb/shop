@@ -42,8 +42,6 @@ public class BOrderShipService {
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private ComUserAccountService comUserAccountService;
-    @Resource
-    private PfBorderPromotionService pfBorderPromotionService;
     /**
      * 合伙订单发货和收货
      *
@@ -52,14 +50,6 @@ public class BOrderShipService {
     public void shipAndReceiptBOrder(PfBorder pfBorder) {
         shipBOrder(pfBorder);
         receiptBOrder(pfBorder);
-        //v1.5.6 更新平台赠送给小白的商品库存
-        pfBorderPromotionService.updateGivePlatformStock(pfBorder.getId(),
-                pfBorder.getUserId(),
-                null,
-                null,
-                null,
-                null,
-                pfBorder.getOrderType());
     }
 
     /**

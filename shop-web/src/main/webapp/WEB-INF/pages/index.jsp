@@ -75,8 +75,8 @@
         <nav>
             <ul>
                 <li >
-                    <a class="herf" href="<%=basePath%>myteam/teamlist">
-                        <%--<a onclick="clickShow()">--%>
+                    <%--<a class="herf" href="<%=basePath%>myteam/teamlist">--%>
+                        <a onclick="clickShow()">
                         <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
                         <span></span>
                     </h1>
@@ -88,19 +88,44 @@
                         <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
                     <span>发展合伙人</span></a>
                 </li>
-                <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
-                    <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
-                    <span>我的授权书 </span></a>
-                </li>
+                <c:if test="${user.isAgent==0}">
+                    <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
+                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
+                        <span>我的授权书 </span></a>
+                    </li>
+                </c:if>
+                <c:if test="${user.isAgent==1 && user.auditStatus == 2}">
+                    <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
+                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
+                        <span>我的授权书 </span></a>
+                    </li>
+                </c:if>
+                <c:if test="${user.isAgent==1 && user.auditStatus != 2}">
+                    <li class="market"><a class="herf" onclick="gorezheng()">
+                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
+                        <span>我的授权书 </span></a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
         <nav>
             <ul>
-                <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower?tabId=0">
-                    <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
-                    </h1>
-                    <span>升级管理</span></a>
-                </li>
+                <c:if test="${user.isAgent==0}">
+                    <li class="market">
+                        <a>
+                            <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
+                            </h1>
+                            <span>升级管理</span></a>
+                    </li>
+                </c:if>
+                <c:if test="${user.isAgent==1}">
+                    <li class="market">
+                        <a onclick="clickShow()">
+                            <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
+                            </h1>
+                            <span>升级管理</span></a>
+                    </li>
+                </c:if>
                 <li class="market"><a class="herf" href="<%=basePath%>myRecommend/myRecommen.shtml">
                     <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
                     <span>我的推荐</span></a>
@@ -131,7 +156,7 @@
     <span class="close">×</span>
     <img src="${path}/static/images/b.png" alt="">
 </div>
-<div class="black">
+<div class="black disab">
     <div class="backb"></div>
     <div class="back_a">
         <img src="${path}/static/images/ku.png" alt=""/>
@@ -140,6 +165,16 @@
             <span onclick="clickHide()">取消</span>
             <%--<span><a href="${path}/download/loadapp">去下载</a></span>--%>
             <span><a href="http://api.iimai.com/static/html/wechatDownload.html">去下载</a></span>
+        </h1>
+    </div>
+</div>
+<div class="black fail">
+    <div class="backb"></div>
+    <div class="back_a">
+        <p style="padding: 50px 0 30px 0;">您未实名认证，认证后才可进行此操作</p>
+        <h1>
+            <span onclick="clickHide()">取消</span>
+            <span><a href="<%=path%>/personalInfo/personalHomePageInfo.html">去认证</a></span>
         </h1>
     </div>
 </div>
@@ -228,10 +263,17 @@
         $(".back_f").hide()
     })
     function clickShow(){
-        $(".black").show();
+        $(".disab").show();
     }
     function clickHide(){
         $(".black").hide();
+    }
+    //实名认证提醒
+    function gorezheng(){
+        $(".fail").show();
+    }
+    function dierezheng(){
+        $(".fail").hide();
     }
 </script>
 <script>

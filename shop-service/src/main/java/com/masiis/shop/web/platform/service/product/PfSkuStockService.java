@@ -54,7 +54,7 @@ public class PfSkuStockService {
         log.info("修改平台库存成功,变动库存为:" + change + ",操作类型为:" + handleType.getCode());
     }
 
-    private PfSkuStockLog createPfSkuStockLog(PfSkuStock stock, Integer beforeStock, Integer afterStock, SkuStockLogType handleType, Long billId) {
+    public PfSkuStockLog createPfSkuStockLog(PfSkuStock stock, Integer beforeStock, Integer afterStock, SkuStockLogType handleType, Long billId) {
         PfSkuStockLog res = new PfSkuStockLog();
 
         res.setBillId(billId);
@@ -83,6 +83,7 @@ public class PfSkuStockService {
             case recoveryGiveSku:
                 afterStock += change;
                 afterFrozeStock += change;
+                break;
             default:
                 throw new BusinessException("该操作类型不支持");
         }

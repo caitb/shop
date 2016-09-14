@@ -163,7 +163,7 @@ public class ProductController {
                 return "success";
             }
         } catch(Exception e) {
-            log.error("保存商品失败!");
+            log.error("保存商品失败!"+e);
             e.printStackTrace();
         }
         return "fail";
@@ -290,7 +290,7 @@ public class ProductController {
             }
         } catch(Exception e){
             e.printStackTrace();
-            log.error("修改商品失败");
+            log.error("修改商品失败"+e);
         }
 
         return "fail";

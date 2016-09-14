@@ -18,7 +18,9 @@ import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +83,8 @@ public class BOrderPayAgentService {
     private ComSpuMapper comSpuMapper;
     @Resource
     private PfUserOrganizationService pfUserOrganizationService;
+    @Resource
+    private PfBorderPromotionService pfBorderPromotionService;
 
     /**
      * 合伙订单支付回调
@@ -138,11 +142,15 @@ public class BOrderPayAgentService {
             //异步上传授权书
             try {
                 PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+                if (StringUtils.isBlank(pfUserSku.getCode())) {
+                    AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+                }
             } catch (InterruptedException e) {
                 logger.error("阻塞住了");
             }
         }
+        //v1.5.6 更新平台赠送给小白的商品库存
+        pfBorderPromotionService.doPromotion(pfBorder);
         logger.info("<13>实时统计数据显示");
         orderStatisticsService.statisticsOrder(pfBorder.getId());
         logger.info("<14>修改结算中数据");

@@ -19,6 +19,7 @@ import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.user.*;
 import com.masiis.shop.web.platform.utils.AsyncUploadCertUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,7 +140,9 @@ public class BOrderPayAgentService {
             //异步上传授权书
             try {
                 PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
-                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+                if (StringUtils.isBlank(pfUserSku.getCode())) {
+                    AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+                }
             } catch (InterruptedException e) {
                 logger.error("阻塞住了");
             }

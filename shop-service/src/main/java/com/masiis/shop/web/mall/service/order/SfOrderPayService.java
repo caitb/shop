@@ -96,6 +96,10 @@ public class SfOrderPayService {
     @Resource
     private PfBorderPromotionService pfBorderPromotionService;
 
+
+
+    private static final  Integer giveSkuId = 16;
+
     /**
      * 获得需要支付的订单的信息
      *
@@ -516,20 +520,6 @@ public class SfOrderPayService {
                 log.info("更新库存shopUserId---" + order.getShopUserId() + "商品skuId----" + orderItem.getSkuId() + "失败");
                 throw new BusinessException("更新冻结库存失败");
             }
-            log.info("----更新平台赠送的小白的货-----start");
-            if (skuStock.getRegisterGiveSkuStock()!=null&&skuStock.getRegisterGiveSkuStock()>0){
-                log.info("----平台赠送小白的还有货-------");
-                pfBorderPromotionService.updateGivePlatformStock(
-                        null,
-                        order.getUserId(),
-                        orderItem.getSkuId(),
-                        orderItem.getSpuId(),
-                        orderItem.getQuantity(),
-                        PfBorderPromotionGiveStockChangeEnum.sell,
-                        null
-                );
-            }
-            log.info("----更新平台赠送的小白的货-----end");
         }
     }
 

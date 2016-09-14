@@ -42,13 +42,7 @@ public class PfSkuStockService {
         Integer afterStock = stock.getStock();
 
         log.info("变动之前库存为:" + afterStock);
-        System.out.println("----"+stock.getId()+"-----"+stock.getFrozenStock()+"------"+stock.getRemark());
-        System.out.println("----"+stock.getCreateTime()+"-----"+stock.getIsQueue()+"------"+stock.getSkuId());
-        System.out.println("----"+stock.getSpuId()+"-----"+stock.getStock()+"------"+stock.getSupplierId());
-        System.out.println("----"+stock.getVersion());
-        Integer i = updateByIdAndVersions(stock);
-        System.out.println("更新平台库存的条数-----"+i);
-        if (i!= 1) {
+        if (updateByIdAndVersions(stock)!= 1) {
             throw new BusinessException("修改平台库存失败");
         }
 

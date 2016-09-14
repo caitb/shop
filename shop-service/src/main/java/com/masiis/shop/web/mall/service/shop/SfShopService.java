@@ -18,6 +18,7 @@ import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.platform.service.qrcode.WeiXinPFQRCodeService;
 import com.masiis.shop.web.platform.service.user.ComPosterService;
 import com.masiis.shop.web.platform.service.user.SfUserShareParamService;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -204,7 +207,7 @@ public class SfShopService {
      * @param userId 用户id
      * @return 海报url
      */
-    public String createShopPoster(Long userId) {
+    public BufferedImage createShopPoster(Long userId) {
         try {
             String rootPath = RootPathUtils.getRootPath();
             ComUser comUser = userService.getUserById(userId);
@@ -222,47 +225,50 @@ public class SfShopService {
 
             Long shareParamId = (sfUserShareParam != null) ? sfUserShareParam.getId() : -1L;
 
-            ComPoster comPosterParam = new ComPoster();
-            comPosterParam.setType(1);
-            comPosterParam.setUserId(comUser.getId());
-            comPosterParam.setShareParamId(shareParamId);
-
-            ComPoster comPoster = comPosterService.findByCondition(comPosterParam);
-            log.info("获取海报图片信息(查询参数[comPosterParam=" + comPosterParam + "]): [comPoster=" + comPoster + "]");
-            if (comPoster != null) {
-
-                return PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName();
-            }
+//            ComPoster comPosterParam = new ComPoster();
+//            comPosterParam.setType(1);
+//            comPosterParam.setUserId(comUser.getId());
+//            comPosterParam.setShareParamId(shareParamId);
+//
+//            ComPoster comPoster = comPosterService.findByCondition(comPosterParam);
+//            log.info("获取海报图片信息(查询参数[comPosterParam=" + comPosterParam + "]): [comPoster=" + comPoster + "]");
+//            if (comPoster != null) {
+//
+//                return PropertiesUtils.getStringValue("index_user_poster_url") + comPoster.getPosterName();
+//            }
 
 
             //获取海报2:如果海报不存在或已经过期,重新创建海报
-            String headImg = "h-" + comUser.getId() + ".png";
+//            String headImg = "h-" + comUser.getId() + ".png";
             String qrcodeName = "qrcode-shop-" + comUser.getId() + "-" + sfShop.getId() + ".png";
             String bgPoster = "shop-" + sfShop.getId() + ".png";
             String posterDirPath = rootPath + "static/images/poster"; //basePath:request.getServletContext().getRealPath("/")
-            File posterDir = new File(posterDirPath);
-            if (!posterDir.exists()) {
-                posterDir.mkdirs();
-            }
-            //先删除旧的图片,再下载新的图片
-            new File(posterDirPath + "/" + headImg).delete();
-            new File(posterDirPath + "/" + bgPoster).delete();
-            new File(posterDirPath + "/" + qrcodeName).delete();
-
-            File headImgFile = new File(posterDirPath + "/" + headImg);
+//            File posterDir = new File(posterDirPath);
+//            if (!posterDir.exists()) {
+//                posterDir.mkdirs();
+//            }
+//            //先删除旧的图片,再下载新的图片
+//            new File(posterDirPath + "/" + headImg).delete();
+//            new File(posterDirPath + "/" + bgPoster).delete();
+//            new File(posterDirPath + "/" + qrcodeName).delete();
+//
+//            File headImgFile = new File(posterDirPath + "/" + headImg);
             File bgImgFile = new File(posterDirPath + "/" + bgPoster);
             File qrcodeFile = new File(posterDirPath + "/" + qrcodeName);
-            //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
-            if (!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))
-                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
-            if (!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))
-                OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
+//            //File qrcodeImgFile = new File(posterDirPath+"/"+qrcodeName);
+//            if (!headImgFile.exists() && StringUtils.isNotBlank(comUser.getWxHeadImg()))
+//                DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+//            if (!headImgFile.exists() && StringUtils.isBlank(comUser.getWxHeadImg()))
+//                OSSObjectUtils.downloadFile("static/user/background_poster/h-default.png", headImgFile.getAbsolutePath());
             if (!bgImgFile.exists())
                 OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", bgImgFile.getAbsolutePath());
+//
+//            if (sfShop == null) {
+//                throw new BusinessException("店铺不存在[comUser=" + comUser + "][shopId=" + sfShop.getId() + "]");
+//            }
 
-            if (sfShop == null) {
-                throw new BusinessException("店铺不存在[comUser=" + comUser + "][shopId=" + sfShop.getId() + "]");
-            }
+
+
             String[] qrcodeResult = null;
             if (StringUtils.isBlank(sfShop.getQrCode())) {
                 log.info("到微信端获取店铺永久二维码.........![sfShop=" + sfShop + "]");
@@ -275,16 +281,34 @@ public class SfShopService {
                 updateById(sfShop);
                 log.info("成功获取并保存店铺永久二维码........[sfShop=" + sfShop + "]");
             }
-            if (!qrcodeFile.exists())
-                OSSObjectUtils.downloadFile("static/shop/shop_qrcode/" + sfShop.getQrCode(), qrcodeFile.getAbsolutePath());
+//            if (!qrcodeFile.exists())
+//                OSSObjectUtils.downloadFile("static/shop/shop_qrcode/" + sfShop.getQrCode(), qrcodeFile.getAbsolutePath());
+
+
+
+            //下载图片
+            Long beginTime = System.currentTimeMillis();
+            BufferedImage headImgBuff = ImageIO.read(new URL(comUser.getWxHeadImg()));
+            System.out.println("下载头像的时间: " + (System.currentTimeMillis()-beginTime));
+            beginTime = System.currentTimeMillis();
+            BufferedImage bgImgBuff   = ImageIO.read(bgImgFile);
+            System.out.println("下载背景图的时间: " + (System.currentTimeMillis()-beginTime));
+            beginTime = System.currentTimeMillis();
+            BufferedImage qrcodeImgBuff = ImageIO.read(new URL(PropertiesUtils.getStringValue("oss.BASE_URL")+"/static/shop/shop_qrcode/" + sfShop.getQrCode()));
+            System.out.println("下载二维码的时间: " + (System.currentTimeMillis()-beginTime));
+
 
             //画图
             Date curDate = new Date();
             curDate.setDate(curDate.getDate() + 30);
 
-            Element headImgElement = new Element(317, 201, 120, 120, ImageIO.read(new File(posterDirPath + "/" + headImg)));
-            Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath + "/" + bgPoster)));
-            Element qrcodeImgElement = new Element(236, 602, 280, 280, ImageIO.read(new File(posterDirPath + "/" + qrcodeName)));
+//            Element headImgElement = new Element(317, 201, 120, 120, ImageIO.read(new File(posterDirPath + "/" + headImg)));
+//            Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath + "/" + bgPoster)));
+//            Element qrcodeImgElement = new Element(236, 602, 280, 280, ImageIO.read(new File(posterDirPath + "/" + qrcodeName)));
+            Element headImgElement = new Element(317, 201, 120, 120, headImgBuff);
+            Element bgPosterImgElement = new Element(0, 0, 750, 1334, bgImgBuff);
+            Element qrcodeImgElement = new Element(236, 602, 280, 280, qrcodeImgBuff);
+
             //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
             String title = "Hi，我是" + comUser.getWxNkName();
             String desc1 = "正品特供，好友专享价，尽在我的麦链";
@@ -314,22 +338,24 @@ public class SfShopService {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
             Date createTime = new Date();
             String posterName = simpleDateFormat.format(createTime) + random + ".png";
-            DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/" + posterName);
+            beginTime = System.currentTimeMillis();
+            BufferedImage bufferedImage = DrawImageUtil.drawImage(750, 1334, drawElements, "static/user/poster/" + posterName);
+            System.out.println("画海报的时间: " + (System.currentTimeMillis()-beginTime));
 
             //保存二维码海报图片地址
-            ComPoster newComPoster = new ComPoster();
-            newComPoster.setCreateTime(createTime);
-            if (qrcodeResult != null) {
-                newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
-            } else {
-                newComPoster.setShareParamId(shareParamId);
-            }
-            log.info("二维码参数ID[qrcodeResult=" + qrcodeResult + "][shareParamId=" + shareParamId + "]");
-            newComPoster.setType(1);
-            newComPoster.setUserId(comUser.getId());
-            newComPoster.setPosterName(posterName);
-
-            comPosterService.add(newComPoster);
+//            ComPoster newComPoster = new ComPoster();
+//            newComPoster.setCreateTime(createTime);
+//            if (qrcodeResult != null) {
+//                newComPoster.setShareParamId(Long.valueOf(qrcodeResult[0]));
+//            } else {
+//                newComPoster.setShareParamId(shareParamId);
+//            }
+//            log.info("二维码参数ID[qrcodeResult=" + qrcodeResult + "][shareParamId=" + shareParamId + "]");
+//            newComPoster.setType(1);
+//            newComPoster.setUserId(comUser.getId());
+//            newComPoster.setPosterName(posterName);
+//
+//            comPosterService.add(newComPoster);
 
             //二维码获取成功,更新com_user成为代言人
             SfUserRelation sfUserRelation = sfUserRelationService.getSfUserRelationByUserIdAndShopId(comUser.getId(), sfShop.getId());
@@ -340,8 +366,7 @@ public class SfShopService {
                 log.info("sfUserRelation为null");
             }
 
-
-            return PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName();
+            return bufferedImage;
         } catch (Exception e) {
             log.error("获取专属海报失败![userId=" + userId + "]" + e);
             e.printStackTrace();

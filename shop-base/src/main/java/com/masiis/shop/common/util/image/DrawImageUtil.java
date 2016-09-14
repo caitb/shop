@@ -65,27 +65,27 @@ public class DrawImageUtil {
             }
         }
 
-        if(StringUtils.isNotBlank(savePath)) {
-            ByteArrayOutputStream bs = null;
-            ImageOutputStream imOut = null;
-            InputStream is = null;
-            try {
-                bs = new ByteArrayOutputStream();
-                imOut = ImageIO.createImageOutputStream(bs);
-                ImageIO.write(bufferedImage, "png", imOut);
-                is = new ByteArrayInputStream(bs.toByteArray());
-
-                OSSObjectUtils.deleteBucketFile(savePath);
-                OSSObjectUtils.uploadFile(savePath, is);
-
-            } catch (Exception e) {
-                bs.close();
-                imOut.close();
-                is.close();
-
-                e.printStackTrace();
-            }
-        }
+//        if(StringUtils.isNotBlank(savePath)) {
+//            ByteArrayOutputStream bs = null;
+//            ImageOutputStream imOut = null;
+//            InputStream is = null;
+//            try {
+//                bs = new ByteArrayOutputStream();
+//                imOut = ImageIO.createImageOutputStream(bs);
+//                ImageIO.write(bufferedImage, "png", imOut);
+//                is = new ByteArrayInputStream(bs.toByteArray());
+//
+//                OSSObjectUtils.deleteBucketFile(savePath);
+//                OSSObjectUtils.uploadFile(savePath, is);
+//
+//            } catch (Exception e) {
+//                bs.close();
+//                imOut.close();
+//                is.close();
+//
+//                e.printStackTrace();
+//            }
+//        }
 
         return bufferedImage;
     }

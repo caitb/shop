@@ -114,6 +114,8 @@ public class ProductController {
                       @RequestParam(value = "imgNames", required = false)String[] imgNames
     ) throws FileNotFoundException {
 
+        Map<String, Object> resultMap = new HashMap<>();
+
         String realPath = request.getServletContext().getRealPath("/");
         realPath = realPath.substring(0, realPath.lastIndexOf("/"));
 
@@ -160,13 +162,18 @@ public class ProductController {
 
                 productService.save(comSpu, comSku, comSkuExtension, comSkuImages);
 
-                return "success";
+                resultMap.put("result_code", "success");
+                resultMap.put("result_msg", "保存成功!");
             }
         } catch(Exception e) {
+            resultMap.put("result_code", "error");
+            resultMap.put("result_msg", "保存失败!");
+
             log.error("保存商品失败!"+e);
             e.printStackTrace();
         }
-        return "fail";
+
+        return resultMap;
     }
 
     @RequestMapping("/update.do")

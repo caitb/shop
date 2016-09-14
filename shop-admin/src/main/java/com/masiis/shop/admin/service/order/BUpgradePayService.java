@@ -690,7 +690,8 @@ public class BUpgradePayService {
      * @param userId
      */
     private void clearRegisterGiveSkuStockAtom(Integer skuId,Long userId){
-        if (skuId.equals(giveSkuId)&&orgAgentLevelId.equals(giveSkuAgentLevel)) {
+        log.info("清空赠送商品原子----参数----skuId----"+skuId+"----userId----"+userId+"----orgAgentLevelId---"+orgAgentLevelId+"----giveSkuAgentLevel---"+giveSkuAgentLevel);
+        if (orgAgentLevelId.equals(giveSkuAgentLevel)) {
             PfUserSkuStock userSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
             if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
                 userSkuStock.setRegisterGiveSkuStock(0);
@@ -698,6 +699,8 @@ public class BUpgradePayService {
                     throw new BusinessException("升级清空赠送商品出错");
                 }
             }
+        }else{
+            log.info("要升级的原等级不是赠送商品的等级");
         }
     }
 

@@ -96,4 +96,11 @@
         from pf_border_promotion
     </select>
 
+    <select id="selectByPfBorderId" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, user_id, user_pid,pf_promotion_id, spu_id, sku_id, sku_name,
+        quantity, unit_price, total_price, is_send, is_take, remark
+        from pf_border_promotion
+        where pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

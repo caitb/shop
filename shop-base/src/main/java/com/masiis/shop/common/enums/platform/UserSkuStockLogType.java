@@ -23,7 +23,7 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "下级合伙";
         }
-    },shopOrder{
+    }, shopOrder {
         public Integer getCode() {
             return 2;
         }
@@ -31,7 +31,7 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "小铺发货";
         }
-    },shopReturn{
+    }, shopReturn {
         public Integer getCode() {
             return 3;
         }
@@ -39,7 +39,7 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "小铺退货";
         }
-    },STORAGECHANGE_BILL_ADD{
+    }, STORAGECHANGE_BILL_ADD {
         public Integer getCode() {
             return 4;
         }
@@ -47,8 +47,25 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "库存变更单增加";
         }
+    }, PROMOTION_ADD {
+        public Integer getCode() {
+            return 5;
+        }
+
+        public String getDesc() {
+            return "活动增加库存";
+        }
+    }, PROMOTION_REDUCE {
+        public Integer getCode() {
+            return 6;
+        }
+
+        public String getDesc() {
+            return "活动减少库存";
+        }
     };
 
     public abstract Integer getCode();
+
     public abstract String getDesc();
 }

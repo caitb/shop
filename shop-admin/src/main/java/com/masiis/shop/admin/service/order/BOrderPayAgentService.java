@@ -19,6 +19,7 @@ import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +82,8 @@ public class BOrderPayAgentService {
     private ComSpuMapper comSpuMapper;
     @Resource
     private PfUserOrganizationService pfUserOrganizationService;
+    @Resource
+    private PfBorderPromotionService pfBorderPromotionService;
 
     /**
      * 合伙订单支付回调
@@ -143,6 +146,15 @@ public class BOrderPayAgentService {
                 logger.error("阻塞住了");
             }
         }
+        //v1.5.6 更新平台赠送给小白的商品库存
+        pfBorderPromotionService.doPromotion(pfBorder);
+//        pfBorderPromotionService.updateGivePlatformStock(pfBorder.getId(),
+//                pfBorder.getUserId(),
+//                null,
+//                null,
+//                null,
+//                null,
+//                pfBorder.getOrderType());
         logger.info("<13>实时统计数据显示");
         orderStatisticsService.statisticsOrder(pfBorder.getId());
         logger.info("<14>修改结算中数据");

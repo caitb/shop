@@ -9,6 +9,7 @@ import com.masiis.shop.admin.service.system.PfSysMenuService;
 import com.masiis.shop.admin.service.user.*;
 import com.masiis.shop.common.constant.platform.SysConstants;
 import com.masiis.shop.common.enums.platform.BOrderStatus;
+import com.masiis.shop.common.enums.platform.PfBorderPromotionGiveStockChangeEnum;
 import com.masiis.shop.common.enums.platform.UpGradeStatus;
 import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
@@ -18,6 +19,7 @@ import com.masiis.shop.common.util.RootPathUtils;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
+import org.apache.log4j.pattern.IntegerPatternConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +94,9 @@ public class BUpgradePayService {
     @Resource
     private PfSysMenuService sysMenuService;
 
+    private Integer giveSkuAgentLevel = 5; //赠送商品的等级
+    private static final Integer giveSkuId = 16;
+
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {
         String rootPath = RootPathUtils.getRootPath();
         //修改订单支付
@@ -122,6 +127,8 @@ public class BUpgradePayService {
         log.info("v1.4.2 修改推荐关系--------------start");
         updatePfUserRecommenRelation(pfBorder, pfBorderItems);
         log.info("v1.4.2 修改推荐关系--------------end");
+        //清空赠送商品
+        clearRegisterGiveSkuStock(pfBorder.getUserId(),pfBorderItems);
         //修改冻结库存
         log.info("修改冻结库存----start");
         updateFrozenStock(pfBorder, pfBorderItems);
@@ -162,6 +169,7 @@ public class BUpgradePayService {
         log.info("非主打商品的品牌下的商品升级---------start");
         skipNoBrandSkuUpgrade(pfBorder.getUserId(), pfBorder.getUserPid(), pfBorderItems);
         log.info("非主打商品的品牌下的商品升级---------end");
+
     }
 
     private void skipNoBrandSkuUpgrade(Long userId, Long userPid, List<PfBorderItem> pfBorderItems) {
@@ -256,6 +264,8 @@ public class BUpgradePayService {
         log.info("agentLevelId-----"+agentLevelId);
         log.info("------spuId--------"+spuId);
         String rootPath = RootPathUtils.getRootPath();
+        //清空赠送商品
+        clearRegisterGiveSkuStockAtom(noMainSkuId,agentLevelId,userId);
         //修改推荐关系
         log.info("修改推荐关系-----start");
         PfUserRecommenRelation noMainPfUserRecommenRelation = pfUserRecommendRelationService.selectRecommenRelationByUserIdAndSkuId(userId, noMainSkuId);
@@ -661,6 +671,33 @@ public class BUpgradePayService {
         return i;
     }
 
+    /**
+     * 清空赠送商品
+     * @param userId
+     * @param pfBorderItems
+     */
+    private void clearRegisterGiveSkuStock(Long userId, List<PfBorderItem> pfBorderItems) {
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            clearRegisterGiveSkuStockAtom(pfBorderItem.getSkuId(),pfBorderItem.getAgentLevelId(),userId);
+        }
+    }
+    /**
+     * 清空赠送商品原子
+     * @param skuId
+     * @param agentLevelId
+     * @param userId
+     */
+    private void clearRegisterGiveSkuStockAtom(Integer skuId,Integer agentLevelId,Long userId){
+        if (skuId.equals(giveSkuId)&&agentLevelId.equals(giveSkuAgentLevel)) {
+            PfUserSkuStock userSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
+            if (userSkuStock!=null&&userSkuStock.getRegisterGiveSkuStock()>0){
+                userSkuStock.setRegisterGiveSkuStock(0);
+                if (pfUserSkuStockService.updateByIdAndVersions(userSkuStock) != 1) {
+                    throw new BusinessException("升级清空赠送商品出错");
+                }
+            }
+        }
+    }
 
     /**
      * 冻结库存

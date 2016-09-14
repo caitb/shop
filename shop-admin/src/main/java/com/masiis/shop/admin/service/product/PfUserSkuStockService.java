@@ -34,12 +34,13 @@ public class PfUserSkuStockService {
 
     /**
      * 判断用户是否有足够的库存
-     * @param userId   用户id
-     * @param skuId    商品id
+     *
+     * @param userId 用户id
+     * @param skuId  商品id
      * @return
      */
-    public Boolean isEnoughStock(Long userId,Integer skuId){
-        log.info("判断用户是否有足够的库存-----userId----"+userId+"-----skuId----"+skuId);
+    public Boolean isEnoughStock(Long userId, Integer skuId) {
+        log.info("判断用户是否有足够的库存-----userId----" + userId + "-----skuId----" + skuId);
         PfUserSkuStock pfUserSkuStock = selectByUserIdAndSkuId(userId, skuId);
         Boolean isStock = true;
         if (pfUserSkuStock == null) {
@@ -48,7 +49,7 @@ public class PfUserSkuStockService {
         if (pfUserSkuStock.getCustomStock() <= 0) {
             isStock = false;
         }
-        log.info("判断用户是否有足够的库存----------"+isStock);
+        log.info("判断用户是否有足够的库存----------" + isStock);
         return isStock;
     }
 
@@ -103,41 +104,49 @@ public class PfUserSkuStockService {
         Integer afterStock = before.getStock();
         Integer fronzeStock = before.getFrozenStock();
         Integer registerGiveSkuStock = before.getRegisterGiveSkuStock();
-        if (registerGiveSkuStock==null){
-            registerGiveSkuStock = 0;
-        }
         switch (handleType) {
             case agent:
                 afterStock += change;
-                registerGiveSkuStock = 0;
                 break;
             case downAgent:
                 afterStock -= change;
                 fronzeStock -= change;
+                registerGiveSkuStock -= change;
                 break;
             case shopOrder:
                 afterStock -= change;
                 fronzeStock -= change;
+                registerGiveSkuStock -= change;
                 break;
             case shopReturn:
                 afterStock += change;
                 break;
+            case STORAGECHANGE_BILL_ADD:
+                afterStock += change;
+                break;
+            case PROMOTION_ADD:
+                afterStock += change;
+                registerGiveSkuStock += change;
+                break;
+            case PROMOTION_REDUCE:
+                afterStock -= change;
+                registerGiveSkuStock -= change;
+                break;
             default:
-                throw new BusinessException();
+                throw new BusinessException("没有这种出入库类型!");
         }
-
+        //如果锁定库存不够减，那么改为0不能为负数
+        if (registerGiveSkuStock < 0) {
+            registerGiveSkuStock = 0;
+        }
         before.setStock(afterStock);
         before.setFrozenStock(fronzeStock);
         before.setRegisterGiveSkuStock(registerGiveSkuStock);
-
         if (before.getStock().intValue() < 0) {
             throw new BusinessException("库存变动后小于0,错误");
         }
         if (before.getFrozenStock().intValue() < 0) {
             throw new BusinessException("冻结库存变动后小于0,错误");
-        }
-        if (before.getRegisterGiveSkuStock()<0){
-            throw new BusinessException("赠送商品库存变动小于0，错误");
         }
     }
 
@@ -152,9 +161,8 @@ public class PfUserSkuStockService {
         return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
-    public PfUserSkuStock selectByUserIdAndSkuIdAndSpuId(Long userId, Integer skuId,Integer spuId) {
-        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId,spuId);
-        return pfUserSkuStock;
+    public PfUserSkuStock selectByUserIdAndSkuIdAndSpuId(Long userId, Integer skuId, Integer spuId) {
+        return pfUserSkuStockMapper.selectByUserIdAndSkuIdAndSpuId(userId, skuId, spuId);
     }
 
 
@@ -194,30 +202,31 @@ public class PfUserSkuStockService {
 
     /**
      * 查找商品库存
+     *
      * @param userId
      * @param skuId
      * @return
      */
-    public PfUserSkuStock findByUserIdAndSkuId(Long userId, Integer skuId){
+    public PfUserSkuStock findByUserIdAndSkuId(Long userId, Integer skuId) {
         return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
-    public List<Map<String,Object>> selectByCondition(Integer pageNumber, Integer pageSize,
-                                  String realName, String mobile, String skuName) {
+    public List<Map<String, Object>> selectByCondition(Integer pageNumber, Integer pageSize,
+                                                       String realName, String mobile, String skuName) {
 
-        Map<String,Object> conditionMap = new HashMap<>();
-        if(StringUtils.isNotBlank(realName)) {
+        Map<String, Object> conditionMap = new HashMap<>();
+        if (StringUtils.isNotBlank(realName)) {
             conditionMap.put("realName", realName);
         }
-        if(StringUtils.isNotBlank(mobile)) {
+        if (StringUtils.isNotBlank(mobile)) {
             conditionMap.put("mobile", mobile);
         }
-        if(StringUtils.isNotBlank(skuName)) {
+        if (StringUtils.isNotBlank(skuName)) {
             conditionMap.put("skuName", skuName);
         }
 
         PageHelper.startPage(pageNumber, pageSize, null);
-        List<Map<String,Object>> userSkuStockList = pfUserSkuStockMapper.selectByCondition(conditionMap);
+        List<Map<String, Object>> userSkuStockList = pfUserSkuStockMapper.selectByCondition(conditionMap);
 
         return userSkuStockList;
     }

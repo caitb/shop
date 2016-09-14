@@ -226,6 +226,7 @@ public class MyRecommendController extends BaseController{
                 userRecommend.setCountGroup(countGroupService.countGroupInfo(pfUserSku.getTreeCode()));
             }
 //            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            //只显示代理的主商品
             List<PfUserSku> pfUserSkuList = pfUserSkuService.selectPrimarySkuByUserId(comUser.getId());
             List<Integer> list = new ArrayList<>();
             if(pfUserSkuList==null){

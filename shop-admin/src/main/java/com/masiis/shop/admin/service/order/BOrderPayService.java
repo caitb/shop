@@ -168,6 +168,9 @@ public class BOrderPayService {
             throw new BusinessException("该支付记录已经被处理成功");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
+        if (!pfBorderPayment.getAmount().equals(pfBorder.getReceivableAmount())) {
+            throw new BusinessException("订单支付金额异常，应收金额：" + pfBorder.getReceivableAmount() + ",支付金额：" + pfBorderPayment.getAmount());
+        }
         //处理支付逻辑 订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0) {
             bOrderPayAgentService.payBOrderAgent(pfBorderPayment, outOrderId);

@@ -137,7 +137,7 @@ public class WxPayService {
     private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r, PfBorder order) {
         PfBorderPayment payment = new PfBorderPayment();
 
-        payment.setAmount(order.getOrderAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+        payment.setAmount(order.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
         payment.setCreateTime(new Date());
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号
@@ -151,7 +151,7 @@ public class WxPayService {
     private PfCorderPayment createCorderPayment(UnifiedOrderReq p, UnifiedOrderRes r, PfCorder order) {
         PfCorderPayment payment = new PfCorderPayment();
 
-        payment.setAmount(order.getOrderAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+        payment.setAmount(order.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
         payment.setCreateTime(new Date());
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号

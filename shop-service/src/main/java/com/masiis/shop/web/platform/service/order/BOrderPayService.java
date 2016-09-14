@@ -99,6 +99,9 @@ public class BOrderPayService {
             throw new BusinessException("该支付记录已经被处理成功");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
+        if (!pfBorderPayment.getAmount().equals(pfBorder.getReceivableAmount())) {
+            throw new BusinessException("订单支付金额异常，应收金额：" + pfBorder.getReceivableAmount() + ",支付金额：" + pfBorderPayment.getAmount());
+        }
         //处理支付逻辑 订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0) {
             bOrderPayAgentService.payBOrderAgent(pfBorderPayment, outOrderId);
@@ -186,7 +189,7 @@ public class BOrderPayService {
         billAmountService.orderBillAmount(pfBorder.getId());
         //增加抽奖的次数
         log.info("增加抽奖的次数----start");
-        userTurnTableService.addTimes(null,pfBorder.getUserId(),SfTurnTableRuleTypeEnum.B.getCode());
+        userTurnTableService.addTimes(null, pfBorder.getUserId(), SfTurnTableRuleTypeEnum.B.getCode());
         log.info("增加抽奖的次数----end");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.WaitShip.getCode()) {
@@ -270,7 +273,7 @@ public class BOrderPayService {
     public Boolean offinePayment(ComUser comUser, Long bOrderId) throws Exception {
         //修改订单状态
         try {
-            log.info("线下支付修改状态--------borderId------"+bOrderId);
+            log.info("线下支付修改状态--------borderId------" + bOrderId);
             PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
             if (pfBorder != null) {
                 //插入订单支付表
@@ -397,7 +400,7 @@ public class BOrderPayService {
      */
     public Map<String, Object> getOffinePaymentDeatil(Long bOrderId) throws BusinessException {
         log.info("获取线下支付详情------start");
-        log.info("borderId--------------"+bOrderId);
+        log.info("borderId--------------" + bOrderId);
         Map<String, Object> map = null;
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder != null) {

@@ -64,11 +64,11 @@
            $(".level b").html($("#level option:selected").text());
            $("#goods").width(goodsWidth);
            $("#level").width(levelWidth);
-           $("#level option").each(function (i) {
-               if(i==1){
-                   $("#level option").eq(i).remove();
-               }
-           })
+//           $("#level option").each(function (i) {
+//               if(i==1){
+//                   $("#level option").eq(i).remove();
+//               }
+//           })
        })
        $("#goods").on("change",function(){
            var tabVal=$("#goods option:selected").text();

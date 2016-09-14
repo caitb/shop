@@ -45,6 +45,7 @@ public class PfSkuStockService {
         System.out.println("----"+stock.getId()+"-----"+stock.getFrozenStock()+"------"+stock.getRemark());
         System.out.println("----"+stock.getCreateTime()+"-----"+stock.getIsQueue()+"------"+stock.getSkuId());
         System.out.println("----"+stock.getSpuId()+"-----"+stock.getStock()+"------"+stock.getSupplierId());
+        System.out.println("----"+stock.getVersion());
         Integer i = updateByIdAndVersions(stock);
         System.out.println("更新平台库存的条数-----"+i);
         if (i!= 1) {
@@ -160,14 +161,13 @@ public class PfSkuStockService {
         return map;
     }
 
-    public PfSkuStock updateFrozenStock(Integer changeQuantity,String remark,PfSkuStock pfSkuStock){
+    public void updateFrozenStock(Integer changeQuantity,String remark,PfSkuStock pfSkuStock){
         if (pfSkuStock!=null){
             //增加平台冻结库存
             pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
             if (updateByIdAndVersions(pfSkuStock) != 1) {
                 throw new BusinessException(remark);
             }
-            return pfSkuStock;
         }else{
             throw new BusinessException("----更新平台库存失败-----");
         }

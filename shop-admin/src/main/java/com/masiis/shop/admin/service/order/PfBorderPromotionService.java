@@ -56,8 +56,9 @@ public class PfBorderPromotionService {
                     if (pfSkuStock.getFrozenStock() < pfBorderPromotion.getQuantity()) {
                         throw new BusinessException("库存冻结不足，操作失败");
                     }
-                    pfSkuStock = pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), "小白注册赠送商品，下单时增加平台冻结库存",pfSkuStock);
+                    pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), "小白注册赠送商品，下单时增加平台冻结库存",pfSkuStock);
                     //减少平台库存
+                    pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
                     pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
                     log.info("---------------------增加代理用户库存--------------------");
                     PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());

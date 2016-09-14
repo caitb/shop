@@ -418,6 +418,7 @@ public class PfBorderPromotionService {
         log.info("registerGiveSkuStock------"+registerGiveSkuStock+"-------changeQuantity----"+changeQuantity);
         switch (changeGiveStockType){
             case agent:
+                stock += changeQuantity;
                 registerGiveSkuStock += changeQuantity;
                 userSkuStock.setRemark("小白用户注册代理平台送货");
                 break;

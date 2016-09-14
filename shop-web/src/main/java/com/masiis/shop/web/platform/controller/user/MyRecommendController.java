@@ -29,6 +29,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -219,24 +220,29 @@ public class MyRecommendController extends BaseController{
             ComUser comUser = getComUser(request);
 
             List<UserRecommend> sumByUserPid = pfUserRecommendRelationService.findSumByUserPid(comUser.getId());//我推荐的详情列表
-            List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
 
             for (UserRecommend userRecommend :sumByUserPid){
                 PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(userRecommend.getUserId(),userRecommend.getSkuId());
                 userRecommend.setCountGroup(countGroupService.countGroupInfo(pfUserSku.getTreeCode()));
             }
-            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+//            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            List<PfUserSku> pfUserSkuList = pfUserSkuService.selectPrimarySkuByUserId(comUser.getId());
+            List<Integer> list = new ArrayList<>();
             if(pfUserSkuList==null){
                 throw new BusinessException("代理商品异常，初始化商品列表失败");
             }else{
                 List<ComSku> skuList = new ArrayList();
                 for(PfUserSku pfUserSku :pfUserSkuList){
+                    list.add(pfUserSku.getAgentLevelId());
                     ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
                     skuList.add(comSku);
                 }
                 modelAndView.addObject("skuList", skuList);
             }
-
+//            List<ComAgentLevel> agentLevels = comAgentLevelService.selectAll();
+            Collections.sort(list);
+            //等级信息
+            List<ComAgentLevel> agentLevels = comAgentLevelService.selectLastAll(list.get(0));
             modelAndView.addObject("agentLevels",agentLevels);
             modelAndView.addObject("sumByUserPid",sumByUserPid);
             modelAndView.setViewName("platform/user/wotuijianderen");

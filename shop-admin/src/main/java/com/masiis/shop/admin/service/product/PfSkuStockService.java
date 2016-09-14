@@ -83,6 +83,7 @@ public class PfSkuStockService {
             case recoveryGiveSku:
                 afterStock += change;
                 afterFrozeStock += change;
+                break;
             default:
                 throw new BusinessException("该操作类型不支持");
         }

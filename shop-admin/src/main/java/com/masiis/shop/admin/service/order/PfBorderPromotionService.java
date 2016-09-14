@@ -98,8 +98,6 @@ public class PfBorderPromotionService {
                                         Integer mallSellQuantity,
                                         PfBorderPromotionGiveStockChangeEnum changeGiveStockType,
                                         Integer orderType){
-        log.info("skuId-------"+skuId+"----giveSkuId----"+giveSkuId);
-        if (skuId.equals(giveSkuId)) {
             if (isOpenPromotion()) {
                 log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---start");
                 log.info("入口参数------pfBorderId---" + pfBorderId + "---userId---" + userId + "---skuId----" + skuId + "----spuId---" + spuId);
@@ -157,15 +155,17 @@ public class PfBorderPromotionService {
                         }
                         break;
                     case sell:
-                        userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId, skuId, spuId);
-                        if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
-                            updateOwnStock(mallSellQuantity,
-                                    null,
-                                    userSkuStock,
-                                    userId,
-                                    skuId,
-                                    spuId,
-                                    PfBorderPromotionGiveStockChangeEnum.sell);
+                        if (skuId.equals(giveSkuId)){
+                            userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(userId, skuId, spuId);
+                            if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
+                                updateOwnStock(mallSellQuantity,
+                                        null,
+                                        userSkuStock,
+                                        userId,
+                                        skuId,
+                                        spuId,
+                                        PfBorderPromotionGiveStockChangeEnum.sell);
+                            }
                         }
                         break;
                     case recovery:
@@ -176,9 +176,6 @@ public class PfBorderPromotionService {
                 }
                 log.info("代理，补货，升级，购买，回收 更新平台赠送商品的库存的--入口---end");
             }
-        }else{
-            log.info("购买的不是赠送商品-----购买商品skuId----"+skuId);
-        }
     }
 
     /**

@@ -417,8 +417,10 @@ public class AgentBOrderController extends BaseController {
             pfBorder = bOrderService.getPfBorderById(borderId);
             if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
                 res.setPayType(0);
+            }else{
+                res.setPayType(1);
             }
-            res.setPayType(1);
+
 
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

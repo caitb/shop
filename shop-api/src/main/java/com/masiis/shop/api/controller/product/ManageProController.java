@@ -139,7 +139,7 @@ public class ManageProController extends BaseController {
                 applyProRes.setComUserAddress(comUserAddress);
             }
             PfUserSkuStock pfUserSkuStock = productService.getStockByUser(req.getId());
-            int userStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock()-pfUserSkuStock.getRegisterGiveSkuStock();
+            int userStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
             if (userStock < 0) {
                 pfUserSkuStock.setStock(0);
             } else {

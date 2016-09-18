@@ -16,8 +16,11 @@
                     <p>升级</p>
         </header>
         <main>
-            <c:if test="${upgradeDetail.upStatus == 3}">
+            <c:if test="${upgradeDetail.upStatus == 3 && upgradeDetail.upgradeStatus != 4}">
                 <h1>您的升级申请已经审核通过，请继续支付。</h1>
+            </c:if>
+            <c:if test="${upgradeDetail.upgradeStatus == 4}">
+                <h1>您的升级申请已经取消。</h1>
             </c:if>
             <p>升级信息：</p>
             <div class="floor">
@@ -57,9 +60,11 @@
                 <p>合计：<span>￥${upgradeDetail.totalPrice} </span></p>
                 <h1><b>*</b>在${payDate}前（2天内）支付升级申请，逾期将取消升级申请</h1>
             </div>
-            <button onclick="skipGenerateOrder(${upgradeDetail.upgradeNoticeId})">
-                下一步
-            </button>
+            <c:if test="${upgradeDetail.upgradeStatus == 2}">
+                <button onclick="skipGenerateOrder(${upgradeDetail.upgradeNoticeId})">
+                    下一步
+                </button>
+            </c:if>
         </main>
     </div>
     <script src="${path}/static/js/jquery-1.8.3.min.js"></script>

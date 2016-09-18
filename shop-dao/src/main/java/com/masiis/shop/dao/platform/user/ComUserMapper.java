@@ -86,6 +86,10 @@ public interface ComUserMapper {
 
     int deleteByPrimaryKey(Long userId);
 
-
-
+    /**
+     * 修改昵称
+     *
+     * @return
+     */
+    int modifyName (ComUser user);
 }

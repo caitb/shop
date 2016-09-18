@@ -1,13 +1,16 @@
 package com.masiis.shop.api.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.api.bean.common.CommonRei;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.PersonalCenterRes;
+import com.masiis.shop.api.bean.user.PersonalCenterRei;
 import com.masiis.shop.api.bean.user.SkuAgentDetail;
 import com.masiis.shop.api.constants.AuditStatusEnum;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.web.api.service.PersonalCenterService;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
@@ -36,6 +39,7 @@ public class PersonalCenterController extends BaseController {
 
     @Autowired
     private PersonalCenterService personalCenterService;
+
 
     @RequestMapping(value = "/centerHome.do",method = RequestMethod.POST)
     @ResponseBody
@@ -78,6 +82,28 @@ public class PersonalCenterController extends BaseController {
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
 
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
+        return res;
+    }
+
+
+    @RequestMapping(value = "/modifyName.do")//,method = RequestMethod.POST
+    @ResponseBody
+    @SignValid(paramType = CommonRei.class)
+    public PersonalCenterRei modifyName(HttpServletRequest request, CommonRei rei, ComUser user){
+        logger.info("修改昵称");
+        PersonalCenterRei res = new PersonalCenterRei();
+        user.setWxNkName(rei.getWxNkName());
+        try {
+            personalCenterService.modifyName(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
+        }
+        logger.info("变更名：" + user.getWxNkName());
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
     }

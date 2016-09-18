@@ -1,6 +1,7 @@
 package com.masiis.shop.web.api.service;
 
 import com.masiis.shop.common.constant.platform.SysConstants;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -25,6 +26,8 @@ public class PersonalCenterService {
     private SkuAgentService skuAgentService;
     @Autowired
     private SkuService skuService;
+    @Autowired
+    private ComUserMapper comUserMapper;
     /**
      * 个人信息首页信息
      * @author hanzengzhi
@@ -69,5 +72,13 @@ public class PersonalCenterService {
             skuAgentDetails.add(skuAgentDetail);
         }
         return skuAgentDetails;
+    }
+
+    @Transactional
+    public Integer modifyName( ComUser user){
+        if (comUserMapper.modifyName(user) == 0){
+            throw new BusinessException("用户不存在");
+        }
+        return  comUserMapper.modifyName(user);
     }
 }

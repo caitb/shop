@@ -409,4 +409,12 @@
         </if>
     </select>
 
+    <update id="modifyName" parameterType="com.masiis.shop.dao.po.ComUser">
+        update com_user
+        <set>
+            wx_nk_name = #{wxNkName,jdbcType=VARCHAR}
+        </set>
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

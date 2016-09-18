@@ -127,7 +127,11 @@ public class ProductController {
                 comSpu.setCreateTime(new Date());
                 comSpu.setCreateMan(pbUser.getId());
                 comSpu.setStatus(1);
-                comSpu.setIsSale(0);
+                if(spuId == null){
+                    comSpu.setIsSale(0);
+                }else{
+                    comSpu.setIsSale(null);
+                }
                 comSpu.setIsDelete(0);
                 comSpu.setType(1);
                 if(StringUtils.isBlank(comSpu.getCategoryName())) comSpu.setCategoryName(null);

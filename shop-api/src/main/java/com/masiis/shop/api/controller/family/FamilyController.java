@@ -84,6 +84,9 @@ public class FamilyController extends BaseController {
             List<PbBanner> pbBanners = pbBannerMapper.selectAll();//banner 图列表
             for (PbBanner pbBanner : pbBanners) {
                 pbBanner.setImgUrl(bannerUrl + pbBanner.getImgUrl());
+                if(pbBanner.getAppHyperlinkUrl()!=null && pbBanner.getAppHyperlinkUrl().indexOf("skuId")!= -1){
+                    pbBanner.setSkuId(Integer.parseInt(pbBanner.getAppHyperlinkUrl().substring(6)));
+                }
             }
             List<ComBrandForFamily> comBrandForFamilies = pfUserBrandService.organizationListForWorld();//品牌
             List<PfUserOrganization> pfUserOrganizations = pfUserBrandService.familyListForWorld(agentLevelId_family, MarketTypeEnum.TYPE_Family.getCode());//家族

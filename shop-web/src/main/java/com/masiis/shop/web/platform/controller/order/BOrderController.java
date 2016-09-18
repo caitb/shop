@@ -134,7 +134,7 @@ public class BOrderController extends BaseController {
      * @return
      * @throws Exception
      */
-   /* @RequestMapping("/payBOrder.shtml")
+    @RequestMapping("/payBOrder.shtml")
     public String payBOrder(HttpServletRequest request,
                             RedirectAttributes attrs,
                             @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
@@ -181,7 +181,7 @@ public class BOrderController extends BaseController {
                 }
             } else if (pfBorder.getOrderType() == 1) {
                 successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
-            } else if (pfBorder.getOrderType() == 3){
+            } else if (pfBorder.getOrderType() == 3) {
                 successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else {
                 throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
@@ -195,7 +195,7 @@ public class BOrderController extends BaseController {
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
-    }*/
+    }
 
     /**
      * 实时的获取订单的详情
@@ -314,12 +314,12 @@ public class BOrderController extends BaseController {
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
 //        boolean isUserForcus = WxPFUserUtils.getInstance().isUserForcusPF(comUser);
 //        mav.addObject("isUserForcus", isUserForcus);
-        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        Map<String, String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
         String bl = map.get("isTurnTableRule");
-        mav.addObject("isTurnTableRule",bl);
-        if (bl.equals("true")){
+        mav.addObject("isTurnTableRule", bl);
+        if (bl.equals("true")) {
             mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
-        }else{
+        } else {
             mav.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
         }
         return mav;
@@ -351,7 +351,7 @@ public class BOrderController extends BaseController {
             successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
         } else if (pfBorder.getOrderType() == 2) {
             successURL += "product/replenishmentSelf.shtml?bOrderId=" + pfBorder.getId();
-        }else if (pfBorder.getOrderType() == 3){
+        } else if (pfBorder.getOrderType() == 3) {
             successURL += "border/upgradePaySuccessSkipPage.shtml?bOrderId=" + pfBorder.getId();
         } else {
             throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
@@ -363,27 +363,28 @@ public class BOrderController extends BaseController {
 
     /**
      * 升级支付成功回调
+     *
      * @param bOrderId
      * @return
      * @throws Exception
      */
     @RequestMapping("/upgradePaySuccessSkipPage.shtml")
-    public ModelAndView upgradePaySuccessSkipPage(HttpServletRequest request,@RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception{
+    public ModelAndView upgradePaySuccessSkipPage(HttpServletRequest request, @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ModelAndView mv = new ModelAndView();
         ComUser comUser = getComUser(request);
         BOrderUpgradeDetail bOrderUpgradeDetail = bOrderService.getUpgradeOrderInfo(bOrderId);
-        if (comUser!=null){
+        if (comUser != null) {
             bOrderUpgradeDetail.setName(comUser.getRealName());
         }
-        mv.addObject("orderUpgradeDetail",bOrderUpgradeDetail);
-        mv.addObject("comUser",comUser);
+        mv.addObject("orderUpgradeDetail", bOrderUpgradeDetail);
+        mv.addObject("comUser", comUser);
         mv.setViewName("platform/order/agent/upgradePaySuccess");
-        Map<String,String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
+        Map<String, String> map = turnTableRuleService.isTurnTableRule(SfTurnTableRuleTypeEnum.B.getCode());
         String bl = map.get("isTurnTableRule");
-        mv.addObject("isTurnTableRule",bl);
-        if (bl.equals("true")){
+        mv.addObject("isTurnTableRule", bl);
+        if (bl.equals("true")) {
             mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
-        }else{
+        } else {
             mv.addObject("turnTableRuleTimes", map.get("turnTableRuleTimes"));
         }
         return mv;

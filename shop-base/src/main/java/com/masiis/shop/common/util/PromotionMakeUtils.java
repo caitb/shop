@@ -14,7 +14,7 @@ public class PromotionMakeUtils {
     public static  final String promotionStartEndString  = "2020-10-10";
     public static  final Integer giveSkuAgentLevel = 3; //赠送商品的等级
     public static  final Integer giveSkuQuantity = 5;//赠送的商品数量
-    public static  final  Integer giveSkuId = 16;
+    public static  final  Integer giveSkuId = 16; //赠送商品的id
 
 
     public static String makeCode() {

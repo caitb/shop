@@ -123,15 +123,10 @@ public class PfSkuStockService {
         return map;
     }
 
-    public void updateFrozenStock(Integer changeQuantity,Integer skuId,String remark){
-        PfSkuStock pfSkuStock =  selectBySkuId(skuId);
+    public void updateFrozenStock(Integer changeQuantity,String remark,PfSkuStock pfSkuStock){
         if (pfSkuStock!=null){
             //增加平台冻结库存
-            if (pfSkuStock.getFrozenStock()==null){
-                pfSkuStock.setFrozenStock(changeQuantity);
-            }else{
-                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
-            }
+            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + changeQuantity);
             if (updateByIdAndVersions(pfSkuStock) != 1) {
                 throw new BusinessException(remark);
             }

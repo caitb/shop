@@ -235,6 +235,9 @@ public class PfBorderPromotionService {
                         pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
                         log.info("---------------------增加代理用户库存--------------------");
                         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());
+                        if (pfUserSkuStock==null){
+                             pfUserSkuStockService.initPfUserSkuStock(pfBorder.getUserId(),pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId());
+                        }
                         pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.PROMOTION_ADD);
                         //修改发送状态
                         updateIsSend(pfBorderPromotion);
@@ -246,6 +249,7 @@ public class PfBorderPromotionService {
         }
         log.info(" 更新平台赠送给小白的商品库存----end");
     }
+
 
     /**
      * 更新订单促销活动赠品表中是否已发放商品
@@ -269,23 +273,24 @@ public class PfBorderPromotionService {
     public void recoverySkuStock(PfBorderPromotion pfBorderPromotion ) {
         try {
             log.info("回收平台赠送的到期的商品-----start");
+            log.info("回收到期的平台送的商品----订单活动id-----"+pfBorderPromotion.getId());
             PfUserSkuStock userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(pfBorderPromotion.getUserId(), pfBorderPromotion.getSkuId(), pfBorderPromotion.getSpuId());
             if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
                 //更新自己的库存
                 log.info("-----更新自己的库存----start");
-                pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), userSkuStock, pfBorderPromotion.getPfBorderId(), UserSkuStockLogType.PROMOTION_REDUCE);
-                Integer stock = userSkuStock.getStock();
                 Integer registerGiveSkuStock = userSkuStock.getRegisterGiveSkuStock();
                 if (registerGiveSkuStock>0){
-                    stock -= registerGiveSkuStock;
-                    registerGiveSkuStock = 0;
                     userSkuStock.setRemark("时间到期回收小白没有卖出去的库存");
+                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), userSkuStock, pfBorderPromotion.getPfBorderId(), UserSkuStockLogType.PROMOTION_REDUCE);
+                    log.info("-----更新自己的库存----end");
+                    //更新平台库存
+                    log.info("-----更新平台库存----start");
+                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
+                    pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorderPromotion.getPfBorderId(), SkuStockLogType.recoveryGiveSku);
+                    log.info("-----更新平台库存----end");
+                }else{
+                    log.info("赠送商品小于等于0----订单活动id-----"+pfBorderPromotion.getId());
                 }
-                log.info("-----更新自己的库存----end");
-                //更新平台库存
-                log.info("-----更新平台库存----start");
-
-                log.info("-----更新平台库存----end");
             }
             log.info("回收平台赠送的到期的商品-----end");
         } catch (Exception e) {

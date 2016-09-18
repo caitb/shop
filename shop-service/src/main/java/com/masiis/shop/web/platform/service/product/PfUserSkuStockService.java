@@ -173,6 +173,26 @@ public class PfUserSkuStockService {
         return pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
     }
 
+
+    public void initPfUserSkuStock(Long userId,Integer skuId,Integer spuId){
+        PfUserSkuStock pfUserSkuStock = new PfUserSkuStock();
+        pfUserSkuStock = new PfUserSkuStock();
+        pfUserSkuStock.setCreateTime(new Date());
+        pfUserSkuStock.setUserId(userId);
+        pfUserSkuStock.setSpuId(spuId);
+        pfUserSkuStock.setSkuId(skuId);
+        pfUserSkuStock.setStock(0);
+        pfUserSkuStock.setFrozenStock(0);
+        pfUserSkuStock.setRegisterGiveSkuStock(0);
+        pfUserSkuStock.setFrozenCustomStock(0);
+        pfUserSkuStock.setCustomStock(0);
+        pfUserSkuStock.setVersion(0);
+        int i = insert(pfUserSkuStock);
+        if (i!=1){
+            throw new BusinessException("初始化用户库存失败----userId---"+userId+"----skuId---"+skuId+"---spuId---"+spuId);
+        }
+    }
+
     public int insert(PfUserSkuStock pfUserSkuStock) {
         return pfUserSkuStockMapper.insert(pfUserSkuStock);
     }

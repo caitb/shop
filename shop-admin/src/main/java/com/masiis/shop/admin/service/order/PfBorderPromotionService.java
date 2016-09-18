@@ -64,6 +64,9 @@ public class PfBorderPromotionService {
                         pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
                         log.info("---------------------增加代理用户库存--------------------");
                         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());
+                        if (pfUserSkuStock==null){
+                            pfUserSkuStockService.initPfUserSkuStock(pfBorder.getUserId(),pfBorderPromotion.getSkuId(),pfBorderPromotion.getSpuId());
+                        }
                         pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.PROMOTION_ADD);
                         //修改发送状态
                         updateIsSend(pfBorderPromotion);

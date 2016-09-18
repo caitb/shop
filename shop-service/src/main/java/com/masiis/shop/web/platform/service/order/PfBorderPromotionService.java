@@ -114,6 +114,7 @@ public class PfBorderPromotionService {
                         Map<String,Object>  map =  pfSkuStockService.isEnoughPlatformSku(pfSkuAgent.getQuantity(),spuId,skuId);
                         Boolean isEnoughPlatformSku = (Boolean) map.get("isEnoughPlatformSku");
                         if (isEnoughPlatformSku){
+                            log.info("满足活动条件");
                             unitPrice = pfSkuAgent.getUnitPrice();
                             totalPrice = pfSkuAgent.getTotalPrice();
                             return true;
@@ -144,6 +145,7 @@ public class PfBorderPromotionService {
      */
     private Boolean isOpenPromotion(){
         try{
+            log.info("判断活动时间是否开启-----start");
             SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.YYYYMMDDFMT);
             Date startDate = sdf.parse(promotionStartDateString);
             Date endDate = sdf.parse(promotionStartEndString);
@@ -154,6 +156,7 @@ public class PfBorderPromotionService {
                     return true;
                 }
             }
+            log.info("判断活动时间是否开启-----end");
             return false;
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -210,9 +213,56 @@ public class PfBorderPromotionService {
         }
     }
 
+    public void doPromotion(PfBorder pfBorder) {
+        log.info(" 更新平台赠送给小白的商品库存----start");
+        try {
+            List<PfBorderPromotion> pfBorderPromotions = pfBorderPromotionMapper.selectByPfBorderId(pfBorder.getId());
+            if (pfBorderPromotions != null && pfBorderPromotions.size() > 0) {
+                for (PfBorderPromotion pfBorderPromotion : pfBorderPromotions) {
+                    if (pfBorderPromotion.getQuantity() > 0 && pfBorderPromotion.getIsSend().intValue() == 0) {
+                        log.info("---------------------减少平台库存--------------------");
+                        //增加平台冻结库存
+                        PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
+                        if (pfSkuStock.getStock() < pfBorderPromotion.getQuantity()) {
+                            throw new BusinessException("库存不足，操作失败");
+                        }
+                        if (pfSkuStock.getFrozenStock() < pfBorderPromotion.getQuantity()) {
+                            throw new BusinessException("库存冻结不足，操作失败");
+                        }
+                        pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), "小白注册赠送商品，下单时增加平台冻结库存",pfSkuStock);
+                        //减少平台库存
+                        pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
+                        pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
+                        log.info("---------------------增加代理用户库存--------------------");
+                        PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());
+                        pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.PROMOTION_ADD);
+                        //修改发送状态
+                        updateIsSend(pfBorderPromotion);
+                    }
+                }
+            }
+        }catch (Exception e){
+            throw new BusinessException("更新平台赠送给小白的商品库存失败-----"+e.getMessage());
+        }
+        log.info(" 更新平台赠送给小白的商品库存----end");
+    }
 
-
-
+    /**
+     * 更新订单促销活动赠品表中是否已发放商品
+     *
+     * @param pfBorderPromotion
+     */
+    private void updateIsSend(PfBorderPromotion pfBorderPromotion) {
+        if (pfBorderPromotion == null) {
+            throw new BusinessException("------数据异常!!!------");
+//            pfBorderPromotion = getBorderPromotionsByBorderIdAndIsSend(pfBorderId, PfBorderPromotionIsSendEnum.NO_GiVE.getCode());
+        }
+        pfBorderPromotion.setIsSend(PfBorderPromotionIsSendEnum.GiVED.getCode());
+        int i = update(pfBorderPromotion);
+        if (i != 1) {
+            throw new BusinessException("------更新订单促销活动赠品表中是否已发放商品失败------");
+        }
+    }
     /**
      * 回收到期的平台送的商品
      */

@@ -96,11 +96,11 @@ public class PersonalCenterController extends BaseController {
         logger.info("修改昵称");
         PersonalCenterRei res = new PersonalCenterRei();
         try {
-            String pattenForWxcode = "^(([\\u4e00-\\u9fa5]{2,8})|([a-zA-Z]{2,16}))$";
+            String pattenForWxcode = "^(([\\u4e00-\\u9fa5]{1,8})|([0-9]{1,16})|([a-zA-Z]{1,16}))$";
             if (startCheck(pattenForWxcode, rei.getWxNkName()) == false) {
                 res.setResCode(SysResCodeCons.RES_CODE_ILLEGAL);
-                res.setResCode(SysResCodeCons.NICHENG_IILEAGAL);
-                logger.info("该昵称不合法");
+                res.setResMsg(SysResCodeCons.NICHENG_IILEAGAL);
+                logger.info("该昵称不合法"+rei.getWxNkName());
                 return res;
             }
             user.setWxNkName(rei.getWxNkName());

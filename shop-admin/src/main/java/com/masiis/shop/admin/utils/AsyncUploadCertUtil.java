@@ -1,9 +1,11 @@
 package com.masiis.shop.admin.utils;
 
+import com.masiis.shop.admin.service.shop.SfShopService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserCertificateService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.po.SfShop;
 import org.apache.log4j.Logger;
 
 import java.util.Objects;
@@ -19,6 +21,8 @@ public class AsyncUploadCertUtil {
             (PfUserCertificateService) ApplicationContextUtil.getBean("pfUserCertificateService");
     ComUserService comUserService =
             (ComUserService) ApplicationContextUtil.getBean("comUserService");
+    SfShopService sfShopService =
+            (SfShopService) ApplicationContextUtil.getBean("sfShopService");
 
     private static class Holder {
         private static final AsyncUploadCertUtil INSTANCE = new AsyncUploadCertUtil();
@@ -46,6 +50,9 @@ public class AsyncUploadCertUtil {
                         PfUserSku pfUserSku = (PfUserSku) object;
                         ComUser comUser = comUserService.getUserById(pfUserSku.getUserId());
                         pfUserCertificateService.asyncUploadUserCertificateItem(pfUserSku, comUser);
+                    } else if (object instanceof SfShop) {
+                        SfShop sfShop = (SfShop) object;
+                        sfShopService.createShopPoster(sfShop);
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);

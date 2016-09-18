@@ -103,7 +103,7 @@ public class ComUserService {
 //
 //        return pageMap;
 //    }
-    public Map<String,Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
         PageHelper.startPage(pageNumber, pageSize, "audit_date desc");
         List<ComUser> comUsers = comUserMapper.selectByConditionWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
@@ -145,7 +145,7 @@ public class ComUserService {
 //
 //        return pageMap;
 //    }
-    public Map<String,Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
+    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser, Map<String, Object> conMap) {
         PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<ComUser> comUsers = comUserMapper.auditListWithMap(conMap);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
@@ -254,13 +254,17 @@ public class ComUserService {
             //添加合伙证书 回写证书编号
             try {
                 AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(comUser);
+                SfShop sfShop = sfShopService.loadShopByUserId(comUser.getId());
+                if (sfShop != null) {
+                    AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(sfShop);
+                }
             } catch (InterruptedException e) {
                 logger.error("阻塞住了");
             }
             //开店
             SfShop sfShop = sfShopService.loadShopByUserId(comUser.getId());
             if (sfShop != null) {
-                sfShop.setName(comUser.getRealName()+"的店铺");
+                sfShop.setName(comUser.getRealName() + "的店铺");
                 sfShop.setStatus(1);
                 sfShopService.update(sfShop);
             }
@@ -292,7 +296,6 @@ public class ComUserService {
     public List<ComUser> queryByConditions(Map<String, Object> params) {
         return comUserMapper.selectByConditions(params);
     }
-
 
 
 }

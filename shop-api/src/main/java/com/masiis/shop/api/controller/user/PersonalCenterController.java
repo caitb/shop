@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by wangbingjian on 2016/5/5.
@@ -93,8 +95,15 @@ public class PersonalCenterController extends BaseController {
     public PersonalCenterRei modifyName(HttpServletRequest request, CommonRei rei, ComUser user){
         logger.info("修改昵称");
         PersonalCenterRei res = new PersonalCenterRei();
-        user.setWxNkName(rei.getWxNkName());
         try {
+            String pattenForWxcode = "^(([\\u4e00-\\u9fa5]{2,8})|([a-zA-Z]{2,16}))$";
+            if (startCheck(pattenForWxcode, rei.getWxNkName()) == false) {
+                res.setResCode(SysResCodeCons.RES_CODE_ILLEGAL);
+                res.setResCode(SysResCodeCons.NICHENG_IILEAGAL);
+                logger.info("该昵称不合法");
+                return res;
+            }
+            user.setWxNkName(rei.getWxNkName());
             personalCenterService.modifyName(user);
         }catch (Exception e){
             e.printStackTrace();
@@ -108,4 +117,11 @@ public class PersonalCenterController extends BaseController {
         return res;
     }
 
+    private boolean startCheck(String reg, String str) {
+        boolean tem = false;
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(str);
+        tem = matcher.matches();
+        return tem;
+    }
 }

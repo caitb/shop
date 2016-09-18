@@ -12,6 +12,7 @@ import com.masiis.shop.web.common.service.UserAddressService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
+import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.common.service.SkuService;
@@ -62,6 +63,8 @@ public class BOrderAddController extends BaseController {
     private UpgradeNoticeService upgradeNoticeService;
     @Resource
     private UpgradeWechatNewsService upgradeWechatNewsService;
+    @Resource
+    private BOrderPayService payBOrderService;
 
     /**
      * 代理订单确认订单页
@@ -432,6 +435,19 @@ public class BOrderAddController extends BaseController {
                     log.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
                     orderAdd.setUserSource(0);
                     orderId = bOrderAddService.addBOrder(orderAdd);
+
+                    // 0元升级，不需要支付，直接升级成功
+                    PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+                    if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                        log.info("0元升级订单处理，订单id:" + orderId);
+                        PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+                        log.info("处理0元升级订单，支付流水号为:" + payment.getPaySerialNum());
+                        payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                        jsonObject.put("upgradeType", 0);
+                    }else{
+                        jsonObject.put("upgradeType", 1);
+                    }
+
                 } else {
                     log.info("您已不能再升级----当前用户id---" + comUser.getId() + "----当前等级----" + upgradeDetail.getCurrentAgentLevelName());
                     throw new BusinessException("您是最顶级不能再升级");

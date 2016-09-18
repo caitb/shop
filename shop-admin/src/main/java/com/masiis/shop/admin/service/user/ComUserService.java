@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
 import com.masiis.shop.admin.service.product.SkuService;
-import com.masiis.shop.admin.service.shop.ShopService;
+import com.masiis.shop.admin.service.shop.SfShopService;
 import com.masiis.shop.admin.utils.AsyncUploadCertUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.platform.OperationType;
@@ -47,7 +47,7 @@ public class ComUserService {
     @Resource
     private SkuService skuService;
     @Resource
-    private ShopService shopService;
+    private SfShopService sfShopService;
 
     private Logger logger = Logger.getLogger(this.getClass());
 
@@ -258,11 +258,11 @@ public class ComUserService {
                 logger.error("阻塞住了");
             }
             //开店
-            SfShop sfShop = shopService.loadShopByUserId(comUser.getId());
+            SfShop sfShop = sfShopService.loadShopByUserId(comUser.getId());
             if (sfShop != null) {
                 sfShop.setName(comUser.getRealName()+"的店铺");
                 sfShop.setStatus(1);
-                shopService.update(sfShop);
+                sfShopService.update(sfShop);
             }
 
 

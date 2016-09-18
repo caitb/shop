@@ -36,9 +36,9 @@ import java.util.List;
  * Created by cai_tb on 16/4/18.
  */
 @Service
-public class ShopService {
+public class SfShopService {
 
-    private final static Log log = LogFactory.getLog(ShopService.class);
+    private final static Log log = LogFactory.getLog(SfShopService.class);
 
     private static Font font30 = null;
     private static Font font25 = null;

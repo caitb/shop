@@ -117,6 +117,11 @@ public interface PfBorderMapper {
     PfBorder selectPfBOrderBySkuIdAndUserId(@Param("skuId") Integer skuId,@Param("userId") Long userId);
 
     /**
+     * 查询是否存在某skuId的代理订单
+     */
+    PfBorder selectBySkuIdAndUserIdWithNotCancel(@Param("skuId") Integer skuId,@Param("userId") Long userId);
+
+    /**
      * 根据orderid来取消线下支付订单
      *
      * @param orderId

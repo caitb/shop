@@ -385,7 +385,7 @@ public class AgentBOrderController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_AGENT_AGENTLEVEL_ERROR_MSG);
             }
 
-            PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, user.getId());
+            PfBorder pfBorder = bOrderService.getBySkuAndUserIdWithNotCancel(skuId, user.getId());
             if (pfBorder != null) {
                 res.setResCode(SysResCodeCons.RES_CODE_AGENT_ALREADY_HAS_AGENTORDER);
                 res.setResMsg(SysResCodeCons.RES_CODE_AGENT_ALREADY_HAS_AGENTORDER_MSG);

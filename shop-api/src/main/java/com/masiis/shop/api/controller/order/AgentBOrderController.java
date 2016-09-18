@@ -440,13 +440,13 @@ public class AgentBOrderController extends BaseController {
     }
 
     /**
-     * 0元免支付订单回调接口
+     * 0元免支付订单回调接口(废弃)
      * @param request
      * @param req
      * @param user
      * @return
      */
-    @RequestMapping("/agentBOrderZeroPay.do")
+    /*@RequestMapping("/agentBOrderZeroPay.do")
     @ResponseBody
     @SignValid(paramType = AgentBOrderZeroPayReq.class)
     public AgentBOrderZeroPayRes agentBOrderZeroPay(HttpServletRequest request, AgentBOrderZeroPayReq req, ComUser user){
@@ -491,7 +491,7 @@ public class AgentBOrderController extends BaseController {
             res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }
         return res;
-    }
+    }*/
 
     @RequestMapping("/applysuccess")
     @ResponseBody

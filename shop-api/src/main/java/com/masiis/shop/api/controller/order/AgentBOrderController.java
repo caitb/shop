@@ -416,9 +416,14 @@ public class AgentBOrderController extends BaseController {
             //0元免支付订单，不需要去收银台支付，直接注册成功
             pfBorder = bOrderService.getPfBorderById(borderId);
             if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                log.info("0元免支付代理订单生成支付信息,订单id:" + borderId);
+                PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+                log.info("处理订单开始,类型为B,支付流水号为:" + payment.getPaySerialNum());
+                payBOrderService.mainPayBOrder(payment, "ZERO_PAY");
                 res.setPayType(0);
+            }else{
+                res.setPayType(1);
             }
-            res.setPayType(1);
 
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -435,13 +440,13 @@ public class AgentBOrderController extends BaseController {
     }
 
     /**
-     * 0元免支付订单回调接口
+     * 0元免支付订单回调接口(废弃)
      * @param request
      * @param req
      * @param user
      * @return
      */
-    @RequestMapping("/agentBOrderZeroPay.do")
+    /*@RequestMapping("/agentBOrderZeroPay.do")
     @ResponseBody
     @SignValid(paramType = AgentBOrderZeroPayReq.class)
     public AgentBOrderZeroPayRes agentBOrderZeroPay(HttpServletRequest request, AgentBOrderZeroPayReq req, ComUser user){
@@ -486,7 +491,7 @@ public class AgentBOrderController extends BaseController {
             res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }
         return res;
-    }
+    }*/
 
     @RequestMapping("/applysuccess")
     @ResponseBody

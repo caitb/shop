@@ -200,15 +200,13 @@ public class SfShopService {
 
     /**
      * 创建海报
-     *
-     * @param userId 用户id
-     * @return 海报url
+     * @param comUser
+     * @param sfShop
+     * @return
      */
-    public String createShopPoster(Long userId) {
+    public String createShopPoster(ComUser comUser, SfShop sfShop) {
         try {
             String rootPath = RootPathUtils.getRootPath();
-            ComUser comUser = userService.getUserById(userId);
-            SfShop sfShop = getSfShopByUserId(comUser.getId());
             /**
              * 获取海报
              */
@@ -343,7 +341,7 @@ public class SfShopService {
 
             return PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName();
         } catch (Exception e) {
-            log.error("获取专属海报失败![userId=" + userId + "]" + e);
+            log.error("获取专属海报失败![comUser=" + comUser + "][sfShop=sfShop]" + e);
             e.printStackTrace();
         }
 

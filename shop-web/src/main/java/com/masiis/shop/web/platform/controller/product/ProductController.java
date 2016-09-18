@@ -98,7 +98,7 @@ public class ProductController extends BaseController {
         return mav;
     }
 
-    @RequestMapping(value = "/user/{user Id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
     public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception {
         ModelAndView mav;
         ComUser comUser = userService.getUserById(userId);

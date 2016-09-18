@@ -43,31 +43,37 @@ public class PfBorderPromotionService {
     }
 
     public void doPromotion(PfBorder pfBorder) {
-        List<PfBorderPromotion> pfBorderPromotions = pfBorderPromotionMapper.selectByPfBorderId(pfBorder.getId());
-        if (pfBorderPromotions != null && pfBorderPromotions.size() > 0) {
-            for (PfBorderPromotion pfBorderPromotion : pfBorderPromotions) {
-                if (pfBorderPromotion.getQuantity() > 0 && pfBorderPromotion.getIsSend().intValue() == 0) {
-                    log.info("---------------------减少平台库存--------------------");
-                    //增加平台冻结库存
-                    PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
-                    if (pfSkuStock.getStock() < pfBorderPromotion.getQuantity()) {
-                        throw new BusinessException("库存不足，操作失败");
+        log.info(" 更新平台赠送给小白的商品库存----start");
+        try {
+            List<PfBorderPromotion> pfBorderPromotions = pfBorderPromotionMapper.selectByPfBorderId(pfBorder.getId());
+            if (pfBorderPromotions != null && pfBorderPromotions.size() > 0) {
+                for (PfBorderPromotion pfBorderPromotion : pfBorderPromotions) {
+                    if (pfBorderPromotion.getQuantity() > 0 && pfBorderPromotion.getIsSend().intValue() == 0) {
+                        log.info("---------------------减少平台库存--------------------");
+                        //增加平台冻结库存
+                        PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
+                        if (pfSkuStock.getStock() < pfBorderPromotion.getQuantity()) {
+                            throw new BusinessException("库存不足，操作失败");
+                        }
+                        if (pfSkuStock.getFrozenStock() < pfBorderPromotion.getQuantity()) {
+                            throw new BusinessException("库存冻结不足，操作失败");
+                        }
+                        pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), "小白注册赠送商品，下单时增加平台冻结库存",pfSkuStock);
+                        //减少平台库存
+                        pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
+                        pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
+                        log.info("---------------------增加代理用户库存--------------------");
+                        PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());
+                        pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.PROMOTION_ADD);
+                        //修改发送状态
+                        updateIsSend(pfBorderPromotion);
                     }
-                    if (pfSkuStock.getFrozenStock() < pfBorderPromotion.getQuantity()) {
-                        throw new BusinessException("库存冻结不足，操作失败");
-                    }
-                    pfSkuStockService.updateFrozenStock(pfBorderPromotion.getQuantity(), "小白注册赠送商品，下单时增加平台冻结库存",pfSkuStock);
-                    //减少平台库存
-                    pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderPromotion.getSkuId());
-                    pfSkuStockService.updateSkuStockWithLog(pfBorderPromotion.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.registerGiveSku);
-                    log.info("---------------------增加代理用户库存--------------------");
-                    PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderPromotion.getSkuId());
-                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.PROMOTION_ADD);
-                    //修改发送状态
-                    updateIsSend(pfBorderPromotion);
                 }
             }
+        }catch (Exception e){
+            throw new BusinessException("更新平台赠送给小白的商品库存失败-----"+e.getMessage());
         }
+        log.info(" 更新平台赠送给小白的商品库存----end");
     }
 
     /**

@@ -333,6 +333,8 @@ public class SysResCodeCons {
 
     public static final String WXCODE_IILEAGAL = "微信号非法";
 
+    public static final String NICHENG_IILEAGAL = "该昵称不合法";
+
     /**
      * 店铺信息
      */

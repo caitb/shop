@@ -18,6 +18,7 @@ import com.masiis.shop.dao.po.PfUserBrand;
 import com.masiis.shop.dao.po.PfUserOrganization;
 import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.UserService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.service.statistics.BrandStatisticService;
 import com.masiis.shop.web.platform.service.user.PfUserBrandService;
 import com.masiis.shop.web.platform.service.user.PfUserOrganizationService;
@@ -53,6 +54,8 @@ public class UserOrganizationController extends BaseController {
     private BrandStatisticService brandStatisticService;
     @Resource
     private PfUserBrandMapper pfUserBrandMapper;
+    @Resource
+    private SfShopService sfShopService;
 
     /**
      * 我创建的家族
@@ -160,7 +163,7 @@ public class UserOrganizationController extends BaseController {
     @RequestMapping("/save")
     @ResponseBody
     @SignValid(paramType = UserOrganizationReq.class)
-    public BaseBusinessRes save(HttpServletRequest request, UserOrganizationReq userOrganizationReq, ComUser comUser) {
+    public BaseBusinessRes save(HttpServletRequest request, UserOrganizationReq userOrganizationReq, final ComUser comUser) {
         UserOrganizationRes userOrganizationRes = new UserOrganizationRes();
 
         try {
@@ -189,6 +192,15 @@ public class UserOrganizationController extends BaseController {
             } else {
                 pfUserOrganizationService.update(pfUserOrganization);
             }
+
+            //异步生成店铺海报
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sfShopService.createShopPoster(comUser.getId());
+                }
+            }).start();
+
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

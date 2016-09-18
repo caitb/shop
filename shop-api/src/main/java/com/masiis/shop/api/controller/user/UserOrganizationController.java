@@ -170,8 +170,6 @@ public class UserOrganizationController extends BaseController {
 
             PfUserOrganization pfUserOrganization = new PfUserOrganization();
             pfUserOrganization.setId(userOrganizationReq.getOrganizationId());
-            pfUserOrganization.setCreateTime(new Date());
-            pfUserOrganization.setStatus(1);
             pfUserOrganization.setAgentLevelId(userOrganizationReq.getAgentLevelId());
             pfUserOrganization.setUserId(comUser.getId());
             pfUserOrganization.setName(name);
@@ -183,8 +181,10 @@ public class UserOrganizationController extends BaseController {
             pfUserOrganization.setSlogan(userOrganizationReq.getSlogan());
             pfUserOrganization.setWxId(userOrganizationReq.getWxId());
             pfUserOrganization.setWxQrCode(userOrganizationReq.getWxQrCode());
-            pfUserOrganization.setFreemanNum(0);
             if (pfUserOrganization.getId() == null) {
+                pfUserOrganization.setCreateTime(new Date());
+                pfUserOrganization.setStatus(1);
+                pfUserOrganization.setFreemanNum(0);
                 pfUserOrganizationService.save(pfUserOrganization);
             } else {
                 pfUserOrganizationService.update(pfUserOrganization);

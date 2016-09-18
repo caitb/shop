@@ -645,6 +645,7 @@
         ,e.cname          	brandName
         ,e.content        	brandContent
         ,e.logo_url       	brandLogoUrl
+        ,e.illustrating_picture_name       	illustratingPictureName
         ,e.remark         	brandRemark
         ,d.id             	organizationId
         ,d.name           	organizationName

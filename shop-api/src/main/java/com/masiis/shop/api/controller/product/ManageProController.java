@@ -156,6 +156,7 @@ public class ManageProController extends BaseController {
             applyProRes.setLowerCount(objectMap.get("countLevel").toString());
             applyProRes.setPriceDiscount(objectMap.get("priceDiscount").toString());
             applyProRes.setLevelStock(objectMap.get("levelStock").toString());
+            applyProRes.setFreeAgent(Integer.parseInt(objectMap.get("freeAgent").toString()));
             applyProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             applyProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

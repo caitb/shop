@@ -186,6 +186,7 @@ public class ProductController extends BaseController {
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(product.getSkuId(),pfUserSku.getAgentLevelId());
         mav.addObject("productInfo", product);
         mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
+        mav.addObject("freeAgent", objectMap.get("freeAgent"));//0元代理标志
         mav.addObject("comSku", comSku);
         mav.addObject("comSkuImage", productImgValue + comSkuImage.getImgUrl());
         mav.addObject("levelStock", objectMap.get("levelStock"));

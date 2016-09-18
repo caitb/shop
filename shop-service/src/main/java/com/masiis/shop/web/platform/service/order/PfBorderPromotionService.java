@@ -48,7 +48,7 @@ public class PfBorderPromotionService {
     private BigDecimal totalPrice = null;
     private String promotionStartDateString = "2000-10-10";
     private String promotionStartEndString  = "2020-10-10";
-    private Integer giveSkuAgentLevel = 5; //赠送商品的等级
+    private Integer giveSkuAgentLevel = 3; //赠送商品的等级
     private Integer giveSkuQuantity = 5;//赠送的商品数量
     private static final  Integer giveSkuId = 16;
 

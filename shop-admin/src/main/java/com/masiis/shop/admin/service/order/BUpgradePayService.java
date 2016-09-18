@@ -94,7 +94,7 @@ public class BUpgradePayService {
     @Resource
     private PfSysMenuService sysMenuService;
 
-    private Integer giveSkuAgentLevel = 5; //赠送商品的等级
+    private Integer giveSkuAgentLevel = 3; //赠送商品的等级
     private static final Integer giveSkuId = 16;
     private Integer orgAgentLevelId = null;
 

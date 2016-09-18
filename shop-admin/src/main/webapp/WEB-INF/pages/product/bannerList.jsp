@@ -77,6 +77,7 @@
                             <div class="col-xs-12">
 
                                 <div>
+                                    <button type="button" class="btn btn-default" id="addBanner">添加</button>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
                                            data-detail-view="false"
@@ -587,6 +588,9 @@
     var brands = null;
     $('#addBtn').on('click', function(){
         loadSpu();
+    });
+    $('#addBanner').on('click', function(){
+        parent.window.$('#myTabbable').add('banner-add', '添加Banner', '<%=basePath%>banner/addBanner.shtml');
     });
 
     function loadSpu(){

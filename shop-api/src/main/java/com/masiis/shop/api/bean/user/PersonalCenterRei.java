@@ -13,7 +13,7 @@ public class PersonalCenterRei extends BaseRes {
     /**
      * 用户在平台的昵称,不同于微信昵称
      */
-    private String wxNkName;
+//    private String wxNkName;
 //    private ComUser comUser;
 //
 //    public ComUser getComUser() {
@@ -23,13 +23,13 @@ public class PersonalCenterRei extends BaseRes {
 //    public void setComUser(ComUser comUser) {
 //        this.comUser = comUser;
 //    }
-
-    public String getWxNkName() {
-        return wxNkName;
-    }
-
-    public void setWxNkName(String wxNkName) {
-        this.wxNkName = wxNkName;
-    }
+//
+//    public String getWxNkName() {
+//        return wxNkName;
+//    }
+//
+//    public void setWxNkName(String wxNkName) {
+//        this.wxNkName = wxNkName;
+//    }
 
 }

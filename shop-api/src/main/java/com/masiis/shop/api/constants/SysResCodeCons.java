@@ -333,6 +333,8 @@ public class SysResCodeCons {
 
     public static final String WXCODE_IILEAGAL = "微信号非法";
 
+    public static final String NICHENG_IILEAGAL = "请输入1～8汉字或1～16字母、数字组成";
+
     /**
      * 店铺信息
      */

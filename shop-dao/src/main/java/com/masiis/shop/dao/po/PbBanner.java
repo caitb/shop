@@ -47,6 +47,11 @@ public class PbBanner {
      */
     private String appHyperlinkUrl;
 
+    /**
+     * 附属属性-商品id
+     */
+    private Integer skuId;//详情页的id
+
     public Integer getId() {
         return id;
     }
@@ -109,6 +114,14 @@ public class PbBanner {
 
     public void setAppHyperlinkUrl(String appHyperlinkUrl) {
         this.appHyperlinkUrl = appHyperlinkUrl;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     @Override

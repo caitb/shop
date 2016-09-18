@@ -21,7 +21,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStock">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStock" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_sku_stock (id, create_time, user_id, 
             spu_id, sku_id, frozen_stock,
             stock, frozen_custom_stock,register_give_sku_stock, custom_stock,

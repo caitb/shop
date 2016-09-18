@@ -180,7 +180,8 @@ public class PfUserSkuStockService {
         return pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
     }
 
-    public void initPfUserSkuStock(Long userId,Integer skuId,Integer spuId){
+
+    public PfUserSkuStock initPfUserSkuStock(Long userId,Integer skuId,Integer spuId){
         PfUserSkuStock pfUserSkuStock = new PfUserSkuStock();
         pfUserSkuStock = new PfUserSkuStock();
         pfUserSkuStock.setCreateTime(new Date());
@@ -197,6 +198,7 @@ public class PfUserSkuStockService {
         if (i!=1){
             throw new BusinessException("初始化用户库存失败----userId---"+userId+"----skuId---"+skuId+"---spuId---"+spuId);
         }
+        return pfUserSkuStock;
     }
 
     public int insert(PfUserSkuStock pfUserSkuStock) {

@@ -109,7 +109,7 @@
                                     <%--data-show-pagination-switch="true"--%>
                                            data-pagination="true"
                                            data-id-field="id"
-                                           data-page-list="[10, 25, 50, 100, ALL]"
+                                           data-page-list="[10, 25, 50]"
                                            data-show-footer="false"
                                            data-side-pagination="server"
                                            data-url="/comuser/auditlist.do"

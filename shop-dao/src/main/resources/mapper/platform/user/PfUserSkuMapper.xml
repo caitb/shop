@@ -850,8 +850,7 @@
         from pf_user_sku b
             INNER JOIN com_sku sku ON sku.id = b.sku_id
             INNER JOIN com_spu spu ON spu.id = sku.spu_id
-            WHERE spu.is_sale=1 AND spu.is_delete=0 AND spu.TYPE=0
-        AND b.user_id = #{userId}
+            WHERE spu.TYPE=0 AND b.user_id = #{userId}
     </select>
 
     <select id="selectGTLastLevelNumByUserId" resultType="java.lang.Integer">

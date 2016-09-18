@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface ComSkuMapper {
+    public interface ComSkuMapper {
     int deleteByPrimaryKey(Integer id);
 
     ComSku selectByPrimaryKey(Integer id);

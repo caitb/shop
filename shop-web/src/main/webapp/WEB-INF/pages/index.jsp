@@ -110,20 +110,26 @@
         </nav>
         <nav>
             <ul>
-                <%--<c:if test="${user.isAgent==0}">--%>
-                    <%--<li class="market">--%>
-                        <%--<a>--%>
-                            <%--<h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">--%>
-                            <%--</h1>--%>
-                            <%--<span>升级管理</span></a>--%>
-                    <%--</li>--%>
-                <%--</c:if>--%>
+                <c:if test="${user.isAgent==0}">
+                    <li class="market"><a class="herf" href="<%=basePath%>upgradeInfo/lower?tabId=0">
+                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
+                        <span>升级管理 </span></a>
+                    </li>
+                </c:if>
+                <c:if test="${user.isAgent==1 && user.auditStatus != 2}">
+                    <li class="market"><a class="herf" onclick="gorezheng()">
+                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
+                        <span>升级管理 </span></a>
+                    </li>
+                </c:if>
+                <c:if test="${user.isAgent==1 && user.auditStatus == 2}">
                     <li class="market">
                         <a class="herf" href="<%=basePath%>upgradeInfo/lower?tabId=0">
                             <h1><img src="<%=path%>/static/images/s3.png" alt="" style="width: 30%">
                             </h1>
                             <span>升级管理</span></a>
                     </li>
+                </c:if>
                 <li class="market"><a class="herf" href="<%=basePath%>myRecommend/myRecommen.shtml">
                     <h1><img src="<%=path%>/static/images/s2.png" alt=""></h1>
                     <span>我的推荐</span></a>

@@ -83,9 +83,18 @@
                 success:function(data){
                     if (data.isError == false) {
                         if (data.isRedirect == true){
-                            window.location.href = "${basePath}"+data.redirectUrl;
+                            //0元升级订单 直接去支付成功页面
+                            if(data.upgradeType == 1){
+                                window.location.href = "${basePath}"+data.redirectUrl;
+                            }else{
+                                window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + data.bOrderId;
+                            }
                         }else{
-                            window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                            if(data.upgradeType == 1){
+                                window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                            }else{
+                                window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + data.bOrderId;
+                            }
                         }
                     }
                 }

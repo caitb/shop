@@ -432,10 +432,10 @@ public class SfShopManageController extends BaseController {
 //
 //            indexShopRes.setShopPoster(PropertiesUtils.getStringValue("index_user_poster_url") + newComPoster.getPosterName());
 
-            comUser = userService.getUserById(comUser.getId());
+
             SfShop sfShop = sfShopService.getSfShopByUserId(comUser.getId());
 
-            String posterUrl = sfShopService.createShopPoster(comUser, sfShop);
+            String posterUrl = sfShopService.createShopPoster(sfShop);
             indexShopRes.setShopPoster(posterUrl);
             indexShopRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             indexShopRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

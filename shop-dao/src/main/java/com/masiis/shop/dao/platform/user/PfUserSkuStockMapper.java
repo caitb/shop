@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @Repository
-public interface PfUserSkuStockMapper {
+    public interface PfUserSkuStockMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(PfUserSkuStock record);

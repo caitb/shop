@@ -310,6 +310,7 @@ public class ProductService {
     public Map<String, Object> getLowerCount(Integer skuId, Integer stock, Integer level) {
         Map<String, Object> param = new HashMap();
         Integer countLevel = 0;
+        Integer isFree = 0;
         int endLevel = comAgentLevelMapper.getMaxAgentLevel();
         PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
         if (level == endLevel || stock == 0) {
@@ -318,7 +319,12 @@ public class ProductService {
             param.put("levelStock", pfSkuAgent.getQuantity());
             return param;
         } else {
-            countLevel = stock / pfSkuAgent.getQuantity();
+            if(pfSkuAgent.getQuantity()==0){
+                isFree =1;
+            }else {
+                countLevel = stock / pfSkuAgent.getQuantity();
+            }
+            param.put("freeAgent", isFree);//0元代理，拿货数量为0
             param.put("countLevel", countLevel);
             param.put("levelStock", pfSkuAgent.getQuantity());
         }

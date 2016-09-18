@@ -113,10 +113,11 @@ public class BOrderPayAgentService {
         }
         comUserMapper.updateByPrimaryKey(comUser);
         logger.info("<4>为用户生成小铺并初始化小铺统计表");
-        addShopAndShopStatistics(comUser);
+        SfShop sfShop = addShopAndShopStatistics(comUser);
+        ComSku comSku = new ComSku();
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             //获取商品对象
-            ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
+            comSku = skuService.getSkuById(pfBorderItem.getSkuId());
             //获取SPU对象
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             logger.info("<5>为小铺生成商品");
@@ -139,15 +140,6 @@ public class BOrderPayAgentService {
             }
             logger.info("<12>修改上级小白合伙人数");
             modifyUserOrganization(pfBorder, comSpu);
-            //异步上传授权书
-            try {
-                PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
-                if (StringUtils.isBlank(pfUserSku.getCode())) {
-                    AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
-                }
-            } catch (InterruptedException e) {
-                logger.error("阻塞住了");
-            }
         }
         //v1.5.6 更新平台赠送给小白的商品库存
         pfBorderPromotionService.doPromotion(pfBorder);
@@ -159,6 +151,18 @@ public class BOrderPayAgentService {
         if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus().equals(BOrderStatus.WaitShip.getCode())) {
             //处理平台发货类型订单
             bOrderShipService.shipAndReceiptBOrder(pfBorder);
+        }
+        //异步上传授权书
+        try {
+            PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
+            if (StringUtils.isBlank(pfUserSku.getCode())) {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(pfUserSku);
+            }
+            if (sfShop != null) {
+                AsyncUploadCertUtil.getInstance().getUploadOSSQueue().put(sfShop);
+            }
+        } catch (InterruptedException e) {
+            logger.error("阻塞住了");
         }
     }
 
@@ -393,7 +397,7 @@ public class BOrderPayAgentService {
      *
      * @param comUser 用户对象
      */
-    private void addShopAndShopStatistics(ComUser comUser) {
+    private SfShop addShopAndShopStatistics(ComUser comUser) {
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
         logger.info("------用户id---------" + comUser.getId());
         if (sfShop == null) {
@@ -438,6 +442,7 @@ public class BOrderPayAgentService {
             shopStatistics.setRemark("");
             shopStatisticsService.insert(shopStatistics);
         }
+        return sfShop;
     }
 
     /**

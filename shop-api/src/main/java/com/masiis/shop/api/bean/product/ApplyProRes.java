@@ -27,6 +27,8 @@ public class ApplyProRes extends BaseRes{
 
     private Long orderCode;//订单id
 
+    private Integer freeAgent;//0元代理标志
+
     private PfBorderConsignee pfBorderConsignee;//订单地址
 
     public ComUserAddress getComUserAddress() {
@@ -99,5 +101,13 @@ public class ApplyProRes extends BaseRes{
 
     public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {
         this.pfBorderConsignee = pfBorderConsignee;
+    }
+
+    public Integer getFreeAgent() {
+        return freeAgent;
+    }
+
+    public void setFreeAgent(Integer freeAgent) {
+        this.freeAgent = freeAgent;
     }
 }

@@ -379,6 +379,10 @@ public class BOrderService {
         return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId, userId);
     }
 
+    public PfBorder getBySkuAndUserIdWithNotCancel(Integer skuId, Long userId){
+        return pfBorderMapper.selectBySkuIdAndUserIdWithNotCancel(skuId, userId);
+    }
+
     /**
      * 获得奖励订单
      * @author muchaofeng

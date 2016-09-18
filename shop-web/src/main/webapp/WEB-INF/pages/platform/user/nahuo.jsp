@@ -84,8 +84,10 @@
             <input type="hidden" id="levelStock" value="${levelStock}"/>
         </section>
         <section class="sec4">
-            <p><em>在线库存：</em><b style="margin-top:5px">${productInfo.stock}</b></p>
-
+            <p><em>在线库存：</em><b style="margin-top:5px">${productInfo.stock}</b>
+                <c:if test="${productInfo.registerGiveSkuStock>0}">
+                    <b style="margin-top: 5px;color: #f74a11">（赠送库存为${productInfo.registerGiveSkuStock}件）</b>
+                </c:if></p>
             <p>
                 <em>拿货数量：</em><b><label class="jian">-</label><input type="tel" value="1" class="number">
                 <label class="jia">+</label></b>
@@ -159,7 +161,8 @@
         var checked = document.getElementById("active").checked;
         var currentStock = $("#currentStock").text();
         var levelStock = $("#levelStock").val();
-        var afterLowerCount = parseInt((currentStock - i) / levelStock);
+        var giveStock = '${productInfo.registerGiveSkuStock}';
+        var afterLowerCount = parseInt(currentStock - i - giveStock);
         //地址
         var addressId = $("#addressId").val();
         if (addressId === undefined || addressId == "") {

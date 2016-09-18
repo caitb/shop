@@ -162,6 +162,7 @@ public class ProductService {
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
+                product.setRegisterGiveSkuStock(product.getRegisterGiveSkuStock());
                 int currentStock = product.getStock() - product.getFrozenStock();
                 if (currentStock >= 0) {
                     product.setStock(currentStock);
@@ -190,6 +191,7 @@ public class ProductService {
         if (userProducts != null) {
             for (Product product : userProducts) {
                 int currentStock = product.getStock() - product.getFrozenStock();
+                product.setRegisterGiveSkuStock(product.getRegisterGiveSkuStock());
                 if (currentStock >= 0) {
                     product.setStock(currentStock);
                     product.setNeedStockNum(0);

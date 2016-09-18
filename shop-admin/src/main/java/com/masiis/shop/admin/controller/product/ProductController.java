@@ -123,21 +123,32 @@ public class ProductController {
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
             if(pbUser != null){
                 log.info("准备comSpu数据..........................");
-                comSpu.setId(spuId);
-                comSpu.setCreateTime(new Date());
-                comSpu.setCreateMan(pbUser.getId());
-                comSpu.setStatus(1);
-                comSpu.setIsSale(0);
-                comSpu.setIsDelete(0);
-                comSpu.setType(1);
+                if(spuId == null){
+                    comSpu.setCreateTime(new Date());
+                    comSpu.setCreateMan(pbUser.getId());
+                    comSpu.setIsDelete(0);
+                    comSpu.setType(1);
+                    comSpu.setStatus(1);
+                    comSpu.setIsSale(0);
+                }else{
+                    comSpu.setId(spuId);
+                    comSpu.setModifyTime(new Date());
+                    comSpu.setModifyMan(pbUser.getId());
+                }
+
                 if(StringUtils.isBlank(comSpu.getCategoryName())) comSpu.setCategoryName(null);
                 if(StringUtils.isBlank(comSpu.getContent())) comSpu.setContent(null);
                 log.info("准备comSpu数据..........................[comSpu="+comSpu+"]");
 
                 log.info("准备comSku数据..........................");
-                comSku.setId(skuId);
-                comSku.setCreateTime(new Date());
-                comSku.setCreateMan(pbUser.getId());
+                if(skuId == null){
+                    comSku.setCreateTime(new Date());
+                    comSku.setCreateMan(pbUser.getId());
+                }else{
+                    comSku.setId(skuId);
+                    comSku.setModifyTime(new Date());
+                    comSku.setModifyMan(pbUser.getId());
+                }
                 log.info("准备comSku数据..........................[comSku="+comSku+"]");
 
                 comSkuExtension.setId(skuExtensionId);

@@ -34,10 +34,9 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
-
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
-    <link rel="stylesheet" href="<%=basePath%>static/class/zoom/zoom.css" />
     <![endif]-->
 
     <!-- inline styles related to this page -->
@@ -79,30 +78,49 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar" style="display: none;">
+                                    <div id="toolbar">
                                         <form class="form-inline">
-                                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
-                                            <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
-                                            <%--</button>--%>
-                                            <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
-                                            <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
-                                            <%--</a>--%>
+                                            <div class="form-group">
+                                                <label for="name">姓名</label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="wxId">微信号</label>
+                                                <input type="text" class="form-control" id="wxId" name="wxId" placeholder="微信号">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mobile">手机号码</label>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="手机号码">
+                                            </div>
                                             <div class="form-group">
                                                 <label for="skuName">商品名称</label>
                                                 <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">
                                             </div>
                                             <div class="form-group">
-                                                <label for="categoryName">商品分类</label>
-                                                <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
+                                                <label for="calName">意向等级</label>
+                                                <input type="text" class="form-control" id="calName" name="calName" placeholder="意向等级">
+                                            </div>
+                                            <div class="form-group" style="display: none">
+                                                <label for="orderCode">订单号：</label>
+                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderCode">申请日期：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </form>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
-                                           data-show-refresh="true"
-                                           data-show-toggle="true"
+                                           <%--data-search="true"--%>
+                                           <%--data-show-refresh="true"--%>
+                                           <%--data-show-toggle="true"--%>
                                     <%--data-show-columns="true"--%>
                                     <%--data-show-export="true"--%>
                                            data-detail-view="false"
@@ -111,7 +129,7 @@
                                     <%--data-show-pagination-switch="true"--%>
                                            data-pagination="true"
                                            data-id-field="id"
-                                           data-page-list="[10, 25, 50, 100, ALL]"
+                                           data-page-list="[10, 25, 50]"
                                            data-show-footer="false"
                                            data-side-pagination="server"
                                            data-response-handler="responseHandler">
@@ -259,8 +277,16 @@
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
-
+<script src="<%=basePath%>static/js/laydate.js"></script>
 <script src="<%=basePath%>static/js/date-util.js"></script>
+<script>
+    laydate({
+        elem: '#beginTime'
+    });
+    laydate({
+        elem: '#endTime'
+    });
+</script>
 
 <script>
     var $table = $('#table'),
@@ -275,6 +301,20 @@
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
+            queryParams: function(params){
+                if($('#name').val()) params.name = $('#name').val();
+                if($('#mobile').val())    params.mobile   = $('#mobile').val();
+                if($('#wxId').val())    params.wxId   = $('#wxId').val();
+                if($('#skuName').val())    params.skuName   = $('#skuName').val();
+                if($('#calName').val())    params.calName   = $('#calName').val();
+                if($('#beginTime').val()){
+                    params.beginTime = $('#beginTime').val();
+                }
+                if($('#endTime').val()){
+                    params.endTime = $('#endTime').val();
+                }
+                return params;
+            },
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -363,8 +403,20 @@
                         }
                     },
                     {
+                        field: 'skuName',
+                        title: '意向等级',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
                         align: 'center',
-                        field: 'create_time',
+                        formatter: function(value, row, index){
+                            if(row && row.calName){
+                                return row.calName;
+                            }
+                        }
+                    },
+                    {
+                        align: 'center',
+                        field: 'createTime',
                         title: '提交日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -446,6 +498,10 @@
         });
         $table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
+        });
+
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
         });
         $remove.click(function () {
             var ids = getIdSelections();
@@ -579,10 +635,6 @@
         // We handle everything using the script element injection
         return undefined;
     }
-
-    $('#searchBtn').on('click', function(){
-
-    });
 
     $('#saveDispose').on('click', function(){
 

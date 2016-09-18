@@ -8,6 +8,7 @@ import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -16,6 +17,7 @@ import java.util.*;
  * Created by cai_tb on 16/3/7.
  */
 @Service
+@Transactional
 public class ProductService {
 
     private final static Log log = LogFactory.getLog(ProductService.class);

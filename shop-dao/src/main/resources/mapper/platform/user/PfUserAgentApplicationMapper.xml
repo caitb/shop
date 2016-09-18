@@ -99,16 +99,37 @@
                uaa.status      status,
                uaa.remark      remark,
                sku.id          skuId,
-               sku.name        skuName
+               sku.name        skuName,
+              cal.id           calId,
+              cal.name         calName
         from
                pf_user_agent_application uaa
         LEFT JOIN com_sku                sku ON sku.id = uaa.sku_id
+        LEFT JOIN com_agent_level cal ON cal.id = uaa.agent_level_id
         <where>
             <if test="id != null">
-                AND id = #{id}
+                AND uaa.id = #{id}
             </if>
             <if test="name != null">
-                AND name = #{name}
+                AND uaa.name = #{name}
+            </if>
+            <if test="wxId != null">
+                AND uaa.wx_id = #{wxId}
+            </if>
+            <if test="mobile != null">
+                AND uaa.mobile = #{mobile}
+            </if>
+            <if test="skuName != null">
+                AND sku.name = #{skuName}
+            </if>
+            <if test="calName != null">
+                AND cal.name = #{calName}
+            </if>
+            <if test="beginTime != null"  >
+                AND uaa.create_time &gt;=#{beginTime}
+            </if>
+            <if test="endTime != null"  >
+                AND uaa.create_time &lt;=#{endTime}
             </if>
         </where>
     </select>

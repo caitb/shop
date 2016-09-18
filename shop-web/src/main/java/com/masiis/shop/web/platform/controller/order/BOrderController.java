@@ -134,7 +134,7 @@ public class BOrderController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/payBOrder.shtml")
+   /* @RequestMapping("/payBOrder.shtml")
     public String payBOrder(HttpServletRequest request,
                             RedirectAttributes attrs,
                             @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
@@ -195,7 +195,7 @@ public class BOrderController extends BaseController {
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
-    }
+    }*/
 
     /**
      * 实时的获取订单的详情

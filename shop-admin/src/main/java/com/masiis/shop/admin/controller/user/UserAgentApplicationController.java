@@ -4,11 +4,13 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.service.user.UserAgentApplicationService;
 import com.masiis.shop.dao.po.PfUserAgentApplication;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +46,9 @@ public class UserAgentApplicationController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    public Object list(
+    public Object list(HttpServletRequest request,
+            String beginTime,
+            String endTime,
             Integer pageNumber,
             Integer pageSize,
             String sortName,
@@ -54,6 +58,18 @@ public class UserAgentApplicationController {
         Map<String, Object> pageMap = new HashMap<>();
 
         try {
+            if(StringUtils.isNotBlank(request.getParameter("name")))    conditionMap.put("name", request.getParameter("name"));
+            if(StringUtils.isNotBlank(request.getParameter("wxId")))    conditionMap.put("wxId", request.getParameter("wxId"));
+            if(StringUtils.isNotBlank(request.getParameter("mobile")))    conditionMap.put("mobile", request.getParameter("mobile"));
+            if(StringUtils.isNotBlank(request.getParameter("skuName")))    conditionMap.put("skuName", request.getParameter("skuName"));
+            if(StringUtils.isNotBlank(request.getParameter("calName")))    conditionMap.put("calName", request.getParameter("calName"));
+            if (!StringUtils.isEmpty(beginTime)){
+                conditionMap.put("beginTime",beginTime);
+            }
+            if (!StringUtils.isEmpty(endTime)){
+                conditionMap.put("endTime",endTime);
+            }
+
             pageMap = userAgentApplicationService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
         } catch (Exception e) {
             log.error("获取合伙意向申请列表失败![conditionMap="+conditionMap+"]"+e);

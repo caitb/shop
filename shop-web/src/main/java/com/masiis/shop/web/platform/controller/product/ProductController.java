@@ -170,7 +170,7 @@ public class ProductController extends BaseController {
         }
         mav.addObject("pfUserSkuStockId", id);
         PfUserSkuStock product = productService.getStockByUser(id);
-        Integer currentStock = product.getStock()-product.getFrozenStock()-product.getRegisterGiveSkuStock();
+        Integer currentStock = product.getStock()-product.getFrozenStock();
         if (currentStock < 0) {
             product.setStock(0);
         } else {

@@ -45,6 +45,9 @@
                                      <c:if test="${sku.needStockNum>0}">
                                          <b>需进货${sku.needStockNum}件</b>
                                      </c:if>
+                                    <c:if test="${sku.registerGiveSkuStock>0}">
+                                        <b>（赠送库存为${sku.registerGiveSkuStock}件）</b>
+                                    </c:if>
                                     </p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="text" id="skuId" value="${sku.id}" style="display: none">

@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.common.enums.platform.*;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PromotionMakeUtils;
 import com.masiis.shop.dao.platform.order.PfBorderPromotionMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.common.service.SkuService;
@@ -46,11 +47,11 @@ public class PfBorderPromotionService {
 
     private BigDecimal unitPrice = null;
     private BigDecimal totalPrice = null;
-    private String promotionStartDateString = "2000-10-10";
-    private String promotionStartEndString  = "2020-10-10";
-    private Integer giveSkuAgentLevel = 3; //赠送商品的等级
-    private Integer giveSkuQuantity = 5;//赠送的商品数量
-    private static final  Integer giveSkuId = 16;
+    private String promotionStartDateString = PromotionMakeUtils.promotionStartDateString;
+    private String promotionStartEndString  = PromotionMakeUtils.promotionStartEndString;
+    private Integer giveSkuAgentLevel = PromotionMakeUtils.giveSkuAgentLevel; //赠送商品的等级
+    private Integer giveSkuQuantity = PromotionMakeUtils.giveSkuQuantity;//赠送的商品数量
+    private static final  Integer giveSkuId = PromotionMakeUtils.giveSkuId;
 
 
     public int update(PfBorderPromotion pfBorderPromotion){
@@ -215,39 +216,27 @@ public class PfBorderPromotionService {
     /**
      * 回收到期的平台送的商品
      */
-    private void recoverySkuStock() {
+    public void recoverySkuStock(PfBorderPromotion pfBorderPromotion ) {
         try {
             log.info("回收平台赠送的到期的商品-----start");
-            Date _beforTime = DateUtil.getLastDays(0);
-            Date startTime = DateUtil.getMinTimeofDay(_beforTime);
-            Date endTime = DateUtil.getMaxTimeofDay(_beforTime);
-            log.info("startTime------" + startTime + "-----endTime----" + endTime);
-            List<PfBorderPromotion> borderPromotions = pfBorderPromotionMapper.getExpirePromotionsByIsSendAndQuantityAndTime(
-                    PfBorderPromotionIsSendEnum.GiVED.getCode(),
-                    0,
-                    startTime,
-                    endTime);
-            for (PfBorderPromotion pfBorderPromotion : borderPromotions) {
-                PfUserSkuStock userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(pfBorderPromotion.getUserId(), pfBorderPromotion.getSkuId(), pfBorderPromotion.getSpuId());
-                if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
-                    //更新自己的库存
-                    log.info("-----更新自己的库存----start");
-                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), userSkuStock, pfBorderPromotion.getPfBorderId(), UserSkuStockLogType.PROMOTION_REDUCE);
-                    Integer stock = userSkuStock.getStock();
-                    Integer registerGiveSkuStock = userSkuStock.getRegisterGiveSkuStock();
-                    if (registerGiveSkuStock>0){
-                        stock -= registerGiveSkuStock;
-                        registerGiveSkuStock = 0;
-                        userSkuStock.setRemark("时间到期回收小白没有卖出去的库存");
-                    }
-                    log.info("-----更新自己的库存----end");
-                    //更新平台库存
-                    log.info("-----更新平台库存----start");
-
-                    log.info("-----更新平台库存----end");
+            PfUserSkuStock userSkuStock = userSkuStockService.selectByUserIdAndSkuIdAndSpuId(pfBorderPromotion.getUserId(), pfBorderPromotion.getSkuId(), pfBorderPromotion.getSpuId());
+            if (userSkuStock != null && userSkuStock.getRegisterGiveSkuStock() > 0) {
+                //更新自己的库存
+                log.info("-----更新自己的库存----start");
+                pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderPromotion.getQuantity(), userSkuStock, pfBorderPromotion.getPfBorderId(), UserSkuStockLogType.PROMOTION_REDUCE);
+                Integer stock = userSkuStock.getStock();
+                Integer registerGiveSkuStock = userSkuStock.getRegisterGiveSkuStock();
+                if (registerGiveSkuStock>0){
+                    stock -= registerGiveSkuStock;
+                    registerGiveSkuStock = 0;
+                    userSkuStock.setRemark("时间到期回收小白没有卖出去的库存");
                 }
-            }
+                log.info("-----更新自己的库存----end");
+                //更新平台库存
+                log.info("-----更新平台库存----start");
 
+                log.info("-----更新平台库存----end");
+            }
             log.info("回收平台赠送的到期的商品-----end");
         } catch (Exception e) {
             throw new BusinessException("回收平台赠送的到期的商品失败----" + e.getMessage());

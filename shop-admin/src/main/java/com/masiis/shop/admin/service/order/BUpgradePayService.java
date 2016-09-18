@@ -15,6 +15,7 @@ import com.masiis.shop.common.enums.platform.UpGradeUpStatus;
 import com.masiis.shop.common.enums.promotion.SfTurnTableRuleTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PromotionMakeUtils;
 import com.masiis.shop.common.util.RootPathUtils;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.po.*;
@@ -94,8 +95,7 @@ public class BUpgradePayService {
     @Resource
     private PfSysMenuService sysMenuService;
 
-    private Integer giveSkuAgentLevel = 3; //赠送商品的等级
-    private static final Integer giveSkuId = 16;
+    private Integer giveSkuAgentLevel = PromotionMakeUtils.giveSkuAgentLevel; //赠送商品的等级
     private Integer orgAgentLevelId = null;
 
     public void paySuccessCallBack(PfBorderPayment pfBorderPayment, String outOrderId) {

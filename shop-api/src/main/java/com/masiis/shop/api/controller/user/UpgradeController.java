@@ -24,6 +24,7 @@ import com.masiis.shop.web.common.service.ComAgentLevelService;
 import com.masiis.shop.web.common.service.SkuService;
 import com.masiis.shop.web.common.service.UserService;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
+import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfUserUpgradeNoticeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -72,6 +74,8 @@ public class UpgradeController {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private BOrderAddService bOrderAddService;
+    @Resource
+    private BOrderPayService payBOrderService;
 
     /**
      * 升级管理我的申请单（列表）
@@ -733,6 +737,19 @@ public class UpgradeController {
             //升级申请表添加orderId
             upgradeNotice.setPfBorderId(orderId);
             upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
+
+            // 0元升级，不需要支付，直接升级成功
+            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                logger.info("0元升级订单处理,订单id:" + orderId);
+                PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+                logger.info("处理0元升级订单,支付流水号为:" + payment.getPaySerialNum());
+                payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                res.setUpgradeType(0);
+            }else{
+                res.setUpgradeType(1);
+            }
+
             res.setOrderId(orderId);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

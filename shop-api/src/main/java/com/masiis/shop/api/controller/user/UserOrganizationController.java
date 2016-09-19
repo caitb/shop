@@ -9,6 +9,7 @@ import com.masiis.shop.api.bean.user.UserOrganizationRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
@@ -127,7 +128,7 @@ public class UserOrganizationController extends BaseController {
             PfUserOrganization pfUserOrganization = pfUserOrganizationService.loadByBrandIdAndUserId(userOrganizationReq.getBrandId(), comUser.getId());
             ComAgentLevel comAgentLevel = comAgentLevelService.selectByPrimaryKey(userOrganizationReq.getAgentLevelId());
 
-            if(pfUserOrganization != null){
+            if (pfUserOrganization != null) {
                 String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? pfUserOrganization.getName() : pfUserOrganizationService.handlerName(pfUserOrganization.getName(), comAgentLevel.getOrganizationSuffix());
                 pfUserOrganization.setName(name);
             }
@@ -168,33 +169,47 @@ public class UserOrganizationController extends BaseController {
             String name = StringUtils.isBlank(comAgentLevel.getOrganizationSuffix()) ? userOrganizationReq.getName() : pfUserOrganizationService.handlerName(userOrganizationReq.getName(), comAgentLevel.getOrganizationSuffix());
             name += comAgentLevel.getOrganizationSuffix();
 
-            PfUserOrganization pfUserOrganization = new PfUserOrganization();
-            pfUserOrganization.setId(userOrganizationReq.getOrganizationId());
-            pfUserOrganization.setAgentLevelId(userOrganizationReq.getAgentLevelId());
-            pfUserOrganization.setUserId(comUser.getId());
-            pfUserOrganization.setName(name);
-            pfUserOrganization.setAddDescription(userOrganizationReq.getAddDescription());
-            pfUserOrganization.setBackImg(userOrganizationReq.getBackImg());
-            pfUserOrganization.setBrandId(userOrganizationReq.getBrandId());
-            pfUserOrganization.setIntroduction(userOrganizationReq.getIntroduction());
-            pfUserOrganization.setLogo(userOrganizationReq.getLogo());
-            pfUserOrganization.setSlogan(userOrganizationReq.getSlogan());
-            pfUserOrganization.setWxId(userOrganizationReq.getWxId());
-            pfUserOrganization.setWxQrCode(userOrganizationReq.getWxQrCode());
-            if (pfUserOrganization.getId() == null) {
+            if (userOrganizationReq.getOrganizationId() != null) {
+                PfUserOrganization pfUserOrganization = pfUserOrganizationService.getById(userOrganizationReq.getOrganizationId());
+                if (pfUserOrganization != null) {
+                    pfUserOrganization.setName(name);
+                    pfUserOrganization.setAddDescription(userOrganizationReq.getAddDescription());
+                    pfUserOrganization.setBackImg(userOrganizationReq.getBackImg());
+                    pfUserOrganization.setBrandId(userOrganizationReq.getBrandId());
+                    pfUserOrganization.setIntroduction(userOrganizationReq.getIntroduction());
+                    pfUserOrganization.setLogo(userOrganizationReq.getLogo());
+                    pfUserOrganization.setSlogan(userOrganizationReq.getSlogan());
+                    pfUserOrganization.setWxId(userOrganizationReq.getWxId());
+                    pfUserOrganization.setWxQrCode(userOrganizationReq.getWxQrCode());
+                    pfUserOrganizationService.update(pfUserOrganization);
+                } else {
+                    throw new BusinessException("编辑失败，id不正确:" + userOrganizationReq.getOrganizationId());
+                }
+            } else {
+                PfUserOrganization pfUserOrganization = new PfUserOrganization();
+                pfUserOrganization.setId(userOrganizationReq.getOrganizationId());
+                pfUserOrganization.setAgentLevelId(userOrganizationReq.getAgentLevelId());
+                pfUserOrganization.setUserId(comUser.getId());
+                pfUserOrganization.setName(name);
+                pfUserOrganization.setAddDescription(userOrganizationReq.getAddDescription());
+                pfUserOrganization.setBackImg(userOrganizationReq.getBackImg());
+                pfUserOrganization.setBrandId(userOrganizationReq.getBrandId());
+                pfUserOrganization.setIntroduction(userOrganizationReq.getIntroduction());
+                pfUserOrganization.setLogo(userOrganizationReq.getLogo());
+                pfUserOrganization.setSlogan(userOrganizationReq.getSlogan());
+                pfUserOrganization.setWxId(userOrganizationReq.getWxId());
+                pfUserOrganization.setWxQrCode(userOrganizationReq.getWxQrCode());
                 pfUserOrganization.setCreateTime(new Date());
                 pfUserOrganization.setStatus(1);
                 pfUserOrganization.setFreemanNum(0);
                 pfUserOrganizationService.save(pfUserOrganization);
-            } else {
-                pfUserOrganizationService.update(pfUserOrganization);
             }
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             userOrganizationRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
             userOrganizationRes.setResMsg(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR_MSG);
-            log.error("保存家族设置失败![userOrganizationReq="+userOrganizationReq+"]" + e);
+            log.error("保存家族设置失败![userOrganizationReq=" + userOrganizationReq + "]" + e);
             e.printStackTrace();
         }
 
@@ -202,9 +217,9 @@ public class UserOrganizationController extends BaseController {
     }
 
 
-
     /**
      * 验证是否有家族(包括加入的)
+     *
      * @param request
      * @param comUser
      * @return
@@ -212,7 +227,7 @@ public class UserOrganizationController extends BaseController {
     @RequestMapping("/hasOrganization")
     @ResponseBody
     @SignValid(paramType = UserOrganizationReq.class)
-    public BaseBusinessRes hasOrganization(HttpServletRequest request, ComUser comUser){
+    public BaseBusinessRes hasOrganization(HttpServletRequest request, ComUser comUser) {
         UserOrganizationRes userOrganizationRes = new UserOrganizationRes();
 
         try {

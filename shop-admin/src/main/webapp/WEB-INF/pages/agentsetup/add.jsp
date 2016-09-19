@@ -432,7 +432,7 @@
                                                     <div class="pricing-span">
                                                         <div class="widget-box pricing-box-small widget-color-orange">
                                                             <div class="widget-header">
-                                                                <h5 class="widget-title bigger lighter">单价</h5>
+                                                                <h5 class="widget-title bigger lighter">分润(填小数点)</h5>
                                                             </div>
 
                                                             <div class="widget-body">

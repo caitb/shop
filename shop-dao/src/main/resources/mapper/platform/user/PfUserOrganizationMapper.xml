@@ -50,22 +50,56 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserOrganization" >
         update pf_user_organization
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-            brand_id = #{brandId,jdbcType=INTEGER},
-            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
-            user_id = #{userId,jdbcType=BIGINT},
-            name = #{name,jdbcType=VARCHAR},
-            logo = #{logo,jdbcType=VARCHAR},
-            back_img = #{backImg,jdbcType=VARCHAR},
-            wx_qr_code = #{wxQrCode,jdbcType=VARCHAR},
-            wx_id = #{wxId,jdbcType=VARCHAR},
-            add_description = #{addDescription,jdbcType=VARCHAR},
-            slogan = #{slogan,jdbcType=VARCHAR},
-            introduction = #{introduction,jdbcType=VARCHAR},
-            status = #{status,jdbcType=INTEGER},
-            freeman_num = #{freemanNum,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=INTEGER},
+            </if>
+            <if test="agentLevelId != null">
+                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="logo != null">
+                logo = #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="backImg != null">
+                back_img = #{backImg,jdbcType=VARCHAR},
+            </if>
+            <if test="wxQrCode != null">
+                wx_qr_code = #{wxQrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="wxId != null">
+                wx_id = #{wxId,jdbcType=VARCHAR},
+            </if>
+            <if test="addDescription != null">
+                add_description = #{addDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="slogan != null">
+                slogan = #{slogan,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="freemanNum != null">
+                freeman_num = #{freemanNum,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 

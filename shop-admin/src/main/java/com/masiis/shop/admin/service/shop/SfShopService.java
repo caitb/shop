@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -276,8 +277,13 @@ public class SfShopService {
             Date curDate = new Date();
             curDate.setDate(curDate.getDate() + 30);
 
-            Element headImgElement = new Element(317, 201, 120, 120, ImageIO.read(new File(posterDirPath + "/" + headImg)));
-            Element bgPosterImgElement = new Element(0, 0, 750, 1334, ImageIO.read(new File(posterDirPath + "/" + bgPoster)));
+            BufferedImage headImgBuff = DrawImageUtil.makeCircle(ImageIO.read(new File(posterDirPath + "/" + headImg)));
+            Element headImgElement = new Element(317, 201, 120, 120, headImgBuff);
+
+            BufferedImage bgPosterBuff = new BufferedImage(375, 667, BufferedImage.TYPE_INT_RGB);
+            bgPosterBuff.getGraphics().drawImage(ImageIO.read(new File(posterDirPath + "/" + bgPoster)), 0, 0, 375, 667, null);
+            Element bgPosterImgElement = new Element(0, 0, 750, 1334, bgPosterBuff);
+
             Element qrcodeImgElement = new Element(236, 602, 280, 280, ImageIO.read(new File(posterDirPath + "/" + qrcodeName)));
             //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
             String title = "Hi，我是" + comUser.getWxNkName();
@@ -296,8 +302,9 @@ public class SfShopService {
             //Element text3Element = new Element(34, 695, font2, new Color(102,102,102), startTime+"-"+endDate);
 
             List<Element> drawElements = new ArrayList<>();
-            drawElements.add(headImgElement);
+
             drawElements.add(bgPosterImgElement);
+            drawElements.add(headImgElement);
             drawElements.add(qrcodeImgElement);
             drawElements.add(text1Element);
             drawElements.add(text2Element);

@@ -82,19 +82,14 @@
                 dataType:"Json",
                 success:function(data){
                     if (data.isError == false) {
+                        if(data.upgradeType != 1){
+                            alert("该操作不支持0元订单");
+                            return;
+                        }
                         if (data.isRedirect == true){
-                            //0元升级订单 直接去支付成功页面
-                            if(data.upgradeType == 1){
-                                window.location.href = "${basePath}"+data.redirectUrl;
-                            }else{
-                                window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + data.bOrderId;
-                            }
+                            window.location.href = "${basePath}"+data.redirectUrl;
                         }else{
-                            if(data.upgradeType == 1){
-                                window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
-                            }else{
-                                window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + data.bOrderId;
-                            }
+                            window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
                         }
                     }
                 }

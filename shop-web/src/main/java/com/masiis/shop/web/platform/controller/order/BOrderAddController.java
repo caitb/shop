@@ -404,6 +404,10 @@ public class BOrderAddController extends BaseController {
             jsonObject.put("upgradeType", 1);//不是0元订单
             if (upgradeDetail != null) {
                 if (upgradeDetail.getPfBorderId() != null && upgradeDetail.getPfBorderId() != 0 && upgradeDetail.getUpgradeStatus() == 2) {
+                    PfBorder pfBorder = bOrderService.getPfBorderById(upgradeDetail.getPfBorderId());
+                    if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                        jsonObject.put("upgradeType", 0);
+                    }
                     //订单存在重定向到收银台
                     jsonObject.put("isError", false);
                     jsonObject.put("isRedirect", true);

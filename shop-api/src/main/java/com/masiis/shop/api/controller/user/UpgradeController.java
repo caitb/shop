@@ -702,6 +702,10 @@ public class UpgradeController {
             return res;
         }
         if (upgradeNotice.getPfBorderId() != null){
+            PfBorder pfBorder = bOrderService.getPfBorderById(upgradeNotice.getPfBorderId());
+            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                res.setUpgradeType(0);
+            }
             res.setOrderId(upgradeNotice.getPfBorderId());
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

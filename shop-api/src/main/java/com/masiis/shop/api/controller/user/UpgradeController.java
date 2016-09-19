@@ -689,6 +689,7 @@ public class UpgradeController {
         UpgradeAddOrderRes res = new UpgradeAddOrderRes();
         Long upgradeId = req.getId();
         logger.info("upgradeId = " + upgradeId);
+        res.setUpgradeType(1);//不是0元订单
         if (upgradeId == null){
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
             res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG);
@@ -738,16 +739,14 @@ public class UpgradeController {
             upgradeNotice.setPfBorderId(orderId);
             upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
 
-            // 0元升级，不需要支付，直接升级成功
+            // 0元升级，不需要支付，直接升级成功（不支持0元升级）
             PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
             if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                logger.info("0元升级订单处理,订单id:" + orderId);
+                /*logger.info("0元升级订单处理,订单id:" + orderId);
                 PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
                 logger.info("处理0元升级订单,支付流水号为:" + payment.getPaySerialNum());
-                payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");*/
                 res.setUpgradeType(0);
-            }else{
-                res.setUpgradeType(1);
             }
 
             res.setOrderId(orderId);

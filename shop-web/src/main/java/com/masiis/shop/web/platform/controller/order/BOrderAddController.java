@@ -401,6 +401,7 @@ public class BOrderAddController extends BaseController {
         ComUser comUser = getComUser(request);
         BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
         try {
+            jsonObject.put("upgradeType", 1);//不是0元订单
             if (upgradeDetail != null) {
                 if (upgradeDetail.getPfBorderId() != null && upgradeDetail.getPfBorderId() != 0 && upgradeDetail.getUpgradeStatus() == 2) {
                     //订单存在重定向到收银台
@@ -436,16 +437,14 @@ public class BOrderAddController extends BaseController {
                     orderAdd.setUserSource(0);
                     orderId = bOrderAddService.addBOrder(orderAdd);
 
-                    // 0元升级，不需要支付，直接升级成功
+                    // 0元升级，不需要支付，直接升级成功（不支持0元升级）
                     PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
                     if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                        log.info("0元升级订单处理，订单id:" + orderId);
+                        /*log.info("0元升级订单处理，订单id:" + orderId);
                         PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
                         log.info("处理0元升级订单，支付流水号为:" + payment.getPaySerialNum());
-                        payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                        payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");*/
                         jsonObject.put("upgradeType", 0);
-                    }else{
-                        jsonObject.put("upgradeType", 1);
                     }
 
                 } else {

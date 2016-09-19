@@ -10,6 +10,7 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.statistic.BrandStatistic;
 import com.masiis.shop.dao.platform.user.PfUserBrandMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -190,7 +191,7 @@ public class SearchController extends BaseController {
 
             searchRes.getDataMap().put("comUser", comUser);
             searchRes.getDataMap().put("organizations", organizations);
-            searchRes.getDataMap().put("imgUrlPrefix", "http://file.qc.masiis.com/static/user/organization/");
+            searchRes.getDataMap().put("imgUrlPrefix", PropertiesUtils.getStringValue("organization_url"));
             searchRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             searchRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

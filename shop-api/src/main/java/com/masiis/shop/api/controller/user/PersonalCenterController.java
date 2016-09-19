@@ -96,7 +96,7 @@ public class PersonalCenterController extends BaseController {
         logger.info("修改昵称");
         PersonalCenterRei res = new PersonalCenterRei();
         try {
-            String pattenForWxcode = "^(([\\u4e00-\\u9fa5]{1,8})|([0-9]{1,16})|([a-zA-Z]{1,16}))$";
+            String pattenForWxcode = "^(([a-zA-Z0-9\\u4e00-\\u9fa5]{1,8})|([0-9a-zA-Z]{1,16}))$";
             if (startCheck(pattenForWxcode, rei.getWxNkName()) == false) {
                 res.setResCode(SysResCodeCons.RES_CODE_ILLEGAL);
                 res.setResMsg(SysResCodeCons.NICHENG_IILEAGAL);

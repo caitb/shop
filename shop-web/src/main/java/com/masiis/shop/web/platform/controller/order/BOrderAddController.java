@@ -401,13 +401,8 @@ public class BOrderAddController extends BaseController {
         ComUser comUser = getComUser(request);
         BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeNoticeId);
         try {
-            jsonObject.put("upgradeType", 1);//不是0元订单
             if (upgradeDetail != null) {
                 if (upgradeDetail.getPfBorderId() != null && upgradeDetail.getPfBorderId() != 0 && upgradeDetail.getUpgradeStatus() == 2) {
-                    PfBorder pfBorder = bOrderService.getPfBorderById(upgradeDetail.getPfBorderId());
-                    if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                        jsonObject.put("upgradeType", 0);
-                    }
                     //订单存在重定向到收银台
                     jsonObject.put("isError", false);
                     jsonObject.put("isRedirect", true);
@@ -422,35 +417,42 @@ public class BOrderAddController extends BaseController {
                 if (upgradeDetail.getApplyAgentLevel() != 0) {
                     //插入订单表
                     PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
-                    BOrderAdd orderAdd = new BOrderAdd();
-                    orderAdd.setUpgradeNoticeId(upgradeNoticeId);
-                    log.info("升级订单对应的通知单id--------" + upgradeNoticeId);
-                    orderAdd.setOrderType(3);
-                    orderAdd.setUserId(comUser.getId());
-                    orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
-                    orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
-                    log.info("新上级id----------" + upgradeDetail.getNewPUserId());
-                    orderAdd.setSendType(1);//拿货方式
-                    orderAdd.setSkuId(upgradeDetail.getSkuId());
-                    orderAdd.setQuantity(newSkuAgent.getQuantity());
-                    log.info("订单数量---------" + newSkuAgent.getQuantity());
-                    orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
-                    orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
-                    log.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
-                    log.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
-                    orderAdd.setUserSource(0);
-                    orderId = bOrderAddService.addBOrder(orderAdd);
 
-                    // 0元升级，不需要支付，直接升级成功（不支持0元升级）
-                    PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-                    if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                        /*log.info("0元升级订单处理，订单id:" + orderId);
-                        PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
-                        log.info("处理0元升级订单，支付流水号为:" + payment.getPaySerialNum());
-                        payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");*/
+                    //不创建0元订单
+                    if(newSkuAgent.getTotalPrice().compareTo(BigDecimal.ZERO) == 0){
                         jsonObject.put("upgradeType", 0);
-                    }
+                    }else{
+                        jsonObject.put("upgradeType", 1);
 
+                        BOrderAdd orderAdd = new BOrderAdd();
+                        orderAdd.setUpgradeNoticeId(upgradeNoticeId);
+                        log.info("升级订单对应的通知单id--------" + upgradeNoticeId);
+                        orderAdd.setOrderType(3);
+                        orderAdd.setUserId(comUser.getId());
+                        orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
+                        orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
+                        log.info("新上级id----------" + upgradeDetail.getNewPUserId());
+                        orderAdd.setSendType(1);//拿货方式
+                        orderAdd.setSkuId(upgradeDetail.getSkuId());
+                        orderAdd.setQuantity(newSkuAgent.getQuantity());
+                        log.info("订单数量---------" + newSkuAgent.getQuantity());
+                        orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+                        orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+                        log.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
+                        log.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
+                        orderAdd.setUserSource(0);
+                        orderId = bOrderAddService.addBOrder(orderAdd);
+
+                        // 0元升级，不需要支付，直接升级成功（不支持0元升级）
+                        /*PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+                        if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                            log.info("0元升级订单处理，订单id:" + orderId);
+                            PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+                            log.info("处理0元升级订单，支付流水号为:" + payment.getPaySerialNum());
+                            payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                            jsonObject.put("upgradeType", 0);
+                        }*/
+                    }
                 } else {
                     log.info("您已不能再升级----当前用户id---" + comUser.getId() + "----当前等级----" + upgradeDetail.getCurrentAgentLevelName());
                     throw new BusinessException("您是最顶级不能再升级");

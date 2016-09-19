@@ -689,7 +689,6 @@ public class UpgradeController {
         UpgradeAddOrderRes res = new UpgradeAddOrderRes();
         Long upgradeId = req.getId();
         logger.info("upgradeId = " + upgradeId);
-        res.setUpgradeType(1);//不是0元订单
         if (upgradeId == null){
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
             res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG);
@@ -702,10 +701,6 @@ public class UpgradeController {
             return res;
         }
         if (upgradeNotice.getPfBorderId() != null){
-            PfBorder pfBorder = bOrderService.getPfBorderById(upgradeNotice.getPfBorderId());
-            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                res.setUpgradeType(0);
-            }
             res.setOrderId(upgradeNotice.getPfBorderId());
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -719,51 +714,61 @@ public class UpgradeController {
         //插入订单表
         BOrderUpgradeDetail upgradeDetail = upgradeNoticeService.getUpgradeNoticeInfo(upgradeId);
         PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
-        BOrderAdd orderAdd = new BOrderAdd();
-        orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
-        logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
-        orderAdd.setOrderType(3);
-        orderAdd.setUserId(comUser.getId());
-        orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
-        orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
-        logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
-        orderAdd.setSendType(1);//拿货方式
-        orderAdd.setSkuId(upgradeDetail.getSkuId());
-        orderAdd.setQuantity(newSkuAgent.getQuantity());
-        logger.info("订单数量---------" + newSkuAgent.getQuantity());
-        orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
-        orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
-        logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
-        logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
-        orderAdd.setUserSource(0);
-        try {
-            Long orderId = bOrderAddService.addBOrder(orderAdd);
-            logger.info("添加的升级订单id = " + orderId);
-            //升级申请表添加orderId
-            upgradeNotice.setPfBorderId(orderId);
-            upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
 
-            // 0元升级，不需要支付，直接升级成功（不支持0元升级）
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
-                /*logger.info("0元升级订单处理,订单id:" + orderId);
-                PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
-                logger.info("处理0元升级订单,支付流水号为:" + payment.getPaySerialNum());
-                payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");*/
-                res.setUpgradeType(0);
-            }
-
-            res.setOrderId(orderId);
+        //不创建0元订单
+        if(newSkuAgent.getTotalPrice().compareTo(BigDecimal.ZERO) == 0){
+            res.setUpgradeType(0);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
-            return res;
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.error(e.getMessage(),e);
-            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            res.setResMsg("创建升级订单失败");
-            return res;
+        }else{
+            res.setUpgradeType(1);
+
+            BOrderAdd orderAdd = new BOrderAdd();
+            orderAdd.setUpgradeNoticeId(upgradeNotice.getId());
+            logger.info("升级订单对应的通知单id--------" + upgradeNotice.getId());
+            orderAdd.setOrderType(3);
+            orderAdd.setUserId(comUser.getId());
+            orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
+            orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
+            logger.info("新上级id----------" + upgradeDetail.getNewPUserId());
+            orderAdd.setSendType(1);//拿货方式
+            orderAdd.setSkuId(upgradeDetail.getSkuId());
+            orderAdd.setQuantity(newSkuAgent.getQuantity());
+            logger.info("订单数量---------" + newSkuAgent.getQuantity());
+            orderAdd.setCurrentAgentLevel(upgradeDetail.getCurrentAgentLevel());
+            orderAdd.setAgentLevelId(upgradeDetail.getApplyAgentLevel());
+            logger.info("原始等级--------" + upgradeDetail.getCurrentAgentLevel());
+            logger.info("期望等级--------" + upgradeDetail.getApplyAgentLevel());
+            orderAdd.setUserSource(0);
+
+            try {
+                Long orderId = bOrderAddService.addBOrder(orderAdd);
+                logger.info("添加的升级订单id = " + orderId);
+                //升级申请表添加orderId
+                upgradeNotice.setPfBorderId(orderId);
+                upgradeNoticeService.updateUpgradeNotice(upgradeNotice);
+
+                // 0元升级，不需要支付，直接升级成功（不支持0元升级）
+                /*PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+                if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                    logger.info("0元升级订单处理,订单id:" + orderId);
+                    PfBorderPayment payment = bOrderService.createPfBorderPaymentByOrderCode(pfBorder.getOrderCode());
+                    logger.info("处理0元升级订单,支付流水号为:" + payment.getPaySerialNum());
+                    payBOrderService.mainPayBOrder(payment, "ZERO_UPGRADE");
+                    res.setUpgradeType(0);
+                }*/
+
+                res.setOrderId(orderId);
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            }catch (Exception e){
+                e.printStackTrace();
+                logger.error(e.getMessage(),e);
+                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+                res.setResMsg("创建升级订单失败");
+            }
         }
+        return res;
     }
 
     @RequestMapping("/paySuccessInfo.do")

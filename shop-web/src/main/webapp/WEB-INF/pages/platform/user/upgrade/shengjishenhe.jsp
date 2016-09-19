@@ -83,7 +83,7 @@
                 success:function(data){
                     if (data.isError == false) {
                         if(data.upgradeType != 1){
-                            alert("该操作不支持0元订单");
+                            alert("不支持创建0元订单");
                             return;
                         }
                         if (data.isRedirect == true){

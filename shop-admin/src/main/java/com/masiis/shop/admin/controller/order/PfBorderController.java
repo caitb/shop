@@ -116,7 +116,7 @@ public class PfBorderController extends BaseController {
             Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
-            log.error("查询合伙人列表失败![conditionMap=" + conditionMap + "]");
+            log.error("查询合伙人列表失败![conditionMap=" + conditionMap + "]"+e);
             e.printStackTrace();
         }
 
@@ -134,7 +134,7 @@ public class PfBorderController extends BaseController {
 
             return mav;
         } catch (Exception e) {
-            log.error("查看合伙人订单明细失败![borderId=" + borderId + "]");
+            log.error("查看合伙人订单明细失败![borderId=" + borderId + "]"+e);
             e.printStackTrace();
         }
 
@@ -187,7 +187,7 @@ public class PfBorderController extends BaseController {
             Map<String, Object> pageMap = bOrderService.offlineList(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
-            log.error("查询合伙人线下支付订单列表失败![conditionMap=" + conditionMap + "]");
+            log.error("查询合伙人线下支付订单列表失败![conditionMap=" + conditionMap + "]"+e);
             e.printStackTrace();
         }
 
@@ -229,7 +229,7 @@ public class PfBorderController extends BaseController {
 
             return resultMap;
         } catch (Exception e) {
-            log.error("合伙人线下支付收款确认失败![bOrderId=" + bOrderId + "][outOrderId=" + outOrderId + "]");
+            log.error("合伙人线下支付收款确认失败![bOrderId=" + bOrderId + "][outOrderId=" + outOrderId + "]"+e);
             e.printStackTrace();
 
             resultMap.put("result_code", "1");
@@ -263,7 +263,7 @@ public class PfBorderController extends BaseController {
 
             return "success";
         } catch (Exception e) {
-            log.error("处理排单出错了![orderMap=" + orderMap + "]");
+            log.error("处理排单出错了![orderMap=" + orderMap + "]"+e);
             e.printStackTrace();
         }
 
@@ -306,7 +306,7 @@ public class PfBorderController extends BaseController {
 
             return "success";
         } catch (Exception e) {
-            log.error("合伙人订单发货失败![pfBorderFreight=" + pfBorderFreight + "]");
+            log.error("合伙人订单发货失败![pfBorderFreight=" + pfBorderFreight + "]"+e);
             e.printStackTrace();
         }
 

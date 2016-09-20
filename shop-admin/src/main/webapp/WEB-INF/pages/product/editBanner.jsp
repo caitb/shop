@@ -118,6 +118,12 @@
                                     <input type="text" class="form-control" id="hyperlinkUrl" name="hyperlinkUrl" value="${banner.hyperlinkUrl}">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="hyperlinkUrl" class="col-sm-2 control-label">appHyperlinkUrl</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="appHyperlinkUrl" name="appHyperlinkUrl" value="${banner.appHyperlinkUrl}">
+                                </div>
+                            </div>
                             <textarea rows="500" cols="300" id="policy" name="policy" style="display: none;"></textarea>
                             <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
                         </form>

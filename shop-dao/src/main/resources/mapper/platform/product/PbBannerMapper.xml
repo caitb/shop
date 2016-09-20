@@ -28,13 +28,26 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PbBanner" >
         update pb_banner
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            name = #{name,jdbcType=VARCHAR},
-            img_url = #{imgUrl,jdbcType=VARCHAR},
-            hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
-            app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
-            remark = #{remark,jdbcType=VARCHAR},
-            sort = #{sort,jdbcType=INTEGER}
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="hyperlinkUrl != null">
+                hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="appHyperlinkUrl != null">
+                app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -90,12 +103,26 @@
 
     <update id="editBanner"  parameterType="com.masiis.shop.dao.po.PbBanner">
         update pb_banner
-        set name = #{name,jdbcType=VARCHAR},
-            img_url = #{imgUrl,jdbcType=VARCHAR},
-            hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
-            app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
-            remark = #{remark,jdbcType=VARCHAR},
-            sort = #{sort,jdbcType=INTEGER}
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="hyperlinkUrl != null">
+                hyperlink_url = #{hyperlinkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="appHyperlinkUrl != null">
+                app_hyperlink_url = #{appHyperlinkUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 

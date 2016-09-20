@@ -65,7 +65,7 @@
         </div>
         <div class="sec1" style="background:white url('${path}/static/images/weixin.png') no-repeat 10px;  background-size: 20px; margin-bottom: 10px;">
             <p>微信号</p>
-            <p>已绑定 ${comUser.wxNkName}</p>
+            <p>已绑定 ${comUser.wxId}</p>
         </div>
         <div class="sec1" id = "identityAuthId"  style="background:white url('${path}/static/images/name.png') no-repeat 10px;  background-size: 20px;">
             <p>实名认证</p>

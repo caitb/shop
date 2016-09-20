@@ -55,8 +55,9 @@
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
-                                        麦士商城后台管理系统<span class="dz-error-message">${requestScope.get("login_error_msg")}</span>
+                                        麦士商城后台管理系统
                                     </h4>
+                                    <span class="text-danger">${sessionScope.get("error_msg")}</span>
 
                                     <div class="space-6"></div>
 

@@ -147,10 +147,12 @@ public class UserController {
             }
             session.setAttribute("login_error_count", login_error_count);
             session.setAttribute("last_login_time", System.currentTimeMillis());
+            session.setAttribute("error_msg", "用户名或密码不正确!");
 
 
             mav.setViewName("redirect:login.shtml");
             mav.addObject("pbUser", pbUser);
+
             return mav;
         }
 
@@ -158,6 +160,7 @@ public class UserController {
         //登陆成功
         session.removeAttribute("login_error_count");
         session.removeAttribute("last_login_time");
+        session.removeAttribute("error_msg");
         session.setAttribute("pbUser", pbUsers.get(0));
         mav.setViewName("redirect:/main/index.shtml");
 

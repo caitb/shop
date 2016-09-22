@@ -417,4 +417,12 @@
         where mobile = #{mobile,jdbcType=VARCHAR}
     </update>
 
+    <update id="modifyHeadImg" parameterType="com.masiis.shop.dao.po.ComUser">
+        update com_user
+        <set>
+            wx_head_img = #{wxHeadImg,jdbcType=VARCHAR}
+        </set>
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

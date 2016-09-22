@@ -1,29 +1,34 @@
 package com.masiis.shop.api.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cloopen.rest.sdk.utils.PropertiesUtil;
 import com.masiis.shop.api.bean.common.CommonRei;
 import com.masiis.shop.api.bean.common.CommonReq;
-import com.masiis.shop.api.bean.user.PersonalCenterRes;
-import com.masiis.shop.api.bean.user.PersonalCenterRei;
-import com.masiis.shop.api.bean.user.SkuAgentDetail;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.AuditStatusEnum;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.web.api.service.PersonalCenterService;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfSkuAgentDetail;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,8 @@ public class PersonalCenterController extends BaseController {
 
     @Autowired
     private PersonalCenterService personalCenterService;
+    @Autowired
+    private UserCertificateService userCertificateService;
 
 
     @RequestMapping(value = "/centerHome.do",method = RequestMethod.POST)
@@ -123,5 +130,42 @@ public class PersonalCenterController extends BaseController {
         Matcher matcher = pattern.matcher(str);
         tem = matcher.matches();
         return tem;
+    }
+
+
+    /**
+     * 上传头像图片
+     *
+     * @author
+     * @date
+     */
+    @ResponseBody
+    @RequestMapping("/imgUpload.do")
+    @SignValid(paramType = UploadIdentityRei.class)
+    public UploadIdentityRes imgUpload(HttpServletRequest request, HttpServletResponse response,
+                                       UploadIdentityRei rei,
+                                       ComUser user,
+                                       MultipartFile imgInputStream) {
+        UploadIdentityRes uploadIdentityRes = new UploadIdentityRes();
+        try {
+            String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_HEADIMAGE_HEADIMAGE;
+            String fileName = userCertificateService.uploadImageToOss(imgInputStream,user,2);
+            user.setWxHeadImg(savepath + fileName);
+            personalCenterService.modifyHeadImg(user);
+            if (StringUtils.isBlank(fileName)) {
+                logger.info("-----------图片名为null-----------");
+                uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL);
+                uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL_MSG);
+            } else {
+                uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+                uploadIdentityRes.setImageName(fileName);
+                uploadIdentityRes.setImagePath(savepath + fileName);
+            }
+        } catch (Exception e) {
+            uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL);
+            uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL_MSG);
+        }
+        return uploadIdentityRes;
     }
 }

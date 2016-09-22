@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -168,7 +169,7 @@ public class UserCertificateService {
     public String getCtname(Integer agentLevelId){
         return comAgentLevelMapper.selectByPrimaryKey(agentLevelId).getName();
     }
-    public String uploadCertificateToOss(MultipartFile idCardImg,ComUser comUser){
+    public String uploadImageToOss(MultipartFile idCardImg,ComUser comUser,Integer i){
         try {
             String contentType = idCardImg.getContentType();
             String imageType= null;
@@ -177,21 +178,27 @@ public class UserCertificateService {
             }else{
                 imageType = contentType.substring(contentType.indexOf("/")+1);
             }
-            return uploadCertificateToOss(idCardImg.getInputStream(),idCardImg.getSize(),imageType,comUser.getId());
+            String fileName = null;
+            switch (i){
+                case 1:// 上传身份证
+                    fileName = comUser.getId()+"_"+"certificate_"+ createGenerateStr()+"."+imageType;
+                    OSSObjectUtils.uploadFile(fileName,idCardImg.getSize(),idCardImg.getInputStream(),OSSObjectUtils.OSS_CERTIFICATE_TEMP );
+                    break;
+                case 2://上传微信头像
+                    fileName = comUser.getId()+"_"+"headImage_"+ createGenerateStr()+"."+imageType;
+                    OSSObjectUtils.uploadFile(fileName,idCardImg.getSize(),idCardImg.getInputStream(),OSSObjectUtils.OSS_HEADIMAGE_HEADIMAGE);
+                    break;
+                default:
+                    break;
+            }
+            if (fileName==null){
+                throw new BusinessException("上传图片名字为空");
+            }
+            return fileName;
         }catch (Exception e){
             e.getMessage();
         }
         return null;
-    }
-    public String uploadCertificateToOss(InputStream is,long fileSize,String imageType, Long userId){
-        String fileName = null;
-        try {
-            fileName = userId+"_"+"certificate_"+ createGenerateStr()+"."+imageType;
-            OSSObjectUtils.uploadFile(fileName,fileSize,is,OSSObjectUtils.OSS_CERTIFICATE_TEMP );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fileName;
     }
 
     /**

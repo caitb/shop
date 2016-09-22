@@ -159,7 +159,7 @@ public class UserIdentityAuthController extends BaseController {
         UploadIdentityRes uploadIdentityRes = new UploadIdentityRes();
         try {
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            String fileName = userCertificateService.uploadCertificateToOss(imgInputStream,comUser);
+            String fileName = userCertificateService.uploadImageToOss(imgInputStream,comUser,1);
             if (StringUtils.isBlank(fileName)) {
                 log.info("-----------身份证名字为null-----------");
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);

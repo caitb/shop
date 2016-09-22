@@ -43,6 +43,8 @@ public class OSSObjectUtils {
     public static final String OSS_DOWN_LOAD_IMG_KEY = PropertiesUtils.getStringValue("oss.OSS_DOWN_LOAD_IMG_KEY");
 
     public static final String OSS_CERTIFICATE_TEMP = PropertiesUtils.getStringValue("oss.OSS_CERTIFICATE_TEMP");//上传身份证临时文件目录
+    public static final String OSS_HEADIMAGE_HEADIMAGE = PropertiesUtils.getStringValue("oss.OSS_HEADIMAGE_HEADIMAGE");//上传头像图片
+
 
     public static final String OSS_SHOPMAN_WX_QRCODE = PropertiesUtils.getStringValue("oss.OSS_SHOPMAN_WX_QRCODE");
 

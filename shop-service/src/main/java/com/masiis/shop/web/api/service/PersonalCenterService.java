@@ -81,4 +81,12 @@ public class PersonalCenterService {
         }
         return  comUserMapper.modifyName(user);
     }
+
+    @Transactional
+    public Integer modifyHeadImg( ComUser user){
+        if (comUserMapper.modifyHeadImg(user) == 0){
+            throw new BusinessException("用户不存在");
+        }
+        return  comUserMapper.modifyHeadImg(user);
+    }
 }

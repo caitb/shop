@@ -92,4 +92,12 @@ public interface ComUserMapper {
      * @return
      */
     int modifyName (ComUser user);
+
+    /**
+     * 修改头像
+     *
+     * @return
+     */
+    int modifyHeadImg (ComUser user);
+
 }

@@ -103,7 +103,7 @@ public class UserCertificateController extends BaseController {
         JSONObject object = new JSONObject();
         try {
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            String fileName = userCertificateService.uploadCertificateToOss(idCardImg,getComUser(request));
+            String fileName = userCertificateService.uploadImageToOss(idCardImg,getComUser(request),1);
             log.info("上传服务器根路径---------"+savepath);
             log.info("上传服务器文件名----------"+fileName);
             if (StringUtils.isBlank(fileName)) {

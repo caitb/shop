@@ -183,6 +183,12 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPLOAD_IDENTITY_FAIL_MSG = "上传身份证失败";
 
     /**
+     * 上传头像
+     */
+    public static final String RES_CODE_UPLOAD_IMG_FAIL = "100809";
+    public static final String RES_CODE_UPLOAD_IMG_FAIL_MSG = "上传头像失败";
+
+    /**
      * 申请试用
      */
     public static final String RES_CODE_TRIAL_APPLY_ADDRESS_FAIL = "100901";

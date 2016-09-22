@@ -234,6 +234,12 @@ public class ManageProController extends BaseController {
             //获取用户代理等级
             bOrderConfirm.setAgentLevelId(agentLevelId);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(req.getUserSkuId(), agentLevelId);
+            //check 补货门槛
+            if(pfSkuAgent.getSupplementLowerQuantity()!=null && req.getQuantity()<pfSkuAgent.getSupplementLowerQuantity()){
+                addProRes.setResCode(SysResCodeCons.RES_CODE_ILLEGAL);
+                addProRes.setResMsg("该等级补货的数量不能少于"+pfSkuAgent.getSupplementLowerQuantity());
+                return addProRes;
+            }
             bOrderConfirm.setSkuQuantity(req.getQuantity());
             BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
             BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));

@@ -291,6 +291,25 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="pricing-span">
+                                                        <div class="widget-box pricing-box-small widget-color-blue">
+                                                            <div class="widget-header">
+                                                                <h5 class="widget-title bigger lighter">补货门槛数量</h5>
+                                                            </div>
+
+                                                            <div class="widget-body">
+                                                                <div class="widget-main no-padding">
+                                                                    <ul class="list-unstyled list-striped pricing-table" id="supplementLowerQuantityUl">
+                                                                        <c:forEach items="${pfSkuAgents}" var="skuAgent" varStatus="status">
+                                                                            <c:if test="${status.index % 2 == 0}"><li> <input type="text" name="pfSkuAgents[${status.index}].supplementLowerQuantity" value="${skuAgent.supplementLowerQuantity}" style="width:100px;height:13px;border:0px;" > </li></c:if>
+                                                                            <c:if test="${status.index % 2 == 1}"><li> <input type="text" name="pfSkuAgents[${status.index}].supplementLowerQuantity" value="${skuAgent.supplementLowerQuantity}" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li></c:if>
+                                                                        </c:forEach>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <!-- 代理等级图标 -->
                                                     <div class="form-group">
                                                         <label for="dropzoneIcon" class="col-sm-2 control-label">&nbsp;</label>
@@ -924,6 +943,7 @@
         var isUpgradeLi = '';
         var isShowLi = '';
         var freemanUpperNumLi = '';
+        var supplementLowerQuantityLi = '';
         var levelCount = $('#agentLevelCount').val();
 
         for(var i=0; i<levelCount; i++){
@@ -970,6 +990,12 @@
                 freemanUpperNumLi += '<li> <input type="text" name="pfSkuAgents['+i+'].freemanUpperNum" value="" style="width:100px;height:13px;border:0px;" > </li>';
             else
                 freemanUpperNumLi += '<li> <input type="text" name="pfSkuAgents['+i+'].freemanUpperNum" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
+
+            //补货门槛数量
+            if(i%2 == 0)
+                supplementLowerQuantityLi += '<li> <input type="text" name="pfSkuAgents['+i+'].supplementLowerQuantity" value="" style="width:100px;height:13px;border:0px;" > </li>';
+            else
+                supplementLowerQuantityLi += '<li> <input type="text" name="pfSkuAgents['+i+'].supplementLowerQuantity" value="" style="width:100px;height:13px;border:0px;background-color:#F2F3EB;" > </li>';
         }
 
 
@@ -982,6 +1008,7 @@
         $('#isUpgradeUl').html(isUpgradeLi);
         $('#isShowUl').html(isShowLi);
         $('#freemanUpperNumUl').html(freemanUpperNumLi);
+        $('#supplementLowerQuantityUl').html(supplementLowerQuantityLi);
     }
 
     function changeRecommendSetup(){

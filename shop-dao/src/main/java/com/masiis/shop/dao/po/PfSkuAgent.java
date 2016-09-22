@@ -62,6 +62,11 @@ public class PfSkuAgent {
      */
     private Integer freemanUpperNum;
 
+    /**
+     * 补货门槛数量
+     */
+    private Integer supplementLowerQuantity;
+
     public Integer getId() {
         return id;
     }
@@ -174,6 +179,14 @@ public class PfSkuAgent {
         this.freemanUpperNum = freemanUpperNum;
     }
 
+    public Integer getSupplementLowerQuantity() {
+        return supplementLowerQuantity;
+    }
+
+    public void setSupplementLowerQuantity(Integer supplementLowerQuantity) {
+        this.supplementLowerQuantity = supplementLowerQuantity;
+    }
+
     @Override
     public String toString() {
         return "PfSkuAgent{" +
@@ -191,6 +204,7 @@ public class PfSkuAgent {
                 ", isUpgrade=" + isUpgrade +
                 ", rewardUnitPrice=" + rewardUnitPrice +
                 ", freemanUpperNum=" + freemanUpperNum +
+                ", supplementLowerQuantity=" + supplementLowerQuantity +
                 '}';
     }
 }

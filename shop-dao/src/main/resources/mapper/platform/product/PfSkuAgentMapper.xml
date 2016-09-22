@@ -16,6 +16,7 @@
         <result column="is_upgrade" property="isUpgrade" jdbcType="INTEGER" />
         <result column="reward_unit_price" property="rewardUnitPrice" jdbcType="DECIMAL" />
         <result column="freeman_upper_num" property="freemanUpperNum" jdbcType="INTEGER" />
+        <result column="supplement_lower_quantity" property="supplementLowerQuantity" jdbcType="INTEGER" />
     </resultMap>
 
     <resultMap id="UpgradePackageInfoMap" type="com.masiis.shop.dao.beans.user.upgrade.UpgradePackageInfo">
@@ -35,7 +36,7 @@
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num, supplement_lower_quantity
         FROM
                pf_sku_agent
         WHERE
@@ -52,12 +53,12 @@
             icon, unit_price, quantity,
             total_price, bail, back_img,
             is_show, remark, is_upgrade,
-            reward_unit_price, freeman_upper_num)
+            reward_unit_price, freeman_upper_num, supplement_lower_quantity)
         values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
             #{icon,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
             #{totalPrice,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{backImg,jdbcType=VARCHAR},
             #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isUpgrade,jdbcType=INTEGER},
-            #{rewardUnitPrice,jdbcType=DECIMAL}, #{freemanUpperNum,jdbcType=INTEGER})
+            #{rewardUnitPrice,jdbcType=DECIMAL}, #{freemanUpperNum,jdbcType=INTEGER}, #{supplementLowerQuantity,jdbcType=INTEGER})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent" >
@@ -100,7 +101,10 @@
                 reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
             </if>
             <if test="freemanUpperNum != null">
-                freeman_upper_num = #{freemanUpperNum,jdbcType=INTEGER}
+                freeman_upper_num = #{freemanUpperNum,jdbcType=INTEGER},
+            </if>
+            <if test="supplementLowerQuantity != null">
+                supplement_lower_quantity = #{supplementLowerQuantity},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -108,14 +112,14 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num, supplement_lower_quantity
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price, freeman_upper_num, supplement_lower_quantity
         from pf_sku_agent
     </select>
 
@@ -133,14 +137,14 @@
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num, supplement_lower_quantity
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num, supplement_lower_quantity
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -148,7 +152,7 @@
 
     <select id="selectBySkuIdAndLevelIdAndIsShow" resultMap="BaseResultMap">
         select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
-        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num
+        back_img, is_show, remark, is_upgrade, reward_unit_price,freeman_upper_num, supplement_lower_quantity
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -190,10 +194,13 @@
                 is_upgrade = #{isUpgrade,jdbcType=INTEGER},
             </if>
             <if test="rewardUnitPrice != null">
-                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL}
+                reward_unit_price = #{rewardUnitPrice,jdbcType=DECIMAL},
             </if>
             <if test="freemanUpperNum != null">
-                freeman_upper_num = #{freemanUpperNum,jdbcType=DECIMAL}
+                freeman_upper_num = #{freemanUpperNum,jdbcType=DECIMAL},
+            </if>
+            <if test="supplementLowerQuantity != null">
+                supplement_lower_quantity = #{supplementLowerQuantity},
             </if>
         </set>
         where

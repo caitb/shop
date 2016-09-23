@@ -40,6 +40,10 @@ public class SysResCodeCons {
     public static final String RES_CODE_REQ_OPERATE_ERROR = "100007";
     public static final String RES_CODE_REQ_OPERATE_ERROR_MSG = "业务操作失败";
 
+    public static final String RES_CODE_REQ_IS_AGENT_ERROR = "100008";
+    public static final String RES_CODE_REQ_IS_AGENT_ERROR_MSG = "不是合伙人";
+
+
     /**
      * 获取手机验证码返回码
      */

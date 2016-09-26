@@ -186,7 +186,13 @@ public class SearchController extends BaseController {
             if (comUser != null && StringUtils.isBlank(comUser.getRealName())) {
                 comUser.setRealName(comUser.getWxNkName());
             }
-            //List<Map<String, Object>> organizations = userOrganizationService.listByUserId(searchReq.getUserId());
+
+            if(comUser != null && comUser.getIsAgent().intValue() == 0){
+                searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_IS_AGENT_ERROR);
+                searchRes.setResMsg(SysResCodeCons.RES_CODE_REQ_IS_AGENT_ERROR_MSG);
+                return searchRes;
+            }
+
             List<Map<String, Object>> organizations = userOrganizationService.listCreateAndJoinOrganization(searchReq.getUserId());
 
             searchRes.getDataMap().put("comUser", comUser);
@@ -196,7 +202,7 @@ public class SearchController extends BaseController {
             searchRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             searchRes.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
-            searchRes.setResMsg("获取合伙人代理的品牌!");
+            searchRes.setResMsg("获取合伙人代理的品牌失败!");
 
             log.error("获取代理品牌失败!" + e);
             e.printStackTrace();

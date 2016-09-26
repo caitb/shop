@@ -338,6 +338,6 @@
         <set>
             logo = #{logo,jdbcType=VARCHAR}
         </set>
-        id = #{id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

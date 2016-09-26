@@ -831,7 +831,7 @@ public class UpgradeNoticeService {
             if (pfUserSku.getUserPid().longValue() == upGradeInfoPo.getApplyPid().longValue()){
                 PfUserSku pPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), upGradeInfoPo.getSkuId());
                 if (upGradeInfoPo.getWishAgentId().intValue() >= pPfUserSku.getAgentLevelId().intValue()){
-                    ComUser comUser = userService.getUserById(pfUserSku.getUserPid());
+                    ComUser comUser = userService.getUserById(pPfUserSku.getUserPid());
                     returnMsg = comUser.getRealName();
                 }else {
                     returnMsg = upGradeInfoPo.getApplyPName();

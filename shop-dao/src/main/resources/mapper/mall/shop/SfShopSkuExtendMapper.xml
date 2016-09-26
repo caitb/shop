@@ -27,6 +27,8 @@
             from sf_shop_sku sku
             INNER JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id AND sku.sku_id=a.sku_id
             INNER JOIN com_agent_level l on sku.agent_level_id = l.id
+            INNER JOIN com_sku b on sku.sku_id = b.id
+            INNER JOIN com_spu c on b.spu_id = c.id AND c.type = 0
         where sku.shop_id = #{shopId,jdbcType=BIGINT}
     </select>
 

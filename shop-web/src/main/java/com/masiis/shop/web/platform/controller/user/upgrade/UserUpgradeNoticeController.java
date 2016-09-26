@@ -60,7 +60,7 @@ public class UserUpgradeNoticeController extends BaseController {
               throw new BusinessException("用户出现问题");
             }
             //初始化商品查询列表
-            List<PfUserSku> pfUserSkuList = pfUserSkuService.getPfUserSkuInfoByUserId(comUser.getId());
+            List<PfUserSku> pfUserSkuList = pfUserSkuService.selectPrimarySkuByUserId(comUser.getId());
             if(pfUserSkuList==null){
                 throw new BusinessException("代理商品异常，初始化商品列表失败");
             }else{

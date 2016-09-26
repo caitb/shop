@@ -80,6 +80,8 @@
         bail, sale_num, share_num, qr_code,is_own_ship, remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} AND is_own_ship = #{isOwnShip,jdbcType=INTEGER}
+        and is_sale = 1
+        ORDER BY id DESC
     </select>
 
     <select id="getSfShopSkuByShopUserIdAndSkuId" resultMap="BaseResultMap">

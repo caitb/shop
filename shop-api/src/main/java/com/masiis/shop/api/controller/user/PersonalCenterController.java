@@ -159,9 +159,11 @@ public class PersonalCenterController extends BaseController {
             String fileName = userCertificateService.uploadImageToOss(imgInputStream,user,2);
             user.setWxHeadImg(savepath + fileName);
             personalCenterService.modifyHeadImg(user);
-            SfShop sfShop = sfShopMapper.selectByUserId(user.getId());
-            sfShop.setLogo(user.getWxHeadImg());
-            sfShopService.modifyHeadImg(sfShop);
+            if(sfShopMapper.selectByUserId(user.getId()) != null){
+                SfShop sfShop = sfShopMapper.selectByUserId(user.getId());
+                sfShop.setLogo(user.getWxHeadImg());
+                sfShopService.modifyHeadImg(sfShop);
+            }
             if (StringUtils.isBlank(fileName)) {
                 logger.info("-----------图片名为null-----------");
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL);

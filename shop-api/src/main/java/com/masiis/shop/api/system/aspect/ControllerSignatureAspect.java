@@ -250,13 +250,13 @@ public class ControllerSignatureAspect implements Ordered {
         log.info("sign:" + sign);
         log.info("reqSign:" + reqSign);
 
-        if(!sign.equals(reqSign)){
+        /*if(!sign.equals(reqSign)){
             if(res != null) {
                 res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
                 res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
             }
             return null;
-        }
+        }*/
 
         // 绑定参数
         for(int i = 0; i < parames.length; i++){

@@ -238,7 +238,7 @@ public class SfShopService {
             String headImg = "h-" + comUser.getId() + ".png";
             String qrcodeName = "qrcode-shop-" + comUser.getId() + "-" + sfShop.getId() + ".png";
             String bgPoster = "shop-" + sfShop.getId() + ".png";
-            String posterDirPath = rootPath + "static/images/poster"; //basePath:request.getServletContext().getRealPath("/")
+            String posterDirPath = rootPath + "/static/images/poster"; //basePath:request.getServletContext().getRealPath("/")
             File posterDir = new File(posterDirPath);
             if (!posterDir.exists()) {
                 posterDir.mkdirs();

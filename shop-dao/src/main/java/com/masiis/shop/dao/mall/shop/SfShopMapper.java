@@ -35,4 +35,11 @@ public interface SfShopMapper {
     int updateWithVersion(SfShop sfShop);
 
     List<SfShop> selectSharedShops(@Param("userId") Long userId);
+
+    /**
+     * 修改头像
+     *
+     * @return
+     */
+    int modifyHeadImg (SfShop sfShop);
 }

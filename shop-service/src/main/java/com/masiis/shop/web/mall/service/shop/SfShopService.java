@@ -354,4 +354,11 @@ public class SfShopService {
 
         return null;
     }
+    @Transactional
+    public Integer modifyHeadImg( SfShop sfShop){
+        if (sfShopMapper.modifyHeadImg(sfShop) == 0){
+            throw new BusinessException("用户不存在");
+        }
+        return  sfShopMapper.modifyHeadImg(sfShop);
+    }
 }

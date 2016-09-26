@@ -332,4 +332,12 @@
     <select id="selectSharedShops" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select a.* from sf_shop a inner join sf_user_share_param b on a.id = b.shop_id where b.f_user_id = #{userId};
     </select>
+
+    <update id="modifyHeadImg" parameterType="com.masiis.shop.dao.po.SfShop">
+        update sf_shop
+        <set>
+            logo = #{logo,jdbcType=VARCHAR}
+        </set>
+        id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

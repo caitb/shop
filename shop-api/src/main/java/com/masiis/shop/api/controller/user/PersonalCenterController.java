@@ -11,12 +11,15 @@ import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.api.service.PersonalCenterService;
 import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfSkuAgentDetail;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,6 +51,10 @@ public class PersonalCenterController extends BaseController {
     private PersonalCenterService personalCenterService;
     @Autowired
     private UserCertificateService userCertificateService;
+    @Autowired
+    private SfShopService sfShopService;
+    @Autowired
+    private SfShopMapper sfShopMapper;
 
 
     @RequestMapping(value = "/centerHome.do",method = RequestMethod.POST)
@@ -152,6 +159,9 @@ public class PersonalCenterController extends BaseController {
             String fileName = userCertificateService.uploadImageToOss(imgInputStream,user,2);
             user.setWxHeadImg(savepath + fileName);
             personalCenterService.modifyHeadImg(user);
+            SfShop sfShop = sfShopMapper.selectByUserId(user.getId());
+            sfShop.setLogo(user.getWxHeadImg());
+            sfShopService.modifyHeadImg(sfShop);
             if (StringUtils.isBlank(fileName)) {
                 logger.info("-----------图片名为null-----------");
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IMG_FAIL);

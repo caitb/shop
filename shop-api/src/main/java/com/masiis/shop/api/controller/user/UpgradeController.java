@@ -469,7 +469,8 @@ public class UpgradeController {
             logger.info(JSONObject.toJSONString(res));
             return res;
         }
-        Integer pLevelId = pfUserSku.getAgentLevelId();logger.info("查询上级用户代理等级end");
+        Integer pLevelId = pfUserSku.getAgentLevelId();
+        logger.info("查询上级用户代理等级end");
         logger.info("上级用户：" + pfUserSku.getUserId() + "：：：skuId = " + skuId + "：：：代理级别：" + pLevelId);
         logger.info("获取当前用户商品代理等级信息begin");
         PfSkuAgent currentSkuAgent = pfUserSkuService.getCurrentSkuAgent(skuId, agentLevelId);

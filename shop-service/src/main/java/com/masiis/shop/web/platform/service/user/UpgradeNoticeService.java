@@ -11,6 +11,8 @@ import com.masiis.shop.dao.beans.order.BOrderUpgradeDetail;
 import com.masiis.shop.dao.beans.user.PfUserUpGradeInfo;
 import com.masiis.shop.dao.beans.user.upgrade.UpGradeInfoPo;
 import com.masiis.shop.dao.beans.user.upgrade.UpgradeManagePo;
+import com.masiis.shop.dao.beans.user.upgrade.UpgradePackageInfo;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.PfUserRebateMapper;
 import com.masiis.shop.dao.platform.user.PfUserUpgradeNoticeMapper;
 import com.masiis.shop.dao.po.*;
@@ -41,6 +43,8 @@ public class UpgradeNoticeService {
     private PfUserUpgradeNoticeMapper pfUserUpgradeNoticeMapper;
     @Resource
     private PfUserRebateMapper pfUserRebateMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private SkuService comSkuService;
     @Resource
@@ -829,10 +833,23 @@ public class UpgradeNoticeService {
             logger.info("查询原上级代理商品信息-------pid="+upGradeInfoPo.getApplyPid());
             PfUserSku pfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(upGradeInfoPo.getApplyId(), upGradeInfoPo.getSkuId());
             if (pfUserSku.getUserPid().longValue() == upGradeInfoPo.getApplyPid().longValue()){
+                //查询上级代理
                 PfUserSku pPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), upGradeInfoPo.getSkuId());
                 if (upGradeInfoPo.getWishAgentId().intValue() >= pPfUserSku.getAgentLevelId().intValue()){
-                    ComUser comUser = userService.getUserById(pPfUserSku.getUserPid());
-                    returnMsg = comUser.getRealName();
+                    //上级代理用户的上级用户为平台时
+                    if (pPfUserSku.getUserPid().longValue() == 0){
+                        returnMsg = "平台";
+                    }else {
+                        //查询上级的上级代理
+                        PfUserSku ppPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pPfUserSku.getUserPid(), upGradeInfoPo.getSkuId());
+                        //查询上级是否有可以上级的等级
+                        List<UpgradePackageInfo> infos = pfSkuAgentMapper.selectUpgradePackage(upGradeInfoPo.getSkuId(), pPfUserSku.getAgentLevelId(), ppPfUserSku.getAgentLevelId());
+                        if (infos.isEmpty()){//上级不可以升级
+                            returnMsg = userService.getUserById(pPfUserSku.getUserPid()).getRealName();
+                        }else {//上级可以升级
+                            returnMsg = userService.getUserById(pfUserSku.getUserPid()).getRealName();
+                        }
+                    }
                 }else {
                     returnMsg = upGradeInfoPo.getApplyPName();
                 }

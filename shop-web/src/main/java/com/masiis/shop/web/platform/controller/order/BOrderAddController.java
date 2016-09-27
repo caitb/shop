@@ -225,6 +225,9 @@ public class BOrderAddController extends BaseController {
             if (status == 2) {
                 throw new BusinessException("您的上级合伙人库存不足，请联系补货");
             }
+            if (agentLevelId != 1) {
+                throw new BusinessException("目前麦链合伙人微信端已经关闭此等级代理，请使用APP进行该操作。");
+            }
             BOrderAdd bOrderAdd = new BOrderAdd();
             bOrderAdd.setOrderType(BOrderType.agent.getCode());
             bOrderAdd.setpUserId(pUserId);
@@ -405,7 +408,7 @@ public class BOrderAddController extends BaseController {
             if (upgradeDetail != null) {
                 if (upgradeDetail.getPfBorderId() != null && upgradeDetail.getPfBorderId() != 0 && upgradeDetail.getUpgradeStatus() == 2) {
                     PfBorder pfBorder = bOrderService.getPfBorderById(upgradeDetail.getPfBorderId());
-                    if(pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0){
+                    if (pfBorder.getReceivableAmount().compareTo(BigDecimal.ZERO) == 0) {
                         jsonObject.put("upgradeType", 0);
                     }
                     //订单存在重定向到收银台
@@ -424,9 +427,9 @@ public class BOrderAddController extends BaseController {
                     PfSkuAgent newSkuAgent = skuAgentService.getBySkuIdAndLevelId(upgradeDetail.getSkuId(), upgradeDetail.getApplyAgentLevel());
 
                     //不创建0元订单
-                    if(newSkuAgent.getTotalPrice().compareTo(BigDecimal.ZERO) == 0){
+                    if (newSkuAgent.getTotalPrice().compareTo(BigDecimal.ZERO) == 0) {
                         jsonObject.put("upgradeType", 0);
-                    }else{
+                    } else {
                         jsonObject.put("upgradeType", 1);
 
                         BOrderAdd orderAdd = new BOrderAdd();
@@ -435,7 +438,7 @@ public class BOrderAddController extends BaseController {
                         orderAdd.setOrderType(3);
                         orderAdd.setUserId(comUser.getId());
                         orderAdd.setOldPUserId(upgradeDetail.getOldPUserId());
-                        orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null?0:upgradeDetail.getNewPUserId());//设置新的上级
+                        orderAdd.setpUserId(upgradeDetail.getNewPUserId() == null ? 0 : upgradeDetail.getNewPUserId());//设置新的上级
                         log.info("新上级id----------" + upgradeDetail.getNewPUserId());
                         orderAdd.setSendType(1);//拿货方式
                         orderAdd.setSkuId(upgradeDetail.getSkuId());

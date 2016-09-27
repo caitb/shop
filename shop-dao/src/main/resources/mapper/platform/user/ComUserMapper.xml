@@ -390,7 +390,7 @@
         </where>
     </select>
 
-    <select id="selectByConditions" parameterType="Map" resultType="java.util.HashMap">
+    <select id="selectByConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
         select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name,
         id_card, id_card_front_url, id_card_back_url, wx_id, send_type, audit_reason, audit_status,
         audit_date, wx_unionid, password, pwd_salt, register_source, app_token, app_token_expire,
@@ -399,13 +399,10 @@
         com_user
         where is_agent = 1
         <if test="mobile  != null">
-            AND mobile = #{mobile}
+            AND mobile like concat(#{mobile,jdbcType=VARCHAR},'%')
         </if>
-        <if test="idCard  != null">
-            AND id_card = #{idCard}
-        </if>
-        <if test="realName != null">
-            AND real_name LIKE #{realName}
+        <if test="userName != null">
+            AND real_name like concat(#{userName,jdbcType=VARCHAR},'%')
         </if>
     </select>
 

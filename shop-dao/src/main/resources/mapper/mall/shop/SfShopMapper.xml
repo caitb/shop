@@ -349,7 +349,7 @@
         WHERE
           s.user_id = #{userId,jdbcType=BIGINT}
         AND s.`status` = 1
-        AND u.create_time <![CDATA[ <= ]]> #{time,jdbcType=TIMESTAMP}
+        AND s.create_time <![CDATA[ <= ]]> #{time,jdbcType=TIMESTAMP}
         AND
           EXISTS (
             SELECT

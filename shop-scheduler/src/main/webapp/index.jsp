@@ -53,7 +53,7 @@
         PfCertificateTask task = (PfCertificateTask) ac.getBean("pfCertificateTask");
         task.autoCreateCertificateJob();
     } else if(type.equals("closeshop")){
-        PfUserTask task = (PfUserTask) ac.getBean("PfUserTask");
+        PfUserTask task = (PfUserTask) ac.getBean("pfUserTask");
         task.autoCloseUnAuditUserShopJob();
     }
 %>

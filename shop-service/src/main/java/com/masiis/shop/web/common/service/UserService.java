@@ -490,10 +490,10 @@ public class UserService {
             if(user.getAuditStatus().intValue() == AuditStatusEnum.AUDITSUCCESS.getIndex()){
                 throw new BusinessException("该用户已经实名审核成功,用户id:" + user.getId());
             }
-            if(user.getCreateTime().compareTo(time) > 0){
+            SfShop shop = sfShopMapper.selectByUserId(user.getId());
+            if(shop.getCreateTime().compareTo(time) > 0){
                 throw new BusinessException("该用户时间还未到指定天数");
             }
-            SfShop shop = sfShopMapper.selectByUserId(user.getId());
             if(shop == null){
                 throw new BusinessException("该用户还没有店铺");
             }

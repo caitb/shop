@@ -86,9 +86,15 @@ public class UserMergeService {
                         logger.info("直接进行手机号绑定");
                         user = userService.bindPhone(comUser, mobile);
                         //绑定结束之后初始化用户基础信息表
-                        accountService.createAccountByUser(user);
-                        sfAccountService.createSfAccountByUser(user);
-                        sfUserStatisticsService.initSfUserStatistics(user);
+                        if (accountService.findAccountByUserid(user.getId()) == null){
+                            accountService.createAccountByUser(user);
+                        }
+                        if (sfAccountService.findAccountByUserId(user.getId()) == null){
+                            sfAccountService.createSfAccountByUser(user);
+                        }
+                        if (sfUserStatisticsService.selectByUserId(user.getId()) == null){
+                            sfUserStatisticsService.initSfUserStatistics(user);
+                        }
                     }else {
                         user = this.megreUser(mobileUser, comUser, 2);
                     }

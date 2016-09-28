@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.ComUser;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -100,4 +102,10 @@ public interface ComUserMapper {
      */
     int modifyHeadImg (ComUser user);
 
+    /**
+     * 查询指定时间之前的未通过实名审核的用户集合
+     * @param time
+     * @return
+     */
+    List<ComUser> selectUnAuditUsersAndNotCloseShopByTime(@Param("time") Date time);
 }

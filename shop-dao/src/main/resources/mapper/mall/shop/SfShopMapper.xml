@@ -340,4 +340,25 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <update id="updateCloseShopWithUnAuditUser" >
+        UPDATE
+          sf_shop s
+        SET
+          s.`status` = 0
+        WHERE
+          s.user_id = #{userId,jdbcType=BIGINT}
+        AND s.`status` = 1
+        AND
+          EXISTS (
+            SELECT
+              1
+            FROM
+              com_user u
+            WHERE
+              u.id = #{userId,jdbcType=BIGINT}
+            AND u.create_time <![CDATA[ < ]]> #{time,jdbcType=TIMESTAMP}
+            AND u.audit_status <![CDATA[ <> ]]> 2
+          );
+    </update>
 </mapper>

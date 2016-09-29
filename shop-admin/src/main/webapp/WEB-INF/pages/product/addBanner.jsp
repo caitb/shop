@@ -131,7 +131,7 @@
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=banner/" class="dropzone" id="dropzone">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -232,7 +232,7 @@
     initDropzone('#dropzone', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
        // $('#skuForm').append('<input type="hidden" name="imgUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="imgUrl" value="'+res.title+'" />');
+        $('input[name="imgUrl"]').val(res.title);
        // $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
     });
 

@@ -132,7 +132,7 @@
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=banner/" class="dropzone" id="dropzone">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>

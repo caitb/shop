@@ -35,7 +35,7 @@
 <div class="wrap">
     <header class="xq_header">
         <%--<a href="<%=basePath%>index"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
-        <a href="#"><img src="" alt=""></a>
+        <%--<a href="#"><img src="" alt=""></a>--%>
         <p>店铺名称</p>
     </header>
     <img src="${path}/static/images/tanhao.png" alt=""/>

@@ -834,7 +834,7 @@ public class UpgradeNoticeService {
             if (pfUserSku.getUserPid().longValue() == upGradeInfoPo.getApplyPid().longValue()){
                 //查询上级代理
                 PfUserSku pPfUserSku = pfUserSkuService.getPfUserSkuByUserIdAndSkuId(pfUserSku.getUserPid(), upGradeInfoPo.getSkuId());
-                if (upGradeInfoPo.getWishAgentId().intValue() >= pPfUserSku.getAgentLevelId().intValue()){
+                if (upGradeInfoPo.getWishAgentId().intValue() <= pPfUserSku.getAgentLevelId().intValue()){
                     //上级代理用户的上级用户为平台时
                     if (pPfUserSku.getUserPid().longValue() == 0){
                         returnMsg = "平台";

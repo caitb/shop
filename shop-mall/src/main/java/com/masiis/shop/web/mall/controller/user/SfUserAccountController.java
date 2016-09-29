@@ -151,6 +151,7 @@ public class SfUserAccountController extends BaseController {
         }
         Long userId = comUser.getId();
         ModelAndView mv = new ModelAndView();
+        mv.setViewName("mall/user/sf_reward");
         log.info("处理可提现的财富、佣金记录begin");
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
         if (userAccount == null){
@@ -214,7 +215,6 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("totalCount",totalCount);
         mv.addObject("orderItemDistributions",list);
         mv.addObject("isBuy",comUser.getIsBuy());
-        mv.setViewName("mall/user/sf_reward");
         return mv;
     }
 }

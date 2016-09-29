@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.SfShop;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,4 +43,7 @@ public interface SfShopMapper {
      * @return
      */
     int modifyHeadImg (SfShop sfShop);
+
+    int updateCloseShopWithUnAuditUser(@Param("userId") Long userId,
+                                       @Param("time") Date time);
 }

@@ -2,8 +2,10 @@ package com.masiis.shop.web.common.service;
 
 import com.masiis.shop.common.beans.wx.wxauth.AccessTokenRes;
 import com.masiis.shop.common.beans.wx.wxauth.WxUserInfo;
+import com.masiis.shop.common.enums.platform.AuditStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.EmojiUtils;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
@@ -54,6 +56,8 @@ public class UserService {
     private SfUserStatisticsService sfUserStatisticsService;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private SfShopMapper sfShopMapper;
 
     /**
      * 根据用户id获取用户
@@ -466,5 +470,43 @@ public class UserService {
     @Transactional
     public int delComUser(ComUser user){
         return comUserMapper.deleteByPrimaryKey(user.getId());
+    }
+
+    public List<ComUser> findUnAuditUsersAndNotCloseShopByTime(Date time) {
+        return comUserMapper.selectUnAuditUsersAndNotCloseShopByTime(time);
+    }
+
+    /**
+     * 关闭代理在指定时间前未实名认证的用户店铺
+     * @param user
+     * @param time
+     */
+    @Transactional
+    public void closeUnAuditUserShop(ComUser user, Date time) {
+        try{
+            if(user == null){
+                throw new BusinessException("用户user为null");
+            }
+            if(user.getAuditStatus().intValue() == AuditStatusEnum.AUDITSUCCESS.getIndex()){
+                throw new BusinessException("该用户已经实名审核成功,用户id:" + user.getId());
+            }
+            SfShop shop = sfShopMapper.selectByUserId(user.getId());
+            if(shop.getCreateTime().compareTo(time) > 0){
+                throw new BusinessException("该用户时间还未到指定天数");
+            }
+            if(shop == null){
+                throw new BusinessException("该用户还没有店铺");
+            }
+            if(shop.getStatus().intValue() == 0){
+                throw new BusinessException("该用户店铺已经关闭");
+            }
+            if(sfShopMapper.updateCloseShopWithUnAuditUser(user.getId(), time) != 1){
+                throw new BusinessException("关闭店铺失败");
+            }
+            log.info("关闭店铺成功");
+        } catch (Exception e) {
+            log.error(e);
+            throw new BusinessException(e);
+        }
     }
 }

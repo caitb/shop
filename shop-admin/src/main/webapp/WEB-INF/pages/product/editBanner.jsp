@@ -233,7 +233,8 @@
     initDropzone('#dropzone', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         // $('#skuForm').append('<input type="hidden" name="imgUrl" value="'+res.url+'" />');
-        $('#skuForm').append('<input type="hidden" name="imgUrl" value="'+res.title+'" />');
+        $('input[name="imgUrl"]').val(res.title);
+        //$('#skuForm').append('<input type="hidden" name="imgUrl" value="'+res.title+'" />');
         // $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
     });
 

@@ -163,6 +163,9 @@ public class SfUserAccountController extends BaseController {
             mv.addObject("userAccount",userAccount);
             mv.addObject("totalCount",0);
             mv.addObject("orderItemDistributions",null);
+            mv.addObject("withdraw",0);
+            mv.addObject("isPayDistribution",0);
+            mv.addObject("isNotPayDistribution",0);
             return mv;
         }
         //根据条件查询 小铺订单商品分润 数量

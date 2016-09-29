@@ -61,6 +61,7 @@ public class IndexController extends BaseController {
                               @PathVariable("shopId") Long shopId,
                               @PathVariable("userPid") Long userPid) throws Exception {
         ComUser user = getComUser(req);
+        ModelAndView modelAndView = new ModelAndView();
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
@@ -90,6 +91,10 @@ public class IndexController extends BaseController {
         boolean isUpload = true; //没上传
         if (shopId != null) {
             sfShop = sfShopService.getSfShopById(shopId);
+            if(sfShop.getStatus() == 0){
+             return  new ModelAndView("pay/accessFail");
+//            return "accessFail";
+            }
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }else{
@@ -104,7 +109,6 @@ public class IndexController extends BaseController {
             throw new BusinessException("shopId不能为空");
         }
 
-        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("allSfSpokesManNum", allSfSpokesManNum);
@@ -206,8 +210,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =261L;
-        userPid = 1838L;
+        shopId =553L;
+        userPid = 2349L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
